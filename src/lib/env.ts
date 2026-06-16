@@ -15,6 +15,7 @@ const schema = z.object({
   NEXT_PUBLIC_FCM_APP_ID: z.string().optional(),
   NEXT_PUBLIC_FCM_VAPID_KEY: z.string().optional(),
   FCM_SERVER_KEY: z.string().optional(),
+  GEMINI_API_KEY: z.string().min(1).optional(),
 });
 
 const parsed = schema.safeParse({
@@ -28,6 +29,7 @@ const parsed = schema.safeParse({
   NEXT_PUBLIC_FCM_APP_ID: process.env.NEXT_PUBLIC_FCM_APP_ID,
   NEXT_PUBLIC_FCM_VAPID_KEY: process.env.NEXT_PUBLIC_FCM_VAPID_KEY,
   FCM_SERVER_KEY: process.env.FCM_SERVER_KEY,
+  GEMINI_API_KEY: process.env.GEMINI_API_KEY,
 });
 
 export const env = parsed.success
@@ -51,5 +53,7 @@ export const hasSupabase = Boolean(
 export const hasFcm = Boolean(
   env.NEXT_PUBLIC_FCM_API_KEY && env.NEXT_PUBLIC_FCM_PROJECT_ID,
 );
+
+export const hasGemini = Boolean(env.GEMINI_API_KEY);
 
 export const dataMode: "supabase" | "mock" = hasSupabase ? "supabase" : "mock";

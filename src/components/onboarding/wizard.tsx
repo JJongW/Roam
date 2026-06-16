@@ -20,6 +20,7 @@ import type { Category, RoutePlan } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { OptionCard } from "@/components/onboarding/option-card";
+import { AiQuickStart } from "@/components/onboarding/ai-quick-start";
 
 // Interests first: it's the only field quick-start requires, so putting it on
 // the opening screen makes "바로 추천 받기" reachable immediately.
@@ -56,9 +57,11 @@ const TITLES: Record<(typeof STEPS)[number], { title: string; sub: string }> = {
 export function OnboardingWizard({
   slug,
   categories,
+  aiEnabled = false,
 }: {
   slug: string;
   categories: Category[];
+  aiEnabled?: boolean;
 }) {
   const router = useRouter();
   const [step, setStep] = useState(0);
@@ -162,7 +165,19 @@ export function OnboardingWizard({
         </span>
       </header>
 
-      <div className="flex-1 overflow-hidden px-5 pt-6">
+      <div className="flex-1 overflow-y-auto overflow-x-hidden px-5 pt-6">
+        {aiEnabled && step === 0 && (
+          <div className="mb-5">
+            <AiQuickStart slug={slug} />
+            <div className="mt-5 flex items-center gap-3">
+              <span className="h-px flex-1 bg-border" />
+              <span className="text-xs font-medium text-muted-foreground">
+                또는 직접 골라보기
+              </span>
+              <span className="h-px flex-1 bg-border" />
+            </div>
+          </div>
+        )}
         <div className="space-y-1.5">
           <h1 className="text-2xl font-extrabold leading-snug">{meta.title}</h1>
           <p className="text-sm text-muted-foreground">{meta.sub}</p>
