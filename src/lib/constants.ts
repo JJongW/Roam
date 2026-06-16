@@ -6,6 +6,7 @@ import type {
 
 export const SESSION_COOKIE = "roam_session";
 export const USER_COOKIE = "roam_user";
+export const ADMIN_COOKIE = "roam_admin";
 
 export interface OptionMeta<T extends string> {
   value: T;

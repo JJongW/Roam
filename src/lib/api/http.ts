@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { ZodError, type ZodType } from "zod";
-import { SESSION_COOKIE, USER_COOKIE } from "@/lib/constants";
+import { SESSION_COOKIE, USER_COOKIE, ADMIN_COOKIE } from "@/lib/constants";
+import { env } from "@/lib/env";
 import type { ApiError, ApiErrorCode } from "@/lib/types";
 
 const STATUS: Record<ApiErrorCode, number> = {
@@ -110,6 +111,24 @@ export async function setUserCookie(id: string) {
 export async function clearUserCookie() {
   const store = await cookies();
   store.delete(USER_COOKIE);
+}
+
+/** True if the request carries a valid organizer-gate cookie (admin unlock). */
+export async function isAdminAuthed(): Promise<boolean> {
+  if (!env.ORGANIZER_CODE) return true; // gate disabled when unconfigured
+  const store = await cookies();
+  return store.get(ADMIN_COOKIE)?.value === env.ORGANIZER_CODE;
+}
+
+export async function setAdminCookie() {
+  if (!env.ORGANIZER_CODE) return;
+  const store = await cookies();
+  store.set(ADMIN_COOKIE, env.ORGANIZER_CODE, {
+    httpOnly: true,
+    sameSite: "lax",
+    path: "/",
+    maxAge: 60 * 60 * 12,
+  });
 }
 
 export function withErrorBoundary(handler: () => Promise<NextResponse>) {

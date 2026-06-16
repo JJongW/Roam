@@ -1,12 +1,16 @@
 import { AdminSidebar, AdminTopNav } from "@/components/admin/admin-nav";
+import { AdminUnlock } from "@/components/admin/admin-unlock";
+import { isAdminAuthed } from "@/lib/api/http";
 
 export const metadata = { title: "Admin" };
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // Organizer gate: when ORGANIZER_CODE is set, require the code (cookie) first.
+  if (!(await isAdminAuthed())) return <AdminUnlock />;
   return (
     <div className="flex min-h-dvh">
       <AdminSidebar />

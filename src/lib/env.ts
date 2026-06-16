@@ -16,6 +16,7 @@ const schema = z.object({
   NEXT_PUBLIC_FCM_VAPID_KEY: z.string().optional(),
   FCM_SERVER_KEY: z.string().optional(),
   GEMINI_API_KEY: z.string().min(1).optional(),
+  ORGANIZER_CODE: z.string().min(1).optional(),
 });
 
 const parsed = schema.safeParse({
@@ -30,6 +31,7 @@ const parsed = schema.safeParse({
   NEXT_PUBLIC_FCM_VAPID_KEY: process.env.NEXT_PUBLIC_FCM_VAPID_KEY,
   FCM_SERVER_KEY: process.env.FCM_SERVER_KEY,
   GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+  ORGANIZER_CODE: process.env.ORGANIZER_CODE,
 });
 
 export const env = parsed.success
@@ -55,5 +57,8 @@ export const hasFcm = Boolean(
 );
 
 export const hasGemini = Boolean(env.GEMINI_API_KEY);
+
+/** When set, /admin requires entering this code (organizer gate). Off if unset. */
+export const hasOrganizerGate = Boolean(env.ORGANIZER_CODE);
 
 export const dataMode: "supabase" | "mock" = hasSupabase ? "supabase" : "mock";
