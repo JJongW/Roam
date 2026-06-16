@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { getRepository } from "@/lib/repositories";
+import { hasGemini } from "@/lib/env";
 import { RouteView } from "@/components/route/route-view";
 import type { Waiting } from "@/lib/types";
 
@@ -26,6 +27,7 @@ export default async function RoutePage({ params }: Props) {
       categories={detail.categories}
       halls={detail.halls}
       waitings={waitings}
+      aiEnabled={hasGemini}
     />
   );
 }

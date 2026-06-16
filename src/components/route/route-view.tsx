@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Reorder, useDragControls } from "framer-motion";
 import {
@@ -11,8 +11,13 @@ import {
   Footprints,
   GripVertical,
   ArrowDownNarrowWide,
+  Wand2,
+  Loader2,
 } from "lucide-react";
+import { toast } from "sonner";
+import { api, ApiClientError } from "@/lib/api/client";
 import { formatWalk } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
 import { useRouteStore } from "@/lib/stores/route";
 import { useCartStore } from "@/lib/stores/cart";
 import { useOnboardingStore } from "@/lib/stores/onboarding";
@@ -43,6 +48,7 @@ export function RouteView({
   categories,
   halls,
   waitings,
+  aiEnabled = false,
 }: {
   slug: string;
   exhibition: Exhibition;
@@ -50,6 +56,7 @@ export function RouteView({
   categories: Category[];
   halls: Hall[];
   waitings: Record<string, Waiting>;
+  aiEnabled?: boolean;
 }) {
   const hydrated = useHydrated();
   const cartIds = useCartStore((s) => s.ids);
@@ -97,6 +104,60 @@ export function RouteView({
 
   const ordered = chosen;
   const orderedIds = useMemo(() => ordered.map((b) => b.id), [ordered]);
+
+  // Natural-language route editing ("문학 빼줘", "A홀 근처만").
+  const [editText, setEditText] = useState("");
+  const [editing, setEditing] = useState(false);
+
+  async function aiEdit() {
+    const instruction = editText.trim();
+    if (!instruction || editing || orderedIds.length === 0) return;
+    setEditing(true);
+    try {
+      const r = await api.post<{
+        keepBoothIds: string[];
+        note: string;
+        changed: boolean;
+      }>("/api/ai/replan", {
+        exhibitionSlug: slug,
+        boothIds: orderedIds,
+        instruction,
+      });
+      setCartIds(r.keepBoothIds);
+      setEditText("");
+      toast.success(r.note || "동선을 수정했어요");
+    } catch (e) {
+      const msg =
+        e instanceof ApiClientError ? e.error.message : "수정하지 못했어요";
+      toast.error(msg);
+    } finally {
+      setEditing(false);
+    }
+  }
+
+  // AI one-line reasons per booth (lazy; augments the instant data chips).
+  const [aiReasons, setAiReasons] = useState<Record<string, string>>({});
+  const orderedKey = orderedIds.join(",");
+  useEffect(() => {
+    if (!aiEnabled || !hydrated || orderedIds.length === 0) return;
+    let cancelled = false;
+    api
+      .post<{ reasons: Record<string, string> }>("/api/ai/route-reasons", {
+        exhibitionSlug: slug,
+        boothIds: orderedIds,
+        interests,
+      })
+      .then((r) => {
+        if (!cancelled) setAiReasons(r.reasons ?? {});
+      })
+      .catch(() => {
+        /* AI off / failed — instant data chips still cover the why. */
+      });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [orderedKey, hydrated]);
 
   // Re-optimise the order into a nearest-neighbour sweep from the entrance.
   function optimizeOrder() {
@@ -208,6 +269,36 @@ export function RouteView({
         )}
       </div>
 
+      {aiEnabled && (
+        <div className="mx-4 mb-2 flex gap-2">
+          <div className="relative flex-1">
+            <Wand2 className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-primary" />
+            <Input
+              value={editText}
+              onChange={(e) => setEditText(e.target.value)}
+              placeholder="AI로 수정: 예) 문학 빼줘, A홀 근처만"
+              maxLength={200}
+              disabled={editing}
+              className="h-9 pl-8"
+              aria-label="AI 동선 수정 요청"
+              onKeyDown={(e) => {
+                if (e.nativeEvent.isComposing) return;
+                if (e.key === "Enter") aiEdit();
+              }}
+            />
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-9 shrink-0"
+            disabled={!editText.trim() || editing}
+            onClick={aiEdit}
+          >
+            {editing ? <Loader2 className="size-4 animate-spin" /> : "수정"}
+          </Button>
+        </div>
+      )}
+
       <Reorder.Group
         axis="y"
         values={orderedIds}
@@ -241,6 +332,15 @@ export function RouteView({
                   </span>
                 ))}
               </div>
+            )}
+            {aiReasons[b.id] && (
+              <p className="ml-8 mt-1 text-xs leading-snug text-muted-foreground">
+                <Sparkles
+                  className="mr-0.5 inline size-3 text-primary"
+                  aria-hidden
+                />
+                {aiReasons[b.id]}
+              </p>
             )}
           </RouteRow>
         ))}

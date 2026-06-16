@@ -2,7 +2,15 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { MapPin, MessagesSquare, Send, Loader2, Search, X } from "lucide-react";
+import {
+  MapPin,
+  MessagesSquare,
+  Send,
+  Loader2,
+  Search,
+  X,
+  Sparkles,
+} from "lucide-react";
 import { toast } from "sonner";
 import { formatPostTime } from "@/lib/utils";
 import { api, ApiClientError } from "@/lib/api/client";
@@ -20,16 +28,19 @@ export function CommunityView({
   slug,
   booths,
   initialPosts,
+  aiEnabled = false,
 }: {
   slug: string;
   booths: Booth[];
   initialPosts: CommunityPost[];
+  aiEnabled?: boolean;
 }) {
   const [posts, setPosts] = useState<CommunityPost[]>(initialPosts);
   const [body, setBody] = useState("");
   const [name, setName] = useState("");
   const [boothId, setBoothId] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [summary, setSummary] = useState<string[]>([]);
 
   const boothById = useMemo(
     () => new Map(booths.map((b) => [b.id, b])),
@@ -49,6 +60,23 @@ export function CommunityView({
     const off = watchPosts(slug, setPosts);
     return off;
   }, [slug]);
+
+  // AI summary of visitor reports (crowd-sourced — explicitly NOT official).
+  useEffect(() => {
+    if (!aiEnabled) return;
+    let cancelled = false;
+    api
+      .post<{ summary: string[] }>("/api/ai/community-summary", {
+        exhibitionSlug: slug,
+      })
+      .then((r) => {
+        if (!cancelled) setSummary(r.summary ?? []);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [slug, aiEnabled]);
 
   async function submit() {
     const text = body.trim();
@@ -79,6 +107,28 @@ export function CommunityView({
       <AppBar title="실시간 커뮤니티" />
 
       <div className="flex-1 overflow-y-auto px-4 py-3">
+        {summary.length > 0 && (
+          <div className="mb-3 rounded-2xl border border-primary/20 bg-primary/5 p-3.5">
+            <div className="flex items-center gap-1.5">
+              <Sparkles className="size-4 text-primary" aria-hidden />
+              <p className="text-sm font-bold">방문자 제보 요약</p>
+              <span className="rounded-full bg-secondary px-1.5 py-0.5 text-[10px] font-bold text-muted-foreground">
+                AI · 공식 정보 아님
+              </span>
+            </div>
+            <ul className="mt-1.5 space-y-1">
+              {summary.map((s, i) => (
+                <li
+                  key={i}
+                  className="flex gap-1.5 text-[13px] leading-snug text-foreground/90"
+                >
+                  <span className="text-primary">·</span>
+                  <span>{s}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
         {posts.length === 0 ? (
           <div className="flex h-full items-center justify-center">
             <EmptyState
