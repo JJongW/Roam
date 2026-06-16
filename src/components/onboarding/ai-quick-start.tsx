@@ -7,9 +7,23 @@ import { toast } from "sonner";
 import { api, ApiClientError } from "@/lib/api/client";
 import { useRouteStore } from "@/lib/stores/route";
 import { useCartStore } from "@/lib/stores/cart";
+import { useOnboardingStore } from "@/lib/stores/onboarding";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import type { RoutePlan } from "@/lib/types";
+import type {
+  CompanionType,
+  MovementPreference,
+  RoutePlan,
+  VisitPurpose,
+} from "@/lib/types";
+
+type AiPreference = {
+  visitPurpose: VisitPurpose;
+  interests: string[];
+  availableMinutes: number;
+  movementPreference: MovementPreference;
+  companionType: CompanionType;
+};
 
 const EXAMPLES = [
   "문학 위주로 1시간만, 사람 많은 곳은 피하고 싶어",
@@ -37,12 +51,22 @@ export function AiQuickStart({ slug }: { slug: string }) {
     try {
       const res = await api.post<{
         route: RoutePlan;
+        preference: AiPreference;
         chips: string[];
         confidence: number;
       }>("/api/ai/quick-route", { exhibitionSlug: slug, text: prompt });
 
       setRoute(res.route);
       setCartIds(res.route.boothIds);
+      // Mirror the parsed preference into the onboarding draft so route-page
+      // reason chips show and the wizard is pre-filled if the user goes back.
+      useOnboardingStore.setState({
+        interests: res.preference.interests,
+        visitPurpose: res.preference.visitPurpose,
+        availableMinutes: res.preference.availableMinutes,
+        movementPreference: res.preference.movementPreference,
+        companionType: res.preference.companionType,
+      });
 
       const summary = res.chips.length ? ` · ${res.chips.join(" / ")}` : "";
       if (res.confidence < 0.4) {
@@ -110,8 +134,8 @@ export function AiQuickStart({ slug }: { slug: string }) {
       >
         {loading ? (
           <>
-            <Loader2 className="size-5 animate-spin" /> 조건을 읽고 동선을 만들고
-            있어요
+            <Loader2 className="size-5 animate-spin" /> 조건을 읽고 동선을
+            만들고 있어요
           </>
         ) : (
           <>

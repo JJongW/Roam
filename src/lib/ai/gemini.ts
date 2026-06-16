@@ -27,27 +27,36 @@ export async function generateJSON<T>(opts: {
   temperature?: number;
 }): Promise<T> {
   const ai = getClient();
-  const res = await ai.models.generateContent({
-    model: MODEL,
-    contents: opts.prompt,
-    config: {
-      responseMimeType: "application/json",
-      temperature: opts.temperature ?? 0.2,
-      ...(opts.system ? { systemInstruction: opts.system } : {}),
-    },
-  });
-  const text = res.text;
-  if (!text) throw new Error("Gemini returned an empty response");
-  let json: unknown;
-  try {
-    json = JSON.parse(text);
-  } catch {
-    // Models sometimes wrap JSON in prose/fences — salvage the first object.
-    const m = text.match(/\{[\s\S]*\}/);
-    if (!m) throw new Error("Gemini response was not JSON");
-    json = JSON.parse(m[0]);
+  // One retry: model output occasionally varies in shape/validity.
+  let lastErr: unknown;
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const res = await ai.models.generateContent({
+        model: MODEL,
+        contents: opts.prompt,
+        config: {
+          responseMimeType: "application/json",
+          temperature: opts.temperature ?? 0.2,
+          ...(opts.system ? { systemInstruction: opts.system } : {}),
+        },
+      });
+      const text = res.text;
+      if (!text) throw new Error("Gemini returned an empty response");
+      let json: unknown;
+      try {
+        json = JSON.parse(text);
+      } catch {
+        // Models sometimes wrap JSON in prose/fences — salvage first object.
+        const m = text.match(/\{[\s\S]*\}/);
+        if (!m) throw new Error("Gemini response was not JSON");
+        json = JSON.parse(m[0]);
+      }
+      return opts.schema.parse(json);
+    } catch (e) {
+      lastErr = e;
+    }
   }
-  return opts.schema.parse(json);
+  throw lastErr;
 }
 
 /** Plain-text generation (summaries etc.). */

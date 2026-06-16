@@ -1,24 +1,42 @@
 import { z } from "zod";
-import type { Category, CompanionType, MovementPreference, VisitPurpose } from "@/lib/types";
+import type {
+  Category,
+  CompanionType,
+  MovementPreference,
+  VisitPurpose,
+} from "@/lib/types";
 import type { UserPreferenceInput } from "@/lib/schemas";
+
+/** Models emit a bare string, null, or an array here — coerce to a string[]. */
+const stringList = z
+  .union([z.string(), z.array(z.string())])
+  .nullish()
+  .transform((v) =>
+    v == null ? [] : Array.isArray(v) ? v : v.trim() ? [v.trim()] : [],
+  );
 
 /** Raw AI parse target — loose, then mapped onto the app's strict preference. */
 export const aiRoutePreferencesSchema = z.object({
   purpose: z
     .enum(["purchase", "information", "networking", "experience", "general"])
-    .optional(),
-  interests: z.array(z.string()).default([]),
-  durationMinutes: z.number().optional(),
+    .optional()
+    .catch(undefined),
+  interests: stringList,
+  durationMinutes: z.coerce.number().optional().catch(undefined),
   companion: z
     .enum(["solo", "couple_friend", "family", "group", "business"])
-    .optional(),
-  movementStyle: z.enum(["shortest", "balanced", "thorough"]).optional(),
-  avoidCrowds: z.boolean().optional(),
-  preferredBoothNamesOrIds: z.array(z.string()).default([]),
-  avoidBoothNamesOrIds: z.array(z.string()).default([]),
-  startArea: z.string().optional(),
-  constraints: z.array(z.string()).default([]),
-  confidence: z.number().min(0).max(1).default(0.5),
+    .optional()
+    .catch(undefined),
+  movementStyle: z
+    .enum(["shortest", "balanced", "thorough"])
+    .optional()
+    .catch(undefined),
+  avoidCrowds: z.boolean().optional().catch(undefined),
+  preferredBoothNamesOrIds: stringList,
+  avoidBoothNamesOrIds: stringList,
+  startArea: z.string().optional().catch(undefined),
+  constraints: stringList,
+  confidence: z.coerce.number().min(0).max(1).catch(0.5).default(0.5),
 });
 
 export type AiRoutePreferences = z.infer<typeof aiRoutePreferencesSchema>;
@@ -103,13 +121,19 @@ export function mapToPreference(
   for (const slug of interests) chips.push(bySlug.get(slug)?.name ?? slug);
   chips.push(`${snapDuration(availableMinutes)}분`);
   if (ai.avoidCrowds) chips.push("대기 적은 곳");
-  if (ai.startArea) chips.push(`${ai.startArea} 근처`);
+  if (ai.startArea) {
+    const area = ai.startArea.trim().replace(/\s*근처$/, "");
+    chips.push(`${area} 근처`);
+  }
 
   return { preference, chips, unmatched };
 }
 
 /** Build the parsing prompt with the real category vocabulary injected. */
-export function buildPreferencePrompt(text: string, categories: Category[]): string {
+export function buildPreferencePrompt(
+  text: string,
+  categories: Category[],
+): string {
   const cats = categories.map((c) => `${c.slug} (${c.name})`).join(", ");
   return [
     "너는 전시회 관람 동선 추천 도우미야. 방문객의 한국어 요청을 읽고,",
