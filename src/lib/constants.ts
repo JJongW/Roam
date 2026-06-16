@@ -1,0 +1,129 @@
+import type {
+  CompanionType,
+  MovementPreference,
+  VisitPurpose,
+} from "@/lib/types";
+
+export const SESSION_COOKIE = "roam_session";
+export const USER_COOKIE = "roam_user";
+
+export interface OptionMeta<T extends string> {
+  value: T;
+  label: string;
+  description: string;
+  icon: string; // lucide icon name
+}
+
+export const VISIT_PURPOSE_OPTIONS: OptionMeta<VisitPurpose>[] = [
+  {
+    value: "purchase",
+    label: "구매",
+    description: "제품·서비스 구매가 목적이에요",
+    icon: "ShoppingBag",
+  },
+  {
+    value: "information",
+    label: "정보 수집",
+    description: "트렌드와 정보를 둘러봐요",
+    icon: "Search",
+  },
+  {
+    value: "networking",
+    label: "네트워킹",
+    description: "사람들과 교류하고 싶어요",
+    icon: "Users",
+  },
+  {
+    value: "experience",
+    label: "체험",
+    description: "직접 보고 경험하고 싶어요",
+    icon: "Sparkles",
+  },
+];
+
+export const MOVEMENT_OPTIONS: OptionMeta<MovementPreference>[] = [
+  {
+    value: "shortest",
+    label: "최단 동선",
+    description: "꼭 필요한 곳만 효율적으로",
+    icon: "Zap",
+  },
+  {
+    value: "balanced",
+    label: "균형",
+    description: "관심사와 동선을 적절히",
+    icon: "Scale",
+  },
+  {
+    value: "thorough",
+    label: "꼼꼼하게",
+    description: "최대한 많이 둘러볼래요",
+    icon: "Compass",
+  },
+];
+
+export const COMPANION_OPTIONS: OptionMeta<CompanionType>[] = [
+  { value: "alone", label: "혼자", description: "혼자 자유롭게", icon: "User" },
+  {
+    value: "partner",
+    label: "연인·친구",
+    description: "둘이 함께",
+    icon: "Heart",
+  },
+  {
+    value: "family",
+    label: "가족",
+    description: "아이·부모님과",
+    icon: "Home",
+  },
+  {
+    value: "group",
+    label: "단체",
+    description: "여러 명이 함께",
+    icon: "Users",
+  },
+  {
+    value: "business",
+    label: "비즈니스",
+    description: "업무·미팅 목적",
+    icon: "Briefcase",
+  },
+];
+
+/** Available-time presets in minutes. */
+export const TIME_OPTIONS = [
+  { value: 60, label: "1시간" },
+  { value: 120, label: "2시간" },
+  { value: 180, label: "3시간" },
+  { value: 240, label: "4시간 이상" },
+] as const;
+
+/** Per-purpose scoring weights (engine). Tuned, sum-agnostic. */
+export const PURPOSE_WEIGHTS: Record<
+  VisitPurpose,
+  { interest: number; popularity: number; event: number; waiting: number }
+> = {
+  purchase: { interest: 1.4, popularity: 0.8, event: 0.6, waiting: 1.0 },
+  information: { interest: 1.2, popularity: 1.0, event: 0.7, waiting: 0.6 },
+  networking: { interest: 0.9, popularity: 0.9, event: 1.4, waiting: 0.5 },
+  experience: { interest: 1.1, popularity: 1.1, event: 1.2, waiting: 0.8 },
+};
+
+/** Movement preference tunables for route planning. */
+export const MOVEMENT_TUNING: Record<
+  MovementPreference,
+  { walkPenalty: number; maxStops: number; coverageBias: number }
+> = {
+  shortest: { walkPenalty: 1.6, maxStops: 6, coverageBias: 0.6 },
+  balanced: { walkPenalty: 1.0, maxStops: 10, coverageBias: 1.0 },
+  thorough: { walkPenalty: 0.5, maxStops: 18, coverageBias: 1.4 },
+};
+
+/**
+ * Map-distance → walking minutes (official SIBF coordinate space, 3230×3650).
+ * Calibrated to the real venue: adjacent stands ≈57 units ≈10s, one block
+ * ≈340 units ≈1min.
+ */
+export const WALK_UNITS_PER_MINUTE = 340;
+/** Average browsing time per booth (minutes), modulated by waiting. */
+export const BASE_DWELL_MINUTES = 6;

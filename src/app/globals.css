@@ -1,0 +1,194 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* ------------------------------------------------------------------ */
+/* Roam design system — minimal, Toss-inspired, Apple HIG aligned      */
+/* Primary: Toss blue. Neutrals: slate. Generous radius, soft shadows. */
+/* ------------------------------------------------------------------ */
+
+:root {
+  --radius: 0.875rem; /* 14px — generous, Toss-like */
+
+  --background: #ffffff;
+  --foreground: #14161a;
+
+  --card: #ffffff;
+  --card-foreground: #14161a;
+  --popover: #ffffff;
+  --popover-foreground: #14161a;
+
+  --primary: #3182f6; /* Toss blue */
+  --primary-foreground: #ffffff;
+
+  --secondary: #f2f4f6;
+  --secondary-foreground: #333d4b;
+
+  --muted: #f2f4f6;
+  --muted-foreground: #6b7684;
+
+  --accent: #eef3ff;
+  --accent-foreground: #1b64da;
+
+  --destructive: #f04452;
+  --destructive-foreground: #ffffff;
+
+  --success: #15c47e;
+  --warning: #ffb020;
+
+  --border: #e5e8eb;
+  --input: #e5e8eb;
+  --ring: #3182f6;
+
+  /* chart palette */
+  --chart-1: #3182f6;
+  --chart-2: #15c47e;
+  --chart-3: #ffb020;
+  --chart-4: #8b5cf6;
+  --chart-5: #f04452;
+
+  /* map / route */
+  --route-line: #3182f6;
+  --route-visited: #15c47e;
+  --booth-fill: #f2f4f6;
+  --booth-active: #3182f6;
+}
+
+.dark {
+  --background: #0b0d10;
+  --foreground: #f7f8f9;
+
+  --card: #16191d;
+  --card-foreground: #f7f8f9;
+  --popover: #16191d;
+  --popover-foreground: #f7f8f9;
+
+  --primary: #4593fc;
+  --primary-foreground: #0b0d10;
+
+  --secondary: #1c2024;
+  --secondary-foreground: #d1d6db;
+
+  --muted: #1c2024;
+  --muted-foreground: #8b95a1;
+
+  --accent: #16243f;
+  --accent-foreground: #6aa6ff;
+
+  --destructive: #ff6471;
+  --destructive-foreground: #0b0d10;
+
+  --success: #2ad48f;
+  --warning: #ffc24b;
+
+  --border: #2a2f36;
+  --input: #2a2f36;
+  --ring: #4593fc;
+
+  --chart-1: #4593fc;
+  --chart-2: #2ad48f;
+  --chart-3: #ffc24b;
+  --chart-4: #a78bfa;
+  --chart-5: #ff6471;
+
+  --route-line: #4593fc;
+  --route-visited: #2ad48f;
+  --booth-fill: #1c2024;
+  --booth-active: #4593fc;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-route-line: var(--route-line);
+  --color-route-visited: var(--route-visited);
+  --color-booth-fill: var(--booth-fill);
+  --color-booth-active: var(--booth-active);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 3px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 6px);
+  --radius-2xl: calc(var(--radius) + 12px);
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.05);
+  --shadow-sheet: 0 -2px 24px rgba(0, 0, 0, 0.10);
+  --shadow-pop: 0 8px 28px rgba(0, 0, 0, 0.12);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  /* visible focus for keyboard nav */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  /* safe-area helpers for fixed bars (HIG) */
+  .pb-safe {
+    padding-bottom: max(env(safe-area-inset-bottom), 0.5rem);
+  }
+  .pt-safe {
+    padding-top: max(env(safe-area-inset-top), 0.5rem);
+  }
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+  /* hide scrollbar but keep scroll (horizontal chip rows) */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
