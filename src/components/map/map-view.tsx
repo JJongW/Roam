@@ -236,7 +236,9 @@ export function MapView({
   }
 
   return (
-    <div className="flex h-dvh flex-col overflow-hidden md:flex-row">
+    // The visitor shell boxes pages to max-w-md (mobile frame). The map needs
+    // full width on desktop, so break out of that box at md+ with fixed inset-0.
+    <div className="flex h-dvh flex-col overflow-hidden md:fixed md:inset-0 md:z-30 md:flex-row md:bg-background">
       {/* Desktop: always-open side panel (search + filters + list). The mobile
           bottom sheet is hidden at md+. Selecting in either highlights both. */}
       <aside className="hidden w-96 shrink-0 flex-col border-r border-border bg-card md:flex">
