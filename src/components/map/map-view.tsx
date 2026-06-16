@@ -1,0 +1,387 @@
+"use client";
+
+import { useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import {
+  Check,
+  ChevronRight,
+  ChevronLeft,
+  Clock3,
+  Search,
+  X,
+  MapPin,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useVisitStore, idsByStatus } from "@/lib/stores/visit";
+import { useCartStore } from "@/lib/stores/cart";
+import { useHydrated } from "@/lib/hooks/use-hydrated";
+import { FLOORPLANS } from "@/lib/floorplans";
+import { CartButton } from "@/components/booth/cart-button";
+import { Route as RouteIcon } from "lucide-react";
+import { AppBar } from "@/components/common/app-bar";
+import { ExhibitionMap } from "@/components/map/exhibition-map";
+import { CategoryChip } from "@/components/booth/category-chip";
+import { WaitingBadge } from "@/components/booth/waiting-badge";
+import { EmptyState } from "@/components/common/states";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import type { Booth, ExhibitionDetail, Waiting } from "@/lib/types";
+
+export function MapView({
+  detail,
+  booths,
+  waitings,
+}: {
+  detail: ExhibitionDetail;
+  booths: Booth[];
+  waitings: Record<string, Waiting>;
+}) {
+  const router = useRouter();
+  const [activeCat, setActiveCat] = useState<string | null>(null);
+  const [statusFilter, setStatusFilter] = useState<
+    "visited" | "skipped" | null
+  >(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [centerOn, setCenterOn] = useState<string | null>(null);
+  const [query, setQuery] = useState("");
+  const [sheetOpen, setSheetOpen] = useState(false);
+  // pointer tracking for drag-to-toggle on the sheet handle
+  const dragStart = useRef<number | null>(null);
+
+  const hydrated = useHydrated();
+  const cartCount = useCartStore((s) => s.ids.length);
+  const storeRecords = useVisitStore((s) => s.records);
+  // Empty until hydrated so SSR markup matches the first client paint.
+  const records = hydrated ? storeRecords : {};
+  const visitedIds = useMemo(() => idsByStatus(records, "visited"), [records]);
+  const skippedIds = useMemo(() => idsByStatus(records, "skipped"), [records]);
+  const visitedSet = useMemo(() => new Set(visitedIds), [visitedIds]);
+  const skippedSet = useMemo(() => new Set(skippedIds), [skippedIds]);
+
+  const catById = useMemo(
+    () => new Map(detail.categories.map((c) => [c.id, c])),
+    [detail.categories],
+  );
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return booths.filter((b) => {
+      if (activeCat && b.categoryId !== activeCat) return false;
+      if (statusFilter === "visited" && !visitedSet.has(b.id)) return false;
+      if (statusFilter === "skipped" && !skippedSet.has(b.id)) return false;
+      if (
+        q &&
+        !`${b.name} ${b.company} ${b.code ?? ""}`.toLowerCase().includes(q)
+      )
+        return false;
+      return true;
+    });
+  }, [booths, activeCat, statusFilter, visitedSet, skippedSet, query]);
+
+  const selected = booths.find((b) => b.id === selectedId) ?? null;
+  const selectedCat = selected ? catById.get(selected.categoryId) : undefined;
+
+  // Select a booth from the list/search: mark it, recentre the map on it, and
+  // collapse the sheet so the map is visible.
+  function locate(id: string) {
+    setSelectedId(id);
+    setCenterOn(id);
+    setSheetOpen(false);
+  }
+
+  function onHandleUp(e: React.PointerEvent) {
+    const start = dragStart.current;
+    dragStart.current = null;
+    if (start == null) return;
+    const dy = e.clientY - start;
+    if (dy > 30) setSheetOpen(false);
+    else if (dy < -30) setSheetOpen(true);
+    else setSheetOpen((o) => !o);
+  }
+
+  return (
+    <div className="flex h-dvh flex-col overflow-hidden">
+      {/* In landscape the whole chrome hides — just the map, comfortably. */}
+      <div className="landscape:hidden">
+        <AppBar title="전시장 지도" />
+
+        <div className="no-scrollbar flex gap-1.5 overflow-x-auto border-b border-border px-4 py-2.5">
+          <FilterChip
+            active={activeCat === null}
+            onClick={() => setActiveCat(null)}
+          >
+            전체 {booths.length}
+          </FilterChip>
+          {detail.categories.map((c) => (
+            <FilterChip
+              key={c.id}
+              active={activeCat === c.id}
+              onClick={() => setActiveCat(c.id)}
+              color={c.color}
+            >
+              {c.name}
+            </FilterChip>
+          ))}
+        </div>
+
+        {(visitedIds.length > 0 || skippedIds.length > 0) && (
+          <div className="no-scrollbar flex gap-1.5 overflow-x-auto border-b border-border px-4 py-2">
+            <StatusChip
+              active={statusFilter === "visited"}
+              onClick={() =>
+                setStatusFilter((s) => (s === "visited" ? null : "visited"))
+              }
+              tone="success"
+            >
+              <Check className="size-3.5" /> 방문함 {visitedIds.length}
+            </StatusChip>
+            <StatusChip
+              active={statusFilter === "skipped"}
+              onClick={() =>
+                setStatusFilter((s) => (s === "skipped" ? null : "skipped"))
+              }
+              tone="warning"
+            >
+              <Clock3 className="size-3.5" /> 이따 다시 {skippedIds.length}
+            </StatusChip>
+          </div>
+        )}
+      </div>
+
+      <div className="relative flex-1 overflow-hidden">
+        {/* landscape hides the AppBar, so float a back button over the map */}
+        <button
+          type="button"
+          aria-label="뒤로 가기"
+          onClick={() => router.back()}
+          className="absolute left-3 top-3 z-40 hidden size-10 items-center justify-center rounded-full border border-border bg-card shadow-[var(--shadow-card)] landscape:flex"
+        >
+          <ChevronLeft className="size-6" />
+        </button>
+
+        <ExhibitionMap
+          width={detail.exhibition.mapWidth}
+          height={detail.exhibition.mapHeight}
+          booths={filtered}
+          categories={detail.categories}
+          halls={detail.halls}
+          floorplan={FLOORPLANS[detail.exhibition.slug]}
+          fillHeight
+          visitedIds={visitedIds}
+          skippedIds={skippedIds}
+          selectedId={selectedId}
+          centerOn={centerOn}
+          onSelect={(id) => {
+            setSelectedId(id);
+            if (id) setSheetOpen(false);
+          }}
+          onInteractStart={() => setSheetOpen(false)}
+        />
+
+        {/* selected booth card — sits above the sheet peek (portrait) */}
+        {selected && (
+          <div className="absolute inset-x-0 bottom-[124px] z-20 mx-auto w-full max-w-md p-3 landscape:bottom-3">
+            <div className="flex items-center gap-3 rounded-2xl border border-border bg-card p-3.5 shadow-[var(--shadow-pop)] animate-in slide-in-from-bottom-2">
+              <div className="min-w-0 flex-1">
+                <p className="truncate font-bold">
+                  {selected.name}
+                  {selected.code && (
+                    <span className="ml-1.5 text-xs text-muted-foreground">
+                      {selected.code}
+                    </span>
+                  )}
+                </p>
+                <p className="truncate text-sm text-muted-foreground">
+                  {selected.company}
+                </p>
+                <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+                  {selectedCat && <CategoryChip category={selectedCat} />}
+                  <WaitingBadge waiting={waitings[selected.id]} />
+                </div>
+              </div>
+              <CartButton boothId={selected.id} variant="icon" />
+              <Button asChild size="sm">
+                <Link href={`/booths/${selected.id}`}>
+                  상세 <ChevronRight className="size-4" />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {/* 동선 만들기 — hidden in landscape and when a booth card is showing */}
+        {hydrated && cartCount > 0 && !selected && (
+          <Link
+            href={`/exhibitions/${detail.exhibition.slug}/route`}
+            className="absolute inset-x-0 bottom-[132px] z-20 mx-auto flex w-fit items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-[var(--shadow-pop)] landscape:hidden"
+          >
+            <RouteIcon className="size-4.5" /> 내 동선 {cartCount}개 · 동선
+            만들기
+          </Link>
+        )}
+
+        {/* bottom sheet: search + booth list. Collapses to a peek; hidden in landscape. */}
+        <div
+          className={cn(
+            "absolute inset-x-0 bottom-0 z-30 flex flex-col rounded-t-2xl border-t border-border bg-card shadow-[var(--shadow-pop)] transition-[height] duration-300 ease-out landscape:hidden",
+            sheetOpen ? "h-[60dvh]" : "h-[116px]",
+          )}
+        >
+          <button
+            type="button"
+            aria-label={sheetOpen ? "목록 접기" : "목록 펼치기"}
+            className="flex w-full shrink-0 cursor-grab touch-none justify-center py-2.5 active:cursor-grabbing"
+            onPointerDown={(e) => (dragStart.current = e.clientY)}
+            onPointerUp={onHandleUp}
+          >
+            <span className="h-1.5 w-10 rounded-full bg-border" />
+          </button>
+
+          <div className="px-4 pb-2">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                value={query}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  if (e.target.value) setSheetOpen(true);
+                }}
+                onFocus={() => setSheetOpen(true)}
+                placeholder="부스명·브랜드·번호 검색"
+                className="h-10 pl-9 pr-9"
+                aria-label="부스 검색"
+              />
+              {query && (
+                <button
+                  type="button"
+                  onClick={() => setQuery("")}
+                  aria-label="검색어 지우기"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full p-1 hover:bg-secondary"
+                >
+                  <X className="size-4" />
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-4 pt-1">
+            {filtered.length === 0 ? (
+              <EmptyState
+                title="검색 결과가 없어요"
+                description="다른 키워드나 카테고리로 찾아보세요."
+              />
+            ) : (
+              <>
+                <p className="px-1 pb-1.5 text-xs text-muted-foreground">
+                  {filtered.length}개 부스 · 항목을 누르면 지도에서 위치를
+                  보여줘요
+                </p>
+                <div className="space-y-1.5">
+                  {filtered.map((b) => (
+                    <div
+                      key={b.id}
+                      className={cn(
+                        "flex items-center gap-3 rounded-xl border bg-card px-3 py-2.5",
+                        b.id === selectedId
+                          ? "border-primary"
+                          : "border-border",
+                      )}
+                    >
+                      <button
+                        type="button"
+                        onClick={() => locate(b.id)}
+                        className="flex min-w-0 flex-1 items-center gap-3 text-left"
+                      >
+                        <MapPin
+                          className="size-4 shrink-0"
+                          style={{
+                            color:
+                              catById.get(b.categoryId)?.color ??
+                              "var(--muted-foreground)",
+                          }}
+                        />
+                        {b.code && (
+                          <span className="w-12 shrink-0 text-xs font-bold text-muted-foreground">
+                            {b.code}
+                          </span>
+                        )}
+                        <span className="min-w-0 flex-1 truncate text-sm font-semibold">
+                          {b.name}
+                        </span>
+                        <WaitingBadge waiting={waitings[b.id]} />
+                      </button>
+                      <CartButton boothId={b.id} variant="icon" />
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FilterChip({
+  active,
+  color,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  color?: string;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        "shrink-0 rounded-full border px-3.5 py-1.5 text-sm font-semibold transition-colors",
+        active
+          ? "border-primary bg-primary text-primary-foreground"
+          : "border-border bg-card text-foreground",
+      )}
+      style={
+        active && color
+          ? { backgroundColor: color, borderColor: color }
+          : undefined
+      }
+    >
+      {children}
+    </button>
+  );
+}
+
+function StatusChip({
+  active,
+  tone,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  tone: "success" | "warning";
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={active}
+      className={cn(
+        "inline-flex shrink-0 items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-bold transition-colors",
+        active
+          ? tone === "success"
+            ? "border-success bg-success/15 text-success"
+            : "border-warning bg-warning/15 text-[#9a6700]"
+          : "border-border bg-card text-muted-foreground",
+      )}
+    >
+      {children}
+    </button>
+  );
+}
