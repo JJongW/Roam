@@ -2,10 +2,9 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { formatDistanceToNow } from "date-fns";
-import { ko } from "date-fns/locale";
 import { MapPin, MessagesSquare, Send, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { formatPostTime } from "@/lib/utils";
 import { api, ApiClientError } from "@/lib/api/client";
 import { watchPosts } from "@/lib/realtime";
 import { AppBar } from "@/components/common/app-bar";
@@ -100,10 +99,7 @@ export function CommunityView({
                   <div className="flex items-center justify-between gap-2">
                     <span className="text-sm font-bold">{p.authorName}</span>
                     <time className="text-xs text-muted-foreground">
-                      {formatDistanceToNow(new Date(p.createdAt), {
-                        addSuffix: true,
-                        locale: ko,
-                      })}
+                      {formatPostTime(p.createdAt)}
                     </time>
                   </div>
                   <p className="mt-1.5 whitespace-pre-wrap text-[15px] leading-relaxed">

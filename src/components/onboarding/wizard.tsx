@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronLeft, Loader2 } from "lucide-react";
+import { ChevronLeft, Loader2, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import {
   COMPANION_OPTIONS,
@@ -21,9 +21,11 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { OptionCard } from "@/components/onboarding/option-card";
 
+// Interests first: it's the only field quick-start requires, so putting it on
+// the opening screen makes "바로 추천 받기" reachable immediately.
 const STEPS = [
-  "purpose",
   "interests",
+  "purpose",
   "time",
   "movement",
   "companion",
@@ -90,16 +92,10 @@ export function OnboardingWizard({
     setStep((s) => Math.min(STEPS.length - 1, Math.max(0, s + delta)));
   }
 
-  async function submit() {
-    const parsed = userPreferenceInputSchema.safeParse({
-      visitPurpose: store.visitPurpose,
-      interests: store.interests,
-      availableMinutes: store.availableMinutes,
-      movementPreference: store.movementPreference,
-      companionType: store.companionType,
-    });
+  async function generate(input: Record<string, unknown>) {
+    const parsed = userPreferenceInputSchema.safeParse(input);
     if (!parsed.success) {
-      toast.error("입력값을 다시 확인해 주세요");
+      toast.error("관심 분야를 1개 이상 선택해 주세요");
       return;
     }
     setSubmitting(true);
@@ -121,6 +117,33 @@ export function OnboardingWizard({
       setSubmitting(false);
     }
   }
+
+  // Full path: use every answered step.
+  function submit() {
+    return generate({
+      visitPurpose: store.visitPurpose,
+      interests: store.interests,
+      availableMinutes: store.availableMinutes,
+      movementPreference: store.movementPreference,
+      companionType: store.companionType,
+    });
+  }
+
+  // Quick start (1-2 steps): only interests are required; sensible defaults
+  // fill the rest, and the route page lets the visitor refine afterwards.
+  function quickSubmit() {
+    return generate({
+      visitPurpose: store.visitPurpose ?? "experience",
+      interests: store.interests,
+      availableMinutes: store.availableMinutes ?? 120,
+      movementPreference: store.movementPreference ?? "balanced",
+      companionType: store.companionType ?? "alone",
+    });
+  }
+
+  // Quick start becomes available as soon as interests are chosen, except on
+  // the final step (where the primary button already generates the route).
+  const canQuickStart = store.interests.length > 0 && step < STEPS.length - 1;
 
   return (
     <div className="flex min-h-dvh flex-col">
@@ -232,16 +255,33 @@ export function OnboardingWizard({
         </AnimatePresence>
       </div>
 
-      <div className="sticky bottom-0 border-t border-border bg-background/90 p-4 pb-safe backdrop-blur-xl">
+      <div className="sticky bottom-0 space-y-2 border-t border-border bg-background/90 p-4 pb-safe backdrop-blur-xl">
         {step < STEPS.length - 1 ? (
-          <Button
-            size="lg"
-            className="w-full"
-            disabled={!canNext}
-            onClick={() => go(1)}
-          >
-            다음
-          </Button>
+          <>
+            <Button
+              size="lg"
+              className="w-full"
+              disabled={!canNext}
+              onClick={() => go(1)}
+            >
+              다음
+            </Button>
+            {canQuickStart && (
+              <Button
+                variant="ghost"
+                className="w-full"
+                disabled={submitting}
+                onClick={quickSubmit}
+              >
+                {submitting ? (
+                  <Loader2 className="size-5 animate-spin" />
+                ) : (
+                  <Sparkles className="size-5" />
+                )}
+                {submitting ? "추천 받는 중" : "바로 추천 받기"}
+              </Button>
+            )}
+          </>
         ) : (
           <Button
             size="lg"
