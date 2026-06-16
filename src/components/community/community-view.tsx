@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { MapPin, MessagesSquare, Send, Loader2 } from "lucide-react";
+import { MapPin, MessagesSquare, Send, Loader2, Search, X } from "lucide-react";
 import { toast } from "sonner";
 import { formatPostTime } from "@/lib/utils";
 import { api, ApiClientError } from "@/lib/api/client";
@@ -123,30 +123,25 @@ export function CommunityView({
       </div>
 
       {/* composer */}
-      <div className="border-t border-border bg-background p-3 pb-safe">
-        <div className="mb-2 flex gap-2">
+      <div className="border-t border-border bg-background p-3 pb-safe relative">
+        <div className="mb-2 space-y-2">
           <Input
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="닉네임 (선택)"
             maxLength={30}
-            className="h-9 flex-1"
+            className="h-9"
             aria-label="닉네임"
           />
-          <select
+          <BoothTagPicker
+            booths={booths}
             value={boothId}
-            onChange={(e) => setBoothId(e.target.value)}
-            aria-label="관련 부스 (선택)"
-            className="h-9 flex-1 rounded-md border border-input bg-background px-2 text-sm"
-          >
-            <option value="">부스 태그 (선택)</option>
-            {booths.map((b) => (
-              <option key={b.id} value={b.id}>
-                {b.name}
-                {b.code ? ` (${b.code})` : ""}
-              </option>
-            ))}
-          </select>
+            onChange={setBoothId}
+          />
+          <p className="px-0.5 text-[11px] text-muted-foreground">
+            닉네임 없이 익명으로 게시할 수 있어요. 게시글은 전시 참가자에게
+            공개돼요. 부적절한 글은 신고할 수 있어요.
+          </p>
         </div>
         <div className="flex items-end gap-2">
           <Textarea
@@ -178,6 +173,91 @@ export function CommunityView({
           </Button>
         </div>
       </div>
+    </div>
+  );
+}
+
+/** Searchable booth tag picker — replaces a 100+ option <select>. */
+function BoothTagPicker({
+  booths,
+  value,
+  onChange,
+}: {
+  booths: Booth[];
+  value: string;
+  onChange: (id: string) => void;
+}) {
+  const [query, setQuery] = useState("");
+  const [open, setOpen] = useState(false);
+  const selected = value ? booths.find((b) => b.id === value) : undefined;
+
+  if (selected) {
+    return (
+      <div className="flex items-center gap-1.5 rounded-md border border-input bg-background px-2.5 py-1.5 text-sm">
+        <MapPin className="size-4 shrink-0 text-primary" aria-hidden />
+        <span className="min-w-0 flex-1 truncate font-semibold">
+          {selected.name}
+          {selected.code ? ` (${selected.code})` : ""}
+        </span>
+        <button
+          type="button"
+          onClick={() => onChange("")}
+          aria-label="부스 태그 제거"
+          className="rounded-full p-0.5 hover:bg-secondary"
+        >
+          <X className="size-4" />
+        </button>
+      </div>
+    );
+  }
+
+  const q = query.trim().toLowerCase();
+  const matches = q
+    ? booths
+        .filter((b) => `${b.name} ${b.code ?? ""}`.toLowerCase().includes(q))
+        .slice(0, 8)
+    : [];
+
+  return (
+    <div className="relative">
+      <Search className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+      <Input
+        value={query}
+        onChange={(e) => {
+          setQuery(e.target.value);
+          setOpen(true);
+        }}
+        onFocus={() => setOpen(true)}
+        onBlur={() => setTimeout(() => setOpen(false), 150)}
+        placeholder="부스 태그 검색 (선택)"
+        className="h-9 pl-8"
+        aria-label="관련 부스 검색"
+      />
+      {open && matches.length > 0 && (
+        <ul className="absolute bottom-full z-10 mb-1 max-h-56 w-full overflow-y-auto rounded-md border border-border bg-card py-1 shadow-[var(--shadow-pop)]">
+          {matches.map((b) => (
+            <li key={b.id}>
+              <button
+                type="button"
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => {
+                  onChange(b.id);
+                  setQuery("");
+                  setOpen(false);
+                }}
+                className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-secondary"
+              >
+                {b.code && (
+                  <span className="w-12 shrink-0 text-xs font-bold text-muted-foreground">
+                    {b.code}
+                  </span>
+                )}
+                <span className="min-w-0 flex-1 truncate">{b.name}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

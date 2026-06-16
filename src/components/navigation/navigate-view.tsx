@@ -1,20 +1,18 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   CheckCircle2,
-  Hand,
   Loader2,
+  MapPin,
   Navigation as NavIcon,
-  Play,
-  Pause,
-  TriangleAlert,
+  RotateCcw,
   Flag,
 } from "lucide-react";
 import { toast } from "sonner";
 import { api } from "@/lib/api/client";
-import { nextInstruction, offRoute, bearing } from "@/lib/engine/navigation";
+import { nextInstruction, bearing } from "@/lib/engine/navigation";
 import { useRouteStore } from "@/lib/stores/route";
 import { useCartStore } from "@/lib/stores/cart";
 import { useVisitStore, pushNote } from "@/lib/stores/visit";
@@ -98,6 +96,7 @@ export function NavigateView({
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [route, cartIds.join(","), boothById, slug]);
+
   const entrance: Point = useMemo(
     () => ({
       x: Math.round(exhibition.mapWidth / 2),
@@ -106,12 +105,16 @@ export function NavigateView({
     [exhibition],
   );
 
-  const [position, setPosition] = useState<Point>(entrance);
+  // Indoor venue → no GPS. The visitor's current location is whichever booth
+  // they tell us they're at (or the entrance). null = 입구.
+  const [currentId, setCurrentId] = useState<string | null>(null);
   const [heading, setHeading] = useState<number | undefined>(undefined);
-  const [simulating, setSimulating] = useState(false);
   const [recalculating, setRecalculating] = useState(false);
-  const [hasInteracted, setHasInteracted] = useState(false);
-  const timer = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const position: Point = useMemo(() => {
+    const b = currentId ? boothById.get(currentId) : undefined;
+    return b ? { x: b.x, y: b.y } : entrance;
+  }, [currentId, boothById, entrance]);
 
   const visited = route?.visitedBoothIds ?? [];
   const orderedRemaining = (route?.boothIds ?? []).filter(
@@ -121,14 +124,15 @@ export function NavigateView({
     ? boothById.get(orderedRemaining[0])
     : undefined;
   const allDone = Boolean(route) && orderedRemaining.length === 0;
+  const currentBooth = currentId ? boothById.get(currentId) : undefined;
 
-  const moveTo = useCallback((p: Point) => {
-    setHasInteracted(true);
-    setPosition((prev) => {
-      if (prev.x !== p.x || prev.y !== p.y) setHeading(bearing(prev, p));
-      return p;
-    });
-  }, []);
+  // Set current location to a booth (or 입구), updating heading toward it.
+  function setLocation(id: string | null) {
+    const target = id ? boothById.get(id) : undefined;
+    const p: Point = target ? { x: target.x, y: target.y } : entrance;
+    setHeading(bearing(position, p));
+    setCurrentId(id);
+  }
 
   const arrive = useCallback(
     (booth: Booth) => {
@@ -140,7 +144,8 @@ export function NavigateView({
         (id) => ![...visited, booth.id].includes(id),
       );
       if (after[0]) setCurrent(after[0]);
-      moveTo({ x: booth.x, y: booth.y });
+      // The booth you just reached becomes your current location.
+      setCurrentId(booth.id);
       api
         .post("/api/analytics/events", {
           type: "booth_arrive",
@@ -151,51 +156,23 @@ export function NavigateView({
         .catch(() => {});
       toast.success(`${booth.name} 도착!`);
     },
-    [markVisited, route, visited, setCurrent, moveTo],
+    [markVisited, route, visited, setCurrent],
   );
 
-  // Simulated walking toward the next booth.
-  useEffect(() => {
-    if (!simulating) return;
-    timer.current = setInterval(() => {
-      if (!nextBooth) return;
-      setPosition((prev) => {
-        const dx = nextBooth.x - prev.x;
-        const dy = nextBooth.y - prev.y;
-        const dist = Math.hypot(dx, dy);
-        if (dist < 60) {
-          arrive(nextBooth);
-          return { x: nextBooth.x, y: nextBooth.y };
-        }
-        setHeading(bearing(prev, nextBooth));
-        return { x: prev.x + dx * 0.18, y: prev.y + dy * 0.18 };
-      });
-    }, 650);
-    return () => {
-      if (timer.current) clearInterval(timer.current);
-    };
-  }, [simulating, nextBooth, arrive]);
-
-  useEffect(() => {
-    if (allDone) setSimulating(false);
-  }, [allDone]);
-
-  async function recalc() {
+  // Re-order the remaining booths as a nearest-first sweep from the current
+  // location (replaces GPS "off-route" detection — visitor-driven).
+  async function reorder() {
     if (!route) return;
     setRecalculating(true);
     try {
       const { route: updated } = await api.patch<{ route: RoutePlan }>(
         `/api/route/${route.id}`,
-        {
-          deviated: true,
-          position,
-          visitedBoothIds: visited,
-        },
+        { deviated: true, position, visitedBoothIds: visited },
       );
       setRoute({ ...updated, visitedBoothIds: visited });
-      toast.success("경로를 다시 계산했어요");
+      toast.success("현재 위치 기준으로 남은 동선을 다시 정렬했어요");
     } catch {
-      toast.error("재탐색에 실패했어요");
+      toast.error("재정렬에 실패했어요");
     } finally {
       setRecalculating(false);
     }
@@ -248,7 +225,6 @@ export function NavigateView({
     );
   }
 
-  const deviated = hasInteracted && !allDone && offRoute(position, nextBooth);
   const instruction = nextBooth
     ? nextInstruction(position, nextBooth, 60, heading)
     : {
@@ -282,22 +258,28 @@ export function NavigateView({
 
       <Progress value={progress} className="mx-5" />
 
-      {deviated && (
-        <div
-          className="mx-5 mt-3 flex items-center gap-2 rounded-xl border border-warning/40 bg-warning/10 p-3"
-          role="alert"
-        >
-          <TriangleAlert className="size-5 shrink-0 text-[#9a6700]" />
-          <p className="flex-1 text-sm font-medium">경로에서 벗어났어요.</p>
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={recalc}
-            disabled={recalculating}
+      {/* Current-location picker (no GPS). Pick the booth you're standing at. */}
+      {!allDone && (
+        <div className="mx-5 mt-3 flex items-center gap-2 rounded-xl border border-border bg-card p-2 pl-3">
+          <MapPin className="size-4 shrink-0 text-primary" aria-hidden />
+          <label htmlFor="current-loc" className="shrink-0 text-sm font-semibold">
+            현재 위치
+          </label>
+          <select
+            id="current-loc"
+            value={currentId ?? ""}
+            onChange={(e) => setLocation(e.target.value || null)}
+            className="min-w-0 flex-1 truncate rounded-md border border-input bg-background px-2 py-1.5 text-sm"
+            aria-label="현재 위치 부스 선택"
           >
-            {recalculating ? <Loader2 className="size-4 animate-spin" /> : null}{" "}
-            재탐색
-          </Button>
+            <option value="">입구에서 시작</option>
+            {booths.map((b) => (
+              <option key={b.id} value={b.id}>
+                {b.code ? `${b.code} · ` : ""}
+                {b.name}
+              </option>
+            ))}
+          </select>
         </div>
       )}
 
@@ -315,10 +297,10 @@ export function NavigateView({
           selectedId={nextBooth?.id}
           fillHeight
           focus={position}
-          onMapTap={moveTo}
         />
         <div className="pointer-events-none absolute left-3 top-3 flex items-center gap-1 rounded-full bg-card/90 px-3 py-1.5 text-xs font-medium shadow-[var(--shadow-card)] backdrop-blur">
-          <Hand className="size-3.5" /> 지도를 탭해 현재 위치 설정
+          <MapPin className="size-3.5" />
+          {currentBooth ? `현재: ${currentBooth.name}` : "현재: 입구"}
         </div>
       </div>
 
@@ -331,25 +313,25 @@ export function NavigateView({
           <>
             <Button
               size="lg"
-              variant={simulating ? "secondary" : "outline"}
-              onClick={() => {
-                setHasInteracted(true);
-                setSimulating((s) => !s);
-              }}
-              aria-label={simulating ? "시뮬레이션 정지" : "이동 시뮬레이션"}
+              variant="outline"
+              onClick={reorder}
+              disabled={recalculating}
+              aria-label="현재 위치 기준 재정렬"
             >
-              {simulating ? (
-                <Pause className="size-5" />
+              {recalculating ? (
+                <Loader2 className="size-5 animate-spin" />
               ) : (
-                <Play className="size-5" />
+                <RotateCcw className="size-5" />
               )}
+              재정렬
             </Button>
             <Button
               size="lg"
               className="flex-1"
               onClick={() => nextBooth && arrive(nextBooth)}
             >
-              <CheckCircle2 className="size-5" /> 도착 체크
+              <CheckCircle2 className="size-5" />
+              {nextBooth ? `${nextBooth.name} 도착 체크` : "도착 체크"}
             </Button>
           </>
         )}

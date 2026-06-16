@@ -15,6 +15,7 @@ import {
 import { formatWalk } from "@/lib/utils";
 import { useRouteStore } from "@/lib/stores/route";
 import { useCartStore } from "@/lib/stores/cart";
+import { useOnboardingStore } from "@/lib/stores/onboarding";
 import { useVisitStore, idsByStatus } from "@/lib/stores/visit";
 import { useHydrated } from "@/lib/hooks/use-hydrated";
 import { buildManualRoute, buildOrderedRoute } from "@/lib/engine/route";
@@ -54,8 +55,20 @@ export function RouteView({
   const cartIds = useCartStore((s) => s.ids);
   const setCartIds = useCartStore((s) => s.setIds);
   const setRoute = useRouteStore((s) => s.setRoute);
+  const interests = useOnboardingStore((s) => s.interests);
   const records = useVisitStore((s) => s.records);
   const skippedIds = idsByStatus(records, "skipped");
+
+  // Why this booth is in the route — derived from the data the page has
+  // (onboarding interests + booth signals). Removing a booth = its CartButton.
+  function reasonsFor(b: Booth): string[] {
+    const out: string[] = [];
+    if (b.tags.some((t) => interests.includes(t))) out.push("관심 분야");
+    if (b.popularity >= 70) out.push("인기 부스");
+    const w = waitings[b.id];
+    if (w?.enabled && w.estimatedMinutes < 10) out.push("대기 짧음");
+    return out;
+  }
 
   const boothById = useMemo(
     () => new Map(booths.map((b) => [b.id, b])),
@@ -217,6 +230,18 @@ export function RouteView({
               compact
               action={<CartButton boothId={b.id} variant="icon" />}
             />
+            {reasonsFor(b).length > 0 && (
+              <div className="ml-8 mt-1 flex flex-wrap gap-1">
+                {reasonsFor(b).map((r) => (
+                  <span
+                    key={r}
+                    className="inline-flex items-center gap-0.5 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary"
+                  >
+                    <Sparkles className="size-3" aria-hidden /> {r}
+                  </span>
+                ))}
+              </div>
+            )}
           </RouteRow>
         ))}
       </Reorder.Group>

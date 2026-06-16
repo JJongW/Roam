@@ -22,10 +22,16 @@ export function WaitingBadge({
   const { label, cls } = level(waiting.estimatedMinutes);
   return (
     <span
-      className={cn("inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold tabular", cls, className)}
+      className={cn(
+        "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold tabular",
+        cls,
+        className,
+      )}
       aria-label={`예상 대기 ${waiting.estimatedMinutes}분, ${label}`}
     >
       <Clock className="size-3" aria-hidden />
+      {/* Level word makes congestion readable without relying on colour (a11y). */}
+      <span className="font-bold">{label}</span>
       {waiting.estimatedMinutes}분
       {showQueue && (
         <>
