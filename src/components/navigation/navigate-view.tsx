@@ -23,7 +23,8 @@ import { AppBar } from "@/components/common/app-bar";
 import { ExhibitionMap } from "@/components/map/exhibition-map";
 import { FLOORPLANS } from "@/lib/floorplans";
 import { NavInstructionBanner as NavBanner } from "@/components/navigation/nav-instruction";
-import { EmptyState } from "@/components/common/states";
+import { EmptyState, LoadingScreen } from "@/components/common/states";
+import { useHydrated } from "@/lib/hooks/use-hydrated";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import type {
@@ -49,6 +50,7 @@ export function NavigateView({
   halls: Hall[];
 }) {
   const router = useRouter();
+  const hydrated = useHydrated();
   const route = useRouteStore((s) => s.route);
   const setRoute = useRouteStore((s) => s.setRoute);
   const markVisited = useRouteStore((s) => s.markVisited);
@@ -208,6 +210,20 @@ export function NavigateView({
     }
     toast.success("관람을 완료했어요! 🎉");
     router.push(`/exhibitions/${slug}/route`);
+  }
+
+  // Wait for persisted stores (route in sessionStorage, cart in localStorage)
+  // to hydrate before judging the route empty — otherwise a deep-link/reload
+  // flashes the empty state before the cart-rebuild effect above can run.
+  if (!hydrated) {
+    return (
+      <div className="flex min-h-dvh flex-col">
+        <AppBar title="내비게이션" />
+        <div className="flex flex-1 items-center justify-center p-6">
+          <LoadingScreen label="경로 준비 중" />
+        </div>
+      </div>
+    );
   }
 
   if (!route || route.boothIds.length === 0) {

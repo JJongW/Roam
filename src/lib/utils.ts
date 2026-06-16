@@ -1,8 +1,22 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { formatDistanceToNow, format, isAfter } from "date-fns";
+import { ko } from "date-fns/locale";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
+}
+
+/**
+ * Human time for community posts. Relative time ("3분 전") only makes sense for
+ * the past — before an exhibition opens, seed/scheduled posts carry a future
+ * timestamp, so showing "8일 후" reads as broken. For future times we show the
+ * absolute date with a "예정" tag instead.
+ */
+export function formatPostTime(iso: string, now: Date = new Date()): string {
+  const d = new Date(iso);
+  if (isAfter(d, now)) return `${format(d, "M/d", { locale: ko })} 예정`;
+  return formatDistanceToNow(d, { addSuffix: true, locale: ko });
 }
 
 /** Stable id without external deps (mock + client temp ids). */

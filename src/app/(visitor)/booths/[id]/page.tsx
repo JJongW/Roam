@@ -99,6 +99,35 @@ export default async function BoothDetailPage({ params }: Props) {
           {/* waiting (live) */}
           <LiveWaitingCard boothId={booth.id} initial={waiting} />
 
+          {/* decision-driving info first: events + welcome kit before the
+              general intro, so visitors can judge "go or not" up top. */}
+          {events.length > 0 && (
+            <section className="space-y-2.5">
+              <h2 className="text-base font-bold">이벤트</h2>
+              <EventList events={events} />
+            </section>
+          )}
+
+          {welcomeKit?.enabled && (
+            <section className="space-y-2.5">
+              <h2 className="text-base font-bold">웰컴 키트</h2>
+              <div className="flex items-center gap-3 rounded-2xl border border-primary/20 bg-accent/50 p-4">
+                <div className="flex size-11 items-center justify-center rounded-xl bg-primary/15">
+                  <Ticket className="size-5 text-primary" />
+                </div>
+                <div className="flex-1">
+                  <p className="font-bold">{welcomeKit.name}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {welcomeKit.description}
+                  </p>
+                </div>
+                <span className="shrink-0 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-bold tabular text-primary">
+                  {welcomeKit.remainingCount}개 남음
+                </span>
+              </div>
+            </section>
+          )}
+
           {/* description */}
           <section className="space-y-1.5">
             <h2 className="text-base font-bold">소개</h2>
@@ -135,35 +164,6 @@ export default async function BoothDetailPage({ params }: Props) {
 
           {/* personal records: visited / save-for-later / memo */}
           <BoothPersonalPanel boothId={booth.id} />
-
-          {/* events */}
-          {events.length > 0 && (
-            <section className="space-y-2.5">
-              <h2 className="text-base font-bold">이벤트</h2>
-              <EventList events={events} />
-            </section>
-          )}
-
-          {/* welcome kit */}
-          {welcomeKit?.enabled && (
-            <section className="space-y-2.5">
-              <h2 className="text-base font-bold">웰컴 키트</h2>
-              <div className="flex items-center gap-3 rounded-2xl border border-primary/20 bg-accent/50 p-4">
-                <div className="flex size-11 items-center justify-center rounded-xl bg-primary/15">
-                  <Ticket className="size-5 text-primary" />
-                </div>
-                <div className="flex-1">
-                  <p className="font-bold">{welcomeKit.name}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {welcomeKit.description}
-                  </p>
-                </div>
-                <span className="shrink-0 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-bold tabular text-primary">
-                  {welcomeKit.remainingCount}개 남음
-                </span>
-              </div>
-            </section>
-          )}
 
           <ReviewSection
             boothId={booth.id}

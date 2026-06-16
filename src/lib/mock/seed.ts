@@ -119,6 +119,15 @@ export const booths: Booth[] = floorplan.booths.map((b) => {
   const catReal = (b as { catReal?: string }).catReal ?? "general";
   const catKo = (b as { catKo?: string }).catKo ?? "";
   const web = (b as { web?: string }).web || undefined;
+  // catKo is a full taxonomy dump (e.g. "총류, 철학, 종교, …"). Showing it in the
+  // header overwhelms the name/location, so the header carries a short
+  // representative ("총류 외 14"); the full list stays in longDescription.
+  const cats = catKo
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  const companyLabel =
+    cats.length <= 1 ? (cats[0] ?? "") : `${cats[0]} 외 ${cats.length - 1}`;
   return {
     id: id(b.code),
     exhibitionId: exhibition.id,
@@ -126,7 +135,7 @@ export const booths: Booth[] = floorplan.booths.map((b) => {
     categoryId: CAT[catReal] ?? CAT.general,
     code: b.code,
     name,
-    company: catKo,
+    company: companyLabel,
     description: `${name} · 부스 ${b.code}`,
     longDescription: `${name}의 부스입니다. 부스 번호 ${b.code}.${
       catKo ? ` 분야: ${catKo}.` : ""

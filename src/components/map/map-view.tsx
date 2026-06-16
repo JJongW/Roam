@@ -52,12 +52,14 @@ export function MapView({
   const hydrated = useHydrated();
   const cartCount = useCartStore((s) => s.ids.length);
   const storeRecords = useVisitStore((s) => s.records);
+  const toggleStatus = useVisitStore((s) => s.toggleStatus);
   // Empty until hydrated so SSR markup matches the first client paint.
   const records = hydrated ? storeRecords : {};
   const visitedIds = useMemo(() => idsByStatus(records, "visited"), [records]);
   const skippedIds = useMemo(() => idsByStatus(records, "skipped"), [records]);
   const visitedSet = useMemo(() => new Set(visitedIds), [visitedIds]);
   const skippedSet = useMemo(() => new Set(skippedIds), [skippedIds]);
+  const hasStatus = visitedIds.length > 0 || skippedIds.length > 0;
 
   const catById = useMemo(
     () => new Map(detail.categories.map((c) => [c.id, c])),
@@ -81,9 +83,10 @@ export function MapView({
 
   const selected = booths.find((b) => b.id === selectedId) ?? null;
   const selectedCat = selected ? catById.get(selected.categoryId) : undefined;
+  const selectedStatus = selected ? records[selected.id]?.status : undefined;
 
   // Select a booth from the list/search: mark it, recentre the map on it, and
-  // collapse the sheet so the map is visible.
+  // collapse the (mobile) sheet so the map is visible.
   function locate(id: string) {
     setSelectedId(id);
     setCenterOn(id);
@@ -100,223 +103,297 @@ export function MapView({
     else setSheetOpen((o) => !o);
   }
 
-  return (
-    <div className="flex h-dvh flex-col overflow-hidden">
-      {/* In landscape the whole chrome hides — just the map, comfortably. */}
-      <div className="landscape:hidden">
-        <AppBar title="전시장 지도" />
+  // ---- shared render helpers (mobile sheet + desktop side panel) ----
 
-        <div className="no-scrollbar flex gap-1.5 overflow-x-auto border-b border-border px-4 py-2.5">
-          <FilterChip
-            active={activeCat === null}
-            onClick={() => setActiveCat(null)}
-          >
-            전체 {booths.length}
-          </FilterChip>
-          {detail.categories.map((c) => (
-            <FilterChip
-              key={c.id}
-              active={activeCat === c.id}
-              onClick={() => setActiveCat(c.id)}
-              color={c.color}
-            >
-              {c.name}
-            </FilterChip>
-          ))}
-        </div>
-
-        {(visitedIds.length > 0 || skippedIds.length > 0) && (
-          <div className="no-scrollbar flex gap-1.5 overflow-x-auto border-b border-border px-4 py-2">
-            <StatusChip
-              active={statusFilter === "visited"}
-              onClick={() =>
-                setStatusFilter((s) => (s === "visited" ? null : "visited"))
-              }
-              tone="success"
-            >
-              <Check className="size-3.5" /> 방문함 {visitedIds.length}
-            </StatusChip>
-            <StatusChip
-              active={statusFilter === "skipped"}
-              onClick={() =>
-                setStatusFilter((s) => (s === "skipped" ? null : "skipped"))
-              }
-              tone="warning"
-            >
-              <Clock3 className="size-3.5" /> 이따 다시 {skippedIds.length}
-            </StatusChip>
-          </div>
-        )}
-      </div>
-
-      <div className="relative flex-1 overflow-hidden">
-        {/* landscape hides the AppBar, so float a back button over the map */}
-        <button
-          type="button"
-          aria-label="뒤로 가기"
-          onClick={() => router.back()}
-          className="absolute left-3 top-3 z-40 hidden size-10 items-center justify-center rounded-full border border-border bg-card shadow-[var(--shadow-card)] landscape:flex"
-        >
-          <ChevronLeft className="size-6" />
-        </button>
-
-        <ExhibitionMap
-          width={detail.exhibition.mapWidth}
-          height={detail.exhibition.mapHeight}
-          booths={filtered}
-          categories={detail.categories}
-          halls={detail.halls}
-          floorplan={FLOORPLANS[detail.exhibition.slug]}
-          fillHeight
-          visitedIds={visitedIds}
-          skippedIds={skippedIds}
-          selectedId={selectedId}
-          centerOn={centerOn}
-          onSelect={(id) => {
-            setSelectedId(id);
-            if (id) setSheetOpen(false);
+  function renderSearch() {
+    return (
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+        <Input
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            if (e.target.value) setSheetOpen(true);
           }}
-          onInteractStart={() => setSheetOpen(false)}
+          onFocus={() => setSheetOpen(true)}
+          placeholder="부스명·브랜드·번호 검색"
+          className="h-10 pl-9 pr-9"
+          aria-label="부스 검색"
         />
-
-        {/* selected booth card — sits above the sheet peek (portrait) */}
-        {selected && (
-          <div className="absolute inset-x-0 bottom-[124px] z-20 mx-auto w-full max-w-md p-3 landscape:bottom-3">
-            <div className="flex items-center gap-3 rounded-2xl border border-border bg-card p-3.5 shadow-[var(--shadow-pop)] animate-in slide-in-from-bottom-2">
-              <div className="min-w-0 flex-1">
-                <p className="truncate font-bold">
-                  {selected.name}
-                  {selected.code && (
-                    <span className="ml-1.5 text-xs text-muted-foreground">
-                      {selected.code}
-                    </span>
-                  )}
-                </p>
-                <p className="truncate text-sm text-muted-foreground">
-                  {selected.company}
-                </p>
-                <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-                  {selectedCat && <CategoryChip category={selectedCat} />}
-                  <WaitingBadge waiting={waitings[selected.id]} />
-                </div>
-              </div>
-              <CartButton boothId={selected.id} variant="icon" />
-              <Button asChild size="sm">
-                <Link href={`/booths/${selected.id}`}>
-                  상세 <ChevronRight className="size-4" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {/* 동선 만들기 — hidden in landscape and when a booth card is showing */}
-        {hydrated && cartCount > 0 && !selected && (
-          <Link
-            href={`/exhibitions/${detail.exhibition.slug}/route`}
-            className="absolute inset-x-0 bottom-[132px] z-20 mx-auto flex w-fit items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-[var(--shadow-pop)] landscape:hidden"
-          >
-            <RouteIcon className="size-4.5" /> 내 동선 {cartCount}개 · 동선
-            만들기
-          </Link>
-        )}
-
-        {/* bottom sheet: search + booth list. Collapses to a peek; hidden in landscape. */}
-        <div
-          className={cn(
-            "absolute inset-x-0 bottom-0 z-30 flex flex-col rounded-t-2xl border-t border-border bg-card shadow-[var(--shadow-pop)] transition-[height] duration-300 ease-out landscape:hidden",
-            sheetOpen ? "h-[60dvh]" : "h-[116px]",
-          )}
-        >
+        {query && (
           <button
             type="button"
-            aria-label={sheetOpen ? "목록 접기" : "목록 펼치기"}
-            className="flex w-full shrink-0 cursor-grab touch-none justify-center py-2.5 active:cursor-grabbing"
-            onPointerDown={(e) => (dragStart.current = e.clientY)}
-            onPointerUp={onHandleUp}
+            onClick={() => setQuery("")}
+            aria-label="검색어 지우기"
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full p-1 hover:bg-secondary"
           >
-            <span className="h-1.5 w-10 rounded-full bg-border" />
+            <X className="size-4" />
           </button>
+        )}
+      </div>
+    );
+  }
 
-          <div className="px-4 pb-2">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-              <Input
-                value={query}
-                onChange={(e) => {
-                  setQuery(e.target.value);
-                  if (e.target.value) setSheetOpen(true);
-                }}
-                onFocus={() => setSheetOpen(true)}
-                placeholder="부스명·브랜드·번호 검색"
-                className="h-10 pl-9 pr-9"
-                aria-label="부스 검색"
-              />
-              {query && (
-                <button
-                  type="button"
-                  onClick={() => setQuery("")}
-                  aria-label="검색어 지우기"
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full p-1 hover:bg-secondary"
-                >
-                  <X className="size-4" />
-                </button>
+  function renderCategoryChips() {
+    return (
+      <>
+        <FilterChip
+          active={activeCat === null}
+          onClick={() => setActiveCat(null)}
+        >
+          전체 {booths.length}
+        </FilterChip>
+        {detail.categories.map((c) => (
+          <FilterChip
+            key={c.id}
+            active={activeCat === c.id}
+            onClick={() => setActiveCat(c.id)}
+            color={c.color}
+          >
+            {c.name}
+          </FilterChip>
+        ))}
+      </>
+    );
+  }
+
+  function renderStatusChips() {
+    return (
+      <>
+        <StatusChip
+          active={statusFilter === "visited"}
+          onClick={() =>
+            setStatusFilter((s) => (s === "visited" ? null : "visited"))
+          }
+          tone="success"
+        >
+          <Check className="size-3.5" /> 방문함 {visitedIds.length}
+        </StatusChip>
+        <StatusChip
+          active={statusFilter === "skipped"}
+          onClick={() =>
+            setStatusFilter((s) => (s === "skipped" ? null : "skipped"))
+          }
+          tone="warning"
+        >
+          <Clock3 className="size-3.5" /> 이따 다시 {skippedIds.length}
+        </StatusChip>
+      </>
+    );
+  }
+
+  function renderList() {
+    if (filtered.length === 0)
+      return (
+        <EmptyState
+          title="검색 결과가 없어요"
+          description="다른 키워드나 카테고리로 찾아보세요."
+        />
+      );
+    return (
+      <>
+        <p className="px-1 pb-1.5 text-xs text-muted-foreground">
+          {filtered.length}개 부스 · 항목을 누르면 지도에서 위치를 보여줘요
+        </p>
+        <div className="space-y-1.5">
+          {filtered.map((b) => (
+            <div
+              key={b.id}
+              className={cn(
+                "flex items-center gap-3 rounded-xl border bg-card px-3 py-2.5",
+                b.id === selectedId ? "border-primary" : "border-border",
               )}
+            >
+              <button
+                type="button"
+                onClick={() => locate(b.id)}
+                className="flex min-w-0 flex-1 items-center gap-3 text-left"
+              >
+                <MapPin
+                  className="size-4 shrink-0"
+                  style={{
+                    color:
+                      catById.get(b.categoryId)?.color ??
+                      "var(--muted-foreground)",
+                  }}
+                />
+                {b.code && (
+                  <span className="w-12 shrink-0 text-xs font-bold text-muted-foreground">
+                    {b.code}
+                  </span>
+                )}
+                <span className="min-w-0 flex-1 truncate text-sm font-semibold">
+                  {b.name}
+                </span>
+                <WaitingBadge waiting={waitings[b.id]} />
+              </button>
+              <CartButton boothId={b.id} variant="icon" />
             </div>
+          ))}
+        </div>
+      </>
+    );
+  }
+
+  return (
+    <div className="flex h-dvh flex-col overflow-hidden md:flex-row">
+      {/* Desktop: always-open side panel (search + filters + list). The mobile
+          bottom sheet is hidden at md+. Selecting in either highlights both. */}
+      <aside className="hidden w-96 shrink-0 flex-col border-r border-border bg-card md:flex">
+        <div className="flex items-center gap-1 border-b border-border px-3 py-3">
+          <button
+            type="button"
+            aria-label="뒤로 가기"
+            onClick={() => router.back()}
+            className="flex size-9 items-center justify-center rounded-full hover:bg-secondary"
+          >
+            <ChevronLeft className="size-5" />
+          </button>
+          <h1 className="text-lg font-extrabold">전시장 지도</h1>
+        </div>
+        <div className="border-b border-border p-3">{renderSearch()}</div>
+        <div className="no-scrollbar flex gap-1.5 overflow-x-auto border-b border-border px-3 py-2.5">
+          {renderCategoryChips()}
+        </div>
+        {hasStatus && (
+          <div className="no-scrollbar flex gap-1.5 overflow-x-auto border-b border-border px-3 py-2">
+            {renderStatusChips()}
+          </div>
+        )}
+        <div className="min-h-0 flex-1 overflow-y-auto p-3">{renderList()}</div>
+      </aside>
+
+      {/* Mobile chrome + map column */}
+      <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+        {/* In landscape (and on desktop) the mobile chrome hides. */}
+        <div className="md:hidden landscape:hidden">
+          <AppBar title="전시장 지도" />
+
+          <div className="no-scrollbar flex gap-1.5 overflow-x-auto border-b border-border px-4 py-2.5">
+            {renderCategoryChips()}
           </div>
 
-          <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-4 pt-1">
-            {filtered.length === 0 ? (
-              <EmptyState
-                title="검색 결과가 없어요"
-                description="다른 키워드나 카테고리로 찾아보세요."
-              />
-            ) : (
-              <>
-                <p className="px-1 pb-1.5 text-xs text-muted-foreground">
-                  {filtered.length}개 부스 · 항목을 누르면 지도에서 위치를
-                  보여줘요
-                </p>
-                <div className="space-y-1.5">
-                  {filtered.map((b) => (
-                    <div
-                      key={b.id}
-                      className={cn(
-                        "flex items-center gap-3 rounded-xl border bg-card px-3 py-2.5",
-                        b.id === selectedId
-                          ? "border-primary"
-                          : "border-border",
-                      )}
-                    >
-                      <button
-                        type="button"
-                        onClick={() => locate(b.id)}
-                        className="flex min-w-0 flex-1 items-center gap-3 text-left"
-                      >
-                        <MapPin
-                          className="size-4 shrink-0"
-                          style={{
-                            color:
-                              catById.get(b.categoryId)?.color ??
-                              "var(--muted-foreground)",
-                          }}
-                        />
-                        {b.code && (
-                          <span className="w-12 shrink-0 text-xs font-bold text-muted-foreground">
-                            {b.code}
-                          </span>
-                        )}
-                        <span className="min-w-0 flex-1 truncate text-sm font-semibold">
-                          {b.name}
+          {hasStatus && (
+            <div className="no-scrollbar flex gap-1.5 overflow-x-auto border-b border-border px-4 py-2">
+              {renderStatusChips()}
+            </div>
+          )}
+        </div>
+
+        <div className="relative flex-1 overflow-hidden">
+          {/* landscape hides the AppBar, so float a back button over the map */}
+          <button
+            type="button"
+            aria-label="뒤로 가기"
+            onClick={() => router.back()}
+            className="absolute left-3 top-3 z-40 hidden size-10 items-center justify-center rounded-full border border-border bg-card shadow-[var(--shadow-card)] landscape:flex md:landscape:hidden"
+          >
+            <ChevronLeft className="size-6" />
+          </button>
+
+          <ExhibitionMap
+            width={detail.exhibition.mapWidth}
+            height={detail.exhibition.mapHeight}
+            booths={filtered}
+            categories={detail.categories}
+            halls={detail.halls}
+            floorplan={FLOORPLANS[detail.exhibition.slug]}
+            fillHeight
+            visitedIds={visitedIds}
+            skippedIds={skippedIds}
+            selectedId={selectedId}
+            centerOn={centerOn}
+            onSelect={(id) => {
+              setSelectedId(id);
+              if (id) setSheetOpen(false);
+            }}
+            onInteractStart={() => setSheetOpen(false)}
+          />
+
+          {/* selected booth popup — decision info + quick actions. Sits above
+              the sheet peek on mobile; bottom-right card on desktop. */}
+          {selected && (
+            <div className="absolute inset-x-0 bottom-[124px] z-20 mx-auto w-full max-w-md p-3 md:inset-x-auto md:bottom-3 md:right-3 md:w-80 landscape:bottom-3">
+              <div className="rounded-2xl border border-border bg-card p-3.5 shadow-[var(--shadow-pop)] animate-in slide-in-from-bottom-2">
+                <div className="flex items-start gap-3">
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate font-bold">
+                      {selected.name}
+                      {selected.code && (
+                        <span className="ml-1.5 text-xs text-muted-foreground">
+                          {selected.code}
                         </span>
-                        <WaitingBadge waiting={waitings[b.id]} />
-                      </button>
-                      <CartButton boothId={b.id} variant="icon" />
+                      )}
+                    </p>
+                    <p className="truncate text-sm text-muted-foreground">
+                      {selected.company}
+                    </p>
+                    <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+                      {selectedCat && <CategoryChip category={selectedCat} />}
+                      <WaitingBadge waiting={waitings[selected.id]} />
                     </div>
-                  ))}
+                  </div>
+                  <Button asChild size="sm">
+                    <Link href={`/booths/${selected.id}`}>
+                      상세 <ChevronRight className="size-4" />
+                    </Link>
+                  </Button>
                 </div>
-              </>
+
+                <div className="mt-2.5 flex items-center gap-2 border-t border-border pt-2.5">
+                  <CartButton boothId={selected.id} variant="icon" />
+                  <PopupToggle
+                    active={selectedStatus === "visited"}
+                    tone="success"
+                    onClick={() => toggleStatus(selected.id, "visited")}
+                  >
+                    <Check className="size-4" /> 방문
+                  </PopupToggle>
+                  <PopupToggle
+                    active={selectedStatus === "skipped"}
+                    tone="warning"
+                    onClick={() => toggleStatus(selected.id, "skipped")}
+                  >
+                    <Clock3 className="size-4" /> 이따
+                  </PopupToggle>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* 동선 만들기 — hidden in landscape and when a booth card is showing */}
+          {hydrated && cartCount > 0 && !selected && (
+            <Link
+              href={`/exhibitions/${detail.exhibition.slug}/route`}
+              className="absolute inset-x-0 bottom-[132px] z-20 mx-auto flex w-fit items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-[var(--shadow-pop)] md:inset-x-auto md:bottom-4 md:right-4 landscape:hidden md:landscape:flex"
+            >
+              <RouteIcon className="size-4.5" /> 내 동선 {cartCount}개 · 동선
+              만들기
+            </Link>
+          )}
+
+          {/* bottom sheet: search + booth list. Mobile only (md:hidden). */}
+          <div
+            className={cn(
+              "absolute inset-x-0 bottom-0 z-30 flex flex-col rounded-t-2xl border-t border-border bg-card shadow-[var(--shadow-pop)] transition-[height] duration-300 ease-out md:hidden landscape:hidden",
+              sheetOpen ? "h-[60dvh]" : "h-[116px]",
             )}
+          >
+            <button
+              type="button"
+              aria-label={sheetOpen ? "목록 접기" : "목록 펼치기"}
+              className="flex w-full shrink-0 cursor-grab touch-none justify-center py-2.5 active:cursor-grabbing"
+              onPointerDown={(e) => (dragStart.current = e.clientY)}
+              onPointerUp={onHandleUp}
+            >
+              <span className="h-1.5 w-10 rounded-full bg-border" />
+            </button>
+
+            <div className="px-4 pb-2">{renderSearch()}</div>
+
+            <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-4 pt-1">
+              {renderList()}
+            </div>
           </div>
         </div>
       </div>
@@ -378,6 +455,37 @@ function StatusChip({
           ? tone === "success"
             ? "border-success bg-success/15 text-success"
             : "border-warning bg-warning/15 text-[#9a6700]"
+          : "border-border bg-card text-muted-foreground",
+      )}
+    >
+      {children}
+    </button>
+  );
+}
+
+/** Compact visit/skip toggle inside the map popup. */
+function PopupToggle({
+  active,
+  tone,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  tone: "success" | "warning";
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={active}
+      className={cn(
+        "inline-flex flex-1 items-center justify-center gap-1 rounded-lg border py-2 text-xs font-bold transition-colors",
+        active
+          ? tone === "success"
+            ? "border-success bg-success/12 text-success"
+            : "border-warning bg-warning/12 text-[#9a6700]"
           : "border-border bg-card text-muted-foreground",
       )}
     >
