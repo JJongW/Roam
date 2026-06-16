@@ -10,10 +10,13 @@ import {
   Search,
   X,
   Sparkles,
+  Trash2,
 } from "lucide-react";
 import { toast } from "sonner";
 import { formatPostTime } from "@/lib/utils";
 import { api, ApiClientError } from "@/lib/api/client";
+import { addMyPostId, getMyPostIds, removeMyPostId } from "@/lib/my-posts";
+import { useHydrated } from "@/lib/hooks/use-hydrated";
 import { watchPosts } from "@/lib/realtime";
 import { AppBar } from "@/components/common/app-bar";
 import { EmptyState } from "@/components/common/states";
@@ -41,6 +44,24 @@ export function CommunityView({
   const [boothId, setBoothId] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [summary, setSummary] = useState<string[]>([]);
+  const hydrated = useHydrated();
+  // Posts written on this device (delete affordance; server re-checks owner).
+  // Read in render (gated by hydration) so server/first paint match — re-reads
+  // whenever posts change, so create/delete stay in sync without extra state.
+  const myIds = hydrated ? getMyPostIds() : [];
+
+  async function remove(id: string) {
+    try {
+      await api.del(`/api/community/${id}`);
+      removeMyPostId(id);
+      setPosts((prev) => prev.filter((p) => p.id !== id));
+      toast.success("글을 삭제했어요");
+    } catch (e) {
+      const msg =
+        e instanceof ApiClientError ? e.error.message : "삭제하지 못했어요";
+      toast.error(msg);
+    }
+  }
 
   const boothById = useMemo(
     () => new Map(booths.map((b) => [b.id, b])),
@@ -90,6 +111,7 @@ export function CommunityView({
         { body: text, authorName, boothId: boothId || undefined },
       );
       // Optimistically prepend; the live feed will reconcile.
+      addMyPostId(post.id);
       setPosts((prev) => [post, ...prev.filter((p) => p.id !== post.id)]);
       setBody("");
       setBoothId("");
@@ -148,9 +170,21 @@ export function CommunityView({
                 >
                   <div className="flex items-center justify-between gap-2">
                     <span className="text-sm font-bold">{p.authorName}</span>
-                    <time className="text-xs text-muted-foreground">
-                      {formatPostTime(p.createdAt)}
-                    </time>
+                    <div className="flex items-center gap-1.5">
+                      <time className="text-xs text-muted-foreground">
+                        {formatPostTime(p.createdAt)}
+                      </time>
+                      {myIds.includes(p.id) && (
+                        <button
+                          type="button"
+                          onClick={() => remove(p.id)}
+                          aria-label="내 글 삭제"
+                          className="rounded-full p-1 text-muted-foreground hover:bg-secondary hover:text-destructive"
+                        >
+                          <Trash2 className="size-4" />
+                        </button>
+                      )}
+                    </div>
                   </div>
                   <p className="mt-1.5 whitespace-pre-wrap text-[15px] leading-relaxed">
                     {p.body}
@@ -190,7 +224,7 @@ export function CommunityView({
           />
           <p className="px-0.5 text-[11px] text-muted-foreground">
             닉네임 없이 익명으로 게시할 수 있어요. 게시글은 전시 참가자에게
-            공개돼요. 부적절한 글은 신고할 수 있어요.
+            공개되며, 본인이 쓴 글은 삭제할 수 있어요.
           </p>
         </div>
         <div className="flex items-end gap-2">

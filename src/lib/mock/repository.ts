@@ -496,6 +496,14 @@ export class MockRepository implements Repository {
     return post;
   }
 
+  async deletePost(id: string, sessionId: string): Promise<boolean> {
+    const posts = store().posts;
+    const i = posts.findIndex((p) => p.id === id && p.sessionId === sessionId);
+    if (i === -1) return false;
+    posts.splice(i, 1);
+    return true;
+  }
+
   // --- route sharing -------------------------------------------------------
 
   async publishRoute(

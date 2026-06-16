@@ -1,10 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Loader2, Send } from "lucide-react";
+import { Loader2, Send, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { formatPostTime } from "@/lib/utils";
 import { api, ApiClientError } from "@/lib/api/client";
+import { addMyPostId, getMyPostIds, removeMyPostId } from "@/lib/my-posts";
+import { useHydrated } from "@/lib/hooks/use-hydrated";
 import { useAuthStore } from "@/lib/stores/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,7 +27,22 @@ export function BoothPosts({ boothId }: { boothId: string }) {
   const [body, setBody] = useState("");
   const [name, setName] = useState("");
   const [busy, setBusy] = useState(false);
+  const hydrated = useHydrated();
+  const myIds = hydrated ? getMyPostIds() : [];
   const seededName = useRef(false);
+
+  async function remove(id: string) {
+    try {
+      await api.del(`/api/community/${id}`);
+      removeMyPostId(id);
+      setPosts((prev) => prev.filter((p) => p.id !== id));
+      toast.success("글을 삭제했어요");
+    } catch (e) {
+      const msg =
+        e instanceof ApiClientError ? e.error.message : "삭제하지 못했어요";
+      toast.error(msg);
+    }
+  }
 
   // Fetch posts. Status starts at "loading" (initial state / retry handler),
   // so this only flips to ready/error in async callbacks — no synchronous
@@ -70,6 +87,7 @@ export function BoothPosts({ boothId }: { boothId: string }) {
         `/api/booths/${boothId}/posts`,
         { body: text, authorName },
       );
+      addMyPostId(post.id);
       setPosts((prev) => [post, ...prev]);
       setBody("");
     } catch (e) {
@@ -154,9 +172,21 @@ export function BoothPosts({ boothId }: { boothId: string }) {
             >
               <div className="flex items-center justify-between gap-2">
                 <span className="text-sm font-bold">{p.authorName}</span>
-                <time className="text-xs text-muted-foreground">
-                  {formatPostTime(p.createdAt)}
-                </time>
+                <div className="flex items-center gap-1.5">
+                  <time className="text-xs text-muted-foreground">
+                    {formatPostTime(p.createdAt)}
+                  </time>
+                  {myIds.includes(p.id) && (
+                    <button
+                      type="button"
+                      onClick={() => remove(p.id)}
+                      aria-label="내 글 삭제"
+                      className="rounded-full p-1 text-muted-foreground hover:bg-secondary hover:text-destructive"
+                    >
+                      <Trash2 className="size-4" />
+                    </button>
+                  )}
+                </div>
               </div>
               <p className="mt-1 whitespace-pre-wrap text-[15px] leading-relaxed">
                 {p.body}

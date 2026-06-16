@@ -172,6 +172,8 @@ export interface Repository {
     exhibitionId: string,
     input: CommunityPostInput,
   ): Promise<CommunityPost>;
+  /** Delete a post only if it belongs to the given session. Returns true if a row was removed. */
+  deletePost(id: string, sessionId: string): Promise<boolean>;
 
   // analytics
   recordAnalytics(

@@ -1106,6 +1106,17 @@ export class SupabaseRepository implements Repository {
     return mapPost((data ?? row) as Row);
   }
 
+  async deletePost(id: string, sessionId: string): Promise<boolean> {
+    const db = await this.db();
+    const { data } = await db
+      .from("community_post")
+      .delete()
+      .eq("id", id)
+      .eq("session_id", sessionId)
+      .select("id");
+    return (data?.length ?? 0) > 0;
+  }
+
   // --- analytics -----------------------------------------------------------
 
   async recordAnalytics(

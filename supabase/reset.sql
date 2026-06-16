@@ -253,4 +253,8 @@ insert into community_post (id, exhibition_id, session_id, author_name, body, bo
   ('cp3', 'exh_sibf_2026', 'seed', '익명', 'A2402 신간 굿즈 거의 다 나갔어요. 빨리 가보세요!', 'b_a2402', '2026-06-24T06:05:00.000Z')
 on conflict (id) do nothing;
 
+-- NS-5: 커뮤니티 글 삭제 정책(본인 글 삭제). 소유권은 앱에서 session_id로 검증.
+drop policy if exists "anon delete community_post" on community_post;
+create policy "anon delete community_post" on community_post for delete using (true);
+
 commit;
