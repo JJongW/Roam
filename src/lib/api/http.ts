@@ -120,6 +120,16 @@ export async function isAdminAuthed(): Promise<boolean> {
   return store.get(ADMIN_COOKIE)?.value === env.ORGANIZER_CODE;
 }
 
+/**
+ * Guard an admin-only route handler. Returns a 401 response when the
+ * organizer gate is configured but the request lacks a valid admin cookie,
+ * or `null` when access is allowed (gate disabled or cookie valid).
+ */
+export async function requireAdmin(): Promise<NextResponse | null> {
+  if (await isAdminAuthed()) return null;
+  return fail("UNAUTHORIZED", "운영자 인증이 필요합니다");
+}
+
 export async function setAdminCookie() {
   if (!env.ORGANIZER_CODE) return;
   const store = await cookies();
