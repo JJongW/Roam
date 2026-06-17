@@ -8,6 +8,10 @@ export const SESSION_COOKIE = "roam_session";
 export const USER_COOKIE = "roam_user";
 export const ADMIN_COOKIE = "roam_admin";
 
+/** A community post is hidden from the feed once this many distinct sessions
+ * report it. Deduped per session, so it takes genuine independent reports. */
+export const REPORT_HIDE_THRESHOLD = 3;
+
 export interface OptionMeta<T extends string> {
   value: T;
   label: string;

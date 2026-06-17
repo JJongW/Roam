@@ -258,6 +258,22 @@ export interface CommunityPost {
   createdAt: string;
 }
 
+/** An abuse report against a community post (deduped per reporter session). */
+export interface CommunityReport {
+  id: string;
+  postId: string;
+  sessionId: string;
+  reason?: string;
+  createdAt: string;
+}
+
+/** Result of reporting a post. `ok` is false only when the post is missing. */
+export interface ReportResult {
+  ok: boolean;
+  /** This session had already reported the post (idempotent). */
+  already: boolean;
+}
+
 // --- Derived / composite DTOs ---------------------------------------------
 
 export interface ScoreBreakdown {

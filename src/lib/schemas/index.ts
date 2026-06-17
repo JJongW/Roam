@@ -204,3 +204,8 @@ export const communityPostInputSchema = z.object({
   boothId: z.string().optional(),
 });
 export type CommunityPostInput = z.infer<typeof communityPostInputSchema>;
+
+export const reportInputSchema = z.object({
+  reason: z.string().trim().max(200).optional(),
+});
+export type ReportInput = z.infer<typeof reportInputSchema>;

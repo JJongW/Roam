@@ -11,6 +11,7 @@ import {
   X,
   Sparkles,
   Trash2,
+  Flag,
 } from "lucide-react";
 import { toast } from "sonner";
 import { formatPostTime } from "@/lib/utils";
@@ -50,6 +51,9 @@ export function CommunityView({
   // whenever posts change, so create/delete stay in sync without extra state.
   const myIds = hydrated ? getMyPostIds() : [];
 
+  // Posts this device already reported (local hint; the server dedupes too).
+  const [reportedIds, setReportedIds] = useState<string[]>([]);
+
   async function remove(id: string) {
     try {
       await api.del(`/api/community/${id}`);
@@ -59,6 +63,24 @@ export function CommunityView({
     } catch (e) {
       const msg =
         e instanceof ApiClientError ? e.error.message : "삭제하지 못했어요";
+      toast.error(msg);
+    }
+  }
+
+  async function report(id: string) {
+    if (reportedIds.includes(id)) return;
+    if (!window.confirm("이 글을 신고할까요? 여러 명이 신고하면 숨겨져요."))
+      return;
+    try {
+      const r = await api.post<{ already: boolean }>(
+        `/api/community/${id}/report`,
+        {},
+      );
+      setReportedIds((prev) => (prev.includes(id) ? prev : [...prev, id]));
+      toast.success(r.already ? "이미 신고한 글이에요" : "신고를 접수했어요");
+    } catch (e) {
+      const msg =
+        e instanceof ApiClientError ? e.error.message : "신고하지 못했어요";
       toast.error(msg);
     }
   }
@@ -174,7 +196,7 @@ export function CommunityView({
                       <time className="text-xs text-muted-foreground">
                         {formatPostTime(p.createdAt)}
                       </time>
-                      {myIds.includes(p.id) && (
+                      {myIds.includes(p.id) ? (
                         <button
                           type="button"
                           onClick={() => remove(p.id)}
@@ -182,6 +204,18 @@ export function CommunityView({
                           className="rounded-full p-1 text-muted-foreground hover:bg-secondary hover:text-destructive"
                         >
                           <Trash2 className="size-4" />
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => report(p.id)}
+                          disabled={reportedIds.includes(p.id)}
+                          aria-label={
+                            reportedIds.includes(p.id) ? "신고 완료" : "글 신고"
+                          }
+                          className="rounded-full p-1 text-muted-foreground hover:bg-secondary hover:text-destructive disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-muted-foreground"
+                        >
+                          <Flag className="size-4" />
                         </button>
                       )}
                     </div>
@@ -224,7 +258,7 @@ export function CommunityView({
           />
           <p className="px-0.5 text-[11px] text-muted-foreground">
             닉네임 없이 익명으로 게시할 수 있어요. 게시글은 전시 참가자에게
-            공개되며, 본인이 쓴 글은 삭제할 수 있어요.
+            공개되며, 본인이 쓴 글은 삭제하고, 부적절한 글은 신고할 수 있어요.
           </p>
         </div>
         <div className="flex items-end gap-2">

@@ -261,4 +261,20 @@ create policy "anon delete community_post" on community_post for delete using (t
 drop policy if exists "anon delete route" on route_plan;
 create policy "anon delete route" on route_plan for delete using (true);
 
+-- NS-5: 커뮤니티 글 신고 테이블(세션당 1회 중복방지). 임계 누적 시 앱에서 숨김.
+create table if not exists community_report (
+  id          text primary key default gen_random_uuid()::text,
+  post_id     text not null references community_post(id) on delete cascade,
+  session_id  text not null references visitor_session(id) on delete cascade,
+  reason      text,
+  created_at  timestamptz not null default now(),
+  unique (post_id, session_id)
+);
+create index if not exists community_report_post_idx on community_report (post_id);
+alter table community_report enable row level security;
+drop policy if exists "public read community_report" on community_report;
+drop policy if exists "anon insert community_report" on community_report;
+create policy "public read community_report" on community_report for select using (true);
+create policy "anon insert community_report" on community_report for insert with check (true);
+
 commit;

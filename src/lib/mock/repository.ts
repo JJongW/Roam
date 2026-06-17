@@ -1,4 +1,5 @@
 import { uid, shortId } from "@/lib/utils";
+import { REPORT_HIDE_THRESHOLD } from "@/lib/constants";
 import { freshSeed } from "@/lib/mock/seed";
 import type { ListBoothQuery, Repository } from "@/lib/repositories/types";
 import type {
@@ -10,6 +11,8 @@ import type {
   BoothNote,
   Category,
   CommunityPost,
+  CommunityReport,
+  ReportResult,
   Exhibition,
   ExhibitionDetail,
   Hall,
@@ -53,6 +56,7 @@ interface Store {
   routes: RoutePlan[];
   bookmarks: Bookmark[];
   posts: CommunityPost[];
+  reports: CommunityReport[];
   users: User[];
   notes: BoothNote[];
   analytics: AnalyticsEvent[];
@@ -77,6 +81,7 @@ function buildStore(): Store {
     routes: [],
     bookmarks: [],
     posts: s.communityPosts,
+    reports: [],
     users: [],
     notes: [],
     analytics: [],
@@ -505,8 +510,16 @@ export class MockRepository implements Repository {
     exhibitionId: string,
     opts?: { cursor?: string; limit?: number },
   ): Promise<Paginated<CommunityPost>> {
+    const reportCount = new Map<string, number>();
+    for (const r of store().reports) {
+      reportCount.set(r.postId, (reportCount.get(r.postId) ?? 0) + 1);
+    }
     const list = store()
-      .posts.filter((p) => p.exhibitionId === exhibitionId)
+      .posts.filter(
+        (p) =>
+          p.exhibitionId === exhibitionId &&
+          (reportCount.get(p.id) ?? 0) < REPORT_HIDE_THRESHOLD,
+      )
       .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
     return paginate(list, opts?.cursor, opts?.limit ?? 50);
   }
@@ -529,12 +542,37 @@ export class MockRepository implements Repository {
     return post;
   }
 
+  async getPost(id: string): Promise<CommunityPost | null> {
+    return store().posts.find((p) => p.id === id) ?? null;
+  }
+
   async deletePost(id: string, sessionId: string): Promise<boolean> {
     const posts = store().posts;
     const i = posts.findIndex((p) => p.id === id && p.sessionId === sessionId);
     if (i === -1) return false;
     posts.splice(i, 1);
     return true;
+  }
+
+  async reportPost(
+    postId: string,
+    sessionId: string,
+    reason?: string,
+  ): Promise<ReportResult> {
+    const post = store().posts.find((p) => p.id === postId);
+    if (!post) return { ok: false, already: false };
+    const reports = store().reports;
+    if (reports.some((r) => r.postId === postId && r.sessionId === sessionId)) {
+      return { ok: true, already: true };
+    }
+    reports.push({
+      id: uid("rep"),
+      postId,
+      sessionId,
+      reason,
+      createdAt: now(),
+    });
+    return { ok: true, already: false };
   }
 
   // --- route sharing -------------------------------------------------------

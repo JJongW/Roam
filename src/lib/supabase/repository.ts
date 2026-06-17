@@ -1,4 +1,5 @@
 import { uid } from "@/lib/utils";
+import { REPORT_HIDE_THRESHOLD } from "@/lib/constants";
 import { createServerClient } from "@/lib/supabase/server";
 import type { ListBoothQuery, Repository } from "@/lib/repositories/types";
 import type {
@@ -12,6 +13,7 @@ import type {
   BoothNote,
   Category,
   CommunityPost,
+  ReportResult,
   CompanionType,
   Exhibition,
   ExhibitionDetail,
@@ -1117,7 +1119,24 @@ export class SupabaseRepository implements Repository {
       .select("*")
       .eq("exhibition_id", exhibitionId)
       .order("created_at", { ascending: false });
-    const list = (data ?? []).map(mapPost);
+    let list = (data ?? []).map(mapPost);
+    // Hide posts that reached the report threshold (deduped per session by the
+    // table's unique constraint, so a row count == distinct reporters).
+    if (list.length) {
+      const { data: reps } = await db
+        .from("community_report")
+        .select("post_id")
+        .in(
+          "post_id",
+          list.map((p) => p.id),
+        );
+      const count = new Map<string, number>();
+      for (const r of reps ?? []) {
+        const pid = (r as Row).post_id as string;
+        count.set(pid, (count.get(pid) ?? 0) + 1);
+      }
+      list = list.filter((p) => (count.get(p.id) ?? 0) < REPORT_HIDE_THRESHOLD);
+    }
     return paginate(list, opts?.cursor, opts?.limit);
   }
 
@@ -1144,6 +1163,16 @@ export class SupabaseRepository implements Repository {
     return mapPost((data ?? row) as Row);
   }
 
+  async getPost(id: string): Promise<CommunityPost | null> {
+    const db = await this.db();
+    const { data } = await db
+      .from("community_post")
+      .select("*")
+      .eq("id", id)
+      .maybeSingle();
+    return data ? mapPost(data as Row) : null;
+  }
+
   async deletePost(id: string, sessionId: string): Promise<boolean> {
     const db = await this.db();
     const { data } = await db
@@ -1153,6 +1182,33 @@ export class SupabaseRepository implements Repository {
       .eq("session_id", sessionId)
       .select("id");
     return (data?.length ?? 0) > 0;
+  }
+
+  async reportPost(
+    postId: string,
+    sessionId: string,
+    reason?: string,
+  ): Promise<ReportResult> {
+    const db = await this.db();
+    const { data: post } = await db
+      .from("community_post")
+      .select("id")
+      .eq("id", postId)
+      .maybeSingle();
+    if (!post) return { ok: false, already: false };
+    const { error } = await db.from("community_report").insert({
+      id: uid("rep"),
+      post_id: postId,
+      session_id: sessionId,
+      reason: reason ?? null,
+      created_at: now(),
+    });
+    // 23505 = unique_violation → this session already reported the post.
+    if (error) {
+      if (error.code === "23505") return { ok: true, already: true };
+      throw error;
+    }
+    return { ok: true, already: false };
   }
 
   // --- analytics -----------------------------------------------------------
