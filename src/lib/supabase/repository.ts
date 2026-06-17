@@ -821,6 +821,7 @@ export class SupabaseRepository implements Repository {
       | "shareId"
     >,
     userId?: string,
+    title?: string,
   ): Promise<RoutePlan> {
     const db = await this.db();
     const row = {
@@ -836,6 +837,7 @@ export class SupabaseRepository implements Repository {
       current_booth_id: plan.currentBoothId ?? null,
       visited_booth_ids: [],
       is_public: false,
+      title: title ?? null,
       created_at: now(),
     };
     const { data } = await db
@@ -854,6 +856,42 @@ export class SupabaseRepository implements Repository {
       .eq("id", id)
       .maybeSingle();
     return data ? mapRoute(data as Row) : null;
+  }
+
+  async listMyRoutes(owner: {
+    sessionId: string;
+    userId?: string;
+  }): Promise<RoutePlan[]> {
+    const db = await this.db();
+    let q = db
+      .from("route_plan")
+      .select("*")
+      .not("title", "is", null)
+      .order("created_at", { ascending: false });
+    q = owner.userId
+      ? q.eq("user_id", owner.userId)
+      : q.eq("session_id", owner.sessionId);
+    const { data } = await q;
+    return (data ?? []).map((r) => mapRoute(r as Row));
+  }
+
+  async deleteRoute(
+    id: string,
+    owner: { sessionId: string; userId?: string },
+  ): Promise<boolean> {
+    const existing = await this.getRoute(id);
+    if (!existing) return false;
+    const owned = owner.userId
+      ? existing.userId === owner.userId
+      : existing.sessionId === owner.sessionId;
+    if (!owned) return false;
+    const db = await this.db();
+    const { data } = await db
+      .from("route_plan")
+      .delete()
+      .eq("id", id)
+      .select("id");
+    return (data?.length ?? 0) > 0;
   }
 
   async patchRoute(id: string, patch: RoutePatch): Promise<RoutePlan | null> {

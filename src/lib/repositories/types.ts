@@ -134,9 +134,20 @@ export interface Repository {
       | "shareId"
     >,
     userId?: string,
+    title?: string,
   ): Promise<RoutePlan>;
   getRoute(id: string): Promise<RoutePlan | null>;
   patchRoute(id: string, patch: RoutePatch): Promise<RoutePlan | null>;
+  /** The caller's own named (saved) routes, newest first. */
+  listMyRoutes(owner: {
+    sessionId: string;
+    userId?: string;
+  }): Promise<RoutePlan[]>;
+  /** Delete a route the caller owns. Returns false if missing or not owned. */
+  deleteRoute(
+    id: string,
+    owner: { sessionId: string; userId?: string },
+  ): Promise<boolean>;
   publishRoute(
     id: string,
     input: RoutePublishInput & { shareId: string; userId?: string },

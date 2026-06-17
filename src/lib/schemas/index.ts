@@ -63,6 +63,23 @@ export const routePatchSchema = z.object({
 });
 export type RoutePatch = z.infer<typeof routePatchSchema>;
 
+const routeLegSchema = z.object({
+  from: z.string(),
+  to: z.string(),
+  minutes: z.number(),
+  distance: z.number(),
+});
+
+/** Save the current route under a name (private; no login required). */
+export const routeSaveSchema = z.object({
+  exhibitionId: z.string().min(1),
+  title: z.string().trim().min(1, "이름을 입력해 주세요").max(60),
+  boothIds: z.array(z.string()).min(1, "담은 부스가 없어요"),
+  estimatedMinutes: z.number().nonnegative().default(0),
+  legs: z.array(routeLegSchema).default([]),
+});
+export type RouteSaveInput = z.infer<typeof routeSaveSchema>;
+
 export const reviewInputSchema = z.object({
   rating: z.number().int().min(1).max(5),
   comment: z.string().min(2, "내용을 입력해 주세요").max(500),

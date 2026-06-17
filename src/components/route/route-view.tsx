@@ -26,6 +26,8 @@ import { useHydrated } from "@/lib/hooks/use-hydrated";
 import { buildManualRoute, buildOrderedRoute } from "@/lib/engine/route";
 import { FLOORPLANS } from "@/lib/floorplans";
 import { AppBar } from "@/components/common/app-bar";
+import { SaveRouteButton } from "@/components/route/save-route-sheet";
+import { MyRoutesSheet } from "@/components/route/my-routes-sheet";
 import { BoothCard } from "@/components/booth/booth-card";
 import { CartButton } from "@/components/booth/cart-button";
 import { EmptyState } from "@/components/common/states";
@@ -191,7 +193,7 @@ export function RouteView({
   if (hydrated && ordered.length === 0) {
     return (
       <div className="flex min-h-dvh flex-col">
-        <AppBar title="내 동선" />
+        <AppBar title="내 동선" right={<MyRoutesSheet onLoad={setCartIds} />} />
         <div className="flex flex-1 items-center justify-center p-6">
           <EmptyState
             icon={Navigation}
@@ -219,7 +221,20 @@ export function RouteView({
 
   return (
     <div className="flex min-h-dvh flex-col pb-28">
-      <AppBar title="내 동선" />
+      <AppBar
+        title="내 동선"
+        right={
+          <>
+            <MyRoutesSheet onLoad={setCartIds} />
+            <SaveRouteButton
+              exhibitionId={exhibition.id}
+              boothIds={orderedIds}
+              estimatedMinutes={plan.estimatedMinutes}
+              legs={plan.legs}
+            />
+          </>
+        }
+      />
 
       <div className="relative h-[38dvh] border-b border-border">
         <ExhibitionMap

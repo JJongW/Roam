@@ -257,4 +257,8 @@ on conflict (id) do nothing;
 drop policy if exists "anon delete community_post" on community_post;
 create policy "anon delete community_post" on community_post for delete using (true);
 
+-- NS-6: 동선 삭제 정책(내 동선 삭제). 소유권은 앱에서 session_id/user_id로 검증.
+drop policy if exists "anon delete route" on route_plan;
+create policy "anon delete route" on route_plan for delete using (true);
+
 commit;

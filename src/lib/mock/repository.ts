@@ -394,6 +394,7 @@ export class MockRepository implements Repository {
       | "shareId"
     >,
     userId?: string,
+    title?: string,
   ): Promise<RoutePlan> {
     const route: RoutePlan = {
       id: uid("route"),
@@ -404,6 +405,7 @@ export class MockRepository implements Repository {
       status: "active",
       visitedBoothIds: [],
       isPublic: false,
+      title,
       ...plan,
     };
     store().routes.push(route);
@@ -412,6 +414,37 @@ export class MockRepository implements Repository {
 
   async getRoute(id: string) {
     return store().routes.find((r) => r.id === id) ?? null;
+  }
+
+  async listMyRoutes(owner: {
+    sessionId: string;
+    userId?: string;
+  }): Promise<RoutePlan[]> {
+    return store()
+      .routes.filter(
+        (r) =>
+          r.title != null &&
+          (owner.userId
+            ? r.userId === owner.userId
+            : r.sessionId === owner.sessionId),
+      )
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  }
+
+  async deleteRoute(
+    id: string,
+    owner: { sessionId: string; userId?: string },
+  ): Promise<boolean> {
+    const routes = store().routes;
+    const i = routes.findIndex(
+      (r) =>
+        r.id === id &&
+        ((owner.userId && r.userId === owner.userId) ||
+          r.sessionId === owner.sessionId),
+    );
+    if (i === -1) return false;
+    routes.splice(i, 1);
+    return true;
   }
 
   async patchRoute(id: string, patch: RoutePatch): Promise<RoutePlan | null> {
