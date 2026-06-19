@@ -1,4 +1,6 @@
 import floorplan from "@/lib/floorplan-sibf.json";
+import officialDirectory from "@/lib/booth/official-sibf-2026.json";
+import { normalizeBoothKey } from "@/lib/booth/normalize";
 import type {
   Booth,
   BoothEvent,
@@ -114,8 +116,32 @@ export const halls: Hall[] = [
 
 const id = (code: string) => `b_${code.toLowerCase()}`;
 
+// code → all co-located exhibitor names from the official SIBF directory.
+const directory = officialDirectory as unknown as Record<string, string[]>;
+
 export const booths: Booth[] = floorplan.booths.map((b) => {
   const name = (b as { name?: string }).name || b.code;
+  const kind =
+    (b as { kind?: string }).kind === "facility" ? "facility" : "exhibitor";
+  // Co-located exhibitors at this code, minus the one shown as the booth name.
+  // Dedup by containment too, since directory names are suffix/prefix-cleaned
+  // ("도서출판 달리" on the map vs "달리" in the directory).
+  const officialNames = Array.isArray(directory[b.code])
+    ? directory[b.code]
+    : [];
+  const nameKey = normalizeBoothKey(name);
+  const aliasList =
+    kind === "exhibitor"
+      ? officialNames.filter((nm) => {
+          const k = normalizeBoothKey(nm);
+          return (
+            k.length >= 2 &&
+            k !== nameKey &&
+            !nameKey.includes(k) &&
+            !k.includes(nameKey)
+          );
+        })
+      : [];
   const catReal = (b as { catReal?: string }).catReal ?? "general";
   const catKo = (b as { catKo?: string }).catKo ?? "";
   const web = (b as { web?: string }).web || undefined;
@@ -127,19 +153,30 @@ export const booths: Booth[] = floorplan.booths.map((b) => {
     .map((s) => s.trim())
     .filter(Boolean);
   const companyLabel =
-    cats.length <= 1 ? (cats[0] ?? "") : `${cats[0]} 외 ${cats.length - 1}`;
+    kind === "facility"
+      ? "부대 공간"
+      : cats.length <= 1
+        ? (cats[0] ?? "")
+        : `${cats[0]} 외 ${cats.length - 1}`;
+  // Facility slots (lounge/stage/aux) aren't exhibitors — no participant blurb.
+  const longDescription =
+    kind === "facility"
+      ? `${name} · ${b.code}. 참가사 부스가 아닌 행사장 부대 공간이에요.`
+      : `${name}의 부스입니다. 부스 번호 ${b.code}.${
+          catKo ? ` 분야: ${catKo}.` : ""
+        } 현장에서 신간 전시와 굿즈, 사인회를 만나볼 수 있어요. 2026 서울국제도서전 참가사입니다.`;
   return {
     id: id(b.code),
     exhibitionId: exhibition.id,
     hallId: b.code[0] === "A" ? "hall_a" : "hall_b",
     categoryId: CAT[catReal] ?? CAT.general,
     code: b.code,
+    kind,
     name,
     company: companyLabel,
+    aliases: aliasList.length ? aliasList : undefined,
     description: `${name} · 부스 ${b.code}`,
-    longDescription: `${name}의 부스입니다. 부스 번호 ${b.code}.${
-      catKo ? ` 분야: ${catKo}.` : ""
-    } 현장에서 신간 전시와 굿즈, 사인회를 만나볼 수 있어요. 2026 서울국제도서전 참가사입니다.`,
+    longDescription,
     images: [],
     logoUrl: undefined,
     instagramUrl: undefined,

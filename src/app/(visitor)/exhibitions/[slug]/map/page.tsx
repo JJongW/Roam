@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { getRepository } from "@/lib/repositories";
+import { hasGemini } from "@/lib/env";
 import { MapView } from "@/components/map/map-view";
 import type { Waiting } from "@/lib/types";
 
@@ -18,5 +19,12 @@ export default async function MapPage({ params }: Props) {
   for (const w of await repo.listWaitings(detail.exhibition.id))
     waitings[w.boothId] = w;
 
-  return <MapView detail={detail} booths={booths} waitings={waitings} />;
+  return (
+    <MapView
+      detail={detail}
+      booths={booths}
+      waitings={waitings}
+      aiEnabled={hasGemini}
+    />
+  );
 }

@@ -3,7 +3,6 @@ import Link from "next/link";
 import {
   CalendarDays,
   MapPin,
-  Sparkles,
   Map as MapIcon,
   MessagesSquare,
   Route as RouteIcon,
@@ -117,15 +116,12 @@ export default async function ExhibitionDetailPage({ params }: Props) {
         </div>
       </main>
 
+      {/* Entry = the map. Visitors pick booths first; recommendation lives one
+          step in, as the "잘 모르겠어요" escape hatch for low-involvement users. */}
       <div className="fixed inset-x-0 bottom-0 z-40 mx-auto flex w-full max-w-md gap-2 border-t border-border bg-background/90 p-4 pb-safe backdrop-blur-xl">
-        <Button asChild variant="secondary" size="lg" className="flex-1">
+        <Button asChild size="lg" className="flex-1">
           <Link href={`/exhibitions/${slug}/map`}>
-            <MapIcon className="size-5" /> 지도
-          </Link>
-        </Button>
-        <Button asChild size="lg" className="flex-[2]">
-          <Link href={`/exhibitions/${slug}/onboarding`}>
-            <Sparkles className="size-5" /> 맞춤 추천 받기
+            <MapIcon className="size-5" /> 지도 보기 · 부스 담기
           </Link>
         </Button>
       </div>

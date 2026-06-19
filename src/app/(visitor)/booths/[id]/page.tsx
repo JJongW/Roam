@@ -136,6 +136,26 @@ export default async function BoothDetailPage({ params }: Props) {
             </p>
           </section>
 
+          {/* co-located exhibitors sharing this booth code (pavilions, shared
+              indie stands). Why search/screenshot finds this booth for them. */}
+          {booth.aliases && booth.aliases.length > 0 && (
+            <section className="space-y-2">
+              <h2 className="text-base font-bold">
+                함께 입점한 곳 {booth.aliases.length}곳
+              </h2>
+              <div className="flex flex-wrap gap-1.5">
+                {booth.aliases.map((nm) => (
+                  <span
+                    key={nm}
+                    className="rounded-full border border-border bg-card px-3 py-1 text-sm font-medium text-foreground/90"
+                  >
+                    {nm}
+                  </span>
+                ))}
+              </div>
+            </section>
+          )}
+
           {/* outbound links (Instagram / website) */}
           {(booth.instagramUrl || booth.websiteUrl) && (
             <section className="flex flex-wrap gap-2">

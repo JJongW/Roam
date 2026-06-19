@@ -1,4 +1,5 @@
 import { getRepository } from "@/lib/repositories";
+import { exhibitorBooths } from "@/lib/booth/normalize";
 import { rankBooths, type ScoreContext } from "@/lib/engine/scoring";
 import { planRoute, type PlannedRoute } from "@/lib/engine/route";
 import type { UserPreferenceInput } from "@/lib/schemas";
@@ -28,7 +29,10 @@ export async function rankForExhibition(
   const detail = await repo.getExhibition(exhibitionSlug);
   if (!detail) return null;
 
-  const booths = await repo.listBoothsByExhibitionId(detail.exhibition.id);
+  // Recommend exhibitors only — facility areas (lounge/stage) never get ranked.
+  const booths = exhibitorBooths(
+    await repo.listBoothsByExhibitionId(detail.exhibition.id),
+  );
   const events = await repo.listEvents(exhibitionSlug);
 
   const waitingByBooth: Record<string, Waiting | undefined> = {};

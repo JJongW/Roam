@@ -9,6 +9,7 @@ import {
   ChevronLeft,
   Clock3,
   Search,
+  Sparkles,
   X,
   MapPin,
 } from "lucide-react";
@@ -21,6 +22,8 @@ import { CartButton } from "@/components/booth/cart-button";
 import { Route as RouteIcon } from "lucide-react";
 import { AppBar } from "@/components/common/app-bar";
 import { ExhibitionMap } from "@/components/map/exhibition-map";
+import { ScreenshotCapture } from "@/components/map/screenshot-capture";
+import { SwipeDeck } from "@/components/map/swipe-deck";
 import { CategoryChip } from "@/components/booth/category-chip";
 import { WaitingBadge } from "@/components/booth/waiting-badge";
 import { EmptyState } from "@/components/common/states";
@@ -32,10 +35,12 @@ export function MapView({
   detail,
   booths,
   waitings,
+  aiEnabled = false,
 }: {
   detail: ExhibitionDetail;
   booths: Booth[];
   waitings: Record<string, Waiting>;
+  aiEnabled?: boolean;
 }) {
   const router = useRouter();
   const [activeCat, setActiveCat] = useState<string | null>(null);
@@ -46,6 +51,7 @@ export function MapView({
   const [centerOn, setCenterOn] = useState<string | null>(null);
   const [query, setQuery] = useState("");
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [swipeOpen, setSwipeOpen] = useState(false);
   // pointer tracking for drag-to-toggle on the sheet handle
   const dragStart = useRef<number | null>(null);
 
@@ -74,7 +80,9 @@ export function MapView({
       if (statusFilter === "skipped" && !skippedSet.has(b.id)) return false;
       if (
         q &&
-        !`${b.name} ${b.company} ${b.code ?? ""}`.toLowerCase().includes(q)
+        !`${b.name} ${b.company} ${b.code ?? ""} ${(b.aliases ?? []).join(" ")}`
+          .toLowerCase()
+          .includes(q)
       )
         return false;
       return true;
@@ -107,28 +115,39 @@ export function MapView({
 
   function renderSearch() {
     return (
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          value={query}
-          onChange={(e) => {
-            setQuery(e.target.value);
-            if (e.target.value) setSheetOpen(true);
-          }}
-          onFocus={() => setSheetOpen(true)}
-          placeholder="부스명·브랜드·번호 검색"
-          className="h-10 pl-9 pr-9"
-          aria-label="부스 검색"
-        />
-        {query && (
-          <button
-            type="button"
-            onClick={() => setQuery("")}
-            aria-label="검색어 지우기"
-            className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full p-1 hover:bg-secondary"
-          >
-            <X className="size-4" />
-          </button>
+      // Search is the default input. 캡처(스크린샷 판독) sits beside it as a
+      // secondary path so visitors aren't faced with a 4-way choice up front.
+      <div className="flex items-center gap-2">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              if (e.target.value) setSheetOpen(true);
+            }}
+            onFocus={() => setSheetOpen(true)}
+            placeholder="부스명·브랜드·번호 검색"
+            className="h-10 pl-9 pr-9"
+            aria-label="부스 검색"
+          />
+          {query && (
+            <button
+              type="button"
+              onClick={() => setQuery("")}
+              aria-label="검색어 지우기"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full p-1 hover:bg-secondary"
+            >
+              <X className="size-4" />
+            </button>
+          )}
+        </div>
+        {aiEnabled && (
+          <ScreenshotCapture
+            slug={detail.exhibition.slug}
+            categories={detail.categories}
+            waitings={waitings}
+          />
         )}
       </div>
     );
@@ -239,6 +258,13 @@ export function MapView({
     // The visitor shell boxes pages to max-w-md (mobile frame). The map needs
     // full width on desktop, so break out of that box at md+ with fixed inset-0.
     <div className="flex h-dvh flex-col overflow-hidden md:fixed md:inset-0 md:z-30 md:flex-row md:bg-background">
+      <SwipeDeck
+        slug={detail.exhibition.slug}
+        booths={booths}
+        categories={detail.categories}
+        open={swipeOpen}
+        onClose={() => setSwipeOpen(false)}
+      />
       {/* Desktop: always-open side panel (search + filters + list). The mobile
           bottom sheet is hidden at md+. Selecting in either highlights both. */}
       <aside className="hidden w-96 shrink-0 flex-col border-r border-border bg-card md:flex">
@@ -363,7 +389,8 @@ export function MapView({
             </div>
           )}
 
-          {/* 동선 만들기 — hidden in landscape and when a booth card is showing */}
+          {/* 동선 만들기 — even 1 booth is enough. Hidden in landscape and when
+              a booth card is showing. */}
           {hydrated && cartCount > 0 && !selected && (
             <Link
               href={`/exhibitions/${detail.exhibition.slug}/route`}
@@ -372,6 +399,19 @@ export function MapView({
               <RouteIcon className="size-4.5" /> 내 동선 {cartCount}개 · 동선
               만들기
             </Link>
+          )}
+
+          {/* Low-involvement escape hatch: picked nothing → "골라드릴까요?" opens
+              the swipe deck. Replaced by 동선 만들기 once cart ≥ 1. */}
+          {hydrated && cartCount === 0 && !selected && (
+            <button
+              type="button"
+              onClick={() => setSwipeOpen(true)}
+              className="absolute inset-x-0 bottom-[132px] z-20 mx-auto flex w-fit items-center gap-2 rounded-full border border-border bg-card px-5 py-3 text-sm font-bold shadow-[var(--shadow-pop)] md:inset-x-auto md:bottom-4 md:right-4 landscape:hidden md:landscape:flex"
+            >
+              <Sparkles className="size-4.5 text-primary" /> 뭘 담을지
+              모르겠어요 · 골라드릴까요?
+            </button>
           )}
 
           {/* bottom sheet: search + booth list. Mobile only (md:hidden). */}
