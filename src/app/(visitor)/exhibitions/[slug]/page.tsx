@@ -7,6 +7,7 @@ import {
   MessagesSquare,
   Route as RouteIcon,
   ChevronRight,
+  Sparkles,
 } from "lucide-react";
 import { format } from "date-fns";
 import { getRepository } from "@/lib/repositories";
@@ -119,6 +120,11 @@ export default async function ExhibitionDetailPage({ params }: Props) {
       {/* Entry = the map. Visitors pick booths first; recommendation lives one
           step in, as the "잘 모르겠어요" escape hatch for low-involvement users. */}
       <div className="fixed inset-x-0 bottom-0 z-40 mx-auto flex w-full max-w-md gap-2 border-t border-border bg-background/90 p-4 pb-safe backdrop-blur-xl">
+        <Button asChild variant="secondary" size="lg">
+          <Link href={`/exhibitions/${slug}/onboarding`}>
+            <Sparkles className="size-5" /> 추천받기
+          </Link>
+        </Button>
         <Button asChild size="lg" className="flex-1">
           <Link href={`/exhibitions/${slug}/map`}>
             <MapIcon className="size-5" /> 지도 보기 · 부스 담기

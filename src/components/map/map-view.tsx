@@ -434,29 +434,38 @@ export function MapView({
             </div>
           )}
 
-          {/* 동선 만들기 — even 1 booth is enough. Hidden in landscape and when
-              a booth card is showing. */}
-          {hydrated && cartCount > 0 && !selected && (
-            <Link
-              href={`/exhibitions/${detail.exhibition.slug}/route`}
-              className="absolute inset-x-0 bottom-[132px] z-20 mx-auto flex w-fit items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-[var(--shadow-pop)] md:inset-x-auto md:bottom-4 md:right-4 landscape:hidden md:landscape:flex"
-            >
-              <RouteIcon className="size-4.5" /> 내 동선 {cartCount}개 · 동선
-              만들기
-            </Link>
-          )}
-
-          {/* Low-involvement escape hatch: picked nothing → "골라드릴까요?" opens
-              the context recommendation (who/interests/why → Gemini). Replaced by
-              동선 만들기 once cart ≥ 1. Swipe lives separately (search row). */}
-          {hydrated && cartCount === 0 && !selected && (
-            <Link
-              href={`/exhibitions/${detail.exhibition.slug}/onboarding`}
-              className="absolute inset-x-0 bottom-[132px] z-20 mx-auto flex w-fit items-center gap-2 rounded-full border border-border bg-card px-5 py-3 text-sm font-bold shadow-[var(--shadow-pop)] md:inset-x-auto md:bottom-4 md:right-4 landscape:hidden md:landscape:flex"
-            >
-              <Sparkles className="size-4.5 text-primary" /> 뭘 담을지
-              모르겠어요 · 골라드릴까요?
-            </Link>
+          {/* Floating actions. Recommendation (맞춤 추천) is ALWAYS reachable:
+              when the cart is empty it's the primary "골라드릴까요?", and once a
+              booth is added it sits as a secondary pill above "동선 만들기".
+              Hidden in landscape and when a booth card is showing. */}
+          {hydrated && !selected && (
+            <div className="absolute inset-x-0 bottom-[132px] z-20 mx-auto flex w-fit flex-col items-center gap-2 md:inset-x-auto md:bottom-4 md:right-4 landscape:hidden md:landscape:flex">
+              {cartCount > 0 ? (
+                <>
+                  <Link
+                    href={`/exhibitions/${detail.exhibition.slug}/onboarding`}
+                    className="flex w-fit items-center gap-1.5 rounded-full border border-border bg-card px-4 py-2 text-xs font-bold shadow-[var(--shadow-card)]"
+                  >
+                    <Sparkles className="size-4 text-primary" /> 맞춤 추천받기
+                  </Link>
+                  <Link
+                    href={`/exhibitions/${detail.exhibition.slug}/route`}
+                    className="flex w-fit items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-[var(--shadow-pop)]"
+                  >
+                    <RouteIcon className="size-4.5" /> 내 동선 {cartCount}개 ·
+                    동선 만들기
+                  </Link>
+                </>
+              ) : (
+                <Link
+                  href={`/exhibitions/${detail.exhibition.slug}/onboarding`}
+                  className="flex w-fit items-center gap-2 rounded-full border border-border bg-card px-5 py-3 text-sm font-bold shadow-[var(--shadow-pop)]"
+                >
+                  <Sparkles className="size-4.5 text-primary" /> 뭘 담을지
+                  모르겠어요 · 골라드릴까요?
+                </Link>
+              )}
+            </div>
           )}
 
           {/* bottom sheet: search + booth list. Mobile only (md:hidden). */}
