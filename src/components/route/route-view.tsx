@@ -13,7 +13,9 @@ import {
   ArrowDownNarrowWide,
   Wand2,
   Loader2,
+  Clock,
 } from "lucide-react";
+import { BASE_DWELL_MINUTES } from "@/lib/constants";
 import { toast } from "sonner";
 import { api, ApiClientError } from "@/lib/api/client";
 import { formatWalk } from "@/lib/utils";
@@ -256,16 +258,20 @@ export function RouteView({
         </span>
         <span className="h-6 w-px bg-border" />
         <span className="flex items-center gap-1.5 font-semibold">
-          <Footprints className="size-4 text-primary" /> 이동{" "}
-          {formatWalk(plan.estimatedMinutes)}
+          <Clock className="size-4 text-primary" /> 예상{" "}
+          {formatWalk(
+            ordered.length * BASE_DWELL_MINUTES + plan.estimatedMinutes,
+          )}
         </span>
         <span className="h-6 w-px bg-border" />
         <span className="flex items-center gap-1.5 font-semibold text-muted-foreground">
-          입구→출구
+          <Footprints className="size-4" /> 이동{" "}
+          {formatWalk(plan.estimatedMinutes)}
         </span>
       </div>
       <p className="px-5 pb-1 pt-1.5 text-xs text-muted-foreground">
-        ‘이동’은 부스 사이 걷는 시간이에요. 부스 관람 시간은 사람마다 달라요.
+        관람 1곳당 약 {BASE_DWELL_MINUTES}분 기준이에요. ‘이동’은 부스 사이 걷는
+        시간이고, 실제 관람 시간은 사람마다 달라요.
       </p>
 
       <div className="flex items-center justify-between px-5 pb-2 pt-1">

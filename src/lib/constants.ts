@@ -126,9 +126,11 @@ export const MOVEMENT_TUNING: Record<
 
 /**
  * Map-distance → walking minutes (official SIBF coordinate space, 3230×3650).
- * Calibrated to the real venue: adjacent stands ≈57 units ≈10s, one block
- * ≈340 units ≈1min.
+ * It's one connected hall, so walking between stands is near-instant — adjacent
+ * stands (~58 units) ≈2s, a neighbouring stand (~120 units) ≈4s, and crossing
+ * the whole venue (~4900 units) ≈2.5min. Dwell time, not travel, dominates a
+ * plan — which is the realistic experience.
  */
-export const WALK_UNITS_PER_MINUTE = 340;
+export const WALK_UNITS_PER_MINUTE = 2000;
 /** Average browsing time per booth (minutes), modulated by waiting. */
-export const BASE_DWELL_MINUTES = 6;
+export const BASE_DWELL_MINUTES = 5;
