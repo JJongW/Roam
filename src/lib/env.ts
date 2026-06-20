@@ -17,6 +17,10 @@ const schema = z.object({
   FCM_SERVER_KEY: z.string().optional(),
   GEMINI_API_KEY: z.string().min(1).optional(),
   ORGANIZER_CODE: z.string().min(1).optional(),
+  CLOUDINARY_CLOUD_NAME: z.string().min(1).optional(),
+  CLOUDINARY_API_KEY: z.string().min(1).optional(),
+  CLOUDINARY_API_SECRET: z.string().min(1).optional(),
+  NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: z.string().min(1).optional(),
 });
 
 const parsed = schema.safeParse({
@@ -32,6 +36,12 @@ const parsed = schema.safeParse({
   FCM_SERVER_KEY: process.env.FCM_SERVER_KEY,
   GEMINI_API_KEY: process.env.GEMINI_API_KEY,
   ORGANIZER_CODE: process.env.ORGANIZER_CODE,
+  CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
+  CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
+  CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
+  NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME:
+    process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ??
+    process.env.CLOUDINARY_CLOUD_NAME,
 });
 
 export const env = parsed.success
@@ -57,6 +67,13 @@ export const hasFcm = Boolean(
 );
 
 export const hasGemini = Boolean(env.GEMINI_API_KEY);
+
+/** Cloudinary configured → community media (photo / short clip) uploads enabled. */
+export const hasCloudinary = Boolean(
+  env.CLOUDINARY_CLOUD_NAME &&
+  env.CLOUDINARY_API_KEY &&
+  env.CLOUDINARY_API_SECRET,
+);
 
 /** When set, /admin requires entering this code (organizer gate). Off if unset. */
 export const hasOrganizerGate = Boolean(env.ORGANIZER_CODE);
