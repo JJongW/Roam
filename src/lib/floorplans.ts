@@ -63,6 +63,11 @@ const ZONE: Record<string, string> = {
   special: "#8c82c8",
 };
 
+// Facility/special-event stands (lounge/stage/주제전시 …) read as a distinct,
+// darker neutral gray — recognisably different from normal stands (#dcdee3)
+// without using vivid hues that collide with the 방문/이따 status colors.
+const FACILITY_FILL = "#aeb4bf";
+
 function bbox(rects: { x: number; y: number; w: number; h: number }[]) {
   const pad = 40;
   const xs1 = rects.map((r) => r.x - r.w / 2);
@@ -82,9 +87,11 @@ function buildSibf(): Floorplan {
     w: b.w,
     h: b.h,
     color:
-      (b as { color?: string }).color ??
-      ZONE[(b as { zone?: string }).zone ?? "general"] ??
-      ZONE.general,
+      (b as { kind?: string }).kind === "facility"
+        ? FACILITY_FILL
+        : ((b as { color?: string }).color ??
+          ZONE[(b as { zone?: string }).zone ?? "general"] ??
+          ZONE.general),
   }));
 
   const aRects = booths.filter((b) => b.code[0] === "A");
