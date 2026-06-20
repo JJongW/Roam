@@ -351,8 +351,7 @@ export function RouteView({
         {ordered.map((b, i) => (
           <RouteRow key={b.id} id={b.id}>
             {i > 0 && plan.legs[i] && (
-              <div className="mb-1 ml-8 flex items-center gap-1 text-xs text-muted-foreground">
-                <Footprints className="size-3.5" />{" "}
+              <div className="mb-1 ml-8 text-xs text-muted-foreground">
                 {formatWalk(plan.legs[i].minutes)} 이동
               </div>
             )}
@@ -368,7 +367,11 @@ export function RouteView({
                   <button
                     type="button"
                     aria-label="동선에서 빼기"
-                    onClick={() => removeFromCart(b.id)}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      removeFromCart(b.id);
+                    }}
                     className="flex size-9 shrink-0 items-center justify-center rounded-full text-muted-foreground active:bg-secondary"
                   >
                     <X className="size-4.5" />
@@ -377,7 +380,11 @@ export function RouteView({
                   <button
                     type="button"
                     aria-label="관람 완료로 표시"
-                    onClick={() => toggleStatus(b.id, "visited")}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      toggleStatus(b.id, "visited");
+                    }}
                     className="flex h-9 shrink-0 items-center gap-1 rounded-full bg-success px-3 text-xs font-bold text-white active:opacity-90"
                   >
                     <Check className="size-4" /> 관람
@@ -399,10 +406,6 @@ export function RouteView({
             )}
             {aiReasons[b.id] && (
               <p className="ml-8 mt-1 text-xs leading-snug text-muted-foreground">
-                <Sparkles
-                  className="mr-0.5 inline size-3 text-primary"
-                  aria-hidden
-                />
                 {aiReasons[b.id]}
               </p>
             )}
