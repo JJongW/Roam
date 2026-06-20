@@ -7,6 +7,7 @@ import type {
   BoothNote,
   Category,
   CommunityPost,
+  DeletePostResult,
   ReportResult,
   Exhibition,
   ExhibitionDetail,
@@ -185,8 +186,11 @@ export interface Repository {
     input: CommunityPostInput,
   ): Promise<CommunityPost>;
   getPost(id: string): Promise<CommunityPost | null>;
-  /** Delete a post only if it belongs to the given session. Returns true if a row was removed. */
-  deletePost(id: string, sessionId: string): Promise<boolean>;
+  /**
+   * Delete a post only if it belongs to the given session. Returns whether a
+   * row was removed, plus any attached media so the caller can clean it up.
+   */
+  deletePost(id: string, sessionId: string): Promise<DeletePostResult>;
   /**
    * Report a post for abuse. Deduped per reporter session. Once
    * REPORT_HIDE_THRESHOLD distinct sessions report it, listPosts hides it.

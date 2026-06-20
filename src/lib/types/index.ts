@@ -294,6 +294,17 @@ export interface ReportResult {
   already: boolean;
 }
 
+/**
+ * Result of deleting a post. `deleted` is false when no row was removed
+ * (wrong session / missing). When a deleted post had media attached, the
+ * Cloudinary identifiers are returned so the caller can destroy the asset.
+ */
+export interface DeletePostResult {
+  deleted: boolean;
+  mediaPublicId?: string;
+  mediaType?: "image" | "video";
+}
+
 // --- Derived / composite DTOs ---------------------------------------------
 
 export interface ScoreBreakdown {

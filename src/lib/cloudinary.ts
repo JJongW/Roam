@@ -19,6 +19,23 @@ export { cloudinary, hasCloudinary };
 export const COMMUNITY_FOLDER = "roam/community";
 
 /**
+ * Destroy a community asset once its post is gone — media is display-only, so
+ * it must not outlive the post (avoids orphaned files / storage leak).
+ * Safe no-op when Cloudinary isn't configured. Never throws to the caller.
+ */
+export async function destroyMedia(
+  publicId: string,
+  type: "image" | "video",
+): Promise<void> {
+  if (!hasCloudinary) return;
+  try {
+    await cloudinary.uploader.destroy(publicId, { resource_type: type });
+  } catch {
+    // Best-effort cleanup — a stray asset must not block post deletion.
+  }
+}
+
+/**
  * Produce the params a browser needs for a signed direct upload. The secret
  * never leaves the server; the client gets only a one-time signature.
  */

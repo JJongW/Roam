@@ -383,45 +383,46 @@ export function CommunityView({
           </div>
         )}
         <div className="flex items-end gap-2">
-          {mediaEnabled && (
-            <>
-              <input
-                ref={fileRef}
-                type="file"
-                accept="image/*,video/*"
-                className="hidden"
-                onChange={onPickFile}
-              />
-              <Button
-                size="icon"
-                variant="secondary"
-                className="size-11 shrink-0"
-                onClick={() => fileRef.current?.click()}
-                disabled={uploading || Boolean(media)}
-                aria-label="사진·영상 첨부"
-              >
-                {uploading ? (
-                  <Loader2 className="size-5 animate-spin" />
-                ) : (
-                  <ImagePlus className="size-5" />
-                )}
-              </Button>
-            </>
-          )}
-          <Textarea
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-            placeholder="현장 소식을 공유해 보세요 (대기시간, 굿즈 정보 등)"
-            rows={2}
-            maxLength={500}
-            className="flex-1 resize-none"
-            aria-label="내용"
-            onKeyDown={(e) => {
-              // Ignore Enter fired while composing Hangul (IME).
-              if (e.nativeEvent.isComposing) return;
-              if ((e.metaKey || e.ctrlKey) && e.key === "Enter") submit();
-            }}
-          />
+          <div className="relative flex-1">
+            <Textarea
+              value={body}
+              onChange={(e) => setBody(e.target.value)}
+              placeholder="현장 소식을 공유해 보세요 (대기시간, 굿즈 정보 등)"
+              rows={2}
+              maxLength={500}
+              className={`resize-none ${mediaEnabled ? "pl-11" : ""}`}
+              aria-label="내용"
+              onKeyDown={(e) => {
+                // Ignore Enter fired while composing Hangul (IME).
+                if (e.nativeEvent.isComposing) return;
+                if ((e.metaKey || e.ctrlKey) && e.key === "Enter") submit();
+              }}
+            />
+            {mediaEnabled && (
+              <>
+                <input
+                  ref={fileRef}
+                  type="file"
+                  accept="image/*,video/*"
+                  className="hidden"
+                  onChange={onPickFile}
+                />
+                <button
+                  type="button"
+                  onClick={() => fileRef.current?.click()}
+                  disabled={uploading || Boolean(media)}
+                  aria-label="사진·영상 첨부"
+                  className="absolute bottom-2 left-2 flex size-8 items-center justify-center rounded-full text-muted-foreground hover:bg-secondary hover:text-foreground disabled:opacity-40 disabled:hover:bg-transparent"
+                >
+                  {uploading ? (
+                    <Loader2 className="size-5 animate-spin" />
+                  ) : (
+                    <ImagePlus className="size-5" />
+                  )}
+                </button>
+              </>
+            )}
+          </div>
           <Button
             size="icon"
             className="size-11 shrink-0"

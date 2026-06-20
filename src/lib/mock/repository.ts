@@ -12,6 +12,7 @@ import type {
   Category,
   CommunityPost,
   CommunityReport,
+  DeletePostResult,
   ReportResult,
   Exhibition,
   ExhibitionDetail,
@@ -549,12 +550,16 @@ export class MockRepository implements Repository {
     return store().posts.find((p) => p.id === id) ?? null;
   }
 
-  async deletePost(id: string, sessionId: string): Promise<boolean> {
+  async deletePost(id: string, sessionId: string): Promise<DeletePostResult> {
     const posts = store().posts;
     const i = posts.findIndex((p) => p.id === id && p.sessionId === sessionId);
-    if (i === -1) return false;
-    posts.splice(i, 1);
-    return true;
+    if (i === -1) return { deleted: false };
+    const [removed] = posts.splice(i, 1);
+    return {
+      deleted: true,
+      mediaPublicId: removed.mediaPublicId,
+      mediaType: removed.mediaType,
+    };
   }
 
   async reportPost(

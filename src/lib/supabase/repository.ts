@@ -13,6 +13,7 @@ import type {
   BoothNote,
   Category,
   CommunityPost,
+  DeletePostResult,
   ReportResult,
   CompanionType,
   Exhibition,
@@ -1189,15 +1190,27 @@ export class SupabaseRepository implements Repository {
     return data ? mapPost(data as Row) : null;
   }
 
-  async deletePost(id: string, sessionId: string): Promise<boolean> {
+  async deletePost(id: string, sessionId: string): Promise<DeletePostResult> {
     const db = await this.db();
     const { data } = await db
       .from("community_post")
       .delete()
       .eq("id", id)
       .eq("session_id", sessionId)
-      .select("id");
-    return (data?.length ?? 0) > 0;
+      .select("media_public_id, media_type");
+    const row = data?.[0];
+    if (!row) return { deleted: false };
+    return {
+      deleted: true,
+      mediaPublicId:
+        row.media_public_id == null ? undefined : String(row.media_public_id),
+      mediaType:
+        row.media_type === "video"
+          ? "video"
+          : row.media_type === "image"
+            ? "image"
+            : undefined,
+    };
   }
 
   async reportPost(
