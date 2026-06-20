@@ -8,6 +8,7 @@ import {
   ChevronRight,
   ChevronLeft,
   Clock3,
+  Layers,
   Search,
   Sparkles,
   X,
@@ -149,6 +150,15 @@ export function MapView({
             waitings={waitings}
           />
         )}
+        {/* Swipe = separate lightweight discovery (not the recommendation entry). */}
+        <button
+          type="button"
+          aria-label="부스 휙휙 둘러보기"
+          onClick={() => setSwipeOpen(true)}
+          className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground transition-colors active:bg-accent/40"
+        >
+          <Layers className="size-4.5" />
+        </button>
       </div>
     );
   }
@@ -406,16 +416,16 @@ export function MapView({
           )}
 
           {/* Low-involvement escape hatch: picked nothing → "골라드릴까요?" opens
-              the swipe deck. Replaced by 동선 만들기 once cart ≥ 1. */}
+              the context recommendation (who/interests/why → Gemini). Replaced by
+              동선 만들기 once cart ≥ 1. Swipe lives separately (search row). */}
           {hydrated && cartCount === 0 && !selected && (
-            <button
-              type="button"
-              onClick={() => setSwipeOpen(true)}
+            <Link
+              href={`/exhibitions/${detail.exhibition.slug}/onboarding`}
               className="absolute inset-x-0 bottom-[132px] z-20 mx-auto flex w-fit items-center gap-2 rounded-full border border-border bg-card px-5 py-3 text-sm font-bold shadow-[var(--shadow-pop)] md:inset-x-auto md:bottom-4 md:right-4 landscape:hidden md:landscape:flex"
             >
               <Sparkles className="size-4.5 text-primary" /> 뭘 담을지
               모르겠어요 · 골라드릴까요?
-            </button>
+            </Link>
           )}
 
           {/* bottom sheet: search + booth list. Mobile only (md:hidden). */}

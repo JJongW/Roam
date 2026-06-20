@@ -26,9 +26,9 @@ type AiPreference = {
 };
 
 const EXAMPLES = [
-  "문학 위주로 1시간만, 사람 많은 곳은 피하고 싶어",
-  "아이랑 그림책·체험 위주로 2시간 코스",
-  "굿즈·사인회 있는 곳 위주로 빠르게",
+  "직장인인데 점심에 잠깐, 디자인·예술 신간 보러 왔어요",
+  "아이랑 그림책 사주려고요. 체험도 좋아해요, 2시간 정도",
+  "SF 좋아해서 신간·사인회 위주로, 사람 많은 덴 피하고 싶어요",
 ];
 
 /**
@@ -89,20 +89,21 @@ export function AiQuickStart({ slug }: { slug: string }) {
     <div className="rounded-2xl border border-primary/20 bg-primary/5 p-4">
       <div className="flex items-center gap-1.5">
         <Wand2 className="size-4 text-primary" aria-hidden />
-        <p className="text-sm font-bold">AI 빠른 추천</p>
+        <p className="text-sm font-bold">AI 맞춤 추천</p>
         <span className="rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] font-bold text-primary">
           BETA
         </span>
       </div>
       <p className="mt-0.5 text-xs text-muted-foreground">
-        한 문장으로 말해주면 바로 동선을 만들어드려요.
+        어떤 분인지, 무엇에 관심 있는지, 왜 오셨는지 편하게 적어주세요. 맥락에
+        맞춰 동선을 만들어드려요.
       </p>
 
       <Textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
-        placeholder="예: 문학 위주로 1시간만, 사람 많은 곳은 피하고 싶어"
-        rows={2}
+        placeholder="예: 디자인 일 해서 예술·디자인 신간 보러 왔고, 굿즈도 챙기고 싶어요"
+        rows={3}
         maxLength={500}
         disabled={loading}
         className="mt-2.5 resize-none bg-background"
