@@ -44,6 +44,10 @@ interface MapProps {
   /** Booth id to pan-center on when it changes (e.g. a search result). */
   centerOn?: string | null;
   className?: string;
+  /** Insets the interactive/measured viewport (e.g. to clear an overlapping
+   *  bottom sheet) so fit + clamp use the visible area, not the full container.
+   *  Tailwind positioning classes; defaults to filling the container. */
+  viewportClassName?: string;
 }
 
 interface Rect {
@@ -73,6 +77,7 @@ export function ExhibitionMap({
   onInteractStart,
   centerOn,
   className,
+  viewportClassName = "inset-0",
 }: MapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
@@ -502,7 +507,10 @@ export function ExhibitionMap({
     >
       <div
         ref={containerRef}
-        className="absolute inset-0 cursor-grab active:cursor-grabbing"
+        className={cn(
+          "absolute cursor-grab active:cursor-grabbing",
+          viewportClassName,
+        )}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}

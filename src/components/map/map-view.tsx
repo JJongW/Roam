@@ -327,6 +327,10 @@ export function MapView({
             halls={detail.halls}
             floorplan={FLOORPLANS[detail.exhibition.slug]}
             fillHeight
+            // Mobile portrait: keep the fit/pan area above the bottom-sheet peek
+            // (~116px) so the bottom of the venue isn't clipped behind it.
+            // Desktop (side panel) and landscape have no sheet → fill fully.
+            viewportClassName="inset-x-0 top-0 bottom-[116px] md:inset-0 landscape:inset-0"
             visitedIds={visitedIds}
             skippedIds={skippedIds}
             selectedId={selectedId}
