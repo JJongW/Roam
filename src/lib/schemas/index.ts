@@ -198,11 +198,20 @@ export const routePublishSchema = z.object({
 });
 export type RoutePublishInput = z.infer<typeof routePublishSchema>;
 
-export const communityPostInputSchema = z.object({
-  body: z.string().min(1, "내용을 입력해 주세요").max(500),
-  authorName: z.string().min(1).max(30).default("익명"),
-  boothId: z.string().optional(),
-});
+export const communityPostInputSchema = z
+  .object({
+    body: z.string().max(500).default(""),
+    authorName: z.string().min(1).max(30).default("익명"),
+    boothId: z.string().optional(),
+    mediaUrl: z.string().url().optional(),
+    mediaType: z.enum(["image", "video"]).optional(),
+    mediaPublicId: z.string().optional(),
+  })
+  // A post needs text or media (a photo-only "짤" is fine).
+  .refine((d) => d.body.trim().length > 0 || Boolean(d.mediaUrl), {
+    message: "내용이나 사진을 추가해 주세요",
+    path: ["body"],
+  });
 export type CommunityPostInput = z.infer<typeof communityPostInputSchema>;
 
 export const reportInputSchema = z.object({

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getRepository } from "@/lib/repositories";
-import { hasGemini } from "@/lib/env";
+import { hasGemini, hasCloudinary } from "@/lib/env";
 import { CommunityView } from "@/components/community/community-view";
 
 export const metadata = { title: "실시간 커뮤니티" };
@@ -22,6 +22,7 @@ export default async function CommunityPage({ params }: Props) {
       booths={booths}
       initialPosts={posts}
       aiEnabled={hasGemini}
+      mediaEnabled={hasCloudinary}
     />
   );
 }

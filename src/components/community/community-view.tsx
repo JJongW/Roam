@@ -12,6 +12,7 @@ import {
   Sparkles,
   Trash2,
   Flag,
+  ImagePlus,
 } from "lucide-react";
 import { toast } from "sonner";
 import { formatPostTime } from "@/lib/utils";
@@ -33,17 +34,27 @@ export function CommunityView({
   booths,
   initialPosts,
   aiEnabled = false,
+  mediaEnabled = false,
 }: {
   slug: string;
   booths: Booth[];
   initialPosts: CommunityPost[];
   aiEnabled?: boolean;
+  mediaEnabled?: boolean;
 }) {
   const [posts, setPosts] = useState<CommunityPost[]>(initialPosts);
   const [body, setBody] = useState("");
   const [name, setName] = useState("");
   const [boothId, setBoothId] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  // Pending media attachment (uploaded to Cloudinary, not yet posted).
+  const [media, setMedia] = useState<{
+    url: string;
+    type: "image" | "video";
+    publicId: string;
+  } | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
   const [summary, setSummary] = useState<string[]>([]);
   const hydrated = useHydrated();
   // Posts written on this device (delete affordance; server re-checks owner).
@@ -121,22 +132,74 @@ export function CommunityView({
     };
   }, [slug, aiEnabled]);
 
+  // Upload a photo / short clip straight to Cloudinary using a server signature.
+  async function onPickFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    const isVideo = file.type.startsWith("video/");
+    const maxMb = isVideo ? 30 : 10;
+    if (file.size > maxMb * 1024 * 1024) {
+      toast.error(`${maxMb}MB 이하만 올릴 수 있어요`);
+      return;
+    }
+    setUploading(true);
+    try {
+      const sign = await api.post<{
+        cloudName: string;
+        apiKey: string;
+        timestamp: number;
+        signature: string;
+        folder: string;
+      }>("/api/cloudinary/sign");
+      const form = new FormData();
+      form.append("file", file);
+      form.append("api_key", sign.apiKey);
+      form.append("timestamp", String(sign.timestamp));
+      form.append("signature", sign.signature);
+      form.append("folder", sign.folder);
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${sign.cloudName}/auto/upload`,
+        { method: "POST", body: form },
+      );
+      if (!res.ok) throw new Error("upload failed");
+      const j = await res.json();
+      setMedia({
+        url: j.secure_url as string,
+        type: j.resource_type === "video" ? "video" : "image",
+        publicId: j.public_id as string,
+      });
+    } catch {
+      toast.error("미디어 업로드에 실패했어요");
+    } finally {
+      setUploading(false);
+    }
+  }
+
   async function submit() {
     const text = body.trim();
-    if (!text || submitting) return;
+    if ((!text && !media) || submitting) return;
     setSubmitting(true);
     const authorName = name.trim() || "익명";
     if (name.trim()) localStorage.setItem(NAME_KEY, name.trim());
     try {
       const { post } = await api.post<{ post: CommunityPost }>(
         `/api/exhibitions/${slug}/community`,
-        { body: text, authorName, boothId: boothId || undefined },
+        {
+          body: text,
+          authorName,
+          boothId: boothId || undefined,
+          mediaUrl: media?.url,
+          mediaType: media?.type,
+          mediaPublicId: media?.publicId,
+        },
       );
       // Optimistically prepend; the live feed will reconcile.
       addMyPostId(post.id);
       setPosts((prev) => [post, ...prev.filter((p) => p.id !== post.id)]);
       setBody("");
       setBoothId("");
+      setMedia(null);
     } catch (e) {
       const msg =
         e instanceof ApiClientError ? e.error.message : "전송에 실패했어요";
@@ -220,9 +283,36 @@ export function CommunityView({
                       )}
                     </div>
                   </div>
-                  <p className="mt-1.5 whitespace-pre-wrap text-[15px] leading-relaxed">
-                    {p.body}
-                  </p>
+                  {p.body && (
+                    <p className="mt-1.5 whitespace-pre-wrap text-[15px] leading-relaxed">
+                      {p.body}
+                    </p>
+                  )}
+                  {p.mediaUrl && (
+                    <div className="mt-2 overflow-hidden rounded-xl border border-border">
+                      {p.mediaType === "video" ? (
+                        <video
+                          src={p.mediaUrl}
+                          className="max-h-80 w-full object-cover"
+                          muted
+                          loop
+                          autoPlay
+                          playsInline
+                        />
+                      ) : (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={p.mediaUrl.replace(
+                            "/upload/",
+                            "/upload/f_auto,q_auto/",
+                          )}
+                          alt=""
+                          loading="lazy"
+                          className="max-h-80 w-full object-cover"
+                        />
+                      )}
+                    </div>
+                  )}
                   {booth && (
                     <Link
                       href={`/booths/${booth.id}`}
@@ -261,7 +351,63 @@ export function CommunityView({
             공개되며, 본인이 쓴 글은 삭제하고, 부적절한 글은 신고할 수 있어요.
           </p>
         </div>
+        {media && (
+          <div className="mb-2 inline-flex max-w-full items-start gap-2">
+            <div className="relative h-20 w-20 overflow-hidden rounded-xl border border-border">
+              {media.type === "video" ? (
+                <video
+                  src={media.url}
+                  className="h-full w-full object-cover"
+                  muted
+                  loop
+                  autoPlay
+                  playsInline
+                />
+              ) : (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={media.url}
+                  alt="첨부 미리보기"
+                  className="h-full w-full object-cover"
+                />
+              )}
+              <button
+                type="button"
+                aria-label="첨부 제거"
+                onClick={() => setMedia(null)}
+                className="absolute right-1 top-1 flex size-5 items-center justify-center rounded-full bg-black/60 text-white"
+              >
+                <X className="size-3.5" />
+              </button>
+            </div>
+          </div>
+        )}
         <div className="flex items-end gap-2">
+          {mediaEnabled && (
+            <>
+              <input
+                ref={fileRef}
+                type="file"
+                accept="image/*,video/*"
+                className="hidden"
+                onChange={onPickFile}
+              />
+              <Button
+                size="icon"
+                variant="secondary"
+                className="size-11 shrink-0"
+                onClick={() => fileRef.current?.click()}
+                disabled={uploading || Boolean(media)}
+                aria-label="사진·영상 첨부"
+              >
+                {uploading ? (
+                  <Loader2 className="size-5 animate-spin" />
+                ) : (
+                  <ImagePlus className="size-5" />
+                )}
+              </Button>
+            </>
+          )}
           <Textarea
             value={body}
             onChange={(e) => setBody(e.target.value)}
@@ -280,7 +426,7 @@ export function CommunityView({
             size="icon"
             className="size-11 shrink-0"
             onClick={submit}
-            disabled={submitting || !body.trim()}
+            disabled={submitting || (!body.trim() && !media)}
             aria-label="전송"
           >
             {submitting ? (

@@ -271,6 +271,10 @@ export interface CommunityPost {
   authorName: string;
   body: string;
   boothId?: string; // optional booth the post is about
+  /** Attached photo / short clip (display-only, Cloudinary). */
+  mediaUrl?: string;
+  mediaType?: "image" | "video";
+  mediaPublicId?: string;
   createdAt: string;
 }
 

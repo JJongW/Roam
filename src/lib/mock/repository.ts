@@ -536,6 +536,9 @@ export class MockRepository implements Repository {
       authorName: input.authorName,
       body: input.body,
       boothId: input.boothId,
+      mediaUrl: input.mediaUrl,
+      mediaType: input.mediaType,
+      mediaPublicId: input.mediaPublicId,
       createdAt: now(),
     };
     store().posts.push(post);

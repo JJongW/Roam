@@ -277,6 +277,13 @@ function mapPost(r: Row): CommunityPost {
     authorName: str(r.author_name),
     body: str(r.body),
     boothId: r.booth_id == null ? undefined : String(r.booth_id),
+    mediaUrl: r.media_url == null ? undefined : String(r.media_url),
+    mediaType:
+      r.media_type === "image" || r.media_type === "video"
+        ? r.media_type
+        : undefined,
+    mediaPublicId:
+      r.media_public_id == null ? undefined : String(r.media_public_id),
     createdAt: str(r.created_at),
   };
 }
@@ -1159,6 +1166,9 @@ export class SupabaseRepository implements Repository {
       author_name: input.authorName,
       body: input.body,
       booth_id: input.boothId ?? null,
+      media_url: input.mediaUrl ?? null,
+      media_type: input.mediaType ?? null,
+      media_public_id: input.mediaPublicId ?? null,
       created_at: now(),
     };
     const { data } = await db
