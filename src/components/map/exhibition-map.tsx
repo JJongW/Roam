@@ -120,6 +120,14 @@ export function ExhibitionMap({
   const boothById = new Map(booths.map((b) => [b.id, b]));
   const visitedSet = new Set(visitedIds);
   const skippedSet = new Set(skippedIds);
+  // Paint the selected booth LAST so its name label (drawn above the rect) is
+  // never covered by a booth sitting above it in document order.
+  const renderBooths = selectedId
+    ? [
+        ...booths.filter((b) => b.id !== selectedId),
+        ...booths.filter((b) => b.id === selectedId),
+      ]
+    : booths;
   const orderById = new Map(routeOrder?.map((id, i) => [id, i]));
 
   // Hall containers. From the floorplan when present; otherwise a bounding box
@@ -838,7 +846,7 @@ export function ExhibitionMap({
             })()}
 
           {/* booths */}
-          {booths.map((b) => {
+          {renderBooths.map((b) => {
             // With a floorplan, only render booths that have traced geometry
             // (avoids a stray fallback box overlapping the plan).
             if (floorplan && !(b.code && rectByCode.has(b.code))) return null;
