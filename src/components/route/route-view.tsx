@@ -18,7 +18,12 @@ import {
   Eye,
   X,
 } from "lucide-react";
-import { BASE_DWELL_MINUTES } from "@/lib/constants";
+import {
+  BASE_DWELL_MINUTES,
+  MOVEMENT_OPTIONS,
+  TIME_OPTIONS,
+  VISIT_PURPOSE_OPTIONS,
+} from "@/lib/constants";
 import { toast } from "sonner";
 import { api, ApiClientError } from "@/lib/api/client";
 import { cn, formatWalk } from "@/lib/utils";
@@ -71,6 +76,9 @@ export function RouteView({
   const removeFromCart = useCartStore((s) => s.remove);
   const setRoute = useRouteStore((s) => s.setRoute);
   const interests = useOnboardingStore((s) => s.interests);
+  const visitPurpose = useOnboardingStore((s) => s.visitPurpose);
+  const availableMinutes = useOnboardingStore((s) => s.availableMinutes);
+  const movementPreference = useOnboardingStore((s) => s.movementPreference);
   const records = useVisitStore((s) => s.records);
   const toggleStatus = useVisitStore((s) => s.toggleStatus);
   const skippedIds = idsByStatus(records, "skipped");
@@ -118,6 +126,49 @@ export function RouteView({
 
   const ordered = chosen;
   const orderedIds = useMemo(() => ordered.map((b) => b.id), [ordered]);
+
+  // A short, deterministic "왜 이렇게 짰는지" line — built from the visitor's own
+  // preferences + the route, so it costs no LLM call (and explains the picks).
+  const rationale = useMemo<string | null>(() => {
+    if (!hydrated || ordered.length === 0) return null;
+    const names = interests
+      .map((slug) => categories.find((c) => c.slug === slug)?.name)
+      .filter((n): n is string => Boolean(n));
+    const purposeLabel = VISIT_PURPOSE_OPTIONS.find(
+      (o) => o.value === visitPurpose,
+    )?.label;
+    const timeLabel = availableMinutes
+      ? (TIME_OPTIONS.find((o) => o.value === availableMinutes)?.label ??
+        `${Math.round(availableMinutes / 60)}시간`)
+      : null;
+    const moveLabel = MOVEMENT_OPTIONS.find(
+      (o) => o.value === movementPreference,
+    )?.label;
+    const popular = ordered.filter((b) => b.popularity >= 70).length;
+
+    const lead = names.length
+      ? `관심 분야 ${names.slice(0, 3).join("·")}`
+      : "담은 부스";
+    const cond = [
+      purposeLabel ? `${purposeLabel} 목적` : null,
+      timeLabel ? `약 ${timeLabel} 코스` : null,
+    ].filter(Boolean);
+    let s = `${lead}에 맞춰 ${cond.length ? cond.join(" · ") + "로 " : ""}${ordered.length}곳을 골랐어요.`;
+    const extra = [
+      popular > 0 ? `인기 부스 ${popular}곳` : null,
+      moveLabel ? `${moveLabel} 동선` : null,
+    ].filter(Boolean);
+    if (extra.length) s += ` ${extra.join(", ")} 포함.`;
+    return s;
+  }, [
+    hydrated,
+    ordered,
+    interests,
+    categories,
+    visitPurpose,
+    availableMinutes,
+    movementPreference,
+  ]);
 
   // Natural-language route editing ("문학 빼줘", "A홀 근처만").
   const [editText, setEditText] = useState("");
@@ -287,6 +338,16 @@ export function RouteView({
           floorplan={FLOORPLANS[slug]}
         />
       </div>
+
+      {!viewing && rationale && (
+        <div className="mx-4 mt-3 flex items-start gap-2 rounded-xl border border-border bg-secondary/40 p-3">
+          <Sparkles
+            className="mt-0.5 size-4 shrink-0 text-primary"
+            aria-hidden
+          />
+          <p className="text-sm leading-snug text-foreground/90">{rationale}</p>
+        </div>
+      )}
 
       <div className="mx-4 mt-3 flex items-center justify-around rounded-xl border border-border bg-card py-2.5 text-sm">
         <span className="flex items-center gap-1.5 font-semibold">
