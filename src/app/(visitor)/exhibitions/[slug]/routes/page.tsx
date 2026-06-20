@@ -38,8 +38,8 @@ export default async function PublicRoutesPage({ params }: Props) {
                   href={`/r/${r.shareId}`}
                   className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-[var(--shadow-card)] active:scale-[0.99]"
                 >
-                  <div className="flex size-11 items-center justify-center rounded-xl bg-primary/12">
-                    <RouteIcon className="size-5 text-primary" />
+                  <div className="flex size-11 items-center justify-center rounded-xl bg-secondary">
+                    <RouteIcon className="size-5 text-foreground" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="truncate font-bold">{r.title}</p>

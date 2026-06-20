@@ -26,7 +26,7 @@ export function ExhibitionCard({ exhibition }: { exhibition: Exhibition }) {
       <div className="space-y-1.5 p-4">
         <p className="line-clamp-2 text-sm text-muted-foreground">{exhibition.description}</p>
         <div className="flex items-center gap-1 pt-1 text-sm font-medium text-foreground">
-          <MapPin className="size-4 text-primary" aria-hidden />
+          <MapPin className="size-4 text-muted-foreground" aria-hidden />
           <span className="truncate">{exhibition.venue}</span>
         </div>
         <div className="flex items-center gap-1 text-xs text-muted-foreground">

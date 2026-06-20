@@ -86,11 +86,11 @@ export function AiQuickStart({ slug }: { slug: string }) {
   }
 
   return (
-    <div className="rounded-2xl border border-primary/20 bg-primary/5 p-4">
+    <div className="rounded-2xl border border-border bg-card p-4 shadow-[var(--shadow-card)]">
       <div className="flex items-center gap-1.5">
         <Wand2 className="size-4 text-primary" aria-hidden />
         <p className="text-sm font-bold">AI 맞춤 추천</p>
-        <span className="rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] font-bold text-primary">
+        <span className="rounded-full bg-secondary px-1.5 py-0.5 text-[10px] font-bold text-secondary-foreground">
           BETA
         </span>
       </div>
