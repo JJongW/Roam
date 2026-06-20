@@ -11,7 +11,7 @@ export function ExhibitionCard({ exhibition }: { exhibition: Exhibition }) {
       className="group block overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-card)] transition-transform active:scale-[0.99]"
     >
       <div
-        className="relative flex h-36 items-end bg-gradient-to-br from-primary/85 to-[#1b64da] p-4"
+        className="relative flex h-36 items-end bg-gradient-to-br from-primary/85 to-[#4338ca] p-4"
         style={
           exhibition.coverImageUrl
             ? { backgroundImage: `url(${exhibition.coverImageUrl})`, backgroundSize: "cover", backgroundPosition: "center" }

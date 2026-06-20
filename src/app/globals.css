@@ -2,8 +2,10 @@
 @import "tw-animate-css";
 
 /* ------------------------------------------------------------------ */
-/* Roam design system — minimal, Toss-inspired, Apple HIG aligned      */
-/* Primary: Toss blue. Neutrals: slate. Generous radius, soft shadows. */
+/* Roam design system — minimal, editorial, Apple HIG aligned          */
+/* Primary: Indigo (#4f46e5). Neutrals: slate. Status: green=방문,       */
+/* amber=이따, gray=부대공간 — kept distinct from the indigo brand.       */
+/* Generous radius, soft shadows.                                       */
 /* ------------------------------------------------------------------ */
 
 :root {
@@ -17,7 +19,7 @@
   --popover: #ffffff;
   --popover-foreground: #14161a;
 
-  --primary: #3182f6; /* Toss blue */
+  --primary: #4f46e5; /* indigo-600 */
   --primary-foreground: #ffffff;
 
   --secondary: #f2f4f6;
@@ -26,8 +28,8 @@
   --muted: #f2f4f6;
   --muted-foreground: #6b7684;
 
-  --accent: #eef3ff;
-  --accent-foreground: #1b64da;
+  --accent: #eef2ff; /* indigo-50 */
+  --accent-foreground: #4338ca; /* indigo-700 */
 
   --destructive: #f04452;
   --destructive-foreground: #ffffff;
@@ -37,20 +39,20 @@
 
   --border: #e5e8eb;
   --input: #e5e8eb;
-  --ring: #3182f6;
+  --ring: #4f46e5;
 
-  /* chart palette */
-  --chart-1: #3182f6;
+  /* chart palette — chart-1 brand indigo; chart-4 cyan to stay distinct */
+  --chart-1: #4f46e5;
   --chart-2: #15c47e;
   --chart-3: #ffb020;
-  --chart-4: #8b5cf6;
+  --chart-4: #06b6d4;
   --chart-5: #f04452;
 
   /* map / route */
-  --route-line: #3182f6;
+  --route-line: #4f46e5;
   --route-visited: #15c47e;
   --booth-fill: #f2f4f6;
-  --booth-active: #3182f6;
+  --booth-active: #4f46e5;
 }
 
 .dark {
@@ -62,7 +64,7 @@
   --popover: #16191d;
   --popover-foreground: #f7f8f9;
 
-  --primary: #4593fc;
+  --primary: #818cf8; /* indigo-400 — lighter for dark-mode contrast */
   --primary-foreground: #0b0d10;
 
   --secondary: #1c2024;
@@ -71,8 +73,8 @@
   --muted: #1c2024;
   --muted-foreground: #8b95a1;
 
-  --accent: #16243f;
-  --accent-foreground: #6aa6ff;
+  --accent: #20204a; /* deep indigo tint */
+  --accent-foreground: #a5b4fc; /* indigo-300 */
 
   --destructive: #ff6471;
   --destructive-foreground: #0b0d10;
@@ -82,18 +84,18 @@
 
   --border: #2a2f36;
   --input: #2a2f36;
-  --ring: #4593fc;
+  --ring: #818cf8;
 
-  --chart-1: #4593fc;
+  --chart-1: #818cf8;
   --chart-2: #2ad48f;
   --chart-3: #ffc24b;
-  --chart-4: #a78bfa;
+  --chart-4: #22d3ee;
   --chart-5: #ff6471;
 
-  --route-line: #4593fc;
+  --route-line: #818cf8;
   --route-visited: #2ad48f;
   --booth-fill: #1c2024;
-  --booth-active: #4593fc;
+  --booth-active: #818cf8;
 }
 
 @theme inline {

@@ -18,9 +18,9 @@ export interface PopularDatum {
 }
 
 const COLORS = [
-  "#3182f6",
-  "#4593fc",
-  "#6aa6ff",
+  "#4f46e5",
+  "#6366f1",
+  "#818cf8",
   "#8b5cf6",
   "#15c47e",
   "#ffb020",

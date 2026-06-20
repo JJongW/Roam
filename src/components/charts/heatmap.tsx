@@ -22,7 +22,7 @@ export function Heatmap({
           <radialGradient id="heat" cx="50%" cy="50%" r="50%">
             <stop offset="0%" stopColor="#f04452" stopOpacity="0.85" />
             <stop offset="45%" stopColor="#ffb020" stopOpacity="0.55" />
-            <stop offset="100%" stopColor="#3182f6" stopOpacity="0" />
+            <stop offset="100%" stopColor="#4f46e5" stopOpacity="0" />
           </radialGradient>
           <pattern id="hgrid" width="50" height="50" patternUnits="userSpaceOnUse">
             <path d="M50 0H0V50" fill="none" stroke="var(--border)" strokeWidth="1" opacity="0.4" />

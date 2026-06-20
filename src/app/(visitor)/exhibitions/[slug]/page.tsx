@@ -43,7 +43,7 @@ export default async function ExhibitionDetailPage({ params }: Props) {
     <>
       <AppBar title={exhibition.name} right={<AccountButton />} />
       <main className="flex-1 pb-32">
-        <div className="relative flex h-44 items-end bg-gradient-to-br from-primary/85 to-[#1b64da] p-5">
+        <div className="relative flex h-44 items-end bg-gradient-to-br from-primary/85 to-[#4338ca] p-5">
           <div className="text-white">
             <h1 className="text-2xl font-extrabold leading-tight drop-shadow-sm">
               {exhibition.name}

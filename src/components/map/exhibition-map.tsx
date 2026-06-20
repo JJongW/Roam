@@ -667,7 +667,7 @@ export function ExhibitionMap({
                     width={60}
                     height={60}
                     rx={10}
-                    fill="#3182f6"
+                    fill="var(--primary)"
                   />
                   <text
                     x={d.x}

@@ -9,7 +9,7 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
           <p style={{ color: "#6b7684", marginTop: 8 }}>{error.digest ?? "Unexpected error"}</p>
           <button
             onClick={reset}
-            style={{ marginTop: 16, padding: "10px 20px", borderRadius: 10, background: "#3182f6", color: "white", border: 0 }}
+            style={{ marginTop: 16, padding: "10px 20px", borderRadius: 10, background: "#4f46e5", color: "white", border: 0 }}
           >
             다시 시도
           </button>
