@@ -32,6 +32,7 @@ import { buildManualRoute, buildOrderedRoute } from "@/lib/engine/route";
 import { FLOORPLANS } from "@/lib/floorplans";
 import { AppBar } from "@/components/common/app-bar";
 import { SaveRouteButton } from "@/components/route/save-route-sheet";
+import { ShareRouteButton } from "@/components/route/share-route-sheet";
 import { MyRoutesSheet } from "@/components/route/my-routes-sheet";
 import { BoothCard } from "@/components/booth/booth-card";
 import { EmptyState } from "@/components/common/states";
@@ -248,6 +249,21 @@ export function RouteView({
               boothIds={orderedIds}
               estimatedMinutes={plan.estimatedMinutes}
               legs={plan.legs}
+            />
+            <ShareRouteButton
+              route={{
+                id: "local",
+                sessionId: "",
+                exhibitionId: exhibition.id,
+                boothIds: orderedIds,
+                estimatedMinutes: plan.estimatedMinutes,
+                legs: plan.legs,
+                scores: {},
+                status: "active",
+                visitedBoothIds: [],
+                isPublic: false,
+                createdAt: "",
+              }}
             />
           </>
         }

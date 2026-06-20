@@ -46,8 +46,24 @@ export function ShareRouteButton({ route }: { route: RoutePlan }) {
     if (!name || busy) return;
     setBusy(true);
     try {
+      // The planning-page route isn't persisted yet (id "local"). Save it first
+      // to get a real id, then publish that.
+      let routeId = route.id;
+      if (!routeId || routeId === "local") {
+        const { route: saved } = await api.post<{ route: RoutePlan }>(
+          "/api/me/routes",
+          {
+            exhibitionId: route.exhibitionId,
+            title: name,
+            boothIds: route.boothIds,
+            estimatedMinutes: route.estimatedMinutes,
+            legs: route.legs,
+          },
+        );
+        routeId = saved.id;
+      }
       const { route: updated } = await api.post<{ route: RoutePlan }>(
-        `/api/route/${route.id}/publish`,
+        `/api/route/${routeId}/publish`,
         { title: name, isPublic: true },
       );
       // Keep visited progress from the local store.
@@ -66,7 +82,10 @@ export function ShareRouteButton({ route }: { route: RoutePlan }) {
     if (!shareUrl) return;
     if (navigator.share) {
       try {
-        await navigator.share({ title: route.title ?? "내 동선", url: shareUrl });
+        await navigator.share({
+          title: route.title ?? "내 동선",
+          url: shareUrl,
+        });
         return;
       } catch {
         /* user cancelled — fall through to copy */
@@ -89,7 +108,12 @@ export function ShareRouteButton({ route }: { route: RoutePlan }) {
 
   return (
     <>
-      <Button variant="secondary" size="lg" onClick={onClick} aria-label="동선 공유">
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={onClick}
+        aria-label="동선 공유"
+      >
         <Share2 className="size-5" />
       </Button>
 
@@ -98,7 +122,8 @@ export function ShareRouteButton({ route }: { route: RoutePlan }) {
           <SheetHeader>
             <SheetTitle>동선 공유하기</SheetTitle>
             <SheetDescription>
-              이름을 붙여 공개하면 링크로 공유되고 ‘다른 사람 동선’ 목록에 올라가요.
+              이름을 붙여 공개하면 링크로 공유되고 ‘다른 사람 동선’ 목록에
+              올라가요.
             </SheetDescription>
           </SheetHeader>
 
