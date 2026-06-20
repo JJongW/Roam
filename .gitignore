@@ -49,3 +49,6 @@ next-env.d.ts
 
 # local agent tooling
 .claude/
+
+# Supabase SQL (migrations/seed/reset) — applied manually via SQL Editor, not versioned
+supabase/
