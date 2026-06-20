@@ -1,6 +1,12 @@
 -- 0009: seed the official SIBF program events (standing booth events +
 -- timed lectures). Replaces the old placeholder events without touching booths,
--- community, sessions, or routes. Run after 0008. Idempotent.
+-- community, sessions, or routes. Self-contained — re-adds the 0008 columns so
+-- it runs even if 0008 was skipped. Idempotent.
+
+alter table event add column if not exists tag      text;
+alter table event add column if not exists subtitle text;
+alter table event add column if not exists speaker  text;
+alter table event add column if not exists standing boolean not null default false;
 
 delete from event;
 
