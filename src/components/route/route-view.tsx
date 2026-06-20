@@ -14,11 +14,13 @@ import {
   Wand2,
   Loader2,
   Clock,
+  Check,
+  Eye,
 } from "lucide-react";
 import { BASE_DWELL_MINUTES } from "@/lib/constants";
 import { toast } from "sonner";
 import { api, ApiClientError } from "@/lib/api/client";
-import { formatWalk } from "@/lib/utils";
+import { cn, formatWalk } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { useRouteStore } from "@/lib/stores/route";
 import { useCartStore } from "@/lib/stores/cart";
@@ -68,7 +70,12 @@ export function RouteView({
   const setRoute = useRouteStore((s) => s.setRoute);
   const interests = useOnboardingStore((s) => s.interests);
   const records = useVisitStore((s) => s.records);
+  const toggleStatus = useVisitStore((s) => s.toggleStatus);
   const skippedIds = idsByStatus(records, "skipped");
+  const visitedIds = useMemo(() => idsByStatus(records, "visited"), [records]);
+  const visitedSet = useMemo(() => new Set(visitedIds), [visitedIds]);
+  // 관람 모드: enlarge the map + drop the editing chrome for a clean walking view.
+  const [viewing, setViewing] = useState(false);
 
   // Why this booth is in the route — derived from the data the page has
   // (onboarding interests + booth signals). Removing a booth = its CartButton.
@@ -91,14 +98,15 @@ export function RouteView({
     y: exhibition.mapHeight,
   };
 
-  // The route follows the visitor's chosen order exactly (cart order). They can
-  // drag to rearrange, or tap "거리순 정렬" to re-optimise into a nearest sweep.
+  // The active route = chosen booths in cart order, MINUS the ones already
+  // viewed (관람함). Marking a booth visited drops it from the 동선 and the screen
+  // re-plans around what's left. Drag to rearrange / "거리순 정렬" to re-sweep.
   const chosen = useMemo(
     () =>
       (hydrated ? cartIds : [])
         .map((id) => boothById.get(id))
-        .filter((b): b is Booth => Boolean(b)),
-    [hydrated, cartIds, boothById],
+        .filter((b): b is Booth => b != null && !visitedSet.has(b.id)),
+    [hydrated, cartIds, boothById, visitedSet],
   );
   const plan = useMemo(
     () => buildOrderedRoute(chosen, start),
@@ -193,14 +201,20 @@ export function RouteView({
   }, [plan.boothIds.join(",")]);
 
   if (hydrated && ordered.length === 0) {
+    // Distinguish "nothing planned yet" from "viewed everything on the route".
+    const allViewed = cartIds.length > 0;
     return (
       <div className="flex min-h-dvh flex-col">
         <AppBar title="내 동선" right={<MyRoutesSheet onLoad={setCartIds} />} />
         <div className="flex flex-1 items-center justify-center p-6">
           <EmptyState
-            icon={Navigation}
-            title="담은 부스가 없어요"
-            description="지도·목록에서 가고 싶은 부스를 담거나, 맞춤 추천을 받아보세요."
+            icon={allViewed ? Check : Navigation}
+            title={allViewed ? "동선을 다 둘러봤어요" : "담은 부스가 없어요"}
+            description={
+              allViewed
+                ? "수고했어요! 더 둘러보거나 새 부스를 담아보세요."
+                : "지도·목록에서 가고 싶은 부스를 담거나, 맞춤 추천을 받아보세요."
+            }
             action={
               <div className="flex flex-col gap-2">
                 <Button
@@ -238,7 +252,12 @@ export function RouteView({
         }
       />
 
-      <div className="relative h-[38dvh] border-b border-border">
+      <div
+        className={cn(
+          "relative border-b border-border transition-[height]",
+          viewing ? "h-[58dvh]" : "h-[38dvh]",
+        )}
+      >
         <ExhibitionMap
           width={exhibition.mapWidth}
           height={exhibition.mapHeight}
@@ -246,7 +265,7 @@ export function RouteView({
           categories={categories}
           halls={halls}
           routeOrder={plan.boothIds}
-          visitedIds={[]}
+          visitedIds={visitedIds}
           skippedIds={skippedIds}
           floorplan={FLOORPLANS[slug]}
         />
@@ -274,23 +293,25 @@ export function RouteView({
         시간이고, 실제 관람 시간은 사람마다 달라요.
       </p>
 
-      <div className="flex items-center justify-between px-5 pb-2 pt-1">
-        <span className="text-xs text-muted-foreground">
-          <GripVertical className="mr-0.5 inline size-3.5 align-text-bottom" />
-          끌어서 순서 변경
-        </span>
-        {ordered.length > 1 && (
-          <button
-            type="button"
-            onClick={optimizeOrder}
-            className="flex items-center gap-1 rounded-full border border-border bg-card px-2.5 py-1 text-xs font-semibold active:bg-accent/40"
-          >
-            <ArrowDownNarrowWide className="size-3.5" /> 거리순 정렬
-          </button>
-        )}
-      </div>
+      {!viewing && (
+        <div className="flex items-center justify-between px-5 pb-2 pt-1">
+          <span className="text-xs text-muted-foreground">
+            <GripVertical className="mr-0.5 inline size-3.5 align-text-bottom" />
+            끌어서 순서 변경
+          </span>
+          {ordered.length > 1 && (
+            <button
+              type="button"
+              onClick={optimizeOrder}
+              className="flex items-center gap-1 rounded-full border border-border bg-card px-2.5 py-1 text-xs font-semibold active:bg-accent/40"
+            >
+              <ArrowDownNarrowWide className="size-3.5" /> 거리순 정렬
+            </button>
+          )}
+        </div>
+      )}
 
-      {aiEnabled && (
+      {!viewing && aiEnabled && (
         <div className="mx-4 mb-2 flex gap-2">
           <div className="relative flex-1">
             <Wand2 className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-primary" />
@@ -340,7 +361,19 @@ export function RouteView({
               category={catById.get(b.categoryId)}
               waiting={waitings[b.id]}
               compact
-              action={<CartButton boothId={b.id} variant="icon" />}
+              action={
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    aria-label="관람함으로 표시"
+                    onClick={() => toggleStatus(b.id, "visited")}
+                    className="flex size-11 shrink-0 items-center justify-center rounded-full border border-border bg-card text-success active:bg-success/10"
+                  >
+                    <Check className="size-4.5" />
+                  </button>
+                  <CartButton boothId={b.id} variant="icon" />
+                </div>
+              }
             />
             {reasonsFor(b).length > 0 && (
               <div className="ml-8 mt-1 flex flex-wrap gap-1">
@@ -373,10 +406,13 @@ export function RouteView({
             <Plus className="size-5" /> 담기
           </Link>
         </Button>
-        <Button asChild size="lg" className="flex-1">
-          <Link href={`/exhibitions/${slug}/navigate`}>
-            <Navigation className="size-5" /> 내비게이션 시작
-          </Link>
+        <Button
+          size="lg"
+          className="flex-1"
+          variant={viewing ? "secondary" : "default"}
+          onClick={() => setViewing((v) => !v)}
+        >
+          <Eye className="size-5" /> {viewing ? "관람 종료" : "관람하기"}
         </Button>
       </div>
     </div>
