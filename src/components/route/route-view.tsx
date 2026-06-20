@@ -200,30 +200,6 @@ export function RouteView({
     }
   }
 
-  // AI one-line reasons per booth (lazy; augments the instant data chips).
-  const [aiReasons, setAiReasons] = useState<Record<string, string>>({});
-  const orderedKey = orderedIds.join(",");
-  useEffect(() => {
-    if (!aiEnabled || !hydrated || orderedIds.length === 0) return;
-    let cancelled = false;
-    api
-      .post<{ reasons: Record<string, string> }>("/api/ai/route-reasons", {
-        exhibitionSlug: slug,
-        boothIds: orderedIds,
-        interests,
-      })
-      .then((r) => {
-        if (!cancelled) setAiReasons(r.reasons ?? {});
-      })
-      .catch(() => {
-        /* AI off / failed — instant data chips still cover the why. */
-      });
-    return () => {
-      cancelled = true;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [orderedKey, hydrated]);
-
   // Re-optimise the order into a nearest-neighbour sweep from the entrance.
   function optimizeOrder() {
     const opt = buildManualRoute(chosen, start, {}, waitings);
@@ -480,11 +456,6 @@ export function RouteView({
                   </span>
                 ))}
               </div>
-            )}
-            {aiReasons[b.id] && (
-              <p className="ml-8 mt-1 text-xs leading-snug text-muted-foreground">
-                {aiReasons[b.id]}
-              </p>
             )}
           </RouteRow>
         ))}
