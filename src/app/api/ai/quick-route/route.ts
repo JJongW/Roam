@@ -52,7 +52,10 @@ export async function POST(req: Request) {
       confidence = ai.confidence;
     } catch (e) {
       console.error("[ai/quick-route] parse failed", e);
-      return fail("UNPROCESSABLE", "AI 추천을 만들지 못했어요");
+      return fail(
+        "UNPROCESSABLE",
+        "AI가 잠시 혼잡해요. 잠시 후 다시 시도해 주세요",
+      );
     }
 
     // Build + persist the route exactly like POST /api/route.
