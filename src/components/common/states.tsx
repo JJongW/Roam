@@ -3,7 +3,12 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 export function Spinner({ className }: { className?: string }) {
-  return <Loader2 className={cn("size-5 animate-spin text-muted-foreground", className)} aria-hidden />;
+  return (
+    <Loader2
+      className={cn("size-5 animate-spin text-muted-foreground", className)}
+      aria-hidden
+    />
+  );
 }
 
 export function LoadingScreen({ label = "불러오는 중" }: { label?: string }) {
@@ -25,17 +30,20 @@ export function EmptyState({
   description,
   action,
   className,
+  bordered = false,
 }: {
   icon?: LucideIcon;
   title: string;
   description?: string;
   action?: React.ReactNode;
   className?: string;
+  bordered?: boolean;
 }) {
   return (
     <div
       className={cn(
-        "flex flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-border px-6 py-12 text-center",
+        "flex flex-col items-center justify-center gap-3 px-6 py-12 text-center",
+        bordered && "rounded-2xl border border-dashed border-border",
         className,
       )}
     >
@@ -44,7 +52,9 @@ export function EmptyState({
       </div>
       <div className="space-y-1">
         <p className="font-semibold">{title}</p>
-        {description && <p className="text-sm text-muted-foreground">{description}</p>}
+        {description && (
+          <p className="text-sm text-muted-foreground">{description}</p>
+        )}
       </div>
       {action}
     </div>
