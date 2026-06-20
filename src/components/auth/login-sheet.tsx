@@ -47,8 +47,8 @@ export function LoginSheet() {
     <Sheet open={open} onOpenChange={(o) => (o ? null : closeLogin())}>
       <SheetContent side="bottom" className="px-5 pb-8">
         <SheetHeader className="items-center text-center">
-          <div className="mb-1 flex size-12 items-center justify-center rounded-2xl bg-primary/12">
-            <UserRound className="size-6 text-primary" />
+          <div className="mb-1 flex size-12 items-center justify-center rounded-2xl bg-secondary">
+            <UserRound className="size-6 text-foreground" />
           </div>
           <SheetTitle>닉네임으로 시작하기</SheetTitle>
           <SheetDescription>
