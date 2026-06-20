@@ -1,5 +1,6 @@
 import {
   BASE_DWELL_MINUTES,
+  MAX_PLANNED_STOPS,
   MOVEMENT_TUNING,
   WALK_UNITS_PER_MINUTE,
 } from "@/lib/constants";
@@ -53,6 +54,15 @@ export function planRoute(
   const tuning = MOVEMENT_TUNING[opts.movementPreference];
   const start: Point = opts.start ?? { x: 0, y: 0 };
 
+  // Stop count scales with the TIME budget (not a fixed cap): how many ~dwell
+  // slots fit, modulated by the movement density. A 3h visit thus plans many
+  // more stops than a 1h one. The per-step budget check below is the hard limit.
+  const slots = Math.floor(opts.availableMinutes / BASE_DWELL_MINUTES);
+  const maxStops = Math.max(
+    1,
+    Math.min(MAX_PLANNED_STOPS, Math.round(slots * tuning.density)),
+  );
+
   const remaining = new Map(ranked.map((s) => [s.booth.id, s]));
   const scores: Record<string, number> = Object.fromEntries(
     ranked.map((s) => [s.booth.id, s.score]),
@@ -62,7 +72,7 @@ export function planRoute(
   const selected: Booth[] = [];
   let cursor: Point = start;
   let spent = 0;
-  while (remaining.size > 0 && selected.length < tuning.maxStops) {
+  while (remaining.size > 0 && selected.length < maxStops) {
     let best: ScoredBooth | null = null;
     let bestValue = -Infinity;
     let bestWalk = 0;

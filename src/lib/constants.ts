@@ -114,15 +114,23 @@ export const PURPOSE_WEIGHTS: Record<
   experience: { interest: 1.1, popularity: 1.1, event: 1.2, waiting: 0.8 },
 };
 
-/** Movement preference tunables for route planning. */
+/**
+ * Movement preference tunables for route planning. `density` = how aggressively
+ * to fill the available time: stop count scales with the time budget
+ * (availableMinutes / dwell) × density, so a 3h visit plans far more stops than
+ * a 1h one. shortest leaves slack (efficient), thorough packs the time full.
+ */
 export const MOVEMENT_TUNING: Record<
   MovementPreference,
-  { walkPenalty: number; maxStops: number; coverageBias: number }
+  { walkPenalty: number; density: number; coverageBias: number }
 > = {
-  shortest: { walkPenalty: 1.6, maxStops: 6, coverageBias: 0.6 },
-  balanced: { walkPenalty: 1.0, maxStops: 10, coverageBias: 1.0 },
-  thorough: { walkPenalty: 0.5, maxStops: 18, coverageBias: 1.4 },
+  shortest: { walkPenalty: 1.6, density: 0.55, coverageBias: 0.6 },
+  balanced: { walkPenalty: 1.0, density: 0.8, coverageBias: 1.0 },
+  thorough: { walkPenalty: 0.5, density: 1.0, coverageBias: 1.4 },
 };
+
+/** Absolute safety ceiling on planned stops, regardless of time/density. */
+export const MAX_PLANNED_STOPS = 50;
 
 /**
  * Map-distance → walking minutes (official SIBF coordinate space, 3230×3650).
