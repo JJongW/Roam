@@ -152,9 +152,9 @@ export function CommunityView({
 
       <div className="flex-1 overflow-y-auto px-4 py-3">
         {summary.length > 0 && (
-          <div className="mb-3 rounded-2xl border border-primary/20 bg-primary/5 p-3.5">
+          <div className="mb-3 rounded-2xl border border-border bg-secondary/40 p-3.5">
             <div className="flex items-center gap-1.5">
-              <Sparkles className="size-4 text-primary" aria-hidden />
+              <Sparkles className="size-4 text-muted-foreground" aria-hidden />
               <p className="text-sm font-bold">방문자 제보 요약</p>
               <span className="rounded-full bg-secondary px-1.5 py-0.5 text-[10px] font-bold text-muted-foreground">
                 AI · 공식 정보 아님
@@ -166,7 +166,7 @@ export function CommunityView({
                   key={i}
                   className="flex gap-1.5 text-[13px] leading-snug text-foreground/90"
                 >
-                  <span className="text-primary">·</span>
+                  <span className="text-muted-foreground">·</span>
                   <span>{s}</span>
                 </li>
               ))}
@@ -228,7 +228,7 @@ export function CommunityView({
                       href={`/booths/${booth.id}`}
                       className="mt-2 inline-flex items-center gap-1 rounded-full bg-secondary px-2.5 py-1 text-xs font-semibold text-foreground"
                     >
-                      <MapPin className="size-3.5 text-primary" />
+                      <MapPin className="size-3.5 text-muted-foreground" />
                       {booth.name}
                       {booth.code ? ` · ${booth.code}` : ""}
                     </Link>
@@ -312,7 +312,7 @@ function BoothTagPicker({
   if (selected) {
     return (
       <div className="flex items-center gap-1.5 rounded-md border border-input bg-background px-2.5 py-1.5 text-sm">
-        <MapPin className="size-4 shrink-0 text-primary" aria-hidden />
+        <MapPin className="size-4 shrink-0 text-muted-foreground" aria-hidden />
         <span className="min-w-0 flex-1 truncate font-semibold">
           {selected.name}
           {selected.code ? ` (${selected.code})` : ""}

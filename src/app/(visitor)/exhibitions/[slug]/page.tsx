@@ -55,7 +55,7 @@ export default async function ExhibitionDetailPage({ params }: Props) {
         <div className="space-y-6 px-5 py-5">
           <section className="space-y-2.5">
             <div className="flex items-center gap-2 text-sm font-medium">
-              <MapPin className="size-4 text-primary" aria-hidden />
+              <MapPin className="size-4 text-muted-foreground" aria-hidden />
               {exhibition.venue}
             </div>
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -82,8 +82,8 @@ export default async function ExhibitionDetailPage({ params }: Props) {
             href={`/exhibitions/${slug}/community`}
             className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-[var(--shadow-card)] active:scale-[0.99]"
           >
-            <div className="flex size-11 items-center justify-center rounded-xl bg-primary/12">
-              <MessagesSquare className="size-5 text-primary" />
+            <div className="flex size-11 items-center justify-center rounded-xl bg-secondary">
+              <MessagesSquare className="size-5 text-foreground" />
             </div>
             <div className="min-w-0 flex-1">
               <p className="font-bold">실시간 커뮤니티</p>
@@ -98,8 +98,8 @@ export default async function ExhibitionDetailPage({ params }: Props) {
             href={`/exhibitions/${slug}/routes`}
             className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-[var(--shadow-card)] active:scale-[0.99]"
           >
-            <div className="flex size-11 items-center justify-center rounded-xl bg-primary/12">
-              <RouteIcon className="size-5 text-primary" />
+            <div className="flex size-11 items-center justify-center rounded-xl bg-secondary">
+              <RouteIcon className="size-5 text-foreground" />
             </div>
             <div className="min-w-0 flex-1">
               <p className="font-bold">다른 사람 동선 둘러보기</p>

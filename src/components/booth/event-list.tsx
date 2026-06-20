@@ -91,7 +91,7 @@ export function EventList({ events }: { events: BoothEvent[] }) {
                     <div className="min-w-0 flex-1">
                       <div className="mb-1 flex flex-wrap items-center gap-1.5">
                         {e.tag && (
-                          <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-bold text-primary">
+                          <span className="rounded-full bg-secondary px-2 py-0.5 text-[11px] font-bold text-secondary-foreground">
                             {e.tag}
                           </span>
                         )}

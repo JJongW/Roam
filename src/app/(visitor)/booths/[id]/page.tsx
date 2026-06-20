@@ -111,8 +111,8 @@ export default async function BoothDetailPage({ params }: Props) {
           {welcomeKit?.enabled && (
             <section className="space-y-2.5">
               <h2 className="text-base font-bold">웰컴 키트</h2>
-              <div className="flex items-center gap-3 rounded-2xl border border-primary/20 bg-accent/50 p-4">
-                <div className="flex size-11 items-center justify-center rounded-xl bg-primary/15">
+              <div className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-[var(--shadow-card)]">
+                <div className="flex size-11 items-center justify-center rounded-xl bg-primary/10">
                   <Ticket className="size-5 text-primary" />
                 </div>
                 <div className="flex-1">
@@ -121,7 +121,7 @@ export default async function BoothDetailPage({ params }: Props) {
                     {welcomeKit.description}
                   </p>
                 </div>
-                <span className="shrink-0 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-bold tabular text-primary">
+                <span className="shrink-0 rounded-full bg-secondary px-2.5 py-1 text-xs font-bold tabular text-secondary-foreground">
                   {welcomeKit.remainingCount}개 남음
                 </span>
               </div>
@@ -183,7 +183,7 @@ export default async function BoothDetailPage({ params }: Props) {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-2 text-sm font-semibold active:scale-[0.98]"
                 >
-                  <Globe className="size-4 text-primary" /> 웹사이트
+                  <Globe className="size-4 text-muted-foreground" /> 웹사이트
                 </a>
               )}
             </section>

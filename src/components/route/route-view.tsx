@@ -274,11 +274,11 @@ export function RouteView({
 
       <div className="mx-4 mt-3 flex items-center justify-around rounded-xl border border-border bg-card py-2.5 text-sm">
         <span className="flex items-center gap-1.5 font-semibold">
-          <MapPin className="size-4 text-primary" /> {ordered.length}곳
+          <MapPin className="size-4 text-muted-foreground" /> {ordered.length}곳
         </span>
         <span className="h-6 w-px bg-border" />
         <span className="flex items-center gap-1.5 font-semibold">
-          <Clock className="size-4 text-primary" /> 예상{" "}
+          <Clock className="size-4 text-muted-foreground" /> 예상{" "}
           {formatWalk(
             ordered.length * BASE_DWELL_MINUTES + plan.estimatedMinutes,
           )}
@@ -315,7 +315,7 @@ export function RouteView({
       {!viewing && aiEnabled && (
         <div className="mx-4 mb-2 flex gap-2">
           <div className="relative flex-1">
-            <Wand2 className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-primary" />
+            <Wand2 className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               value={editText}
               onChange={(e) => setEditText(e.target.value)}
@@ -397,7 +397,7 @@ export function RouteView({
                 {reasonsFor(b).map((r) => (
                   <span
                     key={r}
-                    className="inline-flex items-center gap-0.5 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary"
+                    className="inline-flex items-center gap-0.5 rounded-full bg-secondary px-2 py-0.5 text-[11px] font-semibold text-secondary-foreground"
                   >
                     <Sparkles className="size-3" aria-hidden /> {r}
                   </span>
