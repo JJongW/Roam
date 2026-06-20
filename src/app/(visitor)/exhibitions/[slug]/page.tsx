@@ -122,7 +122,7 @@ export default async function ExhibitionDetailPage({ params }: Props) {
       <div className="fixed inset-x-0 bottom-0 z-40 mx-auto flex w-full max-w-md gap-2 border-t border-border bg-background/90 p-4 pb-safe backdrop-blur-xl">
         <Button asChild variant="secondary" size="lg">
           <Link href={`/exhibitions/${slug}/onboarding`}>
-            <Sparkles className="size-5" /> 추천받기
+            <Sparkles className="size-5" /> 동선 추천받기
           </Link>
         </Button>
         <Button asChild size="lg" className="flex-1">

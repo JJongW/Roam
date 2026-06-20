@@ -868,12 +868,15 @@ export function ExhibitionMap({
                   const onRoute = order >= 0;
                   const color = cat?.color ?? "var(--primary)";
                   const zone = g.color ?? `${color}26`;
+                  // Map uses STATE colors only — 방문/이따/동선/facility. Category
+                  // hue lives in chips/detail, not on the booth (avoids clashing
+                  // with the green/amber/indigo status meaning). On-route = indigo.
                   const fill = isVisited
                     ? "var(--route-visited)"
                     : isSkipped
                       ? "var(--warning)"
                       : onRoute
-                        ? color
+                        ? "var(--primary)"
                         : zone;
                   const darkText =
                     isVisited || isSkipped || onRoute || fill === "#3a3d44";
@@ -913,7 +916,7 @@ export function ExhibitionMap({
                             textAnchor="middle"
                             fontSize="11"
                             fontWeight="800"
-                            fill={color}
+                            fill="var(--primary)"
                           >
                             {order + 1}
                           </text>

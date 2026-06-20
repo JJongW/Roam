@@ -335,7 +335,18 @@ export function MapView({
       <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
         {/* In landscape (and on desktop) the mobile chrome hides. */}
         <div className="md:hidden landscape:hidden">
-          <AppBar title="전시장 지도" />
+          <AppBar
+            title="전시장 지도"
+            right={
+              <Link
+                href={`/exhibitions/${detail.exhibition.slug}/onboarding`}
+                aria-label="맞춤 추천받기"
+                className="flex h-9 items-center gap-1 rounded-full px-2.5 text-sm font-bold text-primary active:bg-secondary"
+              >
+                <Sparkles className="size-5" /> 추천
+              </Link>
+            }
+          />
 
           <div className="no-scrollbar flex gap-1.5 overflow-x-auto border-b border-border px-4 py-2.5">
             {renderCategoryChips()}
@@ -434,28 +445,19 @@ export function MapView({
             </div>
           )}
 
-          {/* Floating actions. Recommendation (맞춤 추천) is ALWAYS reachable:
-              when the cart is empty it's the primary "골라드릴까요?", and once a
-              booth is added it sits as a secondary pill above "동선 만들기".
+          {/* Floating action. cart ≥ 1 → "동선 만들기" (추천 lives in the top bar).
+              cart = 0 → prominent "골라드릴까요?" for first-time discovery.
               Hidden in landscape and when a booth card is showing. */}
           {hydrated && !selected && (
-            <div className="absolute inset-x-0 bottom-[132px] z-20 mx-auto flex w-fit flex-col items-center gap-2 md:inset-x-auto md:bottom-4 md:right-4 landscape:hidden md:landscape:flex">
+            <div className="absolute inset-x-0 bottom-[132px] z-20 mx-auto flex w-fit md:inset-x-auto md:bottom-4 md:right-4 landscape:hidden md:landscape:flex">
               {cartCount > 0 ? (
-                <>
-                  <Link
-                    href={`/exhibitions/${detail.exhibition.slug}/onboarding`}
-                    className="flex w-fit items-center gap-1.5 rounded-full border border-border bg-card px-4 py-2 text-xs font-bold shadow-[var(--shadow-card)]"
-                  >
-                    <Sparkles className="size-4 text-primary" /> 맞춤 추천받기
-                  </Link>
-                  <Link
-                    href={`/exhibitions/${detail.exhibition.slug}/route`}
-                    className="flex w-fit items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-[var(--shadow-pop)]"
-                  >
-                    <RouteIcon className="size-4.5" /> 내 동선 {cartCount}개 ·
-                    동선 만들기
-                  </Link>
-                </>
+                <Link
+                  href={`/exhibitions/${detail.exhibition.slug}/route`}
+                  className="flex w-fit items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-[var(--shadow-pop)]"
+                >
+                  <RouteIcon className="size-4.5" /> 내 동선 {cartCount}개 ·
+                  동선 만들기
+                </Link>
               ) : (
                 <Link
                   href={`/exhibitions/${detail.exhibition.slug}/onboarding`}
