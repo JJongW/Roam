@@ -63,13 +63,13 @@ lines.push("on conflict (id) do nothing;");
 lines.push("");
 
 lines.push(
-  "insert into booth (id, exhibition_id, hall_id, category_id, code, name, company, description, long_description, images, logo_url, instagram_url, website_url, tags, x, y, popularity, created_at) values",
+  "insert into booth (id, exhibition_id, hall_id, category_id, code, kind, name, company, aliases, description, long_description, images, logo_url, instagram_url, website_url, tags, x, y, popularity, created_at) values",
 );
 lines.push(
   seed.booths
     .map(
       (t) =>
-        `  (${q(t.id)}, ${q(t.exhibitionId)}, ${q(t.hallId)}, ${q(t.categoryId)}, ${q(t.code)}, ${q(t.name)}, ${q(t.company)}, ${q(t.description)}, ${q(t.longDescription)}, ${jb(t.images)}, ${q(t.logoUrl)}, ${q(t.instagramUrl)}, ${q(t.websiteUrl)}, ${jb(t.tags)}, ${n(t.x)}, ${n(t.y)}, ${n(t.popularity)}, ${q(t.createdAt)})`,
+        `  (${q(t.id)}, ${q(t.exhibitionId)}, ${q(t.hallId)}, ${q(t.categoryId)}, ${q(t.code)}, ${q(t.kind ?? "exhibitor")}, ${q(t.name)}, ${q(t.company)}, ${jb(t.aliases ?? [])}, ${q(t.description)}, ${q(t.longDescription)}, ${jb(t.images)}, ${q(t.logoUrl)}, ${q(t.instagramUrl)}, ${q(t.websiteUrl)}, ${jb(t.tags)}, ${n(t.x)}, ${n(t.y)}, ${n(t.popularity)}, ${q(t.createdAt)})`,
     )
     .join(",\n"),
 );
@@ -77,13 +77,13 @@ lines.push("on conflict (id) do nothing;");
 lines.push("");
 
 lines.push(
-  "insert into event (id, booth_id, title, description, start_time, end_time, reward_info, capacity) values",
+  "insert into event (id, booth_id, title, description, start_time, end_time, reward_info, capacity, tag, subtitle, speaker, standing) values",
 );
 lines.push(
   seed.events
     .map(
       (v) =>
-        `  (${q(v.id)}, ${q(v.boothId)}, ${q(v.title)}, ${q(v.description)}, ${q(v.startTime)}, ${q(v.endTime)}, ${q(v.rewardInfo)}, ${n(v.capacity)})`,
+        `  (${q(v.id)}, ${q(v.boothId)}, ${q(v.title)}, ${q(v.description)}, ${q(v.startTime)}, ${q(v.endTime)}, ${q(v.rewardInfo)}, ${n(v.capacity)}, ${q(v.tag)}, ${q(v.subtitle)}, ${q(v.speaker)}, ${b(v.standing)})`,
     )
     .join(",\n"),
 );

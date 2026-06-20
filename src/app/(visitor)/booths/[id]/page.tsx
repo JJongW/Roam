@@ -128,12 +128,19 @@ export default async function BoothDetailPage({ params }: Props) {
             </section>
           )}
 
-          {/* description */}
+          {/* description — split into one line per sentence so the blurb reads
+              comfortably instead of as a single dense run-on. */}
           <section className="space-y-1.5">
             <h2 className="text-base font-bold">소개</h2>
-            <p className="text-[15px] leading-relaxed text-foreground/90">
-              {booth.longDescription}
-            </p>
+            <div className="space-y-1.5 text-[15px] leading-relaxed text-foreground/90">
+              {booth.longDescription
+                .split(/(?<=[.!?])\s+/)
+                .map((s) => s.trim())
+                .filter(Boolean)
+                .map((s, i) => (
+                  <p key={i}>{s}</p>
+                ))}
+            </div>
           </section>
 
           {/* co-located exhibitors sharing this booth code (pavilions, shared

@@ -127,6 +127,14 @@ export interface BoothEvent {
   endTime: string;
   rewardInfo?: string;
   capacity?: number;
+  /** Program type chip (이벤트 / 저자 사인회 / 주제강연 …). */
+  tag?: string;
+  /** Lecture subtitle / 부주제. */
+  subtitle?: string;
+  /** 강연자 / presenter line. */
+  speaker?: string;
+  /** Runs the whole fair (상시) rather than at a fixed slot — UI shows "상시". */
+  standing?: boolean;
 }
 
 export interface Waiting {

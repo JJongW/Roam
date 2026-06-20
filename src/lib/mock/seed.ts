@@ -1,5 +1,7 @@
 import floorplan from "@/lib/floorplan-sibf.json";
 import officialDirectory from "@/lib/booth/official-sibf-2026.json";
+import standingEvents from "@/lib/sibf-events-standing.json";
+import programSchedule from "@/lib/sibf-events-program.json";
 import { normalizeBoothKey } from "@/lib/booth/normalize";
 import type {
   Booth,
@@ -199,51 +201,60 @@ function at(h: number, m = 0): string {
   ).toISOString();
 }
 
-// Events tied to real (colored / highlight) stands on the map.
+// Anchor demo waiting times / community posts to real stands.
 const EV_A = pick("A1902", booths[0].code!);
 const EV_B = pick("A2402", booths[1].code!);
-const EV_C = pick("B701", booths[2].code!);
 const EV_D = pick("B400", booths[3].code!);
 
-export const events: BoothEvent[] = [
-  {
-    id: "ev1",
-    boothId: id(EV_A),
-    title: `${EV_A} 작가 사인회`,
-    description: "현장 작가 사인회 + 포토타임",
-    startTime: at(14),
-    endTime: at(15, 30),
-    rewardInfo: "한정 굿즈",
-    capacity: 60,
-  },
-  {
-    id: "ev2",
-    boothId: id(EV_B),
-    title: `${EV_B} 신간 북토크`,
-    description: "신간 저자 강연",
-    startTime: at(15),
-    endTime: at(16),
-    rewardInfo: "사인본 추첨",
-    capacity: 50,
-  },
-  {
-    id: "ev3",
-    boothId: id(EV_C),
-    title: `${EV_C} 특별 전시 투어`,
-    description: "큐레이터와 함께 둘러보기",
-    startTime: at(13),
-    endTime: at(14),
-  },
-  {
-    id: "ev4",
-    boothId: id(EV_D),
-    title: `${EV_D} 라운지 스탬프 투어`,
-    description: "부스를 돌며 스탬프 적립",
-    startTime: at(11),
-    endTime: at(20),
-    rewardInfo: "에코백 추첨",
-  },
-];
+// Standing (상시) booth events from the official SIBF program
+// (src/lib/sibf-events-standing.json). Run the whole fair → standing: true.
+const FAIR_START = new Date("2026-06-24T10:00:00+09:00").toISOString();
+const FAIR_END = new Date("2026-06-28T18:00:00+09:00").toISOString();
+const standing: BoothEvent[] = standingEvents
+  .filter((e) => has(e.code))
+  .map((e, i) => ({
+    id: `evs_${i + 1}`,
+    boothId: id(e.code),
+    title: e.title,
+    description: e.description,
+    startTime: FAIR_START,
+    endTime: FAIR_END,
+    tag: e.tag,
+    standing: true,
+  }));
+
+// Timed reader programs (강연·북토크·세미나) at the special venues, from the
+// official reservation schedule (src/lib/sibf-events-program.json). Venue → code.
+const VENUE: Record<string, string> = {
+  책마당: "B704",
+  책만남홀1: "A2402",
+  책만남홀2: "A1901",
+  "프랑스 주빈관 (A601)": "A601",
+};
+function ts(date: string, hm: string): string {
+  return new Date(`${date}T${hm}:00+09:00`).toISOString();
+}
+const program: BoothEvent[] = Object.entries(programSchedule).flatMap(
+  ([date, items]) =>
+    items
+      .map((p, i): BoothEvent | null => {
+        const code = VENUE[p.place];
+        if (!code || !has(code)) return null;
+        return {
+          id: `evp_${date}_${i + 1}`,
+          boothId: id(code),
+          title: p.title,
+          description: "",
+          startTime: ts(date, p.startTime),
+          endTime: ts(date, p.endTime),
+          tag: p.tag,
+          speaker: p.speaker ?? undefined,
+        };
+      })
+      .filter((e): e is BoothEvent => e !== null),
+);
+
+export const events: BoothEvent[] = [...standing, ...program];
 
 const W = booths.slice(0, 8).map((b) => b.code!);
 export const waitings: Waiting[] = [

@@ -128,8 +128,10 @@ function mapBooth(r: Row): Booth {
     hallId: str(r.hall_id),
     categoryId: str(r.category_id),
     code: r.code == null ? undefined : String(r.code),
+    kind: r.kind === "facility" ? "facility" : "exhibitor",
     name: str(r.name),
     company: str(r.company),
+    aliases: r.aliases == null ? undefined : strArr(r.aliases),
     description: str(r.description),
     longDescription: str(r.long_description),
     images: strArr(r.images),
@@ -154,6 +156,10 @@ function mapEvent(r: Row): BoothEvent {
     endTime: str(r.end_time),
     rewardInfo: r.reward_info == null ? undefined : String(r.reward_info),
     capacity: r.capacity == null ? undefined : num(r.capacity),
+    tag: r.tag == null ? undefined : String(r.tag),
+    subtitle: r.subtitle == null ? undefined : String(r.subtitle),
+    speaker: r.speaker == null ? undefined : String(r.speaker),
+    standing: r.standing === true,
   };
 }
 
