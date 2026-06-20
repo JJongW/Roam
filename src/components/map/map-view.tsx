@@ -30,7 +30,8 @@ import { WaitingBadge } from "@/components/booth/waiting-badge";
 import { EmptyState } from "@/components/common/states";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import type { Booth, ExhibitionDetail, Waiting } from "@/lib/types";
+import { buildOrderedRoute } from "@/lib/engine/route";
+import type { Booth, ExhibitionDetail, Point, Waiting } from "@/lib/types";
 
 export function MapView({
   detail,
@@ -89,6 +90,35 @@ export function MapView({
       return true;
     });
   }, [booths, activeCat, statusFilter, visitedSet, skippedSet, query]);
+
+  const cartIds = useCartStore((s) => s.ids);
+  const boothById = useMemo(
+    () => new Map(booths.map((b) => [b.id, b])),
+    [booths],
+  );
+  // The in-progress 동선, drawn on the map so adding booths shows the existing
+  // route too — it re-orders live as the cart changes.
+  const routeOrderIds = useMemo(() => {
+    if (!hydrated || cartIds.length === 0) return undefined;
+    const start: Point = FLOORPLANS[detail.exhibition.slug]?.entrance ?? {
+      x: Math.round(detail.exhibition.mapWidth / 2),
+      y: detail.exhibition.mapHeight,
+    };
+    const cartBooths = cartIds
+      .map((id) => boothById.get(id))
+      .filter((b): b is Booth => Boolean(b));
+    return buildOrderedRoute(cartBooths, start).boothIds;
+  }, [hydrated, cartIds, boothById, detail.exhibition]);
+  // Render the filtered set PLUS any route booths, so the path never breaks when
+  // a category/status filter hides one of the chosen stands.
+  const mapBooths = useMemo(() => {
+    if (!routeOrderIds?.length) return filtered;
+    const seen = new Set(filtered.map((b) => b.id));
+    const extra = routeOrderIds
+      .map((id) => boothById.get(id))
+      .filter((b): b is Booth => b != null && !seen.has(b.id));
+    return extra.length ? [...filtered, ...extra] : filtered;
+  }, [filtered, routeOrderIds, boothById]);
 
   const selected = booths.find((b) => b.id === selectedId) ?? null;
   const selectedCat = selected ? catById.get(selected.categoryId) : undefined;
@@ -332,9 +362,10 @@ export function MapView({
           <ExhibitionMap
             width={detail.exhibition.mapWidth}
             height={detail.exhibition.mapHeight}
-            booths={filtered}
+            booths={mapBooths}
             categories={detail.categories}
             halls={detail.halls}
+            routeOrder={routeOrderIds}
             floorplan={FLOORPLANS[detail.exhibition.slug]}
             fillHeight
             // Mobile portrait: keep the fit/pan area above the bottom-sheet peek

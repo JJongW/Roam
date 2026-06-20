@@ -16,6 +16,7 @@ import {
   Clock,
   Check,
   Eye,
+  X,
 } from "lucide-react";
 import { BASE_DWELL_MINUTES } from "@/lib/constants";
 import { toast } from "sonner";
@@ -33,7 +34,6 @@ import { AppBar } from "@/components/common/app-bar";
 import { SaveRouteButton } from "@/components/route/save-route-sheet";
 import { MyRoutesSheet } from "@/components/route/my-routes-sheet";
 import { BoothCard } from "@/components/booth/booth-card";
-import { CartButton } from "@/components/booth/cart-button";
 import { EmptyState } from "@/components/common/states";
 import { Button } from "@/components/ui/button";
 import { ExhibitionMap } from "@/components/map/exhibition-map";
@@ -67,6 +67,7 @@ export function RouteView({
   const hydrated = useHydrated();
   const cartIds = useCartStore((s) => s.ids);
   const setCartIds = useCartStore((s) => s.setIds);
+  const removeFromCart = useCartStore((s) => s.remove);
   const setRoute = useRouteStore((s) => s.setRoute);
   const interests = useOnboardingStore((s) => s.interests);
   const records = useVisitStore((s) => s.records);
@@ -363,15 +364,24 @@ export function RouteView({
               compact
               action={
                 <div className="flex items-center gap-1.5">
+                  {/* remove from plan — distinct X, not a check */}
                   <button
                     type="button"
-                    aria-label="관람함으로 표시"
-                    onClick={() => toggleStatus(b.id, "visited")}
-                    className="flex size-11 shrink-0 items-center justify-center rounded-full border border-border bg-card text-success active:bg-success/10"
+                    aria-label="동선에서 빼기"
+                    onClick={() => removeFromCart(b.id)}
+                    className="flex size-9 shrink-0 items-center justify-center rounded-full text-muted-foreground active:bg-secondary"
                   >
-                    <Check className="size-4.5" />
+                    <X className="size-4.5" />
                   </button>
-                  <CartButton boothId={b.id} variant="icon" />
+                  {/* the one and only check = 관람 완료 (drops it from the 동선) */}
+                  <button
+                    type="button"
+                    aria-label="관람 완료로 표시"
+                    onClick={() => toggleStatus(b.id, "visited")}
+                    className="flex h-9 shrink-0 items-center gap-1 rounded-full bg-success px-3 text-xs font-bold text-white active:opacity-90"
+                  >
+                    <Check className="size-4" /> 관람
+                  </button>
                 </div>
               }
             />
