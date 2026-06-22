@@ -17,9 +17,9 @@ import { Input } from "@/components/ui/input";
 import type { RouteLeg, RoutePlan } from "@/lib/types";
 
 /**
- * Save the current route under a name so it can be reloaded later.
- * Private and tied to the signed-in user — gated behind login so the route
- * actually persists (an anonymous save can't be reloaded from ‘내 동선’).
+ * Save the current route under a name so it can be reloaded later. A signed-in
+ * save also publishes it to the public gallery in one step (see POST
+ * /api/me/routes), so it's gated behind login.
  */
 export function SaveRouteButton({
   exhibitionId,
@@ -51,7 +51,7 @@ export function SaveRouteButton({
         estimatedMinutes,
         legs,
       });
-      toast.success("동선을 저장했어요");
+      toast.success("동선을 저장하고 ‘다른 사람 동선’에 공개했어요");
       setTitle("");
       setOpen(false);
       onSaved?.();
@@ -86,7 +86,8 @@ export function SaveRouteButton({
           <SheetHeader>
             <SheetTitle>동선 저장하기</SheetTitle>
             <SheetDescription>
-              이름을 붙여 저장하면 ‘내 동선’에서 다시 불러올 수 있어요.
+              이름을 붙여 저장하면 ‘내 동선’에서 다시 불러올 수 있고, ‘다른 사람
+              동선’에도 공개돼 다른 방문객이 참고할 수 있어요.
             </SheetDescription>
           </SheetHeader>
 
