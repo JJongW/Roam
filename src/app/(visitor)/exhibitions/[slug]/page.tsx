@@ -4,7 +4,6 @@ import {
   CalendarDays,
   MapPin,
   Map as MapIcon,
-  MessagesSquare,
   Route as RouteIcon,
   ChevronRight,
   Sparkles,
@@ -79,16 +78,16 @@ export default async function ExhibitionDetailPage({ params }: Props) {
           </section>
 
           <Link
-            href={`/exhibitions/${slug}/community`}
-            className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-[var(--shadow-card)] active:scale-[0.99]"
+            href={`/exhibitions/${slug}/onboarding`}
+            className="flex items-center gap-3 rounded-2xl border border-primary/30 bg-accent/40 p-4 shadow-[var(--shadow-card)] active:scale-[0.99]"
           >
-            <div className="flex size-11 items-center justify-center rounded-xl bg-secondary">
-              <MessagesSquare className="size-5 text-foreground" />
+            <div className="flex size-11 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+              <Sparkles className="size-5" />
             </div>
             <div className="min-w-0 flex-1">
-              <p className="font-bold">실시간 커뮤니티</p>
+              <p className="font-bold">동선 추천받기</p>
               <p className="text-sm text-muted-foreground">
-                현장 소식·대기 정보를 방문객과 나눠보세요
+                관심사·시간에 맞춰 맞춤 관람 코스를 짜드려요
               </p>
             </div>
             <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
@@ -117,15 +116,10 @@ export default async function ExhibitionDetailPage({ params }: Props) {
         </div>
       </main>
 
-      {/* Entry = the map. Visitors pick booths first; recommendation lives one
-          step in, as the "잘 모르겠어요" escape hatch for low-involvement users. */}
+      {/* Entry = the map: visitors pick booths first. Recommendation now lives
+          in-content as a card; the bottom bar is the single map CTA. */}
       <div className="fixed inset-x-0 bottom-0 z-40 mx-auto flex w-full max-w-md gap-2 border-t border-border bg-background/90 p-4 pb-safe backdrop-blur-xl">
-        <Button asChild variant="secondary" size="lg">
-          <Link href={`/exhibitions/${slug}/onboarding`}>
-            <Sparkles className="size-5" /> 동선 추천받기
-          </Link>
-        </Button>
-        <Button asChild size="lg" className="flex-1">
+        <Button asChild size="lg" className="w-full">
           <Link href={`/exhibitions/${slug}/map`}>
             <MapIcon className="size-5" /> 지도 보기 · 부스 담기
           </Link>
