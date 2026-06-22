@@ -44,10 +44,20 @@ export type FloorplanDecor =
   | { type: "wc"; x: number; y: number }
   | { type: "arrowsV"; x: number; y1: number; y2: number };
 
+/** A selectable gate the visitor can set as their route start or end. */
+export interface FloorplanGate {
+  id: string;
+  label: string;
+  x: number;
+  y: number;
+}
+
 export interface Floorplan {
-  /** Route start (entrance) / end (exit) points. */
+  /** Default route start (entrance) / end (exit) points. */
   entrance?: { x: number; y: number };
   exit?: { x: number; y: number };
+  /** Gates the visitor can choose from as entrance / exit on the route screen. */
+  gates?: FloorplanGate[];
   width: number;
   height: number;
   halls: FloorplanHall[];
@@ -114,6 +124,12 @@ function buildSibf(): Floorplan {
   // Positions kept clear of booth rectangles (no overlap).
   const entrance = { x: 1480, y: 3320 };
   const exit = { x: 660, y: 3320 };
+  // Gates the visitor can pick as their own entrance / exit on the route screen.
+  const gates: FloorplanGate[] = [
+    { id: "in", label: "입구", x: entrance.x, y: entrance.y },
+    { id: "out", label: "출구", x: exit.x, y: exit.y },
+    { id: "main", label: "입·출구(메인)", x: 2980, y: 1140 },
+  ];
   decor.push(
     { type: "entrance", x: 2980, y: 1140, text: "입·출구", dir: "left" },
     { type: "entrance", x: entrance.x, y: entrance.y, text: "입구", dir: "up" },
@@ -127,6 +143,7 @@ function buildSibf(): Floorplan {
   return {
     entrance,
     exit,
+    gates,
     width: sibf.width,
     height: sibf.height,
     halls,

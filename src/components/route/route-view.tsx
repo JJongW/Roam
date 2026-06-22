@@ -17,6 +17,8 @@ import {
   Check,
   Eye,
   X,
+  LogIn,
+  LogOut,
 } from "lucide-react";
 import {
   BASE_DWELL_MINUTES,
@@ -103,10 +105,38 @@ export function RouteView({
     [booths],
   );
   const catById = new Map(categories.map((c) => [c.id, c]));
-  const start: Point = FLOORPLANS[slug]?.entrance ?? {
+
+  // Visitor-chosen entrance / exit. The route sweep starts at the entrance and
+  // the drawn path ends at the exit; defaults to the floorplan's own gates.
+  const fp = FLOORPLANS[slug];
+  const gates = fp?.gates ?? [];
+  const fallbackStart: Point = fp?.entrance ?? {
     x: Math.round(exhibition.mapWidth / 2),
     y: exhibition.mapHeight,
   };
+  const [entranceId, setEntranceId] = useState<string>(
+    () =>
+      gates.find((g) => g.x === fp?.entrance?.x && g.y === fp?.entrance?.y)
+        ?.id ??
+      gates[0]?.id ??
+      "",
+  );
+  const [exitId, setExitId] = useState<string>(
+    () =>
+      gates.find((g) => g.x === fp?.exit?.x && g.y === fp?.exit?.y)?.id ??
+      gates[gates.length - 1]?.id ??
+      "",
+  );
+  const start: Point = useMemo(() => {
+    const g = gates.find((x) => x.id === entranceId);
+    return g ? { x: g.x, y: g.y } : fallbackStart;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [entranceId]);
+  const exitPoint: Point | undefined = useMemo(() => {
+    const g = gates.find((x) => x.id === exitId);
+    return g ? { x: g.x, y: g.y } : fp?.exit;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [exitId]);
 
   // The active route = chosen booths in cart order, MINUS the ones already
   // viewed (관람함). Marking a booth visited drops it from the 동선 and the screen
@@ -118,11 +148,7 @@ export function RouteView({
         .filter((b): b is Booth => b != null && !visitedSet.has(b.id)),
     [hydrated, cartIds, boothById, visitedSet],
   );
-  const plan = useMemo(
-    () => buildOrderedRoute(chosen, start),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [chosen],
-  );
+  const plan = useMemo(() => buildOrderedRoute(chosen, start), [chosen, start]);
 
   const ordered = chosen;
   const orderedIds = useMemo(() => ordered.map((b) => b.id), [ordered]);
@@ -340,8 +366,47 @@ export function RouteView({
           visitedIds={visitedIds}
           skippedIds={skippedIds}
           floorplan={FLOORPLANS[slug]}
+          entrance={start}
+          exit={exitPoint}
         />
       </div>
+
+      {!viewing && gates.length > 1 && (
+        <div className="mx-4 mt-3 flex items-center gap-2">
+          <label className="flex flex-1 items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2 text-sm">
+            <LogIn className="size-4 shrink-0 text-success" aria-hidden />
+            <span className="shrink-0 text-muted-foreground">입구</span>
+            <select
+              value={entranceId}
+              onChange={(e) => setEntranceId(e.target.value)}
+              aria-label="입구 선택"
+              className="min-w-0 flex-1 bg-transparent font-semibold outline-none"
+            >
+              {gates.map((g) => (
+                <option key={g.id} value={g.id}>
+                  {g.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="flex flex-1 items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2 text-sm">
+            <LogOut className="size-4 shrink-0 text-warning" aria-hidden />
+            <span className="shrink-0 text-muted-foreground">출구</span>
+            <select
+              value={exitId}
+              onChange={(e) => setExitId(e.target.value)}
+              aria-label="출구 선택"
+              className="min-w-0 flex-1 bg-transparent font-semibold outline-none"
+            >
+              {gates.map((g) => (
+                <option key={g.id} value={g.id}>
+                  {g.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+      )}
 
       {!viewing && rationale && (
         <div className="mx-4 mt-3 flex items-start gap-2 rounded-xl border border-border bg-secondary/40 p-3">

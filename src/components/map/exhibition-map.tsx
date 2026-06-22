@@ -33,6 +33,10 @@ interface MapProps {
   position?: Point | null;
   /** Hand-traced venue geometry; when set, booths render at exact rects. */
   floorplan?: Floorplan;
+  /** Override the route start/end points (visitor-chosen gates). Falls back to
+   *  the floorplan's default entrance/exit. */
+  entrance?: Point | null;
+  exit?: Point | null;
   /** Zoom to fill height (pan horizontally) instead of fitting the whole venue. */
   fillHeight?: boolean;
   /** Initial point to center on when fillHeight is set. */
@@ -70,6 +74,8 @@ export function ExhibitionMap({
   skippedIds = [],
   position,
   floorplan,
+  entrance,
+  exit,
   fillHeight = false,
   focus,
   onSelect,
@@ -414,10 +420,13 @@ export function ExhibitionMap({
       const g = geomOf(b);
       return { x: g.x, y: g.y };
     });
-  // Begin at the entrance, end at the exit (when the floorplan defines them).
+  // Begin at the entrance, end at the exit. Visitor-chosen gates (entrance/exit
+  // props) win; otherwise fall back to the floorplan's defaults.
+  const routeStart = entrance ?? floorplan?.entrance;
+  const routeEnd = exit ?? floorplan?.exit;
   const orderedRouteCenters: Pt[] =
-    routeBoothCenters.length > 0 && floorplan?.entrance && floorplan?.exit
-      ? [floorplan.entrance, ...routeBoothCenters, floorplan.exit]
+    routeBoothCenters.length > 0 && routeStart && routeEnd
+      ? [routeStart, ...routeBoothCenters, routeEnd]
       : routeBoothCenters;
 
   function orthWaypoints(pts: Pt[]): Pt[] {
