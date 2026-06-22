@@ -9,13 +9,15 @@ import {
   ChevronLeft,
   Clock3,
   Layers,
+  NotebookPen,
   Search,
   Sparkles,
   X,
   MapPin,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useVisitStore, idsByStatus } from "@/lib/stores/visit";
+import { useVisitStore, idsByStatus, pushNote } from "@/lib/stores/visit";
+import { useAuthStore } from "@/lib/stores/auth";
 import { useCartStore } from "@/lib/stores/cart";
 import { useHydrated } from "@/lib/hooks/use-hydrated";
 import { FLOORPLANS } from "@/lib/floorplans";
@@ -424,6 +426,8 @@ export function MapView({
                   </Button>
                 </div>
 
+                <BoothPopupMemo key={selected.id} boothId={selected.id} />
+
                 <div className="mt-2.5 flex items-center gap-2 border-t border-border pt-2.5">
                   <CartButton boothId={selected.id} variant="icon" />
                   <PopupToggle
@@ -558,6 +562,44 @@ function StatusChip({
     >
       {children}
     </button>
+  );
+}
+
+/**
+ * Inline memo for the map popup — jot a quick note the moment you tap a booth,
+ * without opening the detail page. The saved note stays visible here (and on the
+ * booth detail) so a glance reminds you why you flagged it. Local-first;
+ * signing in syncs it across devices. Keyed by boothId so it resets per booth.
+ */
+function BoothPopupMemo({ boothId }: { boothId: string }) {
+  const user = useAuthStore((s) => s.user);
+  const initial = useVisitStore((s) => s.records[boothId]?.memo ?? "");
+  const setMemo = useVisitStore((s) => s.setMemo);
+  const [value, setValue] = useState(initial);
+
+  function save() {
+    if (value.trim() === initial.trim()) return;
+    setMemo(boothId, value.trim());
+    if (user) void pushNote(boothId);
+  }
+
+  return (
+    <div className="relative mt-2.5">
+      <NotebookPen className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
+      <Input
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onBlur={save}
+        onKeyDown={(e) => {
+          if (e.nativeEvent.isComposing) return;
+          if (e.key === "Enter") e.currentTarget.blur();
+        }}
+        placeholder="메모 남기기 (예: 리필 노트 사기)"
+        maxLength={100}
+        aria-label="부스 메모"
+        className="h-9 pl-8 text-sm"
+      />
+    </div>
   );
 }
 
