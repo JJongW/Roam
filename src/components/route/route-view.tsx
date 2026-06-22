@@ -127,6 +127,32 @@ export function RouteView({
   const ordered = chosen;
   const orderedIds = useMemo(() => ordered.map((b) => b.id), [ordered]);
 
+  // AI one-line reason per booth ("이 부스의 주요 관람 포인트") — lazy, augments
+  // the instant data chips. Server-cached per booth-set so it costs at most one
+  // Gemini call per distinct route, not one per page view.
+  const [aiReasons, setAiReasons] = useState<Record<string, string>>({});
+  const orderedKey = orderedIds.join(",");
+  useEffect(() => {
+    if (!aiEnabled || !hydrated || orderedIds.length === 0) return;
+    let cancelled = false;
+    api
+      .post<{ reasons: Record<string, string> }>("/api/ai/route-reasons", {
+        exhibitionSlug: slug,
+        boothIds: orderedIds,
+        interests,
+      })
+      .then((r) => {
+        if (!cancelled) setAiReasons(r.reasons ?? {});
+      })
+      .catch(() => {
+        /* AI off / failed — instant data chips still cover the why. */
+      });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [orderedKey, hydrated, aiEnabled]);
+
   // A short, deterministic "왜 이렇게 짰는지" line — built from the visitor's own
   // preferences + the route, so it costs no LLM call (and explains the picks).
   const rationale = useMemo<string | null>(() => {
@@ -458,6 +484,15 @@ export function RouteView({
                   </span>
                 ))}
               </div>
+            )}
+            {aiReasons[b.id] && (
+              <p className="ml-8 mt-1 text-xs leading-snug text-muted-foreground">
+                <Sparkles
+                  className="mr-0.5 inline size-3 text-primary"
+                  aria-hidden
+                />
+                {aiReasons[b.id]}
+              </p>
             )}
           </RouteRow>
         ))}
