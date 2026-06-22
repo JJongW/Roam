@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Bookmark, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { api, ApiClientError } from "@/lib/api/client";
+import { promptLogin, useAuthStore } from "@/lib/stores/auth";
 import {
   Sheet,
   SheetContent,
@@ -17,8 +18,8 @@ import type { RouteLeg, RoutePlan } from "@/lib/types";
 
 /**
  * Save the current route under a name so it can be reloaded later.
- * Private and session-scoped — no sign-in required (it's tied to the userId
- * automatically when the visitor is signed in).
+ * Private and tied to the signed-in user — gated behind login so the route
+ * actually persists (an anonymous save can't be reloaded from ‘내 동선’).
  */
 export function SaveRouteButton({
   exhibitionId,
@@ -33,6 +34,7 @@ export function SaveRouteButton({
   legs: RouteLeg[];
   onSaved?: () => void;
 }) {
+  const user = useAuthStore((s) => s.user);
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [busy, setBusy] = useState(false);
@@ -67,7 +69,13 @@ export function SaveRouteButton({
       <Button
         variant="ghost"
         size="icon"
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          if (!user) {
+            promptLogin("동선을 저장하려면 로그인이 필요해요");
+            return;
+          }
+          setOpen(true);
+        }}
         aria-label="동선 저장"
       >
         <Bookmark className="size-5" />

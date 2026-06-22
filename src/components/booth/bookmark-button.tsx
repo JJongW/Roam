@@ -5,7 +5,7 @@ import { Bookmark } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { api } from "@/lib/api/client";
-import { useAuthStore } from "@/lib/stores/auth";
+import { promptLogin, useAuthStore } from "@/lib/stores/auth";
 import { Button } from "@/components/ui/button";
 import type { Bookmark as BookmarkType, BookmarkTarget } from "@/lib/types";
 
@@ -19,7 +19,6 @@ export function BookmarkButton({
   className?: string;
 }) {
   const user = useAuthStore((s) => s.user);
-  const openLogin = useAuthStore((s) => s.openLogin);
   const [saved, setSaved] = useState(false);
   const [busy, setBusy] = useState(false);
 
@@ -42,7 +41,7 @@ export function BookmarkButton({
 
   async function toggle() {
     if (!user) {
-      openLogin();
+      promptLogin("가고 싶은 부스로 저장하려면 로그인이 필요해요");
       return;
     }
     if (busy) return;
@@ -69,7 +68,9 @@ export function BookmarkButton({
       onClick={toggle}
       className={className}
     >
-      <Bookmark className={cn("size-5", saved && "fill-primary text-primary")} />
+      <Bookmark
+        className={cn("size-5", saved && "fill-primary text-primary")}
+      />
     </Button>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { create } from "zustand";
+import { toast } from "sonner";
 import { api, ApiClientError } from "@/lib/api/client";
 import { useVisitStore } from "@/lib/stores/visit";
 import type { BoothNote, User } from "@/lib/types";
@@ -72,3 +73,17 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     useVisitStore.getState().clear();
   },
 }));
+
+/**
+ * Gate for signed-in-only actions (save / share / bookmark). Instead of
+ * silently failing or jumping straight into the login sheet, surface a toast
+ * that explains why and offers a one-tap path to the login screen.
+ */
+export function promptLogin(message = "로그인이 필요해요") {
+  toast(message, {
+    action: {
+      label: "로그인",
+      onClick: () => useAuthStore.getState().openLogin(),
+    },
+  });
+}

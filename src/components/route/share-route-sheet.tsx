@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Check, Copy, Loader2, Share2 } from "lucide-react";
 import { toast } from "sonner";
 import { api, ApiClientError } from "@/lib/api/client";
-import { useAuthStore } from "@/lib/stores/auth";
+import { promptLogin, useAuthStore } from "@/lib/stores/auth";
 import { useRouteStore } from "@/lib/stores/route";
 import {
   Sheet,
@@ -20,7 +20,6 @@ import type { RoutePlan } from "@/lib/types";
 /** Publish the current route + share its link. Requires sign-in. */
 export function ShareRouteButton({ route }: { route: RoutePlan }) {
   const user = useAuthStore((s) => s.user);
-  const openLogin = useAuthStore((s) => s.openLogin);
   const setRoute = useRouteStore((s) => s.setRoute);
 
   const [open, setOpen] = useState(false);
@@ -35,7 +34,7 @@ export function ShareRouteButton({ route }: { route: RoutePlan }) {
 
   function onClick() {
     if (!user) {
-      openLogin();
+      promptLogin("동선을 공유하려면 로그인이 필요해요");
       return;
     }
     setOpen(true);
