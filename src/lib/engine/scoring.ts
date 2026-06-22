@@ -1,4 +1,4 @@
-import { PURPOSE_WEIGHTS } from "@/lib/constants";
+import { COMPANION_WEIGHTS, PURPOSE_WEIGHTS } from "@/lib/constants";
 import type {
   Booth,
   BoothEvent,
@@ -19,7 +19,10 @@ export function interestScore(booth: Booth, interests: string[]): number {
   const hits = booth.tags.filter((t) => set.has(t)).length;
   // reward any match strongly, scale gently with more matches
   if (hits === 0) return 0;
-  return Math.min(1, 0.6 + 0.2 * (hits - 1) + 0.2 * (hits / booth.tags.length || 0));
+  return Math.min(
+    1,
+    0.6 + 0.2 * (hits - 1) + 0.2 * (hits / booth.tags.length || 0),
+  );
 }
 
 /** Waiting penalty 0..1 — longer queues hurt, weighted by movement pref later. */
@@ -45,14 +48,25 @@ export function eventBoost(
 }
 
 export interface ScoreContext {
-  preference: Pick<UserPreference, "visitPurpose" | "interests" | "availableMinutes">;
+  preference: Pick<
+    UserPreference,
+    "visitPurpose" | "interests" | "availableMinutes" | "companionType"
+  >;
   waitingByBooth: Record<string, Waiting | undefined>;
   eventsByBooth: Record<string, BoothEvent[]>;
   now: number;
 }
 
 export function scoreBooth(booth: Booth, ctx: ScoreContext): ScoredBooth {
-  const w = PURPOSE_WEIGHTS[ctx.preference.visitPurpose];
+  // Purpose sets the base weighting; companion tilts it (who's visiting).
+  const pw = PURPOSE_WEIGHTS[ctx.preference.visitPurpose];
+  const cw = COMPANION_WEIGHTS[ctx.preference.companionType];
+  const w = {
+    interest: pw.interest * cw.interest,
+    popularity: pw.popularity * cw.popularity,
+    event: pw.event * cw.event,
+    waiting: pw.waiting * cw.waiting,
+  };
   const interest = interestScore(booth, ctx.preference.interests);
   const popularity = booth.popularity / 100;
   const event = eventBoost(
