@@ -31,9 +31,9 @@ function booth(p: Partial<Booth>): Booth {
 
 const pref: Pick<
   UserPreference,
-  "visitPurpose" | "interests" | "availableMinutes" | "companionType"
+  "visitPurposes" | "interests" | "availableMinutes" | "companionType"
 > = {
-  visitPurpose: "information",
+  visitPurposes: ["information"],
   interests: ["ai"],
   availableMinutes: 120,
   companionType: "alone",

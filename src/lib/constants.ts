@@ -119,6 +119,34 @@ export const PURPOSE_WEIGHTS: Record<VisitPurpose, DimWeights> = {
 };
 
 /**
+ * Merge several purposes into one weight set by averaging each dimension, so a
+ * multi-goal visitor (e.g. 구매 + 체험) gets a blend rather than only the first
+ * pick. Falls back to "experience" when the list is somehow empty.
+ */
+export function mergePurposeWeights(purposes: VisitPurpose[]): DimWeights {
+  const list = purposes.length ? purposes : (["experience"] as VisitPurpose[]);
+  const sum = list.reduce<DimWeights>(
+    (acc, p) => {
+      const w = PURPOSE_WEIGHTS[p];
+      return {
+        interest: acc.interest + w.interest,
+        popularity: acc.popularity + w.popularity,
+        event: acc.event + w.event,
+        waiting: acc.waiting + w.waiting,
+      };
+    },
+    { interest: 0, popularity: 0, event: 0, waiting: 0 },
+  );
+  const n = list.length;
+  return {
+    interest: sum.interest / n,
+    popularity: sum.popularity / n,
+    event: sum.event / n,
+    waiting: sum.waiting / n,
+  };
+}
+
+/**
  * Per-companion multipliers, layered on top of PURPOSE_WEIGHTS. These tilt the
  * same four dimensions by who's visiting so the route genuinely differs:
  * - alone     : flexible, tolerates queues → softer waiting penalty.

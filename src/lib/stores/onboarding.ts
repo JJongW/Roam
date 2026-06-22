@@ -9,7 +9,7 @@ import type {
 } from "@/lib/types";
 
 export interface OnboardingDraft {
-  visitPurpose?: VisitPurpose;
+  visitPurposes: VisitPurpose[];
   interests: string[];
   availableMinutes?: number;
   movementPreference?: MovementPreference;
@@ -17,7 +17,7 @@ export interface OnboardingDraft {
 }
 
 interface OnboardingState extends OnboardingDraft {
-  setPurpose: (v: VisitPurpose) => void;
+  togglePurpose: (v: VisitPurpose) => void;
   toggleInterest: (slug: string) => void;
   setTime: (m: number) => void;
   setMovement: (v: MovementPreference) => void;
@@ -26,13 +26,18 @@ interface OnboardingState extends OnboardingDraft {
   isComplete: () => boolean;
 }
 
-const initial: OnboardingDraft = { interests: [] };
+const initial: OnboardingDraft = { visitPurposes: [], interests: [] };
 
 export const useOnboardingStore = create<OnboardingState>()(
   persist(
     (set, get) => ({
       ...initial,
-      setPurpose: (visitPurpose) => set({ visitPurpose }),
+      togglePurpose: (v) =>
+        set((s) => ({
+          visitPurposes: s.visitPurposes.includes(v)
+            ? s.visitPurposes.filter((p) => p !== v)
+            : [...s.visitPurposes, v],
+        })),
       toggleInterest: (slug) =>
         set((s) => ({
           interests: s.interests.includes(slug)
@@ -46,11 +51,11 @@ export const useOnboardingStore = create<OnboardingState>()(
       isComplete: () => {
         const s = get();
         return Boolean(
-          s.visitPurpose &&
-            s.interests.length > 0 &&
-            s.availableMinutes &&
-            s.movementPreference &&
-            s.companionType,
+          s.visitPurposes.length > 0 &&
+          s.interests.length > 0 &&
+          s.availableMinutes &&
+          s.movementPreference &&
+          s.companionType,
         );
       },
     }),

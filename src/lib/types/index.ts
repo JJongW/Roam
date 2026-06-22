@@ -166,7 +166,8 @@ export interface Review {
 
 export interface UserPreference {
   sessionId: string;
-  visitPurpose: VisitPurpose;
+  /** One or more visit goals — the route weighs every selected purpose. */
+  visitPurposes: VisitPurpose[];
   interests: string[]; // category slugs
   availableMinutes: number;
   movementPreference: MovementPreference;

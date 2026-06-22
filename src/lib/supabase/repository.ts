@@ -209,7 +209,9 @@ function mapSession(r: Row): VisitorSession {
 function mapPreference(r: Row): UserPreference {
   return {
     sessionId: str(r.session_id),
-    visitPurpose: str(r.visit_purpose) as VisitPurpose,
+    visitPurposes: (Array.isArray(r.visit_purposes)
+      ? r.visit_purposes
+      : []) as VisitPurpose[],
     interests: strArr(r.interests),
     availableMinutes: num(r.available_minutes),
     movementPreference: str(r.movement_preference) as MovementPreference,
@@ -803,7 +805,7 @@ export class SupabaseRepository implements Repository {
     const db = await this.db();
     const row = {
       session_id: sessionId,
-      visit_purpose: input.visitPurpose,
+      visit_purposes: input.visitPurposes,
       interests: input.interests,
       available_minutes: input.availableMinutes,
       movement_preference: input.movementPreference,

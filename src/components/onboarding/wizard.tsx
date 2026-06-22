@@ -34,7 +34,7 @@ const STEPS = [
 const TITLES: Record<(typeof STEPS)[number], { title: string; sub: string }> = {
   purpose: {
     title: "방문 목적이 무엇인가요?",
-    sub: "목적에 맞춰 부스를 추천해 드려요",
+    sub: "여러 개 선택할 수 있어요",
   },
   interests: {
     title: "어떤 분야에 관심 있으세요?",
@@ -78,7 +78,7 @@ export function OnboardingWizard({
   const canNext = useMemo(() => {
     switch (key) {
       case "purpose":
-        return Boolean(store.visitPurpose);
+        return store.visitPurposes.length > 0;
       case "interests":
         return store.interests.length > 0;
       case "time":
@@ -124,7 +124,7 @@ export function OnboardingWizard({
   // Full path: use every answered step.
   function submit() {
     return generate({
-      visitPurpose: store.visitPurpose,
+      visitPurposes: store.visitPurposes,
       interests: store.interests,
       availableMinutes: store.availableMinutes,
       movementPreference: store.movementPreference,
@@ -136,7 +136,9 @@ export function OnboardingWizard({
   // fill the rest, and the route page lets the visitor refine afterwards.
   function quickSubmit() {
     return generate({
-      visitPurpose: store.visitPurpose ?? "experience",
+      visitPurposes: store.visitPurposes.length
+        ? store.visitPurposes
+        : ["experience"],
       interests: store.interests,
       availableMinutes: store.availableMinutes ?? 120,
       movementPreference: store.movementPreference ?? "balanced",
@@ -202,8 +204,8 @@ export function OnboardingWizard({
                     label={o.label}
                     description={o.description}
                     icon={o.icon}
-                    selected={store.visitPurpose === o.value}
-                    onSelect={() => store.setPurpose(o.value)}
+                    selected={store.visitPurposes.includes(o.value)}
+                    onSelect={() => store.togglePurpose(o.value)}
                   />
                 ))}
               </div>

@@ -16,11 +16,27 @@ const stringList = z
   );
 
 /** Raw AI parse target — loose, then mapped onto the app's strict preference. */
+const purposeList = z
+  .union([z.string(), z.array(z.string())])
+  .nullish()
+  .transform((v) => (v == null ? [] : Array.isArray(v) ? v : [v]))
+  .pipe(
+    z.array(
+      z
+        .enum([
+          "purchase",
+          "information",
+          "networking",
+          "experience",
+          "general",
+        ])
+        .catch("general"),
+    ),
+  );
+
 export const aiRoutePreferencesSchema = z.object({
-  purpose: z
-    .enum(["purchase", "information", "networking", "experience", "general"])
-    .optional()
-    .catch(undefined),
+  // One or more goals — the visitor can have several (e.g. 구매 + 체험).
+  purposes: purposeList,
   interests: stringList,
   durationMinutes: z.coerce.number().optional().catch(undefined),
   companion: z
@@ -92,10 +108,11 @@ export function mapToPreference(
     : // No category matched → broad default so the route isn't empty.
       categories.slice(0, Math.min(3, categories.length)).map((c) => c.slug);
 
-  const purpose: VisitPurpose =
-    ai.purpose && ai.purpose !== "general"
-      ? (ai.purpose as VisitPurpose)
-      : "experience";
+  // Keep every concrete goal (drop "general"); fall back to experience if none.
+  const visitPurposes: VisitPurpose[] = Array.from(
+    new Set(ai.purposes.filter((p): p is VisitPurpose => p !== "general")),
+  );
+  if (visitPurposes.length === 0) visitPurposes.push("experience");
 
   const availableMinutes = Math.min(
     600,
@@ -110,7 +127,7 @@ export function mapToPreference(
     : "alone";
 
   const preference: UserPreferenceInput = {
-    visitPurpose: purpose,
+    visitPurposes,
     interests,
     availableMinutes,
     movementPreference: movement,
@@ -151,7 +168,7 @@ export function buildPreferencePrompt(
     "- avoidCrowds: '사람 많은 곳 피하고 싶어' 등 혼잡 회피 의도면 true.",
     "- movementStyle: 빠르게/효율→shortest, 꼼꼼히/많이→thorough, 기본→balanced.",
     "- companion: 혼자→solo, 연인/친구→couple_friend, 가족/아이→family, 단체→group, 업무→business.",
-    "- purpose: 구매→purchase, 정보→information, 교류→networking, 체험→experience, 그 외→general.",
+    "- purposes: 방문 목적 배열(여러 개 가능). 구매→purchase, 정보→information, 교류→networking, 체험→experience, 그 외→general. 해당되는 것 모두 넣어.",
     "- startArea: 'B홀 근처' 같은 시작 위치 언급이 있으면 그 문자열.",
     "- preferredBoothNamesOrIds / avoidBoothNamesOrIds: 특정 부스/브랜드 언급 시.",
     "- constraints: 매핑 못 한 기타 조건 문장.",

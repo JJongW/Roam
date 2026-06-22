@@ -36,14 +36,14 @@ describe("MockRepository", () => {
   it("creates a session and persists a preference", async () => {
     const session = await repo.createSession("exh_sibf_2026");
     await repo.savePreference(session.id, {
-      visitPurpose: "purchase",
+      visitPurposes: ["purchase", "experience"],
       interests: ["art"],
       availableMinutes: 120,
       movementPreference: "balanced",
       companionType: "alone",
     });
     const pref = await repo.getPreference(session.id);
-    expect(pref!.visitPurpose).toBe("purchase");
+    expect(pref!.visitPurposes).toEqual(["purchase", "experience"]);
   });
 
   it("adds a review and updates the summary", async () => {

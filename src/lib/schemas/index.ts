@@ -13,7 +13,10 @@ export const movementSchema = z.enum(MOVEMENT_PREFERENCES);
 export const companionSchema = z.enum(COMPANION_TYPES);
 
 export const userPreferenceInputSchema = z.object({
-  visitPurpose: visitPurposeSchema,
+  visitPurposes: z
+    .array(visitPurposeSchema)
+    .min(1, "방문 목적을 1개 이상 선택해 주세요")
+    .max(VISIT_PURPOSES.length),
   interests: z
     .array(z.string())
     .min(1, "관심사를 1개 이상 선택해 주세요")

@@ -18,7 +18,7 @@ import type {
 } from "@/lib/types";
 
 type AiPreference = {
-  visitPurpose: VisitPurpose;
+  visitPurposes: VisitPurpose[];
   interests: string[];
   availableMinutes: number;
   movementPreference: MovementPreference;
@@ -62,7 +62,7 @@ export function AiQuickStart({ slug }: { slug: string }) {
       // reason chips show and the wizard is pre-filled if the user goes back.
       useOnboardingStore.setState({
         interests: res.preference.interests,
-        visitPurpose: res.preference.visitPurpose,
+        visitPurposes: res.preference.visitPurposes,
         availableMinutes: res.preference.availableMinutes,
         movementPreference: res.preference.movementPreference,
         companionType: res.preference.companionType,

@@ -76,7 +76,7 @@ export function RouteView({
   const removeFromCart = useCartStore((s) => s.remove);
   const setRoute = useRouteStore((s) => s.setRoute);
   const interests = useOnboardingStore((s) => s.interests);
-  const visitPurpose = useOnboardingStore((s) => s.visitPurpose);
+  const visitPurposes = useOnboardingStore((s) => s.visitPurposes);
   const availableMinutes = useOnboardingStore((s) => s.availableMinutes);
   const movementPreference = useOnboardingStore((s) => s.movementPreference);
   const records = useVisitStore((s) => s.records);
@@ -134,9 +134,11 @@ export function RouteView({
     const names = interests
       .map((slug) => categories.find((c) => c.slug === slug)?.name)
       .filter((n): n is string => Boolean(n));
-    const purposeLabel = VISIT_PURPOSE_OPTIONS.find(
-      (o) => o.value === visitPurpose,
-    )?.label;
+    const purposeLabel = VISIT_PURPOSE_OPTIONS.filter((o) =>
+      visitPurposes.includes(o.value),
+    )
+      .map((o) => o.label)
+      .join("·");
     const timeLabel = availableMinutes
       ? (TIME_OPTIONS.find((o) => o.value === availableMinutes)?.label ??
         `${Math.round(availableMinutes / 60)}시간`)
@@ -165,7 +167,7 @@ export function RouteView({
     ordered,
     interests,
     categories,
-    visitPurpose,
+    visitPurposes,
     availableMinutes,
     movementPreference,
   ]);

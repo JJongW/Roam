@@ -1,4 +1,4 @@
-import { COMPANION_WEIGHTS, PURPOSE_WEIGHTS } from "@/lib/constants";
+import { COMPANION_WEIGHTS, mergePurposeWeights } from "@/lib/constants";
 import type {
   Booth,
   BoothEvent,
@@ -50,7 +50,7 @@ export function eventBoost(
 export interface ScoreContext {
   preference: Pick<
     UserPreference,
-    "visitPurpose" | "interests" | "availableMinutes" | "companionType"
+    "visitPurposes" | "interests" | "availableMinutes" | "companionType"
   >;
   waitingByBooth: Record<string, Waiting | undefined>;
   eventsByBooth: Record<string, BoothEvent[]>;
@@ -59,7 +59,7 @@ export interface ScoreContext {
 
 export function scoreBooth(booth: Booth, ctx: ScoreContext): ScoredBooth {
   // Purpose sets the base weighting; companion tilts it (who's visiting).
-  const pw = PURPOSE_WEIGHTS[ctx.preference.visitPurpose];
+  const pw = mergePurposeWeights(ctx.preference.visitPurposes);
   const cw = COMPANION_WEIGHTS[ctx.preference.companionType];
   const w = {
     interest: pw.interest * cw.interest,
