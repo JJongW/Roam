@@ -63,7 +63,7 @@ export default async function ExhibitionDetailPage({ params }: Props) {
             className={cn(
               "absolute inset-0",
               exhibition.coverImageUrl
-                ? "bg-gradient-to-t from-black/75 via-black/25 to-transparent"
+                ? "bg-gradient-to-t from-black/45 via-black/10 to-transparent"
                 : "bg-gradient-to-br from-primary/85 to-[#4338ca]",
             )}
             aria-hidden
