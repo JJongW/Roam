@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 import { getRepository } from "@/lib/repositories";
+import { cn } from "@/lib/utils";
 import { AppBar } from "@/components/common/app-bar";
 import { AccountButton } from "@/components/auth/account-button";
 import { Tips } from "@/components/exhibition/tips";
@@ -43,8 +44,31 @@ export default async function ExhibitionDetailPage({ params }: Props) {
     <>
       <AppBar title={exhibition.name} right={<AccountButton />} />
       <main className="flex-1 pb-32">
-        <div className="relative flex h-44 items-end bg-gradient-to-br from-primary/85 to-[#4338ca] p-5">
-          <div className="text-white">
+        {/* Hero = the fair's own poster when set (cover_image_url), else the
+            brand gradient. Data-driven, so any added exhibition gets its poster
+            here just by setting coverImageUrl — no per-fair code. */}
+        <div
+          className="relative flex h-52 items-end p-5"
+          style={
+            exhibition.coverImageUrl
+              ? {
+                  backgroundImage: `url(${exhibition.coverImageUrl})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }
+              : undefined
+          }
+        >
+          <div
+            className={cn(
+              "absolute inset-0",
+              exhibition.coverImageUrl
+                ? "bg-gradient-to-t from-black/75 via-black/25 to-transparent"
+                : "bg-gradient-to-br from-primary/85 to-[#4338ca]",
+            )}
+            aria-hidden
+          />
+          <div className="relative text-white">
             <h1 className="text-2xl font-extrabold leading-tight drop-shadow-sm">
               {exhibition.name}
             </h1>
