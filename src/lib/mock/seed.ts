@@ -81,7 +81,8 @@ export const exhibition: Exhibition = {
     "‘한 걸음(One Small Step)’을 주제로 열리는 국내 최대 규모의 책 축제. A홀·B1홀에 국내외 출판사 부스가 들어섭니다. 공식 부스배치도를 그대로 옮겨 실제 위치·크기로 길을 안내해요.",
   startDate: "2026-06-24",
   endDate: "2026-06-28",
-  coverImageUrl: undefined,
+  coverImageUrl:
+    "https://res.cloudinary.com/decb4pqj0/image/upload/f_auto,q_auto,w_1200/v1782138259/roam/exhibitions/sibf-2026-keyvisual.jpg",
   mapImageUrl: undefined,
   mapWidth: floorplan.width,
   mapHeight: floorplan.height,
