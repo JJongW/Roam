@@ -13,8 +13,6 @@ import { getRepository } from "@/lib/repositories";
 import { cn } from "@/lib/utils";
 import { AppBar } from "@/components/common/app-bar";
 import { AccountButton } from "@/components/auth/account-button";
-import { Tips } from "@/components/exhibition/tips";
-import { CategoryChip } from "@/components/booth/category-chip";
 import { Button } from "@/components/ui/button";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -36,14 +34,13 @@ export default async function ExhibitionDetailPage({ params }: Props) {
   const detail = await repo.getExhibition(slug);
   if (!detail) notFound();
 
-  const { exhibition, categories } = detail;
-  const booths = await repo.listBoothsByExhibitionId(exhibition.id);
+  const { exhibition } = detail;
   const range = `${format(new Date(exhibition.startDate), "yyyy.M.d")} – ${format(new Date(exhibition.endDate), "M.d")}`;
 
   return (
     <>
       <AppBar title={exhibition.name} right={<AccountButton />} />
-      <main className="flex-1 pb-32">
+      <main className="flex-1 pb-8">
         {/* Hero = the fair's own poster when set (cover_image_url), else the
             brand gradient. Data-driven, so any added exhibition gets its poster
             here just by setting coverImageUrl — no per-fair code. */}
@@ -75,8 +72,8 @@ export default async function ExhibitionDetailPage({ params }: Props) {
           </div>
         </div>
 
-        <div className="space-y-6 px-5 py-5">
-          <section className="space-y-2.5">
+        <div className="space-y-4 px-5 py-5">
+          <section className="space-y-1.5">
             <div className="flex items-center gap-2 text-sm font-medium">
               <MapPin className="size-4 text-muted-foreground" aria-hidden />
               {exhibition.venue}
@@ -85,70 +82,49 @@ export default async function ExhibitionDetailPage({ params }: Props) {
               <CalendarDays className="size-4" aria-hidden />
               {range}
             </div>
-            <p className="text-[15px] leading-relaxed text-foreground/90">
-              {exhibition.description}
-            </p>
           </section>
 
-          <section className="space-y-2">
-            <h2 className="text-sm font-bold text-muted-foreground">
-              카테고리 · 부스 {booths.length}개
-            </h2>
-            <div className="flex flex-wrap gap-1.5">
-              {categories.map((c) => (
-                <CategoryChip key={c.id} category={c} />
-              ))}
-            </div>
-          </section>
+          <div className="space-y-2.5">
+            <Link
+              href={`/exhibitions/${slug}/onboarding`}
+              className="flex items-center gap-3 rounded-2xl border border-primary/30 bg-accent/40 p-4 shadow-[var(--shadow-card)] active:scale-[0.99]"
+            >
+              <div className="flex size-11 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+                <Sparkles className="size-5" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="font-bold">동선 추천받기</p>
+                <p className="text-sm text-muted-foreground">
+                  관심사·시간에 맞춰 맞춤 관람 코스를 짜드려요
+                </p>
+              </div>
+              <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
+            </Link>
 
-          <Link
-            href={`/exhibitions/${slug}/onboarding`}
-            className="flex items-center gap-3 rounded-2xl border border-primary/30 bg-accent/40 p-4 shadow-[var(--shadow-card)] active:scale-[0.99]"
-          >
-            <div className="flex size-11 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-              <Sparkles className="size-5" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="font-bold">동선 추천받기</p>
-              <p className="text-sm text-muted-foreground">
-                관심사·시간에 맞춰 맞춤 관람 코스를 짜드려요
-              </p>
-            </div>
-            <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
-          </Link>
+            <Link
+              href={`/exhibitions/${slug}/routes`}
+              className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-[var(--shadow-card)] active:scale-[0.99]"
+            >
+              <div className="flex size-11 items-center justify-center rounded-xl bg-secondary">
+                <RouteIcon className="size-5 text-foreground" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="font-bold">다른 사람 동선 둘러보기</p>
+                <p className="text-sm text-muted-foreground">
+                  방문객이 공유한 추천 코스를 따라가 보세요
+                </p>
+              </div>
+              <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
+            </Link>
 
-          <Link
-            href={`/exhibitions/${slug}/routes`}
-            className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-[var(--shadow-card)] active:scale-[0.99]"
-          >
-            <div className="flex size-11 items-center justify-center rounded-xl bg-secondary">
-              <RouteIcon className="size-5 text-foreground" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="font-bold">다른 사람 동선 둘러보기</p>
-              <p className="text-sm text-muted-foreground">
-                방문객이 공유한 추천 코스를 따라가 보세요
-              </p>
-            </div>
-            <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
-          </Link>
-
-          <section className="space-y-2.5">
-            <h2 className="text-base font-bold">방문 팁</h2>
-            <Tips tips={exhibition.tips} />
-          </section>
+            <Button asChild size="lg" className="w-full">
+              <Link href={`/exhibitions/${slug}/map`}>
+                <MapIcon className="size-5" /> 지도 보기 · 부스 담기
+              </Link>
+            </Button>
+          </div>
         </div>
       </main>
-
-      {/* Entry = the map: visitors pick booths first. Recommendation now lives
-          in-content as a card; the bottom bar is the single map CTA. */}
-      <div className="fixed inset-x-0 bottom-0 z-40 mx-auto flex w-full max-w-md gap-2 border-t border-border bg-background/90 p-4 pb-safe backdrop-blur-xl">
-        <Button asChild size="lg" className="w-full">
-          <Link href={`/exhibitions/${slug}/map`}>
-            <MapIcon className="size-5" /> 지도 보기 · 부스 담기
-          </Link>
-        </Button>
-      </div>
     </>
   );
 }
