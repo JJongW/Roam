@@ -13,6 +13,9 @@ import {
   NOTE_PHOTO_MAX_MB,
 } from "@/lib/notes/upload-photo";
 
+/** Stable empty array so the store selector never returns a fresh reference. */
+const EMPTY: string[] = [];
+
 /**
  * Personal photo attachments for a booth note. Photos are downscaled in the
  * browser, uploaded to Cloudinary (roam/notes), and stored as URLs on the
@@ -27,7 +30,9 @@ export function NotePhotos({
   compact?: boolean;
 }) {
   const user = useAuthStore((s) => s.user);
-  const photos = useVisitStore((s) => s.records[boothId]?.photos ?? []);
+  // Select the raw value (stable ref) — applying `?? []` *inside* the selector
+  // would return a fresh array each render and loop the store forever.
+  const photos = useVisitStore((s) => s.records[boothId]?.photos) ?? EMPTY;
   const setPhotos = useVisitStore((s) => s.setPhotos);
   const [busy, setBusy] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -59,7 +64,9 @@ export function NotePhotos({
       setPhotos(boothId, next);
       if (user) void pushNote(boothId);
       toast.success(
-        urls.length > 1 ? `사진 ${urls.length}장을 첨부했어요` : "사진을 첨부했어요",
+        urls.length > 1
+          ? `사진 ${urls.length}장을 첨부했어요`
+          : "사진을 첨부했어요",
       );
     } catch {
       toast.error("사진 업로드에 실패했어요");
