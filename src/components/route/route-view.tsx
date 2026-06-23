@@ -41,7 +41,6 @@ import { AppBar } from "@/components/common/app-bar";
 import { SaveRouteButton } from "@/components/route/save-route-sheet";
 import { ShareRouteButton } from "@/components/route/share-route-sheet";
 import { MyRoutesSheet } from "@/components/route/my-routes-sheet";
-import { BoothCard } from "@/components/booth/booth-card";
 import { EmptyState } from "@/components/common/states";
 import { Button } from "@/components/ui/button";
 import { ExhibitionMap } from "@/components/map/exhibition-map";
@@ -80,26 +79,17 @@ export function RouteView({
   const movementPreference = useOnboardingStore((s) => s.movementPreference);
   const records = useVisitStore((s) => s.records);
   const toggleStatus = useVisitStore((s) => s.toggleStatus);
-  const skippedIds = idsByStatus(records, "skipped");
+  const skippedIds = useMemo(() => idsByStatus(records, "skipped"), [records]);
+  const skippedSet = useMemo(() => new Set(skippedIds), [skippedIds]);
   const visitedIds = useMemo(() => idsByStatus(records, "visited"), [records]);
   const visitedSet = useMemo(() => new Set(visitedIds), [visitedIds]);
   // 관람 모드: enlarge the map + drop the editing chrome for a clean walking view.
   const [viewing, setViewing] = useState(false);
 
-  // Why this booth is in the route — derived from the data the page has
-  // (onboarding interests + booth signals). Removing a booth = its CartButton.
-  function reasonsFor(b: Booth): string[] {
-    const out: string[] = [];
-    if (b.tags.some((t) => interests.includes(t))) out.push("관심 분야");
-    if (b.popularity >= 70) out.push("인기 부스");
-    return out;
-  }
-
   const boothById = useMemo(
     () => new Map(booths.map((b) => [b.id, b])),
     [booths],
   );
-  const catById = new Map(categories.map((c) => [c.id, c]));
 
   // Visitor-chosen entrance / exit. The route sweep starts at the entrance and
   // the drawn path ends at the exit; defaults to the floorplan's own gates.
@@ -143,36 +133,18 @@ export function RouteView({
         .filter((b): b is Booth => b != null && !visitedSet.has(b.id)),
     [hydrated, cartIds, boothById, visitedSet],
   );
-  const plan = useMemo(() => buildOrderedRoute(chosen, start), [chosen, start]);
-
-  const ordered = chosen;
+  // "이따 다시"로 표시한 부스는 동선의 뒤로 미룬다(나머지 순서는 유지) — 지금
+  // 바로 안 볼 곳을 자동으로 후순위에. 단순 재배치라 LLM 없이 결정적으로 처리.
+  const ordered = useMemo(() => {
+    const keep = chosen.filter((b) => !skippedSet.has(b.id));
+    const later = chosen.filter((b) => skippedSet.has(b.id));
+    return [...keep, ...later];
+  }, [chosen, skippedSet]);
+  const plan = useMemo(
+    () => buildOrderedRoute(ordered, start),
+    [ordered, start],
+  );
   const orderedIds = useMemo(() => ordered.map((b) => b.id), [ordered]);
-
-  // AI one-line reason per booth ("이 부스의 주요 관람 포인트") — lazy, augments
-  // the instant data chips. Server-cached per booth-set so it costs at most one
-  // Gemini call per distinct route, not one per page view.
-  const [aiReasons, setAiReasons] = useState<Record<string, string>>({});
-  const orderedKey = orderedIds.join(",");
-  useEffect(() => {
-    if (!aiEnabled || !hydrated || orderedIds.length === 0) return;
-    let cancelled = false;
-    api
-      .post<{ reasons: Record<string, string> }>("/api/ai/route-reasons", {
-        exhibitionSlug: slug,
-        boothIds: orderedIds,
-        interests,
-      })
-      .then((r) => {
-        if (!cancelled) setAiReasons(r.reasons ?? {});
-      })
-      .catch(() => {
-        /* AI off / failed — instant data chips still cover the why. */
-      });
-    return () => {
-      cancelled = true;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [orderedKey, hydrated, aiEnabled]);
 
   // A short, deterministic "왜 이렇게 짰는지" line — built from the visitor's own
   // preferences + the route, so it costs no LLM call (and explains the picks).
@@ -489,72 +461,63 @@ export function RouteView({
         onReorder={setCartIds}
         className="space-y-1.5 px-4"
       >
-        {ordered.map((b, i) => (
-          <RouteRow key={b.id} id={b.id}>
-            {i > 0 && plan.legs[i] && (
-              <div className="mb-1 ml-8 text-xs text-muted-foreground">
-                {formatWalk(plan.legs[i].minutes)} 이동
+        {ordered.map((b, i) => {
+          const isLater = skippedSet.has(b.id);
+          return (
+            <RouteRow key={b.id} id={b.id}>
+              {/* Minimal stop: order number + booth name only. Details live on
+                  the booth page / map — the list stays a clean ordered plan. */}
+              <div
+                className={cn(
+                  "flex items-center gap-2.5 rounded-xl border border-border bg-card px-3 py-2.5",
+                  isLater && "opacity-60",
+                )}
+              >
+                <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                  {i + 1}
+                </span>
+                <Link
+                  href={`/booths/${b.id}`}
+                  className="min-w-0 flex-1 truncate text-sm font-semibold"
+                >
+                  {b.name}
+                  {isLater && (
+                    <span className="ml-1.5 text-[11px] font-semibold text-warning">
+                      이따
+                    </span>
+                  )}
+                </Link>
+                <button
+                  type="button"
+                  aria-label={isLater ? "이따 해제" : "이따 다시 (뒤로 미루기)"}
+                  onClick={() => toggleStatus(b.id, "skipped")}
+                  className={cn(
+                    "flex size-9 shrink-0 items-center justify-center rounded-full active:bg-secondary",
+                    isLater ? "text-warning" : "text-muted-foreground",
+                  )}
+                >
+                  <Clock className="size-4.5" />
+                </button>
+                <button
+                  type="button"
+                  aria-label="동선에서 빼기"
+                  onClick={() => removeFromCart(b.id)}
+                  className="flex size-9 shrink-0 items-center justify-center rounded-full text-muted-foreground active:bg-secondary"
+                >
+                  <X className="size-4.5" />
+                </button>
+                <button
+                  type="button"
+                  aria-label="관람 완료로 표시"
+                  onClick={() => toggleStatus(b.id, "visited")}
+                  className="flex h-9 shrink-0 items-center gap-1 rounded-full bg-success px-3 text-xs font-bold text-white active:opacity-90"
+                >
+                  <Check className="size-4" /> 관람
+                </button>
               </div>
-            )}
-            <BoothCard
-              booth={b}
-              order={i + 1}
-              category={catById.get(b.categoryId)}
-              compact
-              action={
-                <div className="flex items-center gap-1.5">
-                  {/* remove from plan — distinct X, not a check */}
-                  <button
-                    type="button"
-                    aria-label="동선에서 빼기"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      removeFromCart(b.id);
-                    }}
-                    className="flex size-9 shrink-0 items-center justify-center rounded-full text-muted-foreground active:bg-secondary"
-                  >
-                    <X className="size-4.5" />
-                  </button>
-                  {/* the one and only check = 관람 완료 (drops it from the 동선) */}
-                  <button
-                    type="button"
-                    aria-label="관람 완료로 표시"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      toggleStatus(b.id, "visited");
-                    }}
-                    className="flex h-9 shrink-0 items-center gap-1 rounded-full bg-success px-3 text-xs font-bold text-white active:opacity-90"
-                  >
-                    <Check className="size-4" /> 관람
-                  </button>
-                </div>
-              }
-            />
-            {reasonsFor(b).length > 0 && (
-              <div className="ml-8 mt-1 flex flex-wrap gap-1">
-                {reasonsFor(b).map((r) => (
-                  <span
-                    key={r}
-                    className="inline-flex items-center gap-0.5 rounded-full bg-secondary px-2 py-0.5 text-[11px] font-semibold text-secondary-foreground"
-                  >
-                    <Sparkles className="size-3" aria-hidden /> {r}
-                  </span>
-                ))}
-              </div>
-            )}
-            {aiReasons[b.id] && (
-              <p className="ml-8 mt-1 text-xs leading-snug text-muted-foreground">
-                <Sparkles
-                  className="mr-0.5 inline size-3 text-primary"
-                  aria-hidden
-                />
-                {aiReasons[b.id]}
-              </p>
-            )}
-          </RouteRow>
-        ))}
+            </RouteRow>
+          );
+        })}
       </Reorder.Group>
 
       <div className="fixed inset-x-0 bottom-0 z-40 mx-auto flex w-full max-w-md gap-2 border-t border-border bg-background/90 p-4 pb-safe backdrop-blur-xl">

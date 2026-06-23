@@ -810,6 +810,41 @@ export function ExhibitionMap({
             </g>
           )}
 
+          {/* Start (입구) / end (출구) markers — make the route's direction and
+              its entrance/exit unmistakable when a route is drawn. */}
+          {routePathD &&
+            routeStart &&
+            routeEnd &&
+            (
+              [
+                { p: routeStart, label: "입구", fill: "#16a34a" },
+                { p: routeEnd, label: "출구", fill: "#dc2626" },
+              ] as const
+            ).map((m) => (
+              <g key={m.label} filter="url(#route-shadow)">
+                <circle cx={m.p.x} cy={m.p.y} r={26} fill={m.fill} />
+                <circle
+                  cx={m.p.x}
+                  cy={m.p.y}
+                  r={26}
+                  fill="none"
+                  stroke="white"
+                  strokeWidth={4}
+                />
+                <text
+                  x={m.p.x}
+                  y={m.p.y}
+                  textAnchor="middle"
+                  dominantBaseline="central"
+                  fontSize={20}
+                  fontWeight={800}
+                  fill="white"
+                >
+                  {m.label}
+                </text>
+              </g>
+            ))}
+
           {/* floorplan decor (passage arrows, info bars, entrance, labels) */}
           {floorplan?.decor.map((d, i) => {
             if (d.type === "header") {
