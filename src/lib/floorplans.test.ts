@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { FLOORPLANS } from "./floorplans";
+import { aisleRoute } from "./aisle-route";
 import { booths } from "./mock/seed";
 
 describe("SIBF floorplan", () => {
@@ -41,6 +42,68 @@ describe("SIBF floorplan", () => {
       expect(b.x + b.w / 2).toBeLessThanOrEqual(fp.width);
       expect(b.y - b.h / 2).toBeGreaterThanOrEqual(0);
       expect(b.y + b.h / 2).toBeLessThanOrEqual(fp.height);
+    }
+  });
+
+  it("defines a walkable interior covering every booth", () => {
+    const interior = fp.interior ?? [];
+    expect(interior.length).toBeGreaterThan(0);
+    const inside = (x: number, y: number) =>
+      interior.some(
+        (r) =>
+          x >= r.x - r.w / 2 &&
+          x <= r.x + r.w / 2 &&
+          y >= r.y - r.h / 2 &&
+          y <= r.y + r.h / 2,
+      );
+    // Every booth centre must sit inside the walkable region (so it's routable).
+    for (const b of fp.booths)
+      expect(inside(b.x, b.y), `booth ${b.code} outside interior`).toBe(true);
+    // Gates too.
+    for (const g of fp.gates ?? [])
+      expect(inside(g.x, g.y), `gate ${g.id} outside interior`).toBe(true);
+  });
+
+  it("routes a cross-hall path that never leaves the building", () => {
+    const interior = fp.interior ?? [];
+    const inside = (x: number, y: number) =>
+      interior.some(
+        (r) =>
+          x >= r.x - r.w / 2 - 1 &&
+          x <= r.x + r.w / 2 + 1 &&
+          y >= r.y - r.h / 2 - 1 &&
+          y <= r.y + r.h / 2 + 1,
+      );
+    // Pick booths from both halls so the route must use the passage.
+    const a = fp.booths.find((b) => b.code.startsWith("A1"))!;
+    const b = fp.booths.find((x) => x.code.startsWith("B"))!;
+    const stops = [
+      fp.entrance!,
+      { x: a.x, y: a.y },
+      { x: b.x, y: b.y },
+      fp.exit!,
+    ];
+    const pts = aisleRoute(
+      stops,
+      fp.booths.map((bb) => ({ x: bb.x, y: bb.y, w: bb.w, h: bb.h })),
+      fp.width,
+      fp.height,
+      fp.interior,
+    );
+    expect(pts.length).toBeGreaterThan(2);
+    // Sample along every segment — no point may fall outside the building.
+    for (let i = 1; i < pts.length; i++) {
+      const p0 = pts[i - 1];
+      const p1 = pts[i];
+      const steps = 12;
+      for (let s = 0; s <= steps; s++) {
+        const x = p0.x + ((p1.x - p0.x) * s) / steps;
+        const y = p0.y + ((p1.y - p0.y) * s) / steps;
+        expect(
+          inside(x, y),
+          `route point (${Math.round(x)},${Math.round(y)}) left the building`,
+        ).toBe(true);
+      }
     }
   });
 });

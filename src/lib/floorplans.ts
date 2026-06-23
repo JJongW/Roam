@@ -63,6 +63,18 @@ export interface Floorplan {
   halls: FloorplanHall[];
   decor: FloorplanDecor[];
   booths: FloorplanBooth[];
+  /** Walkable interior (halls + connecting passage + gate aprons), centre-based
+   *  rects. The router blocks anything outside this union; the map shades the
+   *  exterior as walls. */
+  interior?: FloorplanRect[];
+}
+
+/** A walkable-area rectangle (centre-based). */
+export interface FloorplanRect {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
 }
 
 const ZONE: Record<string, string> = {
@@ -140,6 +152,34 @@ function buildSibf(): Floorplan {
   );
   for (const w of sibf.wc ?? []) decor.push({ type: "wc", x: w.x, y: w.y });
 
+  // Walkable interior: each hall (padded so perimeter aisles stay open), the
+  // passage that bridges the two halls, and short aprons reaching the gates.
+  // The router blocks everything outside this union, so the line can't leave
+  // the building; the map shades the exterior to read as walls.
+  const edges = (
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number,
+  ): FloorplanRect => ({
+    x: (x1 + x2) / 2,
+    y: (y1 + y2) / 2,
+    w: x2 - x1,
+    h: y2 - y1,
+  });
+  const PAD = 72;
+  const interior: FloorplanRect[] = [
+    // Hall A (bottom) + Hall B (top), padded.
+    edges(193 - PAD, 1965 - PAD, 2824 + PAD, 3204 + PAD),
+    edges(1301 - PAD, 542 - PAD, 2719 + PAD, 1781 + PAD),
+    // Passage bridging A↔B (their shared x-span across the gap).
+    edges(1301, 1740, 2719, 2010),
+    // Entrance/exit apron below Hall A.
+    edges(540, 3150, 1620, 3420),
+    // Main gate apron right of Hall B.
+    edges(2680, 1020, 3090, 1260),
+  ];
+
   return {
     entrance,
     exit,
@@ -149,6 +189,7 @@ function buildSibf(): Floorplan {
     halls,
     decor,
     booths,
+    interior,
   };
 }
 

@@ -28,15 +28,34 @@ interface Grid {
   blocked: Uint8Array;
 }
 
-/** Rasterise booth rects into a blocked/free occupancy grid. */
+/** Rasterise booth rects into a blocked/free occupancy grid. When `interior`
+ *  rects are given, every cell whose centre falls outside their union is also
+ *  blocked — this keeps the route inside the building (no piercing walls). */
 export function buildGrid(
   rects: RouteRect[],
   width: number,
   height: number,
+  interior?: RouteRect[],
 ): Grid {
   const cols = Math.ceil(width / CELL);
   const rows = Math.ceil(height / CELL);
   const blocked = new Uint8Array(cols * rows);
+  if (interior && interior.length) {
+    const inside = (px: number, py: number) =>
+      interior.some(
+        (r) =>
+          px >= r.x - r.w / 2 &&
+          px <= r.x + r.w / 2 &&
+          py >= r.y - r.h / 2 &&
+          py <= r.y + r.h / 2,
+      );
+    for (let cy = 0; cy < rows; cy++) {
+      const py = cy * CELL + CELL / 2;
+      for (let cx = 0; cx < cols; cx++) {
+        if (!inside(cx * CELL + CELL / 2, py)) blocked[cy * cols + cx] = 1;
+      }
+    }
+  }
   for (const b of rects) {
     const x0 = b.x - b.w / 2 - MARGIN;
     const x1 = b.x + b.w / 2 + MARGIN;
@@ -219,9 +238,10 @@ export function aisleRoute(
   rects: RouteRect[],
   width: number,
   height: number,
+  interior?: RouteRect[],
 ): RoutePt[] {
   if (stops.length < 2) return [];
-  const g = buildGrid(rects, width, height);
+  const g = buildGrid(rects, width, height, interior);
   // Each stop's access point is the nearest aisle cell — we route between those,
   // never into the booth centre. Going to the centre and back would draw an
   // in-and-out spike at every stop (the "tangle"); staying in the aisle and

@@ -653,6 +653,7 @@ export function ExhibitionMap({
             floorplan.booths.map((b) => ({ x: b.x, y: b.y, w: b.w, h: b.h })),
             width,
             height,
+            floorplan.interior,
           )
         : orthWaypoints(orderedRouteCenters);
       return roundedPathD(waypoints, 10);
@@ -738,6 +739,25 @@ export function ExhibitionMap({
             rx="16"
           />
 
+          {/* Walls: shade everything outside the walkable interior so the
+              building footprint (and where the route can't go) is legible. */}
+          {floorplan?.interior?.length ? (
+            <path
+              d={
+                `M0 0 H${width} V${height} H0 Z ` +
+                floorplan.interior
+                  .map(
+                    (r) =>
+                      `M${r.x - r.w / 2} ${r.y - r.h / 2} H${r.x + r.w / 2} V${r.y + r.h / 2} H${r.x - r.w / 2} Z`,
+                  )
+                  .join(" ")
+              }
+              fillRule="evenodd"
+              fill="var(--foreground)"
+              opacity={0.08}
+            />
+          ) : null}
+
           {/* hall containers + labels */}
           {hallRegions.map((r) => (
             <g key={r.label}>
@@ -748,8 +768,9 @@ export function ExhibitionMap({
                 height={r.h}
                 fill="var(--secondary)"
                 opacity={0.35}
-                stroke="var(--border)"
-                strokeWidth={1.5}
+                stroke="var(--muted-foreground)"
+                strokeWidth={5}
+                strokeOpacity={0.45}
                 rx="14"
               />
               <text
