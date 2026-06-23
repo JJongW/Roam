@@ -1,5 +1,6 @@
 import { z } from "zod";
 import {
+  AGE_GROUPS,
   ANALYTICS_TYPES,
   BOOKMARK_TARGETS,
   COMPANION_TYPES,
@@ -21,9 +22,13 @@ export const userPreferenceInputSchema = z.object({
     .array(z.string())
     .min(1, "관심사를 1개 이상 선택해 주세요")
     .max(12),
-  availableMinutes: z.number().int().min(30).max(600),
-  movementPreference: movementSchema,
-  companionType: companionSchema,
+  // The onboarding now only asks interests · age · purpose; pace/companion are
+  // no longer prompted, so they fall back to sensible defaults here.
+  availableMinutes: z.number().int().min(30).max(600).default(180),
+  movementPreference: movementSchema.default("balanced"),
+  companionType: companionSchema.default("alone"),
+  /** Visitor age group (optional; collected in onboarding for future tuning). */
+  age: z.enum(AGE_GROUPS).optional(),
 });
 export type UserPreferenceInput = z.infer<typeof userPreferenceInputSchema>;
 

@@ -1,104 +1,81 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
-import { ChevronLeft, Loader2, Sparkles } from "lucide-react";
+import { ChevronLeft, ChevronDown, Loader2, Sparkles } from "lucide-react";
 import { toast } from "sonner";
-import {
-  COMPANION_OPTIONS,
-  MOVEMENT_OPTIONS,
-  TIME_OPTIONS,
-  VISIT_PURPOSE_OPTIONS,
-} from "@/lib/constants";
+import { VISIT_PURPOSE_OPTIONS } from "@/lib/constants";
 import { useOnboardingStore } from "@/lib/stores/onboarding";
 import { useRouteStore } from "@/lib/stores/route";
 import { useCartStore } from "@/lib/stores/cart";
 import { api, ApiClientError } from "@/lib/api/client";
 import { userPreferenceInputSchema } from "@/lib/schemas";
-import type { Category, RoutePlan } from "@/lib/types";
+import { AGE_GROUPS, type AgeGroup, type Category, type RoutePlan } from "@/lib/types";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { OptionCard } from "@/components/onboarding/option-card";
-import { AiQuickStart } from "@/components/onboarding/ai-quick-start";
+import { Icon } from "@/components/common/icon";
 
-// Interests first: it's the only field quick-start requires, so putting it on
-// the opening screen makes "바로 추천 받기" reachable immediately.
-const STEPS = [
-  "interests",
-  "purpose",
-  "time",
-  "movement",
-  "companion",
-] as const;
-const TITLES: Record<(typeof STEPS)[number], { title: string; sub: string }> = {
-  purpose: {
-    title: "방문 목적이 무엇인가요?",
-    sub: "여러 개 선택할 수 있어요",
-  },
-  interests: {
-    title: "어떤 분야에 관심 있으세요?",
-    sub: "여러 개 선택할 수 있어요",
-  },
-  time: {
-    title: "얼마나 둘러보실 예정인가요?",
-    sub: "시간에 맞춰 동선을 짜드려요",
-  },
-  movement: {
-    title: "어떻게 움직이고 싶으세요?",
-    sub: "이동 스타일을 골라주세요",
-  },
-  companion: {
-    title: "누구와 함께 오셨나요?",
-    sub: "동행에 맞는 동선을 제안해요",
-  },
+const AGE_LABELS: Record<AgeGroup, string> = {
+  "10s": "10대",
+  "20s": "20대",
+  "30s": "30대",
+  "40s": "40대",
+  "50s+": "50대+",
 };
 
+/**
+ * Onboarding: a single screen that asks only what matters — 관심 분야 · 나이 ·
+ * 관람 목적. Tapping an interest expands keywords drawn from that category's
+ * booths so the choice is concrete. (Replaces the old multi-step wizard + chat.)
+ */
 export function OnboardingWizard({
   slug,
   categories,
-  aiEnabled = false,
 }: {
   slug: string;
   categories: Category[];
   aiEnabled?: boolean;
 }) {
   const router = useRouter();
-  const [step, setStep] = useState(0);
-  const [dir, setDir] = useState(1);
   const [submitting, setSubmitting] = useState(false);
+  const [expanded, setExpanded] = useState<string | null>(null);
+  const [keywords, setKeywords] = useState<Record<string, string[]> | null>(
+    null,
+  );
   const store = useOnboardingStore();
   const setRoute = useRouteStore((s) => s.setRoute);
   const setCartIds = useCartStore((s) => s.setIds);
 
-  const key = STEPS[step];
-  const meta = TITLES[key];
-  const progress = ((step + 1) / STEPS.length) * 100;
+  // Keywords per category — lazy; shown under an expanded interest cell.
+  useEffect(() => {
+    let cancelled = false;
+    api
+      .get<{ keywords: Record<string, string[]> }>(
+        `/api/exhibitions/${slug}/keywords`,
+      )
+      .then((r) => {
+        if (!cancelled) setKeywords(r.keywords ?? {});
+      })
+      .catch(() => {
+        if (!cancelled) setKeywords({});
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [slug]);
 
-  const canNext = useMemo(() => {
-    switch (key) {
-      case "purpose":
-        return store.visitPurposes.length > 0;
-      case "interests":
-        return store.interests.length > 0;
-      case "time":
-        return Boolean(store.availableMinutes);
-      case "movement":
-        return Boolean(store.movementPreference);
-      case "companion":
-        return Boolean(store.companionType);
-    }
-  }, [key, store]);
+  const ready =
+    store.interests.length > 0 && Boolean(store.age) && store.visitPurposes.length > 0;
 
-  function go(delta: number) {
-    setDir(delta);
-    setStep((s) => Math.min(STEPS.length - 1, Math.max(0, s + delta)));
-  }
-
-  async function generate(input: Record<string, unknown>) {
-    const parsed = userPreferenceInputSchema.safeParse(input);
+  async function submit() {
+    if (!ready || submitting) return;
+    const parsed = userPreferenceInputSchema.safeParse({
+      visitPurposes: store.visitPurposes,
+      interests: store.interests,
+      age: store.age,
+    });
     if (!parsed.success) {
-      toast.error("관심 분야를 1개 이상 선택해 주세요");
+      toast.error("관심 분야·나이·관람 목적을 모두 선택해 주세요");
       return;
     }
     setSubmitting(true);
@@ -108,47 +85,15 @@ export function OnboardingWizard({
         preference: parsed.data,
       });
       setRoute(route);
-      // Recommendation fills the cart; the route page lets the user edit it.
       setCartIds(route.boothIds);
       router.push(`/exhibitions/${slug}/route`);
     } catch (e) {
       const msg =
-        e instanceof ApiClientError
-          ? e.error.message
-          : "경로 생성에 실패했어요";
+        e instanceof ApiClientError ? e.error.message : "동선 생성에 실패했어요";
       toast.error(msg);
       setSubmitting(false);
     }
   }
-
-  // Full path: use every answered step.
-  function submit() {
-    return generate({
-      visitPurposes: store.visitPurposes,
-      interests: store.interests,
-      availableMinutes: store.availableMinutes,
-      movementPreference: store.movementPreference,
-      companionType: store.companionType,
-    });
-  }
-
-  // Quick start (1-2 steps): only interests are required; sensible defaults
-  // fill the rest, and the route page lets the visitor refine afterwards.
-  function quickSubmit() {
-    return generate({
-      visitPurposes: store.visitPurposes.length
-        ? store.visitPurposes
-        : ["experience"],
-      interests: store.interests,
-      availableMinutes: store.availableMinutes ?? 120,
-      movementPreference: store.movementPreference ?? "balanced",
-      companionType: store.companionType ?? "alone",
-    });
-  }
-
-  // Quick start becomes available as soon as interests are chosen, except on
-  // the final step (where the primary button already generates the route).
-  const canQuickStart = store.interests.length > 0 && step < STEPS.length - 1;
 
   return (
     <div className="flex min-h-dvh flex-col">
@@ -157,160 +102,192 @@ export function OnboardingWizard({
           variant="ghost"
           size="icon"
           aria-label="이전"
-          onClick={() => (step === 0 ? router.back() : go(-1))}
+          onClick={() => router.back()}
         >
           <ChevronLeft className="size-6" />
         </Button>
-        <Progress value={progress} className="flex-1" />
-        <span className="w-12 text-right text-sm font-semibold tabular text-muted-foreground">
-          {step + 1}/{STEPS.length}
-        </span>
+        <h1 className="text-lg font-extrabold">맞춤 동선 만들기</h1>
       </header>
 
-      <div className="flex-1 overflow-y-auto overflow-x-hidden px-5 pt-6">
-        {aiEnabled && step === 0 && (
-          <div className="mb-5">
-            <AiQuickStart slug={slug} />
-            <div className="mt-5 flex items-center gap-3">
-              <span className="h-px flex-1 bg-border" />
-              <span className="text-xs font-medium text-muted-foreground">
-                또는 직접 골라보기
-              </span>
-              <span className="h-px flex-1 bg-border" />
-            </div>
+      <div className="flex-1 space-y-8 overflow-y-auto px-5 py-6">
+        {/* 1. 관심 분야 — tap to select; expands keywords from that category */}
+        <section className="space-y-3">
+          <div>
+            <h2 className="text-xl font-extrabold">어떤 분야에 관심 있으세요?</h2>
+            <p className="text-sm text-muted-foreground">
+              분야를 누르면 어떤 부스가 있는지 키워드로 보여드려요 · 여러 개 선택
+              가능
+            </p>
           </div>
-        )}
-        <div className="space-y-1.5">
-          <h1 className="text-2xl font-extrabold leading-snug">{meta.title}</h1>
-          <p className="text-sm text-muted-foreground">{meta.sub}</p>
-        </div>
+          <div className="space-y-2">
+            {categories.map((c) => {
+              const selected = store.interests.includes(c.slug);
+              const open = expanded === c.slug;
+              const kws = keywords?.[c.slug] ?? [];
+              return (
+                <div
+                  key={c.id}
+                  className={cn(
+                    "overflow-hidden rounded-2xl border transition-colors",
+                    selected
+                      ? "border-primary bg-accent/40"
+                      : "border-border bg-card",
+                  )}
+                >
+                  <button
+                    type="button"
+                    onClick={() => {
+                      store.toggleInterest(c.slug);
+                      setExpanded((e) => (e === c.slug ? null : c.slug));
+                    }}
+                    className="flex w-full items-center gap-3 p-3.5 text-left"
+                  >
+                    <span
+                      className="flex size-10 shrink-0 items-center justify-center rounded-xl"
+                      style={{
+                        backgroundColor: `${c.color}22`,
+                        color: c.color,
+                      }}
+                    >
+                      <Icon name={c.icon} className="size-5" />
+                    </span>
+                    <span className="flex-1 font-bold">{c.name}</span>
+                    {selected && (
+                      <span className="rounded-full bg-primary px-2 py-0.5 text-[11px] font-bold text-primary-foreground">
+                        선택됨
+                      </span>
+                    )}
+                    <ChevronDown
+                      className={cn(
+                        "size-5 shrink-0 text-muted-foreground transition-transform",
+                        open && "rotate-180",
+                      )}
+                    />
+                  </button>
+                  {open && (
+                    <div className="px-3.5 pb-3.5">
+                      {keywords === null ? (
+                        <div className="flex flex-wrap gap-1.5" aria-label="키워드 불러오는 중">
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <span
+                              key={i}
+                              className="h-6 w-16 animate-pulse rounded-full bg-secondary"
+                            />
+                          ))}
+                        </div>
+                      ) : kws.length > 0 ? (
+                        <div className="flex flex-wrap gap-1.5">
+                          {kws.map((k) => (
+                            <span
+                              key={k}
+                              className="rounded-full border border-border bg-background px-2.5 py-1 text-xs font-medium text-foreground/80"
+                            >
+                              {k}
+                            </span>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-xs text-muted-foreground">
+                          이 분야의 키워드가 아직 없어요.
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </section>
 
-        <AnimatePresence mode="wait" custom={dir}>
-          <motion.div
-            key={key}
-            custom={dir}
-            initial={{ opacity: 0, x: dir * 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: dir * -40 }}
-            transition={{ duration: 0.22, ease: "easeOut" }}
-            className="mt-6"
-          >
-            {key === "purpose" && (
-              <div className="grid grid-cols-2 gap-2.5">
-                {VISIT_PURPOSE_OPTIONS.map((o) => (
-                  <OptionCard
-                    key={o.value}
-                    layout="tile"
-                    label={o.label}
-                    description={o.description}
-                    icon={o.icon}
-                    selected={store.visitPurposes.includes(o.value)}
-                    onSelect={() => store.togglePurpose(o.value)}
-                  />
-                ))}
-              </div>
-            )}
-
-            {key === "interests" && (
-              <div className="grid grid-cols-2 gap-2.5">
-                {categories.map((c) => (
-                  <OptionCard
-                    key={c.id}
-                    layout="tile"
-                    label={c.name}
-                    icon={c.icon}
-                    selected={store.interests.includes(c.slug)}
-                    onSelect={() => store.toggleInterest(c.slug)}
-                  />
-                ))}
-              </div>
-            )}
-
-            {key === "time" && (
-              <div className="grid grid-cols-2 gap-2.5">
-                {TIME_OPTIONS.map((o) => (
-                  <OptionCard
-                    key={o.value}
-                    label={o.label}
-                    selected={store.availableMinutes === o.value}
-                    onSelect={() => store.setTime(o.value)}
-                  />
-                ))}
-              </div>
-            )}
-
-            {key === "movement" && (
-              <div className="space-y-2.5">
-                {MOVEMENT_OPTIONS.map((o) => (
-                  <OptionCard
-                    key={o.value}
-                    label={o.label}
-                    description={o.description}
-                    icon={o.icon}
-                    selected={store.movementPreference === o.value}
-                    onSelect={() => store.setMovement(o.value)}
-                  />
-                ))}
-              </div>
-            )}
-
-            {key === "companion" && (
-              <div className="space-y-2.5">
-                {COMPANION_OPTIONS.map((o) => (
-                  <OptionCard
-                    key={o.value}
-                    label={o.label}
-                    description={o.description}
-                    icon={o.icon}
-                    selected={store.companionType === o.value}
-                    onSelect={() => store.setCompanion(o.value)}
-                  />
-                ))}
-              </div>
-            )}
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
-      <div className="sticky bottom-0 space-y-2 border-t border-border bg-background/90 p-4 pb-safe backdrop-blur-xl">
-        {step < STEPS.length - 1 ? (
-          <>
-            <Button
-              size="lg"
-              className="w-full"
-              disabled={!canNext}
-              onClick={() => go(1)}
-            >
-              다음
-            </Button>
-            {canQuickStart && (
-              <Button
-                variant="ghost"
-                className="w-full"
-                disabled={submitting}
-                onClick={quickSubmit}
-              >
-                {submitting ? (
-                  <Loader2 className="size-5 animate-spin" />
-                ) : (
-                  <Sparkles className="size-5" />
+        {/* 2. 나이 */}
+        <section className="space-y-3">
+          <h2 className="text-xl font-extrabold">나이대가 어떻게 되세요?</h2>
+          <div className="flex flex-wrap gap-2">
+            {AGE_GROUPS.map((a) => (
+              <button
+                key={a}
+                type="button"
+                onClick={() => store.setAge(a)}
+                aria-pressed={store.age === a}
+                className={cn(
+                  "rounded-full border px-4 py-2 text-sm font-semibold transition-colors",
+                  store.age === a
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : "border-border bg-card text-foreground",
                 )}
-                {submitting ? "추천 받는 중" : "바로 추천 받기"}
-              </Button>
-            )}
-          </>
-        ) : (
-          <Button
-            size="lg"
-            className="w-full"
-            disabled={!canNext || submitting}
-            onClick={submit}
-          >
-            {submitting && <Loader2 className="size-5 animate-spin" />}
-            {submitting ? "맞춤 동선 만드는 중" : "맞춤 동선 만들기"}
-          </Button>
-        )}
+              >
+                {AGE_LABELS[a]}
+              </button>
+            ))}
+          </div>
+        </section>
+
+        {/* 3. 관람 목적 */}
+        <section className="space-y-3">
+          <div>
+            <h2 className="text-xl font-extrabold">관람 목적이 무엇인가요?</h2>
+            <p className="text-sm text-muted-foreground">여러 개 선택 가능</p>
+          </div>
+          <div className="grid grid-cols-2 gap-2.5">
+            {VISIT_PURPOSE_OPTIONS.map((o) => {
+              const on = store.visitPurposes.includes(o.value);
+              return (
+                <button
+                  key={o.value}
+                  type="button"
+                  onClick={() => store.togglePurpose(o.value)}
+                  aria-pressed={on}
+                  className={cn(
+                    "flex items-center gap-2.5 rounded-2xl border p-3.5 text-left transition-colors",
+                    on
+                      ? "border-primary bg-accent/40"
+                      : "border-border bg-card",
+                  )}
+                >
+                  <Icon
+                    name={o.icon}
+                    className={cn(
+                      "size-5 shrink-0",
+                      on ? "text-primary" : "text-muted-foreground",
+                    )}
+                  />
+                  <span className="min-w-0">
+                    <span className="block text-sm font-bold">{o.label}</span>
+                    <span className="block truncate text-xs text-muted-foreground">
+                      {o.description}
+                    </span>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </section>
       </div>
+
+      <div className="sticky bottom-0 border-t border-border bg-background/90 p-4 pb-safe backdrop-blur-xl">
+        <Button
+          size="lg"
+          className="w-full"
+          disabled={!ready || submitting}
+          onClick={submit}
+        >
+          {submitting ? (
+            <Loader2 className="size-5 animate-spin" />
+          ) : (
+            <Sparkles className="size-5" />
+          )}
+          {submitting ? "맞춤 동선 만드는 중" : "맞춤 동선 만들기"}
+        </Button>
+      </div>
+
+      {/* Full-screen loading while the route is generated (the slowest step). */}
+      {submitting && (
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-3 bg-background/80 backdrop-blur-sm">
+          <Loader2 className="size-8 animate-spin text-primary" />
+          <p className="text-sm font-semibold">맞춤 동선을 짜고 있어요…</p>
+          <p className="text-xs text-muted-foreground">잠깐이면 돼요</p>
+        </div>
+      )}
     </div>
   );
 }

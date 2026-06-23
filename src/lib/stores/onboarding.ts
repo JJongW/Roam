@@ -3,6 +3,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import type {
+  AgeGroup,
   CompanionType,
   MovementPreference,
   VisitPurpose,
@@ -11,6 +12,7 @@ import type {
 export interface OnboardingDraft {
   visitPurposes: VisitPurpose[];
   interests: string[];
+  age?: AgeGroup;
   availableMinutes?: number;
   movementPreference?: MovementPreference;
   companionType?: CompanionType;
@@ -19,6 +21,7 @@ export interface OnboardingDraft {
 interface OnboardingState extends OnboardingDraft {
   togglePurpose: (v: VisitPurpose) => void;
   toggleInterest: (slug: string) => void;
+  setAge: (v: AgeGroup) => void;
   setTime: (m: number) => void;
   setMovement: (v: MovementPreference) => void;
   setCompanion: (v: CompanionType) => void;
@@ -44,18 +47,16 @@ export const useOnboardingStore = create<OnboardingState>()(
             ? s.interests.filter((i) => i !== slug)
             : [...s.interests, slug],
         })),
+      setAge: (age) => set({ age }),
       setTime: (availableMinutes) => set({ availableMinutes }),
       setMovement: (movementPreference) => set({ movementPreference }),
       setCompanion: (companionType) => set({ companionType }),
       reset: () => set({ ...initial }),
       isComplete: () => {
         const s = get();
+        // New onboarding asks interests · age · purpose only.
         return Boolean(
-          s.visitPurposes.length > 0 &&
-          s.interests.length > 0 &&
-          s.availableMinutes &&
-          s.movementPreference &&
-          s.companionType,
+          s.visitPurposes.length > 0 && s.interests.length > 0 && s.age,
         );
       },
     }),

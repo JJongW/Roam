@@ -26,6 +26,10 @@ export const COMPANION_TYPES = [
 ] as const;
 export type CompanionType = (typeof COMPANION_TYPES)[number];
 
+/** Visitor age group — collected in onboarding (alongside interests + purpose). */
+export const AGE_GROUPS = ["10s", "20s", "30s", "40s", "50s+"] as const;
+export type AgeGroup = (typeof AGE_GROUPS)[number];
+
 export const ROUTE_STATUSES = ["active", "completed", "abandoned"] as const;
 export type RouteStatus = (typeof ROUTE_STATUSES)[number];
 
