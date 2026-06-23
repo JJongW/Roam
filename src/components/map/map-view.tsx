@@ -302,10 +302,10 @@ export function MapView({
   return (
     // The visitor shell boxes pages to max-w-md (mobile frame). The map needs
     // full width on desktop, so break out of that box at md+ with fixed inset-0.
-    <div className="flex h-dvh flex-col overflow-hidden md:fixed md:inset-0 md:z-30 md:flex-row md:bg-background">
-      {/* Desktop: always-open side panel (search + filters + list). The mobile
-          bottom sheet is hidden at md+. Selecting in either highlights both. */}
-      <aside className="hidden w-96 shrink-0 flex-col border-r border-border bg-card md:flex">
+    <div className="flex h-dvh flex-col overflow-hidden bg-background md:fixed md:inset-0 md:z-30 md:flex-row landscape:fixed landscape:inset-0 landscape:z-30 landscape:flex-row">
+      {/* Wide / landscape: always-open side panel (search + filters + list).
+          The portrait bottom sheet is hidden here. Selecting in either syncs. */}
+      <aside className="hidden w-80 shrink-0 flex-col border-r border-border bg-card md:flex md:w-96 landscape:flex">
         <div className="flex items-center gap-1 border-b border-border px-3 py-3">
           <button
             type="button"
@@ -356,16 +356,6 @@ export function MapView({
         </div>
 
         <div className="relative flex-1 overflow-hidden">
-          {/* landscape hides the AppBar, so float a back button over the map */}
-          <button
-            type="button"
-            aria-label="뒤로 가기"
-            onClick={() => router.back()}
-            className="absolute left-3 top-3 z-40 hidden size-10 items-center justify-center rounded-full border border-border bg-card shadow-[var(--shadow-card)] landscape:flex md:landscape:hidden"
-          >
-            <ChevronLeft className="size-6" />
-          </button>
-
           <ExhibitionMap
             width={detail.exhibition.mapWidth}
             height={detail.exhibition.mapHeight}
@@ -395,7 +385,7 @@ export function MapView({
           {/* selected booth popup — decision info + quick actions. Sits above
               the sheet peek on mobile; bottom-right card on desktop. */}
           {selected && (
-            <div className="absolute inset-x-0 bottom-[124px] z-20 mx-auto w-full max-w-md p-3 md:inset-x-auto md:bottom-3 md:right-3 md:w-80 landscape:bottom-3">
+            <div className="absolute inset-x-0 bottom-[124px] z-20 mx-auto w-full max-w-md p-3 md:inset-x-auto md:bottom-3 md:right-3 md:w-80 landscape:inset-x-auto landscape:bottom-3 landscape:right-3 landscape:w-80">
               <div className="rounded-2xl border border-border bg-card p-3.5 shadow-[var(--shadow-pop)] animate-in slide-in-from-bottom-2">
                 <div className="flex items-start gap-3">
                   <div className="min-w-0 flex-1">
@@ -448,7 +438,7 @@ export function MapView({
               cart = 0 → prominent "골라드릴까요?" for first-time discovery.
               Hidden in landscape and when a booth card is showing. */}
           {hydrated && !selected && (
-            <div className="absolute inset-x-0 bottom-[132px] z-20 mx-auto flex w-fit md:inset-x-auto md:bottom-4 md:right-4 landscape:hidden md:landscape:flex">
+            <div className="absolute inset-x-0 bottom-[132px] z-20 mx-auto flex w-fit md:inset-x-auto md:bottom-4 md:right-4 landscape:inset-x-auto landscape:bottom-4 landscape:right-4">
               {cartCount > 0 ? (
                 <div className="flex items-center gap-2">
                   <Link
