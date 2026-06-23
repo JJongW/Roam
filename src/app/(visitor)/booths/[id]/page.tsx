@@ -3,6 +3,7 @@ import { Ticket, ExternalLink, Globe } from "lucide-react";
 import { getRepository } from "@/lib/repositories";
 import { AppBar } from "@/components/common/app-bar";
 import { BookmarkButton } from "@/components/booth/bookmark-button";
+import { BoothAiSummary } from "@/components/booth/booth-ai-summary";
 import { BoothPersonalPanel } from "@/components/booth/booth-personal-panel";
 import { BoothPosts } from "@/components/booth/booth-posts";
 import { CartButton } from "@/components/booth/cart-button";
@@ -45,7 +46,14 @@ export default async function BoothDetailPage({ params }: Props) {
       />
       <AppBar
         title={booth.name}
-        right={<BookmarkButton targetType="booth" targetId={booth.id} />}
+        right={
+          <div className="flex items-center gap-1">
+            {/* 동선에 담기 — lives in the title bar so it's reachable without
+                scrolling past the intro. */}
+            <CartButton boothId={booth.id} variant="icon" />
+            <BookmarkButton targetType="booth" targetId={booth.id} />
+          </div>
+        }
       />
       <main className="flex-1 pb-10">
         {/* hero */}
@@ -80,11 +88,18 @@ export default async function BoothDetailPage({ params }: Props) {
         </div>
 
         <div className="space-y-6 px-5 py-2">
+          {/* At-a-glance 정보: 부스번호 · 분야 — the structured facts up top. */}
           <div className="flex flex-wrap items-center gap-2">
+            {booth.code && (
+              <span className="rounded-full border border-border bg-card px-3 py-1 text-sm font-bold tabular">
+                부스 {booth.code}
+              </span>
+            )}
             <CategoryChip category={category} />
           </div>
 
-          <CartButton boothId={booth.id} className="w-full" />
+          {/* AI 한 줄 요약 — lazy, above the full intro (feature: 부스 AI 요약). */}
+          <BoothAiSummary boothId={booth.id} />
 
           {/* decision-driving info first: events + welcome kit before the
               general intro, so visitors can judge "go or not" up top. */}
