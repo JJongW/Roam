@@ -19,7 +19,6 @@ import type {
   User,
   UserPreference,
   VisitorSession,
-  Waiting,
   WelcomeKit,
 } from "@/lib/types";
 import type {
@@ -35,7 +34,6 @@ import type {
   RoutePatch,
   RoutePublishInput,
   UserPreferenceInput,
-  WaitingInput,
   WelcomeKitInput,
 } from "@/lib/schemas";
 
@@ -87,11 +85,7 @@ export interface Repository {
   ): Promise<BoothEvent | null>;
   deleteEvent(id: string): Promise<boolean>;
 
-  // waiting / welcome kit
-  getWaiting(boothId: string): Promise<Waiting | null>;
-  /** All waiting rows for an exhibition (single batch — avoids per-booth N+1). */
-  listWaitings(exhibitionId: string): Promise<Waiting[]>;
-  upsertWaiting(boothId: string, input: WaitingInput): Promise<Waiting>;
+  // welcome kit
   getWelcomeKit(boothId: string): Promise<WelcomeKit | null>;
   upsertWelcomeKit(
     boothId: string,

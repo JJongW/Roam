@@ -6,9 +6,8 @@ import { toast } from "sonner";
 import { api, ApiClientError } from "@/lib/api/client";
 import { cn } from "@/lib/utils";
 import { CartButton } from "@/components/booth/cart-button";
-import { WaitingBadge } from "@/components/booth/waiting-badge";
 import { CategoryChip } from "@/components/booth/category-chip";
-import type { Booth, Category, Waiting } from "@/lib/types";
+import type { Booth, Category } from "@/lib/types";
 
 interface Candidate {
   booth: Booth;
@@ -18,7 +17,9 @@ interface Candidate {
 
 /** Downscale any image to a ≤1600px JPEG and return bare base64 (no data: prefix).
  *  Normalizes mime (HEIC/PNG/… → jpeg) and trims payload before upload. */
-function fileToJpegBase64(file: File): Promise<{ data: string; mimeType: string }> {
+function fileToJpegBase64(
+  file: File,
+): Promise<{ data: string; mimeType: string }> {
   return new Promise((resolve, reject) => {
     const url = URL.createObjectURL(file);
     const img = new Image();
@@ -53,11 +54,9 @@ function fileToJpegBase64(file: File): Promise<{ data: string; mimeType: string 
 export function ScreenshotCapture({
   slug,
   categories,
-  waitings,
 }: {
   slug: string;
   categories: Category[];
-  waitings: Record<string, Waiting>;
 }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
@@ -188,7 +187,6 @@ export function ScreenshotCapture({
                             {c.confidence >= 1 ? "거의 확실" : "비슷해요"} ·{" "}
                             {c.term}
                           </span>
-                          <WaitingBadge waiting={waitings[c.booth.id]} />
                         </div>
                       </div>
                       <CartButton boothId={c.booth.id} variant="icon" />

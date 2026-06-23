@@ -480,7 +480,7 @@ export function ExhibitionMap({
         now - prev.t < 300 && Math.hypot(p.x - prev.x, p.y - prev.y) < 32;
       if (isDouble) {
         // Double-tap to zoom in toward the tapped point (or out if near max).
-        zoomBy(scale > 3 ? 0.5 : 1.9, p, true);
+        zoomBy(scale > 3 ? 0.55 : 1.6, p, true);
         lastTap.current = { t: 0, x: 0, y: 0 };
       } else {
         lastTap.current = { t: now, x: p.x, y: p.y };
@@ -505,25 +505,34 @@ export function ExhibitionMap({
               break;
             }
           }
-          // Tapping a booth nudges the view toward it — a gentle zoom-in (only
-          // if currently zoomed out) and re-centre, then preserve that view.
+          // Tapping a booth nudges the view toward it. Keep it gentle so it
+          // never feels like a yank: only bump the zoom when very zoomed out,
+          // and only re-centre when the booth sits away from the middle.
           if (hitBooth) {
             const el = containerRef.current;
             if (el) {
               const g = geomOf(hitBooth);
-              const next = Math.max(view.current.scale, 1.4);
-              view.current = {
-                scale: next,
-                offset: clampOffset(
-                  {
-                    x: el.clientWidth / 2 - g.x * next,
-                    y: el.clientHeight / 2 - g.y * next,
-                  },
-                  next,
-                ),
-              };
-              userAdjusted.current = true;
-              applyView(true);
+              const cur = view.current.scale;
+              const next = cur < 1.1 ? 1.25 : cur; // no zoom if already in
+              const cx = g.x * next + view.current.offset.x;
+              const cy = g.y * next + view.current.offset.y;
+              const offCentre =
+                Math.abs(cx - el.clientWidth / 2) > el.clientWidth * 0.28 ||
+                Math.abs(cy - el.clientHeight / 2) > el.clientHeight * 0.28;
+              if (next !== cur || offCentre) {
+                view.current = {
+                  scale: next,
+                  offset: clampOffset(
+                    {
+                      x: el.clientWidth / 2 - g.x * next,
+                      y: el.clientHeight / 2 - g.y * next,
+                    },
+                    next,
+                  ),
+                };
+                userAdjusted.current = true;
+                applyView(true);
+              }
             }
           }
           onSelect(hit); // empty → caller deselects
@@ -536,7 +545,12 @@ export function ExhibitionMap({
   }
 
   function onWheel(e: React.WheelEvent) {
-    if (e.deltaY !== 0) zoomBy(e.deltaY < 0 ? 1.12 : 0.89, localPoint(e));
+    // Gentler step + dampened for trackpads (many small deltas) so wheel/pinch
+    // zoom feels smooth rather than jumpy.
+    if (e.deltaY !== 0) {
+      const step = Math.min(0.08, Math.abs(e.deltaY) * 0.0016);
+      zoomBy(e.deltaY < 0 ? 1 + step : 1 - step, localPoint(e));
+    }
   }
 
   // Route line: clean orthogonal path (one bend per leg) with rounded corners —
@@ -697,6 +711,23 @@ export function ExhibitionMap({
                 opacity="0.5"
               />
             </pattern>
+            {/* Soft drop shadow → the walking line reads as floating above the
+                floor, so overlapping/crossing segments show depth. */}
+            <filter
+              id="route-shadow"
+              x="-20%"
+              y="-20%"
+              width="140%"
+              height="140%"
+            >
+              <feDropShadow
+                dx="0"
+                dy="2"
+                stdDeviation="3"
+                floodColor="#000"
+                floodOpacity="0.28"
+              />
+            </filter>
           </defs>
           <rect
             x="0"
@@ -736,25 +767,26 @@ export function ExhibitionMap({
           {/* route path — drawn under decor/booths so block headers, entrance
               and exit labels stay readable on top of the walking line. */}
           {routePathD && (
-            <>
+            <g filter="url(#route-shadow)">
+              {/* white casing → crossings read as clean "bridges" over the line */}
               <path
                 d={routePathD}
                 fill="none"
                 stroke="white"
-                strokeWidth={10}
+                strokeWidth={16}
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                opacity={0.9}
+                opacity={0.95}
               />
               <path
                 d={routePathD}
                 fill="none"
                 stroke="var(--route-line)"
-                strokeWidth={6}
+                strokeWidth={10}
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
-            </>
+            </g>
           )}
 
           {/* floorplan decor (passage arrows, info bars, entrance, labels) */}

@@ -3,13 +3,11 @@ import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Icon } from "@/components/common/icon";
 import { CategoryChip } from "@/components/booth/category-chip";
-import { WaitingBadge } from "@/components/booth/waiting-badge";
-import type { Booth, Category, Waiting } from "@/lib/types";
+import type { Booth, Category } from "@/lib/types";
 
 export function BoothCard({
   booth,
   category,
-  waiting,
   order,
   compact = false,
   action,
@@ -17,7 +15,6 @@ export function BoothCard({
 }: {
   booth: Booth;
   category?: Category;
-  waiting?: Waiting | null;
   order?: number;
   /** Thin, scannable single-line row (for long lists). */
   compact?: boolean;
@@ -55,7 +52,6 @@ export function BoothCard({
         <span className="min-w-0 flex-1 truncate text-sm font-semibold">
           {booth.name}
         </span>
-        <WaitingBadge waiting={waiting} />
         {action}
         {!action && (
           <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
@@ -97,10 +93,11 @@ export function BoothCard({
         <p className="truncate text-sm text-muted-foreground">
           {booth.company}
         </p>
-        <div className="mt-1 flex flex-wrap items-center gap-1.5">
-          {category && <CategoryChip category={category} />}
-          <WaitingBadge waiting={waiting} />
-        </div>
+        {category && (
+          <div className="mt-1 flex flex-wrap items-center gap-1.5">
+            <CategoryChip category={category} />
+          </div>
+        )}
       </div>
 
       <ChevronRight className="size-5 shrink-0 text-muted-foreground" />

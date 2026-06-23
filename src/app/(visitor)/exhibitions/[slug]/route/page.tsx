@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 import { getRepository } from "@/lib/repositories";
 import { hasGemini } from "@/lib/env";
 import { RouteView } from "@/components/route/route-view";
-import type { Waiting } from "@/lib/types";
 
 export const metadata = { title: "추천 동선" };
 
@@ -15,9 +14,6 @@ export default async function RoutePage({ params }: Props) {
   if (!detail) notFound();
 
   const booths = await repo.listBoothsByExhibitionId(detail.exhibition.id);
-  const waitings: Record<string, Waiting> = {};
-  for (const w of await repo.listWaitings(detail.exhibition.id))
-    waitings[w.boothId] = w;
 
   return (
     <RouteView
@@ -26,7 +22,6 @@ export default async function RoutePage({ params }: Props) {
       booths={booths}
       categories={detail.categories}
       halls={detail.halls}
-      waitings={waitings}
       aiEnabled={hasGemini}
     />
   );

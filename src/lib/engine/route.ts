@@ -11,7 +11,6 @@ import type {
   RouteLeg,
   ScoredBooth,
   UserPreference,
-  Waiting,
 } from "@/lib/types";
 
 export interface PlannedRoute {
@@ -25,20 +24,10 @@ export interface PlanOptions {
   movementPreference: UserPreference["movementPreference"];
   availableMinutes: number;
   start?: Point;
-  waitingByBooth?: Record<string, Waiting | undefined>;
 }
 
 function walkMinutes(a: Point, b: Point): number {
   return distance(a, b) / WALK_UNITS_PER_MINUTE;
-}
-
-function dwellMinutes(
-  boothId: string,
-  waitingByBooth?: Record<string, Waiting | undefined>,
-): number {
-  const w = waitingByBooth?.[boothId];
-  const wait = w?.enabled ? w.estimatedMinutes : 0;
-  return BASE_DWELL_MINUTES + wait;
 }
 
 /**
@@ -87,7 +76,7 @@ export function planRoute(
       }
     }
     if (!best) break;
-    const legCost = bestWalk + dwellMinutes(best.booth.id, opts.waitingByBooth);
+    const legCost = bestWalk + BASE_DWELL_MINUTES;
     if (spent + legCost > opts.availableMinutes && selected.length > 0) {
       remaining.delete(best.booth.id);
       continue;
@@ -152,7 +141,6 @@ export function buildManualRoute(
   booths: Booth[],
   start: Point,
   scores: Record<string, number> = {},
-  waitingByBooth?: Record<string, Waiting | undefined>,
 ): PlannedRoute {
   const pool = [...booths];
   const ordered: Booth[] = [];

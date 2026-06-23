@@ -1,8 +1,6 @@
 import { notFound } from "next/navigation";
 import { getRepository } from "@/lib/repositories";
-import { hasGemini } from "@/lib/env";
 import { MapView } from "@/components/map/map-view";
-import type { Waiting } from "@/lib/types";
 
 export const metadata = { title: "지도" };
 
@@ -15,16 +13,6 @@ export default async function MapPage({ params }: Props) {
   if (!detail) notFound();
 
   const booths = await repo.listBoothsByExhibitionId(detail.exhibition.id);
-  const waitings: Record<string, Waiting> = {};
-  for (const w of await repo.listWaitings(detail.exhibition.id))
-    waitings[w.boothId] = w;
 
-  return (
-    <MapView
-      detail={detail}
-      booths={booths}
-      waitings={waitings}
-      aiEnabled={hasGemini}
-    />
-  );
+  return <MapView detail={detail} booths={booths} />;
 }

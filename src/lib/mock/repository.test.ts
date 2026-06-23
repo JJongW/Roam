@@ -64,15 +64,4 @@ describe("MockRepository", () => {
     const list = await repo.listBookmarks(s.id);
     expect(list.length).toBe(1);
   });
-
-  it("upserts waiting info", async () => {
-    const w = await repo.upsertWaiting("b_b601", {
-      enabled: true,
-      queueCount: 5,
-      estimatedMinutes: 3,
-    });
-    expect(w.queueCount).toBe(5);
-    const got = await repo.getWaiting("b_b601");
-    expect(got!.estimatedMinutes).toBe(3);
-  });
 });

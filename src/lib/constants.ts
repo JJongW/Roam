@@ -8,7 +8,6 @@ type DimWeights = {
   interest: number;
   popularity: number;
   event: number;
-  waiting: number;
 };
 
 export const SESSION_COOKIE = "roam_session";
@@ -112,10 +111,10 @@ export const TIME_OPTIONS = [
 
 /** Per-purpose scoring weights (engine). Tuned, sum-agnostic. */
 export const PURPOSE_WEIGHTS: Record<VisitPurpose, DimWeights> = {
-  purchase: { interest: 1.4, popularity: 0.8, event: 0.6, waiting: 1.0 },
-  information: { interest: 1.2, popularity: 1.0, event: 0.7, waiting: 0.6 },
-  networking: { interest: 0.9, popularity: 0.9, event: 1.4, waiting: 0.5 },
-  experience: { interest: 1.1, popularity: 1.1, event: 1.2, waiting: 0.8 },
+  purchase: { interest: 1.4, popularity: 0.8, event: 0.6 },
+  information: { interest: 1.2, popularity: 1.0, event: 0.7 },
+  networking: { interest: 0.9, popularity: 0.9, event: 1.4 },
+  experience: { interest: 1.1, popularity: 1.1, event: 1.2 },
 };
 
 /**
@@ -132,36 +131,33 @@ export function mergePurposeWeights(purposes: VisitPurpose[]): DimWeights {
         interest: acc.interest + w.interest,
         popularity: acc.popularity + w.popularity,
         event: acc.event + w.event,
-        waiting: acc.waiting + w.waiting,
       };
     },
-    { interest: 0, popularity: 0, event: 0, waiting: 0 },
+    { interest: 0, popularity: 0, event: 0 },
   );
   const n = list.length;
   return {
     interest: sum.interest / n,
     popularity: sum.popularity / n,
     event: sum.event / n,
-    waiting: sum.waiting / n,
   };
 }
 
 /**
  * Per-companion multipliers, layered on top of PURPOSE_WEIGHTS. These tilt the
- * same four dimensions by who's visiting so the route genuinely differs:
- * - alone     : flexible, tolerates queues → softer waiting penalty.
+ * same dimensions by who's visiting so the route genuinely differs:
+ * - alone     : flexible, self-paced.
  * - partner   : enjoy things together → events/experiences nudged up.
- * - family    : with kids/parents → popular & event-rich spots, but long
- *               queues hurt a lot more.
- * - group     : moving many people → strongest queue aversion, lean popular.
- * - business  : meetings/networking → events & relevance up, queue-tolerant.
+ * - family    : with kids/parents → popular & event-rich spots.
+ * - group     : moving many people → lean popular.
+ * - business  : meetings/networking → events & relevance up.
  */
 export const COMPANION_WEIGHTS: Record<CompanionType, DimWeights> = {
-  alone: { interest: 1.0, popularity: 1.0, event: 1.0, waiting: 0.8 },
-  partner: { interest: 1.0, popularity: 1.05, event: 1.2, waiting: 1.0 },
-  family: { interest: 1.0, popularity: 1.1, event: 1.15, waiting: 1.4 },
-  group: { interest: 0.95, popularity: 1.1, event: 1.1, waiting: 1.6 },
-  business: { interest: 1.1, popularity: 0.9, event: 1.25, waiting: 0.7 },
+  alone: { interest: 1.0, popularity: 1.0, event: 1.0 },
+  partner: { interest: 1.0, popularity: 1.05, event: 1.2 },
+  family: { interest: 1.0, popularity: 1.1, event: 1.15 },
+  group: { interest: 0.95, popularity: 1.1, event: 1.1 },
+  business: { interest: 1.1, popularity: 0.9, event: 1.25 },
 };
 
 /**
@@ -190,5 +186,5 @@ export const MAX_PLANNED_STOPS = 50;
  * plan — which is the realistic experience.
  */
 export const WALK_UNITS_PER_MINUTE = 2000;
-/** Average browsing time per booth (minutes), modulated by waiting. */
+/** Average browsing time per booth (minutes). */
 export const BASE_DWELL_MINUTES = 5;

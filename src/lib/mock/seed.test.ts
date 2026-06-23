@@ -6,7 +6,6 @@ import {
   events,
   halls,
   reviews,
-  waitings,
   welcomeKits,
 } from "./seed";
 
@@ -37,9 +36,7 @@ describe("SIBF seed integrity", () => {
     }
   });
 
-  it("links waitings/events/welcomeKits/reviews to real booths", () => {
-    for (const w of waitings)
-      expect(ids.has(w.boothId), `waiting ${w.boothId}`).toBe(true);
+  it("links events/welcomeKits/reviews to real booths", () => {
     for (const e of events)
       expect(ids.has(e.boothId), `event ${e.boothId}`).toBe(true);
     for (const k of welcomeKits)

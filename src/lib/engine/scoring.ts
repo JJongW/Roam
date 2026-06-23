@@ -5,7 +5,6 @@ import type {
   Point,
   ScoredBooth,
   UserPreference,
-  Waiting,
 } from "@/lib/types";
 
 export function distance(a: Point, b: Point): number {
@@ -23,12 +22,6 @@ export function interestScore(booth: Booth, interests: string[]): number {
     1,
     0.6 + 0.2 * (hits - 1) + 0.2 * (hits / booth.tags.length || 0),
   );
-}
-
-/** Waiting penalty 0..1 — longer queues hurt, weighted by movement pref later. */
-export function waitingPenalty(waiting?: Waiting): number {
-  if (!waiting || !waiting.enabled) return 0;
-  return Math.min(1, waiting.estimatedMinutes / 30); // 30+ min wait = max penalty
 }
 
 /** Event boost 0..1 if an event overlaps the visit window [now, now+budget]. */
@@ -52,7 +45,6 @@ export interface ScoreContext {
     UserPreference,
     "visitPurposes" | "interests" | "availableMinutes" | "companionType"
   >;
-  waitingByBooth: Record<string, Waiting | undefined>;
   eventsByBooth: Record<string, BoothEvent[]>;
   now: number;
 }
@@ -65,7 +57,6 @@ export function scoreBooth(booth: Booth, ctx: ScoreContext): ScoredBooth {
     interest: pw.interest * cw.interest,
     popularity: pw.popularity * cw.popularity,
     event: pw.event * cw.event,
-    waiting: pw.waiting * cw.waiting,
   };
   const interest = interestScore(booth, ctx.preference.interests);
   const popularity = booth.popularity / 100;
@@ -74,18 +65,14 @@ export function scoreBooth(booth: Booth, ctx: ScoreContext): ScoredBooth {
     ctx.now,
     ctx.preference.availableMinutes,
   );
-  const penalty = waitingPenalty(ctx.waitingByBooth[booth.id]);
 
   const score =
-    w.interest * interest +
-    w.popularity * popularity +
-    w.event * event -
-    w.waiting * penalty;
+    w.interest * interest + w.popularity * popularity + w.event * event;
 
   return {
     booth,
     score: Number(score.toFixed(4)),
-    breakdown: { interest, popularity, event, waitingPenalty: penalty },
+    breakdown: { interest, popularity, event },
   };
 }
 

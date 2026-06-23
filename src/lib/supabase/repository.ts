@@ -31,7 +31,6 @@ import type {
   UserPreference,
   VisitPurpose,
   VisitorSession,
-  Waiting,
   WelcomeKit,
 } from "@/lib/types";
 import type {
@@ -46,7 +45,6 @@ import type {
   RoutePatch,
   RoutePublishInput,
   UserPreferenceInput,
-  WaitingInput,
   WelcomeKitInput,
 } from "@/lib/schemas";
 
@@ -161,16 +159,6 @@ function mapEvent(r: Row): BoothEvent {
     subtitle: r.subtitle == null ? undefined : String(r.subtitle),
     speaker: r.speaker == null ? undefined : String(r.speaker),
     standing: r.standing === true,
-  };
-}
-
-function mapWaiting(r: Row): Waiting {
-  return {
-    boothId: str(r.booth_id),
-    enabled: Boolean(r.enabled),
-    queueCount: num(r.queue_count),
-    estimatedMinutes: num(r.estimated_minutes),
-    updatedAt: str(r.updated_at),
   };
 }
 
@@ -501,11 +489,6 @@ export class SupabaseRepository implements Repository {
       .from("review")
       .select("*")
       .eq("booth_id", id);
-    const { data: waitingRow } = await db
-      .from("waiting")
-      .select("*")
-      .eq("booth_id", id)
-      .maybeSingle();
     const { data: kitRow } = await db
       .from("welcome_kit")
       .select("*")
@@ -526,7 +509,6 @@ export class SupabaseRepository implements Repository {
     return {
       booth,
       category: mapCategory((catRow ?? {}) as Row),
-      waiting: waitingRow ? mapWaiting(waitingRow as Row) : undefined,
       welcomeKit: kitRow ? mapWelcomeKit(kitRow as Row) : undefined,
       events: (eventRows ?? [])
         .map(mapEvent)
@@ -645,46 +627,7 @@ export class SupabaseRepository implements Repository {
     return !error && (count ?? 0) > 0;
   }
 
-  // --- waiting / welcome kit ----------------------------------------------
-
-  async getWaiting(boothId: string): Promise<Waiting | null> {
-    const db = await this.db();
-    const { data } = await db
-      .from("waiting")
-      .select("*")
-      .eq("booth_id", boothId)
-      .maybeSingle();
-    return data ? mapWaiting(data as Row) : null;
-  }
-
-  async listWaitings(exhibitionId: string): Promise<Waiting[]> {
-    const db = await this.db();
-    const { data: boothRows } = await db
-      .from("booth")
-      .select("id")
-      .eq("exhibition_id", exhibitionId);
-    const ids = (boothRows ?? []).map((b) => String((b as Row).id));
-    if (ids.length === 0) return [];
-    const { data } = await db.from("waiting").select("*").in("booth_id", ids);
-    return (data ?? []).map(mapWaiting);
-  }
-
-  async upsertWaiting(boothId: string, input: WaitingInput): Promise<Waiting> {
-    const db = await this.db();
-    const row = {
-      booth_id: boothId,
-      enabled: input.enabled,
-      queue_count: input.queueCount,
-      estimated_minutes: input.estimatedMinutes,
-      updated_at: now(),
-    };
-    const { data } = await db
-      .from("waiting")
-      .upsert(row, { onConflict: "booth_id" })
-      .select("*")
-      .single();
-    return mapWaiting((data ?? row) as Row);
-  }
+  // --- welcome kit ---------------------------------------------------------
 
   async getWelcomeKit(boothId: string): Promise<WelcomeKit | null> {
     const db = await this.db();

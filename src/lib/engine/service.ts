@@ -3,23 +3,16 @@ import { exhibitorBooths } from "@/lib/booth/normalize";
 import { rankBooths, type ScoreContext } from "@/lib/engine/scoring";
 import { planRoute, type PlannedRoute } from "@/lib/engine/route";
 import type { UserPreferenceInput } from "@/lib/schemas";
-import type {
-  Booth,
-  BoothEvent,
-  Point,
-  ScoredBooth,
-  Waiting,
-} from "@/lib/types";
+import type { Booth, BoothEvent, Point, ScoredBooth } from "@/lib/types";
 
 export interface RankResult {
   exhibitionId: string;
   ranked: ScoredBooth[];
   booths: Booth[];
-  waitingByBooth: Record<string, Waiting | undefined>;
   eventsByBooth: Record<string, BoothEvent[]>;
 }
 
-/** Fetch booths/waiting/events for an exhibition and rank them for a preference. */
+/** Fetch booths/events for an exhibition and rank them for a preference. */
 export async function rankForExhibition(
   exhibitionSlug: string,
   preference: UserPreferenceInput,
@@ -35,15 +28,11 @@ export async function rankForExhibition(
   );
   const events = await repo.listEvents(exhibitionSlug);
 
-  const waitingByBooth: Record<string, Waiting | undefined> = {};
   const eventsByBooth: Record<string, BoothEvent[]> = {};
   for (const e of events) (eventsByBooth[e.boothId] ??= []).push(e);
-  for (const w of await repo.listWaitings(detail.exhibition.id))
-    waitingByBooth[w.boothId] = w;
 
   const ctx: ScoreContext = {
     preference,
-    waitingByBooth,
     eventsByBooth,
     now: nowMs,
   };
@@ -52,7 +41,6 @@ export async function rankForExhibition(
     exhibitionId: detail.exhibition.id,
     ranked: rankBooths(booths, ctx),
     booths,
-    waitingByBooth,
     eventsByBooth,
   };
 }
@@ -67,6 +55,5 @@ export function buildPlan(
     movementPreference: preference.movementPreference,
     availableMinutes: preference.availableMinutes,
     start,
-    waitingByBooth: rank.waitingByBooth,
   });
 }

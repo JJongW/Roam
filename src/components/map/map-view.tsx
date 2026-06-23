@@ -8,7 +8,6 @@ import {
   ChevronRight,
   ChevronLeft,
   Clock3,
-  Layers,
   NotebookPen,
   Search,
   Sparkles,
@@ -21,32 +20,26 @@ import { useVisitStore, idsByStatus, pushNote } from "@/lib/stores/visit";
 import { NotePhotos } from "@/components/booth/note-photos";
 import { useAuthStore } from "@/lib/stores/auth";
 import { useCartStore } from "@/lib/stores/cart";
+import { useRouteStore } from "@/lib/stores/route";
 import { useHydrated } from "@/lib/hooks/use-hydrated";
 import { FLOORPLANS } from "@/lib/floorplans";
 import { CartButton } from "@/components/booth/cart-button";
 import { Route as RouteIcon } from "lucide-react";
 import { AppBar } from "@/components/common/app-bar";
 import { ExhibitionMap } from "@/components/map/exhibition-map";
-import { ScreenshotCapture } from "@/components/map/screenshot-capture";
-import { SwipeDeck } from "@/components/map/swipe-deck";
 import { CategoryChip } from "@/components/booth/category-chip";
-import { WaitingBadge } from "@/components/booth/waiting-badge";
 import { EmptyState } from "@/components/common/states";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { buildOrderedRoute } from "@/lib/engine/route";
-import type { Booth, ExhibitionDetail, Point, Waiting } from "@/lib/types";
+import type { Booth, ExhibitionDetail, Point } from "@/lib/types";
 
 export function MapView({
   detail,
   booths,
-  waitings,
-  aiEnabled = false,
 }: {
   detail: ExhibitionDetail;
   booths: Booth[];
-  waitings: Record<string, Waiting>;
-  aiEnabled?: boolean;
 }) {
   const router = useRouter();
   const [activeCat, setActiveCat] = useState<string | null>(null);
@@ -57,7 +50,6 @@ export function MapView({
   const [centerOn, setCenterOn] = useState<string | null>(null);
   const [query, setQuery] = useState("");
   const [sheetOpen, setSheetOpen] = useState(false);
-  const [swipeOpen, setSwipeOpen] = useState(false);
   // Hide the portrait top chrome (app bar + chips) while the map is being moved,
   // reclaiming vertical space; restore shortly after movement stops.
   const [chromeHidden, setChromeHidden] = useState(false);
@@ -150,6 +142,15 @@ export function MapView({
     if (chromeTimer.current) clearTimeout(chromeTimer.current);
     chromeTimer.current = setTimeout(() => setChromeHidden(false), 280);
   }
+
+  // Clear the in-progress 동선: empties the cart (which the map draws the route
+  // from) and any AI route, so the map starts fresh.
+  function clearRoute() {
+    useCartStore.getState().clear();
+    useRouteStore.getState().clear();
+    setSelectedId(null);
+    toast.success("동선을 비웠어요");
+  }
   useEffect(
     () => () => {
       if (chromeTimer.current) clearTimeout(chromeTimer.current);
@@ -171,49 +172,29 @@ export function MapView({
 
   function renderSearch() {
     return (
-      // Search is the default input. 캡처(스크린샷 판독) sits beside it as a
-      // secondary path so visitors aren't faced with a 4-way choice up front.
-      <div className="flex items-center gap-2">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-          <Input
-            value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              if (e.target.value) setSheetOpen(true);
-            }}
-            onFocus={() => setSheetOpen(true)}
-            placeholder="부스명·브랜드·번호 검색"
-            className="h-10 pl-9 pr-9"
-            aria-label="부스 검색"
-          />
-          {query && (
-            <button
-              type="button"
-              onClick={() => setQuery("")}
-              aria-label="검색어 지우기"
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full p-1 hover:bg-secondary"
-            >
-              <X className="size-4" />
-            </button>
-          )}
-        </div>
-        {aiEnabled && (
-          <ScreenshotCapture
-            slug={detail.exhibition.slug}
-            categories={detail.categories}
-            waitings={waitings}
-          />
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+        <Input
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            if (e.target.value) setSheetOpen(true);
+          }}
+          onFocus={() => setSheetOpen(true)}
+          placeholder="부스명·브랜드·번호 검색"
+          className="h-10 pl-9 pr-9"
+          aria-label="부스 검색"
+        />
+        {query && (
+          <button
+            type="button"
+            onClick={() => setQuery("")}
+            aria-label="검색어 지우기"
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full p-1 hover:bg-secondary"
+          >
+            <X className="size-4" />
+          </button>
         )}
-        {/* Swipe = separate lightweight discovery (not the recommendation entry). */}
-        <button
-          type="button"
-          aria-label="부스 휙휙 둘러보기"
-          onClick={() => setSwipeOpen(true)}
-          className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground transition-colors active:bg-accent/40"
-        >
-          <Layers className="size-4.5" />
-        </button>
       </div>
     );
   }
@@ -309,7 +290,6 @@ export function MapView({
                 <span className="min-w-0 flex-1 truncate text-sm font-semibold">
                   {b.name}
                 </span>
-                <WaitingBadge waiting={waitings[b.id]} />
               </button>
               <CartButton boothId={b.id} variant="icon" />
             </div>
@@ -323,13 +303,6 @@ export function MapView({
     // The visitor shell boxes pages to max-w-md (mobile frame). The map needs
     // full width on desktop, so break out of that box at md+ with fixed inset-0.
     <div className="flex h-dvh flex-col overflow-hidden md:fixed md:inset-0 md:z-30 md:flex-row md:bg-background">
-      <SwipeDeck
-        slug={detail.exhibition.slug}
-        booths={booths}
-        categories={detail.categories}
-        open={swipeOpen}
-        onClose={() => setSwipeOpen(false)}
-      />
       {/* Desktop: always-open side panel (search + filters + list). The mobile
           bottom sheet is hidden at md+. Selecting in either highlights both. */}
       <aside className="hidden w-96 shrink-0 flex-col border-r border-border bg-card md:flex">
@@ -380,16 +353,6 @@ export function MapView({
               </Link>
             }
           />
-
-          <div className="no-scrollbar flex gap-1.5 overflow-x-auto border-b border-border px-4 py-2.5">
-            {renderCategoryChips()}
-          </div>
-
-          {hasStatus && (
-            <div className="no-scrollbar flex gap-1.5 overflow-x-auto border-b border-border px-4 py-2">
-              {renderStatusChips()}
-            </div>
-          )}
         </div>
 
         <div className="relative flex-1 overflow-hidden">
@@ -449,7 +412,6 @@ export function MapView({
                     </p>
                     <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
                       {selectedCat && <CategoryChip category={selectedCat} />}
-                      <WaitingBadge waiting={waitings[selected.id]} />
                     </div>
                   </div>
                   <Button asChild size="sm">
@@ -488,13 +450,23 @@ export function MapView({
           {hydrated && !selected && (
             <div className="absolute inset-x-0 bottom-[132px] z-20 mx-auto flex w-fit md:inset-x-auto md:bottom-4 md:right-4 landscape:hidden md:landscape:flex">
               {cartCount > 0 ? (
-                <Link
-                  href={`/exhibitions/${detail.exhibition.slug}/route`}
-                  className="flex w-fit items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-[var(--shadow-pop)]"
-                >
-                  <RouteIcon className="size-4.5" /> 내 동선 {cartCount}개 ·
-                  동선 만들기
-                </Link>
+                <div className="flex items-center gap-2">
+                  <Link
+                    href={`/exhibitions/${detail.exhibition.slug}/route`}
+                    className="flex w-fit items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-[var(--shadow-pop)]"
+                  >
+                    <RouteIcon className="size-4.5" /> 내 동선 {cartCount}개 ·
+                    동선 만들기
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={clearRoute}
+                    aria-label="동선 비우기"
+                    className="flex size-11 shrink-0 items-center justify-center rounded-full border border-border bg-card text-muted-foreground shadow-[var(--shadow-pop)] active:bg-secondary"
+                  >
+                    <X className="size-5" />
+                  </button>
+                </div>
               ) : (
                 <Link
                   href={`/exhibitions/${detail.exhibition.slug}/onboarding`}
@@ -525,6 +497,17 @@ export function MapView({
             </button>
 
             <div className="px-4 pb-2">{renderSearch()}</div>
+
+            {/* Category (and any active status) filters live right under the
+                search — the map chrome stays clean for the venue. */}
+            <div className="no-scrollbar flex gap-1.5 overflow-x-auto px-4 pb-1">
+              {renderCategoryChips()}
+            </div>
+            {hasStatus && (
+              <div className="no-scrollbar flex gap-1.5 overflow-x-auto px-4 pb-1 pt-1">
+                {renderStatusChips()}
+              </div>
+            )}
 
             <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-4 pt-1">
               {renderList()}

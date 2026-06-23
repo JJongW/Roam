@@ -22,7 +22,7 @@ function scored(id: string, x: number, y: number, score: number): ScoredBooth {
   return {
     booth,
     score,
-    breakdown: { interest: 0, popularity: 0, event: 0, waitingPenalty: 0 },
+    breakdown: { interest: 0, popularity: 0, event: 0 },
   };
 }
 

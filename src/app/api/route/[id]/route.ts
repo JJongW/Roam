@@ -55,7 +55,6 @@ export async function PATCH(req: Request, { params }: Ctx) {
           {
             movementPreference: pref.movementPreference,
             availableMinutes: pref.availableMinutes,
-            waitingByBooth: rank.waitingByBooth,
           },
         );
         const refreshed = await repo.saveRoute(

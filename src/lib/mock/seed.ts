@@ -11,7 +11,6 @@ import type {
   Exhibition,
   Hall,
   Review,
-  Waiting,
   WelcomeKit,
 } from "@/lib/types";
 
@@ -202,7 +201,7 @@ function at(h: number, m = 0): string {
   ).toISOString();
 }
 
-// Anchor demo waiting times / community posts to real stands.
+// Anchor demo reviews / community posts to real stands.
 const EV_A = pick("A1902", booths[0].code!);
 const EV_B = pick("A2402", booths[1].code!);
 const EV_D = pick("B400", booths[3].code!);
@@ -258,43 +257,6 @@ const program: BoothEvent[] = Object.entries(programSchedule).flatMap(
 export const events: BoothEvent[] = [...standing, ...program];
 
 const W = booths.slice(0, 8).map((b) => b.code!);
-export const waitings: Waiting[] = [
-  {
-    boothId: id(EV_A),
-    enabled: true,
-    queueCount: 52,
-    estimatedMinutes: 30,
-    updatedAt: at(14),
-  },
-  {
-    boothId: id(EV_B),
-    enabled: true,
-    queueCount: 38,
-    estimatedMinutes: 22,
-    updatedAt: at(15),
-  },
-  {
-    boothId: id(W[0]),
-    enabled: true,
-    queueCount: 24,
-    estimatedMinutes: 15,
-    updatedAt: at(13),
-  },
-  {
-    boothId: id(W[1]),
-    enabled: true,
-    queueCount: 18,
-    estimatedMinutes: 11,
-    updatedAt: at(13),
-  },
-  {
-    boothId: id(W[2]),
-    enabled: true,
-    queueCount: 12,
-    estimatedMinutes: 8,
-    updatedAt: at(13),
-  },
-];
 
 export const welcomeKits: WelcomeKit[] = [
   {
@@ -380,7 +342,6 @@ export function freshSeed() {
     categories: structuredClone(categories),
     booths: structuredClone(booths),
     events: structuredClone(events),
-    waitings: structuredClone(waitings),
     welcomeKits: structuredClone(welcomeKits),
     reviews: structuredClone(reviews),
     communityPosts: structuredClone(communityPosts),

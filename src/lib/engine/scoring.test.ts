@@ -3,11 +3,10 @@ import {
   interestScore,
   rankBooths,
   scoreBooth,
-  waitingPenalty,
   eventBoost,
   distance,
 } from "./scoring";
-import type { Booth, BoothEvent, UserPreference, Waiting } from "@/lib/types";
+import type { Booth, BoothEvent, UserPreference } from "@/lib/types";
 
 function booth(p: Partial<Booth>): Booth {
   return {
@@ -57,32 +56,6 @@ describe("interestScore", () => {
   });
 });
 
-describe("waitingPenalty", () => {
-  it("is 0 when disabled or missing", () => {
-    expect(waitingPenalty(undefined)).toBe(0);
-    expect(
-      waitingPenalty({
-        boothId: "b1",
-        enabled: false,
-        queueCount: 0,
-        estimatedMinutes: 30,
-        updatedAt: "",
-      } as Waiting),
-    ).toBe(0);
-  });
-  it("caps at 1 for long waits", () => {
-    expect(
-      waitingPenalty({
-        boothId: "b1",
-        enabled: true,
-        queueCount: 100,
-        estimatedMinutes: 60,
-        updatedAt: "",
-      }),
-    ).toBe(1);
-  });
-});
-
 describe("eventBoost", () => {
   const now = Date.parse("2026-06-10T10:00:00+09:00");
   const within: BoothEvent = {
@@ -104,7 +77,6 @@ describe("eventBoost", () => {
 describe("scoreBooth + rankBooths", () => {
   const ctx = {
     preference: pref,
-    waitingByBooth: {},
     eventsByBooth: {},
     now: Date.parse("2026-06-10T10:00:00+09:00"),
   };
@@ -129,47 +101,44 @@ describe("scoreBooth + rankBooths", () => {
     expect(ranked[0].booth.id).toBe("a");
   });
 
-  it("penalizes long waiting", () => {
-    const ctxWait = {
-      ...ctx,
-      waitingByBooth: {
-        w: {
-          boothId: "w",
-          enabled: true,
-          queueCount: 99,
-          estimatedMinutes: 60,
-          updatedAt: "",
-        },
-      },
+  it("boosts a booth with an in-window event over one without", () => {
+    const ev: BoothEvent = {
+      id: "ev",
+      boothId: "e",
+      title: "",
+      description: "",
+      startTime: "2026-06-10T10:30:00+09:00",
+      endTime: "2026-06-10T11:00:00+09:00",
     };
-    const noWait = scoreBooth(booth({ id: "n", tags: ["ai"] }), ctx);
-    const withWait = scoreBooth(booth({ id: "w", tags: ["ai"] }), ctxWait);
-    expect(withWait.score).toBeLessThan(noWait.score);
+    const ctxEvent = { ...ctx, eventsByBooth: { e: [ev] } };
+    const noEvent = scoreBooth(booth({ id: "n", tags: ["ai"] }), ctxEvent);
+    const withEvent = scoreBooth(booth({ id: "e", tags: ["ai"] }), ctxEvent);
+    expect(withEvent.score).toBeGreaterThan(noEvent.score);
   });
 
-  it("companion tilts the score (family avoids queues harder than alone)", () => {
-    const waitingByBooth = {
-      w: {
-        boothId: "w",
-        enabled: true,
-        queueCount: 99,
-        estimatedMinutes: 60,
-        updatedAt: "",
-      },
+  it("companion tilts the score (family weighs events more than alone)", () => {
+    const ev: BoothEvent = {
+      id: "ev",
+      boothId: "w",
+      title: "",
+      description: "",
+      startTime: "2026-06-10T10:30:00+09:00",
+      endTime: "2026-06-10T11:00:00+09:00",
     };
+    const eventsByBooth = { w: [ev] };
     const aloneCtx = {
       ...ctx,
       preference: { ...pref, companionType: "alone" as const },
-      waitingByBooth,
+      eventsByBooth,
     };
     const familyCtx = {
       ...ctx,
       preference: { ...pref, companionType: "family" as const },
-      waitingByBooth,
+      eventsByBooth,
     };
     const alone = scoreBooth(booth({ id: "w", tags: ["ai"] }), aloneCtx);
     const family = scoreBooth(booth({ id: "w", tags: ["ai"] }), familyCtx);
-    // Same booth, same queue — a family is hit harder, so scores must differ.
-    expect(family.score).toBeLessThan(alone.score);
+    // Same booth + event — a family weighs events/popularity higher, so differs.
+    expect(family.score).toBeGreaterThan(alone.score);
   });
 });

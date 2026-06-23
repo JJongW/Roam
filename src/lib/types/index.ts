@@ -137,14 +137,6 @@ export interface BoothEvent {
   standing?: boolean;
 }
 
-export interface Waiting {
-  boothId: string;
-  enabled: boolean;
-  queueCount: number;
-  estimatedMinutes: number;
-  updatedAt: string;
-}
-
 export interface WelcomeKit {
   boothId: string;
   enabled: boolean;
@@ -314,7 +306,6 @@ export interface ScoreBreakdown {
   interest: number;
   popularity: number;
   event: number;
-  waitingPenalty: number;
 }
 
 export interface ScoredBooth {
@@ -326,7 +317,6 @@ export interface ScoredBooth {
 export interface BoothDetail {
   booth: Booth;
   category: Category;
-  waiting?: Waiting;
   welcomeKit?: WelcomeKit;
   events: BoothEvent[];
   reviews: Review[];

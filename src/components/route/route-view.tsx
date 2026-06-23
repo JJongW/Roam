@@ -52,7 +52,6 @@ import type {
   Hall,
   Point,
   RoutePlan,
-  Waiting,
 } from "@/lib/types";
 
 export function RouteView({
@@ -61,7 +60,6 @@ export function RouteView({
   booths,
   categories,
   halls,
-  waitings,
   aiEnabled = false,
 }: {
   slug: string;
@@ -69,7 +67,6 @@ export function RouteView({
   booths: Booth[];
   categories: Category[];
   halls: Hall[];
-  waitings: Record<string, Waiting>;
   aiEnabled?: boolean;
 }) {
   const hydrated = useHydrated();
@@ -95,8 +92,6 @@ export function RouteView({
     const out: string[] = [];
     if (b.tags.some((t) => interests.includes(t))) out.push("관심 분야");
     if (b.popularity >= 70) out.push("인기 부스");
-    const w = waitings[b.id];
-    if (w?.enabled && w.estimatedMinutes < 10) out.push("대기 짧음");
     return out;
   }
 
@@ -256,7 +251,7 @@ export function RouteView({
 
   // Re-optimise the order into a nearest-neighbour sweep from the entrance.
   function optimizeOrder() {
-    const opt = buildManualRoute(chosen, start, {}, waitings);
+    const opt = buildManualRoute(chosen, start, {});
     setCartIds(opt.boothIds);
   }
 
@@ -505,7 +500,6 @@ export function RouteView({
               booth={b}
               order={i + 1}
               category={catById.get(b.categoryId)}
-              waiting={waitings[b.id]}
               compact
               action={
                 <div className="flex items-center gap-1.5">

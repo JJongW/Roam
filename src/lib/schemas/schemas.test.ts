@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 import {
   userPreferenceInputSchema,
   reviewInputSchema,
-  waitingInputSchema,
   routeInputSchema,
 } from "./index";
 
@@ -74,18 +73,6 @@ describe("reviewInputSchema", () => {
   it("defaults author to 익명", () => {
     const r = reviewInputSchema.parse({ rating: 5, comment: "good" });
     expect(r.authorName).toBe("익명");
-  });
-});
-
-describe("waitingInputSchema", () => {
-  it("rejects negative queue", () => {
-    expect(
-      waitingInputSchema.safeParse({
-        enabled: true,
-        queueCount: -1,
-        estimatedMinutes: 5,
-      }).success,
-    ).toBe(false);
   });
 });
 

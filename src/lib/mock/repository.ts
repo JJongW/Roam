@@ -24,7 +24,6 @@ import type {
   User,
   UserPreference,
   VisitorSession,
-  Waiting,
   WelcomeKit,
 } from "@/lib/types";
 import type {
@@ -39,7 +38,6 @@ import type {
   RoutePatch,
   RoutePublishInput,
   UserPreferenceInput,
-  WaitingInput,
   WelcomeKitInput,
 } from "@/lib/schemas";
 
@@ -49,7 +47,6 @@ interface Store {
   categories: Category[];
   booths: Booth[];
   events: BoothEvent[];
-  waitings: Waiting[];
   welcomeKits: WelcomeKit[];
   reviews: Review[];
   sessions: VisitorSession[];
@@ -74,7 +71,6 @@ function buildStore(): Store {
     categories: s.categories,
     booths: s.booths,
     events: s.events,
-    waitings: s.waitings,
     welcomeKits: s.welcomeKits,
     reviews: s.reviews,
     sessions: [],
@@ -192,7 +188,6 @@ export class MockRepository implements Repository {
     return {
       booth,
       category,
-      waiting: store().waitings.find((w) => w.boothId === id),
       welcomeKit: store().welcomeKits.find((w) => w.boothId === id),
       events: store()
         .events.filter((e) => e.boothId === id)
@@ -270,31 +265,6 @@ export class MockRepository implements Repository {
     if (i < 0) return false;
     s.events.splice(i, 1);
     return true;
-  }
-
-  async getWaiting(boothId: string) {
-    return store().waitings.find((w) => w.boothId === boothId) ?? null;
-  }
-
-  async listWaitings(exhibitionId: string): Promise<Waiting[]> {
-    const ids = new Set(
-      store()
-        .booths.filter((b) => b.exhibitionId === exhibitionId)
-        .map((b) => b.id),
-    );
-    return store().waitings.filter((w) => ids.has(w.boothId));
-  }
-
-  async upsertWaiting(boothId: string, input: WaitingInput): Promise<Waiting> {
-    const s = store();
-    let w = s.waitings.find((x) => x.boothId === boothId);
-    if (!w) {
-      w = { boothId, ...input, updatedAt: now() };
-      s.waitings.push(w);
-    } else {
-      Object.assign(w, input, { updatedAt: now() });
-    }
-    return w;
   }
 
   async getWelcomeKit(boothId: string) {

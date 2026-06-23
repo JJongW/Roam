@@ -90,13 +90,6 @@ export const reviewInputSchema = z.object({
 });
 export type ReviewInput = z.infer<typeof reviewInputSchema>;
 
-export const waitingInputSchema = z.object({
-  enabled: z.boolean(),
-  queueCount: z.number().int().min(0).max(9999),
-  estimatedMinutes: z.number().int().min(0).max(480),
-});
-export type WaitingInput = z.infer<typeof waitingInputSchema>;
-
 export const welcomeKitInputSchema = z.object({
   enabled: z.boolean(),
   name: z.string().min(1).max(60),

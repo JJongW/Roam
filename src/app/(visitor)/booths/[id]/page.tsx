@@ -7,9 +7,7 @@ import { BoothPersonalPanel } from "@/components/booth/booth-personal-panel";
 import { BoothPosts } from "@/components/booth/booth-posts";
 import { CartButton } from "@/components/booth/cart-button";
 import { CategoryChip } from "@/components/booth/category-chip";
-import { WaitingBadge } from "@/components/booth/waiting-badge";
 import { ReviewSection } from "@/components/booth/review-section";
-import { LiveWaitingCard } from "@/components/booth/live-waiting-card";
 import { EventList } from "@/components/booth/event-list";
 import { AnalyticsTracker } from "@/components/common/analytics-tracker";
 import { Rating } from "@/components/common/rating";
@@ -34,15 +32,8 @@ export default async function BoothDetailPage({ params }: Props) {
   const detail = await repo.getBoothDetail(id);
   if (!detail) notFound();
 
-  const {
-    booth,
-    category,
-    waiting,
-    welcomeKit,
-    events,
-    reviews,
-    reviewSummary,
-  } = detail;
+  const { booth, category, welcomeKit, events, reviews, reviewSummary } =
+    detail;
 
   return (
     <>
@@ -91,13 +82,9 @@ export default async function BoothDetailPage({ params }: Props) {
         <div className="space-y-6 px-5 py-2">
           <div className="flex flex-wrap items-center gap-2">
             <CategoryChip category={category} />
-            <WaitingBadge waiting={waiting} showQueue />
           </div>
 
           <CartButton boothId={booth.id} className="w-full" />
-
-          {/* waiting (live) */}
-          <LiveWaitingCard boothId={booth.id} initial={waiting} />
 
           {/* decision-driving info first: events + welcome kit before the
               general intro, so visitors can judge "go or not" up top. */}
