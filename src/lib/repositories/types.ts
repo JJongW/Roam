@@ -150,6 +150,13 @@ export interface Repository {
   ): Promise<RoutePlan | null>;
   getRouteByShareId(shareId: string): Promise<RoutePlan | null>;
   listPublicRoutes(exhibitionId: string): Promise<SharedRoute[]>;
+  /** Aggregate popularity from every saved route in the exhibition: how often
+   *  each booth is included, and how often each consecutive booth pair (a
+   *  corridor) is walked. Powers the map heatmap. */
+  boothHeatmap(exhibitionId: string): Promise<{
+    booths: Record<string, number>;
+    pairs: { from: string; to: string; count: number }[];
+  }>;
 
   // users (nickname auth)
   createUser(nickname: string): Promise<User>;

@@ -946,6 +946,34 @@ export class SupabaseRepository implements Repository {
     }));
   }
 
+  async boothHeatmap(exhibitionId: string): Promise<{
+    booths: Record<string, number>;
+    pairs: { from: string; to: string; count: number }[];
+  }> {
+    const db = await this.db();
+    const { data } = await db
+      .from("route_plan")
+      .select("booth_ids")
+      .eq("exhibition_id", exhibitionId);
+    const booths: Record<string, number> = {};
+    const pairs = new Map<string, number>();
+    for (const row of data ?? []) {
+      const ids = strArr((row as Row).booth_ids);
+      for (const id of ids) booths[id] = (booths[id] ?? 0) + 1;
+      for (let i = 1; i < ids.length; i++) {
+        const key = `${ids[i - 1]}→${ids[i]}`;
+        pairs.set(key, (pairs.get(key) ?? 0) + 1);
+      }
+    }
+    return {
+      booths,
+      pairs: [...pairs.entries()].map(([k, count]) => {
+        const [from, to] = k.split("→");
+        return { from, to, count };
+      }),
+    };
+  }
+
   // --- users (nickname auth) -----------------------------------------------
 
   async createUser(nickname: string): Promise<User> {

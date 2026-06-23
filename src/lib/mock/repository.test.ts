@@ -64,4 +64,30 @@ describe("MockRepository", () => {
     const list = await repo.listBookmarks(s.id);
     expect(list.length).toBe(1);
   });
+
+  it("aggregates a booth heatmap from saved routes", async () => {
+    const s = await repo.createSession("exh_sibf_2026");
+    const leg = { from: "x", to: "y", minutes: 1, distance: 1 };
+    await repo.saveRoute(s.id, "exh_sibf_2026", {
+      boothIds: ["b_a101", "b_a201", "b_a301"],
+      estimatedMinutes: 10,
+      legs: [leg],
+      scores: {},
+      currentBoothId: "b_a101",
+    });
+    await repo.saveRoute(s.id, "exh_sibf_2026", {
+      boothIds: ["b_a101", "b_a201"],
+      estimatedMinutes: 8,
+      legs: [leg],
+      scores: {},
+      currentBoothId: "b_a101",
+    });
+    const heat = await repo.boothHeatmap("exh_sibf_2026");
+    expect(heat.booths["b_a101"]).toBe(2);
+    expect(heat.booths["b_a301"]).toBe(1);
+    const pair = heat.pairs.find(
+      (p) => p.from === "b_a101" && p.to === "b_a201",
+    );
+    expect(pair?.count).toBe(2);
+  });
 });

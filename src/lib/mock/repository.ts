@@ -593,6 +593,30 @@ export class MockRepository implements Repository {
       }));
   }
 
+  async boothHeatmap(exhibitionId: string): Promise<{
+    booths: Record<string, number>;
+    pairs: { from: string; to: string; count: number }[];
+  }> {
+    const booths: Record<string, number> = {};
+    const pairs = new Map<string, number>();
+    for (const r of store().routes) {
+      if (r.exhibitionId !== exhibitionId) continue;
+      const ids = r.boothIds;
+      for (const id of ids) booths[id] = (booths[id] ?? 0) + 1;
+      for (let i = 1; i < ids.length; i++) {
+        const key = `${ids[i - 1]}→${ids[i]}`;
+        pairs.set(key, (pairs.get(key) ?? 0) + 1);
+      }
+    }
+    return {
+      booths,
+      pairs: [...pairs.entries()].map(([k, count]) => {
+        const [from, to] = k.split("→");
+        return { from, to, count };
+      }),
+    };
+  }
+
   // --- users (nickname auth) -----------------------------------------------
 
   async createUser(nickname: string): Promise<User> {

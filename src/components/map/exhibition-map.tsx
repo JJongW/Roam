@@ -57,6 +57,10 @@ interface MapProps {
   onMoveEnd?: () => void;
   /** Booth id to pan-center on when it changes (e.g. a search result). */
   centerOn?: string | null;
+  /** Crowd heatmap: per-booth inclusion counts + per-corridor (pair) counts.
+   *  When set, popular booths are tinted and busy corridors thickened. */
+  heat?: Record<string, number>;
+  heatPairs?: { from: string; to: string; count: number }[];
   className?: string;
   /** Insets the interactive/measured viewport (e.g. to clear an overlapping
    *  bottom sheet) so fit + clamp use the visible area, not the full container.
@@ -94,6 +98,8 @@ export function ExhibitionMap({
   onMoveStart,
   onMoveEnd,
   centerOn,
+  heat,
+  heatPairs,
   className,
   viewportClassName = "inset-0",
 }: MapProps) {
@@ -662,6 +668,39 @@ export function ExhibitionMap({
     [routeKey, floorplan, width, height],
   );
 
+  // Crowd heatmap geometry. maxHeat normalises booth tint; the top corridors
+  // (most-walked pairs) are routed through the aisles and drawn as heat lines.
+  const maxHeat = useMemo(
+    () => Math.max(1, ...Object.values(heat ?? {})),
+    [heat],
+  );
+  const heatCorridors = useMemo(() => {
+    if (!heatPairs?.length) return [];
+    const top = [...heatPairs].sort((a, b) => b.count - a.count).slice(0, 24);
+    const maxPair = Math.max(1, ...top.map((p) => p.count));
+    const rects = floorplan
+      ? floorplan.booths.map((b) => ({ x: b.x, y: b.y, w: b.w, h: b.h }))
+      : [];
+    return top
+      .map((p) => {
+        const a = boothById.get(p.from);
+        const b = boothById.get(p.to);
+        if (!a || !b) return null;
+        const ga = geomOf(a);
+        const gb = geomOf(b);
+        const stops = [
+          { x: ga.x, y: ga.y },
+          { x: gb.x, y: gb.y },
+        ];
+        const pts = floorplan
+          ? aisleRoute(stops, rects, width, height, floorplan.interior)
+          : stops;
+        return { d: roundedPathD(pts, 10), t: p.count / maxPair };
+      })
+      .filter((c): c is { d: string; t: number } => Boolean(c && c.d));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [heatPairs, floorplan, width, height]);
+
   return (
     <div
       className={cn(
@@ -783,6 +822,20 @@ export function ExhibitionMap({
                 {r.label}
               </text>
             </g>
+          ))}
+
+          {/* crowd heat: busy corridors (drawn under booths, in the aisles) */}
+          {heatCorridors.map((c, i) => (
+            <path
+              key={`heat-${i}`}
+              d={c.d}
+              fill="none"
+              stroke="#f97316"
+              strokeWidth={6 + c.t * 18}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              opacity={0.12 + c.t * 0.33}
+            />
           ))}
 
           {/* route path — drawn under decor/booths so block headers, entrance
@@ -1177,6 +1230,29 @@ export function ExhibitionMap({
               </g>
             );
           })}
+
+          {/* crowd heat: popular booths tinted on top so the hot spots pop */}
+          {heat &&
+            renderBooths.map((b) => {
+              const c = heat[b.id];
+              if (!c) return null;
+              if (floorplan && !(b.code && rectByCode.has(b.code))) return null;
+              const g = geomOf(b);
+              const t = c / maxHeat;
+              return (
+                <rect
+                  key={`bh-${b.id}`}
+                  x={g.x - g.w / 2}
+                  y={g.y - g.h / 2}
+                  width={g.w}
+                  height={g.h}
+                  rx={6}
+                  fill="#f97316"
+                  opacity={0.18 + t * 0.5}
+                  pointerEvents="none"
+                />
+              );
+            })}
 
           {/* visitor position */}
           {position && (

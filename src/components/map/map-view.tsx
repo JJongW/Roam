@@ -8,6 +8,7 @@ import {
   ChevronRight,
   ChevronLeft,
   Clock3,
+  Flame,
   NotebookPen,
   Search,
   Sparkles,
@@ -15,6 +16,7 @@ import {
   MapPin,
 } from "lucide-react";
 import { toast } from "sonner";
+import { api } from "@/lib/api/client";
 import { cn } from "@/lib/utils";
 import { useVisitStore, idsByStatus, pushNote } from "@/lib/stores/visit";
 import { NotePhotos } from "@/components/booth/note-photos";
@@ -54,6 +56,13 @@ export function MapView({
   // reclaiming vertical space; restore shortly after movement stops.
   const [chromeHidden, setChromeHidden] = useState(false);
   const chromeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Crowd heatmap (방문객이 많이 담은 부스·복도). Lazy-loaded the first time it's on.
+  const [heatOn, setHeatOn] = useState(false);
+  const [heat, setHeat] = useState<{
+    booths: Record<string, number>;
+    pairs: { from: string; to: string; count: number }[];
+  } | null>(null);
+  const [heatLoading, setHeatLoading] = useState(false);
   // pointer tracking for drag-to-toggle on the sheet handle
   const dragStart = useRef<number | null>(null);
 
@@ -158,6 +167,30 @@ export function MapView({
     [],
   );
 
+  // Toggle the crowd heatmap; fetch the aggregate once, then just show/hide.
+  function toggleHeat() {
+    const next = !heatOn;
+    setHeatOn(next);
+    if (next && !heat && !heatLoading) {
+      setHeatLoading(true);
+      api
+        .get<{
+          booths: Record<string, number>;
+          pairs: { from: string; to: string; count: number }[];
+        }>(`/api/exhibitions/${detail.exhibition.slug}/heatmap`)
+        .then((d) => {
+          setHeat(d);
+          const total = Object.keys(d.booths).length;
+          if (total === 0)
+            toast("아직 인기 데이터가 쌓이는 중이에요", {
+              description: "방문객들이 동선을 저장할수록 또렷해져요.",
+            });
+        })
+        .catch(() => toast.error("인기 정보를 불러오지 못했어요"))
+        .finally(() => setHeatLoading(false));
+    }
+  }
+
   function onHandleUp(e: React.PointerEvent) {
     const start = dragStart.current;
     dragStart.current = null;
@@ -219,6 +252,24 @@ export function MapView({
           </FilterChip>
         ))}
       </>
+    );
+  }
+
+  function renderHeatToggle() {
+    return (
+      <button
+        type="button"
+        onClick={toggleHeat}
+        aria-pressed={heatOn}
+        className={cn(
+          "inline-flex shrink-0 items-center gap-1 rounded-full border px-3 py-1.5 text-sm font-semibold transition-colors",
+          heatOn
+            ? "border-[#f97316] bg-[#f97316]/12 text-[#c2410c]"
+            : "border-border bg-card text-foreground",
+        )}
+      >
+        <Flame className="size-3.5" /> 인기
+      </button>
     );
   }
 
@@ -319,6 +370,7 @@ export function MapView({
         </div>
         <div className="border-b border-border p-3">{renderSearch()}</div>
         <div className="no-scrollbar flex gap-1.5 overflow-x-auto border-b border-border px-3 py-2.5">
+          {renderHeatToggle()}
           {renderCategoryChips()}
         </div>
         {hasStatus && (
@@ -373,6 +425,8 @@ export function MapView({
             skippedIds={skippedIds}
             selectedId={selectedId}
             centerOn={centerOn}
+            heat={heatOn ? heat?.booths : undefined}
+            heatPairs={heatOn ? heat?.pairs : undefined}
             onSelect={(id) => {
               setSelectedId(id);
               if (id) setSheetOpen(false);
@@ -491,6 +545,7 @@ export function MapView({
             {/* Category (and any active status) filters live right under the
                 search — the map chrome stays clean for the venue. */}
             <div className="no-scrollbar flex gap-1.5 overflow-x-auto px-4 pb-1">
+              {renderHeatToggle()}
               {renderCategoryChips()}
             </div>
             {hasStatus && (
