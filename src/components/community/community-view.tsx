@@ -56,6 +56,7 @@ export function CommunityView({
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const [summary, setSummary] = useState<string[]>([]);
+  const [summaryLoading, setSummaryLoading] = useState(false);
   const hydrated = useHydrated();
   // Posts written on this device (delete affordance; server re-checks owner).
   // Read in render (gated by hydration) so server/first paint match — re-reads
@@ -119,6 +120,7 @@ export function CommunityView({
   useEffect(() => {
     if (!aiEnabled) return;
     let cancelled = false;
+    setSummaryLoading(true);
     api
       .post<{ summary: string[] }>("/api/ai/community-summary", {
         exhibitionSlug: slug,
@@ -126,7 +128,10 @@ export function CommunityView({
       .then((r) => {
         if (!cancelled) setSummary(r.summary ?? []);
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => {
+        if (!cancelled) setSummaryLoading(false);
+      });
     return () => {
       cancelled = true;
     };
@@ -214,6 +219,21 @@ export function CommunityView({
       <AppBar title="실시간 커뮤니티" />
 
       <div className="flex-1 overflow-y-auto px-4 py-3">
+        {summaryLoading && summary.length === 0 && (
+          <div className="mb-3 rounded-2xl border border-border bg-secondary/40 p-3.5">
+            <div className="flex items-center gap-1.5">
+              <Sparkles className="size-4 text-muted-foreground" aria-hidden />
+              <p className="text-sm font-bold">방문자 제보 요약</p>
+              <span className="rounded-full bg-secondary px-1.5 py-0.5 text-[10px] font-bold text-muted-foreground">
+                AI 정리 중…
+              </span>
+            </div>
+            <div className="mt-2 space-y-1.5" aria-label="요약 불러오는 중">
+              <div className="h-3 w-5/6 animate-pulse rounded bg-secondary" />
+              <div className="h-3 w-2/3 animate-pulse rounded bg-secondary" />
+            </div>
+          </div>
+        )}
         {summary.length > 0 && (
           <div className="mb-3 rounded-2xl border border-border bg-secondary/40 p-3.5">
             <div className="flex items-center gap-1.5">
