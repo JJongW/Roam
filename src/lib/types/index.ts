@@ -222,6 +222,8 @@ export interface BoothNote {
   boothId: string;
   status?: "visited" | "skipped";
   memo?: string;
+  /** Personal photos (Cloudinary URLs) attached to this booth note. */
+  photos?: string[];
   updatedAt: string;
 }
 

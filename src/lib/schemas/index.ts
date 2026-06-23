@@ -192,6 +192,8 @@ export type LoginInput = z.infer<typeof loginSchema>;
 export const boothNoteInputSchema = z.object({
   status: z.enum(["visited", "skipped"]).nullish(),
   memo: z.string().max(300).optional(),
+  /** Personal photos (Cloudinary URLs). Capped to keep notes lightweight. */
+  photos: z.array(z.string().url()).max(4).optional(),
 });
 export type BoothNoteInput = z.infer<typeof boothNoteInputSchema>;
 

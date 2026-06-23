@@ -258,6 +258,7 @@ function mapNote(r: Row): BoothNote {
         ? undefined
         : (String(r.status) as "visited" | "skipped"),
     memo: r.memo == null ? undefined : String(r.memo),
+    photos: Array.isArray(r.photos) ? r.photos.map(String) : undefined,
     updatedAt: str(r.updated_at),
   };
 }
@@ -1050,8 +1051,9 @@ export class SupabaseRepository implements Repository {
     const db = await this.db();
     const status = input.status ?? null;
     const memo = input.memo ?? null;
+    const photos = input.photos ?? [];
     // Empty note → delete so the gallery/back-end stays clean.
-    if (!status && (memo == null || !memo.trim())) {
+    if (!status && (memo == null || !memo.trim()) && photos.length === 0) {
       await db
         .from("booth_note")
         .delete()
@@ -1064,6 +1066,7 @@ export class SupabaseRepository implements Repository {
       booth_id: boothId,
       status,
       memo,
+      photos,
       updated_at: now(),
     };
     const { data } = await db

@@ -17,6 +17,18 @@ if (hasCloudinary) {
 export { cloudinary, hasCloudinary };
 
 export const COMMUNITY_FOLDER = "roam/community";
+export const NOTES_FOLDER = "roam/notes";
+
+/** Folders the browser may request a signed upload into (allowlist). */
+const UPLOAD_FOLDERS: Record<string, string> = {
+  community: COMMUNITY_FOLDER,
+  notes: NOTES_FOLDER,
+};
+
+/** Map a client folder key to a real folder; unknown keys fall back to community. */
+export function resolveUploadFolder(key?: string | null): string {
+  return (key && UPLOAD_FOLDERS[key]) || COMMUNITY_FOLDER;
+}
 
 /**
  * Destroy a community asset once its post is gone — media is display-only, so
@@ -39,9 +51,12 @@ export async function destroyMedia(
  * Produce the params a browser needs for a signed direct upload. The secret
  * never leaves the server; the client gets only a one-time signature.
  */
-export function signUpload(params: Record<string, string | number> = {}) {
+export function signUpload(
+  folder: string = COMMUNITY_FOLDER,
+  params: Record<string, string | number> = {},
+) {
   const timestamp = Math.round(Date.now() / 1000);
-  const toSign = { timestamp, folder: COMMUNITY_FOLDER, ...params };
+  const toSign = { timestamp, folder, ...params };
   const signature = cloudinary.utils.api_sign_request(
     toSign,
     env.CLOUDINARY_API_SECRET!,
@@ -51,6 +66,6 @@ export function signUpload(params: Record<string, string | number> = {}) {
     timestamp,
     apiKey: env.CLOUDINARY_API_KEY!,
     cloudName: env.CLOUDINARY_CLOUD_NAME!,
-    folder: COMMUNITY_FOLDER,
+    folder,
   };
 }

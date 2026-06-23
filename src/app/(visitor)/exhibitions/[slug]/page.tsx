@@ -13,7 +13,6 @@ import { getRepository } from "@/lib/repositories";
 import { cn } from "@/lib/utils";
 import { AppBar } from "@/components/common/app-bar";
 import { AccountButton } from "@/components/auth/account-button";
-import { Button } from "@/components/ui/button";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -117,11 +116,21 @@ export default async function ExhibitionDetailPage({ params }: Props) {
               <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
             </Link>
 
-            <Button asChild size="lg" className="w-full">
-              <Link href={`/exhibitions/${slug}/map`}>
-                <MapIcon className="size-5" /> 지도 보기 · 부스 담기
-              </Link>
-            </Button>
+            <Link
+              href={`/exhibitions/${slug}/map`}
+              className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-[var(--shadow-card)] active:scale-[0.99]"
+            >
+              <div className="flex size-11 items-center justify-center rounded-xl bg-secondary">
+                <MapIcon className="size-5 text-foreground" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="font-bold">지도 보기 · 부스 담기</p>
+                <p className="text-sm text-muted-foreground">
+                  전시장 지도에서 직접 둘러보고 부스를 담아요
+                </p>
+              </div>
+              <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
+            </Link>
           </div>
         </div>
       </main>

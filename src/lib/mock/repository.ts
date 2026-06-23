@@ -661,16 +661,18 @@ export class MockRepository implements Repository {
         boothId,
         status: input.status ?? undefined,
         memo: input.memo,
+        photos: input.photos,
         updatedAt: now(),
       };
       s.notes.push(n);
     } else {
       if (input.status !== undefined) n.status = input.status ?? undefined;
       if (input.memo !== undefined) n.memo = input.memo;
+      if (input.photos !== undefined) n.photos = input.photos;
       n.updatedAt = now();
     }
     // Drop empty notes so the store stays compact.
-    if (!n.status && !n.memo?.trim()) {
+    if (!n.status && !n.memo?.trim() && !n.photos?.length) {
       s.notes = s.notes.filter((x) => x !== n);
     }
     return n;

@@ -12,6 +12,8 @@ export interface BoothRecord {
   status?: BoothStatus;
   /** Free-form personal note shown on the booth detail + map. */
   memo?: string;
+  /** Personal photos (Cloudinary URLs) attached to this booth. */
+  photos?: string[];
 }
 
 interface VisitState {
@@ -20,6 +22,7 @@ interface VisitState {
   toggleStatus: (boothId: string, status: BoothStatus) => void;
   setStatus: (boothId: string, status: BoothStatus | null) => void;
   setMemo: (boothId: string, memo: string) => void;
+  setPhotos: (boothId: string, photos: string[]) => void;
   /** Replace the cache from the server (called after sign-in). */
   setFromNotes: (notes: BoothNote[]) => void;
   clear: () => void;
@@ -35,6 +38,7 @@ export async function pushNote(boothId: string): Promise<void> {
     await api.put(`/api/me/notes/${boothId}`, {
       status: r?.status ?? null,
       memo: r?.memo ?? "",
+      photos: r?.photos ?? [],
     });
   } catch {
     /* offline / not signed in — local cache still holds it */
@@ -48,7 +52,7 @@ function patch(
 ): Record<string, BoothRecord> {
   const merged: BoothRecord = { ...records[boothId], ...next };
   // Drop empty records so the store stays compact.
-  if (!merged.status && !merged.memo?.trim()) {
+  if (!merged.status && !merged.memo?.trim() && !merged.photos?.length) {
     const { [boothId]: _omit, ...rest } = records;
     return rest;
   }
@@ -71,12 +75,18 @@ export const useVisitStore = create<VisitState>()(
         })),
       setMemo: (boothId, memo) =>
         set((s) => ({ records: patch(s.records, boothId, { memo }) })),
+      setPhotos: (boothId, photos) =>
+        set((s) => ({ records: patch(s.records, boothId, { photos }) })),
       setFromNotes: (notes) =>
         set(() => {
           const records: Record<string, BoothRecord> = {};
           for (const n of notes) {
-            if (n.status || n.memo?.trim())
-              records[n.boothId] = { status: n.status, memo: n.memo };
+            if (n.status || n.memo?.trim() || n.photos?.length)
+              records[n.boothId] = {
+                status: n.status,
+                memo: n.memo,
+                photos: n.photos,
+              };
           }
           return { records };
         }),

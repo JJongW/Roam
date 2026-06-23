@@ -1,6 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+} from "react";
 import { Minus, Plus, Locate } from "lucide-react";
 import { cn, clamp } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -43,8 +49,12 @@ interface MapProps {
   focus?: Point | null;
   onSelect?: (boothId: string) => void;
   onMapTap?: (p: Point) => void;
-  /** Fired when the user starts panning/pinching the map (to collapse overlays). */
+  /** Fired on pointer-down (to collapse overlays like the bottom sheet). */
   onInteractStart?: () => void;
+  /** Fired when an actual pan/pinch movement begins (to hide map chrome). */
+  onMoveStart?: () => void;
+  /** Fired when a pan/pinch gesture ends (to restore map chrome after a beat). */
+  onMoveEnd?: () => void;
   /** Booth id to pan-center on when it changes (e.g. a search result). */
   centerOn?: string | null;
   className?: string;
@@ -81,13 +91,43 @@ export function ExhibitionMap({
   onSelect,
   onMapTap,
   onInteractStart,
+  onMoveStart,
+  onMoveEnd,
   centerOn,
   className,
   viewportClassName = "inset-0",
 }: MapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(1);
-  const [offset, setOffset] = useState<Point>({ x: 0, y: 0 });
+  const svgRef = useRef<SVGSVGElement>(null);
+  // Live pan/zoom, driven imperatively so dragging never re-renders the (heavy)
+  // booth layer — only the SVG transform changes on each move.
+  const view = useRef<{ scale: number; offset: Point }>({
+    scale: 1,
+    offset: { x: 0, y: 0 },
+  });
+  // Once the visitor pans/zooms/taps, stop auto-refitting on container resize
+  // (chrome show/hide, status chips appearing) — keep their chosen view.
+  const userAdjusted = useRef(false);
+  const moveStartFired = useRef(false);
+
+  // Write the current view to the DOM. `animate` adds a short transition for
+  // programmatic moves (tap-zoom, buttons); drags pass false for instant feel.
+  const applyView = useCallback((animate = false) => {
+    const el = svgRef.current;
+    if (!el) return;
+    const { scale, offset } = view.current;
+    el.style.transition = animate ? "transform 220ms ease-out" : "none";
+    el.style.transform = `translate(${offset.x}px, ${offset.y}px) scale(${scale})`;
+  }, []);
+  // Re-assert just the transform after a React re-render (which would otherwise
+  // drop the imperatively-set inline style). Leaves `transition` untouched so an
+  // in-flight animated move (tap-zoom, centre-on) isn't cut short.
+  const reassertTransform = useCallback(() => {
+    const el = svgRef.current;
+    if (!el) return;
+    const { scale, offset } = view.current;
+    el.style.transform = `translate(${offset.x}px, ${offset.y}px) scale(${scale})`;
+  }, []);
   // Active touch/mouse points for pan (1) + pinch (2) gestures.
   const pointers = useRef<Map<number, Point>>(new Map());
   const gesture = useRef<{
@@ -178,38 +218,71 @@ export function ExhibitionMap({
         );
 
   // Fit map to container. Guards against 0-size (layout not ready).
-  const fit = useCallback(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const cw = el.clientWidth;
-    const ch = el.clientHeight;
-    if (cw < 2 || ch < 2) return;
-    const contain = Math.min(cw / width, ch / height) * 0.96;
-    // fillHeight: zoom so the map fills the viewport vertically (pan horizontally),
-    // but never below the contain scale.
-    const s = fillHeight ? Math.max(contain, (ch / height) * 0.92) : contain;
-    const cx = focus ? focus.x : width / 2;
-    const cy = focus ? focus.y : height / 2;
-    const scaledH = height * s;
-    setScale(s);
-    setOffset({
-      x: clamp(
-        cw / 2 - cx * s,
-        Math.min(0, cw - width * s),
-        Math.max(0, cw - width * s),
-      ),
-      // When the whole map is shorter than the viewport, anchor it near the top
-      // (instead of vertical-centering) so there's no large empty band above.
-      y:
-        !focus && scaledH < ch
-          ? 12
-          : clamp(
-              ch / 2 - cy * s,
-              Math.min(0, ch - scaledH),
-              Math.max(0, ch - scaledH),
-            ),
-    });
-  }, [width, height, fillHeight, focus?.x, focus?.y]);
+  const fit = useCallback(
+    (animate = false) => {
+      const el = containerRef.current;
+      if (!el) return;
+      const cw = el.clientWidth;
+      const ch = el.clientHeight;
+      if (cw < 2 || ch < 2) return;
+      // After the visitor has taken control, a resize (chrome hiding, status
+      // chips appearing) must NOT snap back to the fitted view — just re-clamp
+      // so their pan/zoom stays within the new bounds.
+      if (userAdjusted.current) {
+        const s = view.current.scale;
+        const o = view.current.offset;
+        view.current.offset = {
+          x: clamp(
+            o.x,
+            Math.min(0, cw - width * s),
+            Math.max(0, cw - width * s),
+          ),
+          y: clamp(
+            o.y,
+            Math.min(0, ch - height * s),
+            Math.max(0, ch - height * s),
+          ),
+        };
+        applyView(animate);
+        return;
+      }
+      const contain = Math.min(cw / width, ch / height) * 0.96;
+      // fillHeight: zoom so the map fills the viewport vertically (pan horizontally),
+      // but never below the contain scale.
+      const s = fillHeight ? Math.max(contain, (ch / height) * 0.92) : contain;
+      const cx = focus ? focus.x : width / 2;
+      const cy = focus ? focus.y : height / 2;
+      const scaledH = height * s;
+      view.current = {
+        scale: s,
+        offset: {
+          x: clamp(
+            cw / 2 - cx * s,
+            Math.min(0, cw - width * s),
+            Math.max(0, cw - width * s),
+          ),
+          // When the whole map is shorter than the viewport, anchor it near the
+          // top (not vertical-centred) so there's no large empty band above.
+          y:
+            !focus && scaledH < ch
+              ? 12
+              : clamp(
+                  ch / 2 - cy * s,
+                  Math.min(0, ch - scaledH),
+                  Math.max(0, ch - scaledH),
+                ),
+        },
+      };
+      applyView(animate);
+    },
+    [width, height, fillHeight, focus?.x, focus?.y, applyView],
+  );
+
+  // The explicit "전체 보기" control: drop the user-adjusted lock and re-fit.
+  const resetView = useCallback(() => {
+    userAdjusted.current = false;
+    fit(true);
+  }, [fit]);
 
   // Re-fit whenever the container is (re)sized — handles late layout, rotation, etc.
   useEffect(() => {
@@ -220,6 +293,13 @@ export function ExhibitionMap({
     ro.observe(el);
     return () => ro.disconnect();
   }, [fit]);
+
+  // The SVG transform is driven imperatively (not via JSX style), so any
+  // re-render that recreates inline styles would otherwise drop it. Re-assert
+  // the current view after every render — cheap (one style write).
+  useLayoutEffect(() => {
+    reassertTransform();
+  });
 
   // Keep the map within the viewport so it can never be panned out of sight.
   const clampOffset = useCallback(
@@ -246,31 +326,42 @@ export function ExhibitionMap({
 
   // Zoom by a factor, keeping the given container-point fixed (defaults to center).
   const zoomBy = useCallback(
-    (factor: number, focal?: Point) => {
+    (factor: number, focal?: Point, animate = false) => {
       const el = containerRef.current;
       if (!el) return;
       const fx = focal?.x ?? el.clientWidth / 2;
       const fy = focal?.y ?? el.clientHeight / 2;
-      setScale((prev) => {
-        const next = clamp(prev * factor, 0.3, 4);
-        setOffset((o) =>
-          clampOffset(
-            {
-              x: fx - ((fx - o.x) / prev) * next,
-              y: fy - ((fy - o.y) / prev) * next,
-            },
-            next,
-          ),
-        );
-        return next;
-      });
+      const prev = view.current.scale;
+      const next = clamp(prev * factor, 0.3, 4);
+      const o = view.current.offset;
+      view.current = {
+        scale: next,
+        offset: clampOffset(
+          {
+            x: fx - ((fx - o.x) / prev) * next,
+            y: fy - ((fy - o.y) / prev) * next,
+          },
+          next,
+        ),
+      };
+      userAdjusted.current = true;
+      applyView(animate);
     },
-    [clampOffset],
+    [clampOffset, applyView],
   );
 
   function localPoint(e: { clientX: number; clientY: number }): Point {
     const rect = containerRef.current!.getBoundingClientRect();
     return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+  }
+
+  // Fire onMoveStart once per gesture, the first time real movement happens.
+  function beginMove() {
+    userAdjusted.current = true;
+    if (!moveStartFired.current) {
+      moveStartFired.current = true;
+      onMoveStart?.();
+    }
   }
 
   function onPointerDown(e: React.PointerEvent) {
@@ -279,8 +370,10 @@ export function ExhibitionMap({
     const p = localPoint(e);
     pointers.current.set(e.pointerId, p);
     const pts = [...pointers.current.values()];
+    const { scale, offset } = view.current;
 
     if (pts.length === 1) {
+      moveStartFired.current = false;
       gesture.current = {
         mode: "pan",
         startOffset: offset,
@@ -320,27 +413,34 @@ export function ExhibitionMap({
       const dist = Math.hypot(a.x - b.x, a.y - b.y) || 1;
       const mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
       const next = clamp((g.startScale * dist) / g.startDist, 0.3, 4);
-      setScale(next);
-      setOffset(
-        clampOffset(
+      beginMove();
+      view.current = {
+        scale: next,
+        offset: clampOffset(
           {
             x: mid.x - g.focalWorld.x * next,
             y: mid.y - g.focalWorld.y * next,
           },
           next,
         ),
-      );
+      };
+      applyView();
     } else if (g.mode === "pan") {
       const cur = pts[0];
       const dx = cur.x - g.startPoint.x;
       const dy = cur.y - g.startPoint.y;
-      if (Math.abs(dx) + Math.abs(dy) > 4) g.moved = true;
-      setOffset(
-        clampOffset(
+      if (Math.abs(dx) + Math.abs(dy) > 4) {
+        g.moved = true;
+        beginMove();
+      }
+      view.current = {
+        scale: view.current.scale,
+        offset: clampOffset(
           { x: g.startOffset.x + dx, y: g.startOffset.y + dy },
-          scale,
+          view.current.scale,
         ),
-      );
+      };
+      applyView();
     }
   }
 
@@ -355,8 +455,8 @@ export function ExhibitionMap({
       const [rest] = [...pointers.current.values()];
       gesture.current = {
         mode: "pan",
-        startOffset: offset,
-        startScale: scale,
+        startOffset: view.current.offset,
+        startScale: view.current.scale,
         startDist: 0,
         focalWorld: { x: 0, y: 0 },
         startPoint: rest,
@@ -366,15 +466,21 @@ export function ExhibitionMap({
     }
     if (pointers.current.size > 0) return;
     gesture.current = null;
+    // A real pan/pinch just ended → let the chrome come back.
+    if (moveStartFired.current) {
+      moveStartFired.current = false;
+      onMoveEnd?.();
+    }
 
     if (wasPan && !moved) {
       const now = e.timeStamp;
       const prev = lastTap.current;
+      const { scale, offset } = view.current;
       const isDouble =
         now - prev.t < 300 && Math.hypot(p.x - prev.x, p.y - prev.y) < 32;
       if (isDouble) {
         // Double-tap to zoom in toward the tapped point (or out if near max).
-        zoomBy(scale > 3 ? 0.5 : 1.9, p);
+        zoomBy(scale > 3 ? 0.5 : 1.9, p, true);
         lastTap.current = { t: 0, x: 0, y: 0 };
       } else {
         lastTap.current = { t: now, x: p.x, y: p.y };
@@ -384,6 +490,7 @@ export function ExhibitionMap({
         if (onSelect) {
           // Point-in-rect hit test against each booth's actual box.
           let hit = "";
+          let hitBooth: Booth | undefined;
           for (const b of booths) {
             if (floorplan && !(b.code && rectByCode.has(b.code))) continue;
             const g = geomOf(b);
@@ -394,7 +501,29 @@ export function ExhibitionMap({
               my <= g.y + g.h / 2
             ) {
               hit = b.id;
+              hitBooth = b;
               break;
+            }
+          }
+          // Tapping a booth nudges the view toward it — a gentle zoom-in (only
+          // if currently zoomed out) and re-centre, then preserve that view.
+          if (hitBooth) {
+            const el = containerRef.current;
+            if (el) {
+              const g = geomOf(hitBooth);
+              const next = Math.max(view.current.scale, 1.4);
+              view.current = {
+                scale: next,
+                offset: clampOffset(
+                  {
+                    x: el.clientWidth / 2 - g.x * next,
+                    y: el.clientHeight / 2 - g.y * next,
+                  },
+                  next,
+                ),
+              };
+              userAdjusted.current = true;
+              applyView(true);
             }
           }
           onSelect(hit); // empty → caller deselects
@@ -488,13 +617,16 @@ export function ExhibitionMap({
     const g = geomOf(b);
     const cw = el.clientWidth;
     const ch = el.clientHeight;
-    setScale((prev) => {
-      const next = Math.max(prev, 1.4);
-      setOffset(
-        clampOffset({ x: cw / 2 - g.x * next, y: ch / 2 - g.y * next }, next),
-      );
-      return next;
-    });
+    const next = Math.max(view.current.scale, 1.4);
+    view.current = {
+      scale: next,
+      offset: clampOffset(
+        { x: cw / 2 - g.x * next, y: ch / 2 - g.y * next },
+        next,
+      ),
+    };
+    userAdjusted.current = true;
+    applyView(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [centerOn]);
 
@@ -540,13 +672,13 @@ export function ExhibitionMap({
         aria-label="전시장 지도"
       >
         <svg
+          ref={svgRef}
           width={width}
           height={height}
           viewBox={`0 0 ${width} ${height}`}
-          style={{
-            transform: `translate(${offset.x}px, ${offset.y}px) scale(${scale})`,
-            transformOrigin: "0 0",
-          }}
+          // Transform is applied imperatively (see applyView) so panning never
+          // re-renders this subtree — only transformOrigin is React-managed.
+          style={{ transformOrigin: "0 0" }}
           className="select-none"
         >
           {/* grid backdrop */}
@@ -987,7 +1119,7 @@ export function ExhibitionMap({
           size="icon"
           className="bg-card shadow-[var(--shadow-card)]"
           aria-label="확대"
-          onClick={() => zoomBy(1.25)}
+          onClick={() => zoomBy(1.25, undefined, true)}
         >
           <Plus className="size-5" />
         </Button>
@@ -996,7 +1128,7 @@ export function ExhibitionMap({
           size="icon"
           className="bg-card shadow-[var(--shadow-card)]"
           aria-label="축소"
-          onClick={() => zoomBy(0.8)}
+          onClick={() => zoomBy(0.8, undefined, true)}
         >
           <Minus className="size-5" />
         </Button>
@@ -1005,7 +1137,7 @@ export function ExhibitionMap({
           size="icon"
           className="bg-card shadow-[var(--shadow-card)]"
           aria-label="전체 보기"
-          onClick={fit}
+          onClick={resetView}
         >
           <Locate className="size-5" />
         </Button>

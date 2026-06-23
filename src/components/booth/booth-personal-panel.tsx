@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from "react";
 import { Check, Clock3, NotebookPen } from "lucide-react";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { useVisitStore, pushNote } from "@/lib/stores/visit";
 import { useAuthStore } from "@/lib/stores/auth";
 import { Textarea } from "@/components/ui/textarea";
+import { NotePhotos } from "@/components/booth/note-photos";
 
 /**
  * Per-visitor controls for a booth: mark visited (4-a), save for later /
@@ -38,8 +40,11 @@ export function BoothPersonalPanel({ boothId }: { boothId: string }) {
   }
 
   function onMemoBlur() {
+    const prev = useVisitStore.getState().records[boothId]?.memo ?? "";
+    if (memo.trim() === prev.trim()) return;
     setMemo(boothId, memo);
     if (user) void pushNote(boothId);
+    toast.success(memo.trim() ? "메모를 저장했어요" : "메모를 지웠어요");
   }
 
   return (
@@ -90,6 +95,8 @@ export function BoothPersonalPanel({ boothId }: { boothId: string }) {
             aria-label="부스 메모"
           />
         </div>
+
+        <NotePhotos boothId={boothId} />
 
         {ready && !user && (
           <p className="text-xs text-muted-foreground">

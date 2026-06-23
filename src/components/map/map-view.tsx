@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -15,8 +15,10 @@ import {
   X,
   MapPin,
 } from "lucide-react";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { useVisitStore, idsByStatus, pushNote } from "@/lib/stores/visit";
+import { NotePhotos } from "@/components/booth/note-photos";
 import { useAuthStore } from "@/lib/stores/auth";
 import { useCartStore } from "@/lib/stores/cart";
 import { useHydrated } from "@/lib/hooks/use-hydrated";
@@ -56,6 +58,10 @@ export function MapView({
   const [query, setQuery] = useState("");
   const [sheetOpen, setSheetOpen] = useState(false);
   const [swipeOpen, setSwipeOpen] = useState(false);
+  // Hide the portrait top chrome (app bar + chips) while the map is being moved,
+  // reclaiming vertical space; restore shortly after movement stops.
+  const [chromeHidden, setChromeHidden] = useState(false);
+  const chromeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   // pointer tracking for drag-to-toggle on the sheet handle
   const dragStart = useRef<number | null>(null);
 
@@ -133,6 +139,23 @@ export function MapView({
     setCenterOn(id);
     setSheetOpen(false);
   }
+
+  // Collapse the top chrome while panning/pinching; bring it back once movement
+  // settles (debounced so a continuous drag doesn't flicker it).
+  function hideChrome() {
+    if (chromeTimer.current) clearTimeout(chromeTimer.current);
+    setChromeHidden(true);
+  }
+  function restoreChromeSoon() {
+    if (chromeTimer.current) clearTimeout(chromeTimer.current);
+    chromeTimer.current = setTimeout(() => setChromeHidden(false), 280);
+  }
+  useEffect(
+    () => () => {
+      if (chromeTimer.current) clearTimeout(chromeTimer.current);
+    },
+    [],
+  );
 
   function onHandleUp(e: React.PointerEvent) {
     const start = dragStart.current;
@@ -335,8 +358,16 @@ export function MapView({
 
       {/* Mobile chrome + map column */}
       <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
-        {/* In landscape (and on desktop) the mobile chrome hides. */}
-        <div className="md:hidden landscape:hidden">
+        {/* In landscape (and on desktop) the mobile chrome hides. While the map
+            is being moved it collapses to give the venue full height. */}
+        <div
+          className={cn(
+            "overflow-hidden transition-all duration-200 ease-out md:hidden landscape:hidden",
+            chromeHidden
+              ? "max-h-0 -translate-y-2 opacity-0"
+              : "max-h-60 translate-y-0 opacity-100",
+          )}
+        >
           <AppBar
             title="전시장 지도"
             right={
@@ -394,6 +425,8 @@ export function MapView({
               if (id) setSheetOpen(false);
             }}
             onInteractStart={() => setSheetOpen(false)}
+            onMoveStart={hideChrome}
+            onMoveEnd={restoreChromeSoon}
           />
 
           {/* selected booth popup — decision info + quick actions. Sits above
@@ -581,24 +614,28 @@ function BoothPopupMemo({ boothId }: { boothId: string }) {
     if (value.trim() === initial.trim()) return;
     setMemo(boothId, value.trim());
     if (user) void pushNote(boothId);
+    toast.success(value.trim() ? "메모를 저장했어요" : "메모를 지웠어요");
   }
 
   return (
-    <div className="relative mt-2.5">
-      <NotebookPen className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
-      <Input
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        onBlur={save}
-        onKeyDown={(e) => {
-          if (e.nativeEvent.isComposing) return;
-          if (e.key === "Enter") e.currentTarget.blur();
-        }}
-        placeholder="메모 남기기 (예: 리필 노트 사기)"
-        maxLength={100}
-        aria-label="부스 메모"
-        className="h-9 pl-8 text-sm"
-      />
+    <div className="mt-2.5">
+      <div className="relative">
+        <NotebookPen className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
+        <Input
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          onBlur={save}
+          onKeyDown={(e) => {
+            if (e.nativeEvent.isComposing) return;
+            if (e.key === "Enter") e.currentTarget.blur();
+          }}
+          placeholder="메모 남기기 (입력 후 Enter로 저장)"
+          maxLength={100}
+          aria-label="부스 메모"
+          className="h-9 pl-8 text-sm"
+        />
+      </div>
+      <NotePhotos boothId={boothId} compact />
     </div>
   );
 }
