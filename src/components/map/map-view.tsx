@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -52,10 +52,6 @@ export function MapView({
   const [centerOn, setCenterOn] = useState<string | null>(null);
   const [query, setQuery] = useState("");
   const [sheetOpen, setSheetOpen] = useState(false);
-  // Hide the portrait top chrome (app bar + chips) while the map is being moved,
-  // reclaiming vertical space; restore shortly after movement stops.
-  const [chromeHidden, setChromeHidden] = useState(false);
-  const chromeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   // Crowd heatmap (방문객이 많이 담은 부스·복도). Lazy-loaded the first time it's on.
   const [heatOn, setHeatOn] = useState(false);
   const [heat, setHeat] = useState<{
@@ -141,17 +137,6 @@ export function MapView({
     setSheetOpen(false);
   }
 
-  // Collapse the top chrome while panning/pinching; bring it back once movement
-  // settles (debounced so a continuous drag doesn't flicker it).
-  function hideChrome() {
-    if (chromeTimer.current) clearTimeout(chromeTimer.current);
-    setChromeHidden(true);
-  }
-  function restoreChromeSoon() {
-    if (chromeTimer.current) clearTimeout(chromeTimer.current);
-    chromeTimer.current = setTimeout(() => setChromeHidden(false), 280);
-  }
-
   // Clear the in-progress 동선: empties the cart (which the map draws the route
   // from) and any AI route, so the map starts fresh.
   function clearRoute() {
@@ -160,12 +145,6 @@ export function MapView({
     setSelectedId(null);
     toast.success("동선을 비웠어요");
   }
-  useEffect(
-    () => () => {
-      if (chromeTimer.current) clearTimeout(chromeTimer.current);
-    },
-    [],
-  );
 
   // Toggle the crowd heatmap; fetch the aggregate once, then just show/hide.
   function toggleHeat() {
@@ -383,16 +362,9 @@ export function MapView({
 
       {/* Mobile chrome + map column */}
       <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
-        {/* In landscape (and on desktop) the mobile chrome hides. While the map
-            is being moved it collapses to give the venue full height. */}
-        <div
-          className={cn(
-            "overflow-hidden transition-all duration-200 ease-out md:hidden landscape:hidden",
-            chromeHidden
-              ? "max-h-0 -translate-y-2 opacity-0"
-              : "max-h-60 translate-y-0 opacity-100",
-          )}
-        >
+        {/* Portrait top bar — always visible (landscape/desktop use the panel).
+            It stays put during zoom/pan so the map doesn't jump. */}
+        <div className="md:hidden landscape:hidden">
           <AppBar
             title="전시장 지도"
             right={
@@ -420,7 +392,7 @@ export function MapView({
             // Mobile portrait: keep the fit/pan area above the bottom-sheet peek
             // (~116px) so the bottom of the venue isn't clipped behind it.
             // Desktop (side panel) and landscape have no sheet → fill fully.
-            viewportClassName="inset-x-0 top-0 bottom-[116px] md:inset-0 landscape:inset-0"
+            viewportClassName="inset-x-0 top-0 bottom-[104px] md:inset-0 landscape:inset-0"
             visitedIds={visitedIds}
             skippedIds={skippedIds}
             selectedId={selectedId}
@@ -432,14 +404,12 @@ export function MapView({
               if (id) setSheetOpen(false);
             }}
             onInteractStart={() => setSheetOpen(false)}
-            onMoveStart={hideChrome}
-            onMoveEnd={restoreChromeSoon}
           />
 
           {/* selected booth popup — decision info + quick actions. Sits above
               the sheet peek on mobile; bottom-right card on desktop. */}
           {selected && (
-            <div className="absolute inset-x-0 bottom-[124px] z-20 mx-auto w-full max-w-md p-3 md:inset-x-auto md:bottom-3 md:right-3 md:w-80 landscape:inset-x-auto landscape:bottom-3 landscape:right-3 landscape:w-80">
+            <div className="absolute inset-x-0 bottom-[112px] z-20 mx-auto w-full max-w-md p-3 md:inset-x-auto md:bottom-3 md:right-3 md:w-80 landscape:inset-x-auto landscape:bottom-3 landscape:right-3 landscape:w-80">
               <div className="rounded-2xl border border-border bg-card p-3.5 shadow-[var(--shadow-pop)] animate-in slide-in-from-bottom-2">
                 <div className="flex items-start gap-3">
                   <div className="min-w-0 flex-1">
@@ -492,7 +462,7 @@ export function MapView({
               cart = 0 → prominent "골라드릴까요?" for first-time discovery.
               Hidden in landscape and when a booth card is showing. */}
           {hydrated && !selected && (
-            <div className="absolute inset-x-0 bottom-[132px] z-20 mx-auto flex w-fit md:inset-x-auto md:bottom-4 md:right-4 landscape:inset-x-auto landscape:bottom-4 landscape:right-4">
+            <div className="absolute inset-x-0 bottom-[120px] z-20 mx-auto flex w-fit md:inset-x-auto md:bottom-4 md:right-4 landscape:inset-x-auto landscape:bottom-4 landscape:right-4">
               {cartCount > 0 ? (
                 <div className="flex items-center gap-2">
                   <Link
@@ -527,34 +497,38 @@ export function MapView({
           <div
             className={cn(
               "absolute inset-x-0 bottom-0 z-30 flex flex-col rounded-t-2xl border-t border-border bg-card shadow-[var(--shadow-pop)] transition-[height] duration-300 ease-out md:hidden landscape:hidden",
-              sheetOpen ? "h-[60dvh]" : "h-[116px]",
+              sheetOpen ? "h-[62dvh]" : "h-[104px]",
             )}
           >
             <button
               type="button"
               aria-label={sheetOpen ? "목록 접기" : "목록 펼치기"}
-              className="flex w-full shrink-0 cursor-grab touch-none justify-center py-2.5 active:cursor-grabbing"
+              className="flex w-full shrink-0 cursor-grab touch-none justify-center py-2 active:cursor-grabbing"
               onPointerDown={(e) => (dragStart.current = e.clientY)}
               onPointerUp={onHandleUp}
             >
               <span className="h-1.5 w-10 rounded-full bg-border" />
             </button>
 
-            <div className="px-4 pb-2">{renderSearch()}</div>
-
-            {/* Category (and any active status) filters live right under the
-                search — the map chrome stays clean for the venue. */}
-            <div className="no-scrollbar flex gap-1.5 overflow-x-auto px-4 pb-1">
-              {renderHeatToggle()}
-              {renderCategoryChips()}
+            {/* Collapsed peek = just the search; pull up to filter + browse. */}
+            <div
+              className="px-4 pb-2"
+              onPointerDown={() => !sheetOpen && setSheetOpen(true)}
+            >
+              {renderSearch()}
             </div>
-            {hasStatus && (
-              <div className="no-scrollbar flex gap-1.5 overflow-x-auto px-4 pb-1 pt-1">
-                {renderStatusChips()}
-              </div>
-            )}
 
-            <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-4 pt-1">
+            <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-4">
+              {/* Filters scroll with the list so the collapsed peek stays clean. */}
+              <div className="no-scrollbar -mx-1 mb-2 flex gap-1.5 overflow-x-auto px-1">
+                {renderHeatToggle()}
+                {renderCategoryChips()}
+              </div>
+              {hasStatus && (
+                <div className="no-scrollbar -mx-1 mb-2 flex gap-1.5 overflow-x-auto px-1">
+                  {renderStatusChips()}
+                </div>
+              )}
               {renderList()}
             </div>
           </div>
