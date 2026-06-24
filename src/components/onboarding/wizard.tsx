@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronLeft, ChevronDown, Loader2, Sparkles, Check } from "lucide-react";
+import { ChevronLeft, ChevronDown, Loader2, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { VISIT_PURPOSE_OPTIONS } from "@/lib/constants";
 import { useOnboardingStore } from "@/lib/stores/onboarding";
@@ -38,11 +38,15 @@ const TITLES: Record<Step, { title: string; sub: string }> = {
     sub: "분야를 누르고 끌리는 키워드를 골라주세요",
   },
   age: { title: "나이대가 어떻게 되세요?", sub: "한 가지만 골라주세요" },
-  purpose: { title: "관람 목적이 무엇인가요?", sub: "여러 개 선택할 수 있어요" },
+  purpose: {
+    title: "관람 목적이 무엇인가요?",
+    sub: "여러 개 선택할 수 있어요",
+  },
 };
 
 function haptic() {
-  if (typeof navigator !== "undefined" && navigator.vibrate) navigator.vibrate(8);
+  if (typeof navigator !== "undefined" && navigator.vibrate)
+    navigator.vibrate(8);
 }
 
 /**
@@ -137,7 +141,9 @@ export function OnboardingWizard({
       router.push(`/exhibitions/${slug}/route`);
     } catch (e) {
       const msg =
-        e instanceof ApiClientError ? e.error.message : "동선 생성에 실패했어요";
+        e instanceof ApiClientError
+          ? e.error.message
+          : "동선 생성에 실패했어요";
       toast.error(msg);
       setSubmitting(false);
     }
@@ -250,13 +256,12 @@ export function OnboardingWizard({
                                     onClick={() => toggleKeyword(c.slug, kw)}
                                     aria-pressed={on}
                                     className={cn(
-                                      "inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
+                                      "rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
                                       on
                                         ? "border-primary bg-primary text-primary-foreground"
                                         : "border-border bg-background text-foreground/80",
                                     )}
                                   >
-                                    {on && <Check className="size-3.5" />}
                                     {kw}
                                   </button>
                                 );
@@ -314,7 +319,9 @@ export function OnboardingWizard({
                       aria-pressed={on}
                       className={cn(
                         "flex items-start gap-2.5 rounded-2xl border p-3.5 text-left transition-colors",
-                        on ? "border-primary bg-accent/40" : "border-border bg-card",
+                        on
+                          ? "border-primary bg-accent/40"
+                          : "border-border bg-card",
                       )}
                     >
                       <Icon
