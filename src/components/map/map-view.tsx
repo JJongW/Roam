@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { memo, useCallback, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -38,6 +38,50 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { buildOrderedRoute } from "@/lib/engine/route";
 import type { Booth, ExhibitionDetail, Point } from "@/lib/types";
+
+/**
+ * One row in the side/sheet booth list. Memoized so that selecting a booth or
+ * any map state change re-renders only the rows whose own props changed (the
+ * newly + previously selected), not all ~180 — the landscape side panel keeps
+ * the full list mounted, so a naive re-render of every row made each tap janky.
+ */
+const BoothRow = memo(function BoothRow({
+  booth,
+  selected,
+  color,
+  onLocate,
+}: {
+  booth: Booth;
+  selected: boolean;
+  color: string;
+  onLocate: (id: string) => void;
+}) {
+  return (
+    <div
+      className={cn(
+        "flex items-center gap-3 rounded-xl border bg-card px-3 py-2.5",
+        selected ? "border-primary" : "border-border",
+      )}
+    >
+      <button
+        type="button"
+        onClick={() => onLocate(booth.id)}
+        className="flex min-w-0 flex-1 items-center gap-3 text-left"
+      >
+        <MapPin className="size-4 shrink-0" style={{ color }} />
+        {booth.code && (
+          <span className="w-12 shrink-0 text-xs font-bold text-muted-foreground">
+            {booth.code}
+          </span>
+        )}
+        <span className="min-w-0 flex-1 truncate text-sm font-semibold">
+          {booth.name}
+        </span>
+      </button>
+      <CartButton boothId={booth.id} variant="icon" />
+    </div>
+  );
+});
 
 export function MapView({
   detail,
@@ -166,11 +210,11 @@ export function MapView({
 
   // Select a booth from the list/search: mark it, recentre the map on it, and
   // collapse the (mobile) sheet so the map is visible.
-  function locate(id: string) {
+  const locate = useCallback((id: string) => {
     setSelectedId(id);
     setCenterOn(id);
     setSheetOpen(false);
-  }
+  }, []);
 
   // Clear the in-progress 동선: empties the cart (which the map draws the route
   // from) and any AI route, so the map starts fresh.
@@ -366,37 +410,15 @@ export function MapView({
         </p>
         <div className="space-y-1.5">
           {filtered.map((b) => (
-            <div
+            <BoothRow
               key={b.id}
-              className={cn(
-                "flex items-center gap-3 rounded-xl border bg-card px-3 py-2.5",
-                b.id === selectedId ? "border-primary" : "border-border",
-              )}
-            >
-              <button
-                type="button"
-                onClick={() => locate(b.id)}
-                className="flex min-w-0 flex-1 items-center gap-3 text-left"
-              >
-                <MapPin
-                  className="size-4 shrink-0"
-                  style={{
-                    color:
-                      catById.get(b.categoryId)?.color ??
-                      "var(--muted-foreground)",
-                  }}
-                />
-                {b.code && (
-                  <span className="w-12 shrink-0 text-xs font-bold text-muted-foreground">
-                    {b.code}
-                  </span>
-                )}
-                <span className="min-w-0 flex-1 truncate text-sm font-semibold">
-                  {b.name}
-                </span>
-              </button>
-              <CartButton boothId={b.id} variant="icon" />
-            </div>
+              booth={b}
+              selected={b.id === selectedId}
+              color={
+                catById.get(b.categoryId)?.color ?? "var(--muted-foreground)"
+              }
+              onLocate={locate}
+            />
           ))}
         </div>
       </>
