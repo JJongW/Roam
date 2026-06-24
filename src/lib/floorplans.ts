@@ -136,19 +136,31 @@ function buildSibf(): Floorplan {
   // Positions kept clear of booth rectangles (no overlap).
   const entrance = { x: 1480, y: 3320 };
   const exit = { x: 660, y: 3320 };
-  // Gates the visitor can pick as their own entrance / exit on the route screen.
+  // Gates the visitor can pick as their own entrance / exit. Each is labelled
+  // with its hall + 입구/출구 so it's clear *which* door. B1 has its own 입구/출구
+  // (split from the old combined "메인").
+  const bIn = { x: 2980, y: 1078 };
+  const bOut = { x: 2980, y: 1204 };
   const gates: FloorplanGate[] = [
-    { id: "in", label: "입구", x: entrance.x, y: entrance.y },
-    { id: "out", label: "출구", x: exit.x, y: exit.y },
-    { id: "main", label: "입·출구(메인)", x: 2980, y: 1140 },
+    { id: "a-in", label: "A홀 입구", x: entrance.x, y: entrance.y },
+    { id: "a-out", label: "A홀 출구", x: exit.x, y: exit.y },
+    { id: "b-in", label: "B1홀 입구", x: bIn.x, y: bIn.y },
+    { id: "b-out", label: "B1홀 출구", x: bOut.x, y: bOut.y },
   ];
   decor.push(
-    { type: "entrance", x: 2980, y: 1140, text: "입·출구", dir: "left" },
-    { type: "entrance", x: entrance.x, y: entrance.y, text: "입구", dir: "up" },
-    // 출구 arrow points outward (away from the halls = downward, toward the exit).
-    { type: "entrance", x: exit.x, y: exit.y, text: "출구", dir: "down" },
+    // A홀 (bottom): 입구 arrow points up (into hall), 출구 down (outward).
+    {
+      type: "entrance",
+      x: entrance.x,
+      y: entrance.y,
+      text: "A홀 입구",
+      dir: "up",
+    },
+    { type: "entrance", x: exit.x, y: exit.y, text: "A홀 출구", dir: "down" },
+    // B1홀 (right edge): 입구 points left (into hall), 출구 right (outward).
+    { type: "entrance", x: bIn.x, y: bIn.y, text: "B1홀 입구", dir: "left" },
+    { type: "entrance", x: bOut.x, y: bOut.y, text: "B1홀 출구", dir: "right" },
     { type: "info", x: 2880, y: 3300, text: "안내" },
-    { type: "info", x: 3060, y: 1300, text: "안내" },
     { type: "arrowsV", x: 1760, y1: 1810, y2: 1945 },
   );
   for (const w of sibf.wc ?? []) decor.push({ type: "wc", x: w.x, y: w.y });

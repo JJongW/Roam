@@ -1001,11 +1001,12 @@ export function ExhibitionMap({
             }
             if (d.type === "entrance") {
               const aw = 22;
+              const hw = 112; // half pill width (fits "B1홀 입구")
               const arrow =
                 d.dir === "left"
-                  ? `M${d.x + 86} ${d.y - aw} L${d.x + 86 + aw} ${d.y} L${d.x + 86} ${d.y + aw}`
+                  ? `M${d.x + hw} ${d.y - aw} L${d.x + hw + aw} ${d.y} L${d.x + hw} ${d.y + aw}`
                   : d.dir === "right"
-                    ? `M${d.x - 86} ${d.y - aw} L${d.x - 86 - aw} ${d.y} L${d.x - 86} ${d.y + aw}`
+                    ? `M${d.x - hw} ${d.y - aw} L${d.x - hw - aw} ${d.y} L${d.x - hw} ${d.y + aw}`
                     : d.dir === "up"
                       ? `M${d.x - aw} ${d.y + 44} L${d.x} ${d.y + 44 - aw} L${d.x + aw} ${d.y + 44}`
                       : `M${d.x - aw} ${d.y + 44} L${d.x} ${d.y + 44 + aw} L${d.x + aw} ${d.y + 44}`;
@@ -1022,18 +1023,18 @@ export function ExhibitionMap({
               return (
                 <g key={i}>
                   <rect
-                    x={d.x - 90}
-                    y={d.y - 30}
-                    width={180}
-                    height={60}
-                    rx={30}
+                    x={d.x - 100}
+                    y={d.y - 28}
+                    width={200}
+                    height={56}
+                    rx={28}
                     fill={color}
                   />
                   <text
                     x={d.x}
-                    y={d.y + 11}
+                    y={d.y + 9}
                     textAnchor="middle"
-                    fontSize={30}
+                    fontSize={26}
                     fontWeight="800"
                     fill="white"
                   >
