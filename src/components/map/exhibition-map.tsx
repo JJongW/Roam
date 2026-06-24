@@ -88,6 +88,10 @@ interface MapProps {
   onMoveEnd?: () => void;
   /** Booth id to pan-center on when it changes (e.g. a search result). */
   centerOn?: string | null;
+  /** Portrait only: px height the bottom popup covers. A selected/centered booth
+   *  is biased upward by this so it lands in the visible band above the popup,
+   *  not hidden behind it. Ignored in landscape (popup sits at the side). */
+  focusBottomInset?: number;
   /** Crowd heatmap: per-booth inclusion counts + per-corridor (pair) counts.
    *  When set, popular booths are tinted and busy corridors thickened. */
   heat?: Record<string, number>;
@@ -132,6 +136,7 @@ export function ExhibitionMap({
   onMoveStart,
   onMoveEnd,
   centerOn,
+  focusBottomInset = 0,
   heat,
   heatPairs,
   className,
@@ -150,6 +155,17 @@ export function ExhibitionMap({
   // (chrome show/hide, status chips appearing) — keep their chosen view.
   const userAdjusted = useRef(false);
   const moveStartFired = useRef(false);
+
+  // Vertical pan target that keeps a focused booth above the bottom popup.
+  // Portrait: shift up by half the popup inset (capped so it never overshoots);
+  // landscape: no bias (popup sits at the side, doesn't cover the map bottom).
+  function focusCenterY(el: HTMLElement, gy: number, scale: number): number {
+    const cw = el.clientWidth;
+    const ch = el.clientHeight;
+    const landscape = cw > ch * 1.4;
+    const bias = landscape ? 0 : Math.min(focusBottomInset, ch * 0.5);
+    return (ch - bias) / 2 - gy * scale;
+  }
 
   // Write the current view to the DOM. `animate` adds a short transition for
   // programmatic moves (tap-zoom, buttons); drags pass false for instant feel.
@@ -558,7 +574,7 @@ export function ExhibitionMap({
                 offset: clampOffset(
                   {
                     x: el.clientWidth / 2 - g.x * s,
-                    y: el.clientHeight / 2 - g.y * s,
+                    y: focusCenterY(el, g.y, s),
                   },
                   s,
                 ),
@@ -662,12 +678,11 @@ export function ExhibitionMap({
     if (!el) return;
     const g = geomOf(b);
     const cw = el.clientWidth;
-    const ch = el.clientHeight;
     const next = Math.max(view.current.scale, 1.4);
     view.current = {
       scale: next,
       offset: clampOffset(
-        { x: cw / 2 - g.x * next, y: ch / 2 - g.y * next },
+        { x: cw / 2 - g.x * next, y: focusCenterY(el, g.y, next) },
         next,
       ),
     };

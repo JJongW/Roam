@@ -536,6 +536,9 @@ export function MapView({
             skippedIds={skippedIds}
             selectedId={selectedId}
             centerOn={centerOn}
+            // Portrait: the booth popup sits at the bottom (~320px tall incl.
+            // its offset). Bias focused booths upward so they aren't hidden.
+            focusBottomInset={320}
             heat={heatOn ? heat?.booths : undefined}
             heatPairs={heatOn ? heat?.pairs : undefined}
             onSelect={(id) => {
