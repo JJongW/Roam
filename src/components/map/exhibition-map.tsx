@@ -1009,15 +1009,25 @@ export function ExhibitionMap({
                     : d.dir === "up"
                       ? `M${d.x - aw} ${d.y + 44} L${d.x} ${d.y + 44 - aw} L${d.x + aw} ${d.y + 44}`
                       : `M${d.x - aw} ${d.y + 44} L${d.x} ${d.y + 44 + aw} L${d.x + aw} ${d.y + 44}`;
+              // Colour-code so 입구 vs 출구 is unmistakable at a glance:
+              // green = 입구(들어가는 곳), red = 출구(나가는 곳), 둘 다면 중립.
+              const isIn = d.text.includes("입구");
+              const isOut = d.text.includes("출구");
+              const color =
+                isIn && !isOut
+                  ? "#16a34a"
+                  : isOut && !isIn
+                    ? "#dc2626"
+                    : "var(--primary)";
               return (
                 <g key={i}>
                   <rect
-                    x={d.x - 80}
+                    x={d.x - 90}
                     y={d.y - 30}
-                    width={160}
+                    width={180}
                     height={60}
                     rx={30}
-                    fill="var(--primary)"
+                    fill={color}
                   />
                   <text
                     x={d.x}
@@ -1032,7 +1042,7 @@ export function ExhibitionMap({
                   <path
                     d={arrow}
                     fill="none"
-                    stroke="var(--primary)"
+                    stroke={color}
                     strokeWidth={9}
                     strokeLinecap="round"
                     strokeLinejoin="round"

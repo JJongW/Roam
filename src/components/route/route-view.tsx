@@ -7,7 +7,6 @@ import {
   MapPin,
   Navigation,
   Sparkles,
-  Plus,
   Footprints,
   GripVertical,
   ArrowDownNarrowWide,
@@ -85,6 +84,8 @@ export function RouteView({
   const visitedSet = useMemo(() => new Set(visitedIds), [visitedIds]);
   // 관람 모드: enlarge the map + drop the editing chrome for a clean walking view.
   const [viewing, setViewing] = useState(false);
+  // Tap a booth on the map to mark it 방문/이따 without scrolling the list.
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const boothById = useMemo(
     () => new Map(booths.map((b) => [b.id, b])),
@@ -338,7 +339,71 @@ export function RouteView({
             floorplan={FLOORPLANS[slug]}
             entrance={start}
             exit={exitPoint}
+            selectedId={selectedId}
+            onSelect={setSelectedId}
           />
+
+          {/* Tapped-booth quick actions — mark 방문/이따 right on the map. */}
+          {(() => {
+            const sb = selectedId ? boothById.get(selectedId) : null;
+            if (!sb) return null;
+            const st = records[sb.id]?.status;
+            return (
+              <div className="absolute inset-x-0 bottom-3 z-20 mx-auto w-full max-w-md p-3">
+                <div className="rounded-2xl border border-border bg-card p-3 shadow-[var(--shadow-pop)]">
+                  <div className="flex items-center gap-2">
+                    <Link
+                      href={`/booths/${sb.id}`}
+                      className="min-w-0 flex-1 truncate font-bold"
+                    >
+                      {sb.name}
+                      {sb.code && (
+                        <span className="ml-1.5 text-xs text-muted-foreground">
+                          {sb.code}
+                        </span>
+                      )}
+                    </Link>
+                    <button
+                      type="button"
+                      aria-label="닫기"
+                      onClick={() => setSelectedId(null)}
+                      className="flex size-8 shrink-0 items-center justify-center rounded-full text-muted-foreground active:bg-secondary"
+                    >
+                      <X className="size-4.5" />
+                    </button>
+                  </div>
+                  <div className="mt-2.5 flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => toggleStatus(sb.id, "skipped")}
+                      aria-pressed={st === "skipped"}
+                      className={cn(
+                        "flex flex-1 items-center justify-center gap-1 rounded-lg border py-2 text-sm font-bold",
+                        st === "skipped"
+                          ? "border-warning bg-warning/12 text-[#9a6700]"
+                          : "border-border bg-card text-muted-foreground",
+                      )}
+                    >
+                      <Clock className="size-4" /> 이따
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => toggleStatus(sb.id, "visited")}
+                      aria-pressed={st === "visited"}
+                      className={cn(
+                        "flex flex-1 items-center justify-center gap-1 rounded-lg border py-2 text-sm font-bold",
+                        st === "visited"
+                          ? "border-success bg-success/12 text-success"
+                          : "border-border bg-card text-muted-foreground",
+                      )}
+                    >
+                      <Check className="size-4" /> 방문
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          })()}
         </div>
 
         {/* Right panel (landscape) / continues vertically (portrait). */}
@@ -533,11 +598,7 @@ export function RouteView({
       </div>
 
       <div className="fixed inset-x-0 bottom-0 z-40 mx-auto flex w-full max-w-md gap-2 border-t border-border bg-background/90 p-4 pb-safe backdrop-blur-xl landscape:inset-x-auto landscape:right-0 landscape:mx-0 landscape:w-[440px] landscape:max-w-none">
-        <Button asChild variant="secondary" size="lg">
-          <Link href={`/exhibitions/${slug}/map`}>
-            <Plus className="size-5" /> 담기
-          </Link>
-        </Button>
+        {/* 담기는 지도에서 부스를 눌러 +로 — 여기선 관람만. */}
         <Button
           size="lg"
           className="flex-1"
