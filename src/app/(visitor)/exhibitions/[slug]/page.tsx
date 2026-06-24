@@ -37,14 +37,15 @@ export default async function ExhibitionDetailPage({ params }: Props) {
   const range = `${format(new Date(exhibition.startDate), "yyyy.M.d")} – ${format(new Date(exhibition.endDate), "M.d")}`;
 
   return (
-    <>
+    <div className="contents landscape:fixed landscape:inset-0 landscape:z-30 landscape:flex landscape:flex-col landscape:overflow-hidden landscape:bg-background">
       <AppBar title={exhibition.name} right={<AccountButton />} />
-      <main className="flex-1 pb-8">
+      <main className="flex-1 pb-8 landscape:flex landscape:min-h-0 landscape:flex-1 landscape:flex-row landscape:pb-0">
         {/* Hero = the fair's own poster when set (cover_image_url), else the
             brand gradient. Data-driven, so any added exhibition gets its poster
-            here just by setting coverImageUrl — no per-fair code. */}
+            here just by setting coverImageUrl — no per-fair code. In landscape
+            it becomes the full-height left column. */}
         <div
-          className="relative flex h-52 items-end p-5"
+          className="relative flex h-52 items-end p-5 landscape:h-auto landscape:flex-1"
           style={
             exhibition.coverImageUrl
               ? {
@@ -71,7 +72,7 @@ export default async function ExhibitionDetailPage({ params }: Props) {
           </div>
         </div>
 
-        <div className="space-y-4 px-5 py-5">
+        <div className="space-y-4 px-5 py-5 landscape:w-[420px] landscape:shrink-0 landscape:self-stretch landscape:overflow-y-auto landscape:border-l landscape:border-border">
           <section className="space-y-1.5">
             <div className="flex items-center gap-2 text-sm font-medium">
               <MapPin className="size-4 text-muted-foreground" aria-hidden />
@@ -134,6 +135,6 @@ export default async function ExhibitionDetailPage({ params }: Props) {
           </div>
         </div>
       </main>
-    </>
+    </div>
   );
 }
