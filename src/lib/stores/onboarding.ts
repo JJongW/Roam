@@ -61,8 +61,10 @@ export const useOnboardingStore = create<OnboardingState>()(
       },
     }),
     {
+      // localStorage so the visitor's onboarding answers (관심·나이·목적) persist
+      // across tab close / reopen on the same device, not just the tab session.
       name: "roam-onboarding",
-      storage: createJSONStorage(() => sessionStorage),
+      storage: createJSONStorage(() => localStorage),
     },
   ),
 );

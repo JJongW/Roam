@@ -31,9 +31,14 @@ export const useRouteStore = create<RouteState>()(
             : s,
         ),
       setCurrent: (boothId) =>
-        set((s) => (s.route ? { route: { ...s.route, currentBoothId: boothId } } : s)),
+        set((s) =>
+          s.route ? { route: { ...s.route, currentBoothId: boothId } } : s,
+        ),
       clear: () => set({ route: null }),
     }),
-    { name: "roam-route", storage: createJSONStorage(() => sessionStorage) },
+    // localStorage so a generated 동선 survives tab close / reopen on the same
+    // device (data persists while the phone/session is kept). Cleared only by
+    // the explicit "동선 비우기".
+    { name: "roam-route", storage: createJSONStorage(() => localStorage) },
   ),
 );
