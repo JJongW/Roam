@@ -451,9 +451,9 @@ export function MapView({
                 <Link
                   href={`/exhibitions/${detail.exhibition.slug}/routes`}
                   aria-label="다른 사람 동선"
-                  className="flex size-9 items-center justify-center rounded-full text-muted-foreground active:bg-secondary"
+                  className="flex h-9 items-center gap-1 rounded-full px-2.5 text-sm font-bold text-muted-foreground active:bg-secondary"
                 >
-                  <RouteIcon className="size-5" />
+                  <RouteIcon className="size-5" /> 다른 동선
                 </Link>
                 <button
                   type="button"
