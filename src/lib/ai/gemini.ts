@@ -6,8 +6,9 @@ import { env, hasGemini } from "@/lib/env";
 export { hasGemini };
 
 /** Primary fast/cheap model, with a fallback used when the primary is overloaded
- *  ("high demand" / 503). */
-const MODELS = ["gemini-2.5-flash", "gemini-2.0-flash"] as const;
+ *  ("high demand" / 503). gemini-2.0-flash was retired (404), so the fallback is
+ *  the current flash-lite tier. */
+const MODELS = ["gemini-2.5-flash", "gemini-2.5-flash-lite"] as const;
 
 let client: GoogleGenAI | null = null;
 function getClient(): GoogleGenAI {
@@ -20,7 +21,9 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 /** Permanent failures (bad request/auth) — retrying or switching model won't help. */
 function isFatal(e: unknown): boolean {
-  const status = (e as { status?: number; code?: number })?.status ?? (e as { code?: number })?.code;
+  const status =
+    (e as { status?: number; code?: number })?.status ??
+    (e as { code?: number })?.code;
   return status === 400 || status === 401 || status === 403 || status === 404;
 }
 

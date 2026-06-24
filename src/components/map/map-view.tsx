@@ -31,6 +31,7 @@ import { CartButton } from "@/components/booth/cart-button";
 import { Route as RouteIcon } from "lucide-react";
 import { AppBar } from "@/components/common/app-bar";
 import { ExhibitionMap } from "@/components/map/exhibition-map";
+import { AiRecommendSheet } from "@/components/map/ai-recommend-sheet";
 import { CategoryChip } from "@/components/booth/category-chip";
 import { EmptyState } from "@/components/common/states";
 import { Button } from "@/components/ui/button";
@@ -54,6 +55,7 @@ export function MapView({
   const [centerOn, setCenterOn] = useState<string | null>(null);
   const [query, setQuery] = useState("");
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [aiOpen, setAiOpen] = useState(false);
   // Crowd heatmap (방문객이 많이 담은 부스·복도). Lazy-loaded the first time it's on.
   const [heatOn, setHeatOn] = useState(false);
   const [heat, setHeat] = useState<{
@@ -453,13 +455,14 @@ export function MapView({
                 >
                   <RouteIcon className="size-5" />
                 </Link>
-                <Link
-                  href={`/exhibitions/${detail.exhibition.slug}/onboarding`}
-                  aria-label="맞춤 추천받기"
+                <button
+                  type="button"
+                  onClick={() => setAiOpen(true)}
+                  aria-label="AI 추천받기"
                   className="flex h-9 items-center gap-1 rounded-full px-2.5 text-sm font-bold text-primary active:bg-secondary"
                 >
-                  <Sparkles className="size-5" /> 추천
-                </Link>
+                  <Sparkles className="size-5" /> AI 추천받기
+                </button>
               </>
             }
           />
@@ -631,6 +634,12 @@ export function MapView({
           </div>
         </div>
       </div>
+
+      <AiRecommendSheet
+        slug={detail.exhibition.slug}
+        open={aiOpen}
+        onClose={() => setAiOpen(false)}
+      />
     </div>
   );
 }
