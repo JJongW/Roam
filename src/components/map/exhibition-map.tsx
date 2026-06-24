@@ -542,34 +542,25 @@ export function ExhibitionMap({
               break;
             }
           }
-          // Tapping a booth nudges the view toward it. Keep it gentle so it
-          // never feels like a yank: only bump the zoom when very zoomed out,
-          // and only re-centre when the booth sits away from the middle.
+          // Tapping a booth re-centres it WITHOUT changing zoom — the visitor's
+          // own zoom ratio is preserved; only the pan moves to centre the booth.
           if (hitBooth) {
             const el = containerRef.current;
             if (el) {
               const g = geomOf(hitBooth);
-              const cur = view.current.scale;
-              const next = cur < 1.1 ? 1.25 : cur; // no zoom if already in
-              const cx = g.x * next + view.current.offset.x;
-              const cy = g.y * next + view.current.offset.y;
-              const offCentre =
-                Math.abs(cx - el.clientWidth / 2) > el.clientWidth * 0.28 ||
-                Math.abs(cy - el.clientHeight / 2) > el.clientHeight * 0.28;
-              if (next !== cur || offCentre) {
-                view.current = {
-                  scale: next,
-                  offset: clampOffset(
-                    {
-                      x: el.clientWidth / 2 - g.x * next,
-                      y: el.clientHeight / 2 - g.y * next,
-                    },
-                    next,
-                  ),
-                };
-                userAdjusted.current = true;
-                applyView(true);
-              }
+              const s = view.current.scale;
+              view.current = {
+                scale: s,
+                offset: clampOffset(
+                  {
+                    x: el.clientWidth / 2 - g.x * s,
+                    y: el.clientHeight / 2 - g.y * s,
+                  },
+                  s,
+                ),
+              };
+              userAdjusted.current = true;
+              applyView(true);
             }
           }
           onSelect(hit); // empty → caller deselects
