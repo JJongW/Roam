@@ -63,6 +63,8 @@ export function MapView({
   const [heatLoading, setHeatLoading] = useState(false);
   // pointer tracking for drag-to-toggle on the sheet handle
   const dragStart = useRef<number | null>(null);
+  // drag-down on the list (when scrolled to top) collapses the sheet
+  const listDrag = useRef<number | null>(null);
 
   const hydrated = useHydrated();
   const cartCount = useCartStore((s) => s.ids.length);
@@ -402,7 +404,7 @@ export function MapView({
   return (
     // The visitor shell boxes pages to max-w-md (mobile frame). The map needs
     // full width on desktop, so break out of that box at md+ with fixed inset-0.
-    <div className="flex h-dvh flex-col overflow-hidden bg-background md:fixed md:inset-0 md:z-30 md:flex-row landscape:fixed landscape:inset-0 landscape:z-30 landscape:flex-row">
+    <div className="flex h-dvh flex-col overflow-hidden overscroll-none bg-background md:fixed md:inset-0 md:z-30 md:flex-row landscape:fixed landscape:inset-0 landscape:z-30 landscape:flex-row">
       {/* Wide / landscape: always-open side panel (search + filters + list).
           The portrait bottom sheet is hidden here. Selecting in either syncs. */}
       <aside className="hidden w-64 shrink-0 flex-col border-r border-border bg-card md:flex md:w-80 landscape:flex">
@@ -592,7 +594,24 @@ export function MapView({
             {/* Collapsed = search only. Filters, gates, and list appear when
                 the sheet is pulled up. */}
             {sheetOpen && (
-              <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-4">
+              <div
+                className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-4"
+                onPointerDown={(e) => {
+                  // Only arm collapse-on-drag when the list is at the top, so
+                  // mid-list scrolling isn't hijacked.
+                  listDrag.current =
+                    e.currentTarget.scrollTop <= 0 ? e.clientY : null;
+                }}
+                onPointerMove={(e) => {
+                  if (listDrag.current == null) return;
+                  if (e.clientY - listDrag.current > 48) {
+                    setSheetOpen(false);
+                    listDrag.current = null;
+                  }
+                }}
+                onPointerUp={() => (listDrag.current = null)}
+                onPointerCancel={() => (listDrag.current = null)}
+              >
                 {/* 입구/출구 — between the search and the category filters. */}
                 {gates.length > 1 && (
                   <div className="mb-2">{renderGateSelectors()}</div>
