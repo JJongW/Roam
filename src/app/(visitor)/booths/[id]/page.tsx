@@ -38,7 +38,7 @@ export default async function BoothDetailPage({ params }: Props) {
     detail;
 
   return (
-    <>
+    <div className="contents landscape:fixed landscape:inset-0 landscape:z-30 landscape:flex landscape:flex-col landscape:overflow-hidden landscape:bg-background">
       <AnalyticsTracker
         type="view"
         boothId={booth.id}
@@ -56,54 +56,62 @@ export default async function BoothDetailPage({ params }: Props) {
           </div>
         }
       />
-      <main className="flex-1 pb-10">
-        {/* hero */}
-        <div
-          className="flex items-center gap-4 p-5"
-          style={{
-            background: `linear-gradient(135deg, ${category.color}22, transparent)`,
-          }}
-        >
+      <main className="flex-1 pb-10 landscape:flex landscape:min-h-0 landscape:flex-1 landscape:flex-row landscape:pb-0">
+        {/* Landscape: identity column (hero + 정보 + AI 요약) on the left. */}
+        <div className="contents landscape:flex landscape:w-[360px] landscape:shrink-0 landscape:flex-col landscape:overflow-y-auto landscape:border-r landscape:border-border">
+          {/* hero */}
           <div
-            className="flex size-16 items-center justify-center rounded-2xl"
+            className="flex items-center gap-4 p-5"
             style={{
-              backgroundColor: `${category.color}26`,
-              color: category.color,
+              background: `linear-gradient(135deg, ${category.color}22, transparent)`,
             }}
           >
-            <Icon name={category.icon} className="size-8" />
+            <div
+              className="flex size-16 items-center justify-center rounded-2xl"
+              style={{
+                backgroundColor: `${category.color}26`,
+                color: category.color,
+              }}
+            >
+              <Icon name={category.icon} className="size-8" />
+            </div>
+            <div className="min-w-0">
+              <h1 className="truncate text-xl font-extrabold">{booth.name}</h1>
+              <p className="truncate text-sm text-muted-foreground">
+                {booth.company}
+              </p>
+              <div className="mt-1.5 flex items-center gap-2">
+                {reviewSummary.count > 0 ? (
+                  <Rating value={reviewSummary.avg} size={14} showValue />
+                ) : (
+                  <span className="text-xs text-muted-foreground">
+                    리뷰 없음
+                  </span>
+                )}
+              </div>
+            </div>
           </div>
-          <div className="min-w-0">
-            <h1 className="truncate text-xl font-extrabold">{booth.name}</h1>
-            <p className="truncate text-sm text-muted-foreground">
-              {booth.company}
-            </p>
-            <div className="mt-1.5 flex items-center gap-2">
-              {reviewSummary.count > 0 ? (
-                <Rating value={reviewSummary.avg} size={14} showValue />
-              ) : (
-                <span className="text-xs text-muted-foreground">리뷰 없음</span>
+
+          <div className="px-5 py-2">
+            {/* At-a-glance 정보 + AI 요약 stay above the tabs (always visible). */}
+            <div className="flex flex-wrap items-center gap-2">
+              {booth.code && (
+                <span className="rounded-full border border-border bg-card px-3 py-1 text-sm font-bold tabular">
+                  부스 {booth.code}
+                </span>
               )}
+              <CategoryChip category={category} />
+            </div>
+
+            <div className="mt-4">
+              <BoothAiSummary boothId={booth.id} />
             </div>
           </div>
         </div>
 
-        <div className="px-5 py-2">
-          {/* At-a-glance 정보 + AI 요약 stay above the tabs (always visible). */}
-          <div className="flex flex-wrap items-center gap-2">
-            {booth.code && (
-              <span className="rounded-full border border-border bg-card px-3 py-1 text-sm font-bold tabular">
-                부스 {booth.code}
-              </span>
-            )}
-            <CategoryChip category={category} />
-          </div>
-
-          <div className="mt-4">
-            <BoothAiSummary boothId={booth.id} />
-          </div>
-
-          <div className="mt-5">
+        {/* Right pane (landscape) / continues below (portrait): the tabs. */}
+        <div className="contents landscape:flex landscape:flex-1 landscape:flex-col landscape:overflow-y-auto">
+          <div className="px-5 py-2 landscape:py-4">
             <BoothTabs
               intro={
                 <div className="space-y-6">
@@ -207,6 +215,6 @@ export default async function BoothDetailPage({ params }: Props) {
           </div>
         </div>
       </main>
-    </>
+    </div>
   );
 }

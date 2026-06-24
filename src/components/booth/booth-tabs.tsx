@@ -40,7 +40,7 @@ export function BoothTabs({
     <div>
       <div
         role="tablist"
-        className="sticky top-14 z-30 -mx-5 flex gap-1 border-b border-border bg-background/90 px-5 backdrop-blur-xl"
+        className="sticky top-14 z-30 -mx-5 flex gap-1 border-b border-border bg-background/90 px-5 backdrop-blur-xl landscape:top-0"
       >
         {TABS.map((t) => (
           <button

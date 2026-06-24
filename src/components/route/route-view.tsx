@@ -286,7 +286,7 @@ export function RouteView({
   }
 
   return (
-    <div className="flex min-h-dvh flex-col pb-28">
+    <div className="flex min-h-dvh flex-col pb-28 landscape:fixed landscape:inset-0 landscape:z-30 landscape:overflow-hidden landscape:bg-background landscape:pb-0">
       <AppBar
         title="내 동선"
         right={
@@ -317,210 +317,222 @@ export function RouteView({
         }
       />
 
-      <div
-        className={cn(
-          "relative border-b border-border transition-[height]",
-          viewing ? "h-[58dvh]" : "h-[38dvh]",
-        )}
-      >
-        <ExhibitionMap
-          width={exhibition.mapWidth}
-          height={exhibition.mapHeight}
-          booths={booths}
-          categories={categories}
-          halls={halls}
-          routeOrder={plan.boothIds}
-          visitedIds={visitedIds}
-          skippedIds={skippedIds}
-          floorplan={FLOORPLANS[slug]}
-          entrance={start}
-          exit={exitPoint}
-        />
-      </div>
-
-      {!viewing && gates.length > 1 && (
-        <div className="mx-4 mt-3 flex items-center gap-2">
-          <label className="flex flex-1 items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2 text-sm">
-            <LogIn className="size-4 shrink-0 text-success" aria-hidden />
-            <span className="shrink-0 text-muted-foreground">입구</span>
-            <select
-              value={entranceId}
-              onChange={(e) => setEntranceId(e.target.value)}
-              aria-label="입구 선택"
-              className="min-w-0 flex-1 bg-transparent font-semibold outline-none"
-            >
-              {gates.map((g) => (
-                <option key={g.id} value={g.id}>
-                  {g.label}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="flex flex-1 items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2 text-sm">
-            <LogOut className="size-4 shrink-0 text-warning" aria-hidden />
-            <span className="shrink-0 text-muted-foreground">출구</span>
-            <select
-              value={exitId}
-              onChange={(e) => setExitId(e.target.value)}
-              aria-label="출구 선택"
-              className="min-w-0 flex-1 bg-transparent font-semibold outline-none"
-            >
-              {gates.map((g) => (
-                <option key={g.id} value={g.id}>
-                  {g.label}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-      )}
-
-      {!viewing && rationale && (
-        <div className="mx-4 mt-3 flex items-start gap-2 rounded-xl border border-border bg-secondary/40 p-3">
-          <Sparkles
-            className="mt-0.5 size-4 shrink-0 text-primary"
-            aria-hidden
+      {/* Landscape: map on the left, the route panel on the right (like the map
+          page). Portrait: the wrappers are display:contents → normal stacking. */}
+      <div className="contents landscape:flex landscape:min-h-0 landscape:flex-1 landscape:flex-row">
+        <div
+          className={cn(
+            "relative border-b border-border transition-[height] landscape:h-full landscape:flex-1 landscape:border-b-0 landscape:border-r",
+            viewing ? "h-[58dvh]" : "h-[38dvh]",
+          )}
+        >
+          <ExhibitionMap
+            width={exhibition.mapWidth}
+            height={exhibition.mapHeight}
+            booths={booths}
+            categories={categories}
+            halls={halls}
+            routeOrder={plan.boothIds}
+            visitedIds={visitedIds}
+            skippedIds={skippedIds}
+            floorplan={FLOORPLANS[slug]}
+            entrance={start}
+            exit={exitPoint}
           />
-          <p className="text-sm leading-snug text-foreground/90">{rationale}</p>
         </div>
-      )}
 
-      <div className="mx-4 mt-3 flex items-center justify-around rounded-xl border border-border bg-card py-2.5 text-sm">
-        <span className="flex items-center gap-1.5 font-semibold">
-          <MapPin className="size-4 text-muted-foreground" /> {ordered.length}곳
-        </span>
-        <span className="h-6 w-px bg-border" />
-        <span className="flex items-center gap-1.5 font-semibold">
-          <Clock className="size-4 text-muted-foreground" /> 예상{" "}
-          {formatWalk(
-            ordered.length * BASE_DWELL_MINUTES + plan.estimatedMinutes,
+        {/* Right panel (landscape) / continues vertically (portrait). */}
+        <div className="contents landscape:flex landscape:w-[440px] landscape:shrink-0 landscape:flex-col landscape:overflow-y-auto landscape:pb-24">
+          {!viewing && gates.length > 1 && (
+            <div className="mx-4 mt-3 flex items-center gap-2">
+              <label className="flex flex-1 items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2 text-sm">
+                <LogIn className="size-4 shrink-0 text-success" aria-hidden />
+                <span className="shrink-0 text-muted-foreground">입구</span>
+                <select
+                  value={entranceId}
+                  onChange={(e) => setEntranceId(e.target.value)}
+                  aria-label="입구 선택"
+                  className="min-w-0 flex-1 bg-transparent font-semibold outline-none"
+                >
+                  {gates.map((g) => (
+                    <option key={g.id} value={g.id}>
+                      {g.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="flex flex-1 items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2 text-sm">
+                <LogOut className="size-4 shrink-0 text-warning" aria-hidden />
+                <span className="shrink-0 text-muted-foreground">출구</span>
+                <select
+                  value={exitId}
+                  onChange={(e) => setExitId(e.target.value)}
+                  aria-label="출구 선택"
+                  className="min-w-0 flex-1 bg-transparent font-semibold outline-none"
+                >
+                  {gates.map((g) => (
+                    <option key={g.id} value={g.id}>
+                      {g.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
           )}
-        </span>
-        <span className="h-6 w-px bg-border" />
-        <span className="flex items-center gap-1.5 font-semibold text-muted-foreground">
-          <Footprints className="size-4" /> 이동{" "}
-          {formatWalk(plan.estimatedMinutes)}
-        </span>
-      </div>
-      <p className="px-5 pb-1 pt-1.5 text-xs text-muted-foreground">
-        관람 1곳당 약 {BASE_DWELL_MINUTES}분 기준이에요. ‘이동’은 부스 사이 걷는
-        시간이고, 실제 관람 시간은 사람마다 달라요.
-      </p>
 
-      {!viewing && (
-        <div className="flex items-center justify-between px-5 pb-2 pt-1">
-          <span className="text-xs text-muted-foreground">
-            <GripVertical className="mr-0.5 inline size-3.5 align-text-bottom" />
-            끌어서 순서 변경
-          </span>
-          {ordered.length > 1 && (
-            <button
-              type="button"
-              onClick={optimizeOrder}
-              className="flex items-center gap-1 rounded-full border border-border bg-card px-2.5 py-1 text-xs font-semibold active:bg-accent/40"
-            >
-              <ArrowDownNarrowWide className="size-3.5" /> 거리순 정렬
-            </button>
+          {!viewing && rationale && (
+            <div className="mx-4 mt-3 flex items-start gap-2 rounded-xl border border-border bg-secondary/40 p-3">
+              <Sparkles
+                className="mt-0.5 size-4 shrink-0 text-primary"
+                aria-hidden
+              />
+              <p className="text-sm leading-snug text-foreground/90">
+                {rationale}
+              </p>
+            </div>
           )}
-        </div>
-      )}
 
-      {!viewing && aiEnabled && (
-        <div className="mx-4 mb-2 flex gap-2">
-          <div className="relative flex-1">
-            <Wand2 className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              value={editText}
-              onChange={(e) => setEditText(e.target.value)}
-              placeholder="AI로 수정: 예) 문학 빼줘, A홀 근처만"
-              maxLength={200}
-              disabled={editing}
-              className="h-9 pl-8"
-              aria-label="AI 동선 수정 요청"
-              onKeyDown={(e) => {
-                if (e.nativeEvent.isComposing) return;
-                if (e.key === "Enter") aiEdit();
-              }}
-            />
+          <div className="mx-4 mt-3 flex items-center justify-around rounded-xl border border-border bg-card py-2.5 text-sm">
+            <span className="flex items-center gap-1.5 font-semibold">
+              <MapPin className="size-4 text-muted-foreground" />{" "}
+              {ordered.length}곳
+            </span>
+            <span className="h-6 w-px bg-border" />
+            <span className="flex items-center gap-1.5 font-semibold">
+              <Clock className="size-4 text-muted-foreground" /> 예상{" "}
+              {formatWalk(
+                ordered.length * BASE_DWELL_MINUTES + plan.estimatedMinutes,
+              )}
+            </span>
+            <span className="h-6 w-px bg-border" />
+            <span className="flex items-center gap-1.5 font-semibold text-muted-foreground">
+              <Footprints className="size-4" /> 이동{" "}
+              {formatWalk(plan.estimatedMinutes)}
+            </span>
           </div>
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-9 shrink-0"
-            disabled={!editText.trim() || editing}
-            onClick={aiEdit}
-          >
-            {editing ? <Loader2 className="size-4 animate-spin" /> : "수정"}
-          </Button>
-        </div>
-      )}
+          <p className="px-5 pb-1 pt-1.5 text-xs text-muted-foreground">
+            관람 1곳당 약 {BASE_DWELL_MINUTES}분 기준이에요. ‘이동’은 부스 사이
+            걷는 시간이고, 실제 관람 시간은 사람마다 달라요.
+          </p>
 
-      <Reorder.Group
-        axis="y"
-        values={orderedIds}
-        onReorder={setCartIds}
-        className="space-y-1.5 px-4"
-      >
-        {ordered.map((b, i) => {
-          const isLater = skippedSet.has(b.id);
-          return (
-            <RouteRow key={b.id} id={b.id}>
-              {/* Minimal stop: order number + booth name only. Details live on
-                  the booth page / map — the list stays a clean ordered plan. */}
-              <div
-                className={cn(
-                  "flex items-center gap-2.5 rounded-xl border border-border bg-card px-3 py-2.5",
-                  isLater && "opacity-60",
-                )}
-              >
-                <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
-                  {i + 1}
-                </span>
-                <Link
-                  href={`/booths/${b.id}`}
-                  className="min-w-0 flex-1 truncate text-sm font-semibold"
-                >
-                  {b.name}
-                  {isLater && (
-                    <span className="ml-1.5 text-[11px] font-semibold text-warning">
-                      이따
-                    </span>
-                  )}
-                </Link>
+          {!viewing && (
+            <div className="flex items-center justify-between px-5 pb-2 pt-1">
+              <span className="text-xs text-muted-foreground">
+                <GripVertical className="mr-0.5 inline size-3.5 align-text-bottom" />
+                끌어서 순서 변경
+              </span>
+              {ordered.length > 1 && (
                 <button
                   type="button"
-                  aria-label={isLater ? "이따 해제" : "이따 다시 (뒤로 미루기)"}
-                  onClick={() => toggleStatus(b.id, "skipped")}
-                  className={cn(
-                    "flex size-9 shrink-0 items-center justify-center rounded-full active:bg-secondary",
-                    isLater ? "text-warning" : "text-muted-foreground",
-                  )}
+                  onClick={optimizeOrder}
+                  className="flex items-center gap-1 rounded-full border border-border bg-card px-2.5 py-1 text-xs font-semibold active:bg-accent/40"
                 >
-                  <Clock className="size-4.5" />
+                  <ArrowDownNarrowWide className="size-3.5" /> 거리순 정렬
                 </button>
-                <button
-                  type="button"
-                  aria-label="동선에서 빼기"
-                  onClick={() => removeFromCart(b.id)}
-                  className="flex size-9 shrink-0 items-center justify-center rounded-full text-muted-foreground active:bg-secondary"
-                >
-                  <X className="size-4.5" />
-                </button>
-                <button
-                  type="button"
-                  aria-label="관람 완료로 표시"
-                  onClick={() => toggleStatus(b.id, "visited")}
-                  className="flex h-9 shrink-0 items-center gap-1 rounded-full bg-success px-3 text-xs font-bold text-white active:opacity-90"
-                >
-                  <Check className="size-4" /> 관람
-                </button>
+              )}
+            </div>
+          )}
+
+          {!viewing && aiEnabled && (
+            <div className="mx-4 mb-2 flex gap-2">
+              <div className="relative flex-1">
+                <Wand2 className="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+                <Input
+                  value={editText}
+                  onChange={(e) => setEditText(e.target.value)}
+                  placeholder="AI로 수정: 예) 문학 빼줘, A홀 근처만"
+                  maxLength={200}
+                  disabled={editing}
+                  className="h-9 pl-8"
+                  aria-label="AI 동선 수정 요청"
+                  onKeyDown={(e) => {
+                    if (e.nativeEvent.isComposing) return;
+                    if (e.key === "Enter") aiEdit();
+                  }}
+                />
               </div>
-            </RouteRow>
-          );
-        })}
-      </Reorder.Group>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-9 shrink-0"
+                disabled={!editText.trim() || editing}
+                onClick={aiEdit}
+              >
+                {editing ? <Loader2 className="size-4 animate-spin" /> : "수정"}
+              </Button>
+            </div>
+          )}
 
-      <div className="fixed inset-x-0 bottom-0 z-40 mx-auto flex w-full max-w-md gap-2 border-t border-border bg-background/90 p-4 pb-safe backdrop-blur-xl">
+          <Reorder.Group
+            axis="y"
+            values={orderedIds}
+            onReorder={setCartIds}
+            className="space-y-1.5 px-4"
+          >
+            {ordered.map((b, i) => {
+              const isLater = skippedSet.has(b.id);
+              return (
+                <RouteRow key={b.id} id={b.id}>
+                  {/* Minimal stop: order number + booth name only. Details live on
+                  the booth page / map — the list stays a clean ordered plan. */}
+                  <div
+                    className={cn(
+                      "flex items-center gap-2.5 rounded-xl border border-border bg-card px-3 py-2.5",
+                      isLater && "opacity-60",
+                    )}
+                  >
+                    <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                      {i + 1}
+                    </span>
+                    <Link
+                      href={`/booths/${b.id}`}
+                      className="min-w-0 flex-1 truncate text-sm font-semibold"
+                    >
+                      {b.name}
+                      {isLater && (
+                        <span className="ml-1.5 text-[11px] font-semibold text-warning">
+                          이따
+                        </span>
+                      )}
+                    </Link>
+                    <button
+                      type="button"
+                      aria-label={
+                        isLater ? "이따 해제" : "이따 다시 (뒤로 미루기)"
+                      }
+                      onClick={() => toggleStatus(b.id, "skipped")}
+                      className={cn(
+                        "flex size-9 shrink-0 items-center justify-center rounded-full active:bg-secondary",
+                        isLater ? "text-warning" : "text-muted-foreground",
+                      )}
+                    >
+                      <Clock className="size-4.5" />
+                    </button>
+                    <button
+                      type="button"
+                      aria-label="동선에서 빼기"
+                      onClick={() => removeFromCart(b.id)}
+                      className="flex size-9 shrink-0 items-center justify-center rounded-full text-muted-foreground active:bg-secondary"
+                    >
+                      <X className="size-4.5" />
+                    </button>
+                    <button
+                      type="button"
+                      aria-label="관람 완료로 표시"
+                      onClick={() => toggleStatus(b.id, "visited")}
+                      className="flex h-9 shrink-0 items-center gap-1 rounded-full bg-success px-3 text-xs font-bold text-white active:opacity-90"
+                    >
+                      <Check className="size-4" /> 관람
+                    </button>
+                  </div>
+                </RouteRow>
+              );
+            })}
+          </Reorder.Group>
+        </div>
+      </div>
+
+      <div className="fixed inset-x-0 bottom-0 z-40 mx-auto flex w-full max-w-md gap-2 border-t border-border bg-background/90 p-4 pb-safe backdrop-blur-xl landscape:inset-x-auto landscape:right-0 landscape:mx-0 landscape:w-[440px] landscape:max-w-none">
         <Button asChild variant="secondary" size="lg">
           <Link href={`/exhibitions/${slug}/map`}>
             <Plus className="size-5" /> 담기
