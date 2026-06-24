@@ -7,7 +7,7 @@ import {
   parseBody,
   withErrorBoundary,
 } from "@/lib/api/http";
-import { hasGemini, generateJSON } from "@/lib/ai/gemini";
+import { hasGemini, generateJSON, generateText } from "@/lib/ai/gemini";
 
 const bodySchema = z.object({ boothId: z.string().min(1) });
 
@@ -72,7 +72,31 @@ export async function POST(req: Request) {
       cache.set(boothId, { data: clean, at: Date.now() });
       return ok(clean);
     } catch {
-      return fail("INTERNAL", "AI 요약을 만들지 못했어요");
+      // Structured extract failed (model/JSON variance) — fall back to a plain
+      // one-line summary so the booth still gets its 한 줄 요약 (no 500, no blank).
+      try {
+        const summary = (
+          await generateText({
+            system:
+              "너는 도서전 부스를 한 문장으로 요약하는 도우미야. 이 부스가 무엇을 보여주는 곳인지 한국어 한 문장(40자 내외)으로만 답해. 과장·이모지·따옴표 없이 담백하게.",
+            prompt: [
+              `부스명: ${booth.name}`,
+              `출판사/브랜드: ${booth.company}`,
+              `분야: ${category.name}`,
+              `소개: ${booth.longDescription || booth.description}`,
+            ].join("\n"),
+            temperature: 0.2,
+          })
+        )
+          .trim()
+          .replace(/^["'"']|["'"']$/g, "")
+          .slice(0, 120);
+        const data: Extract = { summary, newReleases: [], goods: [] };
+        if (summary) cache.set(boothId, { data, at: Date.now() });
+        return ok(data);
+      } catch {
+        return ok({ summary: "", newReleases: [], goods: [] });
+      }
     }
   });
 }
