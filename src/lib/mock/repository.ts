@@ -672,6 +672,19 @@ export class MockRepository implements Repository {
     return n;
   }
 
+  async listExhibitionNotes(
+    exhibitionId: string,
+  ): Promise<{ boothId: string; memo: string }[]> {
+    const boothIds = new Set(
+      store()
+        .booths.filter((b) => b.exhibitionId === exhibitionId)
+        .map((b) => b.id),
+    );
+    return store()
+      .notes.filter((n) => n.memo?.trim() && boothIds.has(n.boothId))
+      .map((n) => ({ boothId: n.boothId, memo: n.memo! }));
+  }
+
   async recordAnalytics(
     sessionId: string,
     exhibitionId: string,

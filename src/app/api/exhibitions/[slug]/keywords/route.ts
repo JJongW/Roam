@@ -32,10 +32,90 @@ function fallbackKeywords(
   return out;
 }
 
+// Common words that carry no signal as a keyword (Korean + a few generic).
+const STOP = new Set([
+  "그리고",
+  "하지만",
+  "에서",
+  "관련",
+  "정도",
+  "구매",
+  "방문",
+  "부스",
+  "출판사",
+  "그림책",
+  "도서",
+  "선물",
+  "사기",
+  "노트",
+  "여기",
+  "이거",
+  "친구",
+]);
+
+/**
+ * Frequent words visitors actually wrote in their memos, grouped by the booth's
+ * category — the crowd-sourced signal that grows as records pile up. Returns the
+ * top terms (seen ≥2×) per category slug.
+ */
+function noteKeywordsByCategory(
+  notes: { boothId: string; memo: string }[],
+  booths: Booth[],
+  categories: Category[],
+): Record<string, string[]> {
+  const slugByBooth = new Map<string, string>();
+  for (const b of booths) {
+    const c = categories.find((x) => x.id === b.categoryId);
+    if (c) slugByBooth.set(b.id, c.slug);
+  }
+  const counts = new Map<string, Map<string, number>>();
+  for (const n of notes) {
+    const slug = slugByBooth.get(n.boothId);
+    if (!slug) continue;
+    const bucket = counts.get(slug) ?? new Map<string, number>();
+    counts.set(slug, bucket);
+    const tokens = n.memo
+      .split(/[^\p{L}\p{N}]+/u)
+      .map((t) => t.trim())
+      .filter((t) => t.length >= 2 && !STOP.has(t));
+    for (const t of new Set(tokens)) bucket.set(t, (bucket.get(t) ?? 0) + 1);
+  }
+  const out: Record<string, string[]> = {};
+  for (const [slug, bucket] of counts) {
+    out[slug] = [...bucket.entries()]
+      .filter(([, n]) => n >= 2)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 4)
+      .map(([t]) => t);
+  }
+  return out;
+}
+
+/** Prepend crowd-note keywords (visitor signal) ahead of booth-content ones. */
+function mergeNotes(
+  base: Record<string, string[]>,
+  noteKw: Record<string, string[]>,
+): Record<string, string[]> {
+  const out: Record<string, string[]> = {};
+  for (const slug of Object.keys(base)) {
+    const seen = new Set<string>();
+    const merged: string[] = [];
+    for (const k of [...(noteKw[slug] ?? []), ...base[slug]]) {
+      if (seen.has(k)) continue;
+      seen.add(k);
+      merged.push(k);
+      if (merged.length >= 8) break;
+    }
+    out[slug] = merged;
+  }
+  return out;
+}
+
 /**
  * Keywords to preview under each interest (category) cell in onboarding — drawn
- * from the booths in that category (authors, titles, brands, themes). Lazy +
- * cached; falls back to booth names when AI is off.
+ * from visitor memos (crowd signal, prioritised) + the booths in that category
+ * (authors, titles, brands, themes). Lazy + cached; falls back to booth names
+ * when AI is off.
  */
 export async function GET(
   _req: Request,
@@ -53,10 +133,14 @@ export async function GET(
   const booths = await repo.listBoothsByExhibitionId(detail.exhibition.id);
   const categories = detail.categories;
   const fallback = fallbackKeywords(booths, categories);
+  // Crowd signal from visitor memos — prioritised when present.
+  const notes = await repo.listExhibitionNotes(detail.exhibition.id);
+  const noteKw = noteKeywordsByCategory(notes, booths, categories);
 
   if (!hasGemini) {
-    cache.set(detail.exhibition.id, { data: fallback, at: Date.now() });
-    return ok({ keywords: fallback });
+    const data = mergeNotes(fallback, noteKw);
+    cache.set(detail.exhibition.id, { data, at: Date.now() });
+    return ok({ keywords: data });
   }
 
   try {
@@ -98,10 +182,12 @@ export async function GET(
       }
       merged[c.slug] = topped.slice(0, 8);
     }
-    cache.set(detail.exhibition.id, { data: merged, at: Date.now() });
-    return ok({ keywords: merged });
+    const data2 = mergeNotes(merged, noteKw);
+    cache.set(detail.exhibition.id, { data: data2, at: Date.now() });
+    return ok({ keywords: data2 });
   } catch {
-    cache.set(detail.exhibition.id, { data: fallback, at: Date.now() });
-    return ok({ keywords: fallback });
+    const data = mergeNotes(fallback, noteKw);
+    cache.set(detail.exhibition.id, { data, at: Date.now() });
+    return ok({ keywords: data });
   }
 }

@@ -170,6 +170,11 @@ export interface Repository {
     boothId: string,
     input: BoothNoteInput,
   ): Promise<BoothNote>;
+  /** Every visitor memo for booths in this exhibition (boothId + memo text).
+   *  Powers crowd-sourced keyword extraction for onboarding. */
+  listExhibitionNotes(
+    exhibitionId: string,
+  ): Promise<{ boothId: string; memo: string }[]>;
 
   // bookmarks
   listBookmarks(sessionId: string): Promise<Bookmark[]>;

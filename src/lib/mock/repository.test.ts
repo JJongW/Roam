@@ -90,4 +90,11 @@ describe("MockRepository", () => {
     );
     expect(pair?.count).toBe(2);
   });
+
+  it("lists exhibition notes for keyword extraction", async () => {
+    await repo.upsertNote("u_test", "b_a101", { memo: "리필 노트 사기" });
+    const notes = await repo.listExhibitionNotes("exh_sibf_2026");
+    const mine = notes.find((n) => n.boothId === "b_a101");
+    expect(mine?.memo).toContain("리필");
+  });
 });

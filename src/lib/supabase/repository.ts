@@ -1048,6 +1048,29 @@ export class SupabaseRepository implements Repository {
     return mapNote((data ?? row) as Row);
   }
 
+  async listExhibitionNotes(
+    exhibitionId: string,
+  ): Promise<{ boothId: string; memo: string }[]> {
+    const db = await this.db();
+    const { data: booths } = await db
+      .from("booth")
+      .select("id")
+      .eq("exhibition_id", exhibitionId);
+    const ids = (booths ?? []).map((b) => str((b as Row).id));
+    if (ids.length === 0) return [];
+    const { data } = await db
+      .from("booth_note")
+      .select("booth_id, memo")
+      .in("booth_id", ids)
+      .not("memo", "is", null);
+    return (data ?? [])
+      .map((r) => ({
+        boothId: str((r as Row).booth_id),
+        memo: str((r as Row).memo),
+      }))
+      .filter((n) => n.memo.trim());
+  }
+
   // --- bookmarks -----------------------------------------------------------
 
   async listBookmarks(sessionId: string): Promise<Bookmark[]> {
