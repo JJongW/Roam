@@ -6,8 +6,9 @@ import {
   useLayoutEffect,
   useMemo,
   useRef,
+  useState,
 } from "react";
-import { Minus, Plus, Locate } from "lucide-react";
+import { Minus, Plus, Locate, RotateCw } from "lucide-react";
 import { cn, clamp } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import type { Booth, Category, Hall, Point } from "@/lib/types";
@@ -145,6 +146,10 @@ export function ExhibitionMap({
 }: MapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
+  // Effective canvas size: floorplan dims override the props when present.
+  // (Declared early — the imperative transform/rotation helpers below need it.)
+  const width = floorplan?.width ?? widthProp;
+  const height = floorplan?.height ?? heightProp;
   // Live pan/zoom, driven imperatively so dragging never re-renders the (heavy)
   // booth layer — only the SVG transform changes on each move.
   const view = useRef<{ scale: number; offset: Point }>({
@@ -155,6 +160,12 @@ export function ExhibitionMap({
   // (chrome show/hide, status chips appearing) — keep their chosen view.
   const userAdjusted = useRef(false);
   const moveStartFired = useRef(false);
+  // Map view rotation in 90° steps. Stored as an ever-increasing degree count so
+  // each press animates forward a quarter turn (270°→360°, not 270°→0°). The
+  // whole map (booths + their labels) rotates rigidly, so nothing overflows its
+  // box; footprint() uses this mod 180 to know if width/height are swapped.
+  const rotationRef = useRef(0);
+  const [, setRotation] = useState(0);
 
   // Vertical pan target that keeps a focused booth above the bottom popup.
   // Portrait: shift up by half the popup inset (capped so it never overshoots);
@@ -169,22 +180,32 @@ export function ExhibitionMap({
 
   // Write the current view to the DOM. `animate` adds a short transition for
   // programmatic moves (tap-zoom, buttons); drags pass false for instant feel.
-  const applyView = useCallback((animate = false) => {
-    const el = svgRef.current;
-    if (!el) return;
+  const transformString = useCallback(() => {
     const { scale, offset } = view.current;
-    el.style.transition = animate ? "transform 220ms ease-out" : "none";
-    el.style.transform = `translate(${offset.x}px, ${offset.y}px) scale(${scale})`;
-  }, []);
+    const cx = width / 2;
+    const cy = height / 2;
+    // Pan → zoom → rotate-about-centre (transform-origin is 0 0, so the rotation
+    // is centred manually). Booth boxes and their labels rotate together.
+    return `translate(${offset.x}px, ${offset.y}px) scale(${scale}) translate(${cx}px, ${cy}px) rotate(${rotationRef.current}deg) translate(${-cx}px, ${-cy}px)`;
+  }, [width, height]);
+
+  const applyView = useCallback(
+    (animate = false) => {
+      const el = svgRef.current;
+      if (!el) return;
+      el.style.transition = animate ? "transform 220ms ease-out" : "none";
+      el.style.transform = transformString();
+    },
+    [transformString],
+  );
   // Re-assert just the transform after a React re-render (which would otherwise
   // drop the imperatively-set inline style). Leaves `transition` untouched so an
   // in-flight animated move (tap-zoom, centre-on) isn't cut short.
   const reassertTransform = useCallback(() => {
     const el = svgRef.current;
     if (!el) return;
-    const { scale, offset } = view.current;
-    el.style.transform = `translate(${offset.x}px, ${offset.y}px) scale(${scale})`;
-  }, []);
+    el.style.transform = transformString();
+  }, [transformString]);
   // Active touch/mouse points for pan (1) + pinch (2) gestures.
   const pointers = useRef<Map<number, Point>>(new Map());
   const gesture = useRef<{
@@ -204,9 +225,44 @@ export function ExhibitionMap({
     y: 0,
   });
 
-  // Effective canvas size: floorplan dims override the props when present.
-  const width = floorplan?.width ?? widthProp;
-  const height = floorplan?.height ?? heightProp;
+  // Axis-aligned footprint of the (possibly rotated) map, in world units. At 90°
+  // / 270° the width and height swap — fit + clamp use this to frame and bound
+  // the rotated map correctly. Rotation always pivots about the map centre, so
+  // that centre stays fixed regardless of angle.
+  const footprint = useCallback(() => {
+    const r = ((rotationRef.current % 180) + 180) % 180;
+    return r === 90 ? { fw: height, fh: width } : { fw: width, fh: height };
+  }, [width, height]);
+
+  // World ↔ rotated-content mapping. The CSS transform rotates the map about its
+  // centre, so pan/zoom (screen-space) stay correct, but anything mapping a
+  // booth's world x/y to the screen — tap hit-testing, centre-on — must apply
+  // the same rotation. `toContent` rotates a world point into the post-rotation
+  // frame; `fromContent` inverts it.
+  const spin = (dx: number, dy: number, deg: number): Point => {
+    const a = (deg * Math.PI) / 180;
+    const c = Math.cos(a);
+    const s = Math.sin(a);
+    return { x: dx * c - dy * s, y: dx * s + dy * c };
+  };
+  const toContent = useCallback(
+    (w: Point): Point => {
+      const cx = width / 2;
+      const cy = height / 2;
+      const r = spin(w.x - cx, w.y - cy, rotationRef.current);
+      return { x: cx + r.x, y: cy + r.y };
+    },
+    [width, height],
+  );
+  const fromContent = useCallback(
+    (p: Point): Point => {
+      const cx = width / 2;
+      const cy = height / 2;
+      const r = spin(p.x - cx, p.y - cy, -rotationRef.current);
+      return { x: cx + r.x, y: cy + r.y };
+    },
+    [width, height],
+  );
 
   // Booth geometry: from the floorplan (by code) when available, else a
   // uniform fallback box at the booth's stored x/y.
@@ -285,38 +341,33 @@ export function ExhibitionMap({
       // After the visitor has taken control, a resize (chrome hiding, status
       // chips appearing) must NOT snap back to the fitted view — just re-clamp
       // so their pan/zoom stays within the new bounds.
+      const { fw, fh } = footprint();
       if (userAdjusted.current) {
         const s = view.current.scale;
         const o = view.current.offset;
         view.current.offset = {
-          x: clamp(
-            o.x,
-            Math.min(0, cw - width * s),
-            Math.max(0, cw - width * s),
-          ),
-          y: clamp(
-            o.y,
-            Math.min(0, ch - height * s),
-            Math.max(0, ch - height * s),
-          ),
+          x: clamp(o.x, Math.min(0, cw - fw * s), Math.max(0, cw - fw * s)),
+          y: clamp(o.y, Math.min(0, ch - fh * s), Math.max(0, ch - fh * s)),
         };
         applyView(animate);
         return;
       }
-      const contain = Math.min(cw / width, ch / height) * 0.96;
+      const contain = Math.min(cw / fw, ch / fh) * 0.96;
       // fillHeight: zoom so the map fills the viewport vertically (pan horizontally),
       // but never below the contain scale.
-      const s = fillHeight ? Math.max(contain, (ch / height) * 0.92) : contain;
+      const s = fillHeight ? Math.max(contain, (ch / fh) * 0.92) : contain;
+      // Centre formula pivots on the map centre (width/2,height/2) — the same
+      // point the rotation turns about — so it holds at every angle.
       const cx = focus ? focus.x : width / 2;
       const cy = focus ? focus.y : height / 2;
-      const scaledH = height * s;
+      const scaledH = fh * s;
       view.current = {
         scale: s,
         offset: {
           x: clamp(
             cw / 2 - cx * s,
-            Math.min(0, cw - width * s),
-            Math.max(0, cw - width * s),
+            Math.min(0, cw - fw * s),
+            Math.max(0, cw - fw * s),
           ),
           // When the whole map is shorter than the viewport, anchor it near the
           // top (not vertical-centred) so there's no large empty band above.
@@ -332,11 +383,21 @@ export function ExhibitionMap({
       };
       applyView(animate);
     },
-    [width, height, fillHeight, focus?.x, focus?.y, applyView],
+    [width, height, fillHeight, focus?.x, focus?.y, applyView, footprint],
   );
 
   // The explicit "전체 보기" control: drop the user-adjusted lock and re-fit.
   const resetView = useCallback(() => {
+    userAdjusted.current = false;
+    fit(true);
+  }, [fit]);
+
+  // Rotate the whole map a quarter-turn. Re-fit afterwards so the rotated map is
+  // re-centred and scaled to the viewport — it can never spill off-screen, and
+  // the transform transition makes the turn animate smoothly.
+  const rotate90 = useCallback(() => {
+    rotationRef.current += 90;
+    setRotation(rotationRef.current);
     userAdjusted.current = false;
     fit(true);
   }, [fit]);
@@ -365,20 +426,13 @@ export function ExhibitionMap({
       if (!el) return off;
       const cw = el.clientWidth;
       const ch = el.clientHeight;
+      const { fw, fh } = footprint();
       return {
-        x: clamp(
-          off.x,
-          Math.min(0, cw - width * s),
-          Math.max(0, cw - width * s),
-        ),
-        y: clamp(
-          off.y,
-          Math.min(0, ch - height * s),
-          Math.max(0, ch - height * s),
-        ),
+        x: clamp(off.x, Math.min(0, cw - fw * s), Math.max(0, cw - fw * s)),
+        y: clamp(off.y, Math.min(0, ch - fh * s), Math.max(0, ch - fh * s)),
       };
     },
-    [width, height],
+    [footprint],
   );
 
   // Zoom by a factor, keeping the given container-point fixed (defaults to center).
@@ -541,8 +595,13 @@ export function ExhibitionMap({
         lastTap.current = { t: 0, x: 0, y: 0 };
       } else {
         lastTap.current = { t: now, x: p.x, y: p.y };
-        const mx = (p.x - offset.x) / scale;
-        const my = (p.y - offset.y) / scale;
+        // Un-project the tap through pan/zoom, then un-rotate to world coords.
+        const world = fromContent({
+          x: (p.x - offset.x) / scale,
+          y: (p.y - offset.y) / scale,
+        });
+        const mx = world.x;
+        const my = world.y;
         // Prefer selecting the nearest booth within a finger-friendly radius.
         if (onSelect) {
           // Point-in-rect hit test against each booth's actual box.
@@ -569,12 +628,14 @@ export function ExhibitionMap({
             if (el) {
               const g = geomOf(hitBooth);
               const s = view.current.scale;
+              // Centre on the booth's rotated screen position, not its raw x/y.
+              const cp = toContent({ x: g.x, y: g.y });
               view.current = {
                 scale: s,
                 offset: clampOffset(
                   {
-                    x: el.clientWidth / 2 - g.x * s,
-                    y: focusCenterY(el, g.y, s),
+                    x: el.clientWidth / 2 - cp.x * s,
+                    y: focusCenterY(el, cp.y, s),
                   },
                   s,
                 ),
@@ -679,10 +740,11 @@ export function ExhibitionMap({
     const g = geomOf(b);
     const cw = el.clientWidth;
     const next = Math.max(view.current.scale, 1.4);
+    const cp = toContent({ x: g.x, y: g.y });
     view.current = {
       scale: next,
       offset: clampOffset(
-        { x: cw / 2 - g.x * next, y: focusCenterY(el, g.y, next) },
+        { x: cw / 2 - cp.x * next, y: focusCenterY(el, cp.y, next) },
         next,
       ),
     };
@@ -1348,6 +1410,15 @@ export function ExhibitionMap({
       <div
         className={cn("absolute z-10 flex flex-col gap-2", controlsClassName)}
       >
+        <Button
+          variant="outline"
+          size="icon"
+          className="bg-card shadow-[var(--shadow-card)]"
+          aria-label="지도 90도 회전"
+          onClick={rotate90}
+        >
+          <RotateCw className="size-5" />
+        </Button>
         <Button
           variant="outline"
           size="icon"
