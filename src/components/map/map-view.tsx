@@ -86,17 +86,24 @@ const BoothRow = memo(function BoothRow({
 export function MapView({
   detail,
   booths,
+  initialFocusId,
 }: {
   detail: ExhibitionDetail;
   booths: Booth[];
+  /** Deep-link target (e.g. from the 메모장 "지도에서 보기"): preselect + center. */
+  initialFocusId?: string;
 }) {
   const router = useRouter();
   const [activeCat, setActiveCat] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<
     "visited" | "skipped" | null
   >(null);
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [centerOn, setCenterOn] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(
+    initialFocusId ?? null,
+  );
+  const [centerOn, setCenterOn] = useState<string | null>(
+    initialFocusId ?? null,
+  );
   const [query, setQuery] = useState("");
   const [sheetOpen, setSheetOpen] = useState(false);
   const [aiOpen, setAiOpen] = useState(false);
@@ -260,6 +267,38 @@ export function MapView({
   }
 
   // ---- shared render helpers (mobile sheet + desktop side panel) ----
+
+  // The map's secondary destinations + AI action. Shared by the portrait top
+  // bar and the landscape/desktop side panel so every layout reaches them.
+  function renderMapActions() {
+    const slug = detail.exhibition.slug;
+    return (
+      <>
+        <Link
+          href={`/exhibitions/${slug}/notes`}
+          aria-label="내 메모장"
+          className="flex h-9 items-center gap-1 rounded-full px-2 text-sm font-bold text-muted-foreground active:bg-secondary"
+        >
+          <NotebookPen className="size-5" /> 메모장
+        </Link>
+        <Link
+          href={`/exhibitions/${slug}/routes`}
+          aria-label="다른 사람 동선"
+          className="flex h-9 items-center gap-1 rounded-full px-2 text-sm font-bold text-muted-foreground active:bg-secondary"
+        >
+          <RouteIcon className="size-5" /> 다른 동선
+        </Link>
+        <button
+          type="button"
+          onClick={() => setAiOpen(true)}
+          aria-label="AI 추천받기"
+          className="flex h-9 items-center gap-1 rounded-full px-2 text-sm font-bold text-primary active:bg-secondary"
+        >
+          <Sparkles className="size-5" /> AI 추천
+        </button>
+      </>
+    );
+  }
 
   function renderSearch() {
     return (
@@ -435,13 +474,16 @@ export function MapView({
         <div className="flex items-center gap-1 border-b border-border px-3 py-3">
           <button
             type="button"
-            aria-label="뒤로 가기"
-            onClick={() => router.back()}
+            aria-label="전시 홈으로"
+            onClick={() => router.push("/")}
             className="flex size-9 items-center justify-center rounded-full hover:bg-secondary"
           >
             <ChevronLeft className="size-5" />
           </button>
           <h1 className="text-lg font-extrabold">전시장 지도</h1>
+        </div>
+        <div className="flex flex-wrap items-center gap-0.5 border-b border-border px-2 py-1.5">
+          {renderMapActions()}
         </div>
         <div className="border-b border-border p-3">{renderSearch()}</div>
         {gates.length > 1 && (
@@ -467,26 +509,9 @@ export function MapView({
             It stays put during zoom/pan so the map doesn't jump. */}
         <div className="md:hidden landscape:hidden">
           <AppBar
-            title="전시장 지도"
-            right={
-              <>
-                <Link
-                  href={`/exhibitions/${detail.exhibition.slug}/routes`}
-                  aria-label="다른 사람 동선"
-                  className="flex h-9 items-center gap-1 rounded-full px-2.5 text-sm font-bold text-muted-foreground active:bg-secondary"
-                >
-                  <RouteIcon className="size-5" /> 다른 동선
-                </Link>
-                <button
-                  type="button"
-                  onClick={() => setAiOpen(true)}
-                  aria-label="AI 추천받기"
-                  className="flex h-9 items-center gap-1 rounded-full px-2.5 text-sm font-bold text-primary active:bg-secondary"
-                >
-                  <Sparkles className="size-5" /> AI 추천받기
-                </button>
-              </>
-            }
+            title="지도"
+            onBack={() => router.push("/")}
+            right={renderMapActions()}
           />
         </div>
 

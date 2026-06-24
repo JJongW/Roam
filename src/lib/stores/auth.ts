@@ -40,8 +40,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     try {
       const { user } = await api.get<{ user: User | null }>("/api/auth/me");
       set({ user, ready: true });
+      // Signed in → merge the server's notes on top. Signed out → keep whatever
+      // is in the local cache: anonymous visitors save memos/visits locally and
+      // must not lose them on reload. Only an explicit logout clears.
       if (user) await loadNotes();
-      else useVisitStore.getState().clear();
     } catch {
       set({ ready: true });
     }

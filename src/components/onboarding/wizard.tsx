@@ -162,7 +162,9 @@ export function OnboardingWizard({
       useRouteStore.getState().setRoute(route);
       useCartStore.getState().setIds(route.boothIds);
       // The map is the single surface now — the recommended 동선 shows there.
-      router.push(`/exhibitions/${slug}/map`);
+      // replace (not push) so Back from the map returns to the exhibition home,
+      // not back into this wizard with its answers half-rebuilt.
+      router.replace(`/exhibitions/${slug}/map`);
     } catch (e) {
       const msg =
         e instanceof ApiClientError
@@ -481,7 +483,7 @@ export function OnboardingWizard({
           variant="ghost"
           className="w-full text-muted-foreground"
           disabled={submitting}
-          onClick={() => router.push(`/exhibitions/${slug}/map`)}
+          onClick={() => router.replace(`/exhibitions/${slug}/map`)}
         >
           바로 지도 보러가기
         </Button>

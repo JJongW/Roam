@@ -8,12 +8,16 @@ import { Button } from "@/components/ui/button";
 export function AppBar({
   title,
   showBack = true,
+  onBack,
   right,
   transparent = false,
   className,
 }: {
   title?: string;
   showBack?: boolean;
+  /** Override the default `router.back()` — for screens whose logical parent
+   *  isn't the previous history entry (the map goes home, not back to onboarding). */
+  onBack?: () => void;
   right?: React.ReactNode;
   transparent?: boolean;
   className?: string;
@@ -34,7 +38,7 @@ export function AppBar({
           variant="ghost"
           size="icon"
           aria-label="뒤로 가기"
-          onClick={() => router.back()}
+          onClick={onBack ?? (() => router.back())}
         >
           <ChevronLeft className="size-6" />
         </Button>

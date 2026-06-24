@@ -1,0 +1,166 @@
+"use client";
+
+import Link from "next/link";
+import { Check, ChevronRight, Clock3, MapPin, NotebookPen } from "lucide-react";
+import { AppBar } from "@/components/common/app-bar";
+import { EmptyState } from "@/components/common/states";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useVisitStore } from "@/lib/stores/visit";
+import { useHydrated } from "@/lib/hooks/use-hydrated";
+import type { Booth, Category } from "@/lib/types";
+
+const STATUS = {
+  visited: { label: "방문함", Icon: Check },
+  skipped: { label: "이따 다시", Icon: Clock3 },
+} as const;
+
+/**
+ * 내 메모장 — every booth the visitor left a note or photo on, gathered in one
+ * place. Reads the same local visit store the booth detail writes to, so it
+ * works without sign-in. Read-only here; editing stays on the booth detail.
+ */
+export function NotesView({
+  slug,
+  booths,
+  categories,
+}: {
+  slug: string;
+  booths: Booth[];
+  categories: Category[];
+}) {
+  const hydrated = useHydrated();
+  const records = useVisitStore((s) => s.records);
+  const catById = new Map(categories.map((c) => [c.id, c]));
+
+  // Booths with a non-empty memo or at least one photo, ordered by stand number.
+  const noted = hydrated
+    ? booths
+        .filter((b) => {
+          const r = records[b.id];
+          return Boolean(r && (r.memo?.trim() || r.photos?.length));
+        })
+        .sort((a, b) =>
+          (a.code ?? a.name).localeCompare(b.code ?? b.name, "ko"),
+        )
+    : [];
+
+  return (
+    <main className="flex flex-1 flex-col pb-safe">
+      <AppBar title="내 메모장" />
+
+      {!hydrated ? (
+        <div className="space-y-3 p-4">
+          <Skeleton className="h-28 w-full rounded-2xl" />
+          <Skeleton className="h-28 w-full rounded-2xl" />
+        </div>
+      ) : noted.length === 0 ? (
+        <div className="flex flex-1 flex-col items-center justify-center gap-5 px-6 text-center">
+          <EmptyState
+            title="아직 메모한 부스가 없어요"
+            description="부스를 누르고 떠오른 생각이나 사진을 남기면, 여기에 모아서 다시 볼 수 있어요."
+          />
+          <Button asChild>
+            <Link href={`/exhibitions/${slug}/map`}>
+              <MapPin className="size-4" /> 지도에서 부스 둘러보기
+            </Link>
+          </Button>
+        </div>
+      ) : (
+        <>
+          <p className="px-4 pb-1 pt-3 text-sm text-muted-foreground">
+            <span className="font-bold text-foreground">{noted.length}곳</span>
+            에 메모를 남겼어요
+          </p>
+          <ul className="space-y-3 p-4 pt-2">
+            {noted.map((b) => {
+              const r = records[b.id];
+              const cat = catById.get(b.categoryId);
+              const status = r?.status ? STATUS[r.status] : null;
+              return (
+                <li
+                  key={b.id}
+                  className="space-y-3 rounded-2xl border border-border bg-card p-4"
+                >
+                  <div className="flex items-start gap-2">
+                    <span
+                      aria-hidden
+                      className="mt-1.5 size-2.5 shrink-0 rounded-full"
+                      style={{
+                        backgroundColor:
+                          cat?.color ?? "var(--muted-foreground)",
+                      }}
+                    />
+                    <div className="min-w-0 flex-1">
+                      <h2 className="font-bold leading-snug">{b.name}</h2>
+                      <p className="text-xs text-muted-foreground">
+                        {b.code ? `${b.code} · ` : ""}
+                        {cat?.name ?? ""}
+                      </p>
+                    </div>
+                    {status && (
+                      <span className="flex shrink-0 items-center gap-1 rounded-full bg-secondary px-2 py-0.5 text-xs font-semibold text-muted-foreground">
+                        <status.Icon className="size-3.5" /> {status.label}
+                      </span>
+                    )}
+                  </div>
+
+                  {r?.memo?.trim() && (
+                    <p className="whitespace-pre-wrap break-words rounded-xl bg-secondary/60 px-3 py-2.5 text-sm leading-relaxed">
+                      {r.memo}
+                    </p>
+                  )}
+
+                  {r?.photos && r.photos.length > 0 && (
+                    <div className="grid grid-cols-3 gap-2">
+                      {r.photos.map((src) => (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          key={src}
+                          src={src}
+                          alt={`${b.name} 메모 사진`}
+                          loading="lazy"
+                          className="aspect-square w-full rounded-lg object-cover"
+                        />
+                      ))}
+                    </div>
+                  )}
+
+                  <div className="flex gap-2 pt-0.5">
+                    <Button
+                      asChild
+                      variant="secondary"
+                      size="sm"
+                      className="flex-1"
+                    >
+                      <Link href={`/exhibitions/${slug}/map?booth=${b.id}`}>
+                        <MapPin className="size-4" /> 지도에서 보기
+                      </Link>
+                    </Button>
+                    <Button
+                      asChild
+                      variant="ghost"
+                      size="sm"
+                      className="flex-1"
+                    >
+                      <Link href={`/booths/${b.id}`}>
+                        상세 보기 <ChevronRight className="size-4" />
+                      </Link>
+                    </Button>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </>
+      )}
+
+      {hydrated && noted.length > 0 && (
+        <p className="px-4 pb-4 text-center text-xs text-muted-foreground">
+          <NotebookPen className="mb-0.5 mr-1 inline size-3.5" />
+          메모는 이 기기에 저장돼요. 로그인하면 다른 기기와도 동기화돼요.
+        </p>
+      )}
+    </main>
+  );
+}
