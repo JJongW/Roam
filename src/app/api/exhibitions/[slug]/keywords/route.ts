@@ -3,6 +3,11 @@ import { getRepository } from "@/lib/repositories";
 import { notFound, ok } from "@/lib/api/http";
 import { hasGemini, generateJSON } from "@/lib/ai/gemini";
 import type { Booth, Category } from "@/lib/types";
+import keywordCache from "@/lib/keyword-cache.json";
+
+// Precomputed keywords per exhibition (committed) — served instantly so the
+// onboarding never waits on Gemini. Regenerate the file when booths change.
+const PRECOMPUTED = keywordCache as Record<string, Record<string, string[]>>;
 
 /**
  * Per-category keyword cache. A fair's booths are fixed, so the keywords shown
@@ -136,6 +141,15 @@ export async function GET(
   // Crowd signal from visitor memos — prioritised when present.
   const notes = await repo.listExhibitionNotes(detail.exhibition.id);
   const noteKw = noteKeywordsByCategory(notes, booths, categories);
+
+  // Precomputed keywords (committed) → instant, no Gemini wait. Notes still
+  // merge on top so the list grows with real visitor records.
+  const pre = PRECOMPUTED[slug];
+  if (pre) {
+    const base: Record<string, string[]> = {};
+    for (const c of categories) base[c.slug] = pre[c.slug] ?? fallback[c.slug];
+    return ok({ keywords: mergeNotes(base, noteKw), cached: true });
+  }
 
   if (!hasGemini) {
     const data = mergeNotes(fallback, noteKw);
