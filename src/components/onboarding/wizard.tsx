@@ -3,7 +3,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronLeft, ChevronDown, Loader2, Sparkles } from "lucide-react";
+import {
+  Check,
+  ChevronLeft,
+  ChevronDown,
+  Loader2,
+  Sparkles,
+} from "lucide-react";
 import { toast } from "sonner";
 import {
   MOVEMENT_OPTIONS,
@@ -39,7 +45,7 @@ type Step = (typeof STEPS)[number];
 const TITLES: Record<Step, { title: string; sub: string }> = {
   interests: {
     title: "어떤 분야에 관심 있으세요?",
-    sub: "분야를 누르고 끌리는 키워드를 골라주세요",
+    sub: "관심 분야를 누르세요 · 키워드는 원하면 더 골라도 돼요",
   },
   age: { title: "나이대가 어떻게 되세요?", sub: "한 가지만 골라주세요" },
   purpose: {
@@ -63,9 +69,10 @@ function haptic() {
 
 /**
  * Onboarding — three quick steps: 관심 분야 · 나이 · 관람 목적. The interest step
- * reveals keywords from each category's booths; picking keywords is how the
- * visitor's context is captured (a category counts as an interest once any of
- * its keywords is chosen). (Replaces the old 5-step wizard + chat.)
+ * captures a category as an interest the moment it's tapped — keywords (pulled
+ * from that category's booths) are an optional refinement, never required, so a
+ * category with no fitting keyword can still be chosen on its own.
+ * (Replaces the old 5-step wizard + chat.)
  */
 export function OnboardingWizard({
   slug,
@@ -126,17 +133,37 @@ export function OnboardingWizard({
     setStep((s) => Math.min(STEPS.length - 1, Math.max(0, s + delta)));
   }
 
-  // Toggle a keyword; a category becomes an interest once it has ≥1 keyword.
+  // Select/deselect a whole category. Keywords are optional refinement — a
+  // category stands on its own as an interest, so picking a keyword is never
+  // required. Selecting opens its keyword tray; deselecting clears its keywords.
+  function toggleCategory(slug: string) {
+    haptic();
+    const st = useOnboardingStore.getState();
+    if (st.interests.includes(slug)) {
+      const catKws = keywords?.[slug] ?? [];
+      for (const k of catKws) {
+        if (useOnboardingStore.getState().keywords.includes(k))
+          useOnboardingStore.getState().toggleKeyword(k);
+      }
+      useOnboardingStore
+        .getState()
+        .setInterests(
+          useOnboardingStore.getState().interests.filter((i) => i !== slug),
+        );
+      setExpanded((e) => (e === slug ? null : e));
+    } else {
+      st.setInterests([...st.interests, slug]);
+      setExpanded(slug);
+    }
+  }
+
+  // Pick/unpick a refinement keyword. Picking implies the category is selected;
+  // unpicking the last keyword keeps the category — it can stand alone.
   function toggleKeyword(slug: string, kw: string) {
     haptic();
     store.toggleKeyword(kw);
     const st = useOnboardingStore.getState();
-    const catKws = keywords?.[slug] ?? [];
-    const stillSelected = catKws.some((k) => st.keywords.includes(k));
-    const interests = stillSelected
-      ? Array.from(new Set([...st.interests, slug]))
-      : st.interests.filter((i) => i !== slug);
-    st.setInterests(interests);
+    if (!st.interests.includes(slug)) st.setInterests([...st.interests, slug]);
   }
 
   async function submit() {
@@ -234,36 +261,56 @@ export function OnboardingWizard({
                             : "border-border bg-card",
                         )}
                       >
-                        <button
-                          type="button"
-                          onClick={() => {
-                            haptic();
-                            setExpanded((e) => (e === c.slug ? null : c.slug));
-                          }}
-                          className="flex w-full items-center gap-3 p-3.5 text-left"
-                        >
-                          <span
-                            className="flex size-10 shrink-0 items-center justify-center rounded-xl"
-                            style={{
-                              backgroundColor: `${c.color}22`,
-                              color: c.color,
-                            }}
+                        <div className="flex w-full items-center gap-2 p-2 pl-3.5">
+                          {/* Primary action: select the category itself — no
+                              keyword required. */}
+                          <button
+                            type="button"
+                            onClick={() => toggleCategory(c.slug)}
+                            aria-pressed={active}
+                            className="flex flex-1 items-center gap-3 py-1.5 text-left"
                           >
-                            <Icon name={c.icon} className="size-5" />
-                          </span>
-                          <span className="flex-1 font-bold">{c.name}</span>
-                          {picked > 0 && (
-                            <span className="rounded-full bg-primary px-2 py-0.5 text-[11px] font-bold text-primary-foreground">
-                              {picked}
+                            <span
+                              className="flex size-10 shrink-0 items-center justify-center rounded-xl"
+                              style={{
+                                backgroundColor: `${c.color}22`,
+                                color: c.color,
+                              }}
+                            >
+                              <Icon name={c.icon} className="size-5" />
                             </span>
-                          )}
-                          <ChevronDown
-                            className={cn(
-                              "size-5 shrink-0 text-muted-foreground transition-transform",
-                              open && "rotate-180",
+                            <span className="flex-1 font-bold">{c.name}</span>
+                            {picked > 0 && (
+                              <span className="rounded-full bg-primary px-2 py-0.5 text-[11px] font-bold text-primary-foreground">
+                                {picked}
+                              </span>
                             )}
-                          />
-                        </button>
+                            {active && (
+                              <Check className="size-5 shrink-0 text-primary" />
+                            )}
+                          </button>
+                          {/* Secondary: peek the optional keyword list. */}
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setExpanded((e) => (e === c.slug ? null : c.slug))
+                            }
+                            aria-expanded={open}
+                            aria-label={
+                              open
+                                ? `${c.name} 키워드 접기`
+                                : `${c.name} 키워드 보기`
+                            }
+                            className="flex size-9 shrink-0 items-center justify-center rounded-full text-muted-foreground active:bg-secondary"
+                          >
+                            <ChevronDown
+                              className={cn(
+                                "size-5 transition-transform",
+                                open && "rotate-180",
+                              )}
+                            />
+                          </button>
+                        </div>
                         {open && (
                           <div className="px-3.5 pb-3.5">
                             {keywords === null ? (
@@ -279,30 +326,38 @@ export function OnboardingWizard({
                                 ))}
                               </div>
                             ) : kws.length > 0 ? (
-                              <div className="flex flex-wrap gap-1.5">
-                                {kws.map((kw) => {
-                                  const on = store.keywords.includes(kw);
-                                  return (
-                                    <button
-                                      key={kw}
-                                      type="button"
-                                      onClick={() => toggleKeyword(c.slug, kw)}
-                                      aria-pressed={on}
-                                      className={cn(
-                                        "rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
-                                        on
-                                          ? "border-primary bg-primary text-primary-foreground"
-                                          : "border-border bg-background text-foreground/80",
-                                      )}
-                                    >
-                                      {kw}
-                                    </button>
-                                  );
-                                })}
-                              </div>
+                              <>
+                                <p className="mb-2 text-xs text-muted-foreground">
+                                  끌리는 키워드가 있다면 골라주세요 · 선택
+                                </p>
+                                <div className="flex flex-wrap gap-1.5">
+                                  {kws.map((kw) => {
+                                    const on = store.keywords.includes(kw);
+                                    return (
+                                      <button
+                                        key={kw}
+                                        type="button"
+                                        onClick={() =>
+                                          toggleKeyword(c.slug, kw)
+                                        }
+                                        aria-pressed={on}
+                                        className={cn(
+                                          "rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
+                                          on
+                                            ? "border-primary bg-primary text-primary-foreground"
+                                            : "border-border bg-background text-foreground/80",
+                                        )}
+                                      >
+                                        {kw}
+                                      </button>
+                                    );
+                                  })}
+                                </div>
+                              </>
                             ) : (
                               <p className="text-xs text-muted-foreground">
-                                이 분야의 키워드가 아직 없어요.
+                                키워드가 없어도 괜찮아요. 분야만 선택해도 추천에
+                                반영돼요.
                               </p>
                             )}
                           </div>
