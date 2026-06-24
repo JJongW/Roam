@@ -5,6 +5,7 @@ import { AppBar } from "@/components/common/app-bar";
 import { BookmarkButton } from "@/components/booth/bookmark-button";
 import { BoothAiSummary } from "@/components/booth/booth-ai-summary";
 import { BoothPersonalPanel } from "@/components/booth/booth-personal-panel";
+import { BoothHighlights } from "@/components/booth/booth-highlights";
 import { BoothTabs } from "@/components/booth/booth-tabs";
 import { BoothPosts } from "@/components/booth/booth-posts";
 import { CartButton } from "@/components/booth/cart-button";
@@ -154,6 +155,9 @@ export default async function BoothDetailPage({ params }: Props) {
                         ))}
                     </div>
                   </section>
+
+                  {/* AI-extracted 신간·굿즈 (renders only when found). */}
+                  <BoothHighlights boothId={booth.id} />
 
                   {booth.aliases && booth.aliases.length > 0 && (
                     <section className="space-y-2">
