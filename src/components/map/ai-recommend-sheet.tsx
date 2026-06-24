@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Loader2, Sparkles, X } from "lucide-react";
 import { toast } from "sonner";
 import { api, ApiClientError } from "@/lib/api/client";
+import { LOADING_MESSAGES } from "@/lib/loading-messages";
+import { useRotatingMessage } from "@/lib/hooks/use-rotating-message";
 import { useCartStore } from "@/lib/stores/cart";
 import { useRouteStore } from "@/lib/stores/route";
 import { useOnboardingStore } from "@/lib/stores/onboarding";
@@ -33,6 +35,7 @@ export function AiRecommendSheet({
 }) {
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
+  const busyMsg = useRotatingMessage(LOADING_MESSAGES.route, busy);
 
   async function send() {
     const t = text.trim();
@@ -125,7 +128,7 @@ export function AiRecommendSheet({
           ) : (
             <Sparkles className="size-5" />
           )}
-          {busy ? "동선 짜는 중" : "이 내용으로 추천받기"}
+          {busy ? busyMsg : "이 내용으로 추천받기"}
         </Button>
       </div>
     </div>

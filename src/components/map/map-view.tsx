@@ -9,6 +9,7 @@ import {
   ChevronLeft,
   Clock3,
   Flame,
+  Loader2,
   LogIn,
   LogOut,
   NotebookPen,
@@ -404,7 +405,12 @@ export function MapView({
             : "border-border bg-card text-foreground",
         )}
       >
-        <Flame className="size-3.5" /> 인기
+        {heatLoading ? (
+          <Loader2 className="size-3.5 animate-spin" />
+        ) : (
+          <Flame className="size-3.5" />
+        )}
+        {heatLoading ? "인기 부르는 중" : "인기"}
       </button>
     );
   }

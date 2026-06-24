@@ -28,6 +28,8 @@ import {
   type RoutePlan,
 } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { LOADING_MESSAGES } from "@/lib/loading-messages";
+import { useRotatingMessage } from "@/lib/hooks/use-rotating-message";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Icon } from "@/components/common/icon";
@@ -86,6 +88,7 @@ export function OnboardingWizard({
   const [step, setStep] = useState(0);
   const [dir, setDir] = useState(1);
   const [submitting, setSubmitting] = useState(false);
+  const submitMsg = useRotatingMessage(LOADING_MESSAGES.route, submitting);
   const [expanded, setExpanded] = useState<string | null>(null);
   const [keywords, setKeywords] = useState<Record<string, string[]> | null>(
     null,
@@ -547,7 +550,7 @@ export function OnboardingWizard({
       {submitting && (
         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-3 bg-background/80 backdrop-blur-sm">
           <Loader2 className="size-8 animate-spin text-primary" />
-          <p className="text-sm font-semibold">맞춤 동선을 짜고 있어요…</p>
+          <p className="text-sm font-semibold">{submitMsg}…</p>
           <p className="text-xs text-muted-foreground">잠깐이면 돼요</p>
         </div>
       )}
