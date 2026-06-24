@@ -47,6 +47,10 @@ export interface ScoreContext {
   >;
   eventsByBooth: Record<string, BoothEvent[]>;
   now: number;
+  /** Crowd popularity per booth (0..1), aggregated from real saved routes. As
+   *  more visitors build routes, this sharpens — the recommendation improves
+   *  with usage. Blended with the booth's static popularity. */
+  crowdByBooth?: Record<string, number>;
 }
 
 export function scoreBooth(booth: Booth, ctx: ScoreContext): ScoredBooth {
@@ -59,7 +63,12 @@ export function scoreBooth(booth: Booth, ctx: ScoreContext): ScoredBooth {
     event: pw.event * cw.event,
   };
   const interest = interestScore(booth, ctx.preference.interests);
-  const popularity = booth.popularity / 100;
+  // Static popularity, blended with live crowd signal when available, so the
+  // recommendation gets better as more visitors save routes.
+  const staticPop = booth.popularity / 100;
+  const crowd = ctx.crowdByBooth?.[booth.id];
+  const popularity =
+    crowd != null ? 0.55 * staticPop + 0.45 * crowd : staticPop;
   const event = eventBoost(
     ctx.eventsByBooth[booth.id] ?? [],
     ctx.now,

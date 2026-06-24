@@ -31,10 +31,19 @@ export async function rankForExhibition(
   const eventsByBooth: Record<string, BoothEvent[]> = {};
   for (const e of events) (eventsByBooth[e.boothId] ??= []).push(e);
 
+  // Crowd signal from real saved routes — normalized to 0..1. Empty at first;
+  // sharpens as visitors build routes (usage → better recommendations).
+  const heat = await repo.boothHeatmap(detail.exhibition.id);
+  const maxCount = Math.max(1, ...Object.values(heat.booths));
+  const crowdByBooth: Record<string, number> = {};
+  for (const [id, c] of Object.entries(heat.booths))
+    crowdByBooth[id] = c / maxCount;
+
   const ctx: ScoreContext = {
     preference,
     eventsByBooth,
     now: nowMs,
+    crowdByBooth,
   };
 
   return {
