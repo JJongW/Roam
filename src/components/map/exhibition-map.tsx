@@ -97,6 +97,9 @@ interface MapProps {
    *  bottom sheet) so fit + clamp use the visible area, not the full container.
    *  Tailwind positioning classes; defaults to filling the container. */
   viewportClassName?: string;
+  /** Position for the zoom controls cluster — override to clear an overlapping
+   *  bottom sheet / nav. Defaults to bottom-right. */
+  controlsClassName?: string;
 }
 
 interface Rect {
@@ -133,6 +136,7 @@ export function ExhibitionMap({
   heatPairs,
   className,
   viewportClassName = "inset-0",
+  controlsClassName = "bottom-4 right-3",
 }: MapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -1301,7 +1305,9 @@ export function ExhibitionMap({
       </div>
 
       {/* controls */}
-      <div className="absolute bottom-4 right-3 flex flex-col gap-2">
+      <div
+        className={cn("absolute z-10 flex flex-col gap-2", controlsClassName)}
+      >
         <Button
           variant="outline"
           size="icon"

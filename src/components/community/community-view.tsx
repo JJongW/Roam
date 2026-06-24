@@ -215,7 +215,7 @@ export function CommunityView({
   }
 
   return (
-    <div className="flex h-dvh flex-col">
+    <div className="flex h-dvh flex-col pb-14">
       <AppBar title="실시간 커뮤니티" />
 
       <div className="flex-1 overflow-y-auto px-4 py-3">
@@ -407,7 +407,7 @@ export function CommunityView({
             <Textarea
               value={body}
               onChange={(e) => setBody(e.target.value)}
-              placeholder="현장 소식을 공유해 보세요 (대기시간, 굿즈 정보 등)"
+              placeholder="현장 소식을 공유해 보세요 (굿즈·이벤트·꿀팁 등)"
               rows={2}
               maxLength={500}
               className={`resize-none ${mediaEnabled ? "pl-11" : ""}`}

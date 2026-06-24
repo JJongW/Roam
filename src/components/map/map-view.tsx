@@ -392,7 +392,8 @@ export function MapView({
             // Mobile portrait: keep the fit/pan area above the bottom-sheet peek
             // (~116px) so the bottom of the venue isn't clipped behind it.
             // Desktop (side panel) and landscape have no sheet → fill fully.
-            viewportClassName="inset-x-0 top-0 bottom-[104px] md:inset-0 landscape:inset-0"
+            viewportClassName="inset-x-0 top-0 bottom-[160px] md:inset-0 landscape:inset-0"
+            controlsClassName="bottom-[168px] right-3 md:bottom-4 landscape:bottom-4"
             visitedIds={visitedIds}
             skippedIds={skippedIds}
             selectedId={selectedId}
@@ -409,7 +410,7 @@ export function MapView({
           {/* selected booth popup — decision info + quick actions. Sits above
               the sheet peek on mobile; bottom-right card on desktop. */}
           {selected && (
-            <div className="absolute inset-x-0 bottom-[112px] z-20 mx-auto w-full max-w-sm px-3 md:inset-x-auto md:bottom-3 md:right-3 md:w-72 md:px-0 landscape:inset-x-auto landscape:bottom-3 landscape:right-3 landscape:w-72 landscape:px-0">
+            <div className="absolute inset-x-0 bottom-[168px] z-20 mx-auto w-full max-w-sm px-3 md:inset-x-auto md:bottom-3 md:right-3 md:w-72 md:px-0 landscape:inset-x-auto landscape:bottom-3 landscape:right-3 landscape:w-72 landscape:px-0">
               <div className="rounded-2xl border border-border bg-card p-3 shadow-[var(--shadow-pop)] animate-in slide-in-from-bottom-2">
                 <div className="flex items-start gap-3">
                   <div className="min-w-0 flex-1">
@@ -461,7 +462,7 @@ export function MapView({
           {/* The map is the route surface — booths are added here and the line
               draws live. Show the count + a clear when there's a 동선. */}
           {hydrated && !selected && cartCount > 0 && (
-            <div className="absolute inset-x-0 bottom-[120px] z-20 mx-auto flex w-fit md:inset-x-auto md:bottom-4 md:right-4 landscape:inset-x-auto landscape:bottom-4 landscape:right-4">
+            <div className="absolute inset-x-0 bottom-[176px] z-20 mx-auto flex w-fit md:inset-x-auto md:bottom-4 md:right-4 landscape:inset-x-auto landscape:bottom-4 landscape:right-4">
               <div className="flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2.5 shadow-[var(--shadow-pop)]">
                 <RouteIcon className="size-4 text-primary" />
                 <span className="text-sm font-bold">담은 {cartCount}곳</span>
@@ -480,7 +481,7 @@ export function MapView({
           {/* bottom sheet: search + booth list. Mobile only (md:hidden). */}
           <div
             className={cn(
-              "absolute inset-x-0 bottom-0 z-30 flex flex-col rounded-t-2xl border-t border-border bg-card shadow-[var(--shadow-pop)] transition-[height] duration-300 ease-out md:hidden landscape:hidden",
+              "absolute inset-x-0 bottom-14 z-30 flex flex-col rounded-t-2xl border-t border-border bg-card shadow-[var(--shadow-pop)] transition-[height] duration-300 ease-out md:hidden landscape:hidden",
               sheetOpen ? "h-[62dvh]" : "h-[104px]",
             )}
           >

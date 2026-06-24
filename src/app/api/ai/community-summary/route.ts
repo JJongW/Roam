@@ -91,9 +91,15 @@ export async function POST(req: Request) {
       JSON.stringify(posts),
     ].join("\n");
 
-    const out = await generateJSON({ prompt, schema: summarySchema });
-    const summary = out.summary.slice(0, 5);
-    cache.set(exId, { summary, count, latestTs, at: now });
-    return ok({ summary, count });
+    try {
+      const out = await generateJSON({ prompt, schema: summarySchema });
+      const summary = out.summary.slice(0, 5);
+      cache.set(exId, { summary, count, latestTs, at: now });
+      return ok({ summary, count });
+    } catch {
+      // Gemini hiccup → don't 500; serve empty (the UI hides the box) and let
+      // a later read retry. Reuse a stale summary if we have one.
+      return ok({ summary: prev?.summary ?? [], count });
+    }
   });
 }
