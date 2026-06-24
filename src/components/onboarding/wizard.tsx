@@ -161,7 +161,8 @@ export function OnboardingWizard({
       });
       useRouteStore.getState().setRoute(route);
       useCartStore.getState().setIds(route.boothIds);
-      router.push(`/exhibitions/${slug}/route`);
+      // The map is the single surface now — the recommended 동선 shows there.
+      router.push(`/exhibitions/${slug}/map`);
     } catch (e) {
       const msg =
         e instanceof ApiClientError
@@ -447,7 +448,7 @@ export function OnboardingWizard({
         </div>
       </div>
 
-      <div className="sticky bottom-0 border-t border-border bg-background/90 p-4 pb-safe backdrop-blur-xl">
+      <div className="sticky bottom-0 space-y-2 border-t border-border bg-background/90 p-4 pb-safe backdrop-blur-xl">
         {step < STEPS.length - 1 ? (
           <Button
             size="lg"
@@ -475,6 +476,15 @@ export function OnboardingWizard({
             {submitting ? "맞춤 동선 만드는 중" : "맞춤 동선 만들기"}
           </Button>
         )}
+        {/* Skip the recommendation — go straight to the map and add booths there. */}
+        <Button
+          variant="ghost"
+          className="w-full text-muted-foreground"
+          disabled={submitting}
+          onClick={() => router.push(`/exhibitions/${slug}/map`)}
+        >
+          바로 지도 보러가기
+        </Button>
       </div>
 
       {submitting && (

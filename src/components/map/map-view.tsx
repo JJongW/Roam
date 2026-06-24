@@ -458,38 +458,22 @@ export function MapView({
             </div>
           )}
 
-          {/* Floating action. cart ≥ 1 → "동선 만들기" (추천 lives in the top bar).
-              cart = 0 → prominent "골라드릴까요?" for first-time discovery.
-              Hidden in landscape and when a booth card is showing. */}
-          {hydrated && !selected && (
+          {/* The map is the route surface — booths are added here and the line
+              draws live. Show the count + a clear when there's a 동선. */}
+          {hydrated && !selected && cartCount > 0 && (
             <div className="absolute inset-x-0 bottom-[120px] z-20 mx-auto flex w-fit md:inset-x-auto md:bottom-4 md:right-4 landscape:inset-x-auto landscape:bottom-4 landscape:right-4">
-              {cartCount > 0 ? (
-                <div className="flex items-center gap-2">
-                  <Link
-                    href={`/exhibitions/${detail.exhibition.slug}/route`}
-                    className="flex w-fit items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-bold text-primary-foreground shadow-[var(--shadow-pop)]"
-                  >
-                    <RouteIcon className="size-4.5" /> 내 동선 {cartCount}개 ·
-                    동선 만들기
-                  </Link>
-                  <button
-                    type="button"
-                    onClick={clearRoute}
-                    aria-label="동선 비우기"
-                    className="flex size-11 shrink-0 items-center justify-center rounded-full border border-border bg-card text-muted-foreground shadow-[var(--shadow-pop)] active:bg-secondary"
-                  >
-                    <X className="size-5" />
-                  </button>
-                </div>
-              ) : (
-                <Link
-                  href={`/exhibitions/${detail.exhibition.slug}/onboarding`}
-                  className="flex w-fit items-center gap-2 rounded-full border border-border bg-card px-5 py-3 text-sm font-bold shadow-[var(--shadow-pop)]"
+              <div className="flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2.5 shadow-[var(--shadow-pop)]">
+                <RouteIcon className="size-4 text-primary" />
+                <span className="text-sm font-bold">담은 {cartCount}곳</span>
+                <button
+                  type="button"
+                  onClick={clearRoute}
+                  aria-label="동선 비우기"
+                  className="-mr-1 flex size-7 shrink-0 items-center justify-center rounded-full text-muted-foreground active:bg-secondary"
                 >
-                  <Sparkles className="size-4.5 text-primary" /> 뭘 담을지
-                  모르겠어요 · 골라드릴까요?
-                </Link>
-              )}
+                  <X className="size-4" />
+                </button>
+              </div>
             </div>
           )}
 
