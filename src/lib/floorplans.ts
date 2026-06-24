@@ -145,7 +145,8 @@ function buildSibf(): Floorplan {
   decor.push(
     { type: "entrance", x: 2980, y: 1140, text: "입·출구", dir: "left" },
     { type: "entrance", x: entrance.x, y: entrance.y, text: "입구", dir: "up" },
-    { type: "entrance", x: exit.x, y: exit.y, text: "출구", dir: "up" },
+    // 출구 arrow points outward (away from the halls = downward, toward the exit).
+    { type: "entrance", x: exit.x, y: exit.y, text: "출구", dir: "down" },
     { type: "info", x: 2880, y: 3300, text: "안내" },
     { type: "info", x: 3060, y: 1300, text: "안내" },
     { type: "arrowsV", x: 1760, y1: 1810, y2: 1945 },

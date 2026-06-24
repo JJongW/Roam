@@ -1008,7 +1008,7 @@ export function ExhibitionMap({
                     ? `M${d.x - 86} ${d.y - aw} L${d.x - 86 - aw} ${d.y} L${d.x - 86} ${d.y + aw}`
                     : d.dir === "up"
                       ? `M${d.x - aw} ${d.y + 44} L${d.x} ${d.y + 44 - aw} L${d.x + aw} ${d.y + 44}`
-                      : `M${d.x - aw} ${d.y - 44} L${d.x} ${d.y - 44 + aw} L${d.x + aw} ${d.y - 44}`;
+                      : `M${d.x - aw} ${d.y + 44} L${d.x} ${d.y + 44 + aw} L${d.x + aw} ${d.y + 44}`;
               return (
                 <g key={i}>
                   <rect
