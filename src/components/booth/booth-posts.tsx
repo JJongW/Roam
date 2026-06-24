@@ -18,7 +18,14 @@ import type { CommunityPost } from "@/lib/types";
  * Crowd-sourced info thread on a booth's detail page (feature: 사용자 기여 정보).
  * Posting is allowed without login; the nickname defaults to the signed-in name.
  */
-export function BoothPosts({ boothId }: { boothId: string }) {
+export function BoothPosts({
+  boothId,
+  previewCount,
+}: {
+  boothId: string;
+  /** Show only the most recent N; the rest reveal behind a "더보기". */
+  previewCount?: number;
+}) {
   const user = useAuthStore((s) => s.user);
   const [posts, setPosts] = useState<CommunityPost[]>([]);
   const [status, setStatus] = useState<"loading" | "ready" | "error">(
@@ -27,6 +34,7 @@ export function BoothPosts({ boothId }: { boothId: string }) {
   const [body, setBody] = useState("");
   const [name, setName] = useState("");
   const [busy, setBusy] = useState(false);
+  const [showAll, setShowAll] = useState(false);
   const hydrated = useHydrated();
   const myIds = hydrated ? getMyPostIds() : [];
   const seededName = useRef(false);
@@ -165,7 +173,10 @@ export function BoothPosts({ boothId }: { boothId: string }) {
 
       {status === "ready" && posts.length > 0 && (
         <ul className="space-y-2">
-          {posts.map((p) => (
+          {(showAll || previewCount == null
+            ? posts
+            : posts.slice(0, previewCount)
+          ).map((p) => (
             <li
               key={p.id}
               className="rounded-2xl border border-border bg-card p-3.5"
@@ -195,6 +206,18 @@ export function BoothPosts({ boothId }: { boothId: string }) {
           ))}
         </ul>
       )}
+      {status === "ready" &&
+        previewCount != null &&
+        !showAll &&
+        posts.length > previewCount && (
+          <Button
+            variant="ghost"
+            className="w-full"
+            onClick={() => setShowAll(true)}
+          >
+            방문자 정보 {posts.length - previewCount}개 더보기
+          </Button>
+        )}
     </section>
   );
 }
