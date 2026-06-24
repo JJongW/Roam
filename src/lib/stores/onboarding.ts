@@ -12,6 +12,8 @@ import type {
 export interface OnboardingDraft {
   visitPurposes: VisitPurpose[];
   interests: string[];
+  /** Keywords the visitor picked under each interest (context signal). */
+  keywords: string[];
   age?: AgeGroup;
   availableMinutes?: number;
   movementPreference?: MovementPreference;
@@ -21,6 +23,8 @@ export interface OnboardingDraft {
 interface OnboardingState extends OnboardingDraft {
   togglePurpose: (v: VisitPurpose) => void;
   toggleInterest: (slug: string) => void;
+  setInterests: (slugs: string[]) => void;
+  toggleKeyword: (kw: string) => void;
   setAge: (v: AgeGroup) => void;
   setTime: (m: number) => void;
   setMovement: (v: MovementPreference) => void;
@@ -29,7 +33,11 @@ interface OnboardingState extends OnboardingDraft {
   isComplete: () => boolean;
 }
 
-const initial: OnboardingDraft = { visitPurposes: [], interests: [] };
+const initial: OnboardingDraft = {
+  visitPurposes: [],
+  interests: [],
+  keywords: [],
+};
 
 export const useOnboardingStore = create<OnboardingState>()(
   persist(
@@ -46,6 +54,13 @@ export const useOnboardingStore = create<OnboardingState>()(
           interests: s.interests.includes(slug)
             ? s.interests.filter((i) => i !== slug)
             : [...s.interests, slug],
+        })),
+      setInterests: (interests) => set({ interests }),
+      toggleKeyword: (kw) =>
+        set((s) => ({
+          keywords: s.keywords.includes(kw)
+            ? s.keywords.filter((k) => k !== kw)
+            : [...s.keywords, kw],
         })),
       setAge: (age) => set({ age }),
       setTime: (availableMinutes) => set({ availableMinutes }),

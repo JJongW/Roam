@@ -29,6 +29,8 @@ export const userPreferenceInputSchema = z.object({
   companionType: companionSchema.default("alone"),
   /** Visitor age group (optional; collected in onboarding for future tuning). */
   age: z.enum(AGE_GROUPS).optional(),
+  /** Keywords picked under interests — extra context (optional). */
+  keywords: z.array(z.string()).max(40).optional(),
 });
 export type UserPreferenceInput = z.infer<typeof userPreferenceInputSchema>;
 
