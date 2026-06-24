@@ -163,7 +163,32 @@ function buildSibf(): Floorplan {
     { type: "info", x: 2880, y: 3300, text: "안내" },
     { type: "arrowsV", x: 1760, y1: 1810, y2: 1945 },
   );
-  for (const w of sibf.wc ?? []) decor.push({ type: "wc", x: w.x, y: w.y });
+  // Toilets: snap each marker just inside the nearest hall plate so none float
+  // in the empty ground around the building (traced coords sometimes land in the
+  // outer margin). Restrooms read as building facilities at the hall edge.
+  const snapToHall = (p: { x: number; y: number }) => {
+    const inset = 24;
+    let best = halls[0];
+    let bestD = Infinity;
+    for (const h of halls) {
+      const cx = Math.max(h.x, Math.min(p.x, h.x + h.w));
+      const cy = Math.max(h.y, Math.min(p.y, h.y + h.h));
+      const d = (cx - p.x) ** 2 + (cy - p.y) ** 2;
+      if (d < bestD) {
+        bestD = d;
+        best = h;
+      }
+    }
+    if (!best) return p;
+    return {
+      x: Math.max(best.x + inset, Math.min(p.x, best.x + best.w - inset)),
+      y: Math.max(best.y + inset, Math.min(p.y, best.y + best.h - inset)),
+    };
+  };
+  for (const w of sibf.wc ?? []) {
+    const p = snapToHall(w);
+    decor.push({ type: "wc", x: p.x, y: p.y });
+  }
 
   // Walkable interior: each hall (padded so perimeter aisles stay open), the
   // passage that bridges the two halls, and short aprons reaching the gates.

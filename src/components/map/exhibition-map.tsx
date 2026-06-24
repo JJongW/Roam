@@ -18,6 +18,37 @@ import { aisleRoute } from "@/lib/aisle-route";
 const BOOTH_W = 72;
 const BOOTH_H = 62;
 
+/** Wrap a label into up to `maxLines` lines of ~`perLine` chars (word-first,
+ *  hard-break long words). Used for facility booths that show their full name. */
+function wrapLabel(text: string, perLine: number, maxLines: number): string[] {
+  const lines: string[] = [];
+  let cur = "";
+  for (const word of text.split(/\s+/).filter(Boolean)) {
+    let w = word;
+    while (w.length > perLine) {
+      if (cur) {
+        lines.push(cur);
+        cur = "";
+      }
+      lines.push(w.slice(0, perLine));
+      w = w.slice(perLine);
+    }
+    if (!cur) cur = w;
+    else if (cur.length + 1 + w.length <= perLine) cur += " " + w;
+    else {
+      lines.push(cur);
+      cur = w;
+    }
+  }
+  if (cur) lines.push(cur);
+  if (lines.length > maxLines) {
+    const kept = lines.slice(0, maxLines);
+    kept[maxLines - 1] = kept[maxLines - 1].slice(0, perLine - 1) + "…";
+    return kept;
+  }
+  return lines;
+}
+
 /** Unit vector from a toward b. */
 function unit(a: { x: number; y: number }, b: { x: number; y: number }) {
   const dx = b.x - a.x;
@@ -768,6 +799,23 @@ export function ExhibitionMap({
                 floodOpacity="0.28"
               />
             </filter>
+            {/* Soft lift for the hall floor plates so they read as raised rooms
+                on the ground, not flat boxes. */}
+            <filter
+              id="hall-shadow"
+              x="-10%"
+              y="-10%"
+              width="120%"
+              height="120%"
+            >
+              <feDropShadow
+                dx="0"
+                dy="6"
+                stdDeviation="14"
+                floodColor="#000"
+                floodOpacity="0.1"
+              />
+            </filter>
           </defs>
           <rect
             x="0"
@@ -778,26 +826,10 @@ export function ExhibitionMap({
             rx="16"
           />
 
-          {/* Walls: shade everything outside the walkable interior so the
-              building footprint (and where the route can't go) is legible. */}
-          {floorplan?.interior?.length ? (
-            <path
-              d={
-                `M0 0 H${width} V${height} H0 Z ` +
-                floorplan.interior
-                  .map(
-                    (r) =>
-                      `M${r.x - r.w / 2} ${r.y - r.h / 2} H${r.x + r.w / 2} V${r.y + r.h / 2} H${r.x - r.w / 2} Z`,
-                  )
-                  .join(" ")
-              }
-              fillRule="evenodd"
-              fill="var(--foreground)"
-              opacity={0.08}
-            />
-          ) : null}
-
-          {/* hall containers + labels */}
+          {/* Hall floor plates — each hall is one clean raised room (the venue is
+              genuinely two halls). Booths sit on these; the gridded ground shows
+              around them. The route's wall-containment is handled in routing, not
+              drawn, so the background stays uncluttered. */}
           {hallRegions.map((r) => (
             <g key={r.label}>
               <rect
@@ -805,19 +837,19 @@ export function ExhibitionMap({
                 y={r.y}
                 width={r.w}
                 height={r.h}
-                fill="var(--secondary)"
-                opacity={0.35}
-                stroke="var(--muted-foreground)"
-                strokeWidth={5}
-                strokeOpacity={0.45}
-                rx="14"
+                rx="24"
+                fill="var(--card)"
+                stroke="var(--border)"
+                strokeWidth={2}
+                filter="url(#hall-shadow)"
               />
               <text
-                x={r.x + 16}
-                y={r.y + 22}
-                fontSize="16"
+                x={r.x + 22}
+                y={r.y + 34}
+                fontSize="22"
                 fontWeight="800"
                 fill="var(--muted-foreground)"
+                opacity={0.55}
               >
                 {r.label}
               </text>
@@ -870,12 +902,12 @@ export function ExhibitionMap({
             routeEnd &&
             (
               [
-                { p: routeStart, label: "입구", fill: "#16a34a" },
-                { p: routeEnd, label: "출구", fill: "#dc2626" },
+                { p: routeStart, label: "출발" },
+                { p: routeEnd, label: "도착" },
               ] as const
             ).map((m) => (
               <g key={m.label} filter="url(#route-shadow)">
-                <circle cx={m.p.x} cy={m.p.y} r={26} fill={m.fill} />
+                <circle cx={m.p.x} cy={m.p.y} r={26} fill="var(--primary)" />
                 <circle
                   cx={m.p.x}
                   cy={m.p.y}
@@ -1010,16 +1042,9 @@ export function ExhibitionMap({
                     : d.dir === "up"
                       ? `M${d.x - aw} ${d.y + 44} L${d.x} ${d.y + 44 - aw} L${d.x + aw} ${d.y + 44}`
                       : `M${d.x - aw} ${d.y + 44} L${d.x} ${d.y + 44 + aw} L${d.x + aw} ${d.y + 44}`;
-              // Colour-code so 입구 vs 출구 is unmistakable at a glance:
-              // green = 입구(들어가는 곳), red = 출구(나가는 곳), 둘 다면 중립.
-              const isIn = d.text.includes("입구");
-              const isOut = d.text.includes("출구");
-              const color =
-                isIn && !isOut
-                  ? "#16a34a"
-                  : isOut && !isIn
-                    ? "#dc2626"
-                    : "var(--primary)";
+              // Single theme colour — 입구/출구 are told apart by their label
+              // ("A홀 입구" / "B1홀 출구") and arrow direction, not by colour.
+              const color = "var(--primary)";
               return (
                 <g key={i}>
                   <rect
@@ -1215,15 +1240,46 @@ export function ExhibitionMap({
                           </text>
                         </>
                       )}
-                      <text
-                        textAnchor="middle"
-                        dy="4"
-                        fontSize="11"
-                        fontWeight="700"
-                        fill={codeColor}
-                      >
-                        {b.code ?? b.name.slice(0, 3)}
-                      </text>
+                      {b.kind === "facility" && Math.min(g.w, g.h) >= 72 ? (
+                        (() => {
+                          // Big facility stands → show the full name
+                          // (wrapped, larger) instead of a code.
+                          const fs = Math.round(
+                            clamp(Math.min(g.w, g.h) / 5, 16, 30),
+                          );
+                          const perLine = Math.max(
+                            4,
+                            Math.floor((g.w * 0.82) / fs),
+                          );
+                          const lines = wrapLabel(b.name, perLine, 3);
+                          const lh = fs * 1.15;
+                          const y0 = -((lines.length - 1) / 2) * lh;
+                          return (
+                            <text
+                              textAnchor="middle"
+                              fontSize={fs}
+                              fontWeight="800"
+                              fill={codeColor}
+                            >
+                              {lines.map((ln, li) => (
+                                <tspan key={li} x={0} y={y0 + li * lh}>
+                                  {ln}
+                                </tspan>
+                              ))}
+                            </text>
+                          );
+                        })()
+                      ) : (
+                        <text
+                          textAnchor="middle"
+                          dy="4"
+                          fontSize="11"
+                          fontWeight="700"
+                          fill={codeColor}
+                        >
+                          {b.code ?? b.name.slice(0, 3)}
+                        </text>
+                      )}
                       {isSel && (
                         <text
                           textAnchor="middle"
