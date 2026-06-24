@@ -692,21 +692,30 @@ export function ExhibitionMap({
   }, [centerOn]);
 
   const routeKey = routeOrder?.join(",");
-  const routePathD = useMemo(
+  // One path per leg (stop → next stop), in visit order. Drawing legs in
+  // sequence lets a later leg's casing + shadow cross OVER an earlier one, so
+  // self-crossings (the common "십자" overlap) read as a bridge with a clear
+  // top/bottom layer instead of an ambiguous flat intersection.
+  const gateKey = `${routeStart?.x},${routeStart?.y},${routeEnd?.x},${routeEnd?.y}`;
+  const routeSegments = useMemo(
     () => {
-      const waypoints: Pt[] = floorplan
-        ? aisleRoute(
-            orderedRouteCenters,
-            floorplan.booths.map((b) => ({ x: b.x, y: b.y, w: b.w, h: b.h })),
-            width,
-            height,
-            floorplan.interior,
-          )
-        : orthWaypoints(orderedRouteCenters);
-      return roundedPathD(waypoints, 10);
+      const centers = orderedRouteCenters;
+      if (centers.length < 2) return [];
+      const rects = floorplan
+        ? floorplan.booths.map((b) => ({ x: b.x, y: b.y, w: b.w, h: b.h }))
+        : [];
+      const segs: string[] = [];
+      for (let i = 0; i < centers.length - 1; i++) {
+        const pair = [centers[i], centers[i + 1]];
+        const wps = floorplan
+          ? aisleRoute(pair, rects, width, height, floorplan.interior)
+          : orthWaypoints(pair);
+        segs.push(roundedPathD(wps, 10));
+      }
+      return segs;
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [routeKey, floorplan, width, height],
+    [routeKey, gateKey, floorplan, width, height],
   );
 
   // Crowd heatmap geometry. maxHeat normalises booth tint; the top corridors
@@ -848,32 +857,46 @@ export function ExhibitionMap({
 
           {/* route path — drawn under decor/booths so block headers, entrance
               and exit labels stay readable on top of the walking line. */}
-          {routePathD && (
+          {routeSegments.length > 0 && (
             <g>
-              {/* white casing → crossings read as clean "bridges" over the line */}
-              <path
-                d={routePathD}
-                fill="none"
-                stroke="white"
-                strokeWidth={16}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                opacity={0.95}
-              />
-              <path
-                d={routePathD}
-                fill="none"
-                stroke="var(--route-line)"
-                strokeWidth={10}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+              {routeSegments.map((d, i) => (
+                // Each leg = soft shadow + white casing + line, painted in visit
+                // order. A later leg lands on top, so where it crosses an earlier
+                // leg the shadow falls onto the lower line → a readable overpass.
+                <g key={i}>
+                  <path
+                    d={d}
+                    fill="none"
+                    stroke="rgba(15,23,42,0.18)"
+                    strokeWidth={18}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    transform="translate(0,2.5)"
+                  />
+                  <path
+                    d={d}
+                    fill="none"
+                    stroke="white"
+                    strokeWidth={15}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d={d}
+                    fill="none"
+                    stroke="var(--route-line)"
+                    strokeWidth={9}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </g>
+              ))}
             </g>
           )}
 
           {/* Start (입구) / end (출구) markers — make the route's direction and
               its entrance/exit unmistakable when a route is drawn. */}
-          {routePathD &&
+          {routeSegments.length > 0 &&
             routeStart &&
             routeEnd &&
             (
