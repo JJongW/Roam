@@ -2027,6 +2027,18 @@
       "catKo": "문학"
     },
     {
+      "code": "B602",
+      "x": 2600,
+      "y": 1450,
+      "w": 236,
+      "h": 167,
+      "zone": "general",
+      "name": "문학동네",
+      "catReal": "lit",
+      "web": "https://www.munhak.com/",
+      "catKo": "문학"
+    },
+    {
       "code": "B603",
       "x": 2600,
       "y": 1220,

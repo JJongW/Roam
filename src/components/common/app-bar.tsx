@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import { ChevronLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/common/theme-toggle";
 
 export function AppBar({
   title,
@@ -31,17 +30,19 @@ export function AppBar({
       )}
     >
       {showBack ? (
-        <Button variant="ghost" size="icon" aria-label="뒤로 가기" onClick={() => router.back()}>
+        <Button
+          variant="ghost"
+          size="icon"
+          aria-label="뒤로 가기"
+          onClick={() => router.back()}
+        >
           <ChevronLeft className="size-6" />
         </Button>
       ) : (
         <span className="w-2" />
       )}
       <h1 className="flex-1 truncate text-base font-bold">{title}</h1>
-      <div className="flex items-center gap-0.5">
-        {right}
-        <ThemeToggle />
-      </div>
+      <div className="flex items-center gap-0.5">{right}</div>
     </header>
   );
 }

@@ -1201,10 +1201,12 @@ export function ExhibitionMap({
                           </text>
                         </>
                       )}
-                      {b.kind === "facility" && Math.min(g.w, g.h) >= 72 ? (
+                      {Math.min(g.w, g.h) >=
+                      (b.kind === "facility" ? 72 : 120) ? (
                         (() => {
-                          // Big facility stands → show the full name
-                          // (wrapped, larger) instead of a code.
+                          // Big stands (facility, or a single exhibitor taking a
+                          // large booth) show the full name (wrapped, larger)
+                          // instead of just a code.
                           const fs = Math.round(
                             clamp(Math.min(g.w, g.h) / 5, 16, 30),
                           );

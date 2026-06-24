@@ -215,7 +215,7 @@ export function CommunityView({
   }
 
   return (
-    <div className="flex h-dvh flex-col pb-14">
+    <div className="flex h-dvh flex-col">
       <AppBar title="실시간 커뮤니티" />
 
       <div className="flex-1 overflow-y-auto px-4 py-3">

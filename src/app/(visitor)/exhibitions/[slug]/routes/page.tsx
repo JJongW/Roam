@@ -4,7 +4,6 @@ import { Clock, MapPin, Route as RouteIcon, ChevronRight } from "lucide-react";
 import { getRepository } from "@/lib/repositories";
 import { formatMinutes } from "@/lib/utils";
 import { AppBar } from "@/components/common/app-bar";
-import { BottomNav } from "@/components/common/bottom-nav";
 import { EmptyState } from "@/components/common/states";
 
 export const metadata = { title: "공유된 동선" };
@@ -20,7 +19,7 @@ export default async function PublicRoutesPage({ params }: Props) {
   const routes = await repo.listPublicRoutes(detail.exhibition.id);
 
   return (
-    <div className="flex min-h-dvh flex-col pb-16">
+    <div className="flex min-h-dvh flex-col">
       <AppBar title="다른 사람 동선" />
       <main className="flex-1 px-4 py-4">
         {routes.length === 0 ? (
@@ -64,7 +63,6 @@ export default async function PublicRoutesPage({ params }: Props) {
           </ul>
         )}
       </main>
-      <BottomNav slug={slug} />
     </div>
   );
 }

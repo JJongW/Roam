@@ -9,6 +9,8 @@ import {
   ChevronLeft,
   Clock3,
   Flame,
+  LogIn,
+  LogOut,
   NotebookPen,
   Search,
   Sparkles,
@@ -101,19 +103,48 @@ export function MapView({
     () => new Map(booths.map((b) => [b.id, b])),
     [booths],
   );
+
+  // Visitor-chosen entrance / exit (the route sweep starts at the entrance and
+  // the drawn path ends at the exit; defaults to the floorplan's own gates).
+  const fp = FLOORPLANS[detail.exhibition.slug];
+  const gates = fp?.gates ?? [];
+  const fallbackStart: Point = fp?.entrance ?? {
+    x: Math.round(detail.exhibition.mapWidth / 2),
+    y: detail.exhibition.mapHeight,
+  };
+  const [entranceId, setEntranceId] = useState<string>(
+    () =>
+      gates.find((g) => g.x === fp?.entrance?.x && g.y === fp?.entrance?.y)
+        ?.id ??
+      gates[0]?.id ??
+      "",
+  );
+  const [exitId, setExitId] = useState<string>(
+    () =>
+      gates.find((g) => g.x === fp?.exit?.x && g.y === fp?.exit?.y)?.id ??
+      gates[gates.length - 1]?.id ??
+      "",
+  );
+  const start: Point = useMemo(() => {
+    const g = gates.find((x) => x.id === entranceId);
+    return g ? { x: g.x, y: g.y } : fallbackStart;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [entranceId]);
+  const exitPoint: Point | undefined = useMemo(() => {
+    const g = gates.find((x) => x.id === exitId);
+    return g ? { x: g.x, y: g.y } : fp?.exit;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [exitId]);
+
   // The in-progress 동선, drawn on the map so adding booths shows the existing
   // route too — it re-orders live as the cart changes.
   const routeOrderIds = useMemo(() => {
     if (!hydrated || cartIds.length === 0) return undefined;
-    const start: Point = FLOORPLANS[detail.exhibition.slug]?.entrance ?? {
-      x: Math.round(detail.exhibition.mapWidth / 2),
-      y: detail.exhibition.mapHeight,
-    };
     const cartBooths = cartIds
       .map((id) => boothById.get(id))
       .filter((b): b is Booth => Boolean(b));
     return buildOrderedRoute(cartBooths, start).boothIds;
-  }, [hydrated, cartIds, boothById, detail.exhibition]);
+  }, [hydrated, cartIds, boothById, start]);
   // Render the filtered set PLUS any route booths, so the path never breaks when
   // a category/status filter hides one of the chosen stands.
   const mapBooths = useMemo(() => {
@@ -234,6 +265,45 @@ export function MapView({
     );
   }
 
+  function renderGateSelectors() {
+    return (
+      <div className="flex items-center gap-2">
+        <label className="flex flex-1 items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2 text-sm">
+          <LogIn className="size-4 shrink-0 text-success" aria-hidden />
+          <span className="shrink-0 text-muted-foreground">입구</span>
+          <select
+            value={entranceId}
+            onChange={(e) => setEntranceId(e.target.value)}
+            aria-label="입구 선택"
+            className="min-w-0 flex-1 bg-transparent font-semibold outline-none"
+          >
+            {gates.map((g) => (
+              <option key={g.id} value={g.id}>
+                {g.label}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="flex flex-1 items-center gap-1.5 rounded-xl border border-border bg-card px-3 py-2 text-sm">
+          <LogOut className="size-4 shrink-0 text-warning" aria-hidden />
+          <span className="shrink-0 text-muted-foreground">출구</span>
+          <select
+            value={exitId}
+            onChange={(e) => setExitId(e.target.value)}
+            aria-label="출구 선택"
+            className="min-w-0 flex-1 bg-transparent font-semibold outline-none"
+          >
+            {gates.map((g) => (
+              <option key={g.id} value={g.id}>
+                {g.label}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+    );
+  }
+
   function renderHeatToggle() {
     return (
       <button
@@ -348,6 +418,11 @@ export function MapView({
           <h1 className="text-lg font-extrabold">전시장 지도</h1>
         </div>
         <div className="border-b border-border p-3">{renderSearch()}</div>
+        {gates.length > 1 && (
+          <div className="border-b border-border p-3">
+            {renderGateSelectors()}
+          </div>
+        )}
         <div className="no-scrollbar flex gap-1.5 overflow-x-auto border-b border-border px-3 py-2.5">
           {renderHeatToggle()}
           {renderCategoryChips()}
@@ -368,13 +443,22 @@ export function MapView({
           <AppBar
             title="전시장 지도"
             right={
-              <Link
-                href={`/exhibitions/${detail.exhibition.slug}/onboarding`}
-                aria-label="맞춤 추천받기"
-                className="flex h-9 items-center gap-1 rounded-full px-2.5 text-sm font-bold text-primary active:bg-secondary"
-              >
-                <Sparkles className="size-5" /> 추천
-              </Link>
+              <>
+                <Link
+                  href={`/exhibitions/${detail.exhibition.slug}/routes`}
+                  aria-label="다른 사람 동선"
+                  className="flex size-9 items-center justify-center rounded-full text-muted-foreground active:bg-secondary"
+                >
+                  <RouteIcon className="size-5" />
+                </Link>
+                <Link
+                  href={`/exhibitions/${detail.exhibition.slug}/onboarding`}
+                  aria-label="맞춤 추천받기"
+                  className="flex h-9 items-center gap-1 rounded-full px-2.5 text-sm font-bold text-primary active:bg-secondary"
+                >
+                  <Sparkles className="size-5" /> 추천
+                </Link>
+              </>
             }
           />
         </div>
@@ -388,12 +472,14 @@ export function MapView({
             halls={detail.halls}
             routeOrder={routeOrderIds}
             floorplan={FLOORPLANS[detail.exhibition.slug]}
+            entrance={start}
+            exit={exitPoint}
             fillHeight
             // Mobile portrait: keep the fit/pan area above the bottom-sheet peek
             // (~116px) so the bottom of the venue isn't clipped behind it.
             // Desktop (side panel) and landscape have no sheet → fill fully.
-            viewportClassName="inset-x-0 top-0 bottom-[160px] md:inset-0 landscape:inset-0"
-            controlsClassName="bottom-[168px] right-3 md:bottom-4 landscape:bottom-4"
+            viewportClassName="inset-x-0 top-0 bottom-[92px] md:inset-0 landscape:inset-0"
+            controlsClassName="bottom-[100px] right-3 md:bottom-4 landscape:bottom-4"
             visitedIds={visitedIds}
             skippedIds={skippedIds}
             selectedId={selectedId}
@@ -410,7 +496,7 @@ export function MapView({
           {/* selected booth popup — decision info + quick actions. Sits above
               the sheet peek on mobile; bottom-right card on desktop. */}
           {selected && (
-            <div className="absolute inset-x-0 bottom-[168px] z-20 mx-auto w-full max-w-sm px-3 md:inset-x-auto md:bottom-3 md:right-3 md:w-72 md:px-0 landscape:inset-x-auto landscape:bottom-3 landscape:right-3 landscape:w-72 landscape:px-0">
+            <div className="absolute inset-x-0 bottom-[100px] z-20 mx-auto w-full max-w-sm px-3 md:inset-x-auto md:bottom-3 md:right-3 md:w-72 md:px-0 landscape:inset-x-auto landscape:bottom-3 landscape:right-3 landscape:w-72 landscape:px-0">
               <div className="rounded-2xl border border-border bg-card p-3 shadow-[var(--shadow-pop)] animate-in slide-in-from-bottom-2">
                 <div className="flex items-start gap-3">
                   <div className="min-w-0 flex-1">
@@ -462,7 +548,7 @@ export function MapView({
           {/* The map is the route surface — booths are added here and the line
               draws live. Show the count + a clear when there's a 동선. */}
           {hydrated && !selected && cartCount > 0 && (
-            <div className="absolute inset-x-0 bottom-[176px] z-20 mx-auto flex w-fit md:inset-x-auto md:bottom-4 md:right-4 landscape:inset-x-auto landscape:bottom-4 landscape:right-4">
+            <div className="absolute inset-x-0 bottom-[108px] z-20 mx-auto flex w-fit md:inset-x-auto md:bottom-4 md:right-4 landscape:inset-x-auto landscape:bottom-4 landscape:right-4">
               <div className="flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2.5 shadow-[var(--shadow-pop)]">
                 <RouteIcon className="size-4 text-primary" />
                 <span className="text-sm font-bold">담은 {cartCount}곳</span>
@@ -481,8 +567,8 @@ export function MapView({
           {/* bottom sheet: search + booth list. Mobile only (md:hidden). */}
           <div
             className={cn(
-              "absolute inset-x-0 bottom-14 z-30 flex flex-col rounded-t-2xl border-t border-border bg-card shadow-[var(--shadow-pop)] transition-[height] duration-300 ease-out md:hidden landscape:hidden",
-              sheetOpen ? "h-[62dvh]" : "h-[104px]",
+              "absolute inset-x-0 bottom-0 z-30 flex flex-col rounded-t-2xl border-t border-border bg-card shadow-[var(--shadow-pop)] transition-[height] duration-300 ease-out md:hidden landscape:hidden",
+              sheetOpen ? "h-[62dvh]" : "h-[92px]",
             )}
           >
             <button
@@ -503,19 +589,26 @@ export function MapView({
               {renderSearch()}
             </div>
 
-            <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-4">
-              {/* Filters scroll with the list so the collapsed peek stays clean. */}
-              <div className="no-scrollbar -mx-1 mb-2 flex gap-1.5 overflow-x-auto px-1">
-                {renderHeatToggle()}
-                {renderCategoryChips()}
-              </div>
-              {hasStatus && (
+            {/* Collapsed = search only. Filters, gates, and list appear when
+                the sheet is pulled up. */}
+            {sheetOpen && (
+              <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-4">
+                {/* 입구/출구 — between the search and the category filters. */}
+                {gates.length > 1 && (
+                  <div className="mb-2">{renderGateSelectors()}</div>
+                )}
                 <div className="no-scrollbar -mx-1 mb-2 flex gap-1.5 overflow-x-auto px-1">
-                  {renderStatusChips()}
+                  {renderHeatToggle()}
+                  {renderCategoryChips()}
                 </div>
-              )}
-              {renderList()}
-            </div>
+                {hasStatus && (
+                  <div className="no-scrollbar -mx-1 mb-2 flex gap-1.5 overflow-x-auto px-1">
+                    {renderStatusChips()}
+                  </div>
+                )}
+                {renderList()}
+              </div>
+            )}
           </div>
         </div>
       </div>
