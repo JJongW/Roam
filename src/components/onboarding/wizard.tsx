@@ -5,7 +5,11 @@ import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronDown, Loader2, Sparkles } from "lucide-react";
 import { toast } from "sonner";
-import { VISIT_PURPOSE_OPTIONS } from "@/lib/constants";
+import {
+  MOVEMENT_OPTIONS,
+  TIME_OPTIONS,
+  VISIT_PURPOSE_OPTIONS,
+} from "@/lib/constants";
 import { useOnboardingStore } from "@/lib/stores/onboarding";
 import { useRouteStore } from "@/lib/stores/route";
 import { useCartStore } from "@/lib/stores/cart";
@@ -30,7 +34,7 @@ const AGE_LABELS: Record<AgeGroup, string> = {
   "50s+": "50대+",
 };
 
-const STEPS = ["interests", "age", "purpose"] as const;
+const STEPS = ["interests", "age", "purpose", "time", "movement"] as const;
 type Step = (typeof STEPS)[number];
 const TITLES: Record<Step, { title: string; sub: string }> = {
   interests: {
@@ -41,6 +45,14 @@ const TITLES: Record<Step, { title: string; sub: string }> = {
   purpose: {
     title: "관람 목적이 무엇인가요?",
     sub: "여러 개 선택할 수 있어요",
+  },
+  time: {
+    title: "얼마나 둘러보실 예정인가요?",
+    sub: "시간에 맞춰 동선을 짜드려요",
+  },
+  movement: {
+    title: "어떻게 추천받고 싶으세요?",
+    sub: "관람 스타일을 골라주세요",
   },
 };
 
@@ -97,8 +109,17 @@ export function OnboardingWizard({
   const canNext = useMemo(() => {
     if (key === "interests") return store.interests.length > 0;
     if (key === "age") return Boolean(store.age);
-    return store.visitPurposes.length > 0;
-  }, [key, store.interests.length, store.age, store.visitPurposes.length]);
+    if (key === "purpose") return store.visitPurposes.length > 0;
+    if (key === "time") return Boolean(store.availableMinutes);
+    return Boolean(store.movementPreference);
+  }, [
+    key,
+    store.interests.length,
+    store.age,
+    store.visitPurposes.length,
+    store.availableMinutes,
+    store.movementPreference,
+  ]);
 
   function go(delta: number) {
     setDir(delta);
@@ -125,9 +146,11 @@ export function OnboardingWizard({
       interests: store.interests,
       age: store.age,
       keywords: store.keywords,
+      availableMinutes: store.availableMinutes,
+      movementPreference: store.movementPreference,
     });
     if (!parsed.success) {
-      toast.error("관심 분야·나이·관람 목적을 모두 선택해 주세요");
+      toast.error("모든 항목을 선택해 주세요");
       return;
     }
     setSubmitting(true);
@@ -150,7 +173,7 @@ export function OnboardingWizard({
   }
 
   return (
-    <div className="flex min-h-dvh flex-col">
+    <div className="flex min-h-dvh flex-col md:fixed md:inset-0 md:z-30 md:bg-background landscape:fixed landscape:inset-0 landscape:z-30 landscape:bg-background">
       <header className="sticky top-0 z-40 flex items-center gap-2 bg-background/80 px-2 pt-safe backdrop-blur-xl">
         <Button
           variant="ghost"
@@ -166,186 +189,262 @@ export function OnboardingWizard({
         </span>
       </header>
 
-      <div className="flex-1 overflow-y-auto px-5 pt-6">
-        <div className="space-y-1.5">
-          <h1 className="text-2xl font-extrabold leading-snug">{meta.title}</h1>
-          <p className="text-sm text-muted-foreground">{meta.sub}</p>
+      {/* Wide screens (desktop / landscape): question on the left, options on
+          the right — fills the width instead of a boxed-in centre column. */}
+      <div className="flex-1 overflow-y-auto px-5 pt-6 md:flex md:flex-row md:gap-10 md:overflow-hidden md:px-12 landscape:flex landscape:flex-row landscape:gap-10 landscape:overflow-hidden landscape:px-12">
+        <div className="md:flex md:w-[36%] md:shrink-0 md:flex-col md:justify-center landscape:flex landscape:w-[36%] landscape:shrink-0 landscape:flex-col landscape:justify-center">
+          <div className="space-y-1.5">
+            <h1 className="text-2xl font-extrabold leading-snug md:text-3xl">
+              {meta.title}
+            </h1>
+            <p className="text-sm text-muted-foreground">{meta.sub}</p>
+          </div>
         </div>
 
-        <AnimatePresence mode="wait" custom={dir}>
-          <motion.div
-            key={key}
-            custom={dir}
-            initial={{ opacity: 0, x: dir * 36 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: dir * -36 }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-            className="mt-6"
-          >
-            {key === "interests" && (
-              <div className="space-y-2">
-                {categories.map((c) => {
-                  const open = expanded === c.slug;
-                  const kws = keywords?.[c.slug] ?? [];
-                  const picked = kws.filter((k) =>
-                    store.keywords.includes(k),
-                  ).length;
-                  const active = store.interests.includes(c.slug);
-                  return (
-                    <div
-                      key={c.id}
-                      className={cn(
-                        "overflow-hidden rounded-2xl border transition-colors",
-                        active
-                          ? "border-primary bg-accent/40"
-                          : "border-border bg-card",
-                      )}
-                    >
-                      <button
-                        type="button"
-                        onClick={() => {
-                          haptic();
-                          setExpanded((e) => (e === c.slug ? null : c.slug));
-                        }}
-                        className="flex w-full items-center gap-3 p-3.5 text-left"
-                      >
-                        <span
-                          className="flex size-10 shrink-0 items-center justify-center rounded-xl"
-                          style={{
-                            backgroundColor: `${c.color}22`,
-                            color: c.color,
-                          }}
-                        >
-                          <Icon name={c.icon} className="size-5" />
-                        </span>
-                        <span className="flex-1 font-bold">{c.name}</span>
-                        {picked > 0 && (
-                          <span className="rounded-full bg-primary px-2 py-0.5 text-[11px] font-bold text-primary-foreground">
-                            {picked}
-                          </span>
+        <div className="md:flex-1 md:overflow-y-auto md:py-10 landscape:flex-1 landscape:overflow-y-auto landscape:py-10">
+          <AnimatePresence mode="wait" custom={dir}>
+            <motion.div
+              key={key}
+              custom={dir}
+              initial={{ opacity: 0, x: dir * 36 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: dir * -36 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              className="mt-6 md:mt-0 landscape:mt-0"
+            >
+              {key === "interests" && (
+                <div className="space-y-2">
+                  {categories.map((c) => {
+                    const open = expanded === c.slug;
+                    const kws = keywords?.[c.slug] ?? [];
+                    const picked = kws.filter((k) =>
+                      store.keywords.includes(k),
+                    ).length;
+                    const active = store.interests.includes(c.slug);
+                    return (
+                      <div
+                        key={c.id}
+                        className={cn(
+                          "overflow-hidden rounded-2xl border transition-colors",
+                          active
+                            ? "border-primary bg-accent/40"
+                            : "border-border bg-card",
                         )}
-                        <ChevronDown
-                          className={cn(
-                            "size-5 shrink-0 text-muted-foreground transition-transform",
-                            open && "rotate-180",
+                      >
+                        <button
+                          type="button"
+                          onClick={() => {
+                            haptic();
+                            setExpanded((e) => (e === c.slug ? null : c.slug));
+                          }}
+                          className="flex w-full items-center gap-3 p-3.5 text-left"
+                        >
+                          <span
+                            className="flex size-10 shrink-0 items-center justify-center rounded-xl"
+                            style={{
+                              backgroundColor: `${c.color}22`,
+                              color: c.color,
+                            }}
+                          >
+                            <Icon name={c.icon} className="size-5" />
+                          </span>
+                          <span className="flex-1 font-bold">{c.name}</span>
+                          {picked > 0 && (
+                            <span className="rounded-full bg-primary px-2 py-0.5 text-[11px] font-bold text-primary-foreground">
+                              {picked}
+                            </span>
                           )}
-                        />
-                      </button>
-                      {open && (
-                        <div className="px-3.5 pb-3.5">
-                          {keywords === null ? (
-                            <div
-                              className="flex flex-wrap gap-1.5"
-                              aria-label="키워드 불러오는 중"
-                            >
-                              {Array.from({ length: 5 }).map((_, i) => (
-                                <span
-                                  key={i}
-                                  className="h-7 w-16 animate-pulse rounded-full bg-secondary"
-                                />
-                              ))}
-                            </div>
-                          ) : kws.length > 0 ? (
-                            <div className="flex flex-wrap gap-1.5">
-                              {kws.map((kw) => {
-                                const on = store.keywords.includes(kw);
-                                return (
-                                  <button
-                                    key={kw}
-                                    type="button"
-                                    onClick={() => toggleKeyword(c.slug, kw)}
-                                    aria-pressed={on}
-                                    className={cn(
-                                      "rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
-                                      on
-                                        ? "border-primary bg-primary text-primary-foreground"
-                                        : "border-border bg-background text-foreground/80",
-                                    )}
-                                  >
-                                    {kw}
-                                  </button>
-                                );
-                              })}
-                            </div>
-                          ) : (
-                            <p className="text-xs text-muted-foreground">
-                              이 분야의 키워드가 아직 없어요.
-                            </p>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
+                          <ChevronDown
+                            className={cn(
+                              "size-5 shrink-0 text-muted-foreground transition-transform",
+                              open && "rotate-180",
+                            )}
+                          />
+                        </button>
+                        {open && (
+                          <div className="px-3.5 pb-3.5">
+                            {keywords === null ? (
+                              <div
+                                className="flex flex-wrap gap-1.5"
+                                aria-label="키워드 불러오는 중"
+                              >
+                                {Array.from({ length: 5 }).map((_, i) => (
+                                  <span
+                                    key={i}
+                                    className="h-7 w-16 animate-pulse rounded-full bg-secondary"
+                                  />
+                                ))}
+                              </div>
+                            ) : kws.length > 0 ? (
+                              <div className="flex flex-wrap gap-1.5">
+                                {kws.map((kw) => {
+                                  const on = store.keywords.includes(kw);
+                                  return (
+                                    <button
+                                      key={kw}
+                                      type="button"
+                                      onClick={() => toggleKeyword(c.slug, kw)}
+                                      aria-pressed={on}
+                                      className={cn(
+                                        "rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
+                                        on
+                                          ? "border-primary bg-primary text-primary-foreground"
+                                          : "border-border bg-background text-foreground/80",
+                                      )}
+                                    >
+                                      {kw}
+                                    </button>
+                                  );
+                                })}
+                              </div>
+                            ) : (
+                              <p className="text-xs text-muted-foreground">
+                                이 분야의 키워드가 아직 없어요.
+                              </p>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
 
-            {key === "age" && (
-              <div className="flex flex-wrap gap-2">
-                {AGE_GROUPS.map((a) => (
-                  <button
-                    key={a}
-                    type="button"
-                    onClick={() => {
-                      haptic();
-                      store.setAge(a);
-                    }}
-                    aria-pressed={store.age === a}
-                    className={cn(
-                      "rounded-2xl border px-5 py-3 text-base font-bold transition-colors",
-                      store.age === a
-                        ? "border-primary bg-primary text-primary-foreground"
-                        : "border-border bg-card text-foreground",
-                    )}
-                  >
-                    {AGE_LABELS[a]}
-                  </button>
-                ))}
-              </div>
-            )}
-
-            {key === "purpose" && (
-              <div className="grid grid-cols-2 gap-2.5">
-                {VISIT_PURPOSE_OPTIONS.map((o) => {
-                  const on = store.visitPurposes.includes(o.value);
-                  return (
+              {key === "age" && (
+                <div className="flex flex-wrap gap-2">
+                  {AGE_GROUPS.map((a) => (
                     <button
-                      key={o.value}
+                      key={a}
                       type="button"
                       onClick={() => {
                         haptic();
-                        store.togglePurpose(o.value);
+                        store.setAge(a);
                       }}
-                      aria-pressed={on}
+                      aria-pressed={store.age === a}
                       className={cn(
-                        "flex items-start gap-2.5 rounded-2xl border p-3.5 text-left transition-colors",
-                        on
-                          ? "border-primary bg-accent/40"
-                          : "border-border bg-card",
+                        "rounded-2xl border px-5 py-3 text-base font-bold transition-colors",
+                        store.age === a
+                          ? "border-primary bg-primary text-primary-foreground"
+                          : "border-border bg-card text-foreground",
                       )}
                     >
-                      <Icon
-                        name={o.icon}
-                        className={cn(
-                          "mt-0.5 size-5 shrink-0",
-                          on ? "text-primary" : "text-muted-foreground",
-                        )}
-                      />
-                      <span className="min-w-0">
-                        <span className="block text-sm font-bold">
-                          {o.label}
-                        </span>
-                        <span className="block text-xs text-muted-foreground">
-                          {o.description}
-                        </span>
-                      </span>
+                      {AGE_LABELS[a]}
                     </button>
-                  );
-                })}
-              </div>
-            )}
-          </motion.div>
-        </AnimatePresence>
+                  ))}
+                </div>
+              )}
+
+              {key === "purpose" && (
+                <div className="grid grid-cols-2 gap-2.5">
+                  {VISIT_PURPOSE_OPTIONS.map((o) => {
+                    const on = store.visitPurposes.includes(o.value);
+                    return (
+                      <button
+                        key={o.value}
+                        type="button"
+                        onClick={() => {
+                          haptic();
+                          store.togglePurpose(o.value);
+                        }}
+                        aria-pressed={on}
+                        className={cn(
+                          "flex items-start gap-2.5 rounded-2xl border p-3.5 text-left transition-colors",
+                          on
+                            ? "border-primary bg-accent/40"
+                            : "border-border bg-card",
+                        )}
+                      >
+                        <Icon
+                          name={o.icon}
+                          className={cn(
+                            "mt-0.5 size-5 shrink-0",
+                            on ? "text-primary" : "text-muted-foreground",
+                          )}
+                        />
+                        <span className="min-w-0">
+                          <span className="block text-sm font-bold">
+                            {o.label}
+                          </span>
+                          <span className="block text-xs text-muted-foreground">
+                            {o.description}
+                          </span>
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {key === "time" && (
+                <div className="grid grid-cols-2 gap-2.5">
+                  {TIME_OPTIONS.map((o) => {
+                    const on = store.availableMinutes === o.value;
+                    return (
+                      <button
+                        key={o.value}
+                        type="button"
+                        onClick={() => {
+                          haptic();
+                          store.setTime(o.value);
+                        }}
+                        aria-pressed={on}
+                        className={cn(
+                          "rounded-2xl border p-4 text-center text-base font-bold transition-colors",
+                          on
+                            ? "border-primary bg-primary text-primary-foreground"
+                            : "border-border bg-card text-foreground",
+                        )}
+                      >
+                        {o.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {key === "movement" && (
+                <div className="space-y-2.5">
+                  {MOVEMENT_OPTIONS.map((o) => {
+                    const on = store.movementPreference === o.value;
+                    return (
+                      <button
+                        key={o.value}
+                        type="button"
+                        onClick={() => {
+                          haptic();
+                          store.setMovement(o.value);
+                        }}
+                        aria-pressed={on}
+                        className={cn(
+                          "flex w-full items-start gap-2.5 rounded-2xl border p-4 text-left transition-colors",
+                          on
+                            ? "border-primary bg-accent/40"
+                            : "border-border bg-card",
+                        )}
+                      >
+                        <Icon
+                          name={o.icon}
+                          className={cn(
+                            "mt-0.5 size-5 shrink-0",
+                            on ? "text-primary" : "text-muted-foreground",
+                          )}
+                        />
+                        <span className="min-w-0">
+                          <span className="block text-sm font-bold">
+                            {o.label}
+                          </span>
+                          <span className="block text-xs text-muted-foreground">
+                            {o.description}
+                          </span>
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
 
       <div className="sticky bottom-0 border-t border-border bg-background/90 p-4 pb-safe backdrop-blur-xl">

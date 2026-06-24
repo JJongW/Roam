@@ -335,7 +335,7 @@ export function MapView({
     <div className="flex h-dvh flex-col overflow-hidden bg-background md:fixed md:inset-0 md:z-30 md:flex-row landscape:fixed landscape:inset-0 landscape:z-30 landscape:flex-row">
       {/* Wide / landscape: always-open side panel (search + filters + list).
           The portrait bottom sheet is hidden here. Selecting in either syncs. */}
-      <aside className="hidden w-80 shrink-0 flex-col border-r border-border bg-card md:flex md:w-96 landscape:flex">
+      <aside className="hidden w-64 shrink-0 flex-col border-r border-border bg-card md:flex md:w-80 landscape:flex">
         <div className="flex items-center gap-1 border-b border-border px-3 py-3">
           <button
             type="button"
@@ -409,8 +409,8 @@ export function MapView({
           {/* selected booth popup — decision info + quick actions. Sits above
               the sheet peek on mobile; bottom-right card on desktop. */}
           {selected && (
-            <div className="absolute inset-x-0 bottom-[112px] z-20 mx-auto w-full max-w-md p-3 md:inset-x-auto md:bottom-3 md:right-3 md:w-80 landscape:inset-x-auto landscape:bottom-3 landscape:right-3 landscape:w-80">
-              <div className="rounded-2xl border border-border bg-card p-3.5 shadow-[var(--shadow-pop)] animate-in slide-in-from-bottom-2">
+            <div className="absolute inset-x-0 bottom-[112px] z-20 mx-auto w-full max-w-sm px-3 md:inset-x-auto md:bottom-3 md:right-3 md:w-72 md:px-0 landscape:inset-x-auto landscape:bottom-3 landscape:right-3 landscape:w-72 landscape:px-0">
+              <div className="rounded-2xl border border-border bg-card p-3 shadow-[var(--shadow-pop)] animate-in slide-in-from-bottom-2">
                 <div className="flex items-start gap-3">
                   <div className="min-w-0 flex-1">
                     <p className="truncate font-bold">

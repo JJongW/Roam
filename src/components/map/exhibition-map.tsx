@@ -754,10 +754,11 @@ export function ExhibitionMap({
           viewBox={`0 0 ${width} ${height}`}
           // Transform is applied imperatively (see applyView) so panning never
           // re-renders this subtree — only transformOrigin is React-managed.
-          style={{ transformOrigin: "0 0" }}
+          style={{ transformOrigin: "0 0", willChange: "transform" }}
           className="select-none"
         >
-          {/* grid backdrop */}
+          {/* grid backdrop. No SVG filters — drop-shadow filters force costly
+              re-rasterisation on every zoom and were the main pan/zoom lag. */}
           <defs>
             <pattern
               id="grid"
@@ -773,40 +774,6 @@ export function ExhibitionMap({
                 opacity="0.5"
               />
             </pattern>
-            {/* Soft drop shadow → the walking line reads as floating above the
-                floor, so overlapping/crossing segments show depth. */}
-            <filter
-              id="route-shadow"
-              x="-20%"
-              y="-20%"
-              width="140%"
-              height="140%"
-            >
-              <feDropShadow
-                dx="0"
-                dy="2"
-                stdDeviation="3"
-                floodColor="#000"
-                floodOpacity="0.28"
-              />
-            </filter>
-            {/* Soft lift for the hall floor plates so they read as raised rooms
-                on the ground, not flat boxes. */}
-            <filter
-              id="hall-shadow"
-              x="-10%"
-              y="-10%"
-              width="120%"
-              height="120%"
-            >
-              <feDropShadow
-                dx="0"
-                dy="6"
-                stdDeviation="14"
-                floodColor="#000"
-                floodOpacity="0.1"
-              />
-            </filter>
           </defs>
           <rect
             x="0"
@@ -832,7 +799,6 @@ export function ExhibitionMap({
                 fill="var(--card)"
                 stroke="var(--border)"
                 strokeWidth={2}
-                filter="url(#hall-shadow)"
               />
               <text
                 x={r.x + 22}
@@ -864,7 +830,7 @@ export function ExhibitionMap({
           {/* route path — drawn under decor/booths so block headers, entrance
               and exit labels stay readable on top of the walking line. */}
           {routePathD && (
-            <g filter="url(#route-shadow)">
+            <g>
               {/* white casing → crossings read as clean "bridges" over the line */}
               <path
                 d={routePathD}
@@ -897,7 +863,7 @@ export function ExhibitionMap({
                 { p: routeEnd, label: "도착" },
               ] as const
             ).map((m) => (
-              <g key={m.label} filter="url(#route-shadow)">
+              <g key={m.label}>
                 <circle cx={m.p.x} cy={m.p.y} r={26} fill="var(--primary)" />
                 <circle
                   cx={m.p.x}
