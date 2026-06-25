@@ -169,8 +169,8 @@ function buildSibf(): Floorplan {
   // Toilets are edge facilities — they belong tight against a hall wall in the
   // perimeter aisle, not floating in the booth grid. Snap each marker to the
   // nearest wall, then slide ALONG that wall to clear any booth it overlaps.
-  const WALL_INSET = 30; // marker centre distance from the wall
-  const GAP = 22;
+  const WALL_INSET = 20; // marker centre distance from the wall (into the margin)
+  const GAP = 6;
   const onBooth = (x: number, y: number) =>
     booths.some(
       (b) =>

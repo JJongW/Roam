@@ -1087,11 +1087,11 @@ export function ExhibitionMap({
               // Restroom marker — 남/녀 pictogram (man + divider + woman), like
               // the universal sign. Compact (smaller than a booth) and on-brand:
               // a light card chip with primary-coloured figures.
-              const R = 23; // half box size
-              const man = d.x - 9;
-              const woman = d.x + 9;
-              const headY = d.y - 11;
-              const hr = 3.4;
+              const R = 16; // half box size — small, sits in the wall margin
+              const man = d.x - 7;
+              const woman = d.x + 7;
+              const headY = d.y - 8;
+              const hr = 2.9;
               return (
                 <g key={i} transform={upright(d.x, d.y)}>
                   <rect
@@ -1099,29 +1099,29 @@ export function ExhibitionMap({
                     y={d.y - R}
                     width={R * 2}
                     height={R * 2}
-                    rx={10}
+                    rx={8}
                     fill="var(--card)"
                     stroke="var(--border)"
-                    strokeWidth={1.5}
+                    strokeWidth={1.4}
                   />
                   <g fill="var(--primary)">
                     {/* man: head + downward (broad-shoulder) torso */}
                     <circle cx={man} cy={headY} r={hr} />
                     <path
-                      d={`M${man - 5.5} ${headY + 4} L${man + 5.5} ${headY + 4} L${man} ${headY + 15} Z`}
+                      d={`M${man - 4.5} ${headY + 3.4} L${man + 4.5} ${headY + 3.4} L${man} ${headY + 12} Z`}
                     />
                     {/* divider */}
                     <rect
-                      x={d.x - 0.9}
+                      x={d.x - 0.8}
                       y={headY - hr}
-                      width={1.8}
-                      height={20}
-                      rx={0.9}
+                      width={1.6}
+                      height={16}
+                      rx={0.8}
                     />
                     {/* woman: head + upward (dress) torso */}
                     <circle cx={woman} cy={headY} r={hr} />
                     <path
-                      d={`M${woman} ${headY + 4} L${woman - 5.5} ${headY + 15} L${woman + 5.5} ${headY + 15} Z`}
+                      d={`M${woman} ${headY + 3.4} L${woman - 4.5} ${headY + 12} L${woman + 4.5} ${headY + 12} Z`}
                     />
                   </g>
                 </g>
