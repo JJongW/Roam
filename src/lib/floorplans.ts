@@ -166,11 +166,20 @@ function buildSibf(): Floorplan {
     { type: "info", x: 2880, y: 3300, text: "안내" },
     { type: "arrowsV", x: 1760, y1: 1810, y2: 1945 },
   );
-  // Toilets: snap each marker just inside the nearest hall plate so none float
-  // in the empty ground around the building (traced coords sometimes land in the
-  // outer margin). Restrooms read as building facilities at the hall edge.
-  const snapToHall = (p: { x: number; y: number }) => {
-    const inset = 24;
+  // Toilets are edge facilities — they belong tight against a hall wall in the
+  // perimeter aisle, not floating in the booth grid. Snap each marker to the
+  // nearest wall, then slide ALONG that wall to clear any booth it overlaps.
+  const WALL_INSET = 30; // marker centre distance from the wall
+  const GAP = 22;
+  const onBooth = (x: number, y: number) =>
+    booths.some(
+      (b) =>
+        x >= b.x - b.w / 2 - GAP &&
+        x <= b.x + b.w / 2 + GAP &&
+        y >= b.y - b.h / 2 - GAP &&
+        y <= b.y + b.h / 2 + GAP,
+    );
+  const placeWc = (p: { x: number; y: number }) => {
     let best = halls[0];
     let bestD = Infinity;
     for (const h of halls) {
@@ -183,46 +192,50 @@ function buildSibf(): Floorplan {
       }
     }
     if (!best) return p;
-    return {
-      x: Math.max(best.x + inset, Math.min(p.x, best.x + best.w - inset)),
-      y: Math.max(best.y + inset, Math.min(p.y, best.y + best.h - inset)),
-    };
-  };
-  // A restroom marker must sit in an aisle, not on top of a booth box. After
-  // clamping into the hall, if the point lands inside (or hard against) a booth,
-  // nudge it outward to the nearest free spot.
-  const GAP = 26;
-  const onBooth = (x: number, y: number) =>
-    booths.some(
-      (b) =>
-        x >= b.x - b.w / 2 - GAP &&
-        x <= b.x + b.w / 2 + GAP &&
-        y >= b.y - b.h / 2 - GAP &&
-        y <= b.y + b.h / 2 + GAP,
-    );
-  const nudgeOff = (p: { x: number; y: number }) => {
-    if (!onBooth(p.x, p.y)) return p;
-    const dirs = [
-      [1, 0],
-      [-1, 0],
-      [0, 1],
-      [0, -1],
-      [1, 1],
-      [-1, 1],
-      [1, -1],
-      [-1, -1],
-    ];
-    for (let rad = 16; rad <= 800; rad += 16) {
-      for (const [dx, dy] of dirs) {
-        const x = p.x + dx * rad;
-        const y = p.y + dy * rad;
-        if (!onBooth(x, y)) return { x, y };
+    const h = best;
+    let x = Math.max(h.x + WALL_INSET, Math.min(p.x, h.x + h.w - WALL_INSET));
+    let y = Math.max(h.y + WALL_INSET, Math.min(p.y, h.y + h.h - WALL_INSET));
+    // Pin to the nearest of the four walls.
+    const dl = x - h.x;
+    const dr = h.x + h.w - x;
+    const dt = y - h.y;
+    const db = h.y + h.h - y;
+    const m = Math.min(dl, dr, dt, db);
+    const vertical = m === dl || m === dr; // left/right wall → slide in y
+    if (m === dl) x = h.x + WALL_INSET;
+    else if (m === dr) x = h.x + h.w - WALL_INSET;
+    else if (m === dt) y = h.y + WALL_INSET;
+    else y = h.y + h.h - WALL_INSET;
+    // Slide along the wall to clear booths.
+    if (onBooth(x, y)) {
+      const along: Array<[number, number]> = vertical
+        ? [
+            [0, 1],
+            [0, -1],
+          ]
+        : [
+            [1, 0],
+            [-1, 0],
+          ];
+      for (let rad = 16; rad <= 1400; rad += 16) {
+        for (const [dx, dy] of along) {
+          const nx = x + dx * rad;
+          const ny = y + dy * rad;
+          if (
+            nx >= h.x &&
+            nx <= h.x + h.w &&
+            ny >= h.y &&
+            ny <= h.y + h.h &&
+            !onBooth(nx, ny)
+          )
+            return { x: nx, y: ny };
+        }
       }
     }
-    return p;
+    return { x, y };
   };
   for (const w of sibf.wc ?? []) {
-    const p = nudgeOff(snapToHall(w));
+    const p = placeWc(w);
     decor.push({ type: "wc", x: p.x, y: p.y });
   }
 

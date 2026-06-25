@@ -1084,32 +1084,44 @@ export function ExhibitionMap({
               );
             }
             if (d.type === "wc") {
-              // Restroom marker: the universal 남/녀 pictogram (man + woman
-              // silhouettes) in a rounded box, like the official map — not a "WC"
-              // label. Figures are drawn as simple filled shapes in white.
-              const man = d.x - 13;
-              const woman = d.x + 13;
-              const top = d.y - 16;
+              // Restroom marker — 남/녀 pictogram (man + divider + woman), like
+              // the universal sign. Compact (smaller than a booth) and on-brand:
+              // a light card chip with primary-coloured figures.
+              const R = 23; // half box size
+              const man = d.x - 9;
+              const woman = d.x + 9;
+              const headY = d.y - 11;
+              const hr = 3.4;
               return (
                 <g key={i} transform={upright(d.x, d.y)}>
                   <rect
-                    x={d.x - 30}
-                    y={d.y - 30}
-                    width={60}
-                    height={60}
-                    rx={12}
-                    fill="var(--primary)"
+                    x={d.x - R}
+                    y={d.y - R}
+                    width={R * 2}
+                    height={R * 2}
+                    rx={10}
+                    fill="var(--card)"
+                    stroke="var(--border)"
+                    strokeWidth={1.5}
                   />
-                  <g fill="white">
-                    {/* man: head + torso + two legs */}
-                    <circle cx={man} cy={top} r={4} />
+                  <g fill="var(--primary)">
+                    {/* man: head + downward (broad-shoulder) torso */}
+                    <circle cx={man} cy={headY} r={hr} />
                     <path
-                      d={`M${man - 6} ${top + 7} h12 l-2 13 h-3 v9 h-2 v-9 h-2 v9 h-2 v-9 h-3 z`}
+                      d={`M${man - 5.5} ${headY + 4} L${man + 5.5} ${headY + 4} L${man} ${headY + 15} Z`}
                     />
-                    {/* woman: head + triangular dress + two legs */}
-                    <circle cx={woman} cy={top} r={4} />
+                    {/* divider */}
+                    <rect
+                      x={d.x - 0.9}
+                      y={headY - hr}
+                      width={1.8}
+                      height={20}
+                      rx={0.9}
+                    />
+                    {/* woman: head + upward (dress) torso */}
+                    <circle cx={woman} cy={headY} r={hr} />
                     <path
-                      d={`M${woman} ${top + 6} l8 16 h-5 v8 h-2 v-8 h-2 v8 h-2 v-8 h-5 z`}
+                      d={`M${woman} ${headY + 4} L${woman - 5.5} ${headY + 15} L${woman + 5.5} ${headY + 15} Z`}
                     />
                   </g>
                 </g>
