@@ -25,10 +25,19 @@ export function NotesView({
   slug,
   booths,
   categories,
+  onClose,
+  onLocate,
 }: {
   slug: string;
   booths: Booth[];
   categories: Category[];
+  /** When provided, render as an in-place overlay (no route change) — back
+   *  closes the overlay instead of navigating. Keeps the map mounted underneath
+   *  so opening/closing the 메모장 is instant. */
+  onClose?: () => void;
+  /** Overlay mode: focus a booth on the live map (closes the overlay + centers)
+   *  instead of navigating to /map?booth=. */
+  onLocate?: (boothId: string) => void;
 }) {
   const router = useRouter();
   const hydrated = useHydrated();
@@ -48,10 +57,16 @@ export function NotesView({
     : [];
 
   return (
-    <main className="flex flex-1 flex-col pb-safe">
+    <main
+      className={
+        onClose
+          ? "fixed inset-0 z-50 flex flex-col overflow-y-auto bg-background pb-safe"
+          : "flex flex-1 flex-col pb-safe"
+      }
+    >
       <AppBar
         title="내 메모장"
-        onBack={() => router.push(`/exhibitions/${slug}/map`)}
+        onBack={onClose ?? (() => router.push(`/exhibitions/${slug}/map`))}
       />
 
       {!hydrated ? (
@@ -132,16 +147,27 @@ export function NotesView({
                   )}
 
                   <div className="flex gap-2 pt-0.5">
-                    <Button
-                      asChild
-                      variant="secondary"
-                      size="sm"
-                      className="flex-1"
-                    >
-                      <Link href={`/exhibitions/${slug}/map?booth=${b.id}`}>
+                    {onLocate ? (
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        className="flex-1"
+                        onClick={() => onLocate(b.id)}
+                      >
                         <MapPin className="size-4" /> 지도에서 보기
-                      </Link>
-                    </Button>
+                      </Button>
+                    ) : (
+                      <Button
+                        asChild
+                        variant="secondary"
+                        size="sm"
+                        className="flex-1"
+                      >
+                        <Link href={`/exhibitions/${slug}/map?booth=${b.id}`}>
+                          <MapPin className="size-4" /> 지도에서 보기
+                        </Link>
+                      </Button>
+                    )}
                     <Button
                       asChild
                       variant="ghost"

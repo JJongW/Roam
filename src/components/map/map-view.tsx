@@ -40,6 +40,7 @@ import { Route as RouteIcon } from "lucide-react";
 import { AppBar } from "@/components/common/app-bar";
 import { ExhibitionMap, HEAT_TIERS } from "@/components/map/exhibition-map";
 import { AiRecommendSheet } from "@/components/map/ai-recommend-sheet";
+import { NotesView } from "@/components/booth/notes-view";
 import { CategoryChip } from "@/components/booth/category-chip";
 import { EmptyState } from "@/components/common/states";
 import { Button } from "@/components/ui/button";
@@ -115,6 +116,7 @@ export function MapView({
   const [query, setQuery] = useState("");
   const [sheetOpen, setSheetOpen] = useState(false);
   const [aiOpen, setAiOpen] = useState(false);
+  const [notesOpen, setNotesOpen] = useState(false);
   // Crowd heatmap (방문객이 많이 담은 부스·복도). Lazy-loaded the first time it's on.
   const [heatOn, setHeatOn] = useState(false);
   const [heat, setHeat] = useState<{
@@ -291,13 +293,14 @@ export function MapView({
     const slug = detail.exhibition.slug;
     return (
       <>
-        <Link
-          href={`/exhibitions/${slug}/notes`}
+        <button
+          type="button"
+          onClick={() => setNotesOpen(true)}
           aria-label="내 메모장"
           className="flex h-11 items-center gap-1 rounded-full px-2 text-sm font-bold text-muted-foreground active:bg-secondary"
         >
           <NotebookPen className="size-5" /> 메모장
-        </Link>
+        </button>
         <Link
           href={`/exhibitions/${slug}/routes`}
           aria-label="다른 사람 동선"
@@ -738,6 +741,21 @@ export function MapView({
         open={aiOpen}
         onClose={() => setAiOpen(false)}
       />
+
+      {/* 메모장 — rendered as an overlay on top of the (still-mounted) map, not a
+          separate route, so opening/closing is instant: no heavy map remount. */}
+      {notesOpen && (
+        <NotesView
+          slug={detail.exhibition.slug}
+          booths={booths}
+          categories={detail.categories}
+          onClose={() => setNotesOpen(false)}
+          onLocate={(id) => {
+            setNotesOpen(false);
+            locate(id);
+          }}
+        />
+      )}
     </div>
   );
 }

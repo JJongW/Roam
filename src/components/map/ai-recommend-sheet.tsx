@@ -44,11 +44,14 @@ export function AiRecommendSheet({
     try {
       const { route } = await api.post<{ route: RoutePlan }>(
         "/api/ai/quick-route",
+        // Build a fresh route from the request (+ onboarding interests) and
+        // REPLACE the current one. We don't force-keep the existing cart: doing
+        // so made every chat just *add* booths, so "문학만 보여줘" still returned
+        // everything already added — the request looked ignored.
         {
           exhibitionSlug: slug,
           text: t,
           interests: useOnboardingStore.getState().interests,
-          keepBoothIds: useCartStore.getState().ids,
         },
       );
       useRouteStore.getState().setRoute(route);
@@ -75,7 +78,7 @@ export function AiRecommendSheet({
         onClick={onClose}
         className="absolute inset-0 bg-black/40"
       />
-      <div className="relative mx-auto w-full max-w-md rounded-t-2xl border-t border-border bg-card p-4 pb-safe shadow-[var(--shadow-pop)] animate-in slide-in-from-bottom-4">
+      <div className="relative mx-auto w-full max-w-md rounded-t-2xl border-t border-border bg-card px-4 pt-4 pb-[max(1.75rem,env(safe-area-inset-bottom))] shadow-[var(--shadow-pop)] animate-in slide-in-from-bottom-4">
         <div className="mb-3 flex items-center gap-2">
           <Sparkles className="size-5 text-primary" />
           <h2 className="flex-1 font-extrabold">AI 추천받기</h2>
@@ -89,8 +92,7 @@ export function AiRecommendSheet({
           </button>
         </div>
         <p className="mb-2 text-sm text-muted-foreground">
-          보고 싶은 걸 자유롭게 적어주세요. 이미 담은 부스와 관심사도 함께
-          고려해요.
+          보고 싶은 걸 자유롭게 적어주세요. 관심사를 반영해 새 동선을 짜 드려요.
         </p>
         <Textarea
           value={text}
@@ -119,7 +121,7 @@ export function AiRecommendSheet({
         </div>
         <Button
           size="lg"
-          className="mt-3 w-full"
+          className="mt-4 w-full"
           disabled={!text.trim() || busy}
           onClick={send}
         >
