@@ -1,6 +1,13 @@
 "use client";
 
-import { memo, useCallback, useMemo, useRef, useState } from "react";
+import {
+  memo,
+  useCallback,
+  useDeferredValue,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -137,8 +144,12 @@ export function MapView({
     [detail.categories],
   );
 
+  // Defer the search term so typing stays instant: the input updates live, but
+  // the (heavy) filtered list + map re-render run as a non-blocking, lower-prio
+  // pass — no per-keystroke jank from reconciling ~180 list rows + map booths.
+  const deferredQuery = useDeferredValue(query);
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    const q = deferredQuery.trim().toLowerCase();
     return booths.filter((b) => {
       if (activeCat && b.categoryId !== activeCat) return false;
       if (statusFilter === "visited" && !visitedSet.has(b.id)) return false;
@@ -152,7 +163,7 @@ export function MapView({
         return false;
       return true;
     });
-  }, [booths, activeCat, statusFilter, visitedSet, skippedSet, query]);
+  }, [booths, activeCat, statusFilter, visitedSet, skippedSet, deferredQuery]);
 
   const cartIds = useCartStore((s) => s.ids);
   const boothById = useMemo(

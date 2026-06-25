@@ -18,6 +18,9 @@ import { aisleRoute } from "@/lib/aisle-route";
 // Fallback booth box when no floorplan geometry is supplied.
 const BOOTH_W = 72;
 const BOOTH_H = 62;
+// Visual inset per booth so adjacent stands keep a gap (aisle) between them —
+// the traced coordinates pack booths edge-to-edge.
+const BOOTH_GAP = 3;
 
 /** Crowd heat steps, quiet → very busy. Distinct hues (yellow→red), not just one
  *  orange at varying opacity, so the four levels read apart at a glance. Drawn
@@ -764,10 +767,11 @@ export function ExhibitionMap({
   }, [centerOn]);
 
   const routeKey = routeOrder?.join(",");
-  // One path per leg (stop → next stop), in visit order. Drawing legs in
-  // sequence lets a later leg's casing + shadow cross OVER an earlier one, so
-  // self-crossings (the common "십자" overlap) read as a bridge with a clear
-  // top/bottom layer instead of an ambiguous flat intersection.
+  // Route the WHOLE path once through the aisle grid (correct, never crosses a
+  // booth), then split the resulting polyline into its straight pieces. Drawing
+  // the pieces in walking order lets a later one's casing + shadow cross OVER an
+  // earlier one, so self-crossings ("십자") read as a bridge. (Routing per leg
+  // instead would spike into every booth centre and clip the boxes.)
   const gateKey = `${routeStart?.x},${routeStart?.y},${routeEnd?.x},${routeEnd?.y}`;
   const routeSegments = useMemo(
     () => {
@@ -776,13 +780,16 @@ export function ExhibitionMap({
       const rects = floorplan
         ? floorplan.booths.map((b) => ({ x: b.x, y: b.y, w: b.w, h: b.h }))
         : [];
+      const wps = floorplan
+        ? aisleRoute(centers, rects, width, height, floorplan.interior)
+        : orthWaypoints(centers);
       const segs: string[] = [];
-      for (let i = 0; i < centers.length - 1; i++) {
-        const pair = [centers[i], centers[i + 1]];
-        const wps = floorplan
-          ? aisleRoute(pair, rects, width, height, floorplan.interior)
-          : orthWaypoints(pair);
-        segs.push(roundedPathD(wps, 10));
+      for (let i = 0; i < wps.length - 1; i++) {
+        const a = wps[i];
+        const b = wps[i + 1];
+        segs.push(
+          `M ${a.x.toFixed(1)} ${a.y.toFixed(1)} L ${b.x.toFixed(1)} ${b.y.toFixed(1)}`,
+        );
       }
       return segs;
     },
@@ -1071,6 +1078,12 @@ export function ExhibitionMap({
               );
             }
             if (d.type === "wc") {
+              // Restroom marker: the universal 남/녀 pictogram (man + woman
+              // silhouettes) in a rounded box, like the official map — not a "WC"
+              // label. Figures are drawn as simple filled shapes in white.
+              const man = d.x - 13;
+              const woman = d.x + 13;
+              const top = d.y - 16;
               return (
                 <g key={i}>
                   <rect
@@ -1078,19 +1091,21 @@ export function ExhibitionMap({
                     y={d.y - 30}
                     width={60}
                     height={60}
-                    rx={10}
+                    rx={12}
                     fill="var(--primary)"
                   />
-                  <text
-                    x={d.x}
-                    y={d.y + 10}
-                    textAnchor="middle"
-                    fontSize={26}
-                    fontWeight="800"
-                    fill="white"
-                  >
-                    WC
-                  </text>
+                  <g fill="white">
+                    {/* man: head + torso + two legs */}
+                    <circle cx={man} cy={top} r={4} />
+                    <path
+                      d={`M${man - 6} ${top + 7} h12 l-2 13 h-3 v9 h-2 v-9 h-2 v9 h-2 v-9 h-3 z`}
+                    />
+                    {/* woman: head + triangular dress + two legs */}
+                    <circle cx={woman} cy={top} r={4} />
+                    <path
+                      d={`M${woman} ${top + 6} l8 16 h-5 v8 h-2 v-8 h-2 v8 h-2 v-8 h-5 z`}
+                    />
+                  </g>
                 </g>
               );
             }
@@ -1300,11 +1315,14 @@ export function ExhibitionMap({
                     b.name.length > 9 ? `${b.name.slice(0, 9)}…` : b.name;
                   return (
                     <>
+                      {/* Draw the box inset by a few px so neighbouring booths
+                          keep a visible gap (aisle) between them, like the
+                          official map — booth coords pack edge-to-edge. */}
                       <rect
-                        x={-g.w / 2}
-                        y={-g.h / 2}
-                        width={g.w}
-                        height={g.h}
+                        x={-g.w / 2 + BOOTH_GAP}
+                        y={-g.h / 2 + BOOTH_GAP}
+                        width={Math.max(8, g.w - BOOTH_GAP * 2)}
+                        height={Math.max(8, g.h - BOOTH_GAP * 2)}
                         rx={5}
                         fill={fill}
                         stroke={stroke}

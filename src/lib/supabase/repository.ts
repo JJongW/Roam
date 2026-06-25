@@ -487,24 +487,20 @@ export class SupabaseRepository implements Repository {
       .maybeSingle();
     if (!boothRow) return null;
     const booth = mapBooth(boothRow as Row);
-    const { data: catRow } = await db
-      .from("category")
-      .select("*")
-      .eq("id", booth.categoryId)
-      .maybeSingle();
-    const { data: reviewRows } = await db
-      .from("review")
-      .select("*")
-      .eq("booth_id", id);
-    const { data: kitRow } = await db
-      .from("welcome_kit")
-      .select("*")
-      .eq("booth_id", id)
-      .maybeSingle();
-    const { data: eventRows } = await db
-      .from("event")
-      .select("*")
-      .eq("booth_id", id);
+    // category / reviews / welcome kit / events are independent once we have the
+    // booth — fetch them together (one round-trip wall-clock) instead of four
+    // sequential queries, which made the booth detail noticeably slow to open.
+    const [
+      { data: catRow },
+      { data: reviewRows },
+      { data: kitRow },
+      { data: eventRows },
+    ] = await Promise.all([
+      db.from("category").select("*").eq("id", booth.categoryId).maybeSingle(),
+      db.from("review").select("*").eq("booth_id", id),
+      db.from("welcome_kit").select("*").eq("booth_id", id).maybeSingle(),
+      db.from("event").select("*").eq("booth_id", id),
+    ]);
 
     const reviews = (reviewRows ?? [])
       .map(mapReview)

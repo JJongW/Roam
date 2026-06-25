@@ -188,8 +188,41 @@ function buildSibf(): Floorplan {
       y: Math.max(best.y + inset, Math.min(p.y, best.y + best.h - inset)),
     };
   };
+  // A restroom marker must sit in an aisle, not on top of a booth box. After
+  // clamping into the hall, if the point lands inside (or hard against) a booth,
+  // nudge it outward to the nearest free spot.
+  const GAP = 26;
+  const onBooth = (x: number, y: number) =>
+    booths.some(
+      (b) =>
+        x >= b.x - b.w / 2 - GAP &&
+        x <= b.x + b.w / 2 + GAP &&
+        y >= b.y - b.h / 2 - GAP &&
+        y <= b.y + b.h / 2 + GAP,
+    );
+  const nudgeOff = (p: { x: number; y: number }) => {
+    if (!onBooth(p.x, p.y)) return p;
+    const dirs = [
+      [1, 0],
+      [-1, 0],
+      [0, 1],
+      [0, -1],
+      [1, 1],
+      [-1, 1],
+      [1, -1],
+      [-1, -1],
+    ];
+    for (let rad = 16; rad <= 800; rad += 16) {
+      for (const [dx, dy] of dirs) {
+        const x = p.x + dx * rad;
+        const y = p.y + dy * rad;
+        if (!onBooth(x, y)) return { x, y };
+      }
+    }
+    return p;
+  };
   for (const w of sibf.wc ?? []) {
-    const p = snapToHall(w);
+    const p = nudgeOff(snapToHall(w));
     decor.push({ type: "wc", x: p.x, y: p.y });
   }
 

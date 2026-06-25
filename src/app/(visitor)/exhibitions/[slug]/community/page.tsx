@@ -13,8 +13,11 @@ export default async function CommunityPage({ params }: Props) {
   const detail = await repo.getExhibition(slug);
   if (!detail) notFound();
 
-  const booths = await repo.listBoothsByExhibitionId(detail.exhibition.id);
-  const { data: posts } = await repo.listPosts(detail.exhibition.id);
+  // Independent once we have the exhibition id — fetch in parallel.
+  const [booths, { data: posts }] = await Promise.all([
+    repo.listBoothsByExhibitionId(detail.exhibition.id),
+    repo.listPosts(detail.exhibition.id),
+  ]);
 
   return (
     <CommunityView
