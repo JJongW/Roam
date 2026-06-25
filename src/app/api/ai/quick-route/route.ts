@@ -9,9 +9,10 @@ import {
 } from "@/lib/api/http";
 import { ensureSession, getCurrentUser } from "@/lib/api/session";
 import { buildPlan, rankForExhibition } from "@/lib/engine/service";
-import { buildOrderedRoute } from "@/lib/engine/route";
+import { buildHallSweepRoute } from "@/lib/engine/route";
 import { FLOORPLANS } from "@/lib/floorplans";
 import { hasGemini, generateJSON } from "@/lib/ai/gemini";
+import { recommendBoothIds } from "@/lib/ai/booth-recommender";
 import {
   aiRoutePreferencesSchema,
   buildPreferencePrompt,
@@ -81,22 +82,52 @@ export async function POST(req: Request) {
     const start = FLOORPLANS[exhibitionSlug]?.entrance;
     const plan = buildPlan(rank, mapped.preference, start);
 
-    // Keep what the visitor already added, then weave in the new picks, and
-    // re-order the whole thing into one clean sweep.
-    let boothIds = plan.boothIds;
-    let legs = plan.legs;
-    let estimatedMinutes = plan.estimatedMinutes;
-    if (keepBoothIds?.length) {
-      const all = await repo.listBoothsByExhibitionId(rank.exhibitionId);
-      const byId = new Map(all.map((b) => [b.id, b]));
-      const merged = [...new Set([...keepBoothIds, ...plan.boothIds])]
-        .map((id) => byId.get(id))
-        .filter((b): b is NonNullable<typeof b> => Boolean(b));
-      const reordered = buildOrderedRoute(merged, start ?? { x: 0, y: 0 });
-      boothIds = reordered.boothIds;
-      legs = reordered.legs;
-      estimatedMinutes = reordered.estimatedMinutes;
+    // 다른 방문객 쿼리에서 자주 나온 키워드(트렌딩)를 추천 신호로 함께 준다.
+    const trending = (await repo.topQueryKeywords(rank.exhibitionId, 12)).map(
+      (t) => t.keyword,
+    );
+
+    // LLM 주도 선택: 결정론 후보 위에서 Gemini가 요청 맥락으로 골라 재정렬한다
+    // (웹검색·URL·RAG 활성 = grounded). 실패하면 결정론 plan을 그대로 쓴다.
+    let selectedIds = plan.boothIds;
+    let recKeywords: string[] = [];
+    if (rank.ranked.length > 0) {
+      try {
+        const rec = await recommendBoothIds({
+          candidates: rank.ranked,
+          userBrief: [text, mapped.chips.join(" · ")]
+            .filter(Boolean)
+            .join("\n"),
+          limit: Math.max(3, plan.boothIds.length || 8),
+          grounded: true, // 지도 AI 추천은 웹검색·URL 활성
+          trendingKeywords: trending,
+        });
+        if (rec.boothIds.length > 0) selectedIds = rec.boothIds;
+        recKeywords = rec.keywords;
+      } catch (e) {
+        console.error("[ai/quick-route] LLM rerank failed, fallback", e);
+      }
     }
+
+    // 이 쿼리를 로그에 적재 — 누적 키워드 추적(RAG)에 쓴다. 베스트에포트.
+    repo
+      .logAiQuery(session.id, rank.exhibitionId, {
+        text,
+        keywords: recKeywords.length ? recKeywords : mapped.chips,
+      })
+      .catch(() => {});
+
+    // keepBoothIds가 주어지면(=토글 ON) 기존 동선에 더해 병합, 아니면 교체.
+    // 어느 쪽이든 홀-스윕으로 정렬해 A↔B 왕복(지그재그)을 막는다.
+    const all = await repo.listBoothsByExhibitionId(rank.exhibitionId);
+    const byId = new Map(all.map((b) => [b.id, b]));
+    const merged = [...new Set([...(keepBoothIds ?? []), ...selectedIds])]
+      .map((id) => byId.get(id))
+      .filter((b): b is NonNullable<typeof b> => Boolean(b));
+    const reordered = buildHallSweepRoute(merged, start ?? { x: 0, y: 0 });
+    const boothIds = reordered.boothIds;
+    const legs = reordered.legs;
+    const estimatedMinutes = reordered.estimatedMinutes;
 
     const route = await repo.saveRoute(
       session.id,

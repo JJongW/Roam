@@ -156,6 +156,37 @@ export default async function BoothDetailPage({ params }: Props) {
                     </div>
                   </section>
 
+                  {/* 수동 주입 추가정보(굿즈·팁) — 있을 때만. */}
+                  {booth.enrichment &&
+                    (booth.enrichment.goodsKeywords.length > 0 ||
+                      booth.enrichment.tips) && (
+                      <section className="space-y-2.5">
+                        {booth.enrichment.goodsKeywords.length > 0 && (
+                          <div className="space-y-1.5">
+                            <h2 className="text-base font-bold">굿즈</h2>
+                            <div className="flex flex-wrap gap-1.5">
+                              {booth.enrichment.goodsKeywords.map((g) => (
+                                <span
+                                  key={g}
+                                  className="rounded-full border border-border bg-card px-3 py-1 text-sm font-medium text-foreground/90"
+                                >
+                                  {g}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                        {booth.enrichment.tips && (
+                          <div className="rounded-2xl border border-border bg-secondary/40 p-3">
+                            <p className="text-sm font-bold">관람 팁</p>
+                            <p className="mt-1 text-sm leading-relaxed text-foreground/80">
+                              {booth.enrichment.tips}
+                            </p>
+                          </div>
+                        )}
+                      </section>
+                    )}
+
                   {/* AI-extracted 신간·굿즈 (renders only when found). */}
                   <BoothHighlights boothId={booth.id} />
 

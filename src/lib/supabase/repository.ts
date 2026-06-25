@@ -495,12 +495,26 @@ export class SupabaseRepository implements Repository {
       { data: reviewRows },
       { data: kitRow },
       { data: eventRows },
+      { data: enrichRow },
     ] = await Promise.all([
       db.from("category").select("*").eq("id", booth.categoryId).maybeSingle(),
       db.from("review").select("*").eq("booth_id", id),
       db.from("welcome_kit").select("*").eq("booth_id", id).maybeSingle(),
       db.from("event").select("*").eq("booth_id", id),
+      db.from("booth_enrichment").select("*").eq("booth_id", id).maybeSingle(),
     ]);
+
+    // 수동 주입 추가정보(있으면)를 부스에 붙여 상세에서 노출.
+    if (enrichRow) {
+      const e = enrichRow as Row;
+      booth.enrichment = {
+        goodsKeywords: strArr(e.goods_keywords),
+        themeTags: strArr(e.theme_tags),
+        summary: e.summary == null ? undefined : String(e.summary),
+        tips: e.tips == null ? undefined : String(e.tips),
+        sourceUrl: e.source_url == null ? undefined : String(e.source_url),
+      };
+    }
 
     const reviews = (reviewRows ?? [])
       .map(mapReview)
@@ -1270,6 +1284,50 @@ export class SupabaseRepository implements Repository {
       .select("*")
       .eq("exhibition_id", exhibitionId);
     return (data ?? []).map(mapAnalytics);
+  }
+
+  async logAiQuery(
+    sessionId: string,
+    exhibitionId: string,
+    input: { text: string; keywords: string[] },
+  ): Promise<void> {
+    const db = await this.db();
+    await db.from("ai_query_log").insert({
+      id: uid("aq"),
+      session_id: sessionId,
+      exhibition_id: exhibitionId,
+      text: input.text,
+      keywords: input.keywords,
+      created_at: now(),
+    });
+  }
+
+  async topQueryKeywords(
+    exhibitionId: string,
+    limit = 12,
+  ): Promise<{ keyword: string; count: number }[]> {
+    const db = await this.db();
+    // 최근 쿼리의 키워드를 가져와 앱에서 빈도 집계(스키마 단순 유지).
+    const { data } = await db
+      .from("ai_query_log")
+      .select("keywords")
+      .eq("exhibition_id", exhibitionId)
+      .order("created_at", { ascending: false })
+      .limit(500);
+    const counts = new Map<string, number>();
+    for (const row of data ?? []) {
+      const kws = Array.isArray((row as { keywords?: unknown }).keywords)
+        ? ((row as { keywords: unknown[] }).keywords as unknown[])
+        : [];
+      for (const k of kws) {
+        const key = typeof k === "string" ? k.trim() : "";
+        if (key) counts.set(key, (counts.get(key) ?? 0) + 1);
+      }
+    }
+    return [...counts.entries()]
+      .map(([keyword, count]) => ({ keyword, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, limit);
   }
 
   async analyticsHeatmap(

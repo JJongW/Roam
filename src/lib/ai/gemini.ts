@@ -94,6 +94,9 @@ export async function generateJSON<T>(opts: {
       config: {
         responseMimeType: "application/json",
         temperature: opts.temperature ?? 0.2,
+        // gemini-2.5-flash는 thinking이 기본 ON이라 응답이 수 초 느려진다. 우리
+        // 작업(구조화 추출/선택)은 추론 토큰이 거의 불필요하므로 꺼서 지연을 줄인다.
+        thinkingConfig: { thinkingBudget: 0 },
         ...(opts.system ? { systemInstruction: opts.system } : {}),
       },
     }),
@@ -152,9 +155,73 @@ export async function generateText(opts: {
       contents: opts.prompt,
       config: {
         temperature: opts.temperature ?? 0.3,
+        thinkingConfig: { thinkingBudget: 0 },
         ...(opts.system ? { systemInstruction: opts.system } : {}),
       },
     }),
     (text) => text ?? "",
   );
+}
+
+export interface GroundingSource {
+  uri: string;
+  title?: string;
+}
+
+/**
+ * Grounded generation — enables Google Search + URL-context tools so the model
+ * can look things up on the web and read URLs mentioned in the prompt (e.g. a
+ * booth's Instagram/website). Tools are incompatible with forced JSON output,
+ * so this returns raw text + the web sources it grounded on; callers salvage
+ * JSON from the text themselves (see `extractJSON`). Same backoff + fallback.
+ */
+export async function generateGrounded(opts: {
+  prompt: string;
+  system?: string;
+  temperature?: number;
+}): Promise<{ text: string; sources: GroundingSource[] }> {
+  const ai = getClient();
+  const plan: Array<{ model: string; delay: number }> = [
+    { model: MODELS[0], delay: 0 },
+    { model: MODELS[0], delay: 600 },
+    { model: MODELS[1], delay: 1500 },
+  ];
+  let lastErr: unknown;
+  for (const step of plan) {
+    if (step.delay) await sleep(step.delay + Math.floor(Math.random() * 250));
+    try {
+      const res = await ai.models.generateContent({
+        model: step.model,
+        contents: opts.prompt,
+        config: {
+          temperature: opts.temperature ?? 0.3,
+          tools: [{ googleSearch: {} }, { urlContext: {} }],
+          thinkingConfig: { thinkingBudget: 0 },
+          ...(opts.system ? { systemInstruction: opts.system } : {}),
+        },
+      });
+      const chunks =
+        res.candidates?.[0]?.groundingMetadata?.groundingChunks ?? [];
+      const sources: GroundingSource[] = chunks
+        .map((c) => c.web)
+        .filter((w): w is NonNullable<typeof w> => Boolean(w?.uri))
+        .map((w) => ({ uri: w.uri as string, title: w.title }));
+      return { text: res.text ?? "", sources };
+    } catch (e) {
+      lastErr = e;
+      if (isFatal(e)) break;
+    }
+  }
+  throw lastErr;
+}
+
+/** Salvage a JSON object/array from a (possibly prose/fenced) model response. */
+export function extractJSON<T>(text: string): T {
+  try {
+    return JSON.parse(text) as T;
+  } catch {
+    const m = text.match(/\{[\s\S]*\}|\[[\s\S]*\]/);
+    if (!m) throw new Error("No JSON found in grounded response");
+    return JSON.parse(m[0]) as T;
+  }
 }

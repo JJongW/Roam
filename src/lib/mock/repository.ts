@@ -3,6 +3,7 @@ import { REPORT_HIDE_THRESHOLD } from "@/lib/constants";
 import { freshSeed } from "@/lib/mock/seed";
 import type { ListBoothQuery, Repository } from "@/lib/repositories/types";
 import type {
+  AiQueryLog,
   AnalyticsEvent,
   Booth,
   BoothDetail,
@@ -58,6 +59,7 @@ interface Store {
   users: User[];
   notes: BoothNote[];
   analytics: AnalyticsEvent[];
+  aiQueries: AiQueryLog[];
 }
 
 // Persist across HMR / route invocations in a single Node process.
@@ -82,6 +84,7 @@ function buildStore(): Store {
     users: [],
     notes: [],
     analytics: [],
+    aiQueries: [],
   };
 }
 
@@ -701,6 +704,40 @@ export class MockRepository implements Repository {
 
   async _allAnalytics(exhibitionId: string): Promise<AnalyticsEvent[]> {
     return store().analytics.filter((a) => a.exhibitionId === exhibitionId);
+  }
+
+  async logAiQuery(
+    sessionId: string,
+    exhibitionId: string,
+    input: { text: string; keywords: string[] },
+  ): Promise<void> {
+    const q: AiQueryLog = {
+      id: uid("aq"),
+      exhibitionId,
+      sessionId,
+      text: input.text,
+      keywords: input.keywords,
+      createdAt: now(),
+    };
+    store().aiQueries.push(q);
+  }
+
+  async topQueryKeywords(
+    exhibitionId: string,
+    limit = 12,
+  ): Promise<{ keyword: string; count: number }[]> {
+    const counts = new Map<string, number>();
+    for (const q of store().aiQueries) {
+      if (q.exhibitionId !== exhibitionId) continue;
+      for (const k of q.keywords) {
+        const key = k.trim();
+        if (key) counts.set(key, (counts.get(key) ?? 0) + 1);
+      }
+    }
+    return [...counts.entries()]
+      .map(([keyword, count]) => ({ keyword, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, limit);
   }
 
   async analyticsHeatmap(exhibitionId: string) {

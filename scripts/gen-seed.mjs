@@ -76,6 +76,24 @@ lines.push(
 lines.push("on conflict (id) do nothing;");
 lines.push("");
 
+// booth_enrichment — 수동 주입 추가정보가 있는 부스만(현재 비어 있으면 블록 생략).
+const enriched = seed.booths.filter((t) => t.enrichment);
+if (enriched.length) {
+  lines.push(
+    "insert into booth_enrichment (booth_id, goods_keywords, theme_tags, summary, tips, source_url) values",
+  );
+  lines.push(
+    enriched
+      .map(
+        (t) =>
+          `  (${q(t.id)}, ${jb(t.enrichment.goodsKeywords ?? [])}, ${jb(t.enrichment.themeTags ?? [])}, ${q(t.enrichment.summary)}, ${q(t.enrichment.tips)}, ${q(t.enrichment.sourceUrl)})`,
+      )
+      .join(",\n"),
+  );
+  lines.push("on conflict (booth_id) do nothing;");
+  lines.push("");
+}
+
 lines.push(
   "insert into event (id, booth_id, title, description, start_time, end_time, reward_info, capacity, tag, subtitle, speaker, standing) values",
 );

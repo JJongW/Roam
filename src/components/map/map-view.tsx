@@ -117,6 +117,8 @@ export function MapView({
   const [sheetOpen, setSheetOpen] = useState(false);
   const [aiOpen, setAiOpen] = useState(false);
   const [notesOpen, setNotesOpen] = useState(false);
+  // 뒤로가기 시 "관람이 끝나셨나요?" 확인. 동선이 있을 때만 묻는다.
+  const [finishOpen, setFinishOpen] = useState(false);
   // Crowd heatmap (방문객이 많이 담은 부스·복도). Lazy-loaded the first time it's on.
   const [heatOn, setHeatOn] = useState(false);
   const [heat, setHeat] = useState<{
@@ -249,6 +251,27 @@ export function MapView({
     useRouteStore.getState().clear();
     setSelectedId(null);
     toast.success("동선을 비웠어요");
+  }
+
+  // 뒤로가기: 동선을 짜둔 상태면 곧장 나가지 않고 "관람이 끝나셨나요?"를 먼저
+  // 묻는다. 동선이 없으면 기존처럼 전시 홈으로.
+  function handleBack() {
+    if (cartCount > 0) setFinishOpen(true);
+    else router.push("/");
+  }
+
+  // "예, 끝났어요": 동선 데이터는 유지한 채 완료로 표시(서버 기록)하고 홈으로.
+  async function finishVisit() {
+    setFinishOpen(false);
+    const r = useRouteStore.getState().route;
+    if (r?.id) {
+      try {
+        await api.patch(`/api/route/${r.id}`, { status: "completed" });
+      } catch {
+        /* 완료 표시는 베스트에포트 — 실패해도 이동은 진행 */
+      }
+    }
+    router.push("/");
   }
 
   // Toggle the crowd heatmap; fetch the aggregate once, then just show/hide.
@@ -500,7 +523,7 @@ export function MapView({
           <button
             type="button"
             aria-label="전시 홈으로"
-            onClick={() => router.push("/")}
+            onClick={handleBack}
             className="flex size-9 items-center justify-center rounded-full hover:bg-secondary"
           >
             <ChevronLeft className="size-5" />
@@ -539,11 +562,7 @@ export function MapView({
         {/* Portrait top bar — always visible (landscape/desktop use the panel).
             It stays put during zoom/pan so the map doesn't jump. */}
         <div className="md:hidden landscape:hidden">
-          <AppBar
-            title="지도"
-            onBack={() => router.push("/")}
-            right={renderMapActions()}
-          />
+          <AppBar title="지도" onBack={handleBack} right={renderMapActions()} />
         </div>
 
         <div className="relative flex-1 overflow-hidden">
@@ -747,6 +766,38 @@ export function MapView({
         open={aiOpen}
         onClose={() => setAiOpen(false)}
       />
+
+      {/* 뒤로가기 확인 — 관람이 끝났는지 묻는다. "아니오"면 지도에 머무르며 상단
+          AI 추천으로 동선을 더 받을 수 있다. */}
+      {finishOpen && (
+        <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
+          <button
+            type="button"
+            aria-label="닫기"
+            onClick={() => setFinishOpen(false)}
+            className="absolute inset-0 bg-black/40"
+          />
+          <div className="relative mx-auto w-full max-w-sm rounded-t-2xl border-t border-border bg-card p-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] shadow-[var(--shadow-pop)] animate-in slide-in-from-bottom-4 sm:rounded-2xl sm:border">
+            <h2 className="text-lg font-extrabold">관람이 끝나셨나요?</h2>
+            <p className="mt-1.5 text-sm text-muted-foreground">
+              아직이라면 지도로 돌아가 상단 ‘AI 추천’으로 동선을 더 받을 수
+              있어요.
+            </p>
+            <div className="mt-4 flex flex-col gap-2">
+              <Button size="lg" onClick={finishVisit}>
+                네, 끝났어요
+              </Button>
+              <Button
+                size="lg"
+                variant="secondary"
+                onClick={() => setFinishOpen(false)}
+              >
+                아니요, 더 둘러볼게요
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 메모장 — rendered as an overlay on top of the (still-mounted) map, not a
           separate route, so opening/closing is instant: no heavy map remount. */}

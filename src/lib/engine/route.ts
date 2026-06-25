@@ -180,6 +180,56 @@ export function buildManualRoute(
 }
 
 /**
+ * Hall-aware sweep ordering. 부스를 홀(hallId)별로 묶고, 입구에서 가까운 홀부터
+ * 방문하되 각 홀 안에서는 직전 위치 기준 최근접 순서로 돈다. 홀 간 전환은 정확히
+ * 홀 개수-1번만 일어나 A↔B 왕복(지그재그)을 막는다. 순수.
+ *
+ * 일반 NN(buildOrderedRoute의 입력이 흩어졌을 때)은 홀 경계를 넘나들며 튈 수
+ * 있어, LLM/엔진이 양쪽 홀 부스를 섞어 골랐을 때 이 정렬을 쓴다.
+ */
+export function buildHallSweepRoute(
+  booths: Booth[],
+  start: Point,
+  scores: Record<string, number> = {},
+): PlannedRoute {
+  // 홀별 그룹.
+  const groups = new Map<string, Booth[]>();
+  for (const b of booths) {
+    const key = b.hallId || "_";
+    (groups.get(key) ?? groups.set(key, []).get(key)!).push(b);
+  }
+  // 각 홀의 무게중심까지 거리로 홀 방문 순서를 정한다(입구에서 가까운 홀 먼저).
+  const centroid = (list: Booth[]): Point => ({
+    x: list.reduce((s, b) => s + b.x, 0) / list.length,
+    y: list.reduce((s, b) => s + b.y, 0) / list.length,
+  });
+  const hallOrder = [...groups.entries()].sort(
+    (a, b) => distance(start, centroid(a[1])) - distance(start, centroid(b[1])),
+  );
+  // 각 홀 안에서 직전 위치 기준 최근접 스윕, 다음 홀로 이어붙임.
+  const ordered: Booth[] = [];
+  let at: Point = start;
+  for (const [, list] of hallOrder) {
+    const pool = [...list];
+    while (pool.length > 0) {
+      let bi = 0;
+      let bd = Infinity;
+      for (let i = 0; i < pool.length; i++) {
+        const d = distance(at, pool[i]);
+        if (d < bd) {
+          bd = d;
+          bi = i;
+        }
+      }
+      const next = pool.splice(bi, 1)[0];
+      ordered.push(next);
+      at = next;
+    }
+  }
+  return buildOrderedRoute(ordered, start, scores);
+}
+
+/**
  * Build a route from booths in the EXACT given order (no reordering). Used when
  * the visitor has manually arranged their stops. Pure.
  */
