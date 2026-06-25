@@ -158,6 +158,19 @@ export interface Repository {
     pairs: { from: string; to: string; count: number }[];
   }>;
 
+  // AI 추천 쿼리 로그 (RAG / 트렌딩 키워드 추적)
+  /** AI 추천 채팅창 입력 텍스트 + 추출 키워드를 적재. */
+  logAiQuery(
+    sessionId: string,
+    exhibitionId: string,
+    input: { text: string; keywords: string[] },
+  ): Promise<void>;
+  /** 전시별 누적 쿼리에서 자주 나온 키워드 상위 N개(빈도순). */
+  topQueryKeywords(
+    exhibitionId: string,
+    limit?: number,
+  ): Promise<{ keyword: string; count: number }[]>;
+
   // users (nickname auth)
   createUser(nickname: string): Promise<User>;
   getUser(id: string): Promise<User | null>;

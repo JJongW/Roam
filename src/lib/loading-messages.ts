@@ -4,12 +4,15 @@
  * stares at a blank, frozen-feeling screen. Grouped by what's being fetched.
  */
 export const LOADING_MESSAGES = {
-  /** Building or re-recommending a 동선 (onboarding, AI quick-route). */
+  /** Building or re-recommending a 동선 (onboarding, AI quick-route). LLM 주도
+   *  파이프라인(검색·URL·RAG)이라 몇 초 걸릴 수 있어 단계가 진행되는 느낌을 준다. */
   route: [
-    "딱 맞는 동선을 짜는 중이에요",
-    "혼잡을 피해 길을 고르는 중이에요",
-    "관심사에 맞춰 부스를 고르는 중이에요",
-    "최단 경로로 이어보는 중이에요",
+    "네 취향을 곰곰이 살펴보는 중이에요",
+    "관심사에 맞는 부스를 찾는 중이에요",
+    "현장 굿즈와 부스 소식을 확인하는 중이에요",
+    "웹에서 관련 정보를 검색하는 중이에요",
+    "가장 잘 맞는 부스를 고르는 중이에요",
+    "혼잡을 피해 동선을 이어보는 중이에요",
   ],
   /** Booth highlights — 신간 · 굿즈. */
   goods: [

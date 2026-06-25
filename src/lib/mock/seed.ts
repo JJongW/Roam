@@ -1,10 +1,12 @@
 import floorplan from "@/lib/floorplan-sibf.json";
 import officialDirectory from "@/lib/booth/official-sibf-2026.json";
+import enrichmentData from "@/lib/booth/enrichment-sibf-2026.json";
 import standingEvents from "@/lib/sibf-events-standing.json";
 import programSchedule from "@/lib/sibf-events-program.json";
 import { normalizeBoothKey } from "@/lib/booth/normalize";
 import type {
   Booth,
+  BoothEnrichment,
   BoothEvent,
   Category,
   CommunityPost,
@@ -121,6 +123,12 @@ const id = (code: string) => `b_${code.toLowerCase()}`;
 // code → all co-located exhibitor names from the official SIBF directory.
 const directory = officialDirectory as unknown as Record<string, string[]>;
 
+// code → 수동 주입한 추가정보(굿즈·테마·팁). booth-data-entry로 채운다.
+const enrichmentByCode = enrichmentData as unknown as Record<
+  string,
+  Partial<BoothEnrichment>
+>;
+
 export const booths: Booth[] = floorplan.booths.map((b) => {
   const name = (b as { name?: string }).name || b.code;
   const kind =
@@ -167,6 +175,22 @@ export const booths: Booth[] = floorplan.booths.map((b) => {
       : `${name}의 부스입니다. 부스 번호 ${b.code}.${
           catKo ? ` 분야: ${catKo}.` : ""
         } 현장에서 신간 전시와 굿즈, 사인회를 만나볼 수 있어요. 2026 서울국제도서전 참가사입니다.`;
+  // 수동 주입 추가정보. themeTags(=카테고리 slug)는 tags에 병합해 추천
+  // 스코어링에 LLM 없이 반영하고, 굿즈/요약/팁은 enrichment로 부스에 붙인다.
+  const e = enrichmentByCode[b.code];
+  const enrichment: BoothEnrichment | undefined =
+    e && kind === "exhibitor"
+      ? {
+          goodsKeywords: e.goodsKeywords ?? [],
+          themeTags: e.themeTags ?? [],
+          summary: e.summary,
+          tips: e.tips,
+          sourceUrl: e.sourceUrl,
+        }
+      : undefined;
+  const tags = enrichment?.themeTags?.length
+    ? [...new Set([catReal, ...enrichment.themeTags])]
+    : [catReal];
   return {
     id: id(b.code),
     exhibitionId: exhibition.id,
@@ -183,7 +207,8 @@ export const booths: Booth[] = floorplan.booths.map((b) => {
     logoUrl: undefined,
     instagramUrl: undefined,
     websiteUrl: web,
-    tags: [catReal],
+    tags,
+    enrichment,
     x: b.x,
     y: b.y,
     popularity: 50,

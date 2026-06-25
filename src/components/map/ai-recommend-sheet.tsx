@@ -35,28 +35,35 @@ export function AiRecommendSheet({
 }) {
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
+  // 기본은 "교체"(입력한 의도를 그대로 반영). 켜면 기존 동선에 더한다(병합).
+  const [addToExisting, setAddToExisting] = useState(false);
   const busyMsg = useRotatingMessage(LOADING_MESSAGES.route, busy);
+  const hasRoute = useCartStore((s) => s.ids.length > 0);
 
   async function send() {
     const t = text.trim();
     if (!t || busy) return;
     setBusy(true);
     try {
+      // 토글 ON일 때만 현재 담은 부스를 keepBoothIds로 넘겨 병합. 기본(OFF)은
+      // 보내지 않아 입력한 텍스트 의도대로 새 동선으로 교체된다.
+      const keep = addToExisting ? useCartStore.getState().ids : undefined;
       const { route } = await api.post<{ route: RoutePlan }>(
         "/api/ai/quick-route",
-        // Build a fresh route from the request (+ onboarding interests) and
-        // REPLACE the current one. We don't force-keep the existing cart: doing
-        // so made every chat just *add* booths, so "문학만 보여줘" still returned
-        // everything already added — the request looked ignored.
         {
           exhibitionSlug: slug,
           text: t,
           interests: useOnboardingStore.getState().interests,
+          ...(keep && keep.length ? { keepBoothIds: keep } : {}),
         },
       );
       useRouteStore.getState().setRoute(route);
       useCartStore.getState().setIds(route.boothIds);
-      toast.success("동선을 추천했어요");
+      toast.success(
+        keep && keep.length
+          ? "기존 동선에 더해 추천했어요"
+          : "새 동선을 추천했어요",
+      );
       setText("");
       onClose();
     } catch (e) {
@@ -92,7 +99,7 @@ export function AiRecommendSheet({
           </button>
         </div>
         <p className="mb-2 text-sm text-muted-foreground">
-          보고 싶은 걸 자유롭게 적어주세요. 관심사를 반영해 새 동선을 짜 드려요.
+          보고 싶은 걸 자유롭게 적어주세요. 입력한 내용으로 새 동선을 짜 드려요.
         </p>
         <Textarea
           value={text}
@@ -119,6 +126,24 @@ export function AiRecommendSheet({
             </button>
           ))}
         </div>
+        {/* 동선이 이미 있을 때만: 기본은 교체, 켜면 기존 동선에 더한다. */}
+        {hasRoute && (
+          <label className="mt-3 flex items-center justify-between gap-3 rounded-xl border border-border bg-background px-3 py-2.5">
+            <span className="text-sm">
+              <span className="font-semibold">기존 동선에 더하기</span>
+              <span className="block text-xs text-muted-foreground">
+                끄면 입력한 내용으로 새로 짜요
+              </span>
+            </span>
+            <input
+              type="checkbox"
+              checked={addToExisting}
+              onChange={(e) => setAddToExisting(e.target.checked)}
+              aria-label="기존 동선에 더하기"
+              className="size-5 accent-primary"
+            />
+          </label>
+        )}
         <Button
           size="lg"
           className="mt-4 w-full"

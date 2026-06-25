@@ -119,7 +119,28 @@ export interface Booth {
   x: number;
   y: number;
   popularity: number; // 0..100
+  /** 수동 주입한 추가정보(굿즈·테마·팁). booth_enrichment 테이블에 보관하고
+   *  부스에 붙여 노출한다. themeTags(=카테고리 slug)는 seed 시 tags에도 병합돼
+   *  추천 스코어링에 LLM 없이 반영된다. */
+  enrichment?: BoothEnrichment;
   createdAt: string;
+}
+
+/**
+ * 운영자/사용자가 인스타·현장에서 보고 손으로 옮겨 적은 부스 추가정보.
+ * 추출(자연어→태그)은 주입 시점 1회. 추천 때는 저장된 값만 읽어 즉시 사용.
+ */
+export interface BoothEnrichment {
+  /** 굿즈·상품 키워드(자유어, 한국어). 상세 표시 + 검색 + 추론 어휘. */
+  goodsKeywords: string[];
+  /** 테마 태그 — 카테고리 slug. seed 시 Booth.tags에 병합돼 스코어링에 반영. */
+  themeTags: string[];
+  /** 한 줄 요약. */
+  summary?: string;
+  /** 대기·위치·추천 시간대 등 현장 팁. */
+  tips?: string;
+  /** 출처(인스타/웹 URL). */
+  sourceUrl?: string;
 }
 
 export interface BoothEvent {
@@ -252,6 +273,20 @@ export interface AnalyticsEvent {
   x?: number;
   y?: number;
   meta?: Record<string, unknown>;
+  createdAt: string;
+}
+
+/**
+ * 지도 "AI 추천" 채팅창에 사용자가 입력한 자유 텍스트 로그. 누적해서 자주 나오는
+ * 키워드를 추적하고(RAG), 이후 추천 프롬프트에 트렌딩 신호로 주입한다.
+ */
+export interface AiQueryLog {
+  id: string;
+  exhibitionId: string;
+  sessionId: string;
+  text: string;
+  /** LLM이 그 쿼리에서 뽑은 대표 키워드(빈도 집계의 단위). */
+  keywords: string[];
   createdAt: string;
 }
 
