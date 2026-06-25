@@ -48,6 +48,9 @@ export type FloorplanDecor =
 export interface FloorplanGate {
   id: string;
   label: string;
+  /** Whether this gate can serve as an entrance ("in") or exit ("out"). The
+   *  start picker lists only "in" gates, the exit picker only "out" gates. */
+  kind: "in" | "out";
   x: number;
   y: number;
 }
@@ -142,10 +145,10 @@ function buildSibf(): Floorplan {
   const bIn = { x: 2980, y: 1078 };
   const bOut = { x: 2980, y: 1204 };
   const gates: FloorplanGate[] = [
-    { id: "a-in", label: "A홀 입구", x: entrance.x, y: entrance.y },
-    { id: "a-out", label: "A홀 출구", x: exit.x, y: exit.y },
-    { id: "b-in", label: "B1홀 입구", x: bIn.x, y: bIn.y },
-    { id: "b-out", label: "B1홀 출구", x: bOut.x, y: bOut.y },
+    { id: "a-in", label: "A홀 입구", kind: "in", x: entrance.x, y: entrance.y },
+    { id: "a-out", label: "A홀 출구", kind: "out", x: exit.x, y: exit.y },
+    { id: "b-in", label: "B1홀 입구", kind: "in", x: bIn.x, y: bIn.y },
+    { id: "b-out", label: "B1홀 출구", kind: "out", x: bOut.x, y: bOut.y },
   ];
   decor.push(
     // A홀 (bottom): 입구 arrow points up (into hall), 출구 down (outward).

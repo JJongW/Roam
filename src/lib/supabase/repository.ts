@@ -120,6 +120,13 @@ function mapCategory(r: Row): Category {
   };
 }
 
+// Columns needed to render a booth in lists / on the map / for recommendation —
+// everything EXCEPT the heavy detail-only fields (long_description, images).
+// Those load only on the booth detail (getBoothDetail), so list/map queries stay
+// lean. mapBooth defaults the omitted fields to "" / [].
+const BOOTH_LIST_COLS =
+  "id,exhibition_id,hall_id,category_id,code,kind,name,company,aliases,description,logo_url,instagram_url,website_url,tags,x,y,popularity,created_at";
+
 function mapBooth(r: Row): Booth {
   return {
     id: str(r.id),
@@ -443,7 +450,7 @@ export class SupabaseRepository implements Repository {
       .maybeSingle();
     if (!ex) return { data: [], nextCursor: null };
     const exId = String((ex as Row).id);
-    let q = db.from("booth").select("*").eq("exhibition_id", exId);
+    let q = db.from("booth").select(BOOTH_LIST_COLS).eq("exhibition_id", exId);
     if (query?.hallId) q = q.eq("hall_id", query.hallId);
     if (query?.categoryId) q = q.eq("category_id", query.categoryId);
     const { data } = await q;
@@ -466,7 +473,7 @@ export class SupabaseRepository implements Repository {
     const db = await this.db();
     const { data } = await db
       .from("booth")
-      .select("*")
+      .select(BOOTH_LIST_COLS)
       .eq("exhibition_id", exhibitionId);
     return (data ?? []).map(mapBooth);
   }

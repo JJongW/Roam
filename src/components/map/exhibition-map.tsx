@@ -19,6 +19,16 @@ import { aisleRoute } from "@/lib/aisle-route";
 const BOOTH_W = 72;
 const BOOTH_H = 62;
 
+/** Crowd heat steps, quiet → very busy. Distinct hues (yellow→red), not just one
+ *  orange at varying opacity, so the four levels read apart at a glance. Drawn
+ *  with mix-blend multiply so a booth's name still shows through the tint. */
+export const HEAT_TIERS = [
+  { key: "여유", fill: "#facc15", opacity: 0.55 },
+  { key: "보통", fill: "#fb923c", opacity: 0.62 },
+  { key: "혼잡", fill: "#f97316", opacity: 0.74 },
+  { key: "매우 혼잡", fill: "#dc2626", opacity: 0.85 },
+] as const;
+
 /** Wrap a label into up to `maxLines` lines of ~`perLine` chars (word-first,
  *  hard-break long words). Used for facility booths that show their full name. */
 function wrapLabel(text: string, perLine: number, maxLines: number): string[] {
@@ -786,6 +796,25 @@ export function ExhibitionMap({
     () => Math.max(1, ...Object.values(heat ?? {})),
     [heat],
   );
+  // Quantile thresholds over the non-zero counts. Tiering by rank (not by
+  // count/max) keeps the four levels visible even when a few booths dwarf the
+  // rest — otherwise everything but the hottest looked the same pale tint.
+  const heatThresholds = useMemo(() => {
+    const vals = Object.values(heat ?? {})
+      .filter((v) => v > 0)
+      .sort((a, b) => a - b);
+    if (vals.length === 0) return null;
+    const at = (p: number) =>
+      vals[Math.min(vals.length - 1, Math.floor(p * vals.length))];
+    return { t1: at(0.25), t2: at(0.5), t3: at(0.75) };
+  }, [heat]);
+  const heatLevel = (c: number): number => {
+    if (!heatThresholds) return 0;
+    if (c >= heatThresholds.t3) return 3;
+    if (c >= heatThresholds.t2) return 2;
+    if (c >= heatThresholds.t1) return 1;
+    return 0;
+  };
   const heatCorridors = useMemo(() => {
     if (!heatPairs?.length) return [];
     const top = [...heatPairs].sort((a, b) => b.count - a.count).slice(0, 24);
@@ -1368,7 +1397,7 @@ export function ExhibitionMap({
               if (!c) return null;
               if (floorplan && !(b.code && rectByCode.has(b.code))) return null;
               const g = geomOf(b);
-              const t = c / maxHeat;
+              const tier = HEAT_TIERS[heatLevel(c)];
               return (
                 <rect
                   key={`bh-${b.id}`}
@@ -1377,8 +1406,9 @@ export function ExhibitionMap({
                   width={g.w}
                   height={g.h}
                   rx={6}
-                  fill="#f97316"
-                  opacity={0.18 + t * 0.5}
+                  fill={tier.fill}
+                  opacity={tier.opacity}
+                  style={{ mixBlendMode: "multiply" }}
                   pointerEvents="none"
                 />
               );

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Check, ChevronRight, Clock3, MapPin, NotebookPen } from "lucide-react";
 import { AppBar } from "@/components/common/app-bar";
 import { EmptyState } from "@/components/common/states";
@@ -29,6 +30,7 @@ export function NotesView({
   booths: Booth[];
   categories: Category[];
 }) {
+  const router = useRouter();
   const hydrated = useHydrated();
   const records = useVisitStore((s) => s.records);
   const catById = new Map(categories.map((c) => [c.id, c]));
@@ -47,7 +49,10 @@ export function NotesView({
 
   return (
     <main className="flex flex-1 flex-col pb-safe">
-      <AppBar title="내 메모장" />
+      <AppBar
+        title="내 메모장"
+        onBack={() => router.push(`/exhibitions/${slug}/map`)}
+      />
 
       {!hydrated ? (
         <div className="space-y-3 p-4">

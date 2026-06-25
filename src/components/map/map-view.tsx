@@ -31,7 +31,7 @@ import { FLOORPLANS } from "@/lib/floorplans";
 import { CartButton } from "@/components/booth/cart-button";
 import { Route as RouteIcon } from "lucide-react";
 import { AppBar } from "@/components/common/app-bar";
-import { ExhibitionMap } from "@/components/map/exhibition-map";
+import { ExhibitionMap, HEAT_TIERS } from "@/components/map/exhibition-map";
 import { AiRecommendSheet } from "@/components/map/ai-recommend-sheet";
 import { CategoryChip } from "@/components/booth/category-chip";
 import { EmptyState } from "@/components/common/states";
@@ -164,21 +164,26 @@ export function MapView({
   // the drawn path ends at the exit; defaults to the floorplan's own gates).
   const fp = FLOORPLANS[detail.exhibition.slug];
   const gates = fp?.gates ?? [];
+  // Split gates by role — the 입구 picker only offers entrances, the 출구 picker
+  // only exits, so you can't pick an exit as your start (or vice versa).
+  const entranceGates = gates.filter((g) => g.kind === "in");
+  const exitGates = gates.filter((g) => g.kind === "out");
   const fallbackStart: Point = fp?.entrance ?? {
     x: Math.round(detail.exhibition.mapWidth / 2),
     y: detail.exhibition.mapHeight,
   };
   const [entranceId, setEntranceId] = useState<string>(
     () =>
-      gates.find((g) => g.x === fp?.entrance?.x && g.y === fp?.entrance?.y)
-        ?.id ??
-      gates[0]?.id ??
+      entranceGates.find(
+        (g) => g.x === fp?.entrance?.x && g.y === fp?.entrance?.y,
+      )?.id ??
+      entranceGates[0]?.id ??
       "",
   );
   const [exitId, setExitId] = useState<string>(
     () =>
-      gates.find((g) => g.x === fp?.exit?.x && g.y === fp?.exit?.y)?.id ??
-      gates[gates.length - 1]?.id ??
+      exitGates.find((g) => g.x === fp?.exit?.x && g.y === fp?.exit?.y)?.id ??
+      exitGates[exitGates.length - 1]?.id ??
       "",
   );
   const start: Point = useMemo(() => {
@@ -278,14 +283,14 @@ export function MapView({
         <Link
           href={`/exhibitions/${slug}/notes`}
           aria-label="내 메모장"
-          className="flex h-9 items-center gap-1 rounded-full px-2 text-sm font-bold text-muted-foreground active:bg-secondary"
+          className="flex h-11 items-center gap-1 rounded-full px-2 text-sm font-bold text-muted-foreground active:bg-secondary"
         >
           <NotebookPen className="size-5" /> 메모장
         </Link>
         <Link
           href={`/exhibitions/${slug}/routes`}
           aria-label="다른 사람 동선"
-          className="flex h-9 items-center gap-1 rounded-full px-2 text-sm font-bold text-muted-foreground active:bg-secondary"
+          className="flex h-11 items-center gap-1 rounded-full px-2 text-sm font-bold text-muted-foreground active:bg-secondary"
         >
           <RouteIcon className="size-5" /> 다른 동선
         </Link>
@@ -293,7 +298,7 @@ export function MapView({
           type="button"
           onClick={() => setAiOpen(true)}
           aria-label="AI 추천받기"
-          className="flex h-9 items-center gap-1 rounded-full px-2 text-sm font-bold text-primary active:bg-secondary"
+          className="flex h-11 items-center gap-1 rounded-full px-2 text-sm font-bold text-primary active:bg-secondary"
         >
           <Sparkles className="size-5" /> AI 추천
         </button>
@@ -365,7 +370,7 @@ export function MapView({
             aria-label="입구 선택"
             className="min-w-0 flex-1 bg-transparent font-semibold outline-none"
           >
-            {gates.map((g) => (
+            {entranceGates.map((g) => (
               <option key={g.id} value={g.id}>
                 {g.label}
               </option>
@@ -381,7 +386,7 @@ export function MapView({
             aria-label="출구 선택"
             className="min-w-0 flex-1 bg-transparent font-semibold outline-none"
           >
-            {gates.map((g) => (
+            {exitGates.map((g) => (
               <option key={g.id} value={g.id}>
                 {g.label}
               </option>
@@ -522,6 +527,24 @@ export function MapView({
         </div>
 
         <div className="relative flex-1 overflow-hidden">
+          {/* Heat legend — only while 인기 is on, so the booth tints have a key
+              (color isn't the only cue: each step is labelled). */}
+          {heatOn && (
+            <div className="pointer-events-none absolute left-3 top-3 z-20 flex flex-col gap-1 rounded-xl border border-border bg-card/90 px-2.5 py-2 text-[11px] font-semibold shadow-[var(--shadow-card)] backdrop-blur">
+              <span className="text-muted-foreground">혼잡도</span>
+              <div className="flex items-center gap-2">
+                {HEAT_TIERS.map((t) => (
+                  <span key={t.key} className="flex items-center gap-1">
+                    <span
+                      className="size-3 rounded-[3px]"
+                      style={{ backgroundColor: t.fill }}
+                    />
+                    {t.key}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
           <ExhibitionMap
             width={detail.exhibition.mapWidth}
             height={detail.exhibition.mapHeight}
