@@ -178,7 +178,12 @@ export function ExhibitionMap({
   // whole map (booths + their labels) rotates rigidly, so nothing overflows its
   // box; footprint() uses this mod 180 to know if width/height are swapped.
   const rotationRef = useRef(0);
-  const [, setRotation] = useState(0);
+  const [rotation, setRotation] = useState(0);
+  // Counter-rotate a label around its own anchor so it stays upright (readable)
+  // while the map turns — the anchor is the pivot, so the text doesn't drift,
+  // only its orientation is cancelled. Returns undefined at 0° (no transform).
+  const upright = (ax: number, ay: number): string | undefined =>
+    rotation % 360 === 0 ? undefined : `rotate(${-rotation} ${ax} ${ay})`;
 
   // Vertical pan target that keeps a focused booth above the bottom popup.
   // Portrait: shift up by half the popup inset (capped so it never overshoots);
@@ -933,6 +938,7 @@ export function ExhibitionMap({
                 fontWeight="800"
                 fill="var(--muted-foreground)"
                 opacity={0.55}
+                transform={upright(r.x + 22, r.y + 34)}
               >
                 {r.label}
               </text>
@@ -1003,7 +1009,7 @@ export function ExhibitionMap({
                 { p: routeEnd, label: "도착" },
               ] as const
             ).map((m) => (
-              <g key={m.label}>
+              <g key={m.label} transform={upright(m.p.x, m.p.y)}>
                 <circle cx={m.p.x} cy={m.p.y} r={26} fill="var(--primary)" />
                 <circle
                   cx={m.p.x}
@@ -1031,7 +1037,7 @@ export function ExhibitionMap({
           {floorplan?.decor.map((d, i) => {
             if (d.type === "header") {
               return (
-                <g key={i}>
+                <g key={i} transform={upright(d.x + d.w / 2, d.y + d.h / 2)}>
                   <rect
                     x={d.x}
                     y={d.y}
@@ -1055,7 +1061,7 @@ export function ExhibitionMap({
             }
             if (d.type === "info") {
               return (
-                <g key={i}>
+                <g key={i} transform={upright(d.x, d.y)}>
                   <rect
                     x={d.x - 70}
                     y={d.y - 26}
@@ -1085,7 +1091,7 @@ export function ExhibitionMap({
               const woman = d.x + 13;
               const top = d.y - 16;
               return (
-                <g key={i}>
+                <g key={i} transform={upright(d.x, d.y)}>
                   <rect
                     x={d.x - 30}
                     y={d.y - 30}
@@ -1151,7 +1157,7 @@ export function ExhibitionMap({
               // ("A홀 입구" / "B1홀 출구") and arrow direction, not by colour.
               const color = "var(--primary)";
               return (
-                <g key={i}>
+                <g key={i} transform={upright(d.x, d.y)}>
                   <rect
                     x={d.x - 100}
                     y={d.y - 28}
@@ -1191,6 +1197,7 @@ export function ExhibitionMap({
                 fontSize={d.size ?? 14}
                 fontWeight="700"
                 fill="var(--muted-foreground)"
+                transform={upright(d.x, d.y)}
               >
                 {d.text}
               </text>
@@ -1370,6 +1377,7 @@ export function ExhibitionMap({
                               fontSize={fs}
                               fontWeight="800"
                               fill={codeColor}
+                              transform={upright(0, 0)}
                             >
                               {lines.map((ln, li) => (
                                 <tspan key={li} x={0} y={y0 + li * lh}>
@@ -1386,6 +1394,7 @@ export function ExhibitionMap({
                           fontSize="11"
                           fontWeight="700"
                           fill={codeColor}
+                          transform={upright(0, 0)}
                         >
                           {b.code ?? b.name.slice(0, 3)}
                         </text>
@@ -1397,6 +1406,7 @@ export function ExhibitionMap({
                           fontSize="13"
                           fontWeight="700"
                           fill="var(--foreground)"
+                          transform={upright(0, -g.h / 2 - 6)}
                         >
                           {name}
                         </text>
