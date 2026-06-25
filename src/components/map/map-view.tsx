@@ -560,7 +560,15 @@ export function MapView({
             // (~116px) so the bottom of the venue isn't clipped behind it.
             // Desktop (side panel) and landscape have no sheet → fill fully.
             viewportClassName="inset-x-0 top-0 bottom-[92px] md:inset-0 landscape:inset-0"
-            controlsClassName="bottom-[100px] right-3 md:bottom-4 landscape:bottom-4"
+            // A selected booth opens the bottom popup (and on md/landscape a
+            // right-docked card), both of which would sit on top of the
+            // bottom-right controls. Lift the zoom/rotate controls to the
+            // top-right while a booth is selected so they stay reachable.
+            controlsClassName={
+              selected
+                ? "top-3 right-3"
+                : "bottom-[100px] right-3 md:bottom-4 landscape:bottom-4"
+            }
             visitedIds={visitedIds}
             skippedIds={skippedIds}
             selectedId={selectedId}
