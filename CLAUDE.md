@@ -52,9 +52,12 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
 
 ## 온보딩 = AI Companion 대화 (폼 아님)
 - 진입 `/exhibitions/[slug]/onboarding` → `components/onboarding/ai-companion-onboarding.tsx`.
-- 스텝 그래프·문구 `src/lib/onboarding/onboarding-flow.ts`(context→date→intent→동적 follow-up→preference→time→route_style→요약). 답마다 **즉시 로컬 템플릿 반응**.
-- 타입 `onboarding-types.ts`(`OnboardingContext`). ctx→`UserPreferenceInput` 변환 `route-profile-builder.ts`(순수, 클라 안전). Gemini 추론 `onboarding-inference.ts`(server-only).
+- 스텝 그래프·문구 `src/lib/onboarding/onboarding-flow.ts`. **Step 1은 부스 단위로 분기**(`start`: "이미 가보고 싶은 부스 있어?" → `boothPlan` has_booths/open). 사용자는 이미 특정 전시 안에 있으니 "전시 선택"은 안 묻는다. 답마다 **즉시 로컬 템플릿 반응**.
+  - **has_booths**: `booth_pick`(검색+다중선택 부스 picker, 컴포넌트가 커스텀 렌더) → `booth_related`("관련 부스도?") → preference → visit_date → time → route_style → 요약.
+  - **open**: visit_date → `intent`(**복수 선택**, `intents[]`) → `followup`(선택한 **의도마다 순차 반복**, `currentFollowupIntent`/`followupAnsweredCount`로 진행) → preference → time → route_style → 요약.
+- 타입 `onboarding-types.ts`(`OnboardingContext`: `boothPlan`·`selectedBoothIds`·`wantRelatedBooths`·`intents[]`+대표 `intent`). ctx→`UserPreferenceInput` 변환 `route-profile-builder.ts`(순수, 클라 안전, 복수 의도 합집합). Gemini 추론 `onboarding-inference.ts`(server-only). 부스 목록은 page가 `listBoothsByExhibitionId`로 fetch해 picker에 전달.
 - 완료 "좋아, 같이 가자" → `POST /api/onboarding/route`(context 전송, LLM 주도 추천) → `useRouteStore.setRoute` → 지도 replace. (`buildProfileFromContext`는 클라 폴백·legacy 필드용.)
+  - **부스 keep/related**: `selectedBoothIds`는 항상 동선에 고정. `wantRelatedBooths=false`+선택 있으면 **고른 부스만**(LLM skip), true면 선택 고정 + 추천 병합. open 분기는 기존대로 전체 추천.
 - `useOnboardingStore.applyProfile`가 레거시 필드도 채워 route-view·ai-recommend-sheet 하위호환.
 
 ## 지도 동작
