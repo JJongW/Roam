@@ -284,7 +284,12 @@ export function recomputeRoute(
 ): PlannedRoute {
   const visited = new Set(visitedBoothIds);
   const rest = ranked.filter((s) => !visited.has(s.booth.id));
-  const spentSoFar = visitedBoothIds.length * BASE_DWELL_MINUTES;
+  // 이미 방문한 부스의 체류 시간 합(크기 기반 dwell, 못 찾으면 평균 기본값).
+  const byId = new Map(ranked.map((s) => [s.booth.id, s.booth]));
+  const spentSoFar = visitedBoothIds.reduce((sum, id) => {
+    const b = byId.get(id);
+    return sum + (b ? dwell(b) : BASE_DWELL_MINUTES);
+  }, 0);
   const replanned = planRoute(rest, {
     ...opts,
     start: current,

@@ -116,6 +116,28 @@ describe("recomputeRoute", () => {
     expect(result.boothIds.filter((x) => x === "a").length).toBe(1); // visited booth kept once
     expect(result.boothIds).toContain("b");
   });
+
+  it("subtracts size-based dwell of visited booths from the remaining budget", () => {
+    // 같은 방문 부스 'a'를 크게/작게만 다르게 해 남은 예산 차이를 본다.
+    const rest = Array.from({ length: 8 }, (_, i) =>
+      scored(`r${i}`, 10 + i * 10, 0, 1),
+    );
+    const make = (dwellMinutes: number) => {
+      const a = { ...scored("a", 0, 0, 1) };
+      a.booth = { ...a.booth, dwellMinutes };
+      return recomputeRoute(
+        [a, ...rest],
+        ["a"],
+        { x: 0, y: 0 },
+        { movementPreference: "thorough", availableMinutes: 60 },
+      );
+    };
+    const big = make(30); // 방문 부스가 예산을 30분 잡아먹음
+    const small = make(3); // 3분만
+    // 큰 dwell이면 남은 예산이 적어 다시 계획되는 정거장이 더 적거나 같다.
+    expect(big.boothIds.length).toBeLessThanOrEqual(small.boothIds.length);
+    expect(big.boothIds.length).toBeLessThan(small.boothIds.length);
+  });
 });
 
 describe("isDeviated", () => {
