@@ -9,7 +9,7 @@
 // 아니면 결정론 빌더 결과로 즉시 보여준다. 동선 빌드는 기존 엔진(/api/route).
 // ---------------------------------------------------------------------------
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, Loader2 } from "lucide-react";
@@ -30,13 +30,11 @@ import {
 import {
   emptyOnboardingContext,
   type OnboardingContext,
-  type OnboardingOption,
 } from "@/lib/onboarding/onboarding-types";
 import { buildProfileFromContext } from "@/lib/onboarding/route-profile-builder";
 import type { Category, RoutePlan } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import {
-  OnboardingEcho,
   OnboardingMessage,
   OnboardingOptionButton,
   OnboardingProgress,
@@ -44,9 +42,47 @@ import {
   UnderstandingPanel,
 } from "@/components/onboarding/parts";
 
-type Turn =
-  | { kind: "ai"; message: string; question: string }
-  | { kind: "user"; label: string };
+// 한 스텝씩 풀카드로 보여주고, 답하면 통째로 슬라이드 전환(샤라락).
+// dir=+1 전진(다음 질문이 오른쪽에서 들어옴), dir=-1 뒤로.
+const slideVariants = {
+  enter: (dir: number) => ({ x: dir >= 0 ? 48 : -48, opacity: 0 }),
+  center: { x: 0, opacity: 1 },
+  exit: (dir: number) => ({ x: dir >= 0 ? -48 : 48, opacity: 0 }),
+};
+const slideTransition = { duration: 0.32, ease: [0.22, 1, 0.36, 1] as const };
+
+// 로컬 기준 yyyy-mm-dd.
+function toLocalISO(d: Date): string {
+  const y = d.getFullYear();
+  const m = `${d.getMonth() + 1}`.padStart(2, "0");
+  const day = `${d.getDate()}`.padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+const WEEKDAY_KO = ["일", "월", "화", "수", "목", "금", "토"] as const;
+
+/** 전시 기간(start~end) 중 오늘(포함) 이후 날짜만. 지난 날짜는 제외. */
+function availableVisitDates(
+  startISO: string | undefined,
+  endISO: string | undefined,
+  todayISO: string,
+): { iso: string; label: string; isToday: boolean }[] {
+  if (!startISO || !endISO) return [];
+  const out: { iso: string; label: string; isToday: boolean }[] = [];
+  const cur = new Date(`${startISO}T00:00:00`);
+  const end = new Date(`${endISO}T00:00:00`);
+  // 무한루프 방지(최대 60일).
+  for (let i = 0; i < 60 && cur <= end; i++) {
+    const iso = toLocalISO(cur);
+    if (iso >= todayISO) {
+      const isToday = iso === todayISO;
+      const label = `${cur.getMonth() + 1}/${cur.getDate()} (${WEEKDAY_KO[cur.getDay()]})`;
+      out.push({ iso, label, isToday });
+    }
+    cur.setDate(cur.getDate() + 1);
+  }
+  return out;
+}
 
 interface Inference {
   source: string;
@@ -57,16 +93,16 @@ interface Inference {
   interests: string[];
 }
 
-function labelOf(options: OnboardingOption[], value: string): string {
-  return options.find((o) => o.value === value)?.label ?? value;
-}
-
 export function AICompanionOnboarding({
   slug,
   categories,
+  startDate,
+  endDate,
 }: {
   slug: string;
   categories: Category[];
+  startDate?: string;
+  endDate?: string;
 }) {
   const router = useRouter();
 
@@ -75,11 +111,7 @@ export function AICompanionOnboarding({
   const [history, setHistory] = useState<
     Array<{ stepId: StepId; ctx: OnboardingContext }>
   >([]);
-  const [turns, setTurns] = useState<Turn[]>(() => {
-    const def = STEPS[FIRST_STEP_ID];
-    const c = emptyOnboardingContext();
-    return [{ kind: "ai", message: def.message(c), question: def.question(c) }];
-  });
+  const [dir, setDir] = useState(1); // 슬라이드 방향: +1 전진, -1 뒤로
   const [multiSel, setMultiSel] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const submitMsg = useRotatingMessage(LOADING_MESSAGES.route, submitting);
@@ -87,17 +119,10 @@ export function AICompanionOnboarding({
   // 추론 결과는 state — prefetch가 도착하면 요약 화면이 조용히 갱신된다.
   const [inference, setInference] = useState<Inference | null>(null);
   const prefetchedRef = useRef(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  // 새 turn이 붙으면 대화 영역을 아래로.
-  useEffect(() => {
-    scrollRef.current?.scrollTo({
-      top: scrollRef.current.scrollHeight,
-      behavior: "smooth",
-    });
-  }, [turns]);
 
   const stepDef = stepId ? STEPS[stepId] : null;
+  const message = stepDef ? stepDef.message(ctx) : "";
+  const question = stepDef ? stepDef.question(ctx) : "";
   const options = useMemo(
     () => (stepDef ? stepDef.options(ctx) : []),
     [stepDef, ctx],
@@ -122,35 +147,50 @@ export function AICompanionOnboarding({
       });
   }
 
-  function commit(answer: string | string[], echo: string) {
+  // 이미 적용된 nextCtx로 다음 스텝으로 전진(슬라이드). 모든 답이 여기로 모인다.
+  function advance(nextCtx: OnboardingContext) {
     if (!stepId || !stepDef) return;
     setHistory((h) => [...h, { stepId, ctx }]);
-    const nextCtx = stepDef.apply(ctx, answer);
-    setCtx(nextCtx);
-    setMultiSel([]);
-
     const nextId = stepDef.next(nextCtx) as StepId | null;
     maybePrefetch(stepId, nextCtx);
 
-    setTurns((t) => {
-      const out: Turn[] = [...t, { kind: "user", label: echo }];
-      if (nextId) {
-        const d = STEPS[nextId];
-        out.push({
-          kind: "ai",
-          message: d.message(nextCtx),
-          question: d.question(nextCtx),
-        });
-      }
-      return out;
-    });
-    setStepId(nextId);
+    setDir(1);
+    setMultiSel([]);
+    setCtx(nextCtx);
+    setStepId(nextId); // null이면 요약 카드로 슬라이드.
+  }
+
+  function commit(answer: string | string[]) {
+    if (!stepDef) return;
+    advance(stepDef.apply(ctx, answer));
   }
 
   function selectSingle(value: string) {
     if (typeof navigator !== "undefined" && navigator.vibrate)
       navigator.vibrate(8);
-    commit(value, labelOf(options, value));
+    commit(value);
+  }
+
+  // 방문 시점 — 커스텀 날짜 선택. 날짜를 직접 고르거나 "아직 미정"만 허용.
+  // 빈 채로 넘어가던 버그 차단: 각 버튼이 곧 답이라 미선택 통과가 없다.
+  const today = useMemo(() => toLocalISO(new Date()), []);
+  const visitDates = useMemo(
+    () => availableVisitDates(startDate, endDate, today),
+    [startDate, endDate, today],
+  );
+
+  function selectDate(iso: string | null) {
+    if (typeof navigator !== "undefined" && navigator.vibrate)
+      navigator.vibrate(8);
+    const nextCtx: OnboardingContext =
+      iso === null
+        ? { ...ctx, visitDate: undefined, visitDateType: "undecided" }
+        : {
+            ...ctx,
+            visitDate: iso,
+            visitDateType: iso === today ? "today" : "specific_date",
+          };
+    advance(nextCtx);
   }
 
   function toggleMulti(value: string) {
@@ -161,8 +201,7 @@ export function AICompanionOnboarding({
 
   function confirmMulti() {
     if (multiSel.length === 0) return;
-    const echo = multiSel.map((v) => labelOf(options, v)).join(" · ");
-    commit(multiSel, echo);
+    commit(multiSel);
   }
 
   function goBack() {
@@ -172,17 +211,10 @@ export function AICompanionOnboarding({
     }
     const prev = history[history.length - 1];
     setHistory((h) => h.slice(0, -1));
+    setDir(-1);
+    setMultiSel([]);
     setCtx(prev.ctx);
     setStepId(prev.stepId);
-    setMultiSel([]);
-    // 마지막 user echo + 그 다음 ai turn 제거(질문으로 되돌아가기).
-    setTurns((t) => {
-      const copy = [...t];
-      // 뒤에서부터 ai 하나 제거(있으면) + user 하나 제거.
-      if (copy.length && copy[copy.length - 1].kind === "ai") copy.pop();
-      if (copy.length && copy[copy.length - 1].kind === "user") copy.pop();
-      return copy;
-    });
   }
 
   // --- 요약 + 동선 생성 ----------------------------------------------------
@@ -237,7 +269,7 @@ export function AICompanionOnboarding({
       </header>
 
       <div className="flex flex-1 overflow-hidden md:gap-8 md:px-10 landscape:gap-8 landscape:px-10">
-        {/* 대화 */}
+        {/* 대화 — 한 스텝씩 풀카드, 답하면 통째로 슬라이드(샤라락) */}
         <div className="flex min-w-0 flex-1 flex-col">
           {/* 모바일 이해 패널 — 답이 하나라도 있으면 위에 컴팩트하게. */}
           {understanding.length > 0 && !inSummary && (
@@ -256,96 +288,123 @@ export function AICompanionOnboarding({
             </div>
           )}
 
-          <div
-            ref={scrollRef}
-            className="flex-1 space-y-4 overflow-y-auto px-5 py-5 md:py-8"
-          >
-            {turns.map((t, i) =>
-              t.kind === "ai" ? (
-                <div key={i} className="space-y-2">
-                  <OnboardingMessage text={t.message} />
-                  <p className="text-xl font-extrabold leading-snug">
-                    {t.question}
-                  </p>
-                </div>
-              ) : (
-                <OnboardingEcho key={i} label={t.label} />
-              ),
-            )}
-
-            {inSummary && (
+          <div className="relative flex-1 overflow-x-hidden overflow-y-auto pb-safe">
+            <AnimatePresence mode="wait" custom={dir} initial={false}>
               <motion.div
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="space-y-3"
+                key={inSummary ? "summary" : stepId}
+                custom={dir}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={slideTransition}
+                className="mx-auto flex min-h-full w-full max-w-md flex-col justify-center gap-7 px-5 py-8"
               >
-                <OnboardingMessage
-                  text={"좋아.\n내가 이해한 내용을 정리해볼게."}
-                />
-                {inference?.summary && (
-                  <p className="text-sm leading-relaxed text-foreground/80">
-                    {inference.summary}
-                  </p>
-                )}
-                <UnderstandingPanel items={understanding} />
-                <RoutePreviewCard name={routeName} reason={routeReason} />
-              </motion.div>
-            )}
-          </div>
-
-          {/* 액션 영역 */}
-          <div className="sticky bottom-0 space-y-2 border-t border-border bg-background/90 p-4 pb-safe backdrop-blur-xl">
-            {!inSummary && stepDef && (
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={stepId}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.18 }}
-                  className="space-y-2"
-                >
-                  {options.map((o) => (
-                    <OnboardingOptionButton
-                      key={o.value}
-                      option={o}
-                      selected={isMulti && multiSel.includes(o.value)}
-                      onClick={() =>
-                        isMulti ? toggleMulti(o.value) : selectSingle(o.value)
-                      }
+                {inSummary ? (
+                  <div className="space-y-3">
+                    <OnboardingMessage
+                      text={"좋아.\n지금까지 이야기한 내용을 정리해볼게."}
                     />
-                  ))}
-                  {isMulti && (
+                    {inference?.summary && (
+                      <p className="text-sm leading-relaxed text-foreground/80">
+                        {inference.summary}
+                      </p>
+                    )}
+                    <UnderstandingPanel items={understanding} />
+                    <RoutePreviewCard name={routeName} reason={routeReason} />
                     <Button
                       size="lg"
-                      className="w-full"
-                      disabled={multiSel.length === 0}
-                      onClick={confirmMulti}
+                      className="mt-1 w-full"
+                      disabled={submitting}
+                      onClick={generate}
                     >
-                      이걸로 할게
+                      {submitting ? (
+                        <>
+                          <Loader2 className="size-5 animate-spin" />
+                          {submitMsg}…
+                        </>
+                      ) : (
+                        "좋아, 같이 가자"
+                      )}
                     </Button>
-                  )}
-                </motion.div>
-              </AnimatePresence>
-            )}
-
-            {inSummary && (
-              <Button
-                size="lg"
-                className="w-full"
-                disabled={submitting}
-                onClick={generate}
-              >
-                {submitting ? (
-                  <>
-                    <Loader2 className="size-5 animate-spin" />
-                    {submitMsg}…
-                  </>
+                  </div>
                 ) : (
-                  "좋아, 같이 가자"
+                  <>
+                    <div className="space-y-2.5">
+                      <OnboardingMessage text={message} />
+                      <p className="text-2xl font-extrabold leading-snug">
+                        {question}
+                      </p>
+                    </div>
+
+                    {stepId === "visit_date" ? (
+                      // 커스텀 날짜 선택 — 전시 기간 중 오늘 이후만. 빈 통과 없음.
+                      <div className="space-y-2.5">
+                        {visitDates.length === 0 && (
+                          <p className="text-sm text-muted-foreground">
+                            전시 기간이 지났어. 아래에서 이어가자.
+                          </p>
+                        )}
+                        {visitDates.length > 0 && (
+                          <div className="grid grid-cols-2 gap-2.5">
+                            {visitDates.map((d) => (
+                              <button
+                                key={d.iso}
+                                type="button"
+                                onClick={() => selectDate(d.iso)}
+                                className="rounded-2xl border border-border bg-card px-4 py-3.5 text-left transition-colors hover:bg-secondary/50 active:scale-[0.99]"
+                              >
+                                <span className="block font-bold">
+                                  {d.isToday ? "오늘" : d.label}
+                                </span>
+                                {d.isToday && (
+                                  <span className="mt-0.5 block text-xs text-muted-foreground">
+                                    {d.label}
+                                  </span>
+                                )}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => selectDate(null)}
+                          className="w-full rounded-2xl border border-border bg-card px-4 py-3.5 text-left font-bold transition-colors hover:bg-secondary/50 active:scale-[0.99]"
+                        >
+                          아직 정하지 않았어
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="space-y-2.5">
+                        {options.map((o) => (
+                          <OnboardingOptionButton
+                            key={o.value}
+                            option={o}
+                            selected={isMulti && multiSel.includes(o.value)}
+                            onClick={() =>
+                              isMulti
+                                ? toggleMulti(o.value)
+                                : selectSingle(o.value)
+                            }
+                          />
+                        ))}
+                        {/* 다중 선택만 확정 버튼 필요. 단일은 누르면 바로 다음. */}
+                        {isMulti && (
+                          <Button
+                            size="lg"
+                            className="mt-1 w-full"
+                            disabled={multiSel.length === 0}
+                            onClick={confirmMulti}
+                          >
+                            다음
+                          </Button>
+                        )}
+                      </div>
+                    )}
+                  </>
                 )}
-              </Button>
-            )}
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
 
