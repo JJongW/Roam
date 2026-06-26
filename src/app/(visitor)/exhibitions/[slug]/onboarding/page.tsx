@@ -11,5 +11,12 @@ export default async function OnboardingPage({ params }: Props) {
   const repo = await getRepository();
   const detail = await repo.getExhibition(slug);
   if (!detail) notFound();
-  return <AICompanionOnboarding slug={slug} categories={detail.categories} />;
+  return (
+    <AICompanionOnboarding
+      slug={slug}
+      categories={detail.categories}
+      startDate={detail.exhibition.startDate}
+      endDate={detail.exhibition.endDate}
+    />
+  );
 }

@@ -191,6 +191,7 @@ export function buildHallSweepRoute(
   booths: Booth[],
   start: Point,
   scores: Record<string, number> = {},
+  end?: Point,
 ): PlannedRoute {
   // 홀별 그룹.
   const groups = new Map<string, Booth[]>();
@@ -199,12 +200,18 @@ export function buildHallSweepRoute(
     (groups.get(key) ?? groups.set(key, []).get(key)!).push(b);
   }
   // 각 홀의 무게중심까지 거리로 홀 방문 순서를 정한다(입구에서 가까운 홀 먼저).
+  // 출구(end)가 주어지면 출구에 가까운 홀일수록 뒤로 미뤄, 입구→…→출구로 자연히
+  // 흐르게 한다(경로 TSP의 가벼운 근사).
   const centroid = (list: Booth[]): Point => ({
     x: list.reduce((s, b) => s + b.x, 0) / list.length,
     y: list.reduce((s, b) => s + b.y, 0) / list.length,
   });
+  const hallKey = (list: Booth[]): number => {
+    const c = centroid(list);
+    return end ? distance(start, c) - distance(end, c) : distance(start, c);
+  };
   const hallOrder = [...groups.entries()].sort(
-    (a, b) => distance(start, centroid(a[1])) - distance(start, centroid(b[1])),
+    (a, b) => hallKey(a[1]) - hallKey(b[1]),
   );
   // 각 홀 안에서 직전 위치 기준 최근접 스윕, 다음 홀로 이어붙임.
   const ordered: Booth[] = [];

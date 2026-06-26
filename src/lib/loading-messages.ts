@@ -7,7 +7,7 @@ export const LOADING_MESSAGES = {
   /** Building or re-recommending a 동선 (onboarding, AI quick-route). LLM 주도
    *  파이프라인(검색·URL·RAG)이라 몇 초 걸릴 수 있어 단계가 진행되는 느낌을 준다. */
   route: [
-    "네 취향을 곰곰이 살펴보는 중이에요",
+    "어떤 걸 좋아하실지 곰곰이 살펴보는 중이에요",
     "관심사에 맞는 부스를 찾는 중이에요",
     "현장 굿즈와 부스 소식을 확인하는 중이에요",
     "웹에서 관련 정보를 검색하는 중이에요",
