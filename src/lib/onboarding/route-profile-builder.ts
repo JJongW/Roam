@@ -85,7 +85,7 @@ function resolveMovement(ctx: OnboardingContext): MovementPreference {
   if (picked !== "auto") return picked;
   // AI에게 맡김 → 시간·의도로 추론.
   if (minutes <= 60) return "shortest";
-  if (ctx.intent === "discovery" || ctx.intent === "experience")
+  if (ctx.intents.includes("discovery") || ctx.intents.includes("experience"))
     return "thorough";
   return "balanced";
 }
@@ -106,22 +106,27 @@ export function buildProfileFromContext(
   ctx: OnboardingContext,
   categories: Category[],
 ): BuiltProfile {
-  const intent = ctx.intent ?? "unknown";
+  const intents = ctx.intents.length ? ctx.intents : [ctx.intent ?? "unknown"];
 
-  const visitPurposes = INTENT_PURPOSES[intent];
+  // 복수 의도 → 목적/키워드를 합집합으로. 대표(첫) 의도는 이름·문구에 쓴다.
+  const visitPurposes = [
+    ...new Set(intents.flatMap((i) => INTENT_PURPOSES[i])),
+  ];
 
   const availableMinutes = TIME_MINUTES[ctx.availableTime ?? "unknown"];
 
   const movementPreference = resolveMovement(ctx);
 
-  // interests: 취향 + intent 키워드를 카테고리에 매핑, 없으면 broad 폴백.
+  // interests: 취향 + 의도 키워드를 카테고리에 매핑, 없으면 broad 폴백.
   const keywords = [
     ...ctx.preferences.flatMap((p) => PREF_KEYWORDS[p] ?? []),
-    ...INTENT_KEYWORDS[intent],
+    ...intents.flatMap((i) => INTENT_KEYWORDS[i]),
   ];
   let interests = matchCategories(keywords, categories);
   if (interests.length === 0) {
-    interests = categories.slice(0, Math.min(3, categories.length)).map((c) => c.slug);
+    interests = categories
+      .slice(0, Math.min(3, categories.length))
+      .map((c) => c.slug);
   }
 
   const preference: UserPreferenceInput = {

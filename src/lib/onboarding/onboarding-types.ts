@@ -4,11 +4,15 @@
 // 막판에 Gemini가 채운다. 동선 빌드는 기존 결정론 엔진이 맡는다.
 // ---------------------------------------------------------------------------
 
-/** 지금 방문 계획이 어느 단계인지. Step 1에서 수집. */
-export type PlanningStage =
-  | "selected_exhibition" // 이미 갈 전시를 정했어
-  | "considering" // 몇 개 고민 중이야
-  | "not_decided"; // 아직 정하지 않았어
+/**
+ * 부스 단위 계획. 사용자는 이미 특정 전시 안에 들어와 있으므로 "전시 선택"이
+ * 아니라 "가고 싶은 부스를 이미 정했는지"를 묻는다. 이 값이 온보딩 분기를 가른다.
+ *   has_booths → 부스 picker → 관련 부스 여부 → 취향 …
+ *   open       → 의도(intent) 기반 추천 흐름.
+ */
+export type BoothPlan =
+  | "has_booths" // 이미 가보고 싶은 부스가 있어
+  | "open"; // 추천받고 싶어
 
 /** 언제 방문하는지. 오늘이면 진행 이벤트/대기까지 고려한다. */
 export type VisitDateType =
@@ -56,12 +60,18 @@ export interface InferredProfile {
  * 않고 분기 답을 유연하게 담기 위함.
  */
 export interface OnboardingContext {
-  planningStage?: PlanningStage;
+  boothPlan?: BoothPlan;
+  /** has_booths 분기에서 직접 고른 부스 id들. 동선에 항상 포함된다. */
+  selectedBoothIds: string[];
+  /** 고른 부스 외에 관련/유사 부스도 추천에 더할지. */
+  wantRelatedBooths?: boolean;
   visitDateType?: VisitDateType;
   visitDate?: string; // specific_date 선택 시 ISO 날짜
+  /** 관람 의도 — 복수 선택. intent는 그중 대표(첫 번째)로 follow-up 분기·이름에 쓴다. */
+  intents: Intent[];
   intent?: Intent;
   dynamicAnswers: Record<string, string | string[]>;
-  preferences: string[]; // Step 5 다중 선택 값
+  preferences: string[]; // 취향 다중 선택 값
   availableTime?: AvailableTime;
   routeStyle?: RouteStyle;
   avoidances: string[]; // 피하고 싶은 것 (대기/혼잡 등)
@@ -69,6 +79,8 @@ export interface OnboardingContext {
 }
 
 export const emptyOnboardingContext = (): OnboardingContext => ({
+  selectedBoothIds: [],
+  intents: [],
   dynamicAnswers: {},
   preferences: [],
   avoidances: [],
@@ -96,6 +108,8 @@ export interface OnboardingStepDef {
   /** AI 동반자가 던지는 인사/반응 + 질문. context로 문구가 바뀔 수 있다. */
   message: (ctx: OnboardingContext) => string;
   question: (ctx: OnboardingContext) => string;
+  /** 질문 아래 보조 안내(선택). 예: "여러 개 골라도 돼". */
+  hint?: string;
   /** 선택지. 동적 follow-up은 intent로 분기. */
   options: (ctx: OnboardingContext) => OnboardingOption[];
   /** 다중 선택 스텝인지. */
