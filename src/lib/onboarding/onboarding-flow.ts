@@ -37,10 +37,14 @@ export type StepId = (typeof STEP_IDS)[number];
 const startStep: OnboardingStepDef = {
   id: "start",
   message: () =>
-    "안녕.\n전시를 더 편하게 둘러볼 수 있도록 내가 같이 도와줄게.",
+    "안녕? 나는 안내 도우미 Roam이야.\n전시를 더 편하게 둘러볼 수 있도록 같이 도와줄게.",
   question: () => "혹시 이미 가보고 싶은 부스가 있어?",
   options: () => [
-    { value: "has_booths", label: "응, 정해둔 곳이 있어", hint: "바로 골라줄게" },
+    {
+      value: "has_booths",
+      label: "응, 정해둔 곳이 있어",
+      hint: "바로 골라줄게",
+    },
     { value: "open", label: "아니, 추천받고 싶어", hint: "대화로 맞춰보자" },
   ],
   apply: (ctx, v) => ({ ...ctx, boothPlan: v as never }),
@@ -70,7 +74,11 @@ const boothRelatedStep: OnboardingStepDef = {
     `좋아. ${ctx.selectedBoothIds.length}곳 담았어.\n네가 고른 곳을 중심으로 동선을 짜줄게.`,
   question: () => "고른 곳 말고, 관련된 다른 부스도 같이 찾아줄까?",
   options: () => [
-    { value: "want", label: "응, 비슷한 곳도 보여줘", hint: "관심 갈 만한 곳을 더해줄게" },
+    {
+      value: "want",
+      label: "응, 비슷한 곳도 보여줘",
+      hint: "관심 갈 만한 곳을 더해줄게",
+    },
     { value: "only", label: "아니, 이 부스들만 갈래" },
   ],
   apply: (ctx, v) => ({ ...ctx, wantRelatedBooths: v === "want" }),
@@ -110,14 +118,16 @@ export function visitDateReaction(ctx: OnboardingContext): string {
 const intentStep: OnboardingStepDef = {
   id: "intent",
   message: (ctx) => visitDateReaction(ctx),
-  question: () =>
-    "이번 전시가 끝났을 때 어떤 기분이면 만족스러울 것 같아?",
+  question: () => "이번 전시가 끝났을 때 어떤 기분이면 만족스러울 것 같아?",
   hint: "여러 개 골라도 돼",
   multi: true,
   options: () => [
     { value: "discovery", label: "새로운 걸 발견하고 싶어" },
     { value: "purchase", label: "좋은 제품을 사고 싶어" },
-    { value: "information", label: "일이나 공부에 도움이 되는 정보를 얻고 싶어" },
+    {
+      value: "information",
+      label: "일이나 공부에 도움이 되는 정보를 얻고 싶어",
+    },
     { value: "experience", label: "직접 체험해보고 싶어" },
     { value: "casual", label: "그냥 가볍게 둘러보고 싶어" },
     { value: "unknown", label: "아직 잘 모르겠어" },
@@ -150,7 +160,8 @@ const FOLLOWUPS: Record<Intent, FollowupSpec> = {
     ],
   },
   purchase: {
-    message: "좋아. 그러면 실제로 구매하거나 비교해볼 수 있는 부스를 우선해서 볼게.",
+    message:
+      "좋아. 그러면 실제로 구매하거나 비교해볼 수 있는 부스를 우선해서 볼게.",
     question: "가격 혜택이나 현장 이벤트도 중요해?",
     options: [
       { value: "deal_important", label: "중요해" },
@@ -159,8 +170,10 @@ const FOLLOWUPS: Record<Intent, FollowupSpec> = {
     ],
   },
   information: {
-    message: "좋아. 그러면 설명이 잘 되어 있거나 상담받기 좋은 부스를 우선해서 볼게.",
-    question: "깊게 상담받는 쪽이 좋아, 아니면 빠르게 여러 곳을 보는 쪽이 좋아?",
+    message:
+      "좋아. 그러면 설명이 잘 되어 있거나 상담받기 좋은 부스를 우선해서 볼게.",
+    question:
+      "깊게 상담받는 쪽이 좋아, 아니면 빠르게 여러 곳을 보는 쪽이 좋아?",
     options: [
       { value: "deep", label: "깊게 상담받고 싶어" },
       { value: "wide", label: "빠르게 여러 곳을 보고 싶어" },
@@ -177,7 +190,8 @@ const FOLLOWUPS: Record<Intent, FollowupSpec> = {
     ],
   },
   casual: {
-    message: "좋아. 그럼 너무 빡빡한 코스보다는 가볍게 둘러볼 수 있는 길로 잡아볼게.",
+    message:
+      "좋아. 그럼 너무 빡빡한 코스보다는 가볍게 둘러볼 수 있는 길로 잡아볼게.",
     question: "사진 찍기 좋은 곳이나 이벤트 부스도 포함할까?",
     options: [
       { value: "ok_photo", label: "좋아" },
@@ -308,7 +322,11 @@ const routeStyleStep: OnboardingStepDef = {
   message: () => "거의 다 왔어. 나는 여러 방식으로 안내할 수 있어.",
   question: () => "어떤 스타일이 좋을까?",
   options: () => [
-    { value: "ai_auto", label: "AI에게 맡길게", hint: "네 답을 바탕으로 가장 잘 맞게" },
+    {
+      value: "ai_auto",
+      label: "AI에게 맡길게",
+      hint: "네 답을 바탕으로 가장 잘 맞게",
+    },
     { value: "max_booths", label: "최대한 많이 보기" },
     { value: "slow", label: "천천히 둘러보기" },
     { value: "low_crowd", label: "사람이 적은 곳 위주" },
@@ -382,7 +400,9 @@ const PREF_LABEL: Record<string, string> = {
  * 현재 context로 "내가 이해한 내용" 패널 줄을 만든다. 아직 답하지 않은 항목은
  * 빼서, 폼이 아니라 AI가 점점 이해해가는 느낌을 준다.
  */
-export function buildUnderstanding(ctx: OnboardingContext): UnderstandingItem[] {
+export function buildUnderstanding(
+  ctx: OnboardingContext,
+): UnderstandingItem[] {
   const items: UnderstandingItem[] = [];
   if (ctx.boothPlan)
     items.push({ key: "방문 상태", value: PLAN_LABEL[ctx.boothPlan] });
