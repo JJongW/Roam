@@ -4,6 +4,7 @@ import {
   memo,
   useCallback,
   useDeferredValue,
+  useEffect,
   useMemo,
   useRef,
   useState,
@@ -45,7 +46,9 @@ import { CategoryChip } from "@/components/booth/category-chip";
 import { EmptyState } from "@/components/common/states";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { buildOrderedRoute } from "@/lib/engine/route";
+import { buildHallSweepRoute } from "@/lib/engine/route";
+import { LOADING_MESSAGES } from "@/lib/loading-messages";
+import { useRotatingMessage } from "@/lib/hooks/use-rotating-message";
 import type { Booth, ExhibitionDetail, Point } from "@/lib/types";
 
 /**
@@ -212,15 +215,35 @@ export function MapView({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [exitId]);
 
-  // The in-progress 동선, drawn on the map so adding booths shows the existing
-  // route too — it re-orders live as the cart changes.
+  // The in-progress 동선, drawn on the map. 체크한 부스(cart)는 그대로 두되, 입구
+  // 기준 가장 가까운 순(홀 인지 스윕)으로 매번 재정렬하고 출구 쪽으로 흐르게 한다.
+  // 입구·출구를 바꾸면 start/exitPoint가 갱신돼 순서가 다시 최적화된다.
   const routeOrderIds = useMemo(() => {
     if (!hydrated || cartIds.length === 0) return undefined;
     const cartBooths = cartIds
       .map((id) => boothById.get(id))
       .filter((b): b is Booth => Boolean(b));
-    return buildOrderedRoute(cartBooths, start).boothIds;
-  }, [hydrated, cartIds, boothById, start]);
+    return buildHallSweepRoute(cartBooths, start, {}, exitPoint).boothIds;
+  }, [hydrated, cartIds, boothById, start, exitPoint]);
+
+  // 입구/출구를 바꾸면 동선을 다시 짠다 — 재정렬은 즉시(순수 계산)지만, 바뀐 게
+  // 분명히 느껴지도록 짧게 로딩 오버레이를 띄운 뒤 새 순서를 보여준다.
+  // 입·출구 선택 핸들러에서 직접 부르므로 최초 마운트엔 뜨지 않는다.
+  const [reordering, setReordering] = useState(false);
+  const reorderMsg = useRotatingMessage(LOADING_MESSAGES.route, reordering);
+  const reorderTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const triggerReorder = useCallback(() => {
+    if (useCartStore.getState().ids.length === 0) return; // 동선 없으면 생략.
+    setReordering(true);
+    if (reorderTimer.current) clearTimeout(reorderTimer.current);
+    reorderTimer.current = setTimeout(() => setReordering(false), 650);
+  }, []);
+  useEffect(
+    () => () => {
+      if (reorderTimer.current) clearTimeout(reorderTimer.current);
+    },
+    [],
+  );
   // Render the filtered set PLUS any route booths, so the path never breaks when
   // a category/status filter hides one of the chosen stands.
   const mapBooths = useMemo(() => {
@@ -403,7 +426,10 @@ export function MapView({
           <span className="shrink-0 text-muted-foreground">입구</span>
           <select
             value={entranceId}
-            onChange={(e) => setEntranceId(e.target.value)}
+            onChange={(e) => {
+              setEntranceId(e.target.value);
+              triggerReorder();
+            }}
             aria-label="입구 선택"
             className="min-w-0 flex-1 bg-transparent font-semibold outline-none"
           >
@@ -419,7 +445,10 @@ export function MapView({
           <span className="shrink-0 text-muted-foreground">출구</span>
           <select
             value={exitId}
-            onChange={(e) => setExitId(e.target.value)}
+            onChange={(e) => {
+              setExitId(e.target.value);
+              triggerReorder();
+            }}
             aria-label="출구 선택"
             className="min-w-0 flex-1 bg-transparent font-semibold outline-none"
           >
@@ -566,6 +595,17 @@ export function MapView({
         </div>
 
         <div className="relative flex-1 overflow-hidden">
+          {/* 입구/출구 변경 → 동선 재정렬 중 오버레이. 체크한 부스는 그대로,
+              순서만 가장 가까운 길로 다시 짜는 동안 잠깐 가린다. */}
+          {reordering && (
+            <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-3 bg-background/70 backdrop-blur-sm">
+              <Loader2 className="size-7 animate-spin text-primary" />
+              <p className="text-sm font-semibold">{reorderMsg}…</p>
+              <p className="text-xs text-muted-foreground">
+                고른 부스는 그대로, 가장 가까운 순으로 다시 이어볼게
+              </p>
+            </div>
+          )}
           {/* Heat legend — only while 인기 is on, so the booth tints have a key
               (color isn't the only cue: each step is labelled). */}
           {heatOn && (
