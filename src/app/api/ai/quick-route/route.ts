@@ -9,7 +9,7 @@ import {
 } from "@/lib/api/http";
 import { ensureSession, getCurrentUser } from "@/lib/api/session";
 import { buildPlan, rankForExhibition } from "@/lib/engine/service";
-import { buildHallSweepRoute } from "@/lib/engine/route";
+import { buildHallSweepRoute, pruneToBudget } from "@/lib/engine/route";
 import { attachDwellMinutes } from "@/lib/booth/dwell";
 import { FLOORPLANS } from "@/lib/floorplans";
 import { hasGemini, generateJSON } from "@/lib/ai/gemini";
@@ -126,7 +126,16 @@ export async function POST(req: Request) {
     const merged = [...new Set([...(keepBoothIds ?? []), ...selectedIds])]
       .map((id) => byId.get(id))
       .filter((b): b is NonNullable<typeof b> => Boolean(b));
-    const reordered = buildHallSweepRoute(merged, start ?? { x: 0, y: 0 });
+    // 시간예산 가지치기: 직접 담은 부스(keep)는 항상 남기고, 추천은 점수순으로
+    // 예산이 허락하는 만큼만 더한다. 그 다음 홀-스윕으로 순서 정렬.
+    const pruned = pruneToBudget(
+      merged,
+      keepBoothIds ?? [],
+      plan.scores,
+      mapped.preference.availableMinutes,
+      start ?? { x: 0, y: 0 },
+    );
+    const reordered = buildHallSweepRoute(pruned, start ?? { x: 0, y: 0 });
     const boothIds = reordered.boothIds;
     const legs = reordered.legs;
     const estimatedMinutes = reordered.estimatedMinutes;

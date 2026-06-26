@@ -5,7 +5,9 @@ import {
   scoreBooth,
   eventBoost,
   distance,
+  diversifyCandidates,
 } from "./scoring";
+import type { ScoredBooth } from "@/lib/types";
 import type { Booth, BoothEvent, UserPreference } from "@/lib/types";
 
 function booth(p: Partial<Booth>): Booth {
@@ -53,6 +55,45 @@ describe("interestScore", () => {
   });
   it("rewards overlap", () => {
     expect(interestScore(booth({ tags: ["ai"] }), ["ai"])).toBeGreaterThan(0.5);
+  });
+  it("grades by focus: a booth squarely on-topic outscores a broad one", () => {
+    const focused = interestScore(booth({ tags: ["ai"] }), ["ai"]);
+    const broad = interestScore(booth({ tags: ["ai", "food", "art"] }), ["ai"]);
+    expect(focused).toBeGreaterThan(broad);
+    expect(broad).toBeGreaterThan(0); // still a real, non-zero match
+  });
+  it("grades by coverage: hitting more of the intent scores higher", () => {
+    const one = interestScore(booth({ tags: ["ai", "x"] }), ["ai", "food"]);
+    const two = interestScore(booth({ tags: ["ai", "food"] }), ["ai", "food"]);
+    expect(two).toBeGreaterThan(one);
+  });
+});
+
+describe("diversifyCandidates", () => {
+  function sc(id: string, tags: string[], score: number): ScoredBooth {
+    return {
+      booth: booth({ id, tags }),
+      score,
+      breakdown: { interest: 0, popularity: 0, event: 0 },
+    };
+  }
+  it("spans categories instead of returning N clones of the top one", () => {
+    // 5 high-scoring 'lit' booths, then art/science — naive top-3 = all lit.
+    const ranked = [
+      sc("l1", ["lit"], 0.99),
+      sc("l2", ["lit"], 0.98),
+      sc("l3", ["lit"], 0.97),
+      sc("a1", ["art"], 0.8),
+      sc("s1", ["science"], 0.7),
+    ];
+    const out = diversifyCandidates(ranked, 3);
+    const cats = new Set(out.map((s) => s.booth.tags[0]));
+    expect(cats.size).toBeGreaterThan(1); // not all the same category
+    expect(out[0].booth.id).toBe("l1"); // still leads with the best
+  });
+  it("returns all when fewer than n", () => {
+    const ranked = [sc("a", ["x"], 1)];
+    expect(diversifyCandidates(ranked, 5)).toHaveLength(1);
   });
 });
 

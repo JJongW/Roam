@@ -243,6 +243,37 @@ export function buildHallSweepRoute(
 }
 
 /**
+ * Prune a merged booth set to fit a time budget ("가지치기"). `pinnedIds` (the
+ * booths the visitor explicitly chose/kept) are ALWAYS retained; the remaining
+ * booths are added highest-score first, each only while the hall-sweep time
+ * estimate (walk + size-based dwell) stays within `availableMinutes`. Pure.
+ *
+ * Without this, a route built by merging LLM picks + kept booths ignores the
+ * visitor's available time entirely and can blow well past it. n is small
+ * (≤ MAX_PLANNED_STOPS) so the O(n²) re-estimate is cheap.
+ */
+export function pruneToBudget(
+  booths: Booth[],
+  pinnedIds: string[],
+  scores: Record<string, number>,
+  availableMinutes: number,
+  start: Point = { x: 0, y: 0 },
+): Booth[] {
+  const pinned = new Set(pinnedIds);
+  const kept = booths.filter((b) => pinned.has(b.id));
+  const extras = booths
+    .filter((b) => !pinned.has(b.id))
+    .sort((a, b) => (scores[b.id] ?? 0) - (scores[a.id] ?? 0));
+  const out = [...kept];
+  const estimate = (list: Booth[]) =>
+    buildHallSweepRoute(list, start, scores).estimatedMinutes;
+  for (const b of extras) {
+    if (estimate([...out, b]) <= availableMinutes) out.push(b);
+  }
+  return out;
+}
+
+/**
  * Build a route from booths in the EXACT given order (no reordering). Used when
  * the visitor has manually arranged their stops. Pure.
  */

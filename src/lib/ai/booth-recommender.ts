@@ -12,6 +12,7 @@ import "server-only";
 
 import { z } from "zod";
 import { generateGrounded, generateJSON, extractJSON } from "@/lib/ai/gemini";
+import { diversifyCandidates } from "@/lib/engine/scoring";
 import type { ScoredBooth } from "@/lib/types";
 
 const outSchema = z.object({
@@ -71,7 +72,9 @@ export async function recommendBoothIds(opts: {
 }): Promise<BoothRecommendation> {
   const { candidates, userBrief, limit, grounded = false } = opts;
   // 후보를 20개로 제한 — 프롬프트가 짧아야 flash 응답이 빠르다(지연 직결).
-  const pool = candidates.slice(0, 20);
+  // 단순 상위 20개(slice)는 점수가 몰린 한 카테고리로 쏠려 매번 비슷한 풀이
+  // 됐다. MMR로 카테고리를 가로질러 다양화한 20개를 줘 추천 변별력을 살린다.
+  const pool = diversifyCandidates(candidates, 20);
   const validIds = new Set(pool.map((s) => s.booth.id));
 
   const corpus = pool
