@@ -118,6 +118,9 @@ export interface Booth {
   tags: string[]; // category slugs used for scoring
   x: number;
   y: number;
+  /** 부스 크기로 추정한 체류 시간(분). floorplan 면적에서 런타임 주입(small 3 /
+   *  large 10). 동선 시간예산·소요시간 계산에 쓰인다. 없으면 BASE_DWELL_MINUTES. */
+  dwellMinutes?: number;
   popularity: number; // 0..100
   /** 수동 주입한 추가정보(굿즈·테마·팁). booth_enrichment 테이블에 보관하고
    *  부스에 붙여 노출한다. themeTags(=카테고리 slug)는 seed 시 tags에도 병합돼

@@ -10,6 +10,7 @@ import {
 import { ensureSession, getCurrentUser } from "@/lib/api/session";
 import { buildPlan, rankForExhibition } from "@/lib/engine/service";
 import { buildHallSweepRoute } from "@/lib/engine/route";
+import { attachDwellMinutes } from "@/lib/booth/dwell";
 import { FLOORPLANS } from "@/lib/floorplans";
 import { hasGemini, generateJSON } from "@/lib/ai/gemini";
 import { recommendBoothIds } from "@/lib/ai/booth-recommender";
@@ -120,6 +121,7 @@ export async function POST(req: Request) {
     // keepBoothIds가 주어지면(=토글 ON) 기존 동선에 더해 병합, 아니면 교체.
     // 어느 쪽이든 홀-스윕으로 정렬해 A↔B 왕복(지그재그)을 막는다.
     const all = await repo.listBoothsByExhibitionId(rank.exhibitionId);
+    attachDwellMinutes(exhibitionSlug, all);
     const byId = new Map(all.map((b) => [b.id, b]));
     const merged = [...new Set([...(keepBoothIds ?? []), ...selectedIds])]
       .map((id) => byId.get(id))

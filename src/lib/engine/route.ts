@@ -1,6 +1,7 @@
 import {
   BASE_DWELL_MINUTES,
   MAX_PLANNED_STOPS,
+  MIN_DWELL_MINUTES,
   MOVEMENT_TUNING,
   WALK_UNITS_PER_MINUTE,
 } from "@/lib/constants";
@@ -12,6 +13,11 @@ import type {
   ScoredBooth,
   UserPreference,
 } from "@/lib/types";
+
+/** 부스 체류 시간(분) — 크기로 주입된 값, 없으면 평균 기본값. */
+function dwell(booth: Booth): number {
+  return booth.dwellMinutes ?? BASE_DWELL_MINUTES;
+}
 
 export interface PlannedRoute {
   boothIds: string[];
@@ -45,8 +51,9 @@ export function planRoute(
 
   // Stop count scales with the TIME budget (not a fixed cap): how many ~dwell
   // slots fit, modulated by the movement density. A 3h visit thus plans many
-  // more stops than a 1h one. The per-step budget check below is the hard limit.
-  const slots = Math.floor(opts.availableMinutes / BASE_DWELL_MINUTES);
+  // more stops than a 1h one. Uses the MIN dwell so the cap reflects the densest
+  // (all-small-booths) case — the per-step budget check below is the real limit.
+  const slots = Math.floor(opts.availableMinutes / MIN_DWELL_MINUTES);
   const maxStops = Math.max(
     1,
     Math.min(MAX_PLANNED_STOPS, Math.round(slots * tuning.density)),
@@ -76,7 +83,7 @@ export function planRoute(
       }
     }
     if (!best) break;
-    const legCost = bestWalk + BASE_DWELL_MINUTES;
+    const legCost = bestWalk + dwell(best.booth);
     if (spent + legCost > opts.availableMinutes && selected.length > 0) {
       remaining.delete(best.booth.id);
       continue;
@@ -122,9 +129,8 @@ export function planRoute(
       distance: Number(distance(cur, booth).toFixed(1)),
     });
     boothIds.push(booth.id);
-    // Total is WALKING time only — the one thing we can actually compute.
-    // (Browsing time per booth is unknown, so we don't fabricate it.)
-    total += walk;
+    // Total = walking + per-booth dwell (size-based: small 3 / large 10).
+    total += walk + dwell(booth);
     cur = booth;
     curId = booth.id;
   }
@@ -172,7 +178,7 @@ export function buildManualRoute(
       distance: Number(distance(cur, booth).toFixed(1)),
     });
     boothIds.push(booth.id);
-    total += walk; // walking time only (browsing time is unknown)
+    total += walk + dwell(booth); // walking + size-based dwell
     cur = booth;
     curId = booth.id;
   }
@@ -259,7 +265,7 @@ export function buildOrderedRoute(
       distance: Number(distance(cur, booth).toFixed(1)),
     });
     boothIds.push(booth.id);
-    total += walk; // walking time only (browsing time is unknown)
+    total += walk + dwell(booth); // walking + size-based dwell
     cur = booth;
     curId = booth.id;
   }
@@ -278,7 +284,12 @@ export function recomputeRoute(
 ): PlannedRoute {
   const visited = new Set(visitedBoothIds);
   const rest = ranked.filter((s) => !visited.has(s.booth.id));
-  const spentSoFar = visitedBoothIds.length * BASE_DWELL_MINUTES;
+  // 이미 방문한 부스의 체류 시간 합(크기 기반 dwell, 못 찾으면 평균 기본값).
+  const byId = new Map(ranked.map((s) => [s.booth.id, s.booth]));
+  const spentSoFar = visitedBoothIds.reduce((sum, id) => {
+    const b = byId.get(id);
+    return sum + (b ? dwell(b) : BASE_DWELL_MINUTES);
+  }, 0);
   const replanned = planRoute(rest, {
     ...opts,
     start: current,
