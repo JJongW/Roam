@@ -30,6 +30,9 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  // 웹뷰·iOS 홈 인디케이터 안전영역을 실제로 보고하게 함.
+  // 없으면 env(safe-area-inset-*)=0 → pb-safe가 0.5rem 폴백으로 떨어져 하단 마진이 짧아짐.
+  viewportFit: "cover",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#ffffff" },
     { media: "(prefers-color-scheme: dark)", color: "#0b0d10" },
