@@ -4,6 +4,7 @@ import { getRepository } from "@/lib/repositories";
 import { ensureSession, getCurrentUser } from "@/lib/api/session";
 import { buildPlan, rankForExhibition } from "@/lib/engine/service";
 import { buildHallSweepRoute } from "@/lib/engine/route";
+import { attachDwellMinutes } from "@/lib/booth/dwell";
 import { FLOORPLANS } from "@/lib/floorplans";
 import { hasGemini } from "@/lib/env";
 import { recommendBoothIds } from "@/lib/ai/booth-recommender";
@@ -77,6 +78,7 @@ export async function POST(req: Request) {
     // 전체 부스(후보 밖이어도 사용자가 직접 고른 부스는 반드시 동선에 포함해야
     // 하므로 ranked가 아니라 전체 목록으로 id를 해석한다).
     const allBooths = await repo.listBoothsByExhibitionId(rank.exhibitionId);
+    attachDwellMinutes(exhibitionSlug, allBooths);
     const allById = new Map(allBooths.map((b) => [b.id, b]));
 
     // has_booths 분기에서 직접 고른 부스(유효한 것만). 항상 동선에 들어간다.

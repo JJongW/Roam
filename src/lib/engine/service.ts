@@ -1,5 +1,6 @@
 import { getRepository } from "@/lib/repositories";
 import { exhibitorBooths } from "@/lib/booth/normalize";
+import { attachDwellMinutes } from "@/lib/booth/dwell";
 import { rankBooths, type ScoreContext } from "@/lib/engine/scoring";
 import { planRoute, type PlannedRoute } from "@/lib/engine/route";
 import type { UserPreferenceInput } from "@/lib/schemas";
@@ -26,6 +27,8 @@ export async function rankForExhibition(
   const booths = exhibitorBooths(
     await repo.listBoothsByExhibitionId(detail.exhibition.id),
   );
+  // 부스 크기로 체류 시간 주입(시간예산·소요시간에 반영). floorplan 기하 사용.
+  attachDwellMinutes(exhibitionSlug, booths);
   const events = await repo.listEvents(exhibitionSlug);
 
   const eventsByBooth: Record<string, BoothEvent[]> = {};

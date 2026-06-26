@@ -66,6 +66,26 @@ describe("planRoute", () => {
     expect(short.boothIds.length).toBeLessThanOrEqual(thorough.boothIds.length);
   });
 
+  it("adds per-booth dwell time to the estimate", () => {
+    const plain = planRoute(ranked, {
+      movementPreference: "thorough",
+      availableMinutes: 600,
+      start: { x: 0, y: 0 },
+    });
+    const withDwell = ranked.map((s) => ({
+      ...s,
+      booth: { ...s.booth, dwellMinutes: 10 },
+    }));
+    const dwelled = planRoute(withDwell, {
+      movementPreference: "thorough",
+      availableMinutes: 600,
+      start: { x: 0, y: 0 },
+    });
+    // same stops, but dwell (10) > fallback BASE_DWELL (5) → larger estimate.
+    expect(dwelled.boothIds).toEqual(plain.boothIds);
+    expect(dwelled.estimatedMinutes).toBeGreaterThan(plain.estimatedMinutes);
+  });
+
   it("produces legs that connect sequentially", () => {
     const plan = planRoute(ranked, {
       movementPreference: "balanced",

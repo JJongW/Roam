@@ -186,5 +186,18 @@ export const MAX_PLANNED_STOPS = 50;
  * plan — which is the realistic experience.
  */
 export const WALK_UNITS_PER_MINUTE = 2000;
-/** Average browsing time per booth (minutes). */
+/** Fallback browsing time per booth (minutes) when size is unknown. */
 export const BASE_DWELL_MINUTES = 5;
+
+// --- Per-booth dwell by stand size -----------------------------------------
+// 실제 체류는 부스 크기에 따라 다르다 — 작은 스탠드는 훑고 지나가고, 큰 부스는
+// 오래 머문다. floorplan의 면적(w×h)으로 두 단계로 나눈다(임계 = 가장 흔한
+// 소형 스탠드 53×53·53×110 ↔ 110×110 이상 사이).
+/** 면적이 이 값 미만이면 "작은 부스". */
+export const DWELL_SMALL_MAX_AREA = 8000;
+/** 작은 부스 체류(분). */
+export const DWELL_SMALL_MINUTES = 3;
+/** 큰 부스 체류(분). */
+export const DWELL_LARGE_MINUTES = 10;
+/** 정지 수 상한 추정에 쓰는 최소 체류(분) — 가장 빽빽한 경우 기준. */
+export const MIN_DWELL_MINUTES = DWELL_SMALL_MINUTES;
