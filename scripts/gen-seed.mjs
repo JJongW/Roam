@@ -108,16 +108,20 @@ lines.push(
 lines.push("on conflict (id) do nothing;");
 lines.push("");
 
-lines.push(
-  "insert into waiting (booth_id, enabled, queue_count, estimated_minutes, updated_at) values",
-);
-lines.push(
-  seed.waitings
-    .map((w) => `  (${q(w.boothId)}, ${b(w.enabled)}, ${n(w.queueCount)}, ${n(w.estimatedMinutes)}, ${q(w.updatedAt)})`)
-    .join(",\n"),
-);
-lines.push("on conflict (booth_id) do nothing;");
-lines.push("");
+// waiting — seed.ts에서 export 제거됨(실시간 대기는 런타임 데이터). 있으면만 emit.
+const waitings = seed.waitings ?? [];
+if (waitings.length) {
+  lines.push(
+    "insert into waiting (booth_id, enabled, queue_count, estimated_minutes, updated_at) values",
+  );
+  lines.push(
+    waitings
+      .map((w) => `  (${q(w.boothId)}, ${b(w.enabled)}, ${n(w.queueCount)}, ${n(w.estimatedMinutes)}, ${q(w.updatedAt)})`)
+      .join(",\n"),
+  );
+  lines.push("on conflict (booth_id) do nothing;");
+  lines.push("");
+}
 
 lines.push(
   "insert into welcome_kit (booth_id, enabled, name, description, image_url, remaining_count) values",
