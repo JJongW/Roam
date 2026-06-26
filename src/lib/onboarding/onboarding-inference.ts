@@ -29,9 +29,18 @@ const SYSTEM = [
 /** 컨텍스트를 프롬프트에 넣을 사람이 읽을 수 있는 한국어 줄로 직렬화. */
 export function describeContext(ctx: OnboardingContext): string {
   const lines: string[] = [];
-  if (ctx.planningStage) lines.push(`계획 단계: ${ctx.planningStage}`);
+  if (ctx.boothPlan)
+    lines.push(
+      `부스 계획: ${ctx.boothPlan === "has_booths" ? "이미 가고 싶은 부스를 직접 골랐음" : "추천 받기"}`,
+    );
+  if (ctx.selectedBoothIds.length)
+    lines.push(`직접 고른 부스: ${ctx.selectedBoothIds.length}곳`);
+  if (ctx.wantRelatedBooths != null)
+    lines.push(
+      `관련 부스 추가: ${ctx.wantRelatedBooths ? "원함" : "고른 곳만"}`,
+    );
   if (ctx.visitDateType) lines.push(`방문 시점: ${ctx.visitDateType}`);
-  if (ctx.intent) lines.push(`관람 의도: ${ctx.intent}`);
+  if (ctx.intents.length) lines.push(`관람 의도: ${ctx.intents.join(", ")}`);
   if (Object.keys(ctx.dynamicAnswers).length)
     lines.push(`추가 답변: ${JSON.stringify(ctx.dynamicAnswers)}`);
   if (ctx.preferences.length)

@@ -9,9 +9,12 @@ import type { OnboardingContext } from "@/lib/onboarding/onboarding-types";
 
 /** 클라이언트가 보낸 온보딩 컨텍스트 — 느슨하게 받아 안전한 기본값으로 정규화. */
 const contextSchema = z.object({
-  planningStage: z.string().optional(),
+  boothPlan: z.string().optional(),
+  selectedBoothIds: z.array(z.string()).default([]),
+  wantRelatedBooths: z.boolean().optional(),
   visitDateType: z.string().optional(),
   visitDate: z.string().optional(),
+  intents: z.array(z.string()).default([]),
   intent: z.string().optional(),
   dynamicAnswers: z
     .record(z.string(), z.union([z.string(), z.array(z.string())]))

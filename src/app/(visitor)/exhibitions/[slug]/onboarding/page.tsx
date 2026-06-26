@@ -11,10 +11,23 @@ export default async function OnboardingPage({ params }: Props) {
   const repo = await getRepository();
   const detail = await repo.getExhibition(slug);
   if (!detail) notFound();
+
+  // 부스 picker(이미 갈 부스 정한 분기)용 — 실제 출품 부스만, 가벼운 형태로.
+  const booths = await repo.listBoothsByExhibitionId(detail.exhibition.id);
+  const pickable = booths
+    .filter((b) => b.kind !== "facility")
+    .map((b) => ({
+      id: b.id,
+      name: b.name,
+      code: b.code,
+      company: b.company,
+    }));
+
   return (
     <AICompanionOnboarding
       slug={slug}
       categories={detail.categories}
+      booths={pickable}
       startDate={detail.exhibition.startDate}
       endDate={detail.exhibition.endDate}
     />

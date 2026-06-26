@@ -14,9 +14,12 @@ import type { OnboardingContext } from "@/lib/onboarding/onboarding-types";
 import type { Booth, Point } from "@/lib/types";
 
 const contextSchema = z.object({
-  planningStage: z.string().optional(),
+  boothPlan: z.string().optional(),
+  selectedBoothIds: z.array(z.string()).default([]),
+  wantRelatedBooths: z.boolean().optional(),
   visitDateType: z.string().optional(),
   visitDate: z.string().optional(),
+  intents: z.array(z.string()).default([]),
   intent: z.string().optional(),
   dynamicAnswers: z
     .record(z.string(), z.union([z.string(), z.array(z.string())]))
@@ -70,38 +73,69 @@ export async function POST(req: Request) {
 
     // 결정론 baseline — 폴백이자 선택 개수(limit)의 기준.
     const baseline = buildPlan(rank, preference, start);
-    const byId = new Map(rank.booths.map((b) => [b.id, b]));
 
-    // 최종 부스 집합: LLM이 고르면 그걸, 아니면 baseline. 항상 홀-스윕으로 정렬해
-    // A↔B 왕복(지그재그)을 막는다.
-    let finalIds = baseline.boothIds;
+    // 전체 부스(후보 밖이어도 사용자가 직접 고른 부스는 반드시 동선에 포함해야
+    // 하므로 ranked가 아니라 전체 목록으로 id를 해석한다).
+    const allBooths = await repo.listBoothsByExhibitionId(rank.exhibitionId);
+    const allById = new Map(allBooths.map((b) => [b.id, b]));
+
+    // has_booths 분기에서 직접 고른 부스(유효한 것만). 항상 동선에 들어간다.
+    const keepIds = (ctx.selectedBoothIds ?? []).filter((id) =>
+      allById.has(id),
+    );
+
     let reason = built.reason;
     let source = "deterministic";
 
-    if (hasGemini && rank.ranked.length > 0) {
-      try {
-        const userBrief = [describeContext(ctx), built.reason]
-          .filter(Boolean)
-          .join("\n");
-        const limit = Math.max(3, baseline.boothIds.length || 8);
-        const rec = await recommendBoothIds({
-          candidates: rank.ranked,
-          userBrief,
-          limit,
-          grounded: false, // 온보딩은 빠른 내부 RAG (웹검색 없음)
-        });
-        if (rec.boothIds.length > 0) {
-          finalIds = rec.boothIds;
-          reason = rec.reason || reason;
-          source = "gemini";
+    // LLM/baseline로 추천 부스를 구한다. 단, 직접 고른 부스만 원하면(관련 부스
+    // 비희망) 추천을 아예 건너뛰고 고른 부스만 쓴다.
+    let recommended: string[] = [];
+    const skipRecommend = keepIds.length > 0 && ctx.wantRelatedBooths === false;
+
+    if (!skipRecommend) {
+      recommended = baseline.boothIds;
+      source = keepIds.length ? "user_selected+deterministic" : "deterministic";
+      if (hasGemini && rank.ranked.length > 0) {
+        try {
+          // 고른 부스가 있으면 그 이름을 brief에 넣어 "관련/유사" 추천을 유도한다.
+          const keepNames = keepIds
+            .map((id) => allById.get(id)?.name)
+            .filter(Boolean);
+          const userBrief = [
+            describeContext(ctx),
+            keepNames.length
+              ? `사용자가 이미 고른 부스: ${keepNames.join(", ")}. 이와 관련되거나 보완되는 부스를 추천해.`
+              : "",
+            built.reason,
+          ]
+            .filter(Boolean)
+            .join("\n");
+          const limit = Math.max(3, baseline.boothIds.length || 8);
+          const rec = await recommendBoothIds({
+            candidates: rank.ranked,
+            userBrief,
+            limit,
+            grounded: false, // 온보딩은 빠른 내부 RAG (웹검색 없음)
+          });
+          if (rec.boothIds.length > 0) {
+            recommended = rec.boothIds;
+            reason = rec.reason || reason;
+            source = keepIds.length ? "user_selected+gemini" : "gemini";
+          }
+        } catch (e) {
+          console.error("[onboarding/route] LLM rerank failed, fallback", e);
         }
-      } catch (e) {
-        console.error("[onboarding/route] LLM rerank failed, fallback", e);
       }
+    } else {
+      source = "user_selected";
+      reason = "직접 고른 부스로 동선을 짰어.";
     }
 
+    // 최종 부스 집합: 고른 부스(우선) + 추천. 중복 제거. 항상 홀-스윕으로 정렬해
+    // A↔B 왕복(지그재그)을 막는다.
+    const finalIds = [...new Set([...keepIds, ...recommended])];
     const finalBooths = finalIds
-      .map((id) => byId.get(id))
+      .map((id) => allById.get(id))
       .filter((b): b is Booth => Boolean(b));
     const ordered = buildHallSweepRoute(
       finalBooths,

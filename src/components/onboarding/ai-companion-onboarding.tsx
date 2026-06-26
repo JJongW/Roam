@@ -12,8 +12,9 @@
 import { useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronLeft, Loader2 } from "lucide-react";
+import { Check, ChevronLeft, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 import { api, ApiClientError } from "@/lib/api/client";
 import { useOnboardingStore } from "@/lib/stores/onboarding";
 import { useRouteStore } from "@/lib/stores/route";
@@ -22,9 +23,9 @@ import { LOADING_MESSAGES } from "@/lib/loading-messages";
 import { useRotatingMessage } from "@/lib/hooks/use-rotating-message";
 import {
   STEPS,
-  STEP_IDS,
   FIRST_STEP_ID,
   buildUnderstanding,
+  followupAnsweredCount,
   type StepId,
 } from "@/lib/onboarding/onboarding-flow";
 import {
@@ -93,14 +94,24 @@ interface Inference {
   interests: string[];
 }
 
+/** 부스 picker용 가벼운 부스 형태. */
+export interface PickableBooth {
+  id: string;
+  name: string;
+  code?: string;
+  company: string;
+}
+
 export function AICompanionOnboarding({
   slug,
   categories,
+  booths,
   startDate,
   endDate,
 }: {
   slug: string;
   categories: Category[];
+  booths: PickableBooth[];
   startDate?: string;
   endDate?: string;
 }) {
@@ -113,6 +124,7 @@ export function AICompanionOnboarding({
   >([]);
   const [dir, setDir] = useState(1); // 슬라이드 방향: +1 전진, -1 뒤로
   const [multiSel, setMultiSel] = useState<string[]>([]);
+  const [boothQuery, setBoothQuery] = useState(""); // 부스 picker 검색어
   const [submitting, setSubmitting] = useState(false);
   const submitMsg = useRotatingMessage(LOADING_MESSAGES.route, submitting);
 
@@ -128,9 +140,22 @@ export function AICompanionOnboarding({
     [stepDef, ctx],
   );
   const isMulti = Boolean(stepDef?.multi);
+  const hint = stepDef?.hint;
   const understanding = useMemo(() => buildUnderstanding(ctx), [ctx]);
 
-  const progress = stepId ? STEP_IDS.indexOf(stepId) / STEP_IDS.length : 1;
+  // 분기마다 스텝 수가 달라 인덱스 대신 답한 개수로 대략 진행률을 잡는다.
+  const progress = stepId ? Math.min(0.92, (history.length + 1) / 8) : 1;
+
+  // 부스 검색 필터 — 이름/회사/코드 부분일치.
+  const filteredBooths = useMemo(() => {
+    const q = boothQuery.trim().toLowerCase();
+    if (!q) return booths.slice(0, 60);
+    return booths
+      .filter((b) =>
+        `${b.name} ${b.company} ${b.code ?? ""}`.toLowerCase().includes(q),
+      )
+      .slice(0, 60);
+  }, [booths, boothQuery]);
 
   // 가용 시간 답 직후 백그라운드 추론 prefetch (논블로킹, 1회).
   function maybePrefetch(answeredStep: StepId, nextCtx: OnboardingContext) {
@@ -156,6 +181,7 @@ export function AICompanionOnboarding({
 
     setDir(1);
     setMultiSel([]);
+    setBoothQuery("");
     setCtx(nextCtx);
     setStepId(nextId); // null이면 요약 카드로 슬라이드.
   }
@@ -213,6 +239,7 @@ export function AICompanionOnboarding({
     setHistory((h) => h.slice(0, -1));
     setDir(-1);
     setMultiSel([]);
+    setBoothQuery("");
     setCtx(prev.ctx);
     setStepId(prev.stepId);
   }
@@ -291,7 +318,13 @@ export function AICompanionOnboarding({
           <div className="relative flex-1 overflow-x-hidden overflow-y-auto pb-safe">
             <AnimatePresence mode="wait" custom={dir} initial={false}>
               <motion.div
-                key={inSummary ? "summary" : stepId}
+                key={
+                  inSummary
+                    ? "summary"
+                    : stepId === "followup"
+                      ? `followup:${followupAnsweredCount(ctx)}`
+                      : stepId
+                }
                 custom={dir}
                 variants={slideVariants}
                 initial="enter"
@@ -332,9 +365,12 @@ export function AICompanionOnboarding({
                   <>
                     <div className="space-y-2.5">
                       <OnboardingMessage text={message} />
-                      <p className="text-2xl font-extrabold leading-snug">
+                      <p className="text-xl font-bold leading-snug">
                         {question}
                       </p>
+                      {hint && (
+                        <p className="text-sm text-muted-foreground">{hint}</p>
+                      )}
                     </div>
 
                     {stepId === "visit_date" ? (
@@ -373,6 +409,69 @@ export function AICompanionOnboarding({
                         >
                           아직 정하지 않았어
                         </button>
+                      </div>
+                    ) : stepId === "booth_pick" ? (
+                      // 부스 직접 선택 — 검색 + 다중 선택. 확정 시 commit(선택 id).
+                      <div className="space-y-2.5">
+                        <input
+                          type="text"
+                          value={boothQuery}
+                          onChange={(e) => setBoothQuery(e.target.value)}
+                          placeholder="부스 이름·출판사·코드 검색"
+                          className="w-full rounded-2xl border border-border bg-card px-4 py-3 text-[15px] outline-none focus:border-primary"
+                        />
+                        {multiSel.length > 0 && (
+                          <p className="text-sm text-muted-foreground">
+                            {multiSel.length}곳 선택됨
+                          </p>
+                        )}
+                        <div className="max-h-[46vh] space-y-2 overflow-y-auto">
+                          {filteredBooths.length === 0 && (
+                            <p className="px-1 py-4 text-sm text-muted-foreground">
+                              검색 결과가 없어. 다른 키워드로 찾아봐.
+                            </p>
+                          )}
+                          {filteredBooths.map((b) => {
+                            const selected = multiSel.includes(b.id);
+                            return (
+                              <button
+                                key={b.id}
+                                type="button"
+                                aria-pressed={selected}
+                                onClick={() => toggleMulti(b.id)}
+                                className={cn(
+                                  "flex w-full items-center gap-3 rounded-2xl border px-4 py-3 text-left transition-colors active:scale-[0.99]",
+                                  selected
+                                    ? "border-primary bg-accent/40"
+                                    : "border-border bg-card hover:bg-secondary/50",
+                                )}
+                              >
+                                <span className="min-w-0 flex-1">
+                                  <span className="block truncate font-bold">
+                                    {b.name}
+                                  </span>
+                                  <span className="mt-0.5 block truncate text-xs text-muted-foreground">
+                                    {b.code ? `${b.code} · ` : ""}
+                                    {b.company}
+                                  </span>
+                                </span>
+                                {selected && (
+                                  <Check className="size-5 shrink-0 text-primary" />
+                                )}
+                              </button>
+                            );
+                          })}
+                        </div>
+                        <Button
+                          size="lg"
+                          className="mt-1 w-full"
+                          disabled={multiSel.length === 0}
+                          onClick={confirmMulti}
+                        >
+                          {multiSel.length > 0
+                            ? `${multiSel.length}곳 담고 계속`
+                            : "부스를 골라줘"}
+                        </Button>
                       </div>
                     ) : (
                       <div className="space-y-2.5">
