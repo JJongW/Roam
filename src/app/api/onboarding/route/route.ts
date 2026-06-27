@@ -3,7 +3,7 @@ import { ok, notFound, parseBody, withErrorBoundary } from "@/lib/api/http";
 import { getRepository } from "@/lib/repositories";
 import { ensureSession, getCurrentUser } from "@/lib/api/session";
 import { buildPlan, rankForExhibition } from "@/lib/engine/service";
-import { buildHallSweepRoute } from "@/lib/engine/route";
+import { buildHallSweepRoute, pruneToBudget } from "@/lib/engine/route";
 import { attachDwellMinutes } from "@/lib/booth/dwell";
 import { FLOORPLANS } from "@/lib/floorplans";
 import { hasGemini } from "@/lib/env";
@@ -139,8 +139,17 @@ export async function POST(req: Request) {
     const finalBooths = finalIds
       .map((id) => allById.get(id))
       .filter((b): b is Booth => Boolean(b));
-    const ordered = buildHallSweepRoute(
+    // 시간예산 가지치기: 직접 고른 부스(keepIds)는 항상 남기고, 추천은 점수순으로
+    // 예산만큼만 더한다. 그 다음 홀-스윕 정렬로 지그재그를 막는다.
+    const pruned = pruneToBudget(
       finalBooths,
+      keepIds,
+      baseline.scores,
+      preference.availableMinutes,
+      start ?? { x: 0, y: 0 },
+    );
+    const ordered = buildHallSweepRoute(
+      pruned,
       start ?? { x: 0, y: 0 },
       baseline.scores,
     );

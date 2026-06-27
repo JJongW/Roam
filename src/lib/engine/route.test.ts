@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isDeviated, planRoute, recomputeRoute } from "./route";
+import { isDeviated, planRoute, pruneToBudget, recomputeRoute } from "./route";
 import type { Booth, ScoredBooth } from "@/lib/types";
 
 function scored(id: string, x: number, y: number, score: number): ScoredBooth {
@@ -137,6 +137,36 @@ describe("recomputeRoute", () => {
     // 큰 dwell이면 남은 예산이 적어 다시 계획되는 정거장이 더 적거나 같다.
     expect(big.boothIds.length).toBeLessThanOrEqual(small.boothIds.length);
     expect(big.boothIds.length).toBeLessThan(small.boothIds.length);
+  });
+});
+
+describe("pruneToBudget", () => {
+  // dwell defaults to BASE_DWELL_MINUTES (5) per booth; walking ~free here.
+  const booths = [
+    scored("p", 0, 0, 0.1).booth, // pinned, low score
+    scored("a", 10, 0, 0.9).booth,
+    scored("b", 20, 0, 0.8).booth,
+    scored("c", 30, 0, 0.7).booth,
+  ];
+  const scores = { p: 0.1, a: 0.9, b: 0.8, c: 0.7 };
+
+  it("always keeps pinned booths, even past budget", () => {
+    const out = pruneToBudget(booths, ["p"], scores, 1); // ~0 budget
+    expect(out.map((b) => b.id)).toContain("p");
+  });
+
+  it("adds extras highest-score first within budget", () => {
+    // ~12min budget → pinned(5) + one extra(5) fits, second would exceed.
+    const out = pruneToBudget(booths, ["p"], scores, 12);
+    const ids = out.map((b) => b.id);
+    expect(ids).toContain("p");
+    expect(ids).toContain("a"); // best-scored extra chosen first
+    expect(ids).not.toContain("c"); // lowest dropped
+  });
+
+  it("keeps everything when budget is ample", () => {
+    const out = pruneToBudget(booths, ["p"], scores, 600);
+    expect(out).toHaveLength(4);
   });
 });
 

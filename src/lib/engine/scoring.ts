@@ -11,17 +11,36 @@ export function distance(a: Point, b: Point): number {
   return Math.hypot(a.x - b.x, a.y - b.y);
 }
 
-/** Interest overlap, 0..1. Tags matching selected interests, normalized. */
+/**
+ * Interest overlap, 0..1 — graded so scores SPREAD instead of bunching at a few
+ * values (the old formula was near-binary → mass ties → identical candidate
+ * pools). Blends two granular signals:
+ *   · coverage = how many of the visitor's interests this booth hits (intent fit)
+ *   · focus    = how on-topic the booth is (hits / its own tag count)
+ * A single generic match scores modestly; a booth that is squarely on several of
+ * the visitor's interests scores near 1. This separation is what lets different
+ * inputs surface different booths.
+ */
 export function interestScore(booth: Booth, interests: string[]): number {
-  if (interests.length === 0) return 0;
+  if (interests.length === 0 || booth.tags.length === 0) return 0;
   const set = new Set(interests);
   const hits = booth.tags.filter((t) => set.has(t)).length;
-  // reward any match strongly, scale gently with more matches
   if (hits === 0) return 0;
-  return Math.min(
-    1,
-    0.6 + 0.2 * (hits - 1) + 0.2 * (hits / booth.tags.length || 0),
-  );
+  const coverage = hits / interests.length; // share of intent covered, 0..1
+  const focus = hits / booth.tags.length; // share of booth that's on-topic, 0..1
+  return Math.min(1, 0.45 * coverage + 0.4 * focus + 0.15);
+}
+
+/** Stable per-id hash → 0..1. Used as the ranking tie-break so equal scores
+ *  don't always favour alphabetically-first ids (which clustered the candidate
+ *  pool on one prefix/hall). Deterministic, spreads ties across the venue. */
+function idHash(id: string): number {
+  let h = 2166136261;
+  for (let i = 0; i < id.length; i++) {
+    h ^= id.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return (h >>> 0) / 4294967296;
 }
 
 /** Event boost 0..1 if an event overlaps the visit window [now, now+budget]. */
@@ -85,9 +104,49 @@ export function scoreBooth(booth: Booth, ctx: ScoreContext): ScoredBooth {
   };
 }
 
-/** Rank booths by score, descending. Deterministic tie-break by id. */
+/** Rank booths by score, descending. Tie-break by a stable id hash (not
+ *  alphabetical) so equal-scored booths don't cluster on one prefix/hall. */
 export function rankBooths(booths: Booth[], ctx: ScoreContext): ScoredBooth[] {
   return booths
     .map((b) => scoreBooth(b, ctx))
-    .sort((a, b) => b.score - a.score || a.booth.id.localeCompare(b.booth.id));
+    .sort(
+      (a, b) => b.score - a.score || idHash(a.booth.id) - idHash(b.booth.id),
+    );
+}
+
+/**
+ * Pick a DIVERSE top-N from a ranking via MMR (maximal marginal relevance):
+ * greedily take the best-scoring booth, then penalise later picks whose tags are
+ * already represented — so the pool spans categories instead of N near-clones of
+ * the single highest-scoring category. This is the main lever against "every
+ * recommendation looks the same": the LLM reranker only sees what we hand it, so
+ * we hand it variety. Pure + deterministic. `lambda` trades relevance (1) vs
+ * diversity (0).
+ */
+export function diversifyCandidates(
+  ranked: ScoredBooth[],
+  n: number,
+  lambda = 0.75,
+): ScoredBooth[] {
+  if (ranked.length <= n) return ranked.slice();
+  const pool = ranked.slice();
+  const picked: ScoredBooth[] = [];
+  const covered = new Set<string>();
+  while (picked.length < n && pool.length > 0) {
+    let bi = 0;
+    let bestValue = -Infinity;
+    for (let i = 0; i < pool.length; i++) {
+      const b = pool[i].booth;
+      const overlap = b.tags.filter((t) => covered.has(t)).length;
+      const value = lambda * pool[i].score - (1 - lambda) * overlap;
+      if (value > bestValue) {
+        bestValue = value;
+        bi = i;
+      }
+    }
+    const chosen = pool.splice(bi, 1)[0];
+    picked.push(chosen);
+    for (const t of chosen.booth.tags) covered.add(t);
+  }
+  return picked;
 }
