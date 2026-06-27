@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Check, Star, NotebookPen } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -27,11 +27,17 @@ export function BoothPersonalPanel({ boothId }: { boothId: string }) {
   const [memo, setLocalMemo] = useState("");
   const [hydrated, setHydrated] = useState(false);
 
-  // Sync local memo from the cache once the store is ready.
-  useEffect(() => {
+  // Seed the editable memo from the cache, and re-seed when the booth changes
+  // or the user signs in (which repopulates records). Done during render via
+  // the "previous render value" pattern instead of an effect, so there's no
+  // cascading-render setState-in-effect. https://react.dev/learn/you-might-not-need-an-effect
+  const [syncKey, setSyncKey] = useState<string | null>(null);
+  const curKey = `${boothId}:${user ? "in" : "out"}`;
+  if (syncKey !== curKey) {
+    setSyncKey(curKey);
     setLocalMemo(useVisitStore.getState().records[boothId]?.memo ?? "");
     setHydrated(true);
-  }, [boothId, user]);
+  }
 
   function onToggle(next: "visited" | "skipped") {
     toggleStatus(boothId, next);
