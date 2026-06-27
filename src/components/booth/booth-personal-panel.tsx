@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Check, Clock3, NotebookPen } from "lucide-react";
+import { Check, Star, NotebookPen } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { useVisitStore, pushNote } from "@/lib/stores/visit";
@@ -77,7 +77,7 @@ export function BoothPersonalPanel({ boothId }: { boothId: string }) {
                 : "border-border bg-card text-foreground",
             )}
           >
-            <Clock3 className="size-4.5" /> 이따 다시
+            <Star className="size-4.5" /> 관심
           </button>
         </div>
 

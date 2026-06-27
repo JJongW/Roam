@@ -21,6 +21,7 @@ export default async function OnboardingPage({ params }: Props) {
       name: b.name,
       code: b.code,
       company: b.company,
+      tags: b.tags,
     }));
 
   return (

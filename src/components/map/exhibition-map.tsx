@@ -8,7 +8,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { Minus, Plus, Locate, RotateCw } from "lucide-react";
+import { Minus, Plus, Maximize2, RotateCw } from "lucide-react";
 import { cn, clamp } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import type { Booth, Category, Hall, Point } from "@/lib/types";
@@ -364,8 +364,8 @@ export function ExhibitionMap({
         const s = view.current.scale;
         const o = view.current.offset;
         view.current.offset = {
-          x: clamp(o.x, Math.min(0, cw - fw * s), Math.max(0, cw - fw * s)),
-          y: clamp(o.y, Math.min(0, ch - fh * s), Math.max(0, ch - fh * s)),
+          x: fw * s <= cw ? (cw - fw * s) / 2 : clamp(o.x, cw - fw * s, 0),
+          y: fh * s <= ch ? (ch - fh * s) / 2 : clamp(o.y, ch - fh * s, 0),
         };
         applyView(animate);
         return;
@@ -438,6 +438,8 @@ export function ExhibitionMap({
   });
 
   // Keep the map within the viewport so it can never be panned out of sight.
+  // When the scaled map is smaller than the viewport on an axis (fully zoomed
+  // out), centre it on that axis instead of pinning it to a corner.
   const clampOffset = useCallback(
     (off: Point, s: number): Point => {
       const el = containerRef.current;
@@ -446,12 +448,24 @@ export function ExhibitionMap({
       const ch = el.clientHeight;
       const { fw, fh } = footprint();
       return {
-        x: clamp(off.x, Math.min(0, cw - fw * s), Math.max(0, cw - fw * s)),
-        y: clamp(off.y, Math.min(0, ch - fh * s), Math.max(0, ch - fh * s)),
+        x: fw * s <= cw ? (cw - fw * s) / 2 : clamp(off.x, cw - fw * s, 0),
+        y: fh * s <= ch ? (ch - fh * s) / 2 : clamp(off.y, ch - fh * s, 0),
       };
     },
     [footprint],
   );
+
+  // Lowest zoom we allow: enough to frame the whole venue (its contain scale),
+  // or 0.3 — whichever is smaller. The old hard 0.3 floor blocked zoom-out on
+  // large floorplans whose contain scale falls below 0.3, so the full map could
+  // never be framed.
+  const minScale = useCallback(() => {
+    const el = containerRef.current;
+    if (!el) return 0.3;
+    const { fw, fh } = footprint();
+    const contain = Math.min(el.clientWidth / fw, el.clientHeight / fh) * 0.96;
+    return Math.min(0.3, contain);
+  }, [footprint]);
 
   // Zoom by a factor, keeping the given container-point fixed (defaults to center).
   const zoomBy = useCallback(
@@ -461,7 +475,7 @@ export function ExhibitionMap({
       const fx = focal?.x ?? el.clientWidth / 2;
       const fy = focal?.y ?? el.clientHeight / 2;
       const prev = view.current.scale;
-      const next = clamp(prev * factor, 0.3, 4);
+      const next = clamp(prev * factor, minScale(), 4);
       const o = view.current.offset;
       view.current = {
         scale: next,
@@ -476,7 +490,7 @@ export function ExhibitionMap({
       userAdjusted.current = true;
       applyView(animate);
     },
-    [clampOffset, applyView],
+    [clampOffset, applyView, minScale],
   );
 
   function localPoint(e: { clientX: number; clientY: number }): Point {
@@ -541,7 +555,7 @@ export function ExhibitionMap({
       const [a, b] = pts;
       const dist = Math.hypot(a.x - b.x, a.y - b.y) || 1;
       const mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
-      const next = clamp((g.startScale * dist) / g.startDist, 0.3, 4);
+      const next = clamp((g.startScale * dist) / g.startDist, minScale(), 4);
       beginMove();
       view.current = {
         scale: next,
@@ -639,13 +653,15 @@ export function ExhibitionMap({
               break;
             }
           }
-          // Tapping a booth re-centres it WITHOUT changing zoom — the visitor's
-          // own zoom ratio is preserved; only the pan moves to centre the booth.
+          // Tapping a booth centres it in the visible band between the top bar
+          // and the bottom popup (focusCenterY), and nudges the zoom into a
+          // comfortable range so the booth AND its neighbours are visible — too
+          // far out and the booth is a speck, too far in and there's no context.
           if (hitBooth) {
             const el = containerRef.current;
             if (el) {
               const g = geomOf(hitBooth);
-              const s = view.current.scale;
+              const s = clamp(view.current.scale, 1.4, 2.6);
               // Centre on the booth's rotated screen position, not its raw x/y.
               const cp = toContent({ x: g.x, y: g.y });
               view.current = {
@@ -1547,7 +1563,7 @@ export function ExhibitionMap({
           aria-label="전체 보기"
           onClick={resetView}
         >
-          <Locate className="size-5" />
+          <Maximize2 className="size-5" />
         </Button>
       </div>
     </div>
