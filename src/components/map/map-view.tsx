@@ -142,7 +142,10 @@ export function MapView({
   const storeRecords = useVisitStore((s) => s.records);
   const toggleStatus = useVisitStore((s) => s.toggleStatus);
   // Empty until hydrated so SSR markup matches the first client paint.
-  const records = hydrated ? storeRecords : {};
+  const records = useMemo(
+    () => (hydrated ? storeRecords : {}),
+    [hydrated, storeRecords],
+  );
   const visitedIds = useMemo(() => idsByStatus(records, "visited"), [records]);
   const skippedIds = useMemo(() => idsByStatus(records, "skipped"), [records]);
   const visitedSet = useMemo(() => new Set(visitedIds), [visitedIds]);
@@ -359,39 +362,44 @@ export function MapView({
 
   // The map's secondary destinations + AI action. Shared by the portrait top
   // bar and the landscape/desktop side panel so every layout reaches them.
-  function renderMapActions() {
+  // `compact` (portrait top bar) = icon-only so four actions never overflow and
+  // wrap the title. The wide side panel passes false and keeps the labels.
+  function renderMapActions(compact = false) {
     const slug = detail.exhibition.slug;
+    const cls = compact
+      ? "flex size-9 items-center justify-center rounded-full active:bg-secondary"
+      : "flex h-11 items-center gap-1 rounded-full px-2 text-sm font-bold active:bg-secondary";
     return (
       <>
         <button
           type="button"
           onClick={() => setNotesOpen(true)}
           aria-label="내 메모장"
-          className="flex h-11 items-center gap-1 rounded-full px-2 text-sm font-bold text-muted-foreground active:bg-secondary"
+          className={cn(cls, "text-muted-foreground")}
         >
-          <NotebookPen className="size-5" /> 메모장
+          <NotebookPen className="size-5" /> {!compact && "메모장"}
         </button>
         <Link
           href={`/exhibitions/${slug}/routes`}
           aria-label="다른 사람 동선"
-          className="flex h-11 items-center gap-1 rounded-full px-2 text-sm font-bold text-muted-foreground active:bg-secondary"
+          className={cn(cls, "text-muted-foreground")}
         >
-          <RouteIcon className="size-5" /> 다른 동선
+          <RouteIcon className="size-5" /> {!compact && "다른 동선"}
         </Link>
         <Link
           href={`/exhibitions/${slug}/community`}
           aria-label="실시간 커뮤니티"
-          className="flex h-11 items-center gap-1 rounded-full px-2 text-sm font-bold text-muted-foreground active:bg-secondary"
+          className={cn(cls, "text-muted-foreground")}
         >
-          <MessagesSquare className="size-5" /> 커뮤니티
+          <MessagesSquare className="size-5" /> {!compact && "커뮤니티"}
         </Link>
         <button
           type="button"
           onClick={() => setAiOpen(true)}
           aria-label="AI 추천받기"
-          className="flex h-11 items-center gap-1 rounded-full px-2 text-sm font-bold text-primary active:bg-secondary"
+          className={cn(cls, "text-primary")}
         >
-          <Sparkles className="size-5" /> AI 추천
+          <Sparkles className="size-5" /> {!compact && "AI 추천"}
         </button>
       </>
     );
@@ -634,7 +642,7 @@ export function MapView({
       {showCoachmark && <MapCoachmark onClose={markMapGuideSeen} />}
       {/* Wide / landscape: always-open side panel (search + filters + list).
           The portrait bottom sheet is hidden here. Selecting in either syncs. */}
-      <aside className="hidden w-64 shrink-0 flex-col border-r border-border bg-card md:flex md:w-80 landscape:flex">
+      <aside className="relative hidden w-64 shrink-0 flex-col border-r border-border bg-card md:flex md:w-80 landscape:flex">
         <div className="flex items-center gap-1 border-b border-border px-3 py-3">
           <button
             type="button"
@@ -650,14 +658,6 @@ export function MapView({
           {renderMapActions()}
         </div>
         <div className="border-b border-border p-3">{renderSearch()}</div>
-        {/* Landscape/desktop: the tapped booth's card shows here in the side
-            panel (above the list) instead of floating over the map, so it never
-            covers the booth the visitor just selected. */}
-        {selected && (
-          <div className="border-b border-border p-3">
-            {renderSelectedCard()}
-          </div>
-        )}
         {/* Everything below search scrolls as one column. In landscape the panel
             is short, so gates + filters would otherwise eat all the height and
             leave the list a 1-row sliver you can't reach — here you just scroll
@@ -679,6 +679,30 @@ export function MapView({
           )}
           <div className="p-3">{renderList()}</div>
         </div>
+
+        {/* Landscape/desktop: tapping a booth covers the side panel with its
+            detail (an overlay, not an inline row). Dismiss with the X or by
+            tapping the map (which deselects). */}
+        {selected && (
+          <div className="absolute inset-0 z-30 flex flex-col bg-card animate-in slide-in-from-left-2">
+            <div className="flex items-center justify-between border-b border-border px-3 py-2.5">
+              <p className="text-sm font-bold text-muted-foreground">
+                부스 정보
+              </p>
+              <button
+                type="button"
+                aria-label="닫기"
+                onClick={() => setSelectedId(null)}
+                className="flex size-8 items-center justify-center rounded-full active:bg-secondary"
+              >
+                <X className="size-5" />
+              </button>
+            </div>
+            <div className="min-h-0 flex-1 overflow-y-auto p-3">
+              {renderSelectedCard()}
+            </div>
+          </div>
+        )}
       </aside>
 
       {/* Mobile chrome + map column */}
@@ -686,7 +710,11 @@ export function MapView({
         {/* Portrait top bar — always visible (landscape/desktop use the panel).
             It stays put during zoom/pan so the map doesn't jump. */}
         <div className="md:hidden landscape:hidden">
-          <AppBar title="지도" onBack={handleBack} right={renderMapActions()} />
+          <AppBar
+            title="지도"
+            onBack={handleBack}
+            right={renderMapActions(true)}
+          />
         </div>
 
         <div className="relative flex-1 overflow-hidden">

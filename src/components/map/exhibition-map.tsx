@@ -401,6 +401,8 @@ export function ExhibitionMap({
       };
       applyView(animate);
     },
+    // focus is depended on by its x/y (object identity may churn each render).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [width, height, fillHeight, focus?.x, focus?.y, applyView, footprint],
   );
 
@@ -653,15 +655,20 @@ export function ExhibitionMap({
               break;
             }
           }
-          // Tapping a booth centres it in the visible band between the top bar
-          // and the bottom popup (focusCenterY), and nudges the zoom into a
-          // comfortable range so the booth AND its neighbours are visible — too
-          // far out and the booth is a speck, too far in and there's no context.
+          // Tapping a booth centres it. In landscape the popup lives in the
+          // side panel and the whole map column is visible, so KEEP the
+          // visitor's current zoom and just pan the booth to the centre. In
+          // portrait the popup covers the bottom, so nudge the zoom into a
+          // comfortable range (booth + neighbours visible) and centre it in the
+          // band above the popup (focusCenterY).
           if (hitBooth) {
             const el = containerRef.current;
             if (el) {
               const g = geomOf(hitBooth);
-              const s = clamp(view.current.scale, 1.4, 2.6);
+              const landscape = el.clientWidth > el.clientHeight * 1.4;
+              const s = landscape
+                ? view.current.scale
+                : clamp(view.current.scale, 1.4, 2.6);
               // Centre on the booth's rotated screen position, not its raw x/y.
               const cp = toContent({ x: g.x, y: g.y });
               view.current = {
@@ -818,12 +825,8 @@ export function ExhibitionMap({
     [routeKey, gateKey, floorplan, width, height],
   );
 
-  // Crowd heatmap geometry. maxHeat normalises booth tint; the top corridors
-  // (most-walked pairs) are routed through the aisles and drawn as heat lines.
-  const maxHeat = useMemo(
-    () => Math.max(1, ...Object.values(heat ?? {})),
-    [heat],
-  );
+  // Crowd heatmap geometry. The top corridors (most-walked pairs) are routed
+  // through the aisles and drawn as heat lines.
   // Quantile thresholds over the non-zero counts. Tiering by rank (not by
   // count/max) keeps the four levels visible even when a few booths dwarf the
   // rest — otherwise everything but the hottest looked the same pale tint.
