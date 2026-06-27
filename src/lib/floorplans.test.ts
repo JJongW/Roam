@@ -2,6 +2,15 @@ import { describe, expect, it } from "vitest";
 import { FLOORPLANS } from "./floorplans";
 import { aisleRoute } from "./aisle-route";
 import { booths } from "./mock/seed";
+import sibf from "./floorplan-sibf.json";
+
+// displayZone 부스(책마을 B4xx 등)는 좌표 미트레이스 — 지도엔 존으로만 표시,
+// 개별 rect가 의도적으로 없다. rect 존재 검사에서 제외한다.
+const zoneOnly = new Set(
+  sibf.booths
+    .filter((b) => (b as { displayZone?: string }).displayZone)
+    .map((b) => b.code),
+);
 
 describe("SIBF floorplan", () => {
   const fp = FLOORPLANS["sibf-2026"];
@@ -26,14 +35,15 @@ describe("SIBF floorplan", () => {
     }
   });
 
-  it("has a rect for every SIBF booth (no fallback)", () => {
+  it("has a rect for every traced SIBF booth (no fallback)", () => {
     const codes = new Set(fp.booths.map((b) => b.code));
     for (const b of booths) {
+      if (zoneOnly.has(b.code!)) continue; // 존 표시 부스는 rect 없음(정상)
       expect(codes.has(b.code!), `missing floorplan rect for ${b.code}`).toBe(
         true,
       );
     }
-    expect(fp.booths.length).toBe(booths.length);
+    expect(fp.booths.length).toBe(booths.length - zoneOnly.size);
   });
 
   it("keeps every booth inside the canvas", () => {

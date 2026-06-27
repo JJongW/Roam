@@ -105,19 +105,24 @@ function bbox(rects: { x: number; y: number; w: number; h: number }[]) {
 }
 
 function buildSibf(): Floorplan {
-  const booths: FloorplanBooth[] = sibf.booths.map((b) => ({
-    code: b.code,
-    x: b.x,
-    y: b.y,
-    w: b.w,
-    h: b.h,
-    color:
-      (b as { kind?: string }).kind === "facility"
-        ? FACILITY_FILL
-        : ((b as { color?: string }).color ??
-          ZONE[(b as { zone?: string }).zone ?? "general"] ??
-          ZONE.general),
-  }));
+  // displayZone 부스(좌표 미트레이스, 존으로만 표시 — 예: 책마을 B4xx)는
+  // 지도에 개별 사각형으로 그리지 않는다. 부스 리스트/검색/상세엔 존재하고,
+  // 선택 시 해당 존 위치로 표시된다(좌표는 존 중심). 여기선 제외.
+  const booths: FloorplanBooth[] = sibf.booths
+    .filter((b) => !(b as { displayZone?: string }).displayZone)
+    .map((b) => ({
+      code: b.code,
+      x: b.x,
+      y: b.y,
+      w: b.w,
+      h: b.h,
+      color:
+        (b as { kind?: string }).kind === "facility"
+          ? FACILITY_FILL
+          : ((b as { color?: string }).color ??
+            ZONE[(b as { zone?: string }).zone ?? "general"] ??
+            ZONE.general),
+    }));
 
   const aRects = booths.filter((b) => b.code[0] === "A");
   const bRects = booths.filter((b) => b.code[0] === "B");

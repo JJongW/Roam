@@ -1290,8 +1290,16 @@ export function ExhibitionMap({
           {/* booths */}
           {renderBooths.map((b) => {
             // With a floorplan, only render booths that have traced geometry
-            // (avoids a stray fallback box overlapping the plan).
-            if (floorplan && !(b.code && rectByCode.has(b.code))) return null;
+            // (avoids a stray fallback box overlapping the plan). Exception:
+            // a SELECTED booth without geometry (책마을 B4xx 등 좌표 미트레이스)
+            // draws a fallback box at its zone-center coords so "누르면 위치 표시"
+            // 동작이 된다.
+            if (
+              floorplan &&
+              !(b.code && rectByCode.has(b.code)) &&
+              b.id !== selectedId
+            )
+              return null;
             const cat = catById.get(b.categoryId);
             const isSel = b.id === selectedId;
             const isVisited = visitedSet.has(b.id);
