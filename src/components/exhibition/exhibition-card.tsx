@@ -1,13 +1,29 @@
+"use client";
+
 import Link from "next/link";
 import { CalendarDays, MapPin } from "lucide-react";
 import { format } from "date-fns";
 import type { Exhibition } from "@/lib/types";
+import { useRouteStore } from "@/lib/stores/route";
+import { useHydrated } from "@/lib/hooks/use-hydrated";
 
 export function ExhibitionCard({ exhibition }: { exhibition: Exhibition }) {
   const range = `${format(new Date(exhibition.startDate), "M.d")} – ${format(new Date(exhibition.endDate), "M.d")}`;
+  // Returning visitor: if they already generated a route for THIS exhibition,
+  // skip the onboarding chat and drop straight onto the map. Gated on hydration
+  // so SSR and the first client render both use the onboarding href (no
+  // hydration mismatch), then it upgrades to the map href once the store loads.
+  const hydrated = useHydrated();
+  const hasRoute = useRouteStore(
+    (s) => s.route?.exhibitionId === exhibition.id,
+  );
+  const href =
+    hydrated && hasRoute
+      ? `/exhibitions/${exhibition.slug}/map`
+      : `/exhibitions/${exhibition.slug}/onboarding`;
   return (
     <Link
-      href={`/exhibitions/${exhibition.slug}/onboarding`}
+      href={href}
       className="group block overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-card)] transition-transform active:scale-[0.99]"
     >
       <div

@@ -15,7 +15,7 @@ import {
   Check,
   ChevronRight,
   ChevronLeft,
-  Clock3,
+  Star,
   Flame,
   Loader2,
   LogIn,
@@ -25,6 +25,7 @@ import {
   Sparkles,
   X,
   MapPin,
+  MessagesSquare,
 } from "lucide-react";
 import { toast } from "sonner";
 import { api } from "@/lib/api/client";
@@ -34,7 +35,9 @@ import { NotePhotos } from "@/components/booth/note-photos";
 import { useAuthStore } from "@/lib/stores/auth";
 import { useCartStore } from "@/lib/stores/cart";
 import { useRouteStore } from "@/lib/stores/route";
+import { useUiStore } from "@/lib/stores/ui";
 import { useHydrated } from "@/lib/hooks/use-hydrated";
+import { MapCoachmark } from "@/components/map/map-coachmark";
 import { FLOORPLANS } from "@/lib/floorplans";
 import { CartButton } from "@/components/booth/cart-button";
 import { Route as RouteIcon } from "lucide-react";
@@ -144,6 +147,27 @@ export function MapView({
   const skippedIds = useMemo(() => idsByStatus(records, "skipped"), [records]);
   const visitedSet = useMemo(() => new Set(visitedIds), [visitedIds]);
   const skippedSet = useMemo(() => new Set(skippedIds), [skippedIds]);
+
+  // First-visit map guide + one-time landscape hint (see ui store).
+  const mapGuideSeen = useUiStore((s) => s.mapGuideSeen);
+  const markMapGuideSeen = useUiStore((s) => s.markMapGuideSeen);
+  const landscapeHintSeen = useUiStore((s) => s.landscapeHintSeen);
+  const markLandscapeHintSeen = useUiStore((s) => s.markLandscapeHintSeen);
+  const showCoachmark = hydrated && !mapGuideSeen;
+
+  // Once the guide is dismissed, the next portrait visit hints (once) that the
+  // map can be rotated to landscape — the wider side-panel layout is easy to
+  // miss on a phone.
+  useEffect(() => {
+    if (!hydrated || showCoachmark || landscapeHintSeen) return;
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(orientation: portrait)").matches
+    ) {
+      toast("가로로 돌리면 지도를 더 넓게 볼 수 있어요");
+    }
+    markLandscapeHintSeen();
+  }, [hydrated, showCoachmark, landscapeHintSeen, markLandscapeHintSeen]);
   const hasStatus = visitedIds.length > 0 || skippedIds.length > 0;
 
   const catById = useMemo(
@@ -354,6 +378,13 @@ export function MapView({
         >
           <RouteIcon className="size-5" /> 다른 동선
         </Link>
+        <Link
+          href={`/exhibitions/${slug}/community`}
+          aria-label="실시간 커뮤니티"
+          className="flex h-11 items-center gap-1 rounded-full px-2 text-sm font-bold text-muted-foreground active:bg-secondary"
+        >
+          <MessagesSquare className="size-5" /> 커뮤니티
+        </Link>
         <button
           type="button"
           onClick={() => setAiOpen(true)}
@@ -505,7 +536,7 @@ export function MapView({
           }
           tone="warning"
         >
-          <Clock3 className="size-3.5" /> 이따 다시 {skippedIds.length}
+          <Star className="size-3.5" /> 관심 {skippedIds.length}
         </StatusChip>
       </>
     );
@@ -541,10 +572,66 @@ export function MapView({
     );
   }
 
+  // The selected-booth card (info + quick actions). Rendered floating over the
+  // map in portrait, and inside the side panel in landscape/desktop so it never
+  // covers the tapped booth. Caller guards on `selected` being truthy.
+  function renderSelectedCard() {
+    if (!selected) return null;
+    const b = selected;
+    return (
+      <div className="rounded-2xl border border-border bg-card p-3 shadow-[var(--shadow-pop)] animate-in slide-in-from-bottom-2">
+        <div className="flex items-start gap-3">
+          <div className="min-w-0 flex-1">
+            <p className="truncate font-bold">
+              {b.name}
+              {b.code && (
+                <span className="ml-1.5 text-xs text-muted-foreground">
+                  {b.code}
+                </span>
+              )}
+            </p>
+            <p className="truncate text-sm text-muted-foreground">
+              {b.company}
+            </p>
+            <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+              {selectedCat && <CategoryChip category={selectedCat} />}
+            </div>
+          </div>
+          <Button asChild size="sm">
+            <Link href={`/booths/${b.id}`}>
+              상세 <ChevronRight className="size-4" />
+            </Link>
+          </Button>
+        </div>
+
+        <BoothPopupMemo key={b.id} boothId={b.id} />
+
+        <div className="mt-2.5 flex items-center gap-2 border-t border-border pt-2.5">
+          <CartButton boothId={b.id} variant="icon" />
+          <PopupToggle
+            active={selectedStatus === "visited"}
+            tone="success"
+            onClick={() => toggleStatus(b.id, "visited")}
+          >
+            <Check className="size-4" /> 방문
+          </PopupToggle>
+          <PopupToggle
+            active={selectedStatus === "skipped"}
+            tone="warning"
+            onClick={() => toggleStatus(b.id, "skipped")}
+          >
+            <Star className="size-4" /> 관심
+          </PopupToggle>
+        </div>
+      </div>
+    );
+  }
+
   return (
     // The visitor shell boxes pages to max-w-md (mobile frame). The map needs
     // full width on desktop, so break out of that box at md+ with fixed inset-0.
     <div className="flex h-dvh flex-col overflow-hidden overscroll-none bg-background md:fixed md:inset-0 md:z-30 md:flex-row landscape:fixed landscape:inset-0 landscape:z-30 landscape:flex-row">
+      {showCoachmark && <MapCoachmark onClose={markMapGuideSeen} />}
       {/* Wide / landscape: always-open side panel (search + filters + list).
           The portrait bottom sheet is hidden here. Selecting in either syncs. */}
       <aside className="hidden w-64 shrink-0 flex-col border-r border-border bg-card md:flex md:w-80 landscape:flex">
@@ -563,6 +650,14 @@ export function MapView({
           {renderMapActions()}
         </div>
         <div className="border-b border-border p-3">{renderSearch()}</div>
+        {/* Landscape/desktop: the tapped booth's card shows here in the side
+            panel (above the list) instead of floating over the map, so it never
+            covers the booth the visitor just selected. */}
+        {selected && (
+          <div className="border-b border-border p-3">
+            {renderSelectedCard()}
+          </div>
+        )}
         {/* Everything below search scrolls as one column. In landscape the panel
             is short, so gates + filters would otherwise eat all the height and
             leave the list a 1-row sliver you can't reach — here you just scroll
@@ -624,6 +719,24 @@ export function MapView({
               </div>
             </div>
           )}
+          {/* Booth color key — the map fills booths by personal state, not
+              category. A tiny always-on legend so the three hues are readable
+              at a glance (color isn't the only cue: each is labelled). */}
+          <div className="pointer-events-none absolute left-1/2 top-3 z-20 flex -translate-x-1/2 items-center gap-2.5 rounded-full border border-border bg-card/90 px-3 py-1.5 text-[11px] font-semibold shadow-[var(--shadow-card)] backdrop-blur">
+            {[
+              { label: "방문", color: "var(--route-visited)" },
+              { label: "관심", color: "var(--warning)" },
+              { label: "동선", color: "var(--primary)" },
+            ].map((l) => (
+              <span key={l.label} className="flex items-center gap-1">
+                <span
+                  className="size-2.5 rounded-full"
+                  style={{ backgroundColor: l.color }}
+                />
+                {l.label}
+              </span>
+            ))}
+          </div>
           <ExhibitionMap
             width={detail.exhibition.mapWidth}
             height={detail.exhibition.mapHeight}
@@ -664,55 +777,12 @@ export function MapView({
             onInteractStart={() => setSheetOpen(false)}
           />
 
-          {/* selected booth popup — decision info + quick actions. Sits above
-              the sheet peek on mobile; bottom-right card on desktop. */}
+          {/* selected booth popup — portrait only. Sits above the sheet peek so
+              it never hides the tapped booth. Landscape/desktop render the same
+              card inside the side panel instead (see <aside> above). */}
           {selected && (
-            <div className="absolute inset-x-0 bottom-[100px] z-20 mx-auto w-full max-w-sm px-3 md:inset-x-auto md:bottom-3 md:right-3 md:w-72 md:px-0 landscape:inset-x-auto landscape:bottom-3 landscape:right-3 landscape:w-72 landscape:px-0">
-              <div className="rounded-2xl border border-border bg-card p-3 shadow-[var(--shadow-pop)] animate-in slide-in-from-bottom-2">
-                <div className="flex items-start gap-3">
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate font-bold">
-                      {selected.name}
-                      {selected.code && (
-                        <span className="ml-1.5 text-xs text-muted-foreground">
-                          {selected.code}
-                        </span>
-                      )}
-                    </p>
-                    <p className="truncate text-sm text-muted-foreground">
-                      {selected.company}
-                    </p>
-                    <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-                      {selectedCat && <CategoryChip category={selectedCat} />}
-                    </div>
-                  </div>
-                  <Button asChild size="sm">
-                    <Link href={`/booths/${selected.id}`}>
-                      상세 <ChevronRight className="size-4" />
-                    </Link>
-                  </Button>
-                </div>
-
-                <BoothPopupMemo key={selected.id} boothId={selected.id} />
-
-                <div className="mt-2.5 flex items-center gap-2 border-t border-border pt-2.5">
-                  <CartButton boothId={selected.id} variant="icon" />
-                  <PopupToggle
-                    active={selectedStatus === "visited"}
-                    tone="success"
-                    onClick={() => toggleStatus(selected.id, "visited")}
-                  >
-                    <Check className="size-4" /> 방문
-                  </PopupToggle>
-                  <PopupToggle
-                    active={selectedStatus === "skipped"}
-                    tone="warning"
-                    onClick={() => toggleStatus(selected.id, "skipped")}
-                  >
-                    <Clock3 className="size-4" /> 이따
-                  </PopupToggle>
-                </div>
-              </div>
+            <div className="absolute inset-x-0 bottom-[100px] z-20 mx-auto w-full max-w-sm px-3 md:hidden landscape:hidden">
+              {renderSelectedCard()}
             </div>
           )}
 

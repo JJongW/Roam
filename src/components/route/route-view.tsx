@@ -16,6 +16,7 @@ import {
   Check,
   Eye,
   X,
+  Star,
   LogIn,
   LogOut,
 } from "lucide-react";
@@ -134,13 +135,9 @@ export function RouteView({
         .filter((b): b is Booth => b != null && !visitedSet.has(b.id)),
     [hydrated, cartIds, boothById, visitedSet],
   );
-  // "이따 다시"로 표시한 부스는 동선의 뒤로 미룬다(나머지 순서는 유지) — 지금
-  // 바로 안 볼 곳을 자동으로 후순위에. 단순 재배치라 LLM 없이 결정적으로 처리.
-  const ordered = useMemo(() => {
-    const keep = chosen.filter((b) => !skippedSet.has(b.id));
-    const later = chosen.filter((b) => skippedSet.has(b.id));
-    return [...keep, ...later];
-  }, [chosen, skippedSet]);
+  // "관심" 표시는 동선 순서를 바꾸지 않는다 — 단순 북마크 마커일 뿐. 순서는
+  // 카트 순서(엔진 정렬) 그대로 유지한다.
+  const ordered = chosen;
   const plan = useMemo(
     () => buildOrderedRoute(ordered, start),
     [ordered, start],
@@ -384,7 +381,7 @@ export function RouteView({
                           : "border-border bg-card text-muted-foreground",
                       )}
                     >
-                      <Clock className="size-4" /> 이따
+                      <Star className="size-4" /> 관심
                     </button>
                     <button
                       type="button"
@@ -543,7 +540,6 @@ export function RouteView({
                   <div
                     className={cn(
                       "flex items-center gap-2.5 rounded-xl border border-border bg-card px-3 py-2.5",
-                      isLater && "opacity-60",
                     )}
                   >
                     <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
@@ -556,22 +552,20 @@ export function RouteView({
                       {b.name}
                       {isLater && (
                         <span className="ml-1.5 text-[11px] font-semibold text-warning">
-                          이따
+                          관심
                         </span>
                       )}
                     </Link>
                     <button
                       type="button"
-                      aria-label={
-                        isLater ? "이따 해제" : "이따 다시 (뒤로 미루기)"
-                      }
+                      aria-label={isLater ? "관심 해제" : "관심 표시"}
                       onClick={() => toggleStatus(b.id, "skipped")}
                       className={cn(
                         "flex size-9 shrink-0 items-center justify-center rounded-full active:bg-secondary",
                         isLater ? "text-warning" : "text-muted-foreground",
                       )}
                     >
-                      <Clock className="size-4.5" />
+                      <Star className="size-4.5" />
                     </button>
                     <button
                       type="button"
