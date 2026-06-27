@@ -109,6 +109,8 @@ export function MapView({
   initialFocusId?: string;
 }) {
   const router = useRouter();
+  // Sentinel category value for the "선택된 부스" (cart) filter chip.
+  const SELECTED_FILTER = "__selected__";
   const [activeCat, setActiveCat] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<
     "visited" | "skipped" | null
@@ -182,10 +184,14 @@ export function MapView({
   // the (heavy) filtered list + map re-render run as a non-blocking, lower-prio
   // pass — no per-keystroke jank from reconciling ~180 list rows + map booths.
   const deferredQuery = useDeferredValue(query);
+  const cartIds = useCartStore((s) => s.ids);
+  const cartSet = useMemo(() => new Set(cartIds), [cartIds]);
   const filtered = useMemo(() => {
     const q = deferredQuery.trim().toLowerCase();
     return booths.filter((b) => {
-      if (activeCat && b.categoryId !== activeCat) return false;
+      if (activeCat === SELECTED_FILTER) {
+        if (!cartSet.has(b.id)) return false;
+      } else if (activeCat && b.categoryId !== activeCat) return false;
       if (statusFilter === "visited" && !visitedSet.has(b.id)) return false;
       if (statusFilter === "skipped" && !skippedSet.has(b.id)) return false;
       if (
@@ -197,9 +203,15 @@ export function MapView({
         return false;
       return true;
     });
-  }, [booths, activeCat, statusFilter, visitedSet, skippedSet, deferredQuery]);
-
-  const cartIds = useCartStore((s) => s.ids);
+  }, [
+    booths,
+    activeCat,
+    statusFilter,
+    visitedSet,
+    skippedSet,
+    deferredQuery,
+    cartSet,
+  ]);
   const boothById = useMemo(
     () => new Map(booths.map((b) => [b.id, b])),
     [booths],
@@ -252,6 +264,18 @@ export function MapView({
       .filter((b): b is Booth => Boolean(b));
     return buildHallSweepRoute(cartBooths, start, {}, exitPoint).boothIds;
   }, [hydrated, cartIds, boothById, start, exitPoint]);
+
+  // List rows: in the "선택된 부스" filter, order by the route sweep (순번 앞으로);
+  // otherwise the plain filtered order.
+  const listBooths = useMemo(() => {
+    if (activeCat !== SELECTED_FILTER || !routeOrderIds) return filtered;
+    const order = new Map(routeOrderIds.map((id, i) => [id, i]));
+    return [...filtered].sort(
+      (a, b) =>
+        (order.get(a.id) ?? Number.MAX_SAFE_INTEGER) -
+        (order.get(b.id) ?? Number.MAX_SAFE_INTEGER),
+    );
+  }, [activeCat, filtered, routeOrderIds]);
 
   // 입구/출구를 바꾸면 동선을 다시 짠다 — 재정렬은 즉시(순수 계산)지만, 바뀐 게
   // 분명히 느껴지도록 짧게 로딩 오버레이를 띄운 뒤 새 순서를 보여준다.
@@ -311,16 +335,15 @@ export function MapView({
   }
 
   // "예, 끝났어요": 동선 데이터는 유지한 채 완료로 표시(서버 기록)하고 홈으로.
-  async function finishVisit() {
+  // 완료 표시는 베스트에포트라 await하지 않는다 — 기다리면 홈 이동이 PATCH 응답만큼
+  // 느려진다. 요청만 쏘고 즉시 이동.
+  function finishVisit() {
     setFinishOpen(false);
     const r = useRouteStore.getState().route;
-    if (r?.id) {
-      try {
-        await api.patch(`/api/route/${r.id}`, { status: "completed" });
-      } catch {
-        /* 완료 표시는 베스트에포트 — 실패해도 이동은 진행 */
-      }
-    }
+    if (r?.id)
+      void api
+        .patch(`/api/route/${r.id}`, { status: "completed" })
+        .catch(() => {});
     router.push("/");
   }
 
@@ -443,6 +466,14 @@ export function MapView({
         >
           전체 {booths.length}
         </FilterChip>
+        {cartIds.length > 0 && (
+          <FilterChip
+            active={activeCat === SELECTED_FILTER}
+            onClick={() => setActiveCat(SELECTED_FILTER)}
+          >
+            선택한 부스 {cartIds.length}
+          </FilterChip>
+        )}
         {detail.categories.map((c) => (
           <FilterChip
             key={c.id}
@@ -551,20 +582,28 @@ export function MapView({
   }
 
   function renderList() {
-    if (filtered.length === 0)
+    if (listBooths.length === 0)
       return (
         <EmptyState
-          title="검색 결과가 없어요"
-          description="다른 키워드나 카테고리로 찾아보세요."
+          title={
+            activeCat === SELECTED_FILTER
+              ? "선택한 부스가 없어요"
+              : "검색 결과가 없어요"
+          }
+          description={
+            activeCat === SELECTED_FILTER
+              ? "부스를 동선에 담으면 여기에 모여요."
+              : "다른 키워드나 카테고리로 찾아보세요."
+          }
         />
       );
     return (
       <>
         <p className="px-1 pb-1.5 text-xs text-muted-foreground">
-          {filtered.length}개 부스 · 항목을 누르면 지도에서 위치를 보여줘요
+          {listBooths.length}개 부스 · 항목을 누르면 지도에서 위치를 보여줘요
         </p>
         <div className="space-y-1.5">
-          {filtered.map((b) => (
+          {listBooths.map((b) => (
             <BoothRow
               key={b.id}
               booth={b}

@@ -655,20 +655,15 @@ export function ExhibitionMap({
               break;
             }
           }
-          // Tapping a booth centres it. In landscape the popup lives in the
-          // side panel and the whole map column is visible, so KEEP the
-          // visitor's current zoom and just pan the booth to the centre. In
-          // portrait the popup covers the bottom, so nudge the zoom into a
-          // comfortable range (booth + neighbours visible) and centre it in the
-          // band above the popup (focusCenterY).
+          // Tapping a booth NEVER changes zoom — keep the visitor's exact
+          // current scale. Only pan so the booth sits centred: horizontally in
+          // the map, vertically in the band between the top bar and the popup
+          // (focusCenterY) so the tapped booth + its neighbours stay visible.
           if (hitBooth) {
             const el = containerRef.current;
             if (el) {
               const g = geomOf(hitBooth);
-              const landscape = el.clientWidth > el.clientHeight * 1.4;
-              const s = landscape
-                ? view.current.scale
-                : clamp(view.current.scale, 1.4, 2.6);
+              const s = view.current.scale;
               // Centre on the booth's rotated screen position, not its raw x/y.
               const cp = toContent({ x: g.x, y: g.y });
               view.current = {

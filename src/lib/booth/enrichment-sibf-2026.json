@@ -1,4 +1,30 @@
 {
+  "A1001": {
+    "goodsKeywords": [
+      "문재인의 필사노트",
+      "독서노트",
+      "ZINE 행간과 여백"
+    ],
+    "themeTags": [
+      "lit",
+      "humanities",
+      "general",
+      "art"
+    ],
+    "summary": "돌베개×평산책방 공동 부스 — 인문서와 문재인 추천도서",
+    "tips": "혼잡 최상위·소요 30~60분. 2026 최대 화제 부스, 6/24 문재인 등장 수백 명 운집, 6/25 유시민·탁현민 즉석 북토크. '대통령의 책' 코너·필사노트.",
+    "sourceUrl": "https://psbooks.kr"
+  },
+  "A104": {
+    "goodsKeywords": [],
+    "themeTags": [
+      "children",
+      "lit",
+      "art"
+    ],
+    "summary": "감성 그림책 중심 아동·그림책 전문 출판사",
+    "tips": "예상혼잡 중·소요 10~20분. 가족·유아 동반 관람객이 꾸준한 그림책 전문 중견사. 화제신간 '매미와 늙은 소'·'초록을 좋아하는 고양이'."
+  },
   "A105": {
     "goodsKeywords": [
       "에코백"
@@ -8,14 +34,79 @@
     "tips": "10주년 에코백 매일 40개 한정 판매, 일찍 방문 추천. 도서 구매 시 책 3권 증정 이벤트",
     "sourceUrl": "https://instagram.com/danchu_press"
   },
+  "A1101": {
+    "goodsKeywords": [
+      "캡슐 토이",
+      "듄",
+      "드래곤 라자",
+      "셜록 홈즈 전집"
+    ],
+    "themeTags": [
+      "lit",
+      "general"
+    ],
+    "summary": "민음사 그룹·황금가지 공유 부스 — 문학·인문·SF/판타지 장르문학",
+    "sourceUrl": "https://instagram.com/minumsa_books",
+    "tips": "인지도 메이저·혼잡 상·소요 20~40분, 도서전 최고 인기 부스. 세계문학전집·캡슐토이 가챠로 결제 대기줄 혼잡. 듄·드래곤 라자 장르문학 팬덤."
+  },
+  "A1102": {
+    "goodsKeywords": [
+      "NFC 키링",
+      "위글위글 리유저블백",
+      "오디오북"
+    ],
+    "themeTags": [
+      "humanities",
+      "lit",
+      "art"
+    ],
+    "summary": "윌라 운영 지식콘텐츠 기업·자기계발·경제경영 출판사",
+    "tips": "인지도 중견·혼잡 상·소요 20~40분. 윌라·윌라스토리 공동 '스토리 온에어' 체험 부스. 오디오북 체험·라디오 포토존·NFC 키링. 윌라 낭독 콘서트+신소율 사인회."
+  },
+  "A1301": {
+    "goodsKeywords": [],
+    "themeTags": [
+      "children",
+      "art",
+      "lit"
+    ],
+    "summary": "어른을 위한 그림책 전문 1인 독립출판사",
+    "tips": "예상혼잡 중·소요 10~20분. '모 이야기' 등 마니아층과 아트북 애호가의 발견형 방문이 꾸준한 1인 독립출판 소형 부스.",
+    "sourceUrl": "https://atnoonbooks.net"
+  },
   "A1304": {
     "goodsKeywords": [
       "캠프캡"
     ],
-    "themeTags": [],
+    "themeTags": [
+      "general",
+      "art",
+      "lit"
+    ],
     "summary": "인기 캠프캡 새 디자인과 초대권 이벤트",
     "tips": "작년 품절된 캠프캡, 일찍 방문 추천. 초대권 이벤트(1인 1매)",
     "sourceUrl": "https://instagram.com/guulpress"
+  },
+  "A1311": {
+    "goodsKeywords": [],
+    "themeTags": [
+      "art",
+      "lit",
+      "general"
+    ],
+    "summary": "국내 최초 독립출판물 전문 서점 겸 출판사",
+    "tips": "예상혼잡 중·소요 15~30분. 독립출판 1세대 대표 서점이자 언리미티드 에디션(UE) 주최사로 독립출판 구역 집객력이 큼.",
+    "sourceUrl": "https://your-mind.com"
+  },
+  "A1405": {
+    "goodsKeywords": [],
+    "themeTags": [
+      "lit",
+      "humanities",
+      "art"
+    ],
+    "summary": "기독교·신앙 단행본 소형 출판사",
+    "tips": "예상혼잡 하·소요 5~10분. 6개사 공동부스(A1405) 일부 테이블 규모의 신생 소형 기독교 출판사. 화제신간 '믿지만, 거기까지'."
   },
   "A1406": {
     "goodsKeywords": [
@@ -29,6 +120,135 @@
     "summary": "키링·소이캔들·필사노트 등 다양한 굿즈",
     "tips": "도서 구매 시 종이백, 현장 이벤트 참여 시 우표 스티커 증정",
     "sourceUrl": "https://instagram.com/dongyeon_press"
+  },
+  "A1410": {
+    "goodsKeywords": [],
+    "themeTags": [
+      "humanities",
+      "science",
+      "lit",
+      "art"
+    ],
+    "summary": "과학기술과 사회를 잇는 인문·과학 독립출판사",
+    "tips": "약 23종 규모 독립출판사, 혼잡 하·10~20분. 'STS 개념어 사전'·SF원작 그림책 '진화 신화' 신간."
+  },
+  "A1501": {
+    "goodsKeywords": [
+      "책등계산법 키링"
+    ],
+    "themeTags": [
+      "children",
+      "art",
+      "humanities",
+      "lit",
+      "general"
+    ],
+    "summary": "그림책·예술·장르문학 메이저 종합 출판사",
+    "tips": "메이저 종합 출판사, 혼잡 중·15~25분. 2025년 공사장 콘셉트·키링 품절·산성비 타자 게임 인기(2026 콘셉트 미정)."
+  },
+  "A1502": {
+    "goodsKeywords": [],
+    "themeTags": [
+      "lit",
+      "art"
+    ],
+    "summary": "전국 동네책방·독립서점 연대 단체",
+    "tips": "동네책방 연대 단체, 혼잡 중·10~20분. 전국 독립서점의 개성 큐레이션을 한자리에서 보는 발견형 부스.",
+    "sourceUrl": "https://instagram.com/localbookshopnet"
+  },
+  "A1601": {
+    "goodsKeywords": [
+      "메모잇",
+      "변색컵"
+    ],
+    "themeTags": [
+      "lit",
+      "art",
+      "children"
+    ],
+    "summary": "베르베르·에코 등 유럽문학 전문 출판사",
+    "tips": "메이저 부스, 혼잡 상·15~30분. 베르베르 내한 6/25 14:00 책마당 대담, 6/27 프랑스관 사인회로 2030 인파 집중."
+  },
+  "A1701": {
+    "goodsKeywords": [
+      "책갈피",
+      "티셔츠",
+      "노트커버",
+      "포스터",
+      "오브제",
+      "그래픽 티셔츠",
+      "아크릴 키링",
+      "레더 북마크",
+      "양초"
+    ],
+    "themeTags": [
+      "general",
+      "lit",
+      "science",
+      "humanities"
+    ],
+    "summary": "교보문고 오리지널 책갈피·티셔츠 등 굿즈",
+    "tips": "굿즈는 현장 판매만 진행, 가격은 현장 공개",
+    "sourceUrl": "https://instagram.com/kyobobook_online"
+  },
+  "A1702": {
+    "goodsKeywords": [
+      "비즈 책갈피",
+      "에코백",
+      "밀리 오리지널스",
+      "북키퍼 앤솔러지",
+      "미니북 키링"
+    ],
+    "themeTags": [
+      "lit",
+      "general",
+      "science"
+    ],
+    "summary": "비즈 책갈피·에코백 등 10주년 굿즈",
+    "tips": "링티·아로마티카 굿즈 매일 선착순 배부",
+    "sourceUrl": "https://instagram.com/millie_bookclub"
+  },
+  "A1703": {
+    "goodsKeywords": [
+      "NFC 메달 키링",
+      "크레마 전자책",
+      "한정 굿즈",
+      "경험 영수증"
+    ],
+    "themeTags": [
+      "science",
+      "general",
+      "lit"
+    ],
+    "summary": "국내 1위 인터넷 서점·문화 콘텐츠 유통 플랫폼",
+    "tips": "인지도 메이저·혼잡 상·소요 20~40분(체험 대기 포함). 개막 첫날 리딩런 약 1,700명. AI 낭독 체험·NFC 메달 키링·경험 영수증 포토존."
+  },
+  "A1802": {
+    "goodsKeywords": [
+      "펭귄 클래식",
+      "1984",
+      "목요일 살인 클럽"
+    ],
+    "themeTags": [
+      "lit",
+      "humanities",
+      "general",
+      "children"
+    ],
+    "summary": "영국 Big5 출판그룹, 도서전 저작권 거래(B2B) 부스",
+    "tips": "인지도 메이저지만 혼잡 하·소요 5~10분. 국제관/저작권센터 내 B2B 부스로 일반 판매·체험·굿즈 없음. 저작권 상담 중심.",
+    "sourceUrl": "https://penguin.co.uk"
+  },
+  "A1904": {
+    "goodsKeywords": [],
+    "themeTags": [
+      "humanities",
+      "science",
+      "lit"
+    ],
+    "summary": "자연과 인간 공존을 지향하는 과학·인문 교양 출판사",
+    "tips": "인지도 중견 출판사, 혼잡도 중·10~20분 소요. 과학·생태·페미니즘·경제비판 라인업. 확인된 사인회·강연 일정 없음.",
+    "sourceUrl": "https://galapagosp.com"
   },
   "A1905": {
     "goodsKeywords": [
@@ -46,9 +266,13 @@
   },
   "A2003": {
     "goodsKeywords": [],
-    "themeTags": [],
+    "themeTags": [
+      "lit",
+      "art"
+    ],
     "summary": "유익한 도서와 함께 굿즈를 준비한 부스",
-    "sourceUrl": "https://instagram.com/foxcorner15"
+    "sourceUrl": "https://instagram.com/foxcorner15",
+    "tips": "예상혼잡 하·소요 5~15분. 폭스코너와 A2003 공동부스 일부 공간 사용, 단독 집객력은 약한 편."
   },
   "A2009": {
     "goodsKeywords": [
@@ -58,6 +282,29 @@
     "summary": "방문객에게 드립백을 증정하는 부스",
     "tips": "방문 시 드립백 선물 증정",
     "sourceUrl": "https://instagram.com/words.of.trees"
+  },
+  "A201": {
+    "goodsKeywords": [],
+    "themeTags": [
+      "art",
+      "humanities"
+    ],
+    "summary": "한글 타이포그래피·그래픽디자인 전문 출판사",
+    "tips": "디자인 전문 출판사, 혼잡 중·15~25분. 6/26 11:00~12:30 책만남홀2 신간 출판기념 강연(박상영·정세랑)."
+  },
+  "A202": {
+    "goodsKeywords": [
+      "아트북",
+      "아티스트북",
+      "진(zine)"
+    ],
+    "themeTags": [
+      "art",
+      "humanities"
+    ],
+    "summary": "현대미술·디자인·아트북 전문 독립출판사(공동 부스)",
+    "tips": "인지도 독립·혼잡 중·소요 15~25분. 사월의눈·프로파간다와 공동 일반부스. 마니아·업계 큐레이션형. 아트북·진 현장 판매.",
+    "sourceUrl": "https://mediabus.org"
   },
   "A209": {
     "goodsKeywords": [
@@ -69,6 +316,148 @@
     "tips": "김미라·이정은·이하영 작가 사인회, 인스타 인증 시 시집 증정",
     "sourceUrl": "https://instagram.com/paperstory_book"
   },
+  "A210": {
+    "goodsKeywords": [],
+    "themeTags": [
+      "general",
+      "children",
+      "art"
+    ],
+    "summary": "만화·그래픽노블·학습만화 전문 출판사",
+    "tips": "예상혼잡 중·소요 10~20분. 작가주의 만화 마니아와 어린이 동반 가족이 함께 찾는 단독 부스."
+  },
+  "A2101": {
+    "goodsKeywords": [],
+    "themeTags": [
+      "humanities",
+      "children"
+    ],
+    "summary": "용선생 학습만화·인문교양 종합 출판사",
+    "tips": "메이저 출판사, 혼잡 중·10~20분. 김영민 새 논어 번역이 도서전 BBK 40종 선정·특별전시·현장 판매."
+  },
+  "A2102": {
+    "goodsKeywords": [
+      "팔각성냥",
+      "선향",
+      "복캔들",
+      "향"
+    ],
+    "themeTags": [
+      "art",
+      "humanities"
+    ],
+    "summary": "한국 정서 재해석 디자인·아트북 출판 스튜디오",
+    "tips": "예상혼잡 상·소요 15~30분. 향·색이름 352 등 인기 굿즈와 감각적 부스 연출로 긴 줄(2025년 별도 대기공간). 화제신간 '산 239'."
+  },
+  "A2103": {
+    "goodsKeywords": [
+      "읽기예보 굿즈",
+      "한정 굿즈",
+      "행운 리워드"
+    ],
+    "themeTags": [
+      "lit",
+      "humanities"
+    ],
+    "summary": "은행나무·휴머니스트 공유 부스 — 문학·인문교양",
+    "tips": "인지도 중견·혼잡 중·소요 15~25분. 정유정·천선란 보유. '읽기예보(마음 날씨)' 테마 부스, 한정 굿즈·행운 리워드·RT 이벤트.",
+    "sourceUrl": "https://x.com/ehbook"
+  },
+  "A2201": {
+    "goodsKeywords": [],
+    "themeTags": [
+      "children",
+      "lit",
+      "art"
+    ],
+    "summary": "'강아지똥' 펴낸 아동·그림책 전문 출판사",
+    "tips": "예상혼잡 중·소요 15~30분. '강아지똥'(100만부) 보유 대표 창작그림책 출판사로 가족·교사 관람객 유입 많음."
+  },
+  "A2202": {
+    "goodsKeywords": [
+      "틴케이스·스티커 세트",
+      "문지북클럽 웰컴 키트",
+      "시집 서명본"
+    ],
+    "themeTags": [
+      "lit",
+      "humanities"
+    ],
+    "summary": "창비와 함께 한국문학 2대 축, 순수문학 출판사",
+    "tips": "메이저 부스, 혼잡 상·15~25분. 창립 50주년 골판지 도서관 부스가 SNS 인증 명소, 굿즈·시집 서명본·강연 운영(서명본 조기 품절 주의)."
+  },
+  "A2203": {
+    "goodsKeywords": [
+      "타포린백"
+    ],
+    "themeTags": [
+      "lit",
+      "humanities",
+      "art"
+    ],
+    "summary": "소전서림 운영, 독서 장려 문학 문화재단",
+    "tips": "출판사 아닌 문학 도서관 재단, 혼잡 중·10~20분. 2025년 대형 타포린백 증정으로 줄 선 마케팅 우수 부스 전례.",
+    "sourceUrl": "https://the-reader.or.kr"
+  },
+  "A2302": {
+    "goodsKeywords": [
+      "1318문고"
+    ],
+    "themeTags": [
+      "lit",
+      "art",
+      "humanities",
+      "children"
+    ],
+    "summary": "사계절출판사·마음산책 공유 부스 — 아동·인문 + 예술 에세이",
+    "tips": "중견 출판사, 혼잡 중·10~20분. 6/26 11:30~13:00 책마당 정세랑×박상영 합동 북토크 시간대 혼잡 급증."
+  },
+  "A2303": {
+    "goodsKeywords": [
+      "책갈피"
+    ],
+    "themeTags": [
+      "art",
+      "humanities"
+    ],
+    "summary": "월간 '디자인' 펴낸 라이프스타일·디자인 출판 미디어 기업",
+    "tips": "예상혼잡 중·소요 15~30분. 오뚜기 협업 'Design Your Own Life' 부스에서 6/24~28 상시 반려 갈피표 만들기·취향 테이블 꾸미기 체험 운영.",
+    "sourceUrl": "https://designhouse.co.kr"
+  },
+  "A301": {
+    "goodsKeywords": [
+      "스테이셔너리",
+      "가방",
+      "초콜릿 굿즈"
+    ],
+    "themeTags": [
+      "art",
+      "lit",
+      "humanities"
+    ],
+    "summary": "워크룸 스튜디오의 디자인·문학 강소 출판사",
+    "tips": "디자인·문학 강소 출판사, 혼잡 중·10~20분. 2026 도서전 포스터·아이덴티티 디자인 주체. 확인된 일정 없음.",
+    "sourceUrl": "https://workroompress.kr"
+  },
+  "A303": {
+    "goodsKeywords": [],
+    "themeTags": [
+      "humanities",
+      "lit"
+    ],
+    "summary": "세계 고전·석학 역작 전문 인문 출판사",
+    "tips": "중견 인문 출판사, 혼잡 중·10~20분. 책 중심 운영으로 꾸준한 방문. 확인된 사인회·강연 일정 없음.",
+    "sourceUrl": "https://kachibooks.co.kr"
+  },
+  "A304": {
+    "goodsKeywords": [],
+    "themeTags": [
+      "humanities",
+      "lit"
+    ],
+    "summary": "문학동네 계열 인문·역사·철학 교양 출판 브랜드",
+    "tips": "중견 인문 브랜드, 혼잡 중·10~20분. 도서 중심이라 회전 빠름. 6/28 13:00~14:30 책만남홀2 김유태 북토크."
+  },
   "A305": {
     "goodsKeywords": [
       "키링",
@@ -78,6 +467,122 @@
     "summary": "청아·봄마중 합동 부스, 키링 만들기와 배지 증정",
     "tips": "도서 2권 이상 구매 시 키링 만들기 체험, 특정 도서 구매 시 배지 증정",
     "sourceUrl": "https://instagram.com/chunga_book"
+  },
+  "A307": {
+    "goodsKeywords": [],
+    "themeTags": [
+      "humanities",
+      "lit",
+      "children"
+    ],
+    "summary": "1988년 창립한 인문·교양·문학 중심 중견 종합 출판사",
+    "tips": "인지도 중견·혼잡 중·소요 10~20분. 공지영·한비야·류시화 베스트셀러 보유. 2026 화제작 《다시 만난 세계》(김희교). 아동 임프린트 푸른숲주니어."
+  },
+  "A401": {
+    "goodsKeywords": [
+      "솔거나라 시리즈",
+      "까치호랑이",
+      "백두산 이야기"
+    ],
+    "themeTags": [
+      "children",
+      "art",
+      "lit"
+    ],
+    "summary": "1976년 창립한 어린이 그림책 전문 출판사",
+    "tips": "인지도 중견·혼잡 중·소요 15~25분. 그림책 1세대 대표 브랜드, 학부모·교사 충성도 높음. 백두산 이야기·달려 토토·솔거나라 시리즈.",
+    "sourceUrl": "https://instagram.com/borimbook"
+  },
+  "A402": {
+    "goodsKeywords": [
+      "캐릭터 굿즈",
+      "마루는 강쥐",
+      "냐한남자",
+      "여신강림"
+    ],
+    "themeTags": [
+      "general",
+      "art"
+    ],
+    "summary": "국내 최대 웹툰 플랫폼, 웹툰 IP 단행본·굿즈 전개",
+    "tips": "인지도 메이저·혼잡 상·소요 20~40분. 마루는 강쥐·냐한남자 캐릭터 굿즈 오픈런 단골. 젊은층 유입 큼."
+  },
+  "A403": {
+    "goodsKeywords": [
+      "책갈피"
+    ],
+    "themeTags": [
+      "lit",
+      "general",
+      "children",
+      "humanities"
+    ],
+    "summary": "단행본·웹툰·웹소설 IP 병행 중견 출판사",
+    "tips": "예상혼잡 상·소요 15~25분. 위픽 단편소설 시리즈 전권 전시와 책 커버 활용 책갈피 굿즈로 개막일부터 붐빔."
+  },
+  "A501": {
+    "goodsKeywords": [
+      "Writer Edition 향수",
+      "오드퍼퓸",
+      "홈프래그런스",
+      "한동일의 라틴어 필사 노트"
+    ],
+    "themeTags": [
+      "lit",
+      "art"
+    ],
+    "summary": "솔테라이브러리(향·문학)·이야기장수(문학동네 에세이) 공유 부스",
+    "tips": "2026 신규 향+문학 브랜드, 혼잡 중·10~20분. 시향 체험·이슬아 작가 연계로 호기심 유입, 향 특성상 체류는 짧음.",
+    "sourceUrl": "https://saltelibrary.com"
+  },
+  "A502": {
+    "goodsKeywords": [
+      "글손실 티셔츠",
+      "총균쇠질 굿즈",
+      "스포츠 타월"
+    ],
+    "themeTags": [
+      "humanities",
+      "science",
+      "children"
+    ],
+    "summary": "사피엔스·정의란 무엇인가의 메이저 종합 출판사",
+    "tips": "메이저 부스, 혼잡 상·15~30분. 'GYM영사' 헬스장 콘셉트·강도별 큐레이션, 캐치스틱 게임 체험, 한정 굿즈로 인파 몰림."
+  },
+  "A503": {
+    "goodsKeywords": [
+      "팝업북",
+      "컬러링북",
+      "도서전 한정 굿즈"
+    ],
+    "themeTags": [
+      "lit",
+      "general",
+      "children"
+    ],
+    "summary": "해리포터·다빈치코드 등 해외 장르문학 강세 종합 출판사",
+    "tips": "인지도 메이저·혼잡 상·소요 20~35분. 도서전 한정 굿즈 오픈런·조기 품절. 팝업북 전시 + 운명 뽑기 이벤트. 김영사·이야기장수 인접 입구권."
+  },
+  "A602": {
+    "goodsKeywords": [
+      "타포린백",
+      "미니 북라이트",
+      "헤어밴드",
+      "부직포백",
+      "달러구트 과자",
+      "초격차",
+      "포노 사피엔스",
+      "달러구트 꿈 백화점"
+    ],
+    "themeTags": [
+      "lit",
+      "humanities",
+      "general",
+      "children"
+    ],
+    "summary": "『달러구트 꿈 백화점 0』 공개와 구매 금액별 증정",
+    "tips": "1만·2만·5만원 이상 구매 시 단계별 굿즈, 인스타 인증 시 부직포백 증정",
+    "sourceUrl": "https://instagram.com/samnparkers"
   },
   "A705": {
     "goodsKeywords": [
@@ -89,6 +594,54 @@
     "summary": "고양이 리유저블백 증정과 박아림 작가 사인회",
     "tips": "도서 2권 이상 구매 시 리유저블백 증정, 박아림 작가 사인회",
     "sourceUrl": "https://instagram.com/kookminbooks"
+  },
+  "A708": {
+    "goodsKeywords": [
+      "한정 박스판",
+      "럭키박스",
+      "PP카드"
+    ],
+    "themeTags": [
+      "general",
+      "lit"
+    ],
+    "summary": "일본 라이트노벨·만화 정발 전문 출판사",
+    "tips": "예상혼잡 중·소요 15~30분. 전생슬라임·던전밥 등 인기 IP 팬덤과 한정 박스판·특전 수요로 서브컬처 관람객이 몰림."
+  },
+  "A803": {
+    "goodsKeywords": [],
+    "themeTags": [
+      "lit",
+      "humanities",
+      "children"
+    ],
+    "summary": "청소년·아동·인문 중견 종합 단행본 출판사",
+    "tips": "예상혼잡 중·소요 10~20분. '신나는 노빈손' 시리즈로 알려진 중견 출판사로 부스 규모·화제성은 중간 수준.",
+    "sourceUrl": "https://ddstone.com"
+  },
+  "A901": {
+    "goodsKeywords": [
+      "더클래식 세계문학",
+      "걸 클래식 컬렉션",
+      "빅팻캣 시리즈"
+    ],
+    "themeTags": [
+      "lit",
+      "humanities",
+      "art"
+    ],
+    "summary": "에세이·어학·클래식 컬렉션 강세 종합 출판사",
+    "tips": "인지도 중견·혼잡 중·소요 15~25분. 수전 손택·사노 요코 등 두터운 독자층. 정관스님 '나의 음식' 북토크 예정. 신간 영화에 관하여.",
+    "sourceUrl": "https://instagram.com/willbooks_pub"
+  },
+  "A903": {
+    "goodsKeywords": [],
+    "themeTags": [
+      "lit",
+      "science"
+    ],
+    "summary": "동아시아 출판사의 SF 전문 임프린트",
+    "tips": "예상혼잡 상·소요 15~30분. 김초엽·천선란 등 스타 SF 작가 팬덤으로 신간 코너 혼잡. 화제신간 '새벽'(옥타비아 버틀러)·'토막 난 우주를 안고서'."
   },
   "B104": {
     "goodsKeywords": [
@@ -104,6 +657,33 @@
     "tips": "세트 구매 시 굿즈 증정, 전보라 작가와의 만남 프로그램",
     "sourceUrl": "https://instagram.com/tokkiseom_book"
   },
+  "B106": {
+    "goodsKeywords": [],
+    "themeTags": [
+      "lit",
+      "art"
+    ],
+    "summary": "SNS 감성 에세이·시 전문 독립출판사",
+    "tips": "성북구 소규모 독립출판사, 혼잡 하·5~15분. B구역 단독 부스로 한산. 확인된 현장 프로그램 없음.",
+    "sourceUrl": "https://dreambooks.kr"
+  },
+  "B107": {
+    "goodsKeywords": [],
+    "themeTags": [
+      "humanities",
+      "lit"
+    ],
+    "summary": "플라톤·칸트 전집의 학술 전문 출판사",
+    "tips": "학술 전문 출판사, 혼잡 하·10~20분. 연구자·인문 애호가 중심으로 한산. 확인된 현장 프로그램 없음."
+  },
+  "B108": {
+    "goodsKeywords": [],
+    "themeTags": [
+      "art"
+    ],
+    "summary": "킨포크 한국판·베어 매거진의 라이프스타일 출판사",
+    "tips": "라이프스타일 독립출판사, 혼잡 중·10~20분. 매거진·아트북 중심. 확인된 현장 프로그램 없음."
+  },
   "B109": {
     "goodsKeywords": [
       "책갈피",
@@ -113,6 +693,17 @@
     "summary": "탐조·창작 테마 굿즈와 휴식 공간이 있는 부스",
     "tips": "이벤트 참여만 해도 책갈피·수첩 증정, B홀 속 쉼터",
     "sourceUrl": "https://instagram.com/cocoon_books"
+  },
+  "B202": {
+    "goodsKeywords": [],
+    "themeTags": [
+      "lit",
+      "art",
+      "humanities",
+      "general"
+    ],
+    "summary": "'바람의아이들'의 성인·전연령 임프린트",
+    "tips": "예상혼잡 중·소요 10~20분. 그래픽노블·여성서사 분야 마니아 독자층 탄탄. 화제신간 '산토끼 키우기'·'트러플'."
   },
   "B203": {
     "goodsKeywords": [
@@ -125,79 +716,20 @@
     "tips": "도서 구매 시 필사노트 증정, 김화진×정기현 합동 사인회 오전 10:30 번호표 배부",
     "sourceUrl": "https://instagram.com/ed_lesmots"
   },
-  "B503": {
-    "goodsKeywords": [],
-    "themeTags": [],
-    "summary": "롤러코스터·초록비책공방 공동 부스, 초대권 증정 이벤트",
-    "tips": "도서전 초대권 증정 이벤트 진행",
-    "sourceUrl": "https://instagram.com/rollercoaster__press"
-  },
-  "B504": {
+  "B205": {
     "goodsKeywords": [
-      "스티커",
-      "미니북 키링",
-      "포스터",
-      "zine",
-      "책갈피",
-      "타포린백",
-      "말랑이",
-      "엽서 세트"
+      "반전 도감",
+      "야구 만화 도감",
+      "K-요괴 도감",
+      "키즈 아트 포스터"
     ],
     "themeTags": [
+      "children",
+      "general",
       "art"
     ],
-    "summary": "플랫폼P 공유부스, 여러 출판사의 책갈피·포스터·키링 굿즈",
-    "tips": "출판사별 구매 특전(3만원 이상 중철노트 등)과 인벤토리 책갈피 만들기 워크숍·라이브드로잉 진행"
-  },
-  "A602": {
-    "goodsKeywords": [
-      "타포린백",
-      "미니 북라이트",
-      "헤어밴드",
-      "부직포백",
-      "달러구트 과자"
-    ],
-    "themeTags": [
-      "lit"
-    ],
-    "summary": "『달러구트 꿈 백화점 0』 공개와 구매 금액별 증정",
-    "tips": "1만·2만·5만원 이상 구매 시 단계별 굿즈, 인스타 인증 시 부직포백 증정",
-    "sourceUrl": "https://instagram.com/samnparkers"
-  },
-  "A1101": {
-    "goodsKeywords": [
-      "캡슐 토이"
-    ],
-    "themeTags": [
-      "lit"
-    ],
-    "summary": "세계문학전집·민음의 시 캡슐토이 굿즈",
-    "sourceUrl": "https://instagram.com/minumsa_books"
-  },
-  "A1701": {
-    "goodsKeywords": [
-      "책갈피",
-      "티셔츠",
-      "노트커버",
-      "포스터",
-      "오브제"
-    ],
-    "themeTags": [
-      "general"
-    ],
-    "summary": "교보문고 오리지널 책갈피·티셔츠 등 굿즈",
-    "tips": "굿즈는 현장 판매만 진행, 가격은 현장 공개",
-    "sourceUrl": "https://instagram.com/kyobobook_online"
-  },
-  "A1702": {
-    "goodsKeywords": [
-      "비즈 책갈피",
-      "에코백"
-    ],
-    "themeTags": [],
-    "summary": "비즈 책갈피·에코백 등 10주년 굿즈",
-    "tips": "링티·아로마티카 굿즈 매일 선착순 배부",
-    "sourceUrl": "https://instagram.com/millie_bookclub"
+    "summary": "키즈 아트 포스터·그림책 독립 브랜드, '반전 도감' 시리즈",
+    "tips": "인지도 독립·혼잡 중·소요 10~20분. 야구 만화 도감 KBO 추천 베스트셀러로 스포츠·가족 관람객 유입. 굿즈·아트포스터 위주."
   },
   "B304": {
     "goodsKeywords": [
@@ -213,6 +745,20 @@
     "summary": "적독 키링·북클립·에코백 등 독서 굿즈",
     "sourceUrl": "https://instagram.com/booksea_pub"
   },
+  "B400": {
+    "goodsKeywords": [
+      "독립출판",
+      "아트북",
+      "한정판 굿즈",
+      "진(zine)"
+    ],
+    "themeTags": [
+      "art",
+      "lit"
+    ],
+    "summary": "독립출판·아트북 출판사 약 110곳이 모인 공식 기획 마켓",
+    "tips": "혼잡 상·소요 40~90분. '도서전의 꽃', 좁은 개방형 통로로 동선 정체 심함. 한정판·작가 직거래·취향 발견."
+  },
   "B407": {
     "goodsKeywords": [
       "굿즈"
@@ -220,6 +766,14 @@
     "themeTags": [],
     "summary": "신간 2권과 실용적인 굿즈 준비",
     "sourceUrl": "https://instagram.com/louderbooks"
+  },
+  "B410": {
+    "goodsKeywords": [],
+    "themeTags": [
+      "art"
+    ],
+    "summary": "K-POP 앨범 패키지로 알려진 그래픽디자인 출판사",
+    "tips": "책마을 소형 테이블 부스, 혼잡 중·5~15분. K-POP 앨범 디자인 팬·디자인 굿즈 수요로 시간대별 대기 가능."
   },
   "B424": {
     "goodsKeywords": [
@@ -260,9 +814,13 @@
     "goodsKeywords": [
       "스티커",
       "엽서",
-      "빵키링"
+      "빵키링",
+      "가방"
     ],
-    "themeTags": [],
+    "themeTags": [
+      "art",
+      "children"
+    ],
     "summary": "스티커·빵키링 등 굿즈 판매",
     "tips": "최신작 구매 시 엽서 증정, 재쇄 없음",
     "sourceUrl": "https://instagram.com/joo_bilder"
@@ -296,5 +854,123 @@
     "themeTags": [],
     "summary": "노트·스티커북 등 다양한 굿즈",
     "sourceUrl": "https://instagram.com/etrebooks"
+  },
+  "B471": {
+    "goodsKeywords": [
+      "대만 독립출판",
+      "아시아 독립출판"
+    ],
+    "themeTags": [
+      "art",
+      "lit",
+      "humanities"
+    ],
+    "summary": "대만 독립·1인 출판사 40여 곳 연합 공동 부스",
+    "tips": "인지도 독립·혼잡 중·소요 15~25분. 신설 국제 독립출판 구역, 2026 테마 「讀字藥局(독서 처방)」. 개방형 소형 부스라 피크 시 정체.",
+    "sourceUrl": "https://indiepublisher.tw"
+  },
+  "B473": {
+    "goodsKeywords": [
+      "아티스트북",
+      "진(zine)",
+      "포토북",
+      "아트북"
+    ],
+    "themeTags": [
+      "art"
+    ],
+    "summary": "동남아 최대 아트북페어 SGABF의 큐레이션 부스",
+    "tips": "인지도 독립·혼잡 중·소요 10~20분. 책마을 내 소형 부스로 회전 빠름. 아티스트북·진·포토북 중심."
+  },
+  "B503": {
+    "goodsKeywords": [],
+    "themeTags": [
+      "children",
+      "science",
+      "humanities",
+      "art"
+    ],
+    "summary": "롤러코스터·초록비책공방 공동 부스, 초대권 증정 이벤트",
+    "tips": "도서전 초대권 증정 이벤트 진행",
+    "sourceUrl": "https://instagram.com/rollercoaster__press"
+  },
+  "B504": {
+    "goodsKeywords": [
+      "스티커",
+      "미니북 키링",
+      "포스터",
+      "zine",
+      "책갈피",
+      "타포린백",
+      "말랑이",
+      "엽서 세트"
+    ],
+    "themeTags": [
+      "art"
+    ],
+    "summary": "플랫폼P 공유부스, 여러 출판사의 책갈피·포스터·키링 굿즈",
+    "tips": "출판사별 구매 특전(3만원 이상 중철노트 등)과 인벤토리 책갈피 만들기 워크숍·라이브드로잉 진행"
+  },
+  "B505": {
+    "goodsKeywords": [
+      "한쪽책",
+      "미니북",
+      "엽서"
+    ],
+    "themeTags": [
+      "art",
+      "lit",
+      "general"
+    ],
+    "summary": "한 장으로 펼치는 '한쪽책' 독립출판사",
+    "tips": "독립출판 인기 부스, 혼잡 중·10~20분. 부스 작아 회전 빠름. 유어마인드와 아트북·미니북·한정 굿즈, 한쪽책 4천원대."
+  },
+  "B601": {
+    "goodsKeywords": [],
+    "themeTags": [
+      "lit",
+      "general",
+      "art"
+    ],
+    "summary": "장르문학 전문 스토리 프로덕션 겸 출판사",
+    "tips": "예상혼잡 상·소요 15~30분. '굿즈·부스 콘셉트 맛집'으로 SNS 화제(체류시간 김). 2026 '장르 덤프' 콘셉트 부스로 복귀."
+  },
+  "B602": {
+    "goodsKeywords": [
+      "시 필사노트",
+      "마스킹테이프",
+      "한지부채",
+      "블라인드북"
+    ],
+    "themeTags": [
+      "lit",
+      "humanities",
+      "general",
+      "children"
+    ],
+    "summary": "10여 개 임프린트 보유한 문학 전문 대형 출판그룹",
+    "tips": "예상혼잡 상·소요 20~40분, 대기 10~30분+. 사인회 6/24 최은영·6/26 김영하·6/27 은희경·6/28 김애란 등, 한정 리커버·굿즈 다수.",
+    "sourceUrl": "https://munhakdongne.com"
+  },
+  "B603": {
+    "goodsKeywords": [],
+    "themeTags": [
+      "lit",
+      "humanities",
+      "children"
+    ],
+    "summary": "한강·손원평의 대형 종합 출판사",
+    "tips": "오픈런 대형 부스, 혼잡 상·20~40분. 신간 선공개 할인·인생문장 벽 참여·클럽창비 혜택.",
+    "sourceUrl": "https://x.com/changbi_books"
+  },
+  "B604": {
+    "goodsKeywords": [],
+    "themeTags": [
+      "lit",
+      "art",
+      "general"
+    ],
+    "summary": "시집·현대시 전문 강소 출판사",
+    "tips": "시 전문 출판사, 혼잡 중·10~20분. 6/28 11:00~12:30 책만남홀2 만화가 재수 작가 토크·창작 워크숍."
   }
 }

@@ -184,8 +184,15 @@ export default async function BoothDetailPage({ params }: Props) {
                       </section>
                     )}
 
-                  {/* AI-extracted 신간·굿즈 (renders only when found). */}
-                  <BoothHighlights boothId={booth.id} />
+                  {/* AI-extracted 신간·굿즈 (renders only when found). 굿즈는
+                      수동 enrichment가 있으면 중복되므로 숨긴다(신간만 노출). */}
+                  <BoothHighlights
+                    boothId={booth.id}
+                    hideGoods={Boolean(
+                      booth.enrichment &&
+                      booth.enrichment.goodsKeywords.length > 0,
+                    )}
+                  />
 
                   {booth.aliases && booth.aliases.length > 0 && (
                     <section className="space-y-2">

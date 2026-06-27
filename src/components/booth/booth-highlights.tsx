@@ -14,14 +14,30 @@ type Extract = { summary: string; newReleases: string[]; goods: string[] };
  * summary call). While the AI call is in flight it shows a labelled skeleton —
  * the call can exceed 0.5s, so the section never appears as a blank gap.
  */
-export function BoothHighlights({ boothId }: { boothId: string }) {
+export function BoothHighlights({
+  boothId,
+  hideGoods = false,
+}: {
+  boothId: string;
+  /** Manual enrichment already shows 굿즈 → hide the AI-extracted goods to avoid a duplicate section. */
+  hideGoods?: boolean;
+}) {
   const [data, setData] = useState<Extract | null>(null);
   const [loading, setLoading] = useState(true);
   const goodsMsg = useRotatingMessage(LOADING_MESSAGES.goods, loading);
 
+  // Reset to the loading state when the booth changes, during render (not in an
+  // effect) to avoid a cascading setState-in-effect. The effect below only kicks
+  // off the fetch and writes results via async callbacks.
+  const [reqKey, setReqKey] = useState(boothId);
+  if (reqKey !== boothId) {
+    setReqKey(boothId);
+    setData(null);
+    setLoading(true);
+  }
+
   useEffect(() => {
     let cancelled = false;
-    setLoading(true);
     api
       .post<Extract>("/api/ai/booth-summary", { boothId })
       .then((r) => {
@@ -39,7 +55,7 @@ export function BoothHighlights({ boothId }: { boothId: string }) {
   }, [boothId]);
 
   const newReleases = data?.newReleases ?? [];
-  const goods = data?.goods ?? [];
+  const goods = hideGoods ? [] : (data?.goods ?? []);
 
   if (loading) {
     return (
