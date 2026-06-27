@@ -13,7 +13,6 @@ import { CategoryChip } from "@/components/booth/category-chip";
 import { ReviewSection } from "@/components/booth/review-section";
 import { EventList } from "@/components/booth/event-list";
 import { AnalyticsTracker } from "@/components/common/analytics-tracker";
-import { Rating } from "@/components/common/rating";
 import { Icon } from "@/components/common/icon";
 
 type Props = { params: Promise<{ id: string }> };
@@ -82,13 +81,11 @@ export default async function BoothDetailPage({ params }: Props) {
                 {booth.company}
               </p>
               <div className="mt-1.5 flex items-center gap-2">
-                {reviewSummary.count > 0 ? (
-                  <Rating value={reviewSummary.avg} size={14} showValue />
-                ) : (
-                  <span className="text-xs text-muted-foreground">
-                    리뷰 없음
-                  </span>
-                )}
+                <span className="text-xs text-muted-foreground">
+                  {reviewSummary.count > 0
+                    ? `후기 ${reviewSummary.count}`
+                    : "후기 없음"}
+                </span>
               </div>
             </div>
           </div>

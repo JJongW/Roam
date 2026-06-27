@@ -30,7 +30,6 @@ describe("MockRepository", () => {
     const detail = await repo.getBoothDetail("b_a1902");
     expect(detail!.booth.code).toBe("A1902");
     expect(detail!.reviewSummary.count).toBeGreaterThan(0);
-    expect(detail!.reviewSummary.avg).toBeGreaterThan(0);
   });
 
   it("creates a session and persists a preference", async () => {
@@ -49,7 +48,6 @@ describe("MockRepository", () => {
   it("adds a review and updates the summary", async () => {
     const before = await repo.listReviews("b_b601");
     await repo.createReview("b_b601", "sess_x", {
-      rating: 5,
       comment: "great",
       authorName: "tester",
     });

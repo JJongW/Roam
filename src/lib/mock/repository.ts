@@ -185,9 +185,6 @@ export class MockRepository implements Repository {
       .reviews.filter((r) => r.boothId === id)
       .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
     const count = reviews.length;
-    const avg = count
-      ? Number((reviews.reduce((s, r) => s + r.rating, 0) / count).toFixed(2))
-      : 0;
     return {
       booth,
       category,
@@ -196,7 +193,7 @@ export class MockRepository implements Repository {
         .events.filter((e) => e.boothId === id)
         .sort((a, b) => a.startTime.localeCompare(b.startTime)),
       reviews,
-      reviewSummary: { avg, count },
+      reviewSummary: { count },
     };
   }
 
@@ -297,12 +294,9 @@ export class MockRepository implements Repository {
       .reviews.filter((r) => r.boothId === boothId)
       .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
     const count = all.length;
-    const avg = count
-      ? Number((all.reduce((s, r) => s + r.rating, 0) / count).toFixed(2))
-      : 0;
     return {
       ...paginate(all, opts?.cursor, opts?.limit),
-      summary: { avg, count },
+      summary: { count },
     };
   }
 

@@ -58,20 +58,13 @@ describe("userPreferenceInputSchema", () => {
 });
 
 describe("reviewInputSchema", () => {
-  it("rejects out-of-range ratings", () => {
-    expect(
-      reviewInputSchema.safeParse({ rating: 9, comment: "hi", authorName: "a" })
-        .success,
-    ).toBe(false);
-  });
   it("requires a comment", () => {
     expect(
-      reviewInputSchema.safeParse({ rating: 5, comment: "", authorName: "a" })
-        .success,
+      reviewInputSchema.safeParse({ comment: "", authorName: "a" }).success,
     ).toBe(false);
   });
   it("defaults author to 익명", () => {
-    const r = reviewInputSchema.parse({ rating: 5, comment: "good" });
+    const r = reviewInputSchema.parse({ comment: "good" });
     expect(r.authorName).toBe("익명");
   });
 });

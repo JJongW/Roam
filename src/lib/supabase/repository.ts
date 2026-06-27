@@ -185,7 +185,6 @@ function mapReview(r: Row): Review {
     id: str(r.id),
     boothId: str(r.booth_id),
     sessionId: str(r.session_id),
-    rating: num(r.rating),
     comment: str(r.comment),
     authorName: str(r.author_name),
     createdAt: str(r.created_at),
@@ -520,9 +519,6 @@ export class SupabaseRepository implements Repository {
       .map(mapReview)
       .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
     const count = reviews.length;
-    const avg = count
-      ? Number((reviews.reduce((s, r) => s + r.rating, 0) / count).toFixed(2))
-      : 0;
     return {
       booth,
       category: mapCategory((catRow ?? {}) as Row),
@@ -531,7 +527,7 @@ export class SupabaseRepository implements Repository {
         .map(mapEvent)
         .sort((a, b) => a.startTime.localeCompare(b.startTime)),
       reviews,
-      reviewSummary: { avg, count },
+      reviewSummary: { count },
     };
   }
 
@@ -682,7 +678,7 @@ export class SupabaseRepository implements Repository {
   async listReviews(
     boothId: string,
     opts?: { cursor?: string; limit?: number },
-  ): Promise<Paginated<Review> & { summary: { avg: number; count: number } }> {
+  ): Promise<Paginated<Review> & { summary: { count: number } }> {
     const db = await this.db();
     const { data } = await db
       .from("review")
@@ -692,12 +688,9 @@ export class SupabaseRepository implements Repository {
       .map(mapReview)
       .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
     const count = all.length;
-    const avg = count
-      ? Number((all.reduce((s, r) => s + r.rating, 0) / count).toFixed(2))
-      : 0;
     return {
       ...paginate(all, opts?.cursor, opts?.limit),
-      summary: { avg, count },
+      summary: { count },
     };
   }
 
@@ -711,7 +704,6 @@ export class SupabaseRepository implements Repository {
       id: uid("rv"),
       booth_id: boothId,
       session_id: sessionId,
-      rating: input.rating,
       comment: input.comment,
       author_name: input.authorName,
       created_at: now(),

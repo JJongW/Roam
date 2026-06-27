@@ -96,7 +96,7 @@ export interface Repository {
   listReviews(
     boothId: string,
     opts?: { cursor?: string; limit?: number },
-  ): Promise<Paginated<Review> & { summary: { avg: number; count: number } }>;
+  ): Promise<Paginated<Review> & { summary: { count: number } }>;
   createReview(
     boothId: string,
     sessionId: string,

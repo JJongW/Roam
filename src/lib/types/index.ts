@@ -178,7 +178,6 @@ export interface Review {
   id: string;
   boothId: string;
   sessionId: string;
-  rating: number; // 1..5
   comment: string;
   authorName: string;
   createdAt: string;
@@ -362,7 +361,7 @@ export interface BoothDetail {
   welcomeKit?: WelcomeKit;
   events: BoothEvent[];
   reviews: Review[];
-  reviewSummary: { avg: number; count: number };
+  reviewSummary: { count: number };
 }
 
 export interface ExhibitionDetail {

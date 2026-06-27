@@ -91,7 +91,6 @@ export const routeSaveSchema = z.object({
 export type RouteSaveInput = z.infer<typeof routeSaveSchema>;
 
 export const reviewInputSchema = z.object({
-  rating: z.number().int().min(1).max(5),
   comment: z.string().min(2, "내용을 입력해 주세요").max(500),
   authorName: z.string().min(1).max(30).default("익명"),
 });

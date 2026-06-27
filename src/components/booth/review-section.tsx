@@ -1,13 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Star, Loader2, PencilLine } from "lucide-react";
+import { Loader2, PencilLine } from "lucide-react";
 import { toast } from "sonner";
 import { format } from "date-fns";
-import { cn } from "@/lib/utils";
 import { api, ApiClientError } from "@/lib/api/client";
 import { reviewInputSchema } from "@/lib/schemas";
-import { Rating } from "@/components/common/rating";
 import { EmptyState } from "@/components/common/states";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -23,7 +21,7 @@ export function ReviewSection({
 }: {
   boothId: string;
   initialReviews: Review[];
-  initialSummary: { avg: number; count: number };
+  initialSummary: { count: number };
   /** Show only the most recent N; the rest reveal behind a "더보기". */
   previewCount?: number;
 }) {
@@ -31,14 +29,12 @@ export function ReviewSection({
   const [summary, setSummary] = useState(initialSummary);
   const [open, setOpen] = useState(false);
   const [showAll, setShowAll] = useState(false);
-  const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
   const [author, setAuthor] = useState("");
   const [busy, setBusy] = useState(false);
 
   async function submit() {
     const parsed = reviewInputSchema.safeParse({
-      rating,
       comment,
       authorName: author || "익명",
     });
@@ -54,12 +50,7 @@ export function ReviewSection({
       );
       const next = [review, ...reviews];
       setReviews(next);
-      setSummary({
-        count: next.length,
-        avg: Number(
-          (next.reduce((s, r) => s + r.rating, 0) / next.length).toFixed(2),
-        ),
-      });
+      setSummary({ count: next.length });
       setComment("");
       setAuthor("");
       setOpen(false);
@@ -77,9 +68,8 @@ export function ReviewSection({
     <section className="space-y-3">
       <div className="flex items-center justify-between">
         <h2 className="text-base font-bold">
-          리뷰 <span className="text-muted-foreground">{summary.count}</span>
+          후기 <span className="text-muted-foreground">{summary.count}</span>
         </h2>
-        {summary.count > 0 && <Rating value={summary.avg} showValue />}
       </div>
 
       {!open ? (
@@ -88,32 +78,10 @@ export function ReviewSection({
           className="w-full"
           onClick={() => setOpen(true)}
         >
-          <PencilLine className="size-4" /> 리뷰 작성하기
+          <PencilLine className="size-4" /> 후기 작성하기
         </Button>
       ) : (
         <div className="space-y-3 rounded-2xl border border-border bg-card p-4">
-          <div className="space-y-1.5">
-            <Label>별점</Label>
-            <div className="flex gap-1">
-              {[1, 2, 3, 4, 5].map((n) => (
-                <button
-                  key={n}
-                  type="button"
-                  onClick={() => setRating(n)}
-                  aria-label={`${n}점`}
-                >
-                  <Star
-                    className={cn(
-                      "size-8",
-                      n <= rating
-                        ? "fill-warning text-warning"
-                        : "fill-secondary text-secondary",
-                    )}
-                  />
-                </button>
-              ))}
-            </div>
-          </div>
           <div className="space-y-1.5">
             <Label htmlFor="rv-comment">내용</Label>
             <Textarea
@@ -152,8 +120,8 @@ export function ReviewSection({
 
       {reviews.length === 0 ? (
         <EmptyState
-          title="아직 리뷰가 없어요"
-          description="첫 번째 리뷰를 남겨보세요."
+          title="아직 후기가 없어요"
+          description="첫 번째 후기를 남겨보세요."
         />
       ) : (
         <>
@@ -168,7 +136,6 @@ export function ReviewSection({
               >
                 <div className="flex items-center justify-between">
                   <span className="font-semibold">{r.authorName}</span>
-                  <Rating value={r.rating} size={14} />
                 </div>
                 <p className="mt-1.5 text-sm leading-relaxed text-foreground/90">
                   {r.comment}
@@ -187,7 +154,7 @@ export function ReviewSection({
                 className="w-full"
                 onClick={() => setShowAll(true)}
               >
-                리뷰 {reviews.length - previewCount}개 더보기
+                후기 {reviews.length - previewCount}개 더보기
               </Button>
             )}
         </>
