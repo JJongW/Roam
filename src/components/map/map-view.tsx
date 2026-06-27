@@ -65,11 +65,14 @@ const BoothRow = memo(function BoothRow({
   selected,
   color,
   onLocate,
+  orderNumber,
 }: {
   booth: Booth;
   selected: boolean;
   color: string;
   onLocate: (id: string) => void;
+  /** When set ("선택한 부스" list), show the route 순번 badge instead of the map pin. */
+  orderNumber?: number;
 }) {
   return (
     <div
@@ -83,7 +86,13 @@ const BoothRow = memo(function BoothRow({
         onClick={() => onLocate(booth.id)}
         className="flex min-w-0 flex-1 items-center gap-3 text-left"
       >
-        <MapPin className="size-4 shrink-0" style={{ color }} />
+        {orderNumber != null ? (
+          <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-bold text-primary-foreground">
+            {orderNumber}
+          </span>
+        ) : (
+          <MapPin className="size-4 shrink-0" style={{ color }} />
+        )}
         {booth.code && (
           <span className="w-12 shrink-0 text-xs font-bold text-muted-foreground">
             {booth.code}
@@ -189,9 +198,14 @@ export function MapView({
   const filtered = useMemo(() => {
     const q = deferredQuery.trim().toLowerCase();
     return booths.filter((b) => {
-      if (activeCat === SELECTED_FILTER) {
-        if (!cartSet.has(b.id)) return false;
-      } else if (activeCat && b.categoryId !== activeCat) return false;
+      // SELECTED_FILTER affects only the LIST (see listBooths), not the map —
+      // the map keeps showing every booth. So here it's a no-op (show all).
+      if (
+        activeCat &&
+        activeCat !== SELECTED_FILTER &&
+        b.categoryId !== activeCat
+      )
+        return false;
       if (statusFilter === "visited" && !visitedSet.has(b.id)) return false;
       if (statusFilter === "skipped" && !skippedSet.has(b.id)) return false;
       if (
@@ -203,15 +217,7 @@ export function MapView({
         return false;
       return true;
     });
-  }, [
-    booths,
-    activeCat,
-    statusFilter,
-    visitedSet,
-    skippedSet,
-    deferredQuery,
-    cartSet,
-  ]);
+  }, [booths, activeCat, statusFilter, visitedSet, skippedSet, deferredQuery]);
   const boothById = useMemo(
     () => new Map(booths.map((b) => [b.id, b])),
     [booths],
@@ -265,17 +271,20 @@ export function MapView({
     return buildHallSweepRoute(cartBooths, start, {}, exitPoint).boothIds;
   }, [hydrated, cartIds, boothById, start, exitPoint]);
 
-  // List rows: in the "선택된 부스" filter, order by the route sweep (순번 앞으로);
-  // otherwise the plain filtered order.
+  // List rows. In the "선택한 부스" filter, narrow to cart booths and order by the
+  // route sweep (순번 앞으로) — the map itself still shows everything.
   const listBooths = useMemo(() => {
-    if (activeCat !== SELECTED_FILTER || !routeOrderIds) return filtered;
-    const order = new Map(routeOrderIds.map((id, i) => [id, i]));
-    return [...filtered].sort(
-      (a, b) =>
-        (order.get(a.id) ?? Number.MAX_SAFE_INTEGER) -
-        (order.get(b.id) ?? Number.MAX_SAFE_INTEGER),
-    );
-  }, [activeCat, filtered, routeOrderIds]);
+    if (activeCat !== SELECTED_FILTER) return filtered;
+    const seq = routeOrderIds ?? cartIds;
+    const order = new Map(seq.map((id, i) => [id, i]));
+    return filtered
+      .filter((b) => cartSet.has(b.id))
+      .sort(
+        (a, b) =>
+          (order.get(a.id) ?? Number.MAX_SAFE_INTEGER) -
+          (order.get(b.id) ?? Number.MAX_SAFE_INTEGER),
+      );
+  }, [activeCat, filtered, routeOrderIds, cartIds, cartSet]);
 
   // 입구/출구를 바꾸면 동선을 다시 짠다 — 재정렬은 즉시(순수 계산)지만, 바뀐 게
   // 분명히 느껴지도록 짧게 로딩 오버레이를 띄운 뒤 새 순서를 보여준다.
@@ -603,7 +612,7 @@ export function MapView({
           {listBooths.length}개 부스 · 항목을 누르면 지도에서 위치를 보여줘요
         </p>
         <div className="space-y-1.5">
-          {listBooths.map((b) => (
+          {listBooths.map((b, i) => (
             <BoothRow
               key={b.id}
               booth={b}
@@ -612,6 +621,7 @@ export function MapView({
                 catById.get(b.categoryId)?.color ?? "var(--muted-foreground)"
               }
               onLocate={locate}
+              orderNumber={activeCat === SELECTED_FILTER ? i + 1 : undefined}
             />
           ))}
         </div>
