@@ -230,6 +230,13 @@ export function AICompanionOnboarding({
     commit(multiSel);
   }
 
+  // 온보딩을 건너뛰고 지도로 바로 — 동선 생성 없이 빈손으로 지도 진입.
+  // 지도에서 "AI 추천"으로 언제든 동선을 만들 수 있다.
+  function skipToMap() {
+    if (submitting) return;
+    router.replace(`/exhibitions/${slug}/map`);
+  }
+
   function goBack() {
     if (history.length === 0) {
       router.back();
@@ -292,7 +299,15 @@ export function AICompanionOnboarding({
           <ChevronLeft className="size-6" />
         </Button>
         <OnboardingProgress value={progress} />
-        <span className="w-8" />
+        <Button
+          variant="ghost"
+          size="sm"
+          className="shrink-0 text-muted-foreground"
+          disabled={submitting}
+          onClick={skipToMap}
+        >
+          건너뛰기
+        </Button>
       </header>
 
       <div className="flex flex-1 overflow-hidden md:gap-8 md:px-10 landscape:gap-8 landscape:px-10">

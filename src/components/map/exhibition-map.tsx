@@ -1367,50 +1367,75 @@ export function ExhibitionMap({
                           </text>
                         </>
                       )}
-                      {Math.min(g.w, g.h) >=
-                      (b.kind === "facility" ? 72 : 120) ? (
-                        (() => {
-                          // Big stands (facility, or a single exhibitor taking a
-                          // large booth) show the full name (wrapped, larger)
-                          // instead of just a code.
-                          const fs = Math.round(
-                            clamp(Math.min(g.w, g.h) / 5, 16, 30),
-                          );
-                          const perLine = Math.max(
-                            4,
-                            Math.floor((g.w * 0.82) / fs),
-                          );
-                          const lines = wrapLabel(b.name, perLine, 3);
-                          const lh = fs * 1.15;
-                          const y0 = -((lines.length - 1) / 2) * lh;
-                          return (
-                            <text
-                              textAnchor="middle"
-                              fontSize={fs}
-                              fontWeight="800"
-                              fill={codeColor}
-                              transform={upright(0, 0)}
-                            >
-                              {lines.map((ln, li) => (
-                                <tspan key={li} x={0} y={y0 + li * lh}>
-                                  {ln}
-                                </tspan>
-                              ))}
-                            </text>
-                          );
-                        })()
-                      ) : (
-                        <text
-                          textAnchor="middle"
-                          dy="4"
-                          fontSize="11"
-                          fontWeight="700"
-                          fill={codeColor}
-                          transform={upright(0, 0)}
-                        >
-                          {b.code ?? b.name.slice(0, 3)}
-                        </text>
-                      )}
+                      {(() => {
+                        // 모든 부스에 코드 + 이름을 함께 표시한다. 글자 크기는
+                        // 부스 크기에 비례(작은 부스 작게, 큰 부스 크게).
+                        // 폭에 맞춰 줄바꿈하고, 높이가 모자라면 줄 수를 줄여
+                        // …로 잘라 박스를 넘치지 않게 한다.
+                        const minDim = Math.min(g.w, g.h);
+                        const fs = Math.round(clamp(minDim / 5.5, 7, 26));
+                        const codeFs = Math.round(clamp(fs * 0.8, 6, 17));
+                        const pad = BOOTH_GAP + 3;
+                        const innerW = Math.max(8, g.w - pad * 2);
+                        const codeLH = b.code ? codeFs * 1.3 : 0;
+                        const nameLH = fs * 1.16;
+                        // 한글 글자폭 ≈ 1em. 옆으로 넘치지 않게 92%만 사용.
+                        const perLine = Math.max(
+                          3,
+                          Math.floor((innerW * 0.92) / fs),
+                        );
+                        // 코드 줄을 뺀 높이에 이름 몇 줄이 들어가는지(최대 3줄).
+                        const availH = Math.max(0, g.h - pad * 2 - codeLH);
+                        const maxNameLines = Math.max(
+                          1,
+                          Math.min(3, Math.floor(availH / nameLH)),
+                        );
+                        const lines = wrapLabel(b.name, perLine, maxNameLines);
+                        // 코드 + 이름 블록을 세로 중앙 정렬(central 베이스라인).
+                        const blockH = codeLH + lines.length * nameLH;
+                        let cy = -blockH / 2;
+                        const rows: {
+                          t: string;
+                          y: number;
+                          size: number;
+                          code?: boolean;
+                        }[] = [];
+                        if (b.code) {
+                          rows.push({
+                            t: b.code,
+                            y: cy + codeLH / 2,
+                            size: codeFs,
+                            code: true,
+                          });
+                          cy += codeLH;
+                        }
+                        for (const ln of lines) {
+                          rows.push({ t: ln, y: cy + nameLH / 2, size: fs });
+                          cy += nameLH;
+                        }
+                        return (
+                          <text
+                            textAnchor="middle"
+                            dominantBaseline="central"
+                            fontWeight="800"
+                            fill={codeColor}
+                            transform={upright(0, 0)}
+                          >
+                            {rows.map((r, ri) => (
+                              <tspan
+                                key={ri}
+                                x={0}
+                                y={r.y}
+                                fontSize={r.size}
+                                fontWeight={r.code ? 600 : 800}
+                                fillOpacity={r.code ? 0.72 : 1}
+                              >
+                                {r.t}
+                              </tspan>
+                            ))}
+                          </text>
+                        );
+                      })()}
                       {isSel && (
                         <text
                           textAnchor="middle"
