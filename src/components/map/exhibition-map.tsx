@@ -766,7 +766,8 @@ export function ExhibitionMap({
   // crosses a booth. Otherwise fall back to the simple orthogonal path.
   // A* is expensive, so memoise on the route order (re-runs only when the plan
   // changes — not on every pan/zoom).
-  // Pan/zoom to bring a chosen booth (e.g. a search hit) into the centre.
+  // Pan to bring a chosen booth (list/search selection) into view. NEVER zooms —
+  // keeps the visitor's current scale, only re-centres the booth.
   useEffect(() => {
     if (!centerOn) return;
     const b = boothById.get(centerOn);
@@ -775,7 +776,7 @@ export function ExhibitionMap({
     if (!el) return;
     const g = geomOf(b);
     const cw = el.clientWidth;
-    const next = Math.max(view.current.scale, 1.4);
+    const next = view.current.scale;
     const cp = toContent({ x: g.x, y: g.y });
     view.current = {
       scale: next,
