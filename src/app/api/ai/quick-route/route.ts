@@ -92,6 +92,8 @@ export async function POST(req: Request) {
     // (웹검색·URL·RAG 활성 = grounded). 실패하면 결정론 plan을 그대로 쓴다.
     let selectedIds = plan.boothIds;
     let recKeywords: string[] = [];
+    let reason = "";
+    let source: "ai" | "deterministic" = "deterministic";
     if (rank.ranked.length > 0) {
       try {
         const rec = await recommendBoothIds({
@@ -111,7 +113,11 @@ export async function POST(req: Request) {
           grounded: true, // 지도 AI 추천은 웹검색·URL 활성
           trendingKeywords: trending,
         });
-        if (rec.boothIds.length > 0) selectedIds = rec.boothIds;
+        if (rec.boothIds.length > 0) {
+          selectedIds = rec.boothIds;
+          reason = rec.reason || "";
+          source = "ai";
+        }
         recKeywords = rec.keywords;
       } catch (e) {
         console.error("[ai/quick-route] LLM rerank failed, fallback", e);
@@ -170,6 +176,11 @@ export async function POST(req: Request) {
       chips: mapped.chips,
       unmatched: mapped.unmatched,
       confidence,
+      // 과정·결과 표시용: 확장 키워드 / 추천 이유 / 소스(AI·결정론) / 부스 수.
+      keywords: recKeywords,
+      reason,
+      source,
+      count: boothIds.length,
     });
   });
 }
