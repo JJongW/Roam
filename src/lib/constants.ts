@@ -190,14 +190,18 @@ export const WALK_UNITS_PER_MINUTE = 2000;
 export const BASE_DWELL_MINUTES = 5;
 
 // --- Per-booth dwell by stand size -----------------------------------------
-// 실제 체류는 부스 크기에 따라 다르다 — 작은 스탠드는 훑고 지나가고, 큰 부스는
-// 오래 머문다. floorplan의 면적(w×h)으로 두 단계로 나눈다(임계 = 가장 흔한
-// 소형 스탠드 53×53·53×110 ↔ 110×110 이상 사이).
-/** 면적이 이 값 미만이면 "작은 부스". */
-export const DWELL_SMALL_MAX_AREA = 8000;
-/** 작은 부스 체류(분). */
-export const DWELL_SMALL_MINUTES = 3;
-/** 큰 부스 체류(분). */
-export const DWELL_LARGE_MINUTES = 10;
-/** 정지 수 상한 추정에 쓰는 최소 체류(분) — 가장 빽빽한 경우 기준. */
-export const MIN_DWELL_MINUTES = DWELL_SMALL_MINUTES;
+// 실제 체류는 부스 크기에 따라 크게 다르다 — 제일 작은 53×53 스탠드는 2분도 안
+// 머물고, 가장 큰 부스라야 10분 안팎. floorplan 면적(w×h)으로 5단계로 나눠
+// 작은 부스를 과대평가하지 않게 한다(과대평가하면 시간예산이 금방 차서 추천
+// 부스 수가 적어진다). 경계는 SIBF floorplan 실측 면적 분포 기준.
+// 2809(53×53)→2, 5830(53×110)→4, ~12k→6, ~24~45k→8, 50k+→10.
+/** 면적 오름차순 경계 — 첫 매칭 tier의 minutes 사용. 마지막은 Infinity(최대 부스). */
+export const DWELL_TIERS: { maxArea: number; minutes: number }[] = [
+  { maxArea: 5000, minutes: 2 },
+  { maxArea: 8000, minutes: 4 },
+  { maxArea: 20000, minutes: 6 },
+  { maxArea: 50000, minutes: 8 },
+  { maxArea: Infinity, minutes: 10 },
+];
+/** 정지 수 상한 추정에 쓰는 최소 체류(분) — 가장 빽빽한(모두 소형) 경우 기준. */
+export const MIN_DWELL_MINUTES = 2;
