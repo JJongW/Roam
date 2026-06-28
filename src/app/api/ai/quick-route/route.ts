@@ -99,7 +99,15 @@ export async function POST(req: Request) {
           userBrief: [text, mapped.chips.join(" · ")]
             .filter(Boolean)
             .join("\n"),
-          limit: Math.max(3, plan.boothIds.length || 8),
+          // 예산 비례로 넉넉히(부스당 ~6분). 실제 시간 맞춤은 pruneToBudget.
+          limit: Math.min(
+            rank.ranked.length,
+            Math.max(
+              15,
+              plan.boothIds.length,
+              Math.round(mapped.preference.availableMinutes / 6),
+            ),
+          ),
           grounded: true, // 지도 AI 추천은 웹검색·URL 활성
           trendingKeywords: trending,
         });

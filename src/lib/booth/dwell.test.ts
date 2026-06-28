@@ -1,10 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { attachDwellMinutes, dwellForArea } from "./dwell";
-import {
-  DWELL_LARGE_MINUTES,
-  DWELL_SMALL_MAX_AREA,
-  DWELL_SMALL_MINUTES,
-} from "@/lib/constants";
+import { DWELL_TIERS } from "@/lib/constants";
 import { FLOORPLANS } from "@/lib/floorplans";
 import type { Booth } from "@/lib/types";
 
@@ -29,17 +25,31 @@ function booth(code: string): Booth {
 }
 
 describe("dwellForArea", () => {
-  it("small stand (53x53) → small dwell", () => {
-    expect(dwellForArea(53, 53)).toBe(DWELL_SMALL_MINUTES);
+  it("smallest stand (53x53 = 2809) → 2분", () => {
+    expect(dwellForArea(53, 53)).toBe(2);
   });
 
-  it("large stand (110x110) → large dwell", () => {
-    expect(dwellForArea(110, 110)).toBe(DWELL_LARGE_MINUTES);
+  it("53x110 (5830) → 4분", () => {
+    expect(dwellForArea(53, 110)).toBe(4);
   });
 
-  it("threshold is exclusive — exactly DWELL_SMALL_MAX_AREA is large", () => {
-    expect(dwellForArea(DWELL_SMALL_MAX_AREA, 1)).toBe(DWELL_LARGE_MINUTES);
-    expect(dwellForArea(DWELL_SMALL_MAX_AREA - 1, 1)).toBe(DWELL_SMALL_MINUTES);
+  it("110x110 (12100) → 6분", () => {
+    expect(dwellForArea(110, 110)).toBe(6);
+  });
+
+  it("110x224 (24640) → 8분", () => {
+    expect(dwellForArea(110, 224)).toBe(8);
+  });
+
+  it("largest stand (417x407) → 10분", () => {
+    expect(dwellForArea(417, 407)).toBe(10);
+  });
+
+  it("tiers are first-match on ascending maxArea", () => {
+    for (const t of DWELL_TIERS) {
+      if (t.maxArea === Infinity) continue;
+      expect(dwellForArea(t.maxArea - 1, 1)).toBeLessThanOrEqual(t.minutes);
+    }
   });
 });
 

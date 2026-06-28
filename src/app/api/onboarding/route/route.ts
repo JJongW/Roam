@@ -112,7 +112,14 @@ export async function POST(req: Request) {
           ]
             .filter(Boolean)
             .join("\n");
-          const limit = Math.max(3, baseline.boothIds.length || 8);
+          // 시간예산에 맞춰 넉넉히 추천받는다 — baseline 길이에 묶으면(작은 부스가
+          // 많아 baseline이 짧을 때) 추천이 인색해진다. 대략 부스당 6분(이동+체류)
+          // 으로 잡아 예산만큼 후보를 넘기고, 실제 시간 맞춤은 pruneToBudget이 한다.
+          const target = Math.round(preference.availableMinutes / 6);
+          const limit = Math.min(
+            rank.ranked.length,
+            Math.max(15, baseline.boothIds.length, target),
+          );
           const rec = await recommendBoothIds({
             candidates: rank.ranked,
             userBrief,
