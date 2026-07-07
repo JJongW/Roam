@@ -255,7 +255,7 @@ export function AICompanionOnboarding({
   // 지도에서 "AI 추천"으로 언제든 동선을 만들 수 있다.
   function skipToMap() {
     if (submitting) return;
-    router.replace(`/exhibitions/${slug}/map`);
+    router.replace(`/exhibitions/${slug}`); // 피드 착지(지도 강등)
   }
 
   function goBack() {
@@ -329,7 +329,7 @@ export function AICompanionOnboarding({
     if (!r || reviewIds.length === 0) return;
     useRouteStore.getState().setRoute({ ...r, boothIds: reviewIds });
     useCartStore.getState().setIds(reviewIds);
-    router.replace(`/exhibitions/${slug}/map`);
+    router.replace(`/exhibitions/${slug}`); // 피드 착지(지도 강등)
   }
 
   // 리뷰 add-picker 후보 — 아직 안 고른 부스 중 검색어 매칭.

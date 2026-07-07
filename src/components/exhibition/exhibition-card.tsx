@@ -1,26 +1,12 @@
-"use client";
-
 import Link from "next/link";
 import { CalendarDays, MapPin } from "lucide-react";
 import { format } from "date-fns";
 import type { Exhibition } from "@/lib/types";
-import { useRouteStore } from "@/lib/stores/route";
-import { useHydrated } from "@/lib/hooks/use-hydrated";
 
 export function ExhibitionCard({ exhibition }: { exhibition: Exhibition }) {
   const range = `${format(new Date(exhibition.startDate), "M.d")} – ${format(new Date(exhibition.endDate), "M.d")}`;
-  // Returning visitor: if they already generated a route for THIS exhibition,
-  // skip the onboarding chat and drop straight onto the map. Gated on hydration
-  // so SSR and the first client render both use the onboarding href (no
-  // hydration mismatch), then it upgrades to the map href once the store loads.
-  const hydrated = useHydrated();
-  const hasRoute = useRouteStore(
-    (s) => s.route?.exhibitionId === exhibition.id,
-  );
-  const href =
-    hydrated && hasRoute
-      ? `/exhibitions/${exhibition.slug}/map`
-      : `/exhibitions/${exhibition.slug}/onboarding`;
+  // 전시 상세(피드 홈)로 착지 — 가치 온보딩·관심 피드가 진입점. 지도는 상세의 부가 진입.
+  const href = `/exhibitions/${exhibition.slug}`;
   return (
     <Link
       href={href}
