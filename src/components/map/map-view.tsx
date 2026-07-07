@@ -46,6 +46,7 @@ import { ExhibitionMap, HEAT_TIERS } from "@/components/map/exhibition-map";
 import { AiRecommendSheet } from "@/components/map/ai-recommend-sheet";
 import { NotesView } from "@/components/booth/notes-view";
 import { CategoryChip } from "@/components/booth/category-chip";
+import { RecapSheet } from "@/components/route/recap-sheet";
 import { EmptyState } from "@/components/common/states";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -136,6 +137,7 @@ export function MapView({
   const [notesOpen, setNotesOpen] = useState(false);
   // 뒤로가기 시 "관람이 끝나셨나요?" 확인. 동선이 있을 때만 묻는다.
   const [finishOpen, setFinishOpen] = useState(false);
+  const [recapOpen, setRecapOpen] = useState(false);
   // Crowd heatmap (방문객이 많이 담은 부스·복도). Lazy-loaded the first time it's on.
   const [heatOn, setHeatOn] = useState(false);
   const [heat, setHeat] = useState<{
@@ -343,17 +345,20 @@ export function MapView({
     else router.push("/");
   }
 
-  // "예, 끝났어요": 동선 데이터는 유지한 채 완료로 표시(서버 기록)하고 홈으로.
-  // 완료 표시는 베스트에포트라 await하지 않는다 — 기다리면 홈 이동이 PATCH 응답만큼
-  // 느려진다. 요청만 쏘고 즉시 이동.
-  function finishVisit() {
+  // "예, 끝났어요": 완료로 표시(서버가 회고 VisitDigest를 증류)한 뒤 회고 화면을 연다.
+  // 회고 GET이 방금 쓴 VisitDigest를 읽어야 하므로 PATCH를 await(결정론 증류라 빠름).
+  // 실패해도 시트는 열어 폴백 서술을 보여준다. 홈 이동은 회고의 "홈으로"가 담당.
+  async function finishVisit() {
     setFinishOpen(false);
     const r = useRouteStore.getState().route;
-    if (r?.id)
-      void api
-        .patch(`/api/route/${r.id}`, { status: "completed" })
-        .catch(() => {});
-    router.push("/");
+    if (r?.id) {
+      try {
+        await api.patch(`/api/route/${r.id}`, { status: "completed" });
+      } catch {
+        // 완료 표시 실패해도 회고는 연다.
+      }
+    }
+    setRecapOpen(true);
   }
 
   // Toggle the crowd heatmap; fetch the aggregate once, then just show/hide.
@@ -956,6 +961,8 @@ export function MapView({
 
       {/* 뒤로가기 확인 — 관람이 끝났는지 묻는다. "아니오"면 지도에 머무르며 상단
           AI 추천으로 동선을 더 받을 수 있다. */}
+      <RecapSheet open={recapOpen} onClose={() => router.push("/")} />
+
       {finishOpen && (
         <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
           <button
