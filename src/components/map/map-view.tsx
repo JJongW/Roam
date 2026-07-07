@@ -26,6 +26,7 @@ import {
   X,
   MapPin,
   MessagesSquare,
+  RotateCcw,
 } from "lucide-react";
 import { toast } from "sonner";
 import { api } from "@/lib/api/client";
@@ -53,7 +54,7 @@ import { Input } from "@/components/ui/input";
 import { buildHallSweepRoute } from "@/lib/engine/route";
 import { LOADING_MESSAGES } from "@/lib/loading-messages";
 import { useRotatingMessage } from "@/lib/hooks/use-rotating-message";
-import type { Booth, ExhibitionDetail, Point } from "@/lib/types";
+import type { Booth, ExhibitionDetail, Point, RoutePlan } from "@/lib/types";
 
 /**
  * One row in the side/sheet booth list. Memoized so that selecting a booth or
@@ -138,6 +139,8 @@ export function MapView({
   // 뒤로가기 시 "관람이 끝나셨나요?" 확인. 동선이 있을 때만 묻는다.
   const [finishOpen, setFinishOpen] = useState(false);
   const [recapOpen, setRecapOpen] = useState(false);
+  const [replanning, setReplanning] = useState(false);
+  const activeRoute = useRouteStore((s) => s.route);
   // Crowd heatmap (방문객이 많이 담은 부스·복도). Lazy-loaded the first time it's on.
   const [heatOn, setHeatOn] = useState(false);
   const [heat, setHeat] = useState<{
@@ -343,6 +346,51 @@ export function MapView({
   function handleBack() {
     if (cartCount > 0) setFinishOpen(true);
     else router.push("/");
+  }
+
+  // 관람 시작 시각 기록(지도 진입, 서버 동선 있을 때) — Planner 경과 시간 산정용.
+  useEffect(() => {
+    const s = useRouteStore.getState();
+    if (s.route && s.startedAt == null) s.setStartedAt(Date.now());
+  }, []);
+
+  // Planner 재계획: 남은 시간(경과)·방문 진행·피로로 남은 동선을 서버가 다시 짠다.
+  const canReplan = Boolean(activeRoute?.id && activeRoute.id !== "local");
+  function fatigueWord(f: number): string {
+    if (f < 0.34) return "아직 여유 있어";
+    if (f < 0.67) return "슬슬 페이스 조절";
+    return "많이 걸었어 — 가볍게 남은 곳만";
+  }
+  async function replanForNow() {
+    const r = useRouteStore.getState().route;
+    if (!r?.id || r.id === "local" || replanning) return;
+    setReplanning(true);
+    try {
+      const started = useRouteStore.getState().startedAt ?? Date.now();
+      const elapsedMinutes = Math.max(0, (Date.now() - started) / 60000);
+      const last = visitedIds.at(-1);
+      const pos = last ? boothById.get(last) : undefined;
+      const res = await api.patch<{ route: RoutePlan; fatigue: number }>(
+        `/api/route/${r.id}`,
+        {
+          visitedBoothIds: visitedIds,
+          elapsedMinutes,
+          position: pos ? { x: pos.x, y: pos.y } : undefined,
+        },
+      );
+      useRouteStore.getState().setRoute(res.route);
+      useCartStore.getState().setIds(res.route.boothIds);
+      const remaining = res.route.boothIds.filter(
+        (id) => !visitedIds.includes(id),
+      ).length;
+      toast.success(`남은 시간에 맞춰 ${remaining}곳으로 다시 짰어`, {
+        description: fatigueWord(res.fatigue),
+      });
+    } catch {
+      toast.error("다시 짜기에 실패했어. 잠시 후 다시 시도해줘");
+    } finally {
+      setReplanning(false);
+    }
   }
 
   // "예, 끝났어요": 완료로 표시(서버가 회고 VisitDigest를 증류)한 뒤 회고 화면을 연다.
@@ -875,6 +923,22 @@ export function MapView({
               <div className="flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2.5 shadow-[var(--shadow-pop)]">
                 <RouteIcon className="size-4 text-primary" />
                 <span className="text-sm font-bold">담은 {cartCount}곳</span>
+                {canReplan && (
+                  <button
+                    type="button"
+                    onClick={replanForNow}
+                    disabled={replanning}
+                    aria-label="남은 시간 맞춰 다시 짜기"
+                    className="flex items-center gap-1 rounded-full bg-secondary px-2.5 py-1 text-xs font-semibold text-foreground/80 active:opacity-70 disabled:opacity-60"
+                  >
+                    {replanning ? (
+                      <Loader2 className="size-3.5 animate-spin" />
+                    ) : (
+                      <RotateCcw className="size-3.5" />
+                    )}
+                    다시 짜기
+                  </button>
+                )}
                 <button
                   type="button"
                   onClick={clearRoute}
