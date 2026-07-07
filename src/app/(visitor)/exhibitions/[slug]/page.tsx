@@ -13,6 +13,9 @@ import { getRepository } from "@/lib/repositories";
 import { cn } from "@/lib/utils";
 import { AppBar } from "@/components/common/app-bar";
 import { AccountButton } from "@/components/auth/account-button";
+import { InterestFeed } from "@/components/feed/interest-feed";
+import { getCurrentUser } from "@/lib/api/session";
+import { curateFeed } from "@/lib/feed/curate";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -35,6 +38,13 @@ export default async function ExhibitionDetailPage({ params }: Props) {
 
   const { exhibition } = detail;
   const range = `${format(new Date(exhibition.startDate), "yyyy.M.d")} – ${format(new Date(exhibition.endDate), "M.d")}`;
+
+  // 관심 피드: 로그인 사용자의 브레인으로 큐레이션한 부스 top-6(빈 브레인=인기순).
+  const user = await getCurrentUser();
+  const feedBooths = user ? await curateFeed(slug, user.id, 6) : [];
+  const categoryById = Object.fromEntries(
+    detail.categories.map((c) => [c.id, c]),
+  );
 
   return (
     <div className="contents landscape:fixed landscape:inset-0 landscape:z-30 landscape:flex landscape:flex-col landscape:overflow-hidden landscape:bg-background">
@@ -133,6 +143,8 @@ export default async function ExhibitionDetailPage({ params }: Props) {
               <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
             </Link>
           </div>
+
+          <InterestFeed booths={feedBooths} categoryById={categoryById} />
         </div>
       </main>
     </div>

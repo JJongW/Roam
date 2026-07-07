@@ -314,7 +314,11 @@ export interface AiQueryLog {
 // userId = app_user.id. 설계: docs/decisions/2026-07-07_knowledge-architecture.md §7
 
 export type SignalKind =
-  "booth_visited" | "booth_skipped" | "booth_bookmarked" | "route_saved";
+  | "booth_visited"
+  | "booth_skipped"
+  | "booth_bookmarked"
+  | "route_saved"
+  | "feed_click";
 
 /** 원장 1행 — 사용자 행동 신호. append-only, 재증류 소스. */
 export interface UserSignal {

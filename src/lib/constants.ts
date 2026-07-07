@@ -156,6 +156,8 @@ export const SIGNAL_WEIGHTS: Record<
   booth_bookmarked: { explicit: 1.2, implicit: 0, negative: 0 },
   route_saved: { explicit: 1.5, implicit: 0, negative: 0 },
   booth_skipped: { explicit: 0, implicit: 0, negative: 0.8 },
+  // 피드 카드 클릭 = 약한 암묵 관심(둘러봄). 방문보다 가볍게.
+  feed_click: { explicit: 0, implicit: 0.3, negative: 0 },
 };
 
 /** Reasoner/Planner 튜닝. 피로도 가중 + 재계획 시 피로 페널티. */
