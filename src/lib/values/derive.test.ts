@@ -11,18 +11,24 @@ describe("deriveValueTags", () => {
     expect(out).toEqual([{ slug: "goods", strength: 0.9 }]);
   });
 
-  it("분야 → 기본 가치 (art→오감)", () => {
+  it("분야 → 기본 가치 (art→영감)", () => {
     const out = deriveValueTags({ categorySlugs: ["art"] });
-    expect(out.map((t) => t.slug)).toContain("sensory");
+    expect(out.map((t) => t.slug)).toContain("inspiration");
   });
 
   it("굿즈 키워드 → goods", () => {
-    const out = deriveValueTags({ categorySlugs: ["lit"], goodsKeywords: ["에코백", "키링"] });
+    const out = deriveValueTags({
+      categorySlugs: ["lit"],
+      goodsKeywords: ["에코백", "키링"],
+    });
     expect(out.map((t) => t.slug)).toContain("goods");
   });
 
   it("tips 체험 키워드 → experience", () => {
-    const out = deriveValueTags({ categorySlugs: ["lit"], tips: "직접 만들어보는 워크숍 진행" });
+    const out = deriveValueTags({
+      categorySlugs: ["lit"],
+      tips: "직접 만들어보는 워크숍 진행",
+    });
     expect(out.map((t) => t.slug)).toContain("experience");
   });
 

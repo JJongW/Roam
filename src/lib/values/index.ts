@@ -13,6 +13,7 @@ export interface ValueTagDef {
   hint: string;
 }
 
+// 캐논 8개(기획 §7.2 관람 가치 온보딩): 발견·체험·굿즈·소통·학습·트렌드·영감·가볍게.
 export const VALUE_TAGS: ValueTagDef[] = [
   {
     slug: "discovery",
@@ -29,11 +30,25 @@ export const VALUE_TAGS: ValueTagDef[] = [
     hint: "직접 해보는 재미",
   },
   {
-    slug: "sensory",
-    label: "오감",
-    color: "#f79009",
-    icon: "Sparkles",
-    hint: "감각·분위기·전시성",
+    slug: "goods",
+    label: "굿즈",
+    color: "#f04438",
+    icon: "ShoppingBag",
+    hint: "구매·굿즈·한정판",
+  },
+  {
+    slug: "social",
+    label: "소통",
+    color: "#0e9384",
+    icon: "MessagesSquare",
+    hint: "사람·대화·교류",
+  },
+  {
+    slug: "learning",
+    label: "학습",
+    color: "#0ba5ec",
+    icon: "BookOpen",
+    hint: "정보·상담·알아감",
   },
   {
     slug: "trend",
@@ -43,22 +58,15 @@ export const VALUE_TAGS: ValueTagDef[] = [
     hint: "화제·신간·요즘",
   },
   {
-    slug: "goods",
-    label: "굿즈",
-    color: "#f04438",
-    icon: "ShoppingBag",
-    hint: "굿즈·한정판·구매",
-  },
-  {
-    slug: "learning",
-    label: "배움",
-    color: "#0ba5ec",
-    icon: "BookOpen",
-    hint: "정보·상담·알아감",
+    slug: "inspiration",
+    label: "영감",
+    color: "#f79009",
+    icon: "Lightbulb",
+    hint: "감각·작품·영감",
   },
   {
     slug: "rest",
-    label: "휴식",
+    label: "가볍게",
     color: "#667085",
     icon: "Coffee",
     hint: "가볍게·조용히",
