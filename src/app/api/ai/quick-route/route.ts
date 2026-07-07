@@ -14,6 +14,8 @@ import { attachDwellMinutes } from "@/lib/booth/dwell";
 import { FLOORPLANS } from "@/lib/floorplans";
 import { hasGemini, generateJSON } from "@/lib/ai/gemini";
 import { recommendBoothIds } from "@/lib/ai/booth-recommender";
+import { brainInterestWeights, mergeBrainInterests } from "@/lib/memory/apply";
+import { readBrain } from "@/lib/memory/service";
 import {
   aiRoutePreferencesSchema,
   buildPreferencePrompt,
@@ -72,12 +74,32 @@ export async function POST(req: Request) {
       );
     }
 
+    // L4 메모리: 로그인 사용자면 누적 관심(브레인)을 confidence 가중으로 주입
+    // (온보딩과 동일 — 지도 AI추천도 "쓸수록 좋아짐"). 빈 브레인이면 무변화.
+    const user = await getCurrentUser();
+    let interestWeights: Record<string, number> | undefined;
+    if (user) {
+      const brain = await readBrain(user.id);
+      interestWeights = brainInterestWeights(
+        mapped.preference.interests,
+        brain,
+      );
+      mapped.preference.interests = mergeBrainInterests(
+        mapped.preference.interests,
+        brain,
+      );
+    }
+
     // Build + persist the route exactly like POST /api/route.
-    const rank = await rankForExhibition(exhibitionSlug, mapped.preference);
+    const rank = await rankForExhibition(
+      exhibitionSlug,
+      mapped.preference,
+      undefined,
+      interestWeights ? { interestWeights } : undefined,
+    );
     if (!rank) return notFound("전시를 찾을 수 없습니다");
 
     const session = await ensureSession(rank.exhibitionId);
-    const user = await getCurrentUser();
     await repo.savePreference(session.id, mapped.preference);
 
     const start = FLOORPLANS[exhibitionSlug]?.entrance;
