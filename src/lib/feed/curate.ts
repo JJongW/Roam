@@ -6,6 +6,7 @@ import { diversifyCandidates, interestScore } from "@/lib/engine/scoring";
 import { rankForExhibition } from "@/lib/engine/service";
 import { brainInterestWeights, mergeBrainInterests } from "@/lib/memory/apply";
 import { readBrain } from "@/lib/memory/service";
+import { boothValueSlugs } from "@/lib/values";
 import type { Booth } from "@/lib/types";
 
 export interface FeedItem {
@@ -18,7 +19,7 @@ export interface FeedItem {
 function relatedBooths(pool: Booth[], target: Booth, n = 3): Booth[] {
   return pool
     .filter((b) => b.id !== target.id)
-    .map((b) => ({ b, s: interestScore(b, target.tags) }))
+    .map((b) => ({ b, s: interestScore(b, boothValueSlugs(target)) }))
     .filter((x) => x.s > 0)
     .sort((a, b) => b.s - a.s)
     .slice(0, n)
