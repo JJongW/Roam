@@ -4,6 +4,8 @@ import { useState } from "react";
 import { ChevronDown, Sparkles } from "lucide-react";
 import { api } from "@/lib/api/client";
 import { BoothCard } from "@/components/booth/booth-card";
+import { ValueChips } from "@/components/values/value-chips";
+import { ReactionBar } from "@/components/feed/reaction-bar";
 import { cn } from "@/lib/utils";
 import type { Category } from "@/lib/types";
 import type { FeedItem } from "@/lib/feed/curate";
@@ -25,7 +27,9 @@ export function InterestFeed({
 
   function fire(boothId: string) {
     // fire-and-forget — 이동을 막지 않는다.
-    void api.post("/api/me/signal", { boothId, kind: "feed_click" }).catch(() => {});
+    void api
+      .post("/api/me/signal", { boothId, kind: "feed_click" })
+      .catch(() => {});
   }
   function toggle(boothId: string) {
     fire(boothId); // 관련 펼치기 = 관심 신호
@@ -56,6 +60,14 @@ export function InterestFeed({
                   booth={booth}
                   category={categoryById[booth.categoryId]}
                 />
+              </div>
+              {booth.valueTags && booth.valueTags.length > 0 && (
+                <div className="mt-1.5 px-1">
+                  <ValueChips tags={booth.valueTags} />
+                </div>
+              )}
+              <div className="mt-1.5">
+                <ReactionBar boothId={booth.id} />
               </div>
               {related.length > 0 && (
                 <>
