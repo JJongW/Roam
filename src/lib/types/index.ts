@@ -228,11 +228,28 @@ export interface RoutePlan {
   createdAt: string;
 }
 
-/** A nickname-based identity. Nickname is unique and used as the public key. */
+/**
+ * A visitor identity. Nickname is unique and used as the public key. An account
+ * may originate from a nickname (provider undefined) or from an OAuth provider
+ * (e.g. "google"); OAuth accounts still carry an auto-generated unique nickname.
+ */
 export interface User {
   id: string;
   nickname: string;
   createdAt: string;
+  /** OAuth provider slug (e.g. "google"), or undefined for nickname-only. */
+  provider?: string;
+  email?: string;
+  avatarUrl?: string;
+}
+
+/** Identity read from an OAuth provider, used to find-or-create an app_user. */
+export interface OAuthIdentity {
+  provider: string;
+  providerAccountId: string;
+  nickname: string;
+  email?: string;
+  avatarUrl?: string;
 }
 
 /** A signed-in visitor's personal record for a booth (visited / skip / memo). */

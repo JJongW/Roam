@@ -28,6 +28,7 @@ import type {
   RouteStatus,
   SharedRoute,
   User,
+  OAuthIdentity,
   UserPreference,
   VisitPurpose,
   VisitorSession,
@@ -72,6 +73,10 @@ function paginate<T extends { id: string }>(
 
 function str(v: unknown): string {
   return v == null ? "" : String(v);
+}
+/** Nullable text column → string | undefined (keeps optional fields absent). */
+function optStr(v: unknown): string | undefined {
+  return v == null || v === "" ? undefined : String(v);
 }
 function num(v: unknown): number {
   return typeof v === "number" ? v : Number(v ?? 0);
@@ -240,6 +245,9 @@ function mapUser(r: Row): User {
     id: str(r.id),
     nickname: str(r.nickname),
     createdAt: str(r.created_at),
+    provider: optStr(r.provider),
+    email: optStr(r.email),
+    avatarUrl: optStr(r.avatar_url),
   };
 }
 
@@ -1010,6 +1018,35 @@ export class SupabaseRepository implements Repository {
       .ilike("nickname", nickname)
       .maybeSingle();
     return data ? mapUser(data as Row) : null;
+  }
+
+  async getUserByProvider(
+    provider: string,
+    providerAccountId: string,
+  ): Promise<User | null> {
+    const db = await this.db();
+    const { data } = await db
+      .from("app_user")
+      .select("*")
+      .eq("provider", provider)
+      .eq("provider_account_id", providerAccountId)
+      .maybeSingle();
+    return data ? mapUser(data as Row) : null;
+  }
+
+  async createOAuthUser(identity: OAuthIdentity): Promise<User> {
+    const db = await this.db();
+    const row = {
+      id: uid("user"),
+      nickname: identity.nickname,
+      created_at: now(),
+      provider: identity.provider,
+      provider_account_id: identity.providerAccountId,
+      email: identity.email ?? null,
+      avatar_url: identity.avatarUrl ?? null,
+    };
+    const { data } = await db.from("app_user").insert(row).select("*").single();
+    return mapUser((data ?? row) as Row);
   }
 
   // --- booth notes ---------------------------------------------------------

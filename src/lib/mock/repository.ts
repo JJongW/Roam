@@ -23,6 +23,7 @@ import type {
   RoutePlan,
   SharedRoute,
   User,
+  OAuthIdentity,
   UserPreference,
   VisitorSession,
   WelcomeKit,
@@ -56,7 +57,9 @@ interface Store {
   bookmarks: Bookmark[];
   posts: CommunityPost[];
   reports: CommunityReport[];
-  users: User[];
+  // providerAccountId links an OAuth account for getUserByProvider lookups;
+  // it is internal and never surfaced on the public User shape.
+  users: (User & { providerAccountId?: string })[];
   notes: BoothNote[];
   analytics: AnalyticsEvent[];
   aiQueries: AiQueryLog[];
@@ -631,6 +634,35 @@ export class MockRepository implements Repository {
     return (
       store().users.find((u) => u.nickname.toLowerCase() === lower) ?? null
     );
+  }
+
+  async getUserByProvider(
+    provider: string,
+    providerAccountId: string,
+  ): Promise<User | null> {
+    return (
+      store().users.find(
+        (u) =>
+          u.provider === provider && u.providerAccountId === providerAccountId,
+      ) ?? null
+    );
+  }
+
+  async createOAuthUser(identity: OAuthIdentity): Promise<User> {
+    const user: User = {
+      id: uid("user"),
+      nickname: identity.nickname,
+      createdAt: now(),
+      provider: identity.provider,
+      email: identity.email,
+      avatarUrl: identity.avatarUrl,
+    };
+    // Mock store keeps the provider link on the record for lookup.
+    store().users.push({
+      ...user,
+      providerAccountId: identity.providerAccountId,
+    } as User & { providerAccountId: string });
+    return user;
   }
 
   // --- booth notes ---------------------------------------------------------

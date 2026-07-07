@@ -4,7 +4,10 @@ import { useEffect, useState } from "react";
 import { Loader2, UserRound } from "lucide-react";
 import { toast } from "sonner";
 import { ApiClientError } from "@/lib/api/client";
+import { createClient } from "@/lib/supabase/client";
+import { hasSupabase } from "@/lib/env";
 import { useAuthStore } from "@/lib/stores/auth";
+import { GoogleIcon } from "@/components/auth/google-icon";
 import {
   Sheet,
   SheetContent,
@@ -24,6 +27,17 @@ export function LoginSheet() {
   const [nickname, setNickname] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  function google() {
+    // Redirects the browser to Google; on return, /auth/callback issues the
+    // roam_user cookie. Preserve the current page as the post-login target.
+    const next = window.location.pathname + window.location.search;
+    const redirectTo = `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`;
+    void createClient().auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo },
+    });
+  }
 
   async function submit() {
     const name = nickname.trim();
@@ -50,11 +64,30 @@ export function LoginSheet() {
           <div className="mb-1 flex size-12 items-center justify-center rounded-2xl bg-secondary">
             <UserRound className="size-6 text-foreground" />
           </div>
-          <SheetTitle>닉네임으로 시작하기</SheetTitle>
+          <SheetTitle>시작하기</SheetTitle>
           <SheetDescription>
-            저장·메모·동선 공유를 쓰려면 닉네임이 필요해요. 비밀번호는 없어요.
+            저장·메모·동선 공유를 쓰려면 로그인이 필요해요.
           </SheetDescription>
         </SheetHeader>
+
+        {hasSupabase && (
+          <div className="mt-5 space-y-3">
+            <Button
+              variant="outline"
+              size="lg"
+              className="w-full"
+              onClick={google}
+            >
+              <GoogleIcon />
+              Google로 계속하기
+            </Button>
+            <div className="flex items-center gap-3 py-1">
+              <div className="h-px flex-1 bg-border" />
+              <span className="text-xs text-muted-foreground">또는 닉네임</span>
+              <div className="h-px flex-1 bg-border" />
+            </div>
+          </div>
+        )}
 
         <div className="mt-5 space-y-3">
           <Input
@@ -99,6 +132,19 @@ export function AuthBootstrap() {
   const refresh = useAuthStore((s) => s.refresh);
   useEffect(() => {
     void refresh();
+    // Surface an OAuth failure bounced back from /auth/callback, then strip the
+    // query param so a reload doesn't re-toast.
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("login_error")) {
+      toast.error("로그인에 실패했어요. 다시 시도해 주세요.");
+      params.delete("login_error");
+      const qs = params.toString();
+      window.history.replaceState(
+        {},
+        "",
+        window.location.pathname + (qs ? `?${qs}` : ""),
+      );
+    }
   }, [refresh]);
   return null;
 }
