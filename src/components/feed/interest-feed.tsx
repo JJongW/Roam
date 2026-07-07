@@ -8,7 +8,7 @@ import { ValueChips } from "@/components/values/value-chips";
 import { ReactionBar } from "@/components/feed/reaction-bar";
 import { cn } from "@/lib/utils";
 import type { Category } from "@/lib/types";
-import type { FeedItem } from "@/lib/feed/curate";
+import type { FeedItem, PickKind } from "@/lib/feed/curate";
 
 /**
  * 관심 피드 — L4 브레인으로 큐레이션한 부스를 사전 노출한다(정보 전달기→발견 동행자).
@@ -51,10 +51,13 @@ export function InterestFeed({
         둘러볼수록 더 잘 맞춰줄게.
       </p>
       <div className="space-y-2">
-        {items.map(({ booth, related }) => {
+        {items.map(({ booth, related, pick }) => {
           const open = expanded.has(booth.id);
           return (
             <div key={booth.id}>
+              <div className="mb-1 px-1">
+                <PickLabel pick={pick} />
+              </div>
               <div onClick={() => fire(booth.id)}>
                 <BoothCard
                   booth={booth}
@@ -106,5 +109,18 @@ export function InterestFeed({
         })}
       </div>
     </section>
+  );
+}
+
+const PICK_META: Record<PickKind, { label: string; className: string }> = {
+  stable: { label: "안정 · 취향 확실", className: "text-muted-foreground" },
+  unfamiliar: { label: "낯선 · 인접 발견", className: "text-primary" },
+  adventure: { label: "모험 · 새 가치", className: "text-warning" },
+};
+
+function PickLabel({ pick }: { pick: PickKind }) {
+  const m = PICK_META[pick];
+  return (
+    <span className={cn("text-xs font-bold", m.className)}>{m.label}</span>
   );
 }
