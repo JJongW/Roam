@@ -1,5 +1,6 @@
 import { uid } from "@/lib/utils";
 import { REPORT_HIDE_THRESHOLD } from "@/lib/constants";
+import { deriveValueTags } from "@/lib/values/derive";
 import { createServerClient } from "@/lib/supabase/server";
 import type { ListBoothQuery, Repository } from "@/lib/repositories/types";
 import type {
@@ -136,6 +137,7 @@ const BOOTH_LIST_COLS =
   "id,exhibition_id,hall_id,category_id,code,kind,name,company,aliases,description,logo_url,instagram_url,website_url,tags,x,y,popularity,created_at";
 
 function mapBooth(r: Row): Booth {
+  const tags = strArr(r.tags);
   return {
     id: str(r.id),
     exhibitionId: str(r.exhibition_id),
@@ -152,7 +154,10 @@ function mapBooth(r: Row): Booth {
     logoUrl: r.logo_url == null ? undefined : String(r.logo_url),
     instagramUrl: r.instagram_url == null ? undefined : String(r.instagram_url),
     websiteUrl: r.website_url == null ? undefined : String(r.website_url),
-    tags: strArr(r.tags),
+    tags,
+    // 가치 태그: DB 컬럼 없이 분야 tags에서 read 시 파생(seed 재생성 회피).
+    // enrichment 있는 상세(getBoothDetail)는 굿즈·팁까지 반영해 더 풍부.
+    valueTags: deriveValueTags({ categorySlugs: tags }),
     x: num(r.x),
     y: num(r.y),
     popularity: num(r.popularity),
@@ -524,6 +529,12 @@ export class SupabaseRepository implements Repository {
         tips: e.tips == null ? undefined : String(e.tips),
         sourceUrl: e.source_url == null ? undefined : String(e.source_url),
       };
+      // 굿즈·팁까지 반영해 가치 태그 재파생(상세/신호에 더 풍부한 가치 축).
+      booth.valueTags = deriveValueTags({
+        categorySlugs: booth.tags,
+        goodsKeywords: booth.enrichment.goodsKeywords,
+        tips: booth.enrichment.tips,
+      });
     }
 
     const reviews = (reviewRows ?? [])

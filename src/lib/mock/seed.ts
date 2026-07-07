@@ -4,6 +4,7 @@ import enrichmentData from "@/lib/booth/enrichment-sibf-2026.json";
 import standingEvents from "@/lib/sibf-events-standing.json";
 import programSchedule from "@/lib/sibf-events-program.json";
 import { normalizeBoothKey } from "@/lib/booth/normalize";
+import { deriveValueTags } from "@/lib/values/derive";
 import type {
   Booth,
   BoothEnrichment,
@@ -186,11 +187,24 @@ export const booths: Booth[] = floorplan.booths.map((b) => {
           summary: e.summary,
           tips: e.tips,
           sourceUrl: e.sourceUrl,
+          valueTags: e.valueTags,
+          roamInterpretation: e.roamInterpretation,
+          timing: e.timing,
+          memoryHooks: e.memoryHooks,
+          conversationPrompts: e.conversationPrompts,
+          confidence: e.confidence,
         }
       : undefined;
   const tags = enrichment?.themeTags?.length
     ? [...new Set([catReal, ...enrichment.themeTags])]
     : [catReal];
+  // 관람 가치 태그 파생(수동 valueTags 우선) — 분야+굿즈·팁에서 결정론 도출.
+  const valueTags = deriveValueTags({
+    categorySlugs: tags,
+    goodsKeywords: enrichment?.goodsKeywords,
+    tips: enrichment?.tips,
+    manual: enrichment?.valueTags,
+  });
   return {
     id: id(b.code),
     exhibitionId: exhibition.id,
@@ -208,6 +222,7 @@ export const booths: Booth[] = floorplan.booths.map((b) => {
     instagramUrl: undefined,
     websiteUrl: web,
     tags,
+    valueTags,
     enrichment,
     x: b.x,
     y: b.y,
