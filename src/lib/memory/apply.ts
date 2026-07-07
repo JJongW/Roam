@@ -36,3 +36,31 @@ export function mergeBrainInterests(
   }
   return out;
 }
+
+/**
+ * interest slug별 가중치. 세션 관심=1, 브레인 관심=1+confidence*scale(누적 관심이
+ * 세션보다 무겁게 — 재방문 사용자의 취향이 우세). 겹치면 큰 쪽(브레인).
+ * `mergeBrainInterests`와 짝: 전자는 interest 집합, 이건 그 위 가중치.
+ */
+export function brainInterestWeights(
+  base: string[],
+  brain: UserBrain,
+  opts: MergeInterestsOptions & { scale?: number } = {},
+): Record<string, number> {
+  const minConfidence = opts.minConfidence ?? 0.25;
+  const max = opts.max ?? 5;
+  const scale = opts.scale ?? 1;
+
+  const weights: Record<string, number> = {};
+  for (const slug of base) weights[slug] = 1;
+
+  const top = brain.interests
+    .filter((n) => n.confidence >= minConfidence)
+    .sort((a, b) => b.confidence - a.confidence)
+    .slice(0, max);
+  for (const n of top) {
+    const w = 1 + n.confidence * scale;
+    weights[n.key] = Math.max(weights[n.key] ?? 0, w);
+  }
+  return weights;
+}

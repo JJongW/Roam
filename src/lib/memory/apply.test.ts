@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import type { Booth, InterestNode, UserBrain } from "@/lib/types";
 import { rankBooths, type ScoreContext } from "@/lib/engine/scoring";
 import { emptyBrain } from "./distill";
-import { mergeBrainInterests } from "./apply";
+import { brainInterestWeights, mergeBrainInterests } from "./apply";
 
 function node(key: string, confidence: number): InterestNode {
   return {
@@ -68,7 +68,10 @@ function booth(id: string, tags: string[]): Booth {
   } as Booth;
 }
 
-function ctx(interests: string[]): ScoreContext {
+function ctx(
+  interests: string[],
+  interestWeights?: Record<string, number>,
+): ScoreContext {
   return {
     preference: {
       visitPurposes: ["experience"],
@@ -78,8 +81,24 @@ function ctx(interests: string[]): ScoreContext {
     },
     eventsByBooth: {},
     now: 0,
+    interestWeights,
   };
 }
+
+describe("brainInterestWeights", () => {
+  it("세션=1, 브레인=1+confidence, 겹치면 큰 쪽", () => {
+    const brain = brainWith([node("lit", 0.6), node("tech", 0.5)]);
+    const w = brainInterestWeights(["tech"], brain);
+    expect(w.tech).toBeCloseTo(1.5, 5); // 세션 1 vs 브레인 1.5 → 큰 쪽
+    expect(w.lit).toBeCloseTo(1.6, 5); // 브레인만
+  });
+  it("빈 브레인이면 base 전부 1", () => {
+    expect(brainInterestWeights(["a", "b"], emptyBrain("u"))).toEqual({
+      a: 1,
+      b: 1,
+    });
+  });
+});
 
 describe("mergeBrainInterests → 랭킹 반영", () => {
   const litBooth = booth("lit1", ["lit"]);
@@ -103,5 +122,16 @@ describe("mergeBrainInterests → 랭킹 반영", () => {
     expect(litBefore.breakdown.interest).toBe(0); // 세션 의도만이면 무시됨
     expect(litAfter.breakdown.interest).toBeGreaterThan(0); // 누적 관심으로 경쟁력
     expect(litAfter.score).toBeGreaterThan(litBefore.score);
+  });
+
+  it("confidence 가중이면 브레인 관심(lit)이 세션(tech)보다 우세 — rank #1", () => {
+    const brain = brainWith([node("lit", 0.67)]);
+    const interests = mergeBrainInterests(["tech"], brain); // ["tech","lit"]
+    const weights = brainInterestWeights(["tech"], brain); // {tech:1, lit:1.67}
+    const ranked = rankBooths([litBooth, techBooth], ctx(interests, weights));
+    expect(ranked[0].booth.id).toBe("lit1"); // 가중으로 lit이 tech를 앞선다
+    const lit = ranked.find((r) => r.booth.id === "lit1")!;
+    const tech = ranked.find((r) => r.booth.id === "tech1")!;
+    expect(lit.breakdown.interest).toBeGreaterThan(tech.breakdown.interest);
   });
 });
