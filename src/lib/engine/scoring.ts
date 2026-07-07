@@ -1,4 +1,5 @@
 import { COMPANION_WEIGHTS, mergePurposeWeights } from "@/lib/constants";
+import { boothValueSlugs } from "@/lib/values";
 import type {
   Booth,
   BoothEvent,
@@ -28,12 +29,13 @@ export function interestScore(
    *  세션 의도보다 무겁게 반영되도록 한다. 미지정이면 기존과 동일(전부 1). */
   weights?: Record<string, number>,
 ): number {
-  if (interests.length === 0 || booth.tags.length === 0) return 0;
+  const boothTags = boothValueSlugs(booth); // 가치 축(없으면 분야 폴백)
+  if (interests.length === 0 || boothTags.length === 0) return 0;
   const set = new Set(interests);
   const w = (slug: string) => weights?.[slug] ?? 1;
   let weightedHits = 0;
   let hitCount = 0;
-  for (const t of booth.tags) {
+  for (const t of boothTags) {
     if (set.has(t)) {
       weightedHits += w(t);
       hitCount++;
@@ -42,7 +44,7 @@ export function interestScore(
   if (hitCount === 0) return 0;
   const totalWeight = interests.reduce((s, slug) => s + w(slug), 0);
   const coverage = totalWeight > 0 ? weightedHits / totalWeight : 0; // 가중 커버리지 0..1
-  const focus = hitCount / booth.tags.length; // share of booth that's on-topic, 0..1
+  const focus = hitCount / boothTags.length; // share of booth that's on-topic, 0..1
   return Math.min(1, 0.45 * coverage + 0.4 * focus + 0.15);
 }
 
@@ -158,7 +160,7 @@ export function diversifyCandidates(
     let bestValue = -Infinity;
     for (let i = 0; i < pool.length; i++) {
       const b = pool[i].booth;
-      const overlap = b.tags.filter((t) => covered.has(t)).length;
+      const overlap = boothValueSlugs(b).filter((t) => covered.has(t)).length;
       const value = lambda * pool[i].score - (1 - lambda) * overlap;
       if (value > bestValue) {
         bestValue = value;
@@ -167,7 +169,7 @@ export function diversifyCandidates(
     }
     const chosen = pool.splice(bi, 1)[0];
     picked.push(chosen);
-    for (const t of chosen.booth.tags) covered.add(t);
+    for (const t of boothValueSlugs(chosen.booth)) covered.add(t);
   }
   return picked;
 }

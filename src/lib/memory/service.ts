@@ -4,6 +4,7 @@ import "server-only";
 import { narrateVisit } from "@/lib/ai/companion";
 import { MEMORY_TUNING } from "@/lib/constants";
 import { getRepository } from "@/lib/repositories";
+import { VALUE_TAGS, boothValueSlugs } from "@/lib/values";
 import type {
   Booth,
   RoutePlan,
@@ -43,7 +44,8 @@ export async function recordSignal(
     if (detail) {
       boothCode = detail.booth.code;
       exhibitionId = exhibitionId ?? detail.booth.exhibitionId;
-      if (!input.slugs) slugs = detail.booth.tags;
+      // 관심 축 = 가치 slug(valueTags). 없으면 분야 tags 폴백.
+      if (!input.slugs) slugs = boothValueSlugs(detail.booth);
     }
   }
 
@@ -64,10 +66,11 @@ export async function recordSignal(
     emptyBrain(userId, new Date(nowMs).toISOString());
   const all = await repo.listUserSignals(userId);
 
-  // slug → 카테고리명 라벨 (InterestNode.label). 없으면 slug 폴백.
+  // slug → 라벨 (InterestNode.label). 가치·분야 둘 다 병합해 어느 축이든 해석.
   const labels: Record<string, string> = {};
   for (const c of await repo.listCategories(exhibitionId))
     labels[c.slug] = c.name;
+  for (const v of VALUE_TAGS) labels[v.slug] = v.label;
 
   const updated = updateBrainWithSignals(
     brain,
@@ -108,7 +111,7 @@ export async function reflectOnVisit(
     const b = byId.get(id);
     if (!b) continue;
     boothCodes.push(b.code ?? b.id);
-    boothTagLists.push(b.tags);
+    boothTagLists.push(boothValueSlugs(b)); // 가치 축(없으면 분야 폴백)
   }
   if (boothCodes.length === 0) return;
 
@@ -116,6 +119,7 @@ export async function reflectOnVisit(
   for (const c of await repo.listCategories(route.exhibitionId)) {
     labels[c.slug] = c.name;
   }
+  for (const v of VALUE_TAGS) labels[v.slug] = v.label;
 
   const nowMs = Date.now();
   const digest = buildVisitDigest({
