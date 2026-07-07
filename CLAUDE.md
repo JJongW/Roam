@@ -10,6 +10,14 @@ OAuth) — 방문객 앱 전체가 인증 게이트 뒤에 있다(`src/proxy.ts`
 
 > 구조·플로우·규약이 바뀌면 이 파일을 갱신한다. CLAUDE.md는 프로젝트 전반을 담는다.
 
+## 제품 방향 (재정의 진행 중 — 2026-07-07, 아직 미구현)
+> ⚠️ 아래는 **지향 방향·설계**다. 현재 코드는 아직 이 구조가 아님. 신규 작업은 이 방향에 정렬.
+- **정보 전달기 → 관람 동행자.** LLM을 기능적으로만 쓰는 챗봇이 아니라, 사용자를 기억하고 계속 나아지는 에이전트로. 앱은 *판단 근거*를 주고 사용자가 스스로 판단. 동선은 제품이 아니라 부산물. `docs/decisions/2026-07-07_companion-reframe.md`.
+- **관람 아크(전·중·후)로 "충분히 즐겼다" 설계.** 3막: 약속(개인 목표) → 비트(진행 축적) → 회고(peak-end 해소). 회고 = 기억 쓰기. 같은 문서 §5-B.
+- **지식 4계층 = 살아있는 장기메모리.** L1 정적 도메인(부스 근거·RAG) / L2 휘발 상황(실시간) / L3 에피소드(관람 1회) / L4 종단 사용자 모델(영속·성장). **저장(축적) 아니라 증류**(정제→압축→승격→아카이브→재증류). 로그인 필수 전환이 L4(크로스-전시 기억)를 비로소 가능케 함. `docs/decisions/2026-07-07_knowledge-architecture.md`.
+- **에이전트 구조 = 서비스가 판단, LLM은 말만.** Onboarding·Memory·Planner·Reasoner·Recommendation·Companion·Reflection. **대부분 결정론 모듈**(confidence·피로도·재계획은 수학), LLM은 Companion 한 겹(언어 표면). 7개 LLM 에이전트는 안티패턴. Memory Engine(L1~L4) 블랙보드 공유. `docs/decisions/2026-07-07_agent-architecture.md`.
+- **선행 과제(블로커 아님)**: L1 근거 데이터 = 부스 enrichment. 현재 **79/256(31%) 채워짐**(빈 상태 아님). 갭 = 나머지 커버리지 + 새 비전(근거카드·confidence 신호)에 현재 필드로 충분한지 검증.
+
 ## 스택
 Next.js 16(App Router) · React 19 · TypeScript · Tailwind v4 · shadcn/ui(Radix) ·
 framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/genai).
@@ -70,7 +78,7 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
 
 ## 부스 enrichment (수동 주입)
 - 인스타 자동 스크래핑 불가/금지 → **운영자 수동 입력**(`docs/booth-enrichment.md` 양식).
-- 소스 `src/lib/booth/enrichment-sibf-2026.json`(code 키, 현재 `{}`). 타입 `BoothEnrichment`.
+- 소스 `src/lib/booth/enrichment-sibf-2026.json`(code 키, **현재 79/256 부스 채워짐**). 타입 `BoothEnrichment`.
 - `seed.ts`가 부스에 attach. `themeTags`(=slug)는 `booth.tags`에 병합 → 추천 스코어링에 **LLM 없이 즉시** 반영. 굿즈/요약/팁은 부스 상세 노출 + 온보딩 추론 프롬프트 어휘로 주입.
 - Supabase `booth_enrichment` 테이블(`0013`), repo `getBoothDetail` attach.
 
