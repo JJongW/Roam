@@ -158,6 +158,9 @@ export const SIGNAL_WEIGHTS: Record<
   booth_skipped: { explicit: 0, implicit: 0, negative: 0.8 },
   // 피드 카드 클릭 = 약한 암묵 관심(둘러봄). 방문보다 가볍게.
   feed_click: { explicit: 0, implicit: 0.3, negative: 0 },
+  // 반응 버튼: 끌림=명시 강, 나중에=약한 명시. 별로/이미봄은 skip/visited 재사용.
+  reaction_interested: { explicit: 1.2, implicit: 0, negative: 0 },
+  reaction_later: { explicit: 0.5, implicit: 0, negative: 0 },
 };
 
 /** Reasoner/Planner 튜닝. 피로도 가중 + 재계획 시 피로 페널티. */

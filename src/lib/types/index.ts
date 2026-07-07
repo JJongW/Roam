@@ -338,7 +338,9 @@ export type SignalKind =
   | "booth_skipped"
   | "booth_bookmarked"
   | "route_saved"
-  | "feed_click";
+  | "feed_click"
+  | "reaction_interested" // 끌림
+  | "reaction_later"; // 나중에
 
 /** 원장 1행 — 사용자 행동 신호. append-only, 재증류 소스. */
 export interface UserSignal {
