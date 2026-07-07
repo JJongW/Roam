@@ -309,6 +309,90 @@ export interface AiQueryLog {
   createdAt: string;
 }
 
+// --- L4 사용자 브레인 (종단 메모리) ------------------------------------------
+// 원장(UserSignal) → 결정론 증류(confidence 수학, LLM 무) → per-user 브레인(UserBrain).
+// userId = app_user.id. 설계: docs/decisions/2026-07-07_knowledge-architecture.md §7
+
+export type SignalKind =
+  "booth_visited" | "booth_skipped" | "booth_bookmarked" | "route_saved";
+
+/** 원장 1행 — 사용자 행동 신호. append-only, 재증류 소스. */
+export interface UserSignal {
+  id: string;
+  userId: string;
+  exhibitionId: string;
+  kind: SignalKind;
+  /** 신호를 유발한 부스(있으면). */
+  boothCode?: string;
+  /** 관심 이전축 = category slug. 부스 tags에서 확장. */
+  slugs: string[];
+  createdAt: string;
+}
+
+/** 증류된 관심 노드 — category slug 단위, confidence 있는. */
+export interface InterestNode {
+  key: string; // category slug (이전축)
+  label: string;
+  confidence: number; // 0..1
+  signals: { explicit: number; implicit: number; negative: number };
+  firstSeenAt: string;
+  lastSeenAt: string;
+  trend: "up" | "flat" | "down";
+}
+
+/** 관람 1회의 약속(개인 목표). 이번 슬라이스 미사용 — 스키마만. */
+export interface GoalRecord {
+  exhibitionId: string;
+  visitId: string;
+  statement: string;
+  themes: string[]; // category slug[]
+  timeBudgetMin: number;
+  status: "set" | "met" | "partial" | "missed";
+  metRatio: number; // 분모 프레이밍: 관련집합 대비
+  createdAt: string;
+  closedAt?: string;
+}
+
+/** L3 에피소드 → 증류본. 이번 슬라이스 미사용 — 스키마만. */
+export interface VisitDigest {
+  exhibitionId: string;
+  visitId: string;
+  date: string;
+  boothsVisited: string[]; // booth code[]
+  themesEngaged: string[]; // category slug[]
+  highlights: string[]; // 자발(메모·사진) + 자동(순간) 합성
+  satisfaction?: number; // 0..1 회고 신호
+  summary: string; // 1~2줄, Companion이 다음 관람에 참조
+}
+
+/** per-user 종단 모델 — 증류본(원장 아님). LLM 주입 시 요약해 전달. */
+export interface UserBrain {
+  userId: string;
+  version: number;
+  updatedAt: string;
+  /** 안목(학습도) — 성장 지표. 초보→고관여 UX 구동. */
+  literacy: {
+    overall: number; // 0..1
+    byTheme: Record<string, number>; // slug → 0..1
+    visitsCount: number;
+    boothsSeenCount: number;
+  };
+  interests: InterestNode[]; // top-N만 유지(증류)
+  preferences: {
+    movement?: MovementPreference;
+    companion?: CompanionType;
+    crowdTolerance?: number; // 0..1 (낮을수록 회피)
+    waitTolerance?: number; // 0..1
+    depthVsBreadth?: number; // 0=깊게 1=넓게
+  };
+  goals: GoalRecord[];
+  visits: VisitDigest[];
+  health: {
+    lastDistilledAt: string;
+    decayHalfLifeDays: number;
+  };
+}
+
 export interface Organizer {
   id: string;
   email: string;
