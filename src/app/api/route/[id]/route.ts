@@ -10,6 +10,7 @@ import {
 import { routePatchSchema } from "@/lib/schemas";
 import { recomputeRoute } from "@/lib/engine/route";
 import { rankForExhibition } from "@/lib/engine/service";
+import { reflectOnVisit } from "@/lib/memory/service";
 
 type Ctx = { params: Promise<{ id: string }> };
 
@@ -79,6 +80,8 @@ export async function PATCH(req: Request, { params }: Ctx) {
     await repo.recordAnalytics(route.sessionId, route.exhibitionId, {
       type: "route_complete",
     });
+    // L4 회고: 로그인 사용자의 완료 관람을 VisitDigest로 증류(L3→L4).
+    if (route.userId) await reflectOnVisit(route.userId, route);
   }
 
   return ok({ route });

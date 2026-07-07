@@ -3,8 +3,13 @@
 import "server-only";
 import { MEMORY_TUNING } from "@/lib/constants";
 import { getRepository } from "@/lib/repositories";
-import type { SignalKind, UserBrain } from "@/lib/types";
-import { emptyBrain, updateBrainWithSignals } from "./distill";
+import type { Booth, RoutePlan, SignalKind, UserBrain } from "@/lib/types";
+import {
+  addVisitDigest,
+  buildVisitDigest,
+  emptyBrain,
+  updateBrainWithSignals,
+} from "./distill";
 
 export interface RecordSignalInput {
   kind: SignalKind;
@@ -38,7 +43,13 @@ export async function recordSignal(
   // 태그 없는 시설 부스 등은 관심 신호로 남길 게 없다.
   if (!exhibitionId || slugs.length === 0) return;
 
-  await repo.appendUserSignal({ userId, exhibitionId, kind: input.kind, boothCode, slugs });
+  await repo.appendUserSignal({
+    userId,
+    exhibitionId,
+    kind: input.kind,
+    boothCode,
+    slugs,
+  });
 
   const nowMs = Date.now();
   const brain =
@@ -48,9 +59,16 @@ export async function recordSignal(
 
   // slug → 카테고리명 라벨 (InterestNode.label). 없으면 slug 폴백.
   const labels: Record<string, string> = {};
-  for (const c of await repo.listCategories(exhibitionId)) labels[c.slug] = c.name;
+  for (const c of await repo.listCategories(exhibitionId))
+    labels[c.slug] = c.name;
 
-  const updated = updateBrainWithSignals(brain, all, nowMs, MEMORY_TUNING, labels);
+  const updated = updateBrainWithSignals(
+    brain,
+    all,
+    nowMs,
+    MEMORY_TUNING,
+    labels,
+  );
   await repo.saveUserBrain(updated);
 }
 
@@ -58,4 +76,52 @@ export async function recordSignal(
 export async function readBrain(userId: string): Promise<UserBrain> {
   const repo = await getRepository();
   return (await repo.getUserBrain(userId)) ?? emptyBrain(userId);
+}
+
+/**
+ * 관람 종료 회고 = L3 에피소드 → L4 증류쓰기(Reflection Agent). 결정론, LLM 없음.
+ * 완료된 route로 VisitDigest를 만들어 브레인 visits에 접는다. visitId = routeId.
+ */
+export async function reflectOnVisit(
+  userId: string,
+  route: RoutePlan,
+): Promise<void> {
+  const repo = await getRepository();
+
+  // 실제 방문 부스 우선, 없으면 계획 부스로 폴백.
+  const boothIds =
+    route.visitedBoothIds.length > 0 ? route.visitedBoothIds : route.boothIds;
+  if (boothIds.length === 0) return;
+
+  const booths = await repo.listBoothsByExhibitionId(route.exhibitionId);
+  const byId = new Map(booths.map((b): [string, Booth] => [b.id, b]));
+  const boothCodes: string[] = [];
+  const boothTagLists: string[][] = [];
+  for (const id of boothIds) {
+    const b = byId.get(id);
+    if (!b) continue;
+    boothCodes.push(b.code ?? b.id);
+    boothTagLists.push(b.tags);
+  }
+  if (boothCodes.length === 0) return;
+
+  const labels: Record<string, string> = {};
+  for (const c of await repo.listCategories(route.exhibitionId)) {
+    labels[c.slug] = c.name;
+  }
+
+  const nowMs = Date.now();
+  const digest = buildVisitDigest({
+    exhibitionId: route.exhibitionId,
+    visitId: route.id,
+    boothCodes,
+    boothTagLists,
+    nowMs,
+    labels,
+  });
+
+  const brain =
+    (await repo.getUserBrain(userId)) ??
+    emptyBrain(userId, new Date(nowMs).toISOString());
+  await repo.saveUserBrain(addVisitDigest(brain, digest, nowMs));
 }
