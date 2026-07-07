@@ -1,4 +1,4 @@
-import { Compass } from "lucide-react";
+import Image from "next/image";
 import { getRepository } from "@/lib/repositories";
 import { ExhibitionCard } from "@/components/exhibition/exhibition-card";
 import { EmptyState } from "@/components/common/states";
@@ -15,8 +15,15 @@ export default async function HomePage() {
     <main className="flex-1 pb-safe">
       <header className="sticky top-0 z-40 flex h-14 items-center justify-between border-b border-border bg-background/80 px-4 pt-safe backdrop-blur-xl">
         <span className="flex items-center gap-1.5 text-lg font-extrabold tracking-tight">
-          <span className="flex size-7 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Compass className="size-4.5" />
+          <span className="flex size-7 items-center justify-center overflow-hidden rounded-full ring-1 ring-border">
+            <Image
+              src="/logo.png"
+              alt="Roam 로고"
+              width={28}
+              height={28}
+              className="size-full object-cover"
+              priority
+            />
           </span>
           Roam
         </span>

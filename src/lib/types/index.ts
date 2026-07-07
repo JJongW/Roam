@@ -115,7 +115,9 @@ export interface Booth {
   /** Outbound links surfaced on the booth detail + map (feature: detail from map). */
   instagramUrl?: string;
   websiteUrl?: string;
-  tags: string[]; // category slugs used for scoring
+  tags: string[]; // category slugs (분야 축) — 표시/필터
+  /** 관람 가치 태그(강도 0..1). 스코어링·L4 브레인·피드의 가치 축(분야와 병행). */
+  valueTags?: BoothValueTag[];
   x: number;
   y: number;
   /** 부스 크기로 추정한 체류 시간(분). floorplan 면적에서 런타임 주입(small 3 /
@@ -144,6 +146,24 @@ export interface BoothEnrichment {
   tips?: string;
   /** 출처(인스타/웹 URL). */
   sourceUrl?: string;
+  /** 관람 가치 태그(수동 주입, 강도). 있으면 파생보다 우선. */
+  valueTags?: BoothValueTag[];
+  /** Roam식 한 줄 해석 — 공식 설명을 사용자 관심 언어로 번역. */
+  roamInterpretation?: string;
+  /** 타이밍 큐(사인회·굿즈 마감·붐빔·품절 등). */
+  timing?: string[];
+  /** 회고·다음 추천용 기억 단서. */
+  memoryHooks?: string[];
+  /** 동행자가 던질 대화 소재. */
+  conversationPrompts?: string[];
+  /** 데이터 신뢰도. */
+  confidence?: "low" | "medium" | "high";
+}
+
+/** 관람 가치 태그 — 부스가 어떤 관람 가치와 연결되는지 + 강도. */
+export interface BoothValueTag {
+  slug: string; // VALUE_TAGS의 slug
+  strength: number; // 0..1
 }
 
 export interface BoothEvent {
