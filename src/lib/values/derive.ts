@@ -15,27 +15,51 @@ export interface DeriveValueInput {
 
 /** 분야 slug → 기본 가치 기여. */
 const CATEGORY_BASE: Record<string, Array<[string, number]>> = {
-  lit: [["learning", 0.5], ["discovery", 0.3]],
-  humanities: [["learning", 0.6]],
-  science: [["learning", 0.5], ["trend", 0.3]],
-  art: [["sensory", 0.6], ["discovery", 0.3]],
-  children: [["experience", 0.5], ["sensory", 0.3]],
+  lit: [
+    ["learning", 0.5],
+    ["discovery", 0.3],
+  ],
+  humanities: [
+    ["learning", 0.6],
+    ["social", 0.2],
+  ],
+  science: [
+    ["learning", 0.5],
+    ["trend", 0.3],
+  ],
+  art: [
+    ["inspiration", 0.6],
+    ["discovery", 0.3],
+  ],
+  children: [
+    ["experience", 0.5],
+    ["inspiration", 0.3],
+  ],
   general: [["discovery", 0.4]],
 };
 
 /** tips 텍스트 → 가치 기여(정규식 키워드). */
 const TIP_RULES: Array<[RegExp, Array<[string, number]>]> = [
   [/체험|만들|워크숍|해보|참여/, [["experience", 0.4]]],
-  [/사인회|토크|낭독|공연|이벤트|미니토크/, [["discovery", 0.3], ["experience", 0.2]]],
+  [
+    /사인회|토크|낭독|공연|이벤트|미니토크|대담/,
+    [
+      ["social", 0.4],
+      ["discovery", 0.2],
+    ],
+  ],
   [/신간|화제|인기|베스트|트렌드|요즘/, [["trend", 0.4]]],
   [/독립|1인|소형|작은|인디/, [["discovery", 0.4]]],
   [/굿즈|한정|에코백|키링|스티커/, [["goods", 0.3]]],
+  [/전시|작품|일러스트|그림|사진|디자인/, [["inspiration", 0.3]]],
   [/조용|한산|여유|가볍게/, [["rest", 0.3]]],
 ];
 
 export function deriveValueTags(input: DeriveValueInput): BoothValueTag[] {
   if (input.manual && input.manual.length > 0) {
-    return normalize(input.manual.map((t) => [t.slug, t.strength] as [string, number]));
+    return normalize(
+      input.manual.map((t) => [t.slug, t.strength] as [string, number]),
+    );
   }
 
   const acc = new Map<string, number>();
@@ -50,7 +74,8 @@ export function deriveValueTags(input: DeriveValueInput): BoothValueTag[] {
   }
   if (input.tips) {
     for (const [re, contribs] of TIP_RULES) {
-      if (re.test(input.tips)) for (const [slug, amt] of contribs) add(slug, amt);
+      if (re.test(input.tips))
+        for (const [slug, amt] of contribs) add(slug, amt);
     }
   }
   if (acc.size === 0) add("discovery", 0.3); // 최소 하나 보장
