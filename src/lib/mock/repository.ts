@@ -24,7 +24,9 @@ import type {
   SharedRoute,
   User,
   OAuthIdentity,
+  UserBrain,
   UserPreference,
+  UserSignal,
   VisitorSession,
   WelcomeKit,
 } from "@/lib/types";
@@ -63,6 +65,8 @@ interface Store {
   notes: BoothNote[];
   analytics: AnalyticsEvent[];
   aiQueries: AiQueryLog[];
+  userSignals: UserSignal[];
+  userBrains: Map<string, UserBrain>;
 }
 
 // Persist across HMR / route invocations in a single Node process.
@@ -88,6 +92,8 @@ function buildStore(): Store {
     notes: [],
     analytics: [],
     aiQueries: [],
+    userSignals: [],
+    userBrains: new Map(),
   };
 }
 
@@ -764,6 +770,33 @@ export class MockRepository implements Repository {
       .map(([keyword, count]) => ({ keyword, count }))
       .sort((a, b) => b.count - a.count)
       .slice(0, limit);
+  }
+
+  async appendUserSignal(
+    sig: Omit<UserSignal, "id" | "createdAt">,
+  ): Promise<void> {
+    store().userSignals.push({ ...sig, id: uid("sig"), createdAt: now() });
+  }
+
+  async listUserSignals(
+    userId: string,
+    opts?: { exhibitionId?: string; limit?: number },
+  ): Promise<UserSignal[]> {
+    let rows = store()
+      .userSignals.filter((s) => s.userId === userId)
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    if (opts?.exhibitionId) {
+      rows = rows.filter((s) => s.exhibitionId === opts.exhibitionId);
+    }
+    return opts?.limit ? rows.slice(0, opts.limit) : rows;
+  }
+
+  async getUserBrain(userId: string): Promise<UserBrain | null> {
+    return store().userBrains.get(userId) ?? null;
+  }
+
+  async saveUserBrain(brain: UserBrain): Promise<void> {
+    store().userBrains.set(brain.userId, brain);
   }
 
   async analyticsHeatmap(exhibitionId: string) {

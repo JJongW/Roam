@@ -1,6 +1,7 @@
 import type {
   CompanionType,
   MovementPreference,
+  SignalKind,
   VisitPurpose,
 } from "@/lib/types";
 
@@ -142,6 +143,36 @@ export function mergePurposeWeights(purposes: VisitPurpose[]): DimWeights {
     event: sum.event / n,
   };
 }
+
+/**
+ * L4 메모리 — 신호 종류별 가중치. 관심 confidence 수학(순수·결정론)의 입력.
+ * booth_visited=암묵 강 / bookmark·route=명시 / skip=음의 신호.
+ */
+export const SIGNAL_WEIGHTS: Record<
+  SignalKind,
+  { explicit: number; implicit: number; negative: number }
+> = {
+  booth_visited: { explicit: 0, implicit: 1.0, negative: 0 },
+  booth_bookmarked: { explicit: 1.2, implicit: 0, negative: 0 },
+  route_saved: { explicit: 1.5, implicit: 0, negative: 0 },
+  booth_skipped: { explicit: 0, implicit: 0, negative: 0.8 },
+};
+
+/** Reasoner/Planner 튜닝. 피로도 가중 + 재계획 시 피로 페널티. */
+export const REASONER_TUNING = {
+  visitedWeight: 0.5, // 방문 진행률의 피로 기여
+  elapsedWeight: 0.5, // 경과 시간률의 피로 기여
+  fatiguePenalty: 0.3, // 피로 1.0이면 남은 예산 30% 축소
+} as const;
+
+/** L4 증류 튜닝. confidence = raw/(raw+K), 시간감쇠 반감기 halfLifeDays. */
+export const MEMORY_TUNING = {
+  halfLifeDays: 90,
+  K: 3, // 포화 상수
+  thetaHi: 0.6, // 승격(안정 관심) 임계
+  thetaLo: 0.15, // 가지치기 임계
+  topN: 30, // interests 상위 유지 수
+} as const;
 
 /**
  * Per-companion multipliers, layered on top of PURPOSE_WEIGHTS. These tilt the

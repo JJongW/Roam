@@ -21,13 +21,28 @@ export function distance(a: Point, b: Point): number {
  * the visitor's interests scores near 1. This separation is what lets different
  * inputs surface different booths.
  */
-export function interestScore(booth: Booth, interests: string[]): number {
+export function interestScore(
+  booth: Booth,
+  interests: string[],
+  /** slug별 가중치(없으면 1). L4 브레인 관심에 confidence 가중을 실어 누적 관심이
+   *  세션 의도보다 무겁게 반영되도록 한다. 미지정이면 기존과 동일(전부 1). */
+  weights?: Record<string, number>,
+): number {
   if (interests.length === 0 || booth.tags.length === 0) return 0;
   const set = new Set(interests);
-  const hits = booth.tags.filter((t) => set.has(t)).length;
-  if (hits === 0) return 0;
-  const coverage = hits / interests.length; // share of intent covered, 0..1
-  const focus = hits / booth.tags.length; // share of booth that's on-topic, 0..1
+  const w = (slug: string) => weights?.[slug] ?? 1;
+  let weightedHits = 0;
+  let hitCount = 0;
+  for (const t of booth.tags) {
+    if (set.has(t)) {
+      weightedHits += w(t);
+      hitCount++;
+    }
+  }
+  if (hitCount === 0) return 0;
+  const totalWeight = interests.reduce((s, slug) => s + w(slug), 0);
+  const coverage = totalWeight > 0 ? weightedHits / totalWeight : 0; // 가중 커버리지 0..1
+  const focus = hitCount / booth.tags.length; // share of booth that's on-topic, 0..1
   return Math.min(1, 0.45 * coverage + 0.4 * focus + 0.15);
 }
 
@@ -70,6 +85,8 @@ export interface ScoreContext {
    *  more visitors build routes, this sharpens — the recommendation improves
    *  with usage. Blended with the booth's static popularity. */
   crowdByBooth?: Record<string, number>;
+  /** interest slug별 가중치(L4 브레인 누적 관심). 미지정이면 전부 1(기존 동작). */
+  interestWeights?: Record<string, number>;
 }
 
 export function scoreBooth(booth: Booth, ctx: ScoreContext): ScoredBooth {
@@ -81,7 +98,11 @@ export function scoreBooth(booth: Booth, ctx: ScoreContext): ScoredBooth {
     popularity: pw.popularity * cw.popularity,
     event: pw.event * cw.event,
   };
-  const interest = interestScore(booth, ctx.preference.interests);
+  const interest = interestScore(
+    booth,
+    ctx.preference.interests,
+    ctx.interestWeights,
+  );
   // Static popularity, blended with live crowd signal when available, so the
   // recommendation gets better as more visitors save routes.
   const staticPop = booth.popularity / 100;

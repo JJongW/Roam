@@ -18,6 +18,8 @@ import type {
   SharedRoute,
   User,
   OAuthIdentity,
+  UserBrain,
+  UserSignal,
   UserPreference,
   VisitorSession,
   WelcomeKit,
@@ -171,6 +173,19 @@ export interface Repository {
     exhibitionId: string,
     limit?: number,
   ): Promise<{ keyword: string; count: number }[]>;
+
+  // L4 사용자 메모리 (원장 + 증류 브레인)
+  /** 사용자 행동 신호를 원장에 append. 증류는 호출부(memory service)가 수행. */
+  appendUserSignal(sig: Omit<UserSignal, "id" | "createdAt">): Promise<void>;
+  /** 재증류 소스 — 사용자 신호 로그 조회(최신순). */
+  listUserSignals(
+    userId: string,
+    opts?: { exhibitionId?: string; limit?: number },
+  ): Promise<UserSignal[]>;
+  /** 증류된 종단 브레인 조회. 없으면 null. */
+  getUserBrain(userId: string): Promise<UserBrain | null>;
+  /** 증류된 브레인 upsert. */
+  saveUserBrain(brain: UserBrain): Promise<void>;
 
   // users (nickname + OAuth auth)
   createUser(nickname: string): Promise<User>;

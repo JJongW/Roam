@@ -18,6 +18,7 @@ export async function rankForExhibition(
   exhibitionSlug: string,
   preference: UserPreferenceInput,
   nowMs: number = Date.now(),
+  opts?: { interestWeights?: Record<string, number> },
 ): Promise<RankResult | null> {
   const repo = await getRepository();
   const detail = await repo.getExhibition(exhibitionSlug);
@@ -47,6 +48,7 @@ export async function rankForExhibition(
     eventsByBooth,
     now: nowMs,
     crowdByBooth,
+    interestWeights: opts?.interestWeights,
   };
 
   return {

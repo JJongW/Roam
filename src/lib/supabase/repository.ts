@@ -29,7 +29,10 @@ import type {
   SharedRoute,
   User,
   OAuthIdentity,
+  SignalKind,
+  UserBrain,
   UserPreference,
+  UserSignal,
   VisitPurpose,
   VisitorSession,
   WelcomeKit,
@@ -1357,6 +1360,69 @@ export class SupabaseRepository implements Repository {
       .map(([keyword, count]) => ({ keyword, count }))
       .sort((a, b) => b.count - a.count)
       .slice(0, limit);
+  }
+
+  async appendUserSignal(
+    sig: Omit<UserSignal, "id" | "createdAt">,
+  ): Promise<void> {
+    const db = await this.db();
+    await db.from("user_signal_log").insert({
+      id: uid("sig"),
+      user_id: sig.userId,
+      exhibition_id: sig.exhibitionId,
+      kind: sig.kind,
+      booth_code: sig.boothCode ?? null,
+      slugs: sig.slugs,
+      created_at: now(),
+    });
+  }
+
+  async listUserSignals(
+    userId: string,
+    opts?: { exhibitionId?: string; limit?: number },
+  ): Promise<UserSignal[]> {
+    const db = await this.db();
+    let q = db
+      .from("user_signal_log")
+      .select("*")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false });
+    if (opts?.exhibitionId) q = q.eq("exhibition_id", opts.exhibitionId);
+    if (opts?.limit) q = q.limit(opts.limit);
+    const { data } = await q;
+    return (data ?? []).map((row) => {
+      const r = row as Row;
+      return {
+        id: String(r.id),
+        userId: String(r.user_id),
+        exhibitionId: String(r.exhibition_id),
+        kind: String(r.kind) as SignalKind,
+        boothCode: r.booth_code == null ? undefined : String(r.booth_code),
+        slugs: strArr(r.slugs),
+        createdAt: String(r.created_at),
+      };
+    });
+  }
+
+  async getUserBrain(userId: string): Promise<UserBrain | null> {
+    const db = await this.db();
+    const { data } = await db
+      .from("user_brain")
+      .select("data")
+      .eq("user_id", userId)
+      .maybeSingle();
+    if (!data) return null;
+    const raw = (data as Row).data;
+    return raw ? (raw as UserBrain) : null;
+  }
+
+  async saveUserBrain(brain: UserBrain): Promise<void> {
+    const db = await this.db();
+    await db.from("user_brain").upsert({
+      user_id: brain.userId,
+      data: brain,
+      updated_at: now(),
+    });
   }
 
   async analyticsHeatmap(
