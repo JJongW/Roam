@@ -14,16 +14,13 @@ const digest = (p: Partial<VisitDigest> = {}): VisitDigest => ({
 });
 
 describe("fallbackNarrative", () => {
-  it("부스 수 + 테마 + 충분히 즐겼다 감각", () => {
-    const t = fallbackNarrative(digest());
-    expect(t).toContain("3곳");
-    expect(t).toContain("lit·art");
+  it("summary(라벨) 기반 + 충분히 즐겼다 감각, raw slug 노출 안 함", () => {
+    const t = fallbackNarrative(
+      digest({ summary: "3개 부스 관람 · 주로 문학" }),
+    );
+    expect(t).toContain("3개 부스 관람 · 주로 문학");
     expect(t).toContain("충분히 즐긴");
-  });
-  it("테마 없으면 테마 절 생략", () => {
-    const t = fallbackNarrative(digest({ themesEngaged: [] }));
-    expect(t).not.toContain("중심으로");
-    expect(t).toContain("3곳");
+    expect(t).not.toContain("lit"); // slug 미노출
   });
 });
 
