@@ -17,6 +17,7 @@ import type {
   RoutePlan,
   SharedRoute,
   User,
+  OAuthIdentity,
   UserPreference,
   VisitorSession,
   WelcomeKit,
@@ -171,10 +172,17 @@ export interface Repository {
     limit?: number,
   ): Promise<{ keyword: string; count: number }[]>;
 
-  // users (nickname auth)
+  // users (nickname + OAuth auth)
   createUser(nickname: string): Promise<User>;
   getUser(id: string): Promise<User | null>;
   getUserByNickname(nickname: string): Promise<User | null>;
+  /** Find an OAuth-linked account by provider identity, or null. */
+  getUserByProvider(
+    provider: string,
+    providerAccountId: string,
+  ): Promise<User | null>;
+  /** Create an account linked to an OAuth identity (nickname pre-deduped). */
+  createOAuthUser(identity: OAuthIdentity): Promise<User>;
 
   // booth notes (signed-in personal records)
   listNotes(userId: string): Promise<BoothNote[]>;

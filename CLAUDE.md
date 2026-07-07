@@ -1,9 +1,12 @@
 # Roam — Exhibition Navigator
 
-전시·박람회 **범용** 모바일 가이드 플랫폼. **무계정(anonymous)**. 방문객이 부스를
+전시·박람회 **범용** 모바일 가이드 플랫폼. **로그인 필수**(닉네임 무비번 또는 Google
+OAuth) — 방문객 앱 전체가 인증 게이트 뒤에 있다(`src/proxy.ts`). 방문객이 부스를
 발견하고, 혼잡을 피하고, 개인화된 동선을 따라가게 돕는다. + 주최자용 관리 콘솔
 (운영·분석). 특정 전시 전용이 아니다 — 현재 들어 있는 **2026 서울국제도서전(SIBF)
 데이터는 시드/데모일 뿐**, 다른 전시로 교체 가능.
+> ⚠️ 원래 무계정(anonymous) 설계였으나 로그인 필수로 전환됨. 익명 세션(`roam_session`)
+> 인프라는 여전히 공존하지만, 페이지 접근은 `roam_user` 없으면 `/login`으로 리다이렉트.
 
 > 구조·플로우·규약이 바뀌면 이 파일을 갱신한다. CLAUDE.md는 프로젝트 전반을 담는다.
 
@@ -30,6 +33,7 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
 - **부스/이벤트**: `Booth`(code 자연키, kind exhibitor|facility, tags=카테고리 slug, aliases 공동입점), `BoothEvent`.
 - **주최자 콘솔** `/admin`: 전시·부스·이벤트·대기 관리 + 분석 대시보드(히트맵·인기부스·동선흐름·퍼널).
 - **부가**: 커뮤니티 포스트(미디어), 개인 메모장(visited/skip/메모/사진), 동선 저장·공유(닉네임), 푸시(FCM), 닉네임 인증.
+- **로그인(필수 게이트)**: `app_user`(닉네임=공개키) 단일 계정 테이블. 닉네임 무비번 + **Google OAuth**(Supabase Auth). 신원은 앱 자체 쿠키 `roam_user`로 통일 — OAuth 콜백(`/auth/callback`)은 Supabase 세션으로 identity만 읽고 `signOut`, `app_user` upsert 후 `roam_user` 발급. mock 모드(Supabase 키 없음)엔 Google 버튼 숨김(닉네임만). **게이트** `src/proxy.ts`(Next 16 proxy 컨벤션): `roam_user` 없으면 `/login?next=`로 307. 예외=`/login`·`/auth`·`/admin`(자체 코드 게이트)·`/api`·정적. 로그인 화면 `src/app/login/`. 외부 설정·설계: `docs/decisions/2026-07-07_google-oauth-login.md`.
 - 도메인 타입 단일 소스: `src/lib/types/index.ts`. 설계 문서: `.claude/plans/`(architecture·erd·api-spec).
 
 ## LLM 추천 + 속도 규칙
