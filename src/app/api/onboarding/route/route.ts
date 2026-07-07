@@ -10,6 +10,8 @@ import { hasGemini } from "@/lib/env";
 import { recommendBoothIds } from "@/lib/ai/booth-recommender";
 import { describeContext } from "@/lib/onboarding/onboarding-inference";
 import { buildProfileFromContext } from "@/lib/onboarding/route-profile-builder";
+import { mergeBrainInterests } from "@/lib/memory/apply";
+import { readBrain } from "@/lib/memory/service";
 import { emptyOnboardingContext } from "@/lib/onboarding/onboarding-types";
 import type { OnboardingContext } from "@/lib/onboarding/onboarding-types";
 import type { Booth, Point } from "@/lib/types";
@@ -61,13 +63,23 @@ export async function POST(req: Request) {
     } as OnboardingContext;
 
     const built = buildProfileFromContext(ctx, detail.categories);
-    const preference = built.preference;
+    let preference = built.preference;
+
+    // L4 메모리: 로그인 사용자면 누적 관심(브레인)을 이번 세션 interests에 합쳐
+    // 랭킹에 반영한다("쓸수록 좋아짐"). 빈 브레인이면 무변화.
+    const user = await getCurrentUser();
+    if (user) {
+      const brain = await readBrain(user.id);
+      preference = {
+        ...preference,
+        interests: mergeBrainInterests(preference.interests, brain),
+      };
+    }
 
     const rank = await rankForExhibition(exhibitionSlug, preference);
     if (!rank) return notFound("전시를 찾을 수 없습니다");
 
     const session = await ensureSession(rank.exhibitionId);
-    const user = await getCurrentUser();
     await repo.savePreference(session.id, preference);
 
     const start: Point | undefined = FLOORPLANS[exhibitionSlug]?.entrance;
