@@ -57,6 +57,8 @@ export const routePatchSchema = z.object({
   status: z.enum(ROUTE_STATUSES).optional(),
   deviated: z.boolean().optional(),
   position: z.object({ x: z.number(), y: z.number() }).optional(),
+  // 관람 중 실경과 시간(분). 주면 Planner가 남은 시간·피로로 재계획한다.
+  elapsedMinutes: z.number().min(0).optional(),
   // manual route editing (add/remove booth → reordered set)
   boothIds: z.array(z.string()).optional(),
   estimatedMinutes: z.number().optional(),

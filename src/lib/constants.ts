@@ -158,6 +158,13 @@ export const SIGNAL_WEIGHTS: Record<
   booth_skipped: { explicit: 0, implicit: 0, negative: 0.8 },
 };
 
+/** Reasoner/Planner 튜닝. 피로도 가중 + 재계획 시 피로 페널티. */
+export const REASONER_TUNING = {
+  visitedWeight: 0.5, // 방문 진행률의 피로 기여
+  elapsedWeight: 0.5, // 경과 시간률의 피로 기여
+  fatiguePenalty: 0.3, // 피로 1.0이면 남은 예산 30% 축소
+} as const;
+
 /** L4 증류 튜닝. confidence = raw/(raw+K), 시간감쇠 반감기 halfLifeDays. */
 export const MEMORY_TUNING = {
   halfLifeDays: 90,
