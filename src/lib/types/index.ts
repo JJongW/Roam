@@ -362,7 +362,9 @@ export interface VisitDigest {
   themesEngaged: string[]; // category slug[]
   highlights: string[]; // 자발(메모·사진) + 자동(순간) 합성
   satisfaction?: number; // 0..1 회고 신호
-  summary: string; // 1~2줄, Companion이 다음 관람에 참조
+  summary: string; // 결정론 1줄 요약(항상 존재)
+  /** Companion(LLM)이 쓴 따뜻한 회고 서술. 조회 시 lazy 생성·캐시. 없으면 summary. */
+  narrative?: string;
 }
 
 /** per-user 종단 모델 — 증류본(원장 아님). LLM 주입 시 요약해 전달. */

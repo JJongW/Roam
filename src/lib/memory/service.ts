@@ -1,9 +1,16 @@
 // L4 메모리 — I/O 래퍼(Memory Agent 진입점). 순수 엔진(confidence·distill)을
 // 레포와 이어붙인다. 신호 append → 전체 재증류 → 브레인 저장. LLM 없음.
 import "server-only";
+import { narrateVisit } from "@/lib/ai/companion";
 import { MEMORY_TUNING } from "@/lib/constants";
 import { getRepository } from "@/lib/repositories";
-import type { Booth, RoutePlan, SignalKind, UserBrain } from "@/lib/types";
+import type {
+  Booth,
+  RoutePlan,
+  SignalKind,
+  UserBrain,
+  VisitDigest,
+} from "@/lib/types";
 import {
   addVisitDigest,
   buildVisitDigest,
@@ -124,4 +131,26 @@ export async function reflectOnVisit(
     (await repo.getUserBrain(userId)) ??
     emptyBrain(userId, new Date(nowMs).toISOString());
   await repo.saveUserBrain(addVisitDigest(brain, digest, nowMs));
+}
+
+/**
+ * 최근 관람의 회고 서술을 반환. 없으면 Companion(LLM)이 생성해 캐시(1회만).
+ * 종료 시점이 아니라 조회 시점 생성 — 관람 종료 액션을 스냅하게 유지.
+ */
+export async function ensureLatestRecap(
+  userId: string,
+): Promise<VisitDigest | null> {
+  const repo = await getRepository();
+  const brain = await repo.getUserBrain(userId);
+  if (!brain || brain.visits.length === 0) return null;
+
+  const latest = brain.visits[brain.visits.length - 1];
+  if (latest.narrative) return latest; // 캐시 히트
+
+  const narrated: VisitDigest = {
+    ...latest,
+    narrative: await narrateVisit(latest),
+  };
+  await repo.saveUserBrain(addVisitDigest(brain, narrated, Date.now()));
+  return narrated;
 }
