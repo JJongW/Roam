@@ -11,6 +11,7 @@ import {
   SheetDescription,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { ValueChips } from "@/components/values/value-chips";
 import type { VisitDigest } from "@/lib/types";
 
 /**
@@ -80,6 +81,26 @@ export function RecapSheet({
             <MapPin className="size-4" aria-hidden />
             {visit.boothsVisited.length}곳을 둘러봤어요
           </div>
+        )}
+
+        {/* A(서사) 위에 오늘 남긴 가치 — 목표 대비 무엇을 봤나. */}
+        {!loading && visit && visit.themesEngaged.length > 0 && (
+          <div className="mt-3 px-1">
+            <p className="mb-1.5 text-xs font-semibold text-muted-foreground">
+              오늘 남긴 가치
+            </p>
+            <ValueChips
+              tags={visit.themesEngaged.map((slug) => ({ slug, strength: 1 }))}
+              max={5}
+            />
+          </div>
+        )}
+
+        {/* C(다음으로 잇기) — 종단 프로필 연결. */}
+        {!loading && visit && (
+          <p className="mt-4 rounded-xl border border-border bg-card p-3 text-sm leading-relaxed text-muted-foreground">
+            네 취향에 오늘 관람이 쌓였어 — 다음 박람회는 더 잘 맞춰줄게.
+          </p>
         )}
 
         <Button size="lg" className="mt-5 w-full" onClick={onClose}>
