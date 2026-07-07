@@ -95,7 +95,13 @@ export default async function ExhibitionDetailPage({ params }: Props) {
           </section>
 
           <div className="space-y-2.5">
-            <ValueOnboarding slug={slug} />
+            <ValueOnboarding
+              slug={slug}
+              exhibitionName={exhibition.name}
+              description={exhibition.description}
+              hallCount={detail.halls.length}
+              categoryNames={detail.categories.map((c) => c.name)}
+            />
 
             <Link
               href={`/exhibitions/${slug}/routes`}
