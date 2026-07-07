@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import { LogOut, UserRound } from "lucide-react";
 import { toast } from "sonner";
 import { useAuthStore } from "@/lib/stores/auth";
 import { Button } from "@/components/ui/button";
+import { BrainSheet } from "@/components/me/brain-sheet";
 
 /** Header control: shows a login button or the signed-in nickname + logout. */
 export function AccountButton() {
@@ -11,6 +13,7 @@ export function AccountButton() {
   const ready = useAuthStore((s) => s.ready);
   const openLogin = useAuthStore((s) => s.openLogin);
   const logout = useAuthStore((s) => s.logout);
+  const [brainOpen, setBrainOpen] = useState(false);
 
   if (!ready) return <div className="h-8 w-16" aria-hidden />;
 
@@ -24,9 +27,14 @@ export function AccountButton() {
 
   return (
     <div className="flex items-center gap-1">
-      <span className="max-w-24 truncate text-sm font-semibold">
+      <button
+        type="button"
+        onClick={() => setBrainOpen(true)}
+        aria-label="내 취향 보기"
+        className="max-w-24 truncate text-sm font-semibold active:opacity-70"
+      >
         {user.nickname}
-      </span>
+      </button>
       <Button
         variant="ghost"
         size="icon"
@@ -38,6 +46,7 @@ export function AccountButton() {
       >
         <LogOut className="size-4.5" />
       </Button>
+      <BrainSheet open={brainOpen} onClose={() => setBrainOpen(false)} />
     </div>
   );
 }
