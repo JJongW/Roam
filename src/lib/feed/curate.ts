@@ -6,6 +6,7 @@ import { rankForExhibition } from "@/lib/engine/service";
 import { brainInterestWeights, mergeBrainInterests } from "@/lib/memory/apply";
 import { readBrain } from "@/lib/memory/service";
 import { deriveCue } from "@/lib/feed/cue";
+import { buildGrounding, type Grounding } from "@/lib/feed/grounding";
 import { DEFAULT_RHYTHM, RHYTHM_MIX, type Rhythm } from "@/lib/feed/rhythm";
 import { VALUE_SLUGS, boothValueSlugs } from "@/lib/values";
 import type { Booth, UserBrain } from "@/lib/types";
@@ -20,6 +21,8 @@ export interface FeedItem {
   pick: PickKind;
   /** 실시간 판단 큐(이벤트/타이밍 사실+이유). 없으면 undefined. */
   cue?: string;
+  /** 근거 카드 — 무엇/왜맞음/근거/행동/신뢰(판단 재료). */
+  grounding: Grounding;
 }
 
 /** 대상 부스의 가치 슬러그와 교집합 유사도 상위 n개(자기 제외, 점수>0). */
@@ -84,6 +87,11 @@ export async function curateFeed(
   );
   if (!rank) return [];
 
+  // 사용자 상위 관심 가치(slug) — 근거 카드의 왜맞음 겹침 계산에 쓴다.
+  const userValueSlugs = brain.interests
+    .filter((n) => n.confidence >= 0.25 && VALUE_SLUGS.includes(n.key))
+    .map((n) => n.key);
+
   const items: FeedItem[] = [];
   const used = new Set<string>();
   const add = (booth: Booth, pick: PickKind) => {
@@ -92,6 +100,7 @@ export async function curateFeed(
       related: relatedBooths(rank.booths, booth, 3),
       pick,
       cue: deriveCue(booth, rank.eventsByBooth[booth.id] ?? []),
+      grounding: buildGrounding(booth, userValueSlugs, pick),
     });
     used.add(booth.id);
   };

@@ -6,6 +6,7 @@ import { ChevronDown, Clock3 } from "lucide-react";
 import { api } from "@/lib/api/client";
 import { BoothCard } from "@/components/booth/booth-card";
 import { ValueChips } from "@/components/values/value-chips";
+import { GroundingCard } from "@/components/feed/grounding-card";
 import { ReactionBar } from "@/components/feed/reaction-bar";
 import { cn } from "@/lib/utils";
 import type { Category } from "@/lib/types";
@@ -56,7 +57,7 @@ export function InterestFeed({
       </div>
 
       <div>
-        {items.map(({ booth, related, pick, cue }) => {
+        {items.map(({ booth, related, pick, cue, grounding }) => {
           const open = expanded.has(booth.id);
           return (
             <article
@@ -92,6 +93,8 @@ export function InterestFeed({
                     <ValueChips tags={booth.valueTags} />
                   </div>
                 )}
+
+                <GroundingCard grounding={grounding} />
 
                 {cue && (
                   <div className="mt-2 flex items-start gap-1.5 text-xs leading-relaxed text-muted-foreground">
