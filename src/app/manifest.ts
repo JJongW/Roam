@@ -4,11 +4,11 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Roam — Exhibition Navigator",
     short_name: "Roam",
-    description: "전시 부스 추천과 혼잡을 피하는 맞춤 동선 안내",
+    description: "너한테 의미 있을 부스를 함께 골라 보는 전시 관람 컴패니언",
     start_url: "/",
     display: "standalone",
     background_color: "#ffffff",
     theme_color: "#4f46e5",
-    icons: [{ src: "/icon.svg", sizes: "any", type: "image/svg+xml" }],
+    icons: [{ src: "/logo.svg", sizes: "any", type: "image/svg+xml" }],
   };
 }
