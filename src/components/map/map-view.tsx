@@ -38,6 +38,8 @@ import { AppBar } from "@/components/common/app-bar";
 import { ExhibitionMap, HEAT_TIERS } from "@/components/map/exhibition-map";
 import { NotesView } from "@/components/booth/notes-view";
 import { CategoryChip } from "@/components/booth/category-chip";
+import { ReactionBar } from "@/components/feed/reaction-bar";
+import { ValueChips } from "@/components/values/value-chips";
 import { EmptyState } from "@/components/common/states";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -117,7 +119,6 @@ export function MapView({
 
   const hydrated = useHydrated();
   const storeRecords = useVisitStore((s) => s.records);
-  const toggleStatus = useVisitStore((s) => s.toggleStatus);
   const records = useMemo(
     () => (hydrated ? storeRecords : {}),
     [hydrated, storeRecords],
@@ -172,7 +173,6 @@ export function MapView({
 
   const selected = booths.find((b) => b.id === selectedId) ?? null;
   const selectedCat = selected ? catById.get(selected.categoryId) : undefined;
-  const selectedStatus = selected ? records[selected.id]?.status : undefined;
 
   const locate = useCallback((id: string) => {
     setSelectedId(id);
@@ -199,8 +199,7 @@ export function MapView({
         .then((d) => {
           setHeat(d);
           const total = Object.keys(d.booths).length;
-          if (total === 0)
-            toast("아직 밀도 데이터가 쌓이는 중이에요");
+          if (total === 0) toast("아직 밀도 데이터가 쌓이는 중이에요");
         })
         .catch(() => toast.error("밀도 정보를 불러오지 못했어요"))
         .finally(() => setHeatLoading(false));
@@ -405,23 +404,17 @@ export function MapView({
           </Button>
         </div>
 
+        {b.valueTags && b.valueTags.length > 0 && (
+          <div className="mt-2 border-t border-border pt-2.5">
+            <ValueChips tags={b.valueTags} />
+          </div>
+        )}
+
         <BoothPopupMemo key={b.id} boothId={b.id} />
 
-        <div className="mt-2.5 flex items-center gap-2 border-t border-border pt-2.5">
-          <PopupToggle
-            active={selectedStatus === "visited"}
-            tone="success"
-            onClick={() => toggleStatus(b.id, "visited")}
-          >
-            <Check className="size-4" /> 방문
-          </PopupToggle>
-          <PopupToggle
-            active={selectedStatus === "skipped"}
-            tone="warning"
-            onClick={() => toggleStatus(b.id, "skipped")}
-          >
-            <Star className="size-4" /> 관심
-          </PopupToggle>
+        {/* 저장 대신 반응 — 끌림/나중에/별로/이미봄 → 신호로 브레인에 반영. */}
+        <div className="mt-2.5 border-t border-border pt-2.5">
+          <ReactionBar boothId={b.id} />
         </div>
       </div>
     );
@@ -484,7 +477,11 @@ export function MapView({
       {/* Mobile chrome + map column */}
       <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
         <div className="md:hidden landscape:hidden">
-          <AppBar title="지도" onBack={handleBack} right={renderMapActions(true)} />
+          <AppBar
+            title="지도"
+            onBack={handleBack}
+            right={renderMapActions(true)}
+          />
         </div>
 
         <div className="relative flex-1 overflow-hidden">
@@ -726,36 +723,5 @@ function BoothPopupMemo({ boothId }: { boothId: string }) {
       </div>
       <NotePhotos boothId={boothId} compact />
     </div>
-  );
-}
-
-/** Compact visit/skip toggle inside the map popup. */
-function PopupToggle({
-  active,
-  tone,
-  onClick,
-  children,
-}: {
-  active: boolean;
-  tone: "success" | "warning";
-  onClick: () => void;
-  children: React.ReactNode;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={active}
-      className={cn(
-        "inline-flex flex-1 items-center justify-center gap-1 rounded-lg border py-2 text-xs font-bold transition-colors",
-        active
-          ? tone === "success"
-            ? "border-success bg-success/12 text-success"
-            : "border-warning bg-warning/12 text-[#9a6700]"
-          : "border-border bg-card text-muted-foreground",
-      )}
-    >
-      {children}
-    </button>
   );
 }
