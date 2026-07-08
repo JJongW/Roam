@@ -4,7 +4,6 @@ import {
   CalendarDays,
   MapPin,
   Map as MapIcon,
-  Route as RouteIcon,
   ChevronRight,
 } from "lucide-react";
 import { format } from "date-fns";
@@ -50,7 +49,7 @@ export default async function ExhibitionDetailPage({ params }: Props) {
     .slice(0, 2)
     .map((n) => n.label);
   const memoryLine = topValues.length
-    ? `요즘 ${topValues.join("·")}에 끌리시네요 — 그쪽으로 골라왔어요.`
+    ? `요즘 ${topValues.join("·")}에 끌리더라 — 그쪽으로 골라왔어.`
     : undefined;
   const categoryById = Object.fromEntries(
     detail.categories.map((c) => [c.id, c]),
@@ -114,22 +113,6 @@ export default async function ExhibitionDetailPage({ params }: Props) {
             />
 
             <Link
-              href={`/exhibitions/${slug}/routes`}
-              className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-[var(--shadow-card)] active:scale-[0.99]"
-            >
-              <div className="flex size-11 items-center justify-center rounded-xl bg-secondary">
-                <RouteIcon className="size-5 text-foreground" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="font-bold">다른 사람 동선 둘러보기</p>
-                <p className="text-sm text-muted-foreground">
-                  방문객이 공유한 추천 코스를 따라가 보세요
-                </p>
-              </div>
-              <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
-            </Link>
-
-            <Link
               href={`/exhibitions/${slug}/map`}
               className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-[var(--shadow-card)] active:scale-[0.99]"
             >
@@ -137,9 +120,9 @@ export default async function ExhibitionDetailPage({ params }: Props) {
                 <MapIcon className="size-5 text-foreground" />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="font-bold">지도 보기 · 부스 담기</p>
+                <p className="font-bold">관심 밀도 지도</p>
                 <p className="text-sm text-muted-foreground">
-                  전시장 지도에서 직접 둘러보고 부스를 담아요
+                  전시장을 직접 둘러보고 끌리는 부스에 반응해봐
                 </p>
               </div>
               <ChevronRight className="size-5 shrink-0 text-muted-foreground" />

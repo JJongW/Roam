@@ -75,6 +75,7 @@ export function AppOnboardingGate() {
               width={56}
               height={56}
               className="size-full object-cover"
+              unoptimized
               priority
             />
           </span>
@@ -149,6 +150,7 @@ export function AppOnboardingGate() {
               width={56}
               height={56}
               className="size-full object-cover"
+              unoptimized
             />
           </span>
           <h1 className="text-2xl font-extrabold leading-tight">
