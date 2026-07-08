@@ -79,7 +79,7 @@ export function RecapSheet({
         {!loading && visit && visit.boothsVisited.length > 0 && (
           <div className="mt-3 flex items-center gap-1.5 px-1 text-sm text-muted-foreground">
             <MapPin className="size-4" aria-hidden />
-            {visit.boothsVisited.length}곳을 둘러봤어요
+            {visit.boothsVisited.length}곳을 둘러봤어
           </div>
         )}
 
