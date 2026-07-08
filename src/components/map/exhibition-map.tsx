@@ -78,16 +78,11 @@ interface MapProps {
   categories: Category[];
   halls?: Hall[];
   selectedId?: string | null;
-  routeOrder?: string[]; // ordered booth ids → draws path
   visitedIds?: string[];
   skippedIds?: string[];
   position?: Point | null;
   /** Hand-traced venue geometry; when set, booths render at exact rects. */
   floorplan?: Floorplan;
-  /** Override the route start/end points (visitor-chosen gates). Falls back to
-   *  the floorplan's default entrance/exit. */
-  entrance?: Point | null;
-  exit?: Point | null;
   /** Zoom to fill height (pan horizontally) instead of fitting the whole venue. */
   fillHeight?: boolean;
   /** Initial point to center on when fillHeight is set. */
@@ -135,13 +130,10 @@ export function ExhibitionMap({
   categories,
   halls = [],
   selectedId,
-  routeOrder,
   visitedIds = [],
   skippedIds = [],
   position,
   floorplan,
-  entrance,
-  exit,
   fillHeight = false,
   focus,
   onSelect,
@@ -305,8 +297,6 @@ export function ExhibitionMap({
         ...booths.filter((b) => b.id === selectedId),
       ]
     : booths;
-  const orderById = new Map(routeOrder?.map((id, i) => [id, i]));
-
   // Hall containers. From the floorplan when present; otherwise a bounding box
   // computed from booth positions.
   const hallRegions = floorplan
@@ -698,46 +688,8 @@ export function ExhibitionMap({
     }
   }
 
-  // Route line: clean orthogonal path (one bend per leg) with rounded corners —
-  // no aisle detours / stubs. Adjacent or same-row/col booths connect straight.
+  // 좌표 헬퍼 타입 — 히트맵 라인(roundedPathD)에서 쓴다.
   type Pt = { x: number; y: number };
-  const routeBoothCenters: Pt[] = (routeOrder ?? [])
-    .map((id) => boothById.get(id))
-    .filter((b): b is Booth => Boolean(b))
-    .map((b) => {
-      const g = geomOf(b);
-      return { x: g.x, y: g.y };
-    });
-  // Begin at the entrance, end at the exit. Visitor-chosen gates (entrance/exit
-  // props) win; otherwise fall back to the floorplan's defaults.
-  const routeStart = entrance ?? floorplan?.entrance;
-  const routeEnd = exit ?? floorplan?.exit;
-  const orderedRouteCenters: Pt[] =
-    routeBoothCenters.length > 0 && routeStart && routeEnd
-      ? [routeStart, ...routeBoothCenters, routeEnd]
-      : routeBoothCenters;
-
-  function orthWaypoints(pts: Pt[]): Pt[] {
-    const out: Pt[] = [];
-    for (let i = 0; i < pts.length; i++) {
-      const b = pts[i];
-      if (i > 0) {
-        const a = pts[i - 1];
-        // one right-angle bend (vertical then horizontal); skip if aligned
-        if (a.x !== b.x && a.y !== b.y) out.push({ x: a.x, y: b.y });
-      }
-      out.push(b);
-    }
-    // drop collinear midpoints so straight runs stay straight
-    return out.filter((p, i) => {
-      if (i === 0 || i === out.length - 1) return true;
-      const a = out[i - 1];
-      const c = out[i + 1];
-      const collinear =
-        (a.x === p.x && p.x === c.x) || (a.y === p.y && p.y === c.y);
-      return !collinear;
-    });
-  }
 
   // Build an SVG path string with rounded corners at every vertex.
   function roundedPathD(pts: Pt[], radius = 16): string {
@@ -789,37 +741,6 @@ export function ExhibitionMap({
     applyView(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [centerOn]);
-
-  const routeKey = routeOrder?.join(",");
-  // Route the WHOLE path once through the aisle grid (correct, never crosses a
-  // booth), then split the resulting polyline into its straight pieces. Drawing
-  // the pieces in walking order lets a later one's casing + shadow cross OVER an
-  // earlier one, so self-crossings ("십자") read as a bridge. (Routing per leg
-  // instead would spike into every booth centre and clip the boxes.)
-  const gateKey = `${routeStart?.x},${routeStart?.y},${routeEnd?.x},${routeEnd?.y}`;
-  const routeSegments = useMemo(
-    () => {
-      const centers = orderedRouteCenters;
-      if (centers.length < 2) return [];
-      const rects = floorplan
-        ? floorplan.booths.map((b) => ({ x: b.x, y: b.y, w: b.w, h: b.h }))
-        : [];
-      const wps = floorplan
-        ? aisleRoute(centers, rects, width, height, floorplan.interior)
-        : orthWaypoints(centers);
-      const segs: string[] = [];
-      for (let i = 0; i < wps.length - 1; i++) {
-        const a = wps[i];
-        const b = wps[i + 1];
-        segs.push(
-          `M ${a.x.toFixed(1)} ${a.y.toFixed(1)} L ${b.x.toFixed(1)} ${b.y.toFixed(1)}`,
-        );
-      }
-      return segs;
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [routeKey, gateKey, floorplan, width, height],
-  );
 
   // Crowd heatmap geometry. The top corridors (most-walked pairs) are routed
   // through the aisles and drawn as heat lines.
@@ -973,80 +894,6 @@ export function ExhibitionMap({
               opacity={0.12 + c.t * 0.33}
             />
           ))}
-
-          {/* route path — drawn under decor/booths so block headers, entrance
-              and exit labels stay readable on top of the walking line. */}
-          {routeSegments.length > 0 && (
-            <g>
-              {routeSegments.map((d, i) => (
-                // Each leg = soft shadow + white casing + line, painted in visit
-                // order. A later leg lands on top, so where it crosses an earlier
-                // leg the shadow falls onto the lower line → a readable overpass.
-                <g key={i}>
-                  <path
-                    d={d}
-                    fill="none"
-                    stroke="rgba(15,23,42,0.18)"
-                    strokeWidth={18}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    transform="translate(0,2.5)"
-                  />
-                  <path
-                    d={d}
-                    fill="none"
-                    stroke="white"
-                    strokeWidth={15}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d={d}
-                    fill="none"
-                    stroke="var(--route-line)"
-                    strokeWidth={9}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </g>
-              ))}
-            </g>
-          )}
-
-          {/* Start (입구) / end (출구) markers — make the route's direction and
-              its entrance/exit unmistakable when a route is drawn. */}
-          {routeSegments.length > 0 &&
-            routeStart &&
-            routeEnd &&
-            (
-              [
-                { p: routeStart, label: "출발" },
-                { p: routeEnd, label: "도착" },
-              ] as const
-            ).map((m) => (
-              <g key={m.label} transform={upright(m.p.x, m.p.y)}>
-                <circle cx={m.p.x} cy={m.p.y} r={26} fill="var(--primary)" />
-                <circle
-                  cx={m.p.x}
-                  cy={m.p.y}
-                  r={26}
-                  fill="none"
-                  stroke="white"
-                  strokeWidth={4}
-                />
-                <text
-                  x={m.p.x}
-                  y={m.p.y}
-                  textAnchor="middle"
-                  dominantBaseline="central"
-                  fontSize={20}
-                  fontWeight={800}
-                  fill="white"
-                >
-                  {m.label}
-                </text>
-              </g>
-            ))}
 
           {/* floorplan decor (passage arrows, info bars, entrance, labels) */}
           {floorplan?.decor.map((d, i) => {
@@ -1319,7 +1166,6 @@ export function ExhibitionMap({
             const isSel = b.id === selectedId;
             const isVisited = visitedSet.has(b.id);
             const isSkipped = !isVisited && skippedSet.has(b.id);
-            const order = orderById.get(b.id) ?? -1;
             const g = geomOf(b);
             return (
               <g
@@ -1330,21 +1176,16 @@ export function ExhibitionMap({
                 aria-label={`${b.name}${b.code ? ` (${b.code})` : ""}`}
               >
                 {(() => {
-                  const onRoute = order >= 0;
                   const color = cat?.color ?? "var(--primary)";
                   const zone = g.color ?? `${color}26`;
-                  // Map uses STATE colors only — 방문/이따/동선/facility. Category
-                  // hue lives in chips/detail, not on the booth (avoids clashing
-                  // with the green/amber/indigo status meaning). On-route = indigo.
+                  // Map uses STATE colors only — 방문/관심/facility. Category
+                  // hue lives in chips/detail, not on the booth.
                   const fill = isVisited
                     ? "var(--route-visited)"
                     : isSkipped
                       ? "var(--warning)"
-                      : onRoute
-                        ? "var(--primary)"
-                        : zone;
-                  const darkText =
-                    isVisited || isSkipped || onRoute || fill === "#3a3d44";
+                      : zone;
+                  const darkText = isVisited || isSkipped || fill === "#3a3d44";
                   const stroke = isSel
                     ? "var(--primary)"
                     : isSkipped
@@ -1370,26 +1211,6 @@ export function ExhibitionMap({
                         stroke={stroke}
                         strokeWidth={isSel ? 3.5 : 1.2}
                       />
-                      {onRoute && (
-                        <>
-                          <circle
-                            cx={-g.w / 2 + 11}
-                            cy={-g.h / 2 + 11}
-                            r={9}
-                            fill="white"
-                          />
-                          <text
-                            x={-g.w / 2 + 11}
-                            y={-g.h / 2 + 15}
-                            textAnchor="middle"
-                            fontSize="11"
-                            fontWeight="800"
-                            fill="var(--primary)"
-                          >
-                            {order + 1}
-                          </text>
-                        </>
-                      )}
                       {(() => {
                         // 모든 부스에 코드 + 이름을 함께 표시한다. 글자 크기는
                         // 부스 크기에 비례(작은 부스 작게, 큰 부스 크게).

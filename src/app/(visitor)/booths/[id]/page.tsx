@@ -8,7 +8,6 @@ import { BoothPersonalPanel } from "@/components/booth/booth-personal-panel";
 import { BoothHighlights } from "@/components/booth/booth-highlights";
 import { BoothTabs } from "@/components/booth/booth-tabs";
 import { BoothPosts } from "@/components/booth/booth-posts";
-import { CartButton } from "@/components/booth/cart-button";
 import { CategoryChip } from "@/components/booth/category-chip";
 import { ReviewSection } from "@/components/booth/review-section";
 import { EventList } from "@/components/booth/event-list";
@@ -47,14 +46,7 @@ export default async function BoothDetailPage({ params }: Props) {
       />
       <AppBar
         title={booth.name}
-        right={
-          <div className="flex items-center gap-1">
-            {/* 동선에 담기 — lives in the title bar so it's reachable without
-                scrolling past the intro. */}
-            <CartButton boothId={booth.id} variant="icon" />
-            <BookmarkButton targetType="booth" targetId={booth.id} />
-          </div>
-        }
+        right={<BookmarkButton targetType="booth" targetId={booth.id} />}
       />
       <main className="flex-1 pb-10 landscape:flex landscape:min-h-0 landscape:flex-1 landscape:flex-row landscape:pb-0">
         {/* Landscape: identity column (hero + 정보 + AI 요약) on the left. */}
