@@ -6,6 +6,7 @@ import { rankForExhibition } from "@/lib/engine/service";
 import { brainInterestWeights, mergeBrainInterests } from "@/lib/memory/apply";
 import { readBrain } from "@/lib/memory/service";
 import { deriveCue } from "@/lib/feed/cue";
+import { DEFAULT_RHYTHM, RHYTHM_MIX, type Rhythm } from "@/lib/feed/rhythm";
 import { VALUE_SLUGS, boothValueSlugs } from "@/lib/values";
 import type { Booth, UserBrain } from "@/lib/types";
 
@@ -60,10 +61,11 @@ function pickAdventure(
   return best;
 }
 
-/** 안정 3 · 낯선 2 · 모험 1 믹스(≤6). 빈 브레인이면 인기순이 안정픽이 된다. */
+/** 리듬별 믹스로 안정·낯선·모험을 뽑는다(기본 가볍게=3·2·1). 빈 브레인이면 인기순이 안정픽. */
 export async function curateFeed(
   slug: string,
   userId: string,
+  rhythm: Rhythm = DEFAULT_RHYTHM,
 ): Promise<FeedItem[]> {
   const brain = await readBrain(userId);
   const interests = mergeBrainInterests([], brain);
@@ -94,14 +96,19 @@ export async function curateFeed(
     used.add(booth.id);
   };
 
-  // 안정픽 3 — 상위 개인화(다양화)
-  for (const s of diversifyCandidates(rank.ranked, 3)) add(s.booth, "stable");
-  // 낯선픽 2 — 남은 랭킹에서 인접 발견
+  const mix = RHYTHM_MIX[rhythm];
+  // 안정픽 — 상위 개인화(다양화)
+  for (const s of diversifyCandidates(rank.ranked, mix.stable))
+    add(s.booth, "stable");
+  // 낯선픽 — 남은 랭킹에서 인접 발견
   const rest = rank.ranked.filter((s) => !used.has(s.booth.id));
-  for (const s of diversifyCandidates(rest, 2)) add(s.booth, "unfamiliar");
-  // 모험픽 1 — 미접촉 가치에서 발굴
-  const adv = pickAdventure(rank.booths, brain, used);
-  if (adv) add(adv, "adventure");
+  for (const s of diversifyCandidates(rest, mix.unfamiliar))
+    add(s.booth, "unfamiliar");
+  // 모험픽 — 미접촉 가치에서 발굴
+  for (let i = 0; i < mix.adventure; i++) {
+    const adv = pickAdventure(rank.booths, brain, used);
+    if (adv) add(adv, "adventure");
+  }
 
   return items;
 }
