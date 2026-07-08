@@ -8,6 +8,7 @@ import { BoothCard } from "@/components/booth/booth-card";
 import { ValueChips } from "@/components/values/value-chips";
 import { GroundingCard } from "@/components/feed/grounding-card";
 import { ReactionBar } from "@/components/feed/reaction-bar";
+import { useT } from "@/lib/i18n/provider";
 import { cn } from "@/lib/utils";
 import type { Category } from "@/lib/types";
 import type { FeedItem, PickKind } from "@/lib/feed/curate";
@@ -28,6 +29,7 @@ export function InterestFeed({
   /** 기억 발화 — 브레인 상위 관심 기반 인사. 없으면 기본 문구. */
   memoryLine?: string;
 }) {
+  const t = useT();
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   if (items.length === 0) return null;
 
@@ -50,9 +52,9 @@ export function InterestFeed({
   return (
     <section className="mt-6">
       <div className="mb-1 px-1">
-        <h2 className="text-base font-bold">내가 미리 골라뒀어</h2>
+        <h2 className="text-base font-bold">{t("feed.heading")}</h2>
         <p className="mt-0.5 text-sm text-muted-foreground">
-          {memoryLine ?? "네 반응 볼수록 더 잘 맞춰줄게."}
+          {memoryLine ?? t("feed.subFallback")}
         </p>
       </div>
 
@@ -75,9 +77,9 @@ export function InterestFeed({
               {/* 게시물 본문 */}
               <div className="min-w-0 flex-1">
                 <div className="flex items-baseline gap-1.5">
-                  <span className="text-sm font-bold">Roam</span>
+                  <span className="text-sm font-bold">{t("romi.name")}</span>
                   <span className="text-xs text-muted-foreground">
-                    · {PICK_UTTERANCE[pick]}
+                    · {t(PICK_KEY[pick])}
                   </span>
                 </div>
 
@@ -122,7 +124,9 @@ export function InterestFeed({
                         )}
                         aria-hidden
                       />
-                      {open ? "접기" : `비슷한 곳 ${related.length}`}
+                      {open
+                        ? t("feed.collapse")
+                        : t("feed.similar", { n: related.length })}
                     </button>
 
                     {open && (
@@ -176,9 +180,9 @@ function RoamAvatar({ small = false }: { small?: boolean }) {
   );
 }
 
-/** pick 갈래를 Roam의 발화 한 조각으로(라벨 아님, 스레드 메타로 붙는다). */
-const PICK_UTTERANCE: Record<PickKind, string> = {
-  stable: "확실히 네 취향이라",
-  unfamiliar: "좀 새로운데 끌릴 것 같아서",
-  adventure: "안 가봤을 결이라 한번 보라고",
+/** pick 갈래 → 사전 키(로미의 발화 한 조각). */
+const PICK_KEY: Record<PickKind, string> = {
+  stable: "feed.pickStable",
+  unfamiliar: "feed.pickUnfamiliar",
+  adventure: "feed.pickAdventure",
 };

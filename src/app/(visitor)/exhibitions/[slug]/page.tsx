@@ -16,6 +16,8 @@ import { RhythmPicker } from "@/components/feed/rhythm-picker";
 import { ValueOnboarding } from "@/components/onboarding/value-onboarding";
 import { FinishVisit } from "@/components/companion/finish-visit";
 import { DEFAULT_RHYTHM, isRhythm } from "@/lib/feed/rhythm";
+import { getI18n } from "@/lib/i18n/server";
+import { VALUE_SLUGS } from "@/lib/values";
 import { getCurrentUser } from "@/lib/api/session";
 import { curateFeed } from "@/lib/feed/curate";
 import { readBrain } from "@/lib/memory/service";
@@ -50,17 +52,18 @@ export default async function ExhibitionDetailPage({
   const { exhibition } = detail;
   const range = `${format(new Date(exhibition.startDate), "yyyy.M.d")} – ${format(new Date(exhibition.endDate), "M.d")}`;
 
+  const { locale, t } = await getI18n();
   // 관심 피드: 로그인 사용자의 브레인 + 오늘의 리듬으로 큐레이션(빈 브레인=인기순).
   const user = await getCurrentUser();
-  const feedItems = user ? await curateFeed(slug, user.id, rhythm) : [];
-  // 기억 발화: 브레인 상위 관심으로 "요즘 ~에 끌리시네요" 인사(§5.1 기억).
+  const feedItems = user ? await curateFeed(slug, user.id, rhythm, locale) : [];
+  // 기억 발화: 브레인 상위 관심 가치로 인사(로케일 라벨). VALUE_SLUGS면 t로 번역.
   const brain = user ? await readBrain(user.id) : null;
   const topValues = (brain?.interests ?? [])
     .filter((n) => n.confidence >= 0.25)
     .slice(0, 2)
-    .map((n) => n.label);
+    .map((n) => (VALUE_SLUGS.includes(n.key) ? t(`values.${n.key}`) : n.label));
   const memoryLine = topValues.length
-    ? `요즘 ${topValues.join("·")}에 끌리더라 — 그쪽으로 골라왔어.`
+    ? t("feed.memoryLine", { values: topValues.join("·") })
     : undefined;
   const categoryById = Object.fromEntries(
     detail.categories.map((c) => [c.id, c]),

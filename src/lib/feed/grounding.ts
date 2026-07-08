@@ -2,7 +2,10 @@
 // 정보 전달이 아니라 사용자가 스스로 판단할 재료(companion-reframe §근거카드). 순수·LLM 없음.
 // v1: 저작 roamInterpretation 데이터가 아직 0%라, 왜맞음은 사용자 가치 ∩ 부스 가치 겹침으로
 // 런타임 생성(더 정직 — 실제 매칭 신호를 그대로 보여준다). 저작 데이터가 차면 우선 채택.
-import { boothValueSlugs, valueLabel } from "@/lib/values";
+import { boothValueSlugs } from "@/lib/values";
+import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n/config";
+import { DICTS } from "@/lib/i18n/dictionaries";
+import { makeT } from "@/lib/i18n/resolve";
 import type { Booth } from "@/lib/types";
 
 type PickKind = "stable" | "unfamiliar" | "adventure";
@@ -33,12 +36,16 @@ export function buildGrounding(
   booth: Booth,
   userValueSlugs: string[],
   pick: PickKind,
+  locale: Locale = DEFAULT_LOCALE,
 ): Grounding {
+  const t = makeT(DICTS[locale]);
+  const vl = (slug: string) => t(`values.${slug}`);
   const e = booth.enrichment;
   const boothVals = boothValueSlugs(booth);
   const overlap = boothVals.filter((v) => userValueSlugs.includes(v));
 
   // 왜 맞음 — 저작 데이터 최우선: 사용자 관심 가치에 대한 추천 근거 > 한 줄 해석 > 런타임 겹침.
+  // (저작 recommendationReasons·roamInterpretation은 한국어 데이터라 미번역, 겹침 문장만 로케일.)
   let why: string;
   const matchedReasons = overlap
     .map((v) => e?.recommendationReasons?.[v])
@@ -48,16 +55,17 @@ export function buildGrounding(
   } else if (e?.roamInterpretation) {
     why = e.roamInterpretation;
   } else if (overlap.length > 0) {
-    const labels = overlap.slice(0, 2).map(valueLabel).join("·");
-    why = `네가 관심 둔 ${labels} 쪽이랑 겹쳐.`;
+    why = t("grounding.whyOverlap", {
+      values: overlap.slice(0, 2).map(vl).join("·"),
+    });
   } else if (boothVals.length > 0) {
-    const lead = valueLabel(boothVals[0]);
+    const lead = vl(boothVals[0]);
     why =
       pick === "stable"
-        ? `${lead} 쪽 부스야.`
-        : `${lead} 쪽이라 평소랑 좀 다른데, 넓혀볼 만해.`;
+        ? t("grounding.whyLeadStable", { lead })
+        : t("grounding.whyLeadNew", { lead });
   } else {
-    why = "둘러보면 취향이 더 또렷해질 거야.";
+    why = t("grounding.whyNone");
   }
 
   // 근거 — 확인 가능한 사실(굿즈 우선, 없으면 팁 한 조각).

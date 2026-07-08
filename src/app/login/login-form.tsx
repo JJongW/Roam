@@ -10,6 +10,7 @@ import { useAuthStore } from "@/lib/stores/auth";
 import { GoogleIcon } from "@/components/auth/google-icon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useT } from "@/lib/i18n/provider";
 
 /** Only same-origin relative paths are honored as the post-login destination. */
 function safeNext(raw: string | null): string {
@@ -17,6 +18,7 @@ function safeNext(raw: string | null): string {
 }
 
 export function LoginForm() {
+  const t = useT();
   const next = safeNext(useSearchParams().get("next"));
   const login = useAuthStore((s) => s.login);
 
@@ -43,7 +45,7 @@ export function LoginForm() {
       window.location.assign(next);
     } catch (e) {
       setError(
-        e instanceof ApiClientError ? e.error.message : "로그인에 실패했어요",
+        e instanceof ApiClientError ? e.error.message : t("login.failed"),
       );
       setBusy(false);
     }
@@ -54,7 +56,7 @@ export function LoginForm() {
       <div className="mb-8 text-center">
         <h1 className="text-3xl font-bold tracking-tight">Roam</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          로그인하면 너에게 맞는 부스를 골라 함께 둘러볼게.
+          {t("login.subtitle")}
         </p>
       </div>
 
@@ -67,11 +69,13 @@ export function LoginForm() {
             onClick={google}
           >
             <GoogleIcon />
-            Google로 계속하기
+            {t("login.google")}
           </Button>
           <div className="my-5 flex items-center gap-3">
             <div className="h-px flex-1 bg-border" />
-            <span className="text-xs text-muted-foreground">또는 닉네임</span>
+            <span className="text-xs text-muted-foreground">
+              {t("login.orNickname")}
+            </span>
             <div className="h-px flex-1 bg-border" />
           </div>
         </>
@@ -84,10 +88,10 @@ export function LoginForm() {
             setNickname(e.target.value);
             setError(null);
           }}
-          placeholder="닉네임 (2–20자)"
+          placeholder={t("login.placeholder")}
           maxLength={20}
           autoFocus
-          aria-label="닉네임"
+          aria-label={t("login.placeholder")}
           aria-invalid={Boolean(error)}
           onKeyDown={(e) => {
             if (e.nativeEvent.isComposing) return;
@@ -104,10 +108,10 @@ export function LoginForm() {
           onClick={submit}
         >
           {busy && <Loader2 className="size-5 animate-spin" />}
-          {busy ? "확인 중" : "닉네임으로 시작하기"}
+          {busy ? t("login.checking") : t("login.submit")}
         </Button>
         <p className="text-center text-xs text-muted-foreground">
-          비밀번호는 없어요. 이미 쓰이는 닉네임은 선택할 수 없어요.
+          {t("login.noPassword")}
         </p>
       </div>
     </div>

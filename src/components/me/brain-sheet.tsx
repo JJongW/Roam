@@ -1,15 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  Footprints,
-  MapPin,
-  Minus,
-  Sparkles,
-  TrendingDown,
-  TrendingUp,
-} from "lucide-react";
+import { MapPin, Pencil } from "lucide-react";
 import { api } from "@/lib/api/client";
+import { cn } from "@/lib/utils";
+import { useT } from "@/lib/i18n/provider";
+import { VALUE_TAGS, valueDef } from "@/lib/values";
+import { RoamMotion } from "@/components/companion/roam-motion";
 import {
   Sheet,
   SheetContent,
@@ -18,12 +15,12 @@ import {
   SheetDescription,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import type { InterestNode, UserBrain } from "@/lib/types";
+import type { UserBrain } from "@/lib/types";
 
 /**
- * 내 취향/안목 화면. L4 브레인(누적 관심·방문 통계)을 보여줘 "쓸수록 좋아짐"을
- * 눈에 보이게 한다(companion-reframe §5-f). 회고 시트와 짝 — 회고=순간, 이건 누적된 나.
+ * 내 취향(마이페이지) — L4 브레인의 관람 가치를 로미 중심 마인드맵으로 보여준다.
+ * 노드 크기 = confidence. "관심 고치기"로 8가치를 눌러 추가(POST /api/me/values). 로그인
+ * 정체성이 드러나는 컴팩트한 공간(companion-reframe §5-f). 회고=순간, 이건 누적된 나.
  */
 export function BrainSheet({
   open,
@@ -32,104 +29,209 @@ export function BrainSheet({
   open: boolean;
   onClose: () => void;
 }) {
+  const t = useT();
   const [brain, setBrain] = useState<UserBrain | null>(null);
   const [loading, setLoading] = useState(true);
+  const [editing, setEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  function load() {
+    api
+      .get<{ data: UserBrain }>("/api/me/brain")
+      .then((r) => setBrain(r.data))
+      .catch(() => setBrain(null))
+      .finally(() => setLoading(false));
+  }
 
   useEffect(() => {
     if (!open) return;
     let cancelled = false;
     api
       .get<{ data: UserBrain }>("/api/me/brain")
-      .then((r) => {
-        if (!cancelled) setBrain(r.data);
-      })
-      .catch(() => {
-        if (!cancelled) setBrain(null);
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
+      .then((r) => !cancelled && setBrain(r.data))
+      .catch(() => !cancelled && setBrain(null))
+      .finally(() => !cancelled && setLoading(false));
     return () => {
       cancelled = true;
     };
   }, [open]);
 
-  const empty =
-    brain && brain.interests.length === 0 && brain.literacy.visitsCount === 0;
+  // 값 가치만(카테고리 slug 레거시 제외) + confidence 순.
+  const nodes = (brain?.interests ?? [])
+    .filter((n) => valueDef(n.key))
+    .sort((a, b) => b.confidence - a.confidence)
+    .slice(0, 8);
+  const empty = !loading && nodes.length === 0;
+
+  async function addValue(slug: string) {
+    if (saving) return;
+    setSaving(true);
+    try {
+      await api.post("/api/me/values", { values: [slug] });
+      load();
+    } catch {
+      // 무시 — 로컬 반영 실패해도 조용히.
+    } finally {
+      setSaving(false);
+    }
+  }
 
   return (
     <Sheet open={open} onOpenChange={(o) => !o && onClose()}>
       <SheetContent side="bottom" className="px-5 pb-8">
         <SheetHeader>
           <SheetTitle className="flex items-center gap-2">
-            <Sparkles className="size-5 text-primary" aria-hidden />내 취향
+            <span className="flex size-7 items-center justify-center overflow-hidden rounded-full ring-1 ring-border">
+              <RoamMotion src="/head.mp4" />
+            </span>
+            {t("myPage.title")}
           </SheetTitle>
-          <SheetDescription>둘러볼수록 내 취향이 쌓여.</SheetDescription>
+          <SheetDescription>{t("myPage.desc")}</SheetDescription>
         </SheetHeader>
 
         {loading ? (
-          <div className="mt-4 space-y-2" aria-label="취향 불러오는 중">
-            <div className="h-4 w-1/2 animate-pulse rounded bg-secondary" />
-            <div className="h-14 w-full animate-pulse rounded-xl bg-secondary" />
-            <div className="h-14 w-full animate-pulse rounded-xl bg-secondary" />
-          </div>
+          <div className="mx-auto mt-6 size-64 animate-pulse rounded-full bg-secondary" />
         ) : empty || !brain ? (
-          <p className="mb-2 mt-8 text-center text-sm leading-relaxed text-muted-foreground">
-            아직 기록이 없어.
-            <br />몇 곳 둘러보면 여기 네 취향이 그려질 거야.
+          <p className="mb-2 mt-10 text-center text-sm leading-relaxed text-muted-foreground">
+            {t("myPage.empty")}
           </p>
         ) : (
-          <div className="mt-4 max-h-[58dvh] space-y-4 overflow-y-auto">
-            <div className="flex items-center gap-3 px-1 text-sm text-muted-foreground">
+          <>
+            <MindMap nodes={nodes} label={(s) => t(`values.${s}`)} />
+
+            <div className="mt-3 flex items-center justify-center gap-3 text-xs text-muted-foreground">
               <span className="flex items-center gap-1">
-                <MapPin className="size-4" aria-hidden /> 관람{" "}
-                {brain.literacy.visitsCount}회
-              </span>
-              <span className="flex items-center gap-1">
-                <Footprints className="size-4" aria-hidden /> 본 부스{" "}
-                {brain.literacy.boothsSeenCount}곳
+                <MapPin className="size-3.5" aria-hidden />
+                {t("myPage.stats", {
+                  v: brain.literacy.visitsCount,
+                  b: brain.literacy.boothsSeenCount,
+                })}
               </span>
             </div>
 
-            <div className="space-y-2">
-              {brain.interests.map((n) => (
-                <div
-                  key={n.key}
-                  className="rounded-xl border border-border bg-card p-3"
-                >
-                  <div className="mb-2 flex items-center justify-between gap-2">
-                    <span className="truncate font-semibold">{n.label}</span>
-                    <TrendTag trend={n.trend} />
-                  </div>
-                  <Progress value={Math.round(n.confidence * 100)} />
+            {editing && (
+              <div className="mt-4">
+                <p className="mb-2 text-center text-xs text-muted-foreground">
+                  {t("myPage.addHint")}
+                </p>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {VALUE_TAGS.map((v) => (
+                    <button
+                      key={v.slug}
+                      type="button"
+                      disabled={saving}
+                      onClick={() => addValue(v.slug)}
+                      className="rounded-full border border-border bg-card px-3 py-1.5 text-xs font-semibold active:opacity-70 disabled:opacity-50"
+                      style={{ color: v.color }}
+                    >
+                      {t(`values.${v.slug}`)}
+                    </button>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
+              </div>
+            )}
+          </>
         )}
 
-        <Button size="lg" className="mt-5 w-full" onClick={onClose}>
-          닫기
-        </Button>
+        <div className="mt-5 flex gap-2">
+          {!empty && brain && (
+            <Button
+              variant="outline"
+              size="lg"
+              className="flex-1"
+              onClick={() => setEditing((e) => !e)}
+            >
+              <Pencil className="size-4" aria-hidden />
+              {saving
+                ? t("myPage.saving")
+                : editing
+                  ? t("myPage.editDone")
+                  : t("myPage.edit")}
+            </Button>
+          )}
+          <Button size="lg" className="flex-1" onClick={onClose}>
+            {t("common.close")}
+          </Button>
+        </div>
       </SheetContent>
     </Sheet>
   );
 }
 
-function TrendTag({ trend }: { trend: InterestNode["trend"] }) {
-  if (trend === "up")
-    return (
-      <span className="flex shrink-0 items-center gap-1 text-xs font-medium text-success">
-        <TrendingUp className="size-3.5" aria-hidden /> 느는 중
-      </span>
-    );
-  if (trend === "down")
-    return (
-      <span className="flex shrink-0 items-center gap-1 text-xs text-muted-foreground">
-        <TrendingDown className="size-3.5" aria-hidden /> 주는 중
-      </span>
-    );
+/** 로미 중심 방사형 마인드맵. 노드 크기 = confidence. */
+function MindMap({
+  nodes,
+  label,
+}: {
+  nodes: { key: string; confidence: number }[];
+  label: (slug: string) => string;
+}) {
+  const S = 264; // 정사각 영역
+  const c = S / 2;
+  const R = 92; // 노드 링 반지름
   return (
-    <Minus className="size-3.5 shrink-0 text-muted-foreground" aria-hidden />
+    <div className="relative mx-auto mt-4" style={{ width: S, height: S }}>
+      {/* 연결선 */}
+      <svg
+        className="absolute inset-0"
+        width={S}
+        height={S}
+        aria-hidden
+        viewBox={`0 0 ${S} ${S}`}
+      >
+        {nodes.map((n, i) => {
+          const a = (-90 + (i * 360) / nodes.length) * (Math.PI / 180);
+          return (
+            <line
+              key={n.key}
+              x1={c}
+              y1={c}
+              x2={c + R * Math.cos(a)}
+              y2={c + R * Math.sin(a)}
+              stroke="var(--border)"
+              strokeWidth={1.5}
+            />
+          );
+        })}
+      </svg>
+
+      {/* 중심 = 로미 */}
+      <span
+        className="absolute flex size-14 items-center justify-center overflow-hidden rounded-full ring-2 ring-primary/30"
+        style={{ left: c - 28, top: c - 28 }}
+      >
+        <RoamMotion src="/walking.mp4" />
+      </span>
+
+      {/* 가치 노드 */}
+      {nodes.map((n, i) => {
+        const a = (-90 + (i * 360) / nodes.length) * (Math.PI / 180);
+        const size = 42 + Math.round(n.confidence * 26); // 42~68
+        const x = c + R * Math.cos(a);
+        const y = c + R * Math.sin(a);
+        const color = valueDef(n.key)?.color ?? "var(--primary)";
+        return (
+          <div
+            key={n.key}
+            className="absolute flex flex-col items-center"
+            style={{ left: x, top: y, transform: "translate(-50%, -50%)" }}
+          >
+            <span
+              className={cn(
+                "flex items-center justify-center rounded-full text-[10px] font-bold text-white shadow-sm",
+              )}
+              style={{
+                width: size,
+                height: size,
+                backgroundColor: color,
+                opacity: 0.55 + n.confidence * 0.45,
+              }}
+            >
+              {label(n.key)}
+            </span>
+          </div>
+        );
+      })}
+    </div>
   );
 }

@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import { api } from "@/lib/api/client";
 import { cn } from "@/lib/utils";
-import { VALUE_TAGS, valueLabel } from "@/lib/values";
+import { VALUE_TAGS } from "@/lib/values";
+import { useT } from "@/lib/i18n/provider";
 import { RoamMotion } from "@/components/companion/roam-motion";
 import { RoamTyping } from "@/components/companion/roam-typing";
 import { ChatBubble } from "@/components/companion/chat-bubble";
@@ -39,6 +40,7 @@ export function ValueOnboarding({
   categoryNames: string[];
 }) {
   const router = useRouter();
+  const t = useT();
   const [open, setOpen] = useState(false);
   const [phase, setPhase] = useState<Phase>(0);
   const [bubbles, setBubbles] = useState<Bubble[]>([]);
@@ -50,9 +52,9 @@ export function ValueOnboarding({
 
   const themes = categoryNames.slice(0, 4).join(" · ");
   const INTRO = [
-    `안녕, 나는 Roam이야. ${exhibitionName} 왔구나 👋`,
+    t("valueOnboarding.intro1", { name: exhibitionName }),
     description,
-    `홀 ${hallCount}개에 ${themes} 같은 게 있어. 이 안에서 오늘 뭘 남길지 같이 정하자.`,
+    t("valueOnboarding.intro3", { halls: hallCount, themes }),
   ];
 
   function clearTimers() {
@@ -107,17 +109,15 @@ export function ValueOnboarding({
   function goValues() {
     setBubbles((prev) => [
       ...prev,
-      { id: "you-ok", from: "you", text: "좋아, 정해보자" },
+      { id: "you-ok", from: "you", text: t("valueOnboarding.youOk") },
     ]);
     setPhase(1);
-    revealSequential([
-      "오늘 뭘 남기고 싶어? 끌리는 걸 골라줘 — 그걸로 부스를 골라둘게. 언제든 바꿔도 돼.",
-    ]);
+    revealSequential([t("valueOnboarding.valuePrompt")]);
   }
 
   async function submit() {
     if (picked.size === 0 || busy) return;
-    const labels = [...picked].map(valueLabel);
+    const labels = [...picked].map((s) => t(`values.${s}`));
     setBubbles((prev) => [
       ...prev,
       { id: "you-vals", from: "you", text: labels.join(" · ") },
@@ -134,8 +134,10 @@ export function ValueOnboarding({
       setBusy(false);
       setPhase(2);
       revealSequential([
-        `좋아, ${labels.slice(0, 2).join("·")} 쪽으로 골라올게.`,
-        "피드에서 내가 고른 곳부터 보면 돼. 끌리면 '끌림'을 눌러줘 — 볼수록 더 잘 맞춰줄게.",
+        t("valueOnboarding.doneResult", {
+          values: labels.slice(0, 2).join("·"),
+        }),
+        t("valueOnboarding.doneHow"),
       ]);
     }
   }
@@ -156,9 +158,9 @@ export function ValueOnboarding({
           <RoamMotion src="/head.mp4" />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="font-bold">오늘 뭘 남기고 싶어?</p>
+          <p className="font-bold">{t("valueOnboarding.cardTitle")}</p>
           <p className="text-sm text-muted-foreground">
-            나랑 잠깐 얘기하고 관심 가치를 정하자
+            {t("valueOnboarding.cardSub")}
           </p>
         </div>
         <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
@@ -169,7 +171,9 @@ export function ValueOnboarding({
           side="bottom"
           className="flex max-h-[85vh] flex-col gap-0 px-0 pb-0"
         >
-          <SheetTitle className="sr-only">관람 가치 정하기</SheetTitle>
+          <SheetTitle className="sr-only">
+            {t("valueOnboarding.cardTitle")}
+          </SheetTitle>
           {/* 진행 표시 */}
           <div className="flex items-center gap-3 px-5 pb-3 pt-5">
             <span className="flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-full ring-1 ring-border">
@@ -222,7 +226,7 @@ export function ValueOnboarding({
                       )}
                       style={on ? { backgroundColor: v.color } : undefined}
                     >
-                      {v.label}
+                      {t(`values.${v.slug}`)}
                     </button>
                   );
                 })}
@@ -236,7 +240,7 @@ export function ValueOnboarding({
                 onClick={goValues}
                 disabled={typing}
               >
-                좋아, 시작하자
+                {t("valueOnboarding.startCta")}
               </Button>
             )}
             {phase === 1 && (
@@ -246,7 +250,9 @@ export function ValueOnboarding({
                 onClick={submit}
                 disabled={picked.size === 0 || busy || typing}
               >
-                {busy ? "맞춰보는 중…" : "이걸로 정했어"}
+                {busy
+                  ? t("appOnboarding.matching")
+                  : t("valueOnboarding.doneCta")}
               </Button>
             )}
             {phase === 2 && (
@@ -256,7 +262,7 @@ export function ValueOnboarding({
                 onClick={finish}
                 disabled={typing}
               >
-                둘러보기
+                {t("valueOnboarding.browse")}
               </Button>
             )}
           </div>

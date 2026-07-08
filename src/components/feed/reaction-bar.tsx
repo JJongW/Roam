@@ -5,6 +5,7 @@ import { Check, Clock3, Heart, X } from "lucide-react";
 import { api } from "@/lib/api/client";
 import { cn } from "@/lib/utils";
 import { useVisitStore, pushNote, type BoothStatus } from "@/lib/stores/visit";
+import { useT } from "@/lib/i18n/provider";
 import type { SignalKind } from "@/lib/types";
 
 /**
@@ -59,6 +60,7 @@ function keyForStatus(s: BoothStatus | undefined): string | null {
 }
 
 export function ReactionBar({ boothId }: { boothId: string }) {
+  const t = useT();
   const storeStatus = useVisitStore((s) => s.records[boothId]?.status);
   const setStatus = useVisitStore((s) => s.setStatus);
   const [picked, setPicked] = useState<string | null>(() =>
@@ -94,7 +96,7 @@ export function ReactionBar({ boothId }: { boothId: string }) {
           )}
         >
           <r.Icon className="size-3.5" aria-hidden />
-          {r.label}
+          {t(`reaction.${r.key}`)}
         </button>
       ))}
     </div>

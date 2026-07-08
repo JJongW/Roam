@@ -4,6 +4,8 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useAuthStore } from "@/lib/stores/auth";
+import { useT } from "@/lib/i18n/provider";
+import type { TFn } from "@/lib/i18n/resolve";
 import {
   Sheet,
   SheetContent,
@@ -17,11 +19,12 @@ import {
  * 즉답 로컬 템플릿만. 로그인 전(로그인/온보딩 게이트)엔 뜨지 않는다.
  */
 export function CompanionBar() {
+  const t = useT();
   const pathname = usePathname() ?? "";
   const user = useAuthStore((s) => s.user);
   const [open, setOpen] = useState(false);
 
-  const line = useMemo(() => contextLine(pathname), [pathname]);
+  const line = useMemo(() => contextLine(pathname, t), [pathname, t]);
 
   // 로그인 사용자 + 방문객 화면에서만. 지도는 자체 전체화면 UI라 겹침 피해 숨김.
   if (!user) return null;
@@ -47,10 +50,10 @@ export function CompanionBar() {
           <SheetHeader>
             <SheetTitle className="flex items-center gap-2">
               <RoamAvatar />
-              Roam한테 물어보기
+              {t("companion.ask")}
             </SheetTitle>
           </SheetHeader>
-          <CompanionChat />
+          <CompanionChat t={t} />
         </SheetContent>
       </Sheet>
     </>
@@ -58,10 +61,15 @@ export function CompanionBar() {
 }
 
 /** 탭 대화 — 정해진 질문에 로컬 템플릿으로 즉답. LLM 없음(속도 규칙). */
-function CompanionChat() {
+function CompanionChat({ t }: { t: TFn }) {
   const [log, setLog] = useState<{ role: "you" | "roam"; text: string }[]>([]);
+  const prompts = [
+    { q: t("companion.q1"), a: t("companion.a1") },
+    { q: t("companion.q2"), a: t("companion.a2") },
+    { q: t("companion.q3"), a: t("companion.a3") },
+  ];
 
-  function ask(q: (typeof PROMPTS)[number]) {
+  function ask(q: { q: string; a: string }) {
     setLog((prev) => [
       ...prev,
       { role: "you", text: q.q },
@@ -88,7 +96,7 @@ function CompanionChat() {
         </div>
       )}
       <div className="flex flex-wrap gap-2">
-        {PROMPTS.map((p) => (
+        {prompts.map((p) => (
           <button
             key={p.q}
             type="button"
@@ -119,26 +127,11 @@ function RoamAvatar() {
 }
 
 /** 화면 맥락별 한 줄 발화. */
-function contextLine(pathname: string): string {
+function contextLine(pathname: string, t: TFn): string {
   if (/\/exhibitions\/[^/]+\/community/.test(pathname))
-    return "다른 사람은 뭘 봤나 궁금해?";
-  if (/\/exhibitions\/[^/]+$/.test(pathname)) return "골라둔 곳 마음에 들어?";
-  if (/\/booths\//.test(pathname)) return "여기 어때? 끌리면 반응 남겨줘.";
-  return "궁금한 거 있으면 물어봐.";
+    return t("companion.lineCommunity");
+  if (/\/exhibitions\/[^/]+$/.test(pathname))
+    return t("companion.lineExhibition");
+  if (/\/booths\//.test(pathname)) return t("companion.lineBooth");
+  return t("companion.lineDefault");
 }
-
-/** 탭 대화 로컬 템플릿(질문→즉답). 근거·판단 기준을 주되 결정은 사용자. */
-const PROMPTS = [
-  {
-    q: "지금 뭐 보면 좋아?",
-    a: "네가 고른 가치로 미리 골라뒀어. 피드 맨 위부터 봐 — 확실히 취향인 것부터 있고, 아래로 갈수록 좀 새로운 결이야.",
-  },
-  {
-    q: "사람 많은 데 피하고 싶어",
-    a: "부스마다 붐빔 정도를 큐로 붙여놨어. '한산'·'적당히' 위주로 돌면 여유로워. 붐비는 곳은 이른 시간대나 늦은 시간대에.",
-  },
-  {
-    q: "왜 이걸 추천했어?",
-    a: "네 관심 가치랑 겹치는 부스라 골랐어. 카드의 색 태그가 그 연결 고리 — 그걸 보고 끌리는지 네가 판단하면 돼.",
-  },
-] as const;

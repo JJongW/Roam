@@ -4,11 +4,13 @@ import { useState } from "react";
 import { LogOut, UserRound } from "lucide-react";
 import { toast } from "sonner";
 import { useAuthStore } from "@/lib/stores/auth";
+import { useT } from "@/lib/i18n/provider";
 import { Button } from "@/components/ui/button";
 import { BrainSheet } from "@/components/me/brain-sheet";
 
 /** Header control: shows a login button or the signed-in nickname + logout. */
 export function AccountButton() {
+  const t = useT();
   const user = useAuthStore((s) => s.user);
   const ready = useAuthStore((s) => s.ready);
   const openLogin = useAuthStore((s) => s.openLogin);
@@ -20,7 +22,7 @@ export function AccountButton() {
   if (!user) {
     return (
       <Button variant="outline" size="sm" onClick={openLogin}>
-        <UserRound className="size-4" /> 로그인
+        <UserRound className="size-4" /> {t("account.login")}
       </Button>
     );
   }
@@ -30,7 +32,7 @@ export function AccountButton() {
       <button
         type="button"
         onClick={() => setBrainOpen(true)}
-        aria-label="내 취향 보기"
+        aria-label={t("account.viewTaste")}
         className="max-w-24 truncate text-sm font-semibold active:opacity-70"
       >
         {user.nickname}
@@ -38,10 +40,10 @@ export function AccountButton() {
       <Button
         variant="ghost"
         size="icon"
-        aria-label="로그아웃"
+        aria-label={t("account.logout")}
         onClick={async () => {
           await logout();
-          toast.success("로그아웃했어요");
+          toast.success(t("account.loggedOut"));
         }}
       >
         <LogOut className="size-4.5" />

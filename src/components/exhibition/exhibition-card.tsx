@@ -1,17 +1,36 @@
 import Link from "next/link";
-import { CalendarDays, MapPin } from "lucide-react";
+import { CalendarDays, MapPin, Sparkles } from "lucide-react";
 import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 import type { Exhibition } from "@/lib/types";
 
-export function ExhibitionCard({ exhibition }: { exhibition: Exhibition }) {
+export function ExhibitionCard({
+  exhibition,
+  recommended = false,
+  recommendedLabel = "로미 추천",
+}: {
+  exhibition: Exhibition;
+  /** 로미 추천 전시 — 테두리 강조 + 배지. */
+  recommended?: boolean;
+  recommendedLabel?: string;
+}) {
   const range = `${format(new Date(exhibition.startDate), "M.d")} – ${format(new Date(exhibition.endDate), "M.d")}`;
   // 전시 상세(피드 홈)로 착지 — 가치 온보딩·관심 피드가 진입점. 지도는 상세의 부가 진입.
   const href = `/exhibitions/${exhibition.slug}`;
   return (
     <Link
       href={href}
-      className="group block overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-card)] transition-transform active:scale-[0.99]"
+      className={cn(
+        "group block overflow-hidden rounded-2xl border bg-card shadow-[var(--shadow-card)] transition-transform active:scale-[0.99]",
+        recommended ? "border-primary ring-2 ring-primary/30" : "border-border",
+      )}
     >
+      {recommended && (
+        <div className="flex items-center gap-1 bg-primary px-3 py-1.5 text-xs font-bold text-primary-foreground">
+          <Sparkles className="size-3.5" aria-hidden />
+          {recommendedLabel}
+        </div>
+      )}
       <div
         className="relative flex h-36 items-end bg-gradient-to-br from-primary/85 to-[#4338ca] p-4"
         style={

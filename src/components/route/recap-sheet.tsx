@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { ValueChips } from "@/components/values/value-chips";
+import { useT } from "@/lib/i18n/provider";
 import type { VisitDigest } from "@/lib/types";
 
 /**
@@ -27,6 +28,7 @@ export function RecapSheet({
   open: boolean;
   onClose: () => void;
 }) {
+  const t = useT();
   const [visit, setVisit] = useState<VisitDigest | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -60,9 +62,9 @@ export function RecapSheet({
             <span className="flex size-8 items-center justify-center overflow-hidden rounded-full ring-1 ring-border">
               <RoamMotion src="/walk_see.mp4" />
             </span>
-            오늘의 관람
+            {t("recap.title")}
           </SheetTitle>
-          <SheetDescription>함께한 하루를 돌아봤어.</SheetDescription>
+          <SheetDescription>{t("recap.desc")}</SheetDescription>
         </SheetHeader>
 
         <div className="mt-4 rounded-2xl border border-primary/25 bg-accent/40 p-4">
@@ -74,7 +76,7 @@ export function RecapSheet({
             </div>
           ) : (
             <p className="text-[15px] font-medium leading-relaxed text-foreground/90">
-              {text ?? "오늘도 고생 많았어. 다음에 또 함께 둘러보자."}
+              {text ?? t("recap.fallback")}
             </p>
           )}
         </div>
@@ -82,7 +84,7 @@ export function RecapSheet({
         {!loading && visit && visit.boothsVisited.length > 0 && (
           <div className="mt-3 flex items-center gap-1.5 px-1 text-sm text-muted-foreground">
             <MapPin className="size-4" aria-hidden />
-            {visit.boothsVisited.length}곳을 둘러봤어
+            {t("recap.visited", { n: visit.boothsVisited.length })}
           </div>
         )}
 
@@ -90,7 +92,7 @@ export function RecapSheet({
         {!loading && visit && visit.themesEngaged.length > 0 && (
           <div className="mt-3 px-1">
             <p className="mb-1.5 text-xs font-semibold text-muted-foreground">
-              오늘 남긴 가치
+              {t("recap.engaged")}
             </p>
             <ValueChips
               tags={visit.themesEngaged.map((slug) => ({ slug, strength: 1 }))}
@@ -102,12 +104,12 @@ export function RecapSheet({
         {/* C(다음으로 잇기) — 종단 프로필 연결. */}
         {!loading && visit && (
           <p className="mt-4 rounded-xl border border-border bg-card p-3 text-sm leading-relaxed text-muted-foreground">
-            네 취향에 오늘 관람이 쌓였어 — 다음 박람회는 더 잘 맞춰줄게.
+            {t("recap.next")}
           </p>
         )}
 
         <Button size="lg" className="mt-5 w-full" onClick={onClose}>
-          홈으로
+          {t("recap.home")}
         </Button>
       </SheetContent>
     </Sheet>
