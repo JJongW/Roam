@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api/client";
 import { cn } from "@/lib/utils";
+import { RoamMotion } from "@/components/companion/roam-motion";
 import { useAuthStore } from "@/lib/stores/auth";
 import { VALUE_TAGS, valueLabel } from "@/lib/values";
 import { Button } from "@/components/ui/button";
@@ -68,16 +69,8 @@ export function AppOnboardingGate() {
     <div className="fixed inset-0 z-[100] flex flex-col bg-background p-6 pt-safe pb-safe">
       {step === "intro" && (
         <div className="flex flex-1 flex-col justify-center gap-4">
-          <span className="flex size-14 items-center justify-center overflow-hidden rounded-2xl ring-1 ring-border">
-            <Image
-              src="/logo.svg"
-              alt="Roam"
-              width={56}
-              height={56}
-              className="size-full object-cover"
-              unoptimized
-              priority
-            />
+          <span className="flex size-20 items-center justify-center overflow-hidden rounded-3xl ring-1 ring-border">
+            <RoamMotion src="/walking.mp4" />
           </span>
           <h1 className="text-2xl font-extrabold leading-tight">
             안녕, 나는 Roam이야
