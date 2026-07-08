@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Sparkles } from "lucide-react";
 import { api } from "@/lib/api/client";
 import { cn } from "@/lib/utils";
 import { useAuthStore } from "@/lib/stores/auth";
@@ -68,9 +68,16 @@ export function AppOnboardingGate() {
     <div className="fixed inset-0 z-[100] flex flex-col bg-background p-6 pt-safe pb-safe">
       {step === "intro" && (
         <div className="flex flex-1 flex-col justify-center gap-4">
-          <div className="flex size-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
-            <Sparkles className="size-7" />
-          </div>
+          <span className="flex size-14 items-center justify-center overflow-hidden rounded-2xl ring-1 ring-border">
+            <Image
+              src="/logo.svg"
+              alt="Roam"
+              width={56}
+              height={56}
+              className="size-full object-cover"
+              priority
+            />
+          </span>
           <h1 className="text-2xl font-extrabold leading-tight">
             안녕, 나는 Roam이야
           </h1>
@@ -135,9 +142,15 @@ export function AppOnboardingGate() {
 
       {step === "done" && (
         <div className="flex flex-1 flex-col justify-center gap-4">
-          <div className="flex size-14 items-center justify-center rounded-2xl bg-primary/15 text-primary">
-            <Sparkles className="size-7" />
-          </div>
+          <span className="flex size-14 items-center justify-center overflow-hidden rounded-2xl ring-1 ring-border">
+            <Image
+              src="/logo.svg"
+              alt="Roam"
+              width={56}
+              height={56}
+              className="size-full object-cover"
+            />
+          </span>
           <h1 className="text-2xl font-extrabold leading-tight">
             이런 스타일이네
           </h1>

@@ -19,7 +19,7 @@ export default async function HomePage() {
         <span className="flex items-center gap-1.5 text-lg font-extrabold tracking-tight">
           <span className="flex size-7 items-center justify-center overflow-hidden rounded-full ring-1 ring-border">
             <Image
-              src="/logo.png"
+              src="/logo.svg"
               alt="Roam 로고"
               width={28}
               height={28}
