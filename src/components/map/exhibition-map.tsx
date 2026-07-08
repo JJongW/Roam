@@ -80,6 +80,7 @@ interface MapProps {
   selectedId?: string | null;
   visitedIds?: string[];
   skippedIds?: string[];
+  interestedIds?: string[];
   position?: Point | null;
   /** Hand-traced venue geometry; when set, booths render at exact rects. */
   floorplan?: Floorplan;
@@ -132,6 +133,7 @@ export function ExhibitionMap({
   selectedId,
   visitedIds = [],
   skippedIds = [],
+  interestedIds = [],
   position,
   floorplan,
   fillHeight = false,
@@ -289,6 +291,7 @@ export function ExhibitionMap({
   const boothById = new Map(booths.map((b) => [b.id, b]));
   const visitedSet = new Set(visitedIds);
   const skippedSet = new Set(skippedIds);
+  const interestedSet = new Set(interestedIds);
   // Paint the selected booth LAST so its name label (drawn above the rect) is
   // never covered by a booth sitting above it in document order.
   const renderBooths = selectedId
@@ -1165,7 +1168,9 @@ export function ExhibitionMap({
             const cat = catById.get(b.categoryId);
             const isSel = b.id === selectedId;
             const isVisited = visitedSet.has(b.id);
-            const isSkipped = !isVisited && skippedSet.has(b.id);
+            const isInterested = !isVisited && interestedSet.has(b.id);
+            const isSkipped =
+              !isVisited && !isInterested && skippedSet.has(b.id);
             const g = geomOf(b);
             return (
               <g
@@ -1178,17 +1183,20 @@ export function ExhibitionMap({
                 {(() => {
                   const color = cat?.color ?? "var(--primary)";
                   const zone = g.color ?? `${color}26`;
-                  // Map uses STATE colors only — 방문/관심/facility. Category
-                  // hue lives in chips/detail, not on the booth.
+                  // Map uses STATE colors only — 가봄(초록)/끌림(노랑)/별로(흐림).
+                  // Category hue lives in chips/detail, not on the booth.
                   const fill = isVisited
                     ? "var(--route-visited)"
-                    : isSkipped
+                    : isInterested
                       ? "var(--warning)"
-                      : zone;
-                  const darkText = isVisited || isSkipped || fill === "#3a3d44";
+                      : isSkipped
+                        ? "var(--muted)"
+                        : zone;
+                  const darkText =
+                    isVisited || isInterested || fill === "#3a3d44";
                   const stroke = isSel
                     ? "var(--primary)"
-                    : isSkipped
+                    : isInterested
                       ? "var(--warning)"
                       : g.color && g.color !== "#d8dade"
                         ? g.color
