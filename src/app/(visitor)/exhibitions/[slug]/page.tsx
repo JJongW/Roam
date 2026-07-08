@@ -12,13 +12,18 @@ import { cn } from "@/lib/utils";
 import { AppBar } from "@/components/common/app-bar";
 import { AccountButton } from "@/components/auth/account-button";
 import { InterestFeed } from "@/components/feed/interest-feed";
+import { RhythmPicker } from "@/components/feed/rhythm-picker";
 import { ValueOnboarding } from "@/components/onboarding/value-onboarding";
 import { FinishVisit } from "@/components/companion/finish-visit";
+import { DEFAULT_RHYTHM, isRhythm } from "@/lib/feed/rhythm";
 import { getCurrentUser } from "@/lib/api/session";
 import { curateFeed } from "@/lib/feed/curate";
 import { readBrain } from "@/lib/memory/service";
 
-type Props = { params: Promise<{ slug: string }> };
+type Props = {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ rhythm?: string }>;
+};
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
@@ -31,8 +36,13 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
-export default async function ExhibitionDetailPage({ params }: Props) {
+export default async function ExhibitionDetailPage({
+  params,
+  searchParams,
+}: Props) {
   const { slug } = await params;
+  const { rhythm: rhythmRaw } = await searchParams;
+  const rhythm = isRhythm(rhythmRaw) ? rhythmRaw : DEFAULT_RHYTHM;
   const repo = await getRepository();
   const detail = await repo.getExhibition(slug);
   if (!detail) notFound();
@@ -40,9 +50,9 @@ export default async function ExhibitionDetailPage({ params }: Props) {
   const { exhibition } = detail;
   const range = `${format(new Date(exhibition.startDate), "yyyy.M.d")} – ${format(new Date(exhibition.endDate), "M.d")}`;
 
-  // 관심 피드: 로그인 사용자의 브레인으로 큐레이션한 부스 top-6(빈 브레인=인기순).
+  // 관심 피드: 로그인 사용자의 브레인 + 오늘의 리듬으로 큐레이션(빈 브레인=인기순).
   const user = await getCurrentUser();
-  const feedItems = user ? await curateFeed(slug, user.id) : [];
+  const feedItems = user ? await curateFeed(slug, user.id, rhythm) : [];
   // 기억 발화: 브레인 상위 관심으로 "요즘 ~에 끌리시네요" 인사(§5.1 기억).
   const brain = user ? await readBrain(user.id) : null;
   const topValues = (brain?.interests ?? [])
@@ -129,6 +139,8 @@ export default async function ExhibitionDetailPage({ params }: Props) {
               <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
             </Link>
           </div>
+
+          {feedItems.length > 0 && <RhythmPicker />}
 
           <InterestFeed
             items={feedItems}
