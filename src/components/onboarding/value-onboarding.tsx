@@ -57,7 +57,10 @@ export function ValueOnboarding({
     if (picked.size === 0 || busy) return;
     setBusy(true);
     try {
-      await api.post("/api/me/values", { exhibitionSlug: slug, values: [...picked] });
+      await api.post("/api/me/values", {
+        exhibitionSlug: slug,
+        values: [...picked],
+      });
     } catch {
       // 실패해도 진행.
     } finally {
@@ -74,7 +77,7 @@ export function ValueOnboarding({
   const result = `이번 관람은 "많이 보기"보다 ${[...picked]
     .slice(0, 2)
     .map(valueLabel)
-    .join("·")} 쪽으로 골라올게요. 맞춰서 발견을 도와줄게요.`;
+    .join("·")} 쪽으로 골라올게. 맞춰서 발견을 도와줄게.`;
 
   return (
     <>
@@ -87,9 +90,9 @@ export function ValueOnboarding({
           <Sparkles className="size-5" />
         </div>
         <div className="min-w-0 flex-1">
-          <p className="font-bold">무엇을 남기고 싶으세요?</p>
+          <p className="font-bold">오늘 뭘 남기고 싶어?</p>
           <p className="text-sm text-muted-foreground">
-            Roam과 오늘 관람의 관심 가치를 먼저 정해요
+            나랑 오늘 관람의 관심 가치를 먼저 정하자
           </p>
         </div>
         <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
@@ -109,7 +112,11 @@ export function ValueOnboarding({
                   않게 같이 볼게.
                 </SheetDescription>
               </SheetHeader>
-              <Button size="lg" className="mt-6 w-full" onClick={() => setStep("orientation")}>
+              <Button
+                size="lg"
+                className="mt-6 w-full"
+                onClick={() => setStep("orientation")}
+              >
                 좋아, 시작하자
               </Button>
             </>
@@ -132,7 +139,11 @@ export function ValueOnboarding({
               <p className="mt-3 px-1 text-sm text-muted-foreground">
                 이 안에서 오늘 무엇을 남기고 싶은지 같이 골라볼까?
               </p>
-              <Button size="lg" className="mt-4 w-full" onClick={() => setStep("pick")}>
+              <Button
+                size="lg"
+                className="mt-4 w-full"
+                onClick={() => setStep("pick")}
+              >
                 관심 가치 고르기
               </Button>
             </>
@@ -141,7 +152,7 @@ export function ValueOnboarding({
           {step === "pick" && (
             <>
               <SheetHeader>
-                <SheetTitle>무엇을 남기고 싶으세요?</SheetTitle>
+                <SheetTitle>오늘 뭘 남기고 싶어?</SheetTitle>
                 <SheetDescription>
                   이번 박람회에서 챙기고 싶은 걸 골라줘. 여러 개도 좋아.
                 </SheetDescription>
@@ -157,7 +168,9 @@ export function ValueOnboarding({
                       aria-pressed={on}
                       className={cn(
                         "rounded-full border px-3.5 py-2 text-sm font-semibold active:opacity-70",
-                        on ? "border-transparent text-white" : "border-border bg-card text-foreground",
+                        on
+                          ? "border-transparent text-white"
+                          : "border-border bg-card text-foreground",
                       )}
                       style={on ? { backgroundColor: v.color } : undefined}
                     >
@@ -172,7 +185,7 @@ export function ValueOnboarding({
                 onClick={submit}
                 disabled={picked.size === 0 || busy}
               >
-                {busy ? "정하는 중…" : "정했어요"}
+                {busy ? "맞춰보는 중…" : "이걸로 정했어"}
               </Button>
             </>
           )}

@@ -48,10 +48,10 @@ export function InterestFeed({
     <section className="mt-6">
       <div className="mb-2 flex items-center gap-2 px-1">
         <Sparkles className="size-4 text-primary" aria-hidden />
-        <h2 className="text-base font-bold">관심 가는 부스</h2>
+        <h2 className="text-base font-bold">내가 미리 골라뒀어</h2>
       </div>
       <p className="mb-3 px-1 text-sm text-muted-foreground">
-        {memoryLine ?? "둘러볼수록 더 잘 맞춰줄게."}
+        {memoryLine ?? "네 반응 볼수록 더 잘 맞춰줄게."}
       </p>
       <div className="space-y-2">
         {items.map(({ booth, related, pick, cue }) => {
@@ -122,9 +122,9 @@ export function InterestFeed({
 }
 
 const PICK_META: Record<PickKind, { label: string; className: string }> = {
-  stable: { label: "안정 · 취향 확실", className: "text-muted-foreground" },
-  unfamiliar: { label: "낯선 · 인접 발견", className: "text-primary" },
-  adventure: { label: "모험 · 새 가치", className: "text-warning" },
+  stable: { label: "확실히 네 취향이야", className: "text-muted-foreground" },
+  unfamiliar: { label: "좀 새로운데 끌릴 것 같아", className: "text-primary" },
+  adventure: { label: "안 가봤을 결, 한번 볼래?", className: "text-warning" },
 };
 
 function PickLabel({ pick }: { pick: PickKind }) {
