@@ -54,7 +54,7 @@ export function LoginForm() {
       <div className="mb-8 text-center">
         <h1 className="text-3xl font-bold tracking-tight">Roam</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          로그인하고 전시를 나만의 동선으로 둘러보세요.
+          로그인하면 너에게 맞는 부스를 골라 함께 둘러볼게.
         </p>
       </div>
 

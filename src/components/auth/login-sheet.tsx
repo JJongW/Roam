@@ -66,7 +66,7 @@ export function LoginSheet() {
           </div>
           <SheetTitle>시작하기</SheetTitle>
           <SheetDescription>
-            저장·메모·동선 공유를 쓰려면 로그인이 필요해요.
+            관심 저장·메모·기억을 쓰려면 로그인이 필요해요.
           </SheetDescription>
         </SheetHeader>
 

@@ -20,7 +20,7 @@ export default function VisitorNotFound() {
       <div className="space-y-1">
         <h1 className="text-2xl font-extrabold">찾을 수 없는 페이지예요</h1>
         <p className="text-sm text-muted-foreground">
-          부스나 동선이 삭제되었거나 링크가 잘못되었을 수 있어요.
+          부스가 삭제되었거나 링크가 잘못되었을 수 있어요.
         </p>
       </div>
       <div className="flex w-full max-w-xs flex-col gap-2">
