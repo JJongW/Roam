@@ -18,9 +18,12 @@ import type { FeedItem, PickKind } from "@/lib/feed/curate";
 export function InterestFeed({
   items,
   categoryById,
+  memoryLine,
 }: {
   items: FeedItem[];
   categoryById: Record<string, Category>;
+  /** 기억 발화 — 브레인 상위 관심 기반 인사. 없으면 기본 문구. */
+  memoryLine?: string;
 }) {
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   if (items.length === 0) return null;
@@ -48,7 +51,7 @@ export function InterestFeed({
         <h2 className="text-base font-bold">관심 가는 부스</h2>
       </div>
       <p className="mb-3 px-1 text-sm text-muted-foreground">
-        둘러볼수록 더 잘 맞춰줄게.
+        {memoryLine ?? "둘러볼수록 더 잘 맞춰줄게."}
       </p>
       <div className="space-y-2">
         {items.map(({ booth, related, pick }) => {

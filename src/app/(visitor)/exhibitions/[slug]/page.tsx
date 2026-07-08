@@ -16,6 +16,7 @@ import { InterestFeed } from "@/components/feed/interest-feed";
 import { ValueOnboarding } from "@/components/onboarding/value-onboarding";
 import { getCurrentUser } from "@/lib/api/session";
 import { curateFeed } from "@/lib/feed/curate";
+import { readBrain } from "@/lib/memory/service";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -42,6 +43,15 @@ export default async function ExhibitionDetailPage({ params }: Props) {
   // 관심 피드: 로그인 사용자의 브레인으로 큐레이션한 부스 top-6(빈 브레인=인기순).
   const user = await getCurrentUser();
   const feedItems = user ? await curateFeed(slug, user.id) : [];
+  // 기억 발화: 브레인 상위 관심으로 "요즘 ~에 끌리시네요" 인사(§5.1 기억).
+  const brain = user ? await readBrain(user.id) : null;
+  const topValues = (brain?.interests ?? [])
+    .filter((n) => n.confidence >= 0.4)
+    .slice(0, 2)
+    .map((n) => n.label);
+  const memoryLine = topValues.length
+    ? `요즘 ${topValues.join("·")}에 끌리시네요 — 그쪽으로 골라왔어요.`
+    : undefined;
   const categoryById = Object.fromEntries(
     detail.categories.map((c) => [c.id, c]),
   );
@@ -136,7 +146,11 @@ export default async function ExhibitionDetailPage({ params }: Props) {
             </Link>
           </div>
 
-          <InterestFeed items={feedItems} categoryById={categoryById} />
+          <InterestFeed
+            items={feedItems}
+            categoryById={categoryById}
+            memoryLine={memoryLine}
+          />
         </div>
       </main>
     </div>
