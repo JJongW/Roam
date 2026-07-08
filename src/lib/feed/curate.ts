@@ -8,6 +8,7 @@ import { readBrain } from "@/lib/memory/service";
 import { deriveCue } from "@/lib/feed/cue";
 import { buildGrounding, type Grounding } from "@/lib/feed/grounding";
 import { DEFAULT_RHYTHM, RHYTHM_MIX, type Rhythm } from "@/lib/feed/rhythm";
+import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n/config";
 import { VALUE_SLUGS, boothValueSlugs } from "@/lib/values";
 import type { Booth, UserBrain } from "@/lib/types";
 
@@ -69,6 +70,7 @@ export async function curateFeed(
   slug: string,
   userId: string,
   rhythm: Rhythm = DEFAULT_RHYTHM,
+  locale: Locale = DEFAULT_LOCALE,
 ): Promise<FeedItem[]> {
   const brain = await readBrain(userId);
   const interests = mergeBrainInterests([], brain);
@@ -100,7 +102,7 @@ export async function curateFeed(
       related: relatedBooths(rank.booths, booth, 3),
       pick,
       cue: deriveCue(booth, rank.eventsByBooth[booth.id] ?? []),
-      grounding: buildGrounding(booth, userValueSlugs, pick),
+      grounding: buildGrounding(booth, userValueSlugs, pick, locale),
     });
     used.add(booth.id);
   };

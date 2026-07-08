@@ -17,9 +17,11 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useT } from "@/lib/i18n/provider";
 
 /** Global nickname-login bottom sheet, driven by useAuthStore.loginOpen. */
 export function LoginSheet() {
+  const t = useT();
   const open = useAuthStore((s) => s.loginOpen);
   const closeLogin = useAuthStore((s) => s.closeLogin);
   const login = useAuthStore((s) => s.login);
@@ -64,10 +66,8 @@ export function LoginSheet() {
           <div className="mb-1 flex size-12 items-center justify-center rounded-2xl bg-secondary">
             <UserRound className="size-6 text-foreground" />
           </div>
-          <SheetTitle>시작하기</SheetTitle>
-          <SheetDescription>
-            관심 저장·메모·기억을 쓰려면 로그인이 필요해요.
-          </SheetDescription>
+          <SheetTitle>{t("login.sheetTitle")}</SheetTitle>
+          <SheetDescription>{t("login.sheetDesc")}</SheetDescription>
         </SheetHeader>
 
         {hasSupabase && (
@@ -79,11 +79,13 @@ export function LoginSheet() {
               onClick={google}
             >
               <GoogleIcon />
-              Google로 계속하기
+              {t("login.google")}
             </Button>
             <div className="flex items-center gap-3 py-1">
               <div className="h-px flex-1 bg-border" />
-              <span className="text-xs text-muted-foreground">또는 닉네임</span>
+              <span className="text-xs text-muted-foreground">
+                {t("login.orNickname")}
+              </span>
               <div className="h-px flex-1 bg-border" />
             </div>
           </div>
@@ -96,10 +98,10 @@ export function LoginSheet() {
               setNickname(e.target.value);
               setError(null);
             }}
-            placeholder="닉네임 (2–20자)"
+            placeholder={t("login.placeholder")}
             maxLength={20}
             autoFocus
-            aria-label="닉네임"
+            aria-label={t("login.placeholder")}
             aria-invalid={Boolean(error)}
             onKeyDown={(e) => {
               if (e.nativeEvent.isComposing) return;
@@ -116,7 +118,7 @@ export function LoginSheet() {
             onClick={submit}
           >
             {busy && <Loader2 className="size-5 animate-spin" />}
-            {busy ? "확인 중" : "시작하기"}
+            {busy ? t("login.checking") : t("login.sheetTitle")}
           </Button>
           <p className="text-center text-xs text-muted-foreground">
             이미 쓰이는 닉네임은 선택할 수 없어요.

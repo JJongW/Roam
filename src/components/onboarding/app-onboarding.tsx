@@ -6,29 +6,15 @@ import { api } from "@/lib/api/client";
 import { cn } from "@/lib/utils";
 import { RoamMotion } from "@/components/companion/roam-motion";
 import { useAuthStore } from "@/lib/stores/auth";
-import { VALUE_TAGS, valueLabel } from "@/lib/values";
+import { useT } from "@/lib/i18n/provider";
+import { VALUE_TAGS } from "@/lib/values";
 import { Button } from "@/components/ui/button";
 
 const FLAG = "roam-app-onboarded";
 
-// 슬라이드 순서: 인트로 3장(누구/왜/어떻게) → 가치 선택 → 마무리. 도트로 진행 표시.
-const INTRO = [
-  {
-    title: ["안녕, 나는", "Roam이야"],
-    sub: "박람회에서 너한테 의미 있을 부스만 골라주는 관람 동행자야.",
-  },
-  {
-    title: ["많이 보기보다", "의미 있게"],
-    sub: "수백 개 부스를 다 도는 게 아니라, 네 취향에 맞는 곳부터 같이 둘러봐.",
-  },
-  {
-    title: ["볼수록", "더 잘 맞춰줘"],
-    sub: "끌림·별로만 눌러줘. 네 반응을 기억해서 다음엔 더 정확해져.",
-  },
-];
-const STEPS = INTRO.length + 2; // + 가치 + 마무리
-const VALUE_STEP = INTRO.length;
-const DONE_STEP = INTRO.length + 1;
+const STEPS = 5; // 인트로 3 + 가치 + 마무리
+const VALUE_STEP = 3;
+const DONE_STEP = 4;
 
 /**
  * 앱 최초진입 온보딩 — 큰 Roam 마스코트 히어로 + 도트 인디케이터 + '다음' 슬라이드 캐러셀.
@@ -37,6 +23,7 @@ const DONE_STEP = INTRO.length + 1;
  */
 export function AppOnboardingGate() {
   const router = useRouter();
+  const t = useT();
   const user = useAuthStore((s) => s.user);
   const ready = useAuthStore((s) => s.ready);
   const [onboarded, setOnboarded] = useState(
@@ -101,21 +88,42 @@ export function AppOnboardingGate() {
     else if (dx > 0) back();
   }
 
+  const intro = [
+    {
+      a: t("appOnboarding.intro1a"),
+      b: t("appOnboarding.intro1b"),
+      sub: t("appOnboarding.intro1sub"),
+    },
+    {
+      a: t("appOnboarding.intro2a"),
+      b: t("appOnboarding.intro2b"),
+      sub: t("appOnboarding.intro2sub"),
+    },
+    {
+      a: t("appOnboarding.intro3a"),
+      b: t("appOnboarding.intro3b"),
+      sub: t("appOnboarding.intro3sub"),
+    },
+  ];
   const result =
     picked.size > 0
-      ? `${[...picked].slice(0, 2).map(valueLabel).join("·")} 쪽으로 맞춰서 골라줄게.`
+      ? t("appOnboarding.doneResult", {
+          values: [...picked]
+            .slice(0, 2)
+            .map((s) => t(`values.${s}`))
+            .join("·"),
+        })
       : "";
 
   const cta =
     step === VALUE_STEP
       ? busy
-        ? "맞춰보는 중…"
-        : "이걸로 시작"
+        ? t("appOnboarding.matching")
+        : t("appOnboarding.startCta")
       : step === DONE_STEP
-        ? "박람회 보러 가기"
-        : "다음";
-  const ctaDisabled =
-    busy || (step === VALUE_STEP && picked.size === 0);
+        ? t("appOnboarding.goCta")
+        : t("common.next");
+  const ctaDisabled = busy || (step === VALUE_STEP && picked.size === 0);
 
   return (
     <div
@@ -130,19 +138,21 @@ export function AppOnboardingGate() {
       >
         {step !== VALUE_STEP && (
           <span className="flex size-44 items-center justify-center overflow-hidden rounded-[2.5rem]">
-            <RoamMotion src={step === DONE_STEP ? "/head.mp4" : "/walking.mp4"} />
+            <RoamMotion
+              src={step === DONE_STEP ? "/head.mp4" : "/walking.mp4"}
+            />
           </span>
         )}
 
         {step < VALUE_STEP && (
           <>
             <h1 className="text-[26px] font-extrabold leading-snug">
-              {INTRO[step].title[0]}
+              {intro[step].a}
               <br />
-              {INTRO[step].title[1]}
+              {intro[step].b}
             </h1>
             <p className="max-w-[19rem] text-[15px] leading-relaxed text-muted-foreground">
-              {INTRO[step].sub}
+              {intro[step].sub}
             </p>
           </>
         )}
@@ -150,11 +160,12 @@ export function AppOnboardingGate() {
         {step === VALUE_STEP && (
           <div className="w-full">
             <h1 className="text-[22px] font-extrabold leading-snug">
-              박람회에서
-              <br />뭘 채우고 싶어?
+              {t("appOnboarding.valueTitleA")}
+              <br />
+              {t("appOnboarding.valueTitleB")}
             </h1>
             <p className="mt-2 text-sm text-muted-foreground">
-              끌리는 걸 골라줘. 여러 개도 좋아.
+              {t("appOnboarding.valueSub")}
             </p>
             <div className="mt-6 flex flex-wrap justify-center gap-2">
               {VALUE_TAGS.map((v) => {
@@ -173,7 +184,7 @@ export function AppOnboardingGate() {
                     )}
                     style={on ? { backgroundColor: v.color } : undefined}
                   >
-                    {v.label}
+                    {t(`values.${v.slug}`)}
                   </button>
                 );
               })}
@@ -184,7 +195,7 @@ export function AppOnboardingGate() {
         {step === DONE_STEP && (
           <>
             <h1 className="text-[26px] font-extrabold leading-snug">
-              이런 스타일이네
+              {t("appOnboarding.doneTitle")}
             </h1>
             <p className="max-w-[19rem] text-[15px] leading-relaxed text-foreground/90">
               {result}
@@ -206,7 +217,12 @@ export function AppOnboardingGate() {
         ))}
       </div>
 
-      <Button size="lg" className="w-full" onClick={next} disabled={ctaDisabled}>
+      <Button
+        size="lg"
+        className="w-full"
+        onClick={next}
+        disabled={ctaDisabled}
+      >
         {cta}
       </Button>
     </div>

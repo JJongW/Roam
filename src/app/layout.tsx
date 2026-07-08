@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import { Providers } from "@/components/providers";
+import { getLocale, hasLocaleCookie } from "@/lib/i18n/server";
 import "./globals.css";
 
 const inter = Inter({
@@ -39,12 +40,16 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const [locale, hasLocale] = await Promise.all([
+    getLocale(),
+    hasLocaleCookie(),
+  ]);
   return (
     <html
-      lang="ko"
+      lang={locale}
       className={`${inter.variable} h-full antialiased`}
       suppressHydrationWarning
     >
@@ -53,9 +58,11 @@ export default function RootLayout({
           href="#main"
           className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[100] focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
         >
-          본문으로 건너뛰기
+          {locale === "en" ? "Skip to content" : "본문으로 건너뛰기"}
         </a>
-        <Providers>{children}</Providers>
+        <Providers locale={locale} needsLang={!hasLocale}>
+          {children}
+        </Providers>
       </body>
     </html>
   );
