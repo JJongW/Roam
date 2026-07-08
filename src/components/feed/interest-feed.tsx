@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, Clock3, Sparkles } from "lucide-react";
+import Image from "next/image";
+import { ChevronDown, Clock3 } from "lucide-react";
 import { api } from "@/lib/api/client";
 import { BoothCard } from "@/components/booth/booth-card";
 import { ValueChips } from "@/components/values/value-chips";
@@ -11,9 +12,10 @@ import type { Category } from "@/lib/types";
 import type { FeedItem, PickKind } from "@/lib/feed/curate";
 
 /**
- * 관심 피드 — L4 브레인으로 큐레이션한 부스를 사전 노출한다(정보 전달기→발견 동행자).
- * 카드는 부스 상세로 이동, "비슷한 부스"를 펼치면 관련 부스가 스레드처럼 인라인 확장된다
- * (companion-reframe §5-b). 클릭·펼치기가 관심 신호로 브레인에 피드백된다.
+ * 관심 피드 — Instagram Threads 앱형 세로 스레드 피드. 각 항목은 Roam이 건네는 "게시물":
+ * 아바타 + 발화(왜 골랐는지) + 인용된 부스 카드 + 가치칩·실시간 큐·반응. 관련 부스는
+ * 스레드의 "답글"처럼 아바타 컬럼 아래로 이어지는 세로선에 물려 인라인 확장된다
+ * (companion-reframe §5-b). 클릭·펼치기가 관심 신호로 브레인에 피드백된다. 로직 무변경.
  */
 export function InterestFeed({
   items,
@@ -46,74 +48,103 @@ export function InterestFeed({
 
   return (
     <section className="mt-6">
-      <div className="mb-2 flex items-center gap-2 px-1">
-        <Sparkles className="size-4 text-primary" aria-hidden />
+      <div className="mb-1 px-1">
         <h2 className="text-base font-bold">내가 미리 골라뒀어</h2>
+        <p className="mt-0.5 text-sm text-muted-foreground">
+          {memoryLine ?? "네 반응 볼수록 더 잘 맞춰줄게."}
+        </p>
       </div>
-      <p className="mb-3 px-1 text-sm text-muted-foreground">
-        {memoryLine ?? "네 반응 볼수록 더 잘 맞춰줄게."}
-      </p>
-      <div className="space-y-2">
+
+      <div>
         {items.map(({ booth, related, pick, cue }) => {
           const open = expanded.has(booth.id);
           return (
-            <div key={booth.id}>
-              <div className="mb-1 px-1">
-                <PickLabel pick={pick} />
+            <article
+              key={booth.id}
+              className="flex gap-3 border-b border-border/60 py-4 last:border-b-0"
+            >
+              {/* 아바타 컬럼 + 스레드 세로선 */}
+              <div className="flex flex-col items-center">
+                <RoamAvatar />
+                {(related.length > 0 && open) || cue ? (
+                  <span className="mt-1 w-px flex-1 bg-border" aria-hidden />
+                ) : null}
               </div>
-              <div onClick={() => fire(booth.id)}>
-                <BoothCard
-                  booth={booth}
-                  category={categoryById[booth.categoryId]}
-                />
-              </div>
-              {booth.valueTags && booth.valueTags.length > 0 && (
-                <div className="mt-1.5 px-1">
-                  <ValueChips tags={booth.valueTags} />
+
+              {/* 게시물 본문 */}
+              <div className="min-w-0 flex-1">
+                <div className="flex items-baseline gap-1.5">
+                  <span className="text-sm font-bold">Roam</span>
+                  <span className="text-xs text-muted-foreground">
+                    · {PICK_UTTERANCE[pick]}
+                  </span>
                 </div>
-              )}
-              {cue && (
-                <div className="mt-1.5 flex items-start gap-1.5 px-1 text-xs leading-relaxed text-muted-foreground">
-                  <Clock3 className="mt-0.5 size-3.5 shrink-0" aria-hidden />
-                  <span>{cue}</span>
+
+                <div className="mt-2" onClick={() => fire(booth.id)}>
+                  <BoothCard
+                    booth={booth}
+                    category={categoryById[booth.categoryId]}
+                  />
                 </div>
-              )}
-              <div className="mt-1.5">
-                <ReactionBar boothId={booth.id} />
+
+                {booth.valueTags && booth.valueTags.length > 0 && (
+                  <div className="mt-2">
+                    <ValueChips tags={booth.valueTags} />
+                  </div>
+                )}
+
+                {cue && (
+                  <div className="mt-2 flex items-start gap-1.5 text-xs leading-relaxed text-muted-foreground">
+                    <Clock3 className="mt-0.5 size-3.5 shrink-0" aria-hidden />
+                    <span>{cue}</span>
+                  </div>
+                )}
+
+                <div className="mt-2.5">
+                  <ReactionBar boothId={booth.id} />
+                </div>
+
+                {related.length > 0 && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => toggle(booth.id)}
+                      aria-expanded={open}
+                      className="mt-2 flex items-center gap-1 py-1 text-xs font-semibold text-muted-foreground active:opacity-70"
+                    >
+                      <ChevronDown
+                        className={cn(
+                          "size-3.5 transition-transform",
+                          open && "rotate-180",
+                        )}
+                        aria-hidden
+                      />
+                      {open ? "접기" : `비슷한 곳 ${related.length}`}
+                    </button>
+
+                    {open && (
+                      <div className="mt-2 space-y-2">
+                        {related.map((rb) => (
+                          <div key={rb.id} className="flex gap-2.5">
+                            <RoamAvatar small />
+                            <div
+                              className="min-w-0 flex-1"
+                              onClick={() => fire(rb.id)}
+                            >
+                              <BoothCard
+                                booth={rb}
+                                category={categoryById[rb.categoryId]}
+                                compact
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
-              {related.length > 0 && (
-                <>
-                  <button
-                    type="button"
-                    onClick={() => toggle(booth.id)}
-                    aria-expanded={open}
-                    className="mt-1 flex items-center gap-1 px-2 py-1 text-xs font-semibold text-muted-foreground active:opacity-70"
-                  >
-                    <ChevronDown
-                      className={cn(
-                        "size-3.5 transition-transform",
-                        open && "rotate-180",
-                      )}
-                      aria-hidden
-                    />
-                    비슷한 부스 {related.length}
-                  </button>
-                  {open && (
-                    <div className="ml-3 mt-1 space-y-1.5 border-l-2 border-primary/20 pl-3">
-                      {related.map((rb) => (
-                        <div key={rb.id} onClick={() => fire(rb.id)}>
-                          <BoothCard
-                            booth={rb}
-                            category={categoryById[rb.categoryId]}
-                            compact
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
+            </article>
           );
         })}
       </div>
@@ -121,15 +152,30 @@ export function InterestFeed({
   );
 }
 
-const PICK_META: Record<PickKind, { label: string; className: string }> = {
-  stable: { label: "확실히 네 취향이야", className: "text-muted-foreground" },
-  unfamiliar: { label: "좀 새로운데 끌릴 것 같아", className: "text-primary" },
-  adventure: { label: "안 가봤을 결, 한번 볼래?", className: "text-warning" },
-};
-
-function PickLabel({ pick }: { pick: PickKind }) {
-  const m = PICK_META[pick];
+/** 스레드 게시자 = Roam. 로고 아바타. */
+function RoamAvatar({ small = false }: { small?: boolean }) {
   return (
-    <span className={cn("text-xs font-bold", m.className)}>{m.label}</span>
+    <span
+      className={cn(
+        "flex shrink-0 items-center justify-center overflow-hidden rounded-full ring-1 ring-border",
+        small ? "size-7" : "size-9",
+      )}
+    >
+      <Image
+        src="/logo.svg"
+        alt="Roam"
+        width={small ? 28 : 36}
+        height={small ? 28 : 36}
+        className="size-full object-cover"
+        unoptimized
+      />
+    </span>
   );
 }
+
+/** pick 갈래를 Roam의 발화 한 조각으로(라벨 아님, 스레드 메타로 붙는다). */
+const PICK_UTTERANCE: Record<PickKind, string> = {
+  stable: "확실히 네 취향이라",
+  unfamiliar: "좀 새로운데 끌릴 것 같아서",
+  adventure: "안 가봤을 결이라 한번 보라고",
+};

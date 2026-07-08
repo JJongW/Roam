@@ -24,6 +24,7 @@ export default async function HomePage() {
               width={28}
               height={28}
               className="size-full object-cover"
+              unoptimized
               priority
             />
           </span>
