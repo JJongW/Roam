@@ -8,6 +8,8 @@ import type {
   AnalyticsType,
   Booth,
   BoothDetail,
+  BoothEnrichment,
+  BoothValueTag,
   BoothEvent,
   Bookmark,
   BookmarkTarget,
@@ -87,6 +89,54 @@ function num(v: unknown): number {
 }
 function strArr(v: unknown): string[] {
   return Array.isArray(v) ? (v as unknown[]).map((x) => String(x)) : [];
+}
+
+/** booth_enrichment 행 → BoothEnrichment(굿즈/요약/팁 + 근거 카드 저작 필드). */
+function mapEnrichment(e: Row): BoothEnrichment {
+  const und = (v: unknown) => (v == null ? undefined : String(v));
+  const valueTags = Array.isArray(e.value_tags)
+    ? (e.value_tags as Record<string, unknown>[]).map((v): BoothValueTag => ({
+        slug: String(v.slug),
+        strength: Number(v.strength) || 0,
+      }))
+    : undefined;
+  const reasons =
+    e.recommendation_reasons && typeof e.recommendation_reasons === "object"
+      ? (e.recommendation_reasons as Record<string, string>)
+      : undefined;
+  return {
+    goodsKeywords: strArr(e.goods_keywords),
+    themeTags: strArr(e.theme_tags),
+    summary: und(e.summary),
+    tips: und(e.tips),
+    sourceUrl: und(e.source_url),
+    valueTags: valueTags?.length ? valueTags : undefined,
+    roamInterpretation: und(e.roam_interpretation),
+    recommendationReasons:
+      reasons && Object.keys(reasons).length ? reasons : undefined,
+    thingsToDo: strArr(e.things_to_do).length
+      ? strArr(e.things_to_do)
+      : undefined,
+    timing: strArr(e.timing).length ? strArr(e.timing) : undefined,
+    memoryHooks: strArr(e.memory_hooks).length
+      ? strArr(e.memory_hooks)
+      : undefined,
+    conversationPrompts: strArr(e.conversation_prompts).length
+      ? strArr(e.conversation_prompts)
+      : undefined,
+    confidence: und(e.confidence) as BoothEnrichment["confidence"],
+  };
+}
+
+/** enrichment을 부스에 붙이고 가치 태그를 재파생(수동 valueTags 우선). */
+function attachEnrichment(booth: Booth, e: Row): void {
+  booth.enrichment = mapEnrichment(e);
+  booth.valueTags = deriveValueTags({
+    categorySlugs: booth.tags,
+    goodsKeywords: booth.enrichment.goodsKeywords,
+    tips: booth.enrichment.tips,
+    manual: booth.enrichment.valueTags,
+  });
 }
 
 function mapExhibition(r: Row): Exhibition {
@@ -490,7 +540,23 @@ export class SupabaseRepository implements Repository {
       .from("booth")
       .select(BOOTH_LIST_COLS)
       .eq("exhibition_id", exhibitionId);
-    return (data ?? []).map(mapBooth);
+    const booths = (data ?? []).map(mapBooth);
+    // 근거 카드·추천에 쓰이는 enrichment를 한 번에 join해 붙인다(피드 경로).
+    const { data: enrichRows } = await db
+      .from("booth_enrichment")
+      .select("*")
+      .in(
+        "booth_id",
+        booths.map((b) => b.id),
+      );
+    const byId = new Map(
+      (enrichRows ?? []).map((e) => [String((e as Row).booth_id), e as Row]),
+    );
+    for (const b of booths) {
+      const e = byId.get(b.id);
+      if (e) attachEnrichment(b, e);
+    }
+    return booths;
   }
 
   async getBoothDetail(id: string): Promise<BoothDetail | null> {
@@ -519,23 +585,8 @@ export class SupabaseRepository implements Repository {
       db.from("booth_enrichment").select("*").eq("booth_id", id).maybeSingle(),
     ]);
 
-    // 수동 주입 추가정보(있으면)를 부스에 붙여 상세에서 노출.
-    if (enrichRow) {
-      const e = enrichRow as Row;
-      booth.enrichment = {
-        goodsKeywords: strArr(e.goods_keywords),
-        themeTags: strArr(e.theme_tags),
-        summary: e.summary == null ? undefined : String(e.summary),
-        tips: e.tips == null ? undefined : String(e.tips),
-        sourceUrl: e.source_url == null ? undefined : String(e.source_url),
-      };
-      // 굿즈·팁까지 반영해 가치 태그 재파생(상세/신호에 더 풍부한 가치 축).
-      booth.valueTags = deriveValueTags({
-        categorySlugs: booth.tags,
-        goodsKeywords: booth.enrichment.goodsKeywords,
-        tips: booth.enrichment.tips,
-      });
-    }
+    // 수동 주입 추가정보(있으면)를 부스에 붙여 상세에서 노출 + 가치 태그 재파생.
+    if (enrichRow) attachEnrichment(booth, enrichRow as Row);
 
     const reviews = (reviewRows ?? [])
       .map(mapReview)

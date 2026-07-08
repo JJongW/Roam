@@ -39,7 +39,21 @@
       "art"
     ],
     "summary": "감성 그림책 중심 아동·그림책 전문 출판사",
-    "tips": "예상혼잡 중·소요 10~20분. 가족·유아 동반 관람객이 꾸준한 그림책 전문 중견사. 화제신간 '매미와 늙은 소'·'초록을 좋아하는 고양이'."
+    "tips": "예상혼잡 중·소요 10~20분. 가족·유아 동반 관람객이 꾸준한 그림책 전문 중견사. 화제신간 '매미와 늙은 소'·'초록을 좋아하는 고양이'.",
+    "roamInterpretation": "아이랑 같이 왔거나 그림책 감성이 그리우면, 부담 없이 넘겨보기 좋은 부스야.",
+    "valueTags": [
+      { "slug": "rest", "strength": 0.75 },
+      { "slug": "discovery", "strength": 0.6 },
+      { "slug": "inspiration", "strength": 0.5 }
+    ],
+    "recommendationReasons": {
+      "rest": "감성 그림책이라 가볍게 넘겨보며 쉬어가기 좋아.",
+      "discovery": "'매미와 늙은 소'·'초록을 좋아하는 고양이' 같은 화제 신간을 새로 만나볼 수 있어.",
+      "inspiration": "그림책 특유의 그림 감성이 마음을 말랑하게 해."
+    },
+    "thingsToDo": ["화제 신간 그림책 넘겨보기", "아이와 함께 고르기", "그림 감상하기"],
+    "timing": ["가족·유아 동반이 꾸준해 주말 오후 붐빔"],
+    "memoryHooks": ["감성 그림책", "매미와 늙은 소", "가족 관람"]
   },
   "A105": {
     "goodsKeywords": [
@@ -92,7 +106,21 @@
       "art"
     ],
     "summary": "윌라 운영 지식콘텐츠 기업·자기계발·경제경영 출판사",
-    "tips": "인지도 중견·혼잡 상·소요 20~40분. 윌라·윌라스토리 공동 '스토리 온에어' 체험 부스. 오디오북 체험·라디오 포토존·NFC 키링. 윌라 낭독 콘서트+신소율 사인회."
+    "tips": "인지도 중견·혼잡 상·소요 20~40분. 윌라·윌라스토리 공동 '스토리 온에어' 체험 부스. 오디오북 체험·라디오 포토존·NFC 키링. 윌라 낭독 콘서트+신소율 사인회.",
+    "roamInterpretation": "귀로 듣는 책이 궁금하면, 오디오북을 직접 체험해보고 굿즈까지 챙기는 부스야.",
+    "valueTags": [
+      { "slug": "experience", "strength": 0.85 },
+      { "slug": "goods", "strength": 0.6 },
+      { "slug": "social", "strength": 0.5 }
+    ],
+    "recommendationReasons": {
+      "experience": "오디오북 체험·라디오 포토존처럼 직접 해볼 거리가 많아.",
+      "goods": "NFC 키링·리유저블백 같은 챙길 굿즈가 쏠쏠해.",
+      "social": "윌라 낭독 콘서트랑 신소율 사인회로 저자·성우를 가까이서 볼 수 있어."
+    },
+    "thingsToDo": ["오디오북 체험하기", "라디오 포토존 찍기", "낭독 콘서트 시간 확인"],
+    "timing": ["신소율 사인회 시간대 인파 몰림"],
+    "memoryHooks": ["오디오북 체험", "낭독 콘서트", "NFC 키링"]
   },
   "A1301": {
     "goodsKeywords": [],
@@ -137,7 +165,21 @@
       "art"
     ],
     "summary": "기독교·신앙 단행본 소형 출판사",
-    "tips": "예상혼잡 하·소요 5~10분. 6개사 공동부스(A1405) 일부 테이블 규모의 신생 소형 기독교 출판사. 화제신간 '믿지만, 거기까지'."
+    "tips": "예상혼잡 하·소요 5~10분. 6개사 공동부스(A1405) 일부 테이블 규모의 신생 소형 기독교 출판사. 화제신간 '믿지만, 거기까지'.",
+    "roamInterpretation": "신앙과 삶의 질문이 궁금하면, 붐비지 않게 잠깐 들러 훑어보기 좋은 작은 부스야.",
+    "valueTags": [
+      { "slug": "learning", "strength": 0.65 },
+      { "slug": "rest", "strength": 0.6 },
+      { "slug": "discovery", "strength": 0.55 }
+    ],
+    "recommendationReasons": {
+      "learning": "기독교·신앙 주제를 차분히 파고들며 읽어보기 좋아.",
+      "rest": "혼잡이 낮아 5~10분이면 부담 없이 훑고 나올 수 있어.",
+      "discovery": "신생 소형 출판사라 화제신간 '믿지만, 거기까지'처럼 새 목소리를 발견하게 돼."
+    },
+    "thingsToDo": ["화제신간 '믿지만, 거기까지' 살펴보기", "신앙 에세이 훑기", "작은 출판사 목록 구경"],
+    "timing": ["혼잡 낮음·5~10분이면 충분"],
+    "memoryHooks": ["기독교·신앙", "믿지만 거기까지", "작은 출판사"]
   },
   "A1406": {
     "goodsKeywords": [
@@ -252,7 +294,21 @@
       "lit"
     ],
     "summary": "국내 1위 인터넷 서점·문화 콘텐츠 유통 플랫폼",
-    "tips": "인지도 메이저·혼잡 상·소요 20~40분(체험 대기 포함). 개막 첫날 리딩런 약 1,700명. AI 낭독 체험·NFC 메달 키링·경험 영수증 포토존."
+    "tips": "인지도 메이저·혼잡 상·소요 20~40분(체험 대기 포함). 개막 첫날 리딩런 약 1,700명. AI 낭독 체험·NFC 메달 키링·경험 영수증 포토존.",
+    "roamInterpretation": "책을 사는 것 말고도, AI 낭독 체험하고 포토존에서 놀 거리가 있는 부스야.",
+    "valueTags": [
+      { "slug": "experience", "strength": 0.8 },
+      { "slug": "trend", "strength": 0.7 },
+      { "slug": "goods", "strength": 0.6 }
+    ],
+    "recommendationReasons": {
+      "experience": "AI 낭독 체험·포토존처럼 직접 해볼 거리가 많아.",
+      "trend": "개막 리딩런에 1700명이 몰릴 만큼 도서전 화제의 중심이야.",
+      "goods": "NFC 메달 키링·크레마·경험영수증 같은 챙길 굿즈가 있어."
+    },
+    "thingsToDo": ["AI 낭독 체험하기", "포토존에서 찍기", "경험영수증 받기"],
+    "timing": ["개막 리딩런(1700명) 전후 인파 최대"],
+    "memoryHooks": ["AI 낭독", "리딩런", "경험영수증"]
   },
   "A1802": {
     "goodsKeywords": [
@@ -378,7 +434,21 @@
       "humanities"
     ],
     "summary": "한국 정서 재해석 디자인·아트북 출판 스튜디오",
-    "tips": "예상혼잡 상·소요 15~30분. 향·색이름 352 등 인기 굿즈와 감각적 부스 연출로 긴 줄(2025년 별도 대기공간). 화제신간 '산 239'."
+    "tips": "예상혼잡 상·소요 15~30분. 향·색이름 352 등 인기 굿즈와 감각적 부스 연출로 긴 줄(2025년 별도 대기공간). 화제신간 '산 239'.",
+    "roamInterpretation": "한국적인 정서를 감각적으로 다시 푼, 향과 아트북으로 눈코가 즐거운 부스야.",
+    "valueTags": [
+      { "slug": "inspiration", "strength": 0.85 },
+      { "slug": "goods", "strength": 0.75 },
+      { "slug": "discovery", "strength": 0.6 }
+    ],
+    "recommendationReasons": {
+      "inspiration": "한국 정서를 재해석한 감각적 연출이라 보는 것만으로 영감이 와.",
+      "goods": "팔각성냥·선향·복캔들·향 같은 소장각 굿즈가 인기야.",
+      "discovery": "디자인·아트북 스튜디오라 흔치 않은 물건을 새로 발견하기 좋아."
+    },
+    "thingsToDo": ["향·색이름352 구경", "복캔들 골라보기", "아트북 훑기"],
+    "timing": ["감각적 연출로 줄이 길어, 여유 있을 때 방문"],
+    "memoryHooks": ["한국 정서 재해석", "향·색이름352", "아트북"]
   },
   "A2103": {
     "goodsKeywords": [
@@ -415,7 +485,21 @@
       "humanities"
     ],
     "summary": "창비와 함께 한국문학 2대 축, 순수문학 출판사",
-    "tips": "메이저 부스, 혼잡 상·15~25분. 창립 50주년 골판지 도서관 부스가 SNS 인증 명소, 굿즈·시집 서명본·강연 운영(서명본 조기 품절 주의)."
+    "tips": "메이저 부스, 혼잡 상·15~25분. 창립 50주년 골판지 도서관 부스가 SNS 인증 명소, 굿즈·시집 서명본·강연 운영(서명본 조기 품절 주의).",
+    "roamInterpretation": "시와 순수문학을 좋아하면, 서명본 챙기고 골판지 도서관에서 사진 남기는 부스야.",
+    "valueTags": [
+      { "slug": "discovery", "strength": 0.75 },
+      { "slug": "goods", "strength": 0.7 },
+      { "slug": "inspiration", "strength": 0.6 }
+    ],
+    "recommendationReasons": {
+      "discovery": "문학과지성사 계열 순수문학이라 묵직한 시·소설을 새로 파보기 좋아.",
+      "goods": "시집 서명본·틴케이스·스티커 같은 소장각 굿즈가 있어.",
+      "inspiration": "창립 50주년 골판지 도서관 연출이 SNS 명소라 눈이 즐거워."
+    },
+    "thingsToDo": ["시집 서명본 찾기", "골판지 도서관 사진 찍기", "틴케이스 굿즈 챙기기"],
+    "timing": ["서명본은 조기 품절, 이른 시간 추천"],
+    "memoryHooks": ["순수문학 서명본", "골판지 도서관", "창립 50주년"]
   },
   "A2203": {
     "goodsKeywords": [
@@ -453,7 +537,19 @@
     ],
     "summary": "월간 '디자인' 펴낸 라이프스타일·디자인 출판 미디어 기업",
     "tips": "예상혼잡 중·소요 15~30분. 오뚜기 협업 'Design Your Own Life' 부스에서 6/24~28 상시 반려 갈피표 만들기·취향 테이블 꾸미기 체험 운영.",
-    "sourceUrl": "https://designhouse.co.kr"
+    "sourceUrl": "https://designhouse.co.kr",
+    "roamInterpretation": "디자인 감각을 눈으로만 보지 말고, 갈피표 만들고 취향대로 꾸며보는 부스야.",
+    "valueTags": [
+      { "slug": "inspiration", "strength": 0.85 },
+      { "slug": "experience", "strength": 0.75 }
+    ],
+    "recommendationReasons": {
+      "inspiration": "월간 디자인이 큐레이션한 감각적인 물건과 지면을 실컷 볼 수 있어.",
+      "experience": "갈피표 만들기·취향 테이블 꾸미기처럼 손으로 해보는 체험이 있어."
+    },
+    "thingsToDo": ["갈피표 만들기", "취향 테이블 꾸미기", "책갈피 챙기기"],
+    "timing": ["갈피표 만들기 체험은 대기 생길 수 있음"],
+    "memoryHooks": ["월간 디자인", "갈피표 만들기", "취향 테이블"]
   },
   "A301": {
     "goodsKeywords": [
@@ -507,7 +603,19 @@
       "children"
     ],
     "summary": "1988년 창립한 인문·교양·문학 중심 중견 종합 출판사",
-    "tips": "인지도 중견·혼잡 중·소요 10~20분. 공지영·한비야·류시화 베스트셀러 보유. 2026 화제작 《다시 만난 세계》(김희교). 아동 임프린트 푸른숲주니어."
+    "tips": "인지도 중견·혼잡 중·소요 10~20분. 공지영·한비야·류시화 베스트셀러 보유. 2026 화제작 《다시 만난 세계》(김희교). 아동 임프린트 푸른숲주니어.",
+    "roamInterpretation": "오래 쌓아온 인문·교양 목록을 천천히 훑으며 읽을 거리를 고르는 부스야.",
+    "valueTags": [
+      { "slug": "learning", "strength": 0.8 },
+      { "slug": "discovery", "strength": 0.6 }
+    ],
+    "recommendationReasons": {
+      "learning": "공지영·한비야·류시화 같은 인문·교양 목록이 두터워 깊이 읽기 좋아.",
+      "discovery": "화제작 《다시 만난 세계》부터 아동 임프린트까지 폭이 넓어 새로 파볼 게 있어."
+    },
+    "thingsToDo": ["화제작 《다시 만난 세계》 살펴보기", "인문·교양 신간 훑기", "푸른숲주니어 아동책 구경"],
+    "timing": ["화제작 코너는 사람 몰릴 수 있음"],
+    "memoryHooks": ["인문·교양", "다시 만난 세계", "푸른숲주니어"]
   },
   "A401": {
     "goodsKeywords": [
@@ -522,7 +630,21 @@
     ],
     "summary": "1976년 창립한 어린이 그림책 전문 출판사",
     "tips": "인지도 중견·혼잡 중·소요 15~25분. 그림책 1세대 대표 브랜드, 학부모·교사 충성도 높음. 백두산 이야기·달려 토토·솔거나라 시리즈.",
-    "sourceUrl": "https://instagram.com/borimbook"
+    "sourceUrl": "https://instagram.com/borimbook",
+    "roamInterpretation": "우리 옛이야기 그림책의 원조 격이라, 아이 책 고르는 어른이 믿고 찾는 부스야.",
+    "valueTags": [
+      { "slug": "rest", "strength": 0.65 },
+      { "slug": "discovery", "strength": 0.6 },
+      { "slug": "learning", "strength": 0.55 }
+    ],
+    "recommendationReasons": {
+      "rest": "익숙한 그림책들이라 가볍게 넘겨보며 쉬어가기 좋아.",
+      "discovery": "솔거나라·까치호랑이 같은 1세대 그림책의 뿌리를 다시 발견하게 돼.",
+      "learning": "우리 옛이야기·전통을 아이 눈높이로 배우기 좋아."
+    },
+    "thingsToDo": ["대표 그림책 솔거나라 찾기", "전통 그림책 넘겨보기", "아이 책 고르기"],
+    "timing": ["학부모·교사 방문이 꾸준해 주말 붐빔"],
+    "memoryHooks": ["1세대 그림책", "까치호랑이", "옛이야기"]
   },
   "A402": {
     "goodsKeywords": [
@@ -592,7 +714,21 @@
       "children"
     ],
     "summary": "해리포터·다빈치코드 등 해외 장르문학 강세 종합 출판사",
-    "tips": "인지도 메이저·혼잡 상·소요 20~35분. 도서전 한정 굿즈 오픈런·조기 품절. 팝업북 전시 + 운명 뽑기 이벤트. 김영사·이야기장수 인접 입구권."
+    "tips": "인지도 메이저·혼잡 상·소요 20~35분. 도서전 한정 굿즈 오픈런·조기 품절. 팝업북 전시 + 운명 뽑기 이벤트. 김영사·이야기장수 인접 입구권.",
+    "roamInterpretation": "해리포터·다빈치코드 팬이면, 한정 굿즈 오픈런하고 팝업북 구경하는 부스야.",
+    "valueTags": [
+      { "slug": "goods", "strength": 0.85 },
+      { "slug": "experience", "strength": 0.65 },
+      { "slug": "trend", "strength": 0.55 }
+    ],
+    "recommendationReasons": {
+      "goods": "팝업북·컬러링북·한정 굿즈가 많아 소장 욕구를 자극해.",
+      "experience": "팝업북 전시랑 운명뽑기처럼 직접 해볼 거리가 있어.",
+      "trend": "한정 굿즈 오픈런이 벌어질 만큼 화제인 부스야."
+    },
+    "thingsToDo": ["한정 굿즈 오픈런", "팝업북 전시 구경", "운명뽑기 해보기"],
+    "timing": ["한정 굿즈 오픈런·조기 품절, 개장 직후 방문"],
+    "memoryHooks": ["해외 장르문학", "한정 굿즈 오픈런", "팝업북"]
   },
   "A602": {
     "goodsKeywords": [
@@ -663,7 +799,21 @@
     ],
     "summary": "에세이·어학·클래식 컬렉션 강세 종합 출판사",
     "tips": "인지도 중견·혼잡 중·소요 15~25분. 수전 손택·사노 요코 등 두터운 독자층. 정관스님 '나의 음식' 북토크 예정. 신간 영화에 관하여.",
-    "sourceUrl": "https://instagram.com/willbooks_pub"
+    "sourceUrl": "https://instagram.com/willbooks_pub",
+    "roamInterpretation": "에세이부터 고전·어학까지 폭넓게 훑으며 읽을 거리를 고르는 부스야.",
+    "valueTags": [
+      { "slug": "learning", "strength": 0.75 },
+      { "slug": "discovery", "strength": 0.6 },
+      { "slug": "social", "strength": 0.55 }
+    ],
+    "recommendationReasons": {
+      "learning": "수전 손택·사노 요코 같은 묵직한 에세이와 클래식으로 깊이 읽기 좋아.",
+      "discovery": "에세이·어학·클래식이 두루 있어 취향 밖 책도 새로 발견하기 좋아.",
+      "social": "정관스님 북토크로 저자의 이야기를 직접 들어볼 수 있어."
+    },
+    "thingsToDo": ["클래식 시리즈 구경", "에세이 신간 훑기", "정관스님 북토크 시간 확인"],
+    "timing": ["정관스님 북토크 시간대 사람 몰림"],
+    "memoryHooks": ["에세이·클래식", "수전 손택", "정관스님 북토크"]
   },
   "A903": {
     "goodsKeywords": [],
@@ -672,7 +822,21 @@
       "science"
     ],
     "summary": "동아시아 출판사의 SF 전문 임프린트",
-    "tips": "예상혼잡 상·소요 15~30분. 김초엽·천선란 등 스타 SF 작가 팬덤으로 신간 코너 혼잡. 화제신간 '새벽'(옥타비아 버틀러)·'토막 난 우주를 안고서'."
+    "tips": "예상혼잡 상·소요 15~30분. 김초엽·천선란 등 스타 SF 작가 팬덤으로 신간 코너 혼잡. 화제신간 '새벽'(옥타비아 버틀러)·'토막 난 우주를 안고서'.",
+    "roamInterpretation": "지금 한국 SF가 어디까지 왔는지 궁금하면, 스타 작가들 신간이 모이는 부스야.",
+    "valueTags": [
+      { "slug": "discovery", "strength": 0.8 },
+      { "slug": "trend", "strength": 0.75 },
+      { "slug": "learning", "strength": 0.5 }
+    ],
+    "recommendationReasons": {
+      "discovery": "동아시아 SF를 파고드는 임프린트라 새로운 작가·세계관을 발견하기 좋아.",
+      "trend": "김초엽·천선란처럼 지금 제일 회자되는 SF 신간이 다 모여 있어.",
+      "learning": "SF로 사고실험하듯 세계를 넓혀볼 수 있어."
+    },
+    "thingsToDo": ["화제신간 훑기", "김초엽·천선란 신간 찾기", "SF 세계관 파보기"],
+    "timing": ["스타 작가 신간대는 인파 몰림"],
+    "memoryHooks": ["한국 SF", "김초엽·천선란", "화제신간"]
   },
   "B104": {
     "goodsKeywords": [
@@ -898,7 +1062,21 @@
     ],
     "summary": "대만 독립·1인 출판사 40여 곳 연합 공동 부스",
     "tips": "인지도 독립·혼잡 중·소요 15~25분. 신설 국제 독립출판 구역, 2026 테마 「讀字藥局(독서 처방)」. 개방형 소형 부스라 피크 시 정체.",
-    "sourceUrl": "https://indiepublisher.tw"
+    "sourceUrl": "https://indiepublisher.tw",
+    "roamInterpretation": "국내에선 보기 힘든 대만·아시아 1인 출판을 한자리에서 파보는 부스야.",
+    "valueTags": [
+      { "slug": "discovery", "strength": 0.9 },
+      { "slug": "inspiration", "strength": 0.65 },
+      { "slug": "social", "strength": 0.5 }
+    ],
+    "recommendationReasons": {
+      "discovery": "대만·아시아 독립출판 40여 곳이 모여 새로운 책을 발견하기 딱이야.",
+      "inspiration": "「독서 처방」 테마 연출이 독특해 감각적 자극이 있어.",
+      "social": "1인 출판 제작자들과 직접 이야기 나눠볼 수 있어."
+    },
+    "thingsToDo": ["대만 독립출판 훑기", "독서 처방 받아보기", "제작자에게 말 걸기"],
+    "timing": ["신설 국제 독립출판 구역이라 초반엔 한산"],
+    "memoryHooks": ["대만 독립출판", "독서 처방", "1인 출판"]
   },
   "B473": {
     "goodsKeywords": [
@@ -981,7 +1159,21 @@
     ],
     "summary": "10여 개 임프린트 보유한 문학 전문 대형 출판그룹",
     "tips": "예상혼잡 상·소요 20~40분, 대기 10~30분+. 사인회 6/24 최은영·6/26 김영하·6/27 은희경·6/28 김애란 등, 한정 리커버·굿즈 다수.",
-    "sourceUrl": "https://munhakdongne.com"
+    "sourceUrl": "https://munhakdongne.com",
+    "roamInterpretation": "좋아하는 작가 사인 받고 한정 굿즈까지 노리는, 문학 팬이라면 오래 머물 부스야.",
+    "valueTags": [
+      { "slug": "social", "strength": 0.9 },
+      { "slug": "goods", "strength": 0.8 },
+      { "slug": "trend", "strength": 0.6 }
+    ],
+    "recommendationReasons": {
+      "social": "최은영·김영하·은희경·김애란 사인회가 줄줄이라 좋아하는 작가를 직접 만날 수 있어.",
+      "goods": "시필사노트·한지부채·블라인드북 같은 한정 굿즈가 다양해.",
+      "trend": "화제 작가 사인회로 도서전에서 가장 사람 몰리는 축이야."
+    },
+    "thingsToDo": ["사인회 일정 확인", "블라인드북 골라보기", "한정 리커버 챙기기"],
+    "timing": ["사인회 시간대 대기 10~30분+", "인기 작가 사인회 전 미리 줄서기"],
+    "memoryHooks": ["작가 사인회", "한정 리커버", "블라인드북"]
   },
   "B603": {
     "goodsKeywords": [],
