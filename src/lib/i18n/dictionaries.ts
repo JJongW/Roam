@@ -150,6 +150,22 @@ const ko = {
     inspiration: "영감",
     rest: "가볍게",
   },
+  account: {
+    login: "로그인",
+    logout: "로그아웃",
+    loggedOut: "로그아웃했어요",
+    viewTaste: "내 취향 보기",
+  },
+  myPage: {
+    title: "내 취향",
+    desc: "둘러볼수록 로미가 그리는 너의 지도야.",
+    empty: "아직 기록이 없어. 몇 곳 둘러보면 여기 네 취향이 그려질 거야.",
+    stats: "관람 {v}회 · 본 부스 {b}곳",
+    edit: "관심 고치기",
+    editDone: "완료",
+    addHint: "더 끌리는 걸 눌러 추가해",
+    saving: "반영 중…",
+  },
 } as const;
 
 const en: Dict = {
@@ -289,6 +305,23 @@ const en: Dict = {
     trend: "Trends",
     inspiration: "Inspire",
     rest: "Easy",
+  },
+  account: {
+    login: "Log in",
+    logout: "Log out",
+    loggedOut: "Logged out",
+    viewTaste: "View my taste",
+  },
+  myPage: {
+    title: "My taste",
+    desc: "The map Romi draws as you explore.",
+    empty:
+      "Nothing yet. Explore a few places and your taste will take shape here.",
+    stats: "{v} visits · {b} booths",
+    edit: "Edit interests",
+    editDone: "Done",
+    addHint: "Tap what draws you to add it",
+    saving: "Saving…",
   },
 };
 
