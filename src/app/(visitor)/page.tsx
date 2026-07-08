@@ -2,6 +2,7 @@ import Image from "next/image";
 import { getRepository } from "@/lib/repositories";
 import { ExhibitionCard } from "@/components/exhibition/exhibition-card";
 import { EmptyState } from "@/components/common/states";
+import { AppOnboardingGate } from "@/components/onboarding/app-onboarding";
 
 export const metadata = {
   title: "전시 둘러보기",
@@ -13,6 +14,7 @@ export default async function HomePage() {
 
   return (
     <main className="flex-1 pb-safe">
+      <AppOnboardingGate />
       <header className="sticky top-0 z-40 flex h-14 items-center justify-between border-b border-border bg-background/80 px-4 pt-safe backdrop-blur-xl">
         <span className="flex items-center gap-1.5 text-lg font-extrabold tracking-tight">
           <span className="flex size-7 items-center justify-center overflow-hidden rounded-full ring-1 ring-border">
@@ -36,7 +38,7 @@ export default async function HomePage() {
           둘러볼까요?
         </h2>
         <p className="text-sm text-muted-foreground">
-          관심사에 맞는 부스를 추천하고, 혼잡을 피하는 동선을 만들어 드려요.
+          너한테 의미 있을 부스를 골라 보여줄게. 관심 가는 곳부터 함께 둘러봐요.
         </p>
       </section>
 
