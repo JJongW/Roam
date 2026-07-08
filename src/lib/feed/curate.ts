@@ -5,6 +5,7 @@ import { diversifyCandidates, interestScore } from "@/lib/engine/scoring";
 import { rankForExhibition } from "@/lib/engine/service";
 import { brainInterestWeights, mergeBrainInterests } from "@/lib/memory/apply";
 import { readBrain } from "@/lib/memory/service";
+import { deriveCue } from "@/lib/feed/cue";
 import { VALUE_SLUGS, boothValueSlugs } from "@/lib/values";
 import type { Booth, UserBrain } from "@/lib/types";
 
@@ -16,6 +17,8 @@ export interface FeedItem {
   related: Booth[];
   /** 큐레이션 갈래: 안정(취향 확실)·낯선(인접)·모험(미접촉 가치 발굴). */
   pick: PickKind;
+  /** 실시간 판단 큐(이벤트/타이밍 사실+이유). 없으면 undefined. */
+  cue?: string;
 }
 
 /** 대상 부스의 가치 슬러그와 교집합 유사도 상위 n개(자기 제외, 점수>0). */
@@ -82,7 +85,12 @@ export async function curateFeed(
   const items: FeedItem[] = [];
   const used = new Set<string>();
   const add = (booth: Booth, pick: PickKind) => {
-    items.push({ booth, related: relatedBooths(rank.booths, booth, 3), pick });
+    items.push({
+      booth,
+      related: relatedBooths(rank.booths, booth, 3),
+      pick,
+      cue: deriveCue(booth, rank.eventsByBooth[booth.id] ?? []),
+    });
     used.add(booth.id);
   };
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, Sparkles } from "lucide-react";
+import { ChevronDown, Clock3, Sparkles } from "lucide-react";
 import { api } from "@/lib/api/client";
 import { BoothCard } from "@/components/booth/booth-card";
 import { ValueChips } from "@/components/values/value-chips";
@@ -54,7 +54,7 @@ export function InterestFeed({
         {memoryLine ?? "둘러볼수록 더 잘 맞춰줄게."}
       </p>
       <div className="space-y-2">
-        {items.map(({ booth, related, pick }) => {
+        {items.map(({ booth, related, pick, cue }) => {
           const open = expanded.has(booth.id);
           return (
             <div key={booth.id}>
@@ -70,6 +70,12 @@ export function InterestFeed({
               {booth.valueTags && booth.valueTags.length > 0 && (
                 <div className="mt-1.5 px-1">
                   <ValueChips tags={booth.valueTags} />
+                </div>
+              )}
+              {cue && (
+                <div className="mt-1.5 flex items-start gap-1.5 px-1 text-xs leading-relaxed text-muted-foreground">
+                  <Clock3 className="mt-0.5 size-3.5 shrink-0" aria-hidden />
+                  <span>{cue}</span>
                 </div>
               )}
               <div className="mt-1.5">
