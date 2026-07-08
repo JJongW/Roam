@@ -115,47 +115,8 @@ export interface Repository {
     input: UserPreferenceInput,
   ): Promise<UserPreference>;
 
-  // route
-  saveRoute(
-    sessionId: string,
-    exhibitionId: string,
-    plan: Omit<
-      RoutePlan,
-      | "id"
-      | "sessionId"
-      | "userId"
-      | "exhibitionId"
-      | "createdAt"
-      | "status"
-      | "visitedBoothIds"
-      | "title"
-      | "isPublic"
-      | "shareId"
-    >,
-    userId?: string,
-    title?: string,
-  ): Promise<RoutePlan>;
-  getRoute(id: string): Promise<RoutePlan | null>;
-  patchRoute(id: string, patch: RoutePatch): Promise<RoutePlan | null>;
-  /** The caller's own named (saved) routes, newest first. */
-  listMyRoutes(owner: {
-    sessionId: string;
-    userId?: string;
-  }): Promise<RoutePlan[]>;
-  /** Delete a route the caller owns. Returns false if missing or not owned. */
-  deleteRoute(
-    id: string,
-    owner: { sessionId: string; userId?: string },
-  ): Promise<boolean>;
-  publishRoute(
-    id: string,
-    input: RoutePublishInput & { shareId: string; userId?: string },
-  ): Promise<RoutePlan | null>;
-  getRouteByShareId(shareId: string): Promise<RoutePlan | null>;
-  listPublicRoutes(exhibitionId: string): Promise<SharedRoute[]>;
-  /** Aggregate popularity from every saved route in the exhibition: how often
-   *  each booth is included, and how often each consecutive booth pair (a
-   *  corridor) is walked. Powers the map heatmap. */
+  /** 부스 인기 히트맵. 동선(saved route) 제거로 소스가 없어져 현재는 빈 값 스텁.
+   *  지도 히트맵·랭킹 crowd 신호가 소비하나 없으면 0으로 degrade. */
   boothHeatmap(exhibitionId: string): Promise<{
     booths: Record<string, number>;
     pairs: { from: string; to: string; count: number }[];

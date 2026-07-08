@@ -2,9 +2,8 @@ import { getRepository } from "@/lib/repositories";
 import { exhibitorBooths } from "@/lib/booth/normalize";
 import { attachDwellMinutes } from "@/lib/booth/dwell";
 import { rankBooths, type ScoreContext } from "@/lib/engine/scoring";
-import { planRoute, type PlannedRoute } from "@/lib/engine/route";
 import type { UserPreferenceInput } from "@/lib/schemas";
-import type { Booth, BoothEvent, Point, ScoredBooth } from "@/lib/types";
+import type { Booth, BoothEvent, ScoredBooth } from "@/lib/types";
 
 export interface RankResult {
   exhibitionId: string;
@@ -37,6 +36,8 @@ export async function rankForExhibition(
 
   // Crowd signal from real saved routes — normalized to 0..1. Empty at first;
   // sharpens as visitors build routes (usage → better recommendations).
+  // Crowd signal from real saved routes — normalized to 0..1. 동선 제거로 소스가
+  // 없어져 현재는 빈 히트맵(스텁) → crowd 0. 인기/관심 스코어로 자연 degrade.
   const heat = await repo.boothHeatmap(detail.exhibition.id);
   const maxCount = Math.max(1, ...Object.values(heat.booths));
   const crowdByBooth: Record<string, number> = {};
@@ -57,17 +58,4 @@ export async function rankForExhibition(
     booths,
     eventsByBooth,
   };
-}
-
-/** Build a route plan from a ranking, honoring the start booth if given. */
-export function buildPlan(
-  rank: RankResult,
-  preference: UserPreferenceInput,
-  start?: Point,
-): PlannedRoute {
-  return planRoute(rank.ranked, {
-    movementPreference: preference.movementPreference,
-    availableMinutes: preference.availableMinutes,
-    start,
-  });
 }
