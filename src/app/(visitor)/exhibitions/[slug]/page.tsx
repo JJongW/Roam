@@ -46,7 +46,7 @@ export default async function ExhibitionDetailPage({ params }: Props) {
   // 기억 발화: 브레인 상위 관심으로 "요즘 ~에 끌리시네요" 인사(§5.1 기억).
   const brain = user ? await readBrain(user.id) : null;
   const topValues = (brain?.interests ?? [])
-    .filter((n) => n.confidence >= 0.4)
+    .filter((n) => n.confidence >= 0.25)
     .slice(0, 2)
     .map((n) => n.label);
   const memoryLine = topValues.length
