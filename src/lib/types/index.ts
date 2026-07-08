@@ -150,6 +150,11 @@ export interface BoothEnrichment {
   valueTags?: BoothValueTag[];
   /** Roam식 한 줄 해석 — 공식 설명을 사용자 관심 언어로 번역. */
   roamInterpretation?: string;
+  /** 관람 가치별 추천 근거 — valueTag slug → "왜 그 가치에 맞는지" 한 줄.
+   *  MVP 필수: 공식정보·해석·가치태그와 함께 부스가 반드시 갖춰야 할 재료. */
+  recommendationReasons?: Record<string, string>;
+  /** 여기서 뭘 하면 좋은지(행동 제안) — "신간 훑기"·"제작 과정 물어보기" 등. */
+  thingsToDo?: string[];
   /** 타이밍 큐(사인회·굿즈 마감·붐빔·품절 등). */
   timing?: string[];
   /** 회고·다음 추천용 기억 단서. */

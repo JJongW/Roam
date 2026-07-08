@@ -189,6 +189,8 @@ export const booths: Booth[] = floorplan.booths.map((b) => {
           sourceUrl: e.sourceUrl,
           valueTags: e.valueTags,
           roamInterpretation: e.roamInterpretation,
+          recommendationReasons: e.recommendationReasons,
+          thingsToDo: e.thingsToDo,
           timing: e.timing,
           memoryHooks: e.memoryHooks,
           conversationPrompts: e.conversationPrompts,

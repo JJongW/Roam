@@ -13,7 +13,23 @@
     ],
     "summary": "돌베개×평산책방 공동 부스 — 인문서와 문재인 추천도서",
     "tips": "혼잡 최상위·소요 30~60분. 2026 최대 화제 부스, 6/24 문재인 등장 수백 명 운집, 6/25 유시민·탁현민 즉석 북토크. '대통령의 책' 코너·필사노트.",
-    "sourceUrl": "https://psbooks.kr"
+    "sourceUrl": "https://psbooks.kr",
+    "roamInterpretation": "유명인의 서재를 엿보듯, 한 사람의 독서 취향을 따라가며 인문서를 발견하는 부스야.",
+    "valueTags": [
+      { "slug": "learning", "strength": 0.9 },
+      { "slug": "trend", "strength": 0.8 },
+      { "slug": "social", "strength": 0.5 }
+    ],
+    "recommendationReasons": {
+      "learning": "추천도서 큐레이션을 따라가며 인문 주제를 깊게 파기 좋아.",
+      "trend": "올해 도서전에서 가장 화제인 부스라, 지금 뭐가 회자되는지 감이 와.",
+      "social": "즉석 북토크가 열려서 저자·독자와 같은 공기를 느낄 수 있어."
+    },
+    "thingsToDo": ["추천도서 코너 훑기", "필사노트 살펴보기", "북토크 일정 확인"],
+    "timing": ["6/24 오후 문재인 등장 전후 인파 최대", "북토크 시간대 밖이 여유로움"],
+    "memoryHooks": ["대통령의 서재", "인문 큐레이션", "화제의 부스"],
+    "conversationPrompts": ["이 중에 네가 먼저 집어들 책은 뭐야?"],
+    "confidence": "high"
   },
   "A104": {
     "goodsKeywords": [],
@@ -47,7 +63,22 @@
     ],
     "summary": "민음사 그룹·황금가지 공유 부스 — 문학·인문·SF/판타지 장르문학",
     "sourceUrl": "https://instagram.com/minumsa_books",
-    "tips": "인지도 메이저·혼잡 상·소요 20~40분, 도서전 최고 인기 부스. 세계문학전집·캡슐토이 가챠로 결제 대기줄 혼잡. 듄·드래곤 라자 장르문학 팬덤."
+    "tips": "인지도 메이저·혼잡 상·소요 20~40분, 도서전 최고 인기 부스. 세계문학전집·캡슐토이 가챠로 결제 대기줄 혼잡. 듄·드래곤 라자 장르문학 팬덤.",
+    "roamInterpretation": "익숙한 이름값만 믿고 지나치기 아까운, 장르문학 팬심이 모이는 부스야.",
+    "valueTags": [
+      { "slug": "goods", "strength": 0.9 },
+      { "slug": "discovery", "strength": 0.7 },
+      { "slug": "trend", "strength": 0.6 }
+    ],
+    "recommendationReasons": {
+      "goods": "캡슐토이 가챠·세계문학전집 같은 소장각 굿즈가 많아.",
+      "discovery": "듄·드래곤 라자처럼 팬덤 두꺼운 장르문학을 한자리에서 파볼 수 있어."
+    },
+    "thingsToDo": ["캡슐토이 가챠 뽑기", "세계문학전집 구경", "장르문학 신간 훑기"],
+    "timing": ["결제 대기줄이 길어 이른 시간대 추천", "점심 직후 혼잡 절정"],
+    "memoryHooks": ["캡슐토이 가챠", "장르문학 팬심", "세계문학전집"],
+    "conversationPrompts": ["가챠 뽑으면 뭐가 나오면 좋겠어?"],
+    "confidence": "high"
   },
   "A1102": {
     "goodsKeywords": [
