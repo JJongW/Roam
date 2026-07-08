@@ -25,7 +25,9 @@ export function CompanionBar() {
 
   // 로그인 사용자 + 방문객 화면에서만. 지도는 자체 전체화면 UI라 겹침 피해 숨김.
   if (!user) return null;
-  if (pathname.endsWith("/map") || pathname.startsWith("/login")) return null;
+  // 전시 안에 들어와야 동행 맥락이 생긴다 — 홈(전시 목록)·로그인·지도(자체 UI)엔 숨김.
+  if (pathname === "/" || pathname.startsWith("/login")) return null;
+  if (pathname.endsWith("/map")) return null;
 
   return (
     <>
@@ -118,7 +120,6 @@ function RoamAvatar() {
 
 /** 화면 맥락별 한 줄 발화. */
 function contextLine(pathname: string): string {
-  if (pathname === "/") return "어디부터 볼지 같이 정할까?";
   if (/\/exhibitions\/[^/]+\/community/.test(pathname))
     return "다른 사람은 뭘 봤나 궁금해?";
   if (/\/exhibitions\/[^/]+$/.test(pathname)) return "골라둔 곳 마음에 들어?";

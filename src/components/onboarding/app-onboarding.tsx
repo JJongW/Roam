@@ -1,40 +1,39 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api/client";
 import { cn } from "@/lib/utils";
 import { RoamMotion } from "@/components/companion/roam-motion";
-import { RoamTyping } from "@/components/companion/roam-typing";
-import { ChatBubble } from "@/components/companion/chat-bubble";
 import { useAuthStore } from "@/lib/stores/auth";
 import { VALUE_TAGS, valueLabel } from "@/lib/values";
 import { Button } from "@/components/ui/button";
 
 const FLAG = "roam-app-onboarded";
 
-/** 대화 대본 — Roam이 순차로 건네는 발화. 각 단계는 목적/사용법을 함께 말한다. */
-const STEPS = 3; // 소개 → 가치 → 마무리
-type Phase = 0 | 1 | 2;
-
-interface Bubble {
-  id: string;
-  from: "roam" | "you";
-  text: string;
-}
-
-const INTRO: string[] = [
-  "안녕, 나는 Roam이야 👋",
-  "박람회엔 부스가 수백 개야. 그중에서 너한테 의미 있을 곳만 골라서 보여주는 게 내 일이야.",
-  "몇 가지만 알려주면 그걸 기억해뒀다가 오늘도, 다음 박람회에서도 맞춰줄게. 30초면 돼.",
+// 슬라이드 순서: 인트로 3장(누구/왜/어떻게) → 가치 선택 → 마무리. 도트로 진행 표시.
+const INTRO = [
+  {
+    title: ["안녕, 나는", "Roam이야"],
+    sub: "박람회에서 너한테 의미 있을 부스만 골라주는 관람 동행자야.",
+  },
+  {
+    title: ["많이 보기보다", "의미 있게"],
+    sub: "수백 개 부스를 다 도는 게 아니라, 네 취향에 맞는 곳부터 같이 둘러봐.",
+  },
+  {
+    title: ["볼수록", "더 잘 맞춰줘"],
+    sub: "끌림·별로만 눌러줘. 네 반응을 기억해서 다음엔 더 정확해져.",
+  },
 ];
-const VALUES_PROMPT =
-  "먼저 — 박람회에서 뭘 채우고 싶어? 끌리는 걸 골라줘. 여러 개도 좋아.";
+const STEPS = INTRO.length + 2; // + 가치 + 마무리
+const VALUE_STEP = INTRO.length;
+const DONE_STEP = INTRO.length + 1;
 
 /**
- * 앱 최초진입 온보딩 — 폼이 아니라 Roam과의 대화. 상단 진행 표시로 단계를 알려주고,
- * 각 단계에서 "왜 묻는지·어떻게 쓰는지"를 함께 말한다. 고른 관람 가치를 브레인에 시드.
- * companion-reframe Phase C(대화형 재설계). 로그인 전엔 뜨지 않는다.
+ * 앱 최초진입 온보딩 — 큰 Roam 마스코트 히어로 + 도트 인디케이터 + '다음' 슬라이드 캐러셀.
+ * 인트로 3장으로 누구/왜/어떻게(사용법)를 그림 중심으로 소개하고, 관람 가치를 골라 브레인에
+ * 시드한다. 폼이 아니라 캐릭터가 이끄는 첫인상. companion-reframe Phase C(이미지형 재설계).
  */
 export function AppOnboardingGate() {
   const router = useRouter();
@@ -43,58 +42,13 @@ export function AppOnboardingGate() {
   const [onboarded, setOnboarded] = useState(
     () => typeof window !== "undefined" && !!localStorage.getItem(FLAG),
   );
-
-  const [phase, setPhase] = useState<Phase>(0);
-  const [bubbles, setBubbles] = useState<Bubble[]>([]);
-  const [typing, setTyping] = useState(false);
+  const [step, setStep] = useState(0);
   const [picked, setPicked] = useState<Set<string>>(new Set());
   const [busy, setBusy] = useState(false);
-  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const touchX = useRef<number | null>(null);
 
   const visible = !onboarded && ready && !!user;
-
-  // 단계 진입 시 Roam 발화를 타이핑 딜레이와 함께 순차 공개.
-  function revealSequential(texts: string[], after?: () => void) {
-    setTyping(true);
-    let acc = 500;
-    texts.forEach((text, i) => {
-      const t = setTimeout(() => {
-        setBubbles((prev) => [
-          ...prev,
-          { id: `r-${Date.now()}-${i}`, from: "roam", text },
-        ]);
-        if (i === texts.length - 1) setTyping(false);
-        else setTyping(true);
-      }, acc);
-      timers.current.push(t);
-      acc += 700 + text.length * 12;
-    });
-    if (after) {
-      const t = setTimeout(after, acc);
-      timers.current.push(t);
-    }
-  }
-
-  // 첫 공개 = 인트로. visible이 처음 true가 될 때 1회.
-  const started = useRef(false);
-  useEffect(() => {
-    if (!visible || started.current) return;
-    started.current = true;
-    revealSequential(INTRO);
-    return () => {
-      timers.current.forEach(clearTimeout);
-      timers.current = [];
-    };
-  }, [visible]);
-
-  // 새 발화마다 하단으로 스크롤.
-  useEffect(() => {
-    scrollRef.current?.scrollTo({
-      top: scrollRef.current.scrollHeight,
-      behavior: "smooth",
-    });
-  }, [bubbles, typing]);
+  if (!visible) return null;
 
   function toggle(v: string) {
     setPicked((prev) => {
@@ -105,139 +59,156 @@ export function AppOnboardingGate() {
     });
   }
 
-  // 인트로 → 가치 질문.
-  function goValues() {
-    setBubbles((prev) => [
-      ...prev,
-      { id: "you-ok", from: "you", text: "좋아, 알려줄게" },
-    ]);
-    setPhase(1);
-    revealSequential([VALUES_PROMPT]);
-  }
-
-  // 가치 제출 → 시드 → 마무리(사용법).
-  async function submit() {
-    if (picked.size === 0 || busy) return;
-    const labels = [...picked].map(valueLabel);
-    setBubbles((prev) => [
-      ...prev,
-      { id: "you-vals", from: "you", text: labels.join(" · ") },
-    ]);
-    setBusy(true);
-    try {
-      await api.post("/api/me/values", { values: [...picked] });
-    } catch {
-      // 실패해도 진행.
-    } finally {
-      setBusy(false);
-      setPhase(2);
-      revealSequential([
-        `좋아, ${labels.slice(0, 2).join("·")} 쪽으로 맞춰서 골라뒀어.`,
-        "이제 피드에서 내가 고른 곳부터 보면 돼. 마음에 들면 '끌림', 아니면 '별로'를 눌러줘 — 누를수록 더 정확해져.",
-      ]);
+  async function next() {
+    if (busy) return;
+    if (step < VALUE_STEP) {
+      setStep(step + 1);
+      return;
     }
-  }
-
-  function finish() {
+    if (step === VALUE_STEP) {
+      if (picked.size === 0) return;
+      setBusy(true);
+      try {
+        await api.post("/api/me/values", { values: [...picked] });
+      } catch {
+        // 실패해도 진행.
+      } finally {
+        setBusy(false);
+        setStep(DONE_STEP);
+      }
+      return;
+    }
+    // DONE
     if (typeof window !== "undefined") localStorage.setItem(FLAG, "1");
     setOnboarded(true);
     router.refresh();
   }
 
-  if (!visible) return null;
+  function back() {
+    if (step > 0 && step <= VALUE_STEP) setStep(step - 1);
+  }
+
+  // 간단한 스와이프 — 인트로 구간에서만 좌우 이동.
+  function onTouchStart(e: React.TouchEvent) {
+    touchX.current = e.touches[0].clientX;
+  }
+  function onTouchEnd(e: React.TouchEvent) {
+    if (touchX.current == null) return;
+    const dx = e.changedTouches[0].clientX - touchX.current;
+    touchX.current = null;
+    if (Math.abs(dx) < 50) return;
+    if (dx < 0 && step < VALUE_STEP) setStep(step + 1);
+    else if (dx > 0) back();
+  }
+
+  const result =
+    picked.size > 0
+      ? `${[...picked].slice(0, 2).map(valueLabel).join("·")} 쪽으로 맞춰서 골라줄게.`
+      : "";
+
+  const cta =
+    step === VALUE_STEP
+      ? busy
+        ? "맞춰보는 중…"
+        : "이걸로 시작"
+      : step === DONE_STEP
+        ? "박람회 보러 가기"
+        : "다음";
+  const ctaDisabled =
+    busy || (step === VALUE_STEP && picked.size === 0);
 
   return (
-    <div className="fixed inset-0 z-[100] flex flex-col bg-background pt-safe pb-safe">
-      {/* 진행 표시 */}
-      <div className="flex items-center gap-3 px-6 pb-2 pt-4">
-        <span className="flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full ring-1 ring-border">
-          <RoamMotion src="/walking.mp4" />
-        </span>
-        <div className="flex flex-1 gap-1.5">
-          {Array.from({ length: STEPS }).map((_, i) => (
-            <span
-              key={i}
-              className={cn(
-                "h-1 flex-1 rounded-full transition-colors",
-                i <= phase ? "bg-primary" : "bg-secondary",
-              )}
-            />
-          ))}
-        </div>
-        <span className="text-xs font-semibold tabular-nums text-muted-foreground">
-          {phase + 1}/{STEPS}
-        </span>
-      </div>
-
-      {/* 대화 스레드 */}
+    <div
+      className="fixed inset-0 z-[100] flex flex-col bg-background px-6 pb-8 pt-safe"
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+    >
+      {/* 히어로 + 본문 */}
       <div
-        ref={scrollRef}
-        className="flex-1 space-y-3 overflow-y-auto px-5 py-4"
+        key={step}
+        className="animate-in fade-in slide-in-from-right-2 flex flex-1 flex-col items-center justify-center gap-6 text-center duration-300"
       >
-        {bubbles.map((b) => (
-          <ChatBubble key={b.id} from={b.from} text={b.text} />
-        ))}
-        {typing && <RoamTyping />}
-      </div>
+        {step !== VALUE_STEP && (
+          <span className="flex size-44 items-center justify-center overflow-hidden rounded-[2.5rem]">
+            <RoamMotion src={step === DONE_STEP ? "/head.mp4" : "/walking.mp4"} />
+          </span>
+        )}
 
-      {/* 액션 영역 — 단계별 */}
-      <div className="border-t border-border px-5 pb-2 pt-4">
-        {phase === 1 && (
-          <div className="mb-3 flex flex-wrap gap-2">
-            {VALUE_TAGS.map((v) => {
-              const on = picked.has(v.slug);
-              return (
-                <button
-                  key={v.slug}
-                  type="button"
-                  onClick={() => toggle(v.slug)}
-                  aria-pressed={on}
-                  className={cn(
-                    "rounded-full border px-3.5 py-2 text-sm font-semibold active:opacity-70",
-                    on
-                      ? "border-transparent text-white"
-                      : "border-border bg-card text-foreground",
-                  )}
-                  style={on ? { backgroundColor: v.color } : undefined}
-                >
-                  {v.label}
-                </button>
-              );
-            })}
+        {step < VALUE_STEP && (
+          <>
+            <h1 className="text-[26px] font-extrabold leading-snug">
+              {INTRO[step].title[0]}
+              <br />
+              {INTRO[step].title[1]}
+            </h1>
+            <p className="max-w-[19rem] text-[15px] leading-relaxed text-muted-foreground">
+              {INTRO[step].sub}
+            </p>
+          </>
+        )}
+
+        {step === VALUE_STEP && (
+          <div className="w-full">
+            <h1 className="text-[22px] font-extrabold leading-snug">
+              박람회에서
+              <br />뭘 채우고 싶어?
+            </h1>
+            <p className="mt-2 text-sm text-muted-foreground">
+              끌리는 걸 골라줘. 여러 개도 좋아.
+            </p>
+            <div className="mt-6 flex flex-wrap justify-center gap-2">
+              {VALUE_TAGS.map((v) => {
+                const on = picked.has(v.slug);
+                return (
+                  <button
+                    key={v.slug}
+                    type="button"
+                    onClick={() => toggle(v.slug)}
+                    aria-pressed={on}
+                    className={cn(
+                      "rounded-full border px-4 py-2.5 text-sm font-semibold active:opacity-70",
+                      on
+                        ? "border-transparent text-white"
+                        : "border-border bg-card text-foreground",
+                    )}
+                    style={on ? { backgroundColor: v.color } : undefined}
+                  >
+                    {v.label}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         )}
 
-        {phase === 0 && (
-          <Button
-            size="lg"
-            className="w-full"
-            onClick={goValues}
-            disabled={typing}
-          >
-            좋아, 시작하자
-          </Button>
-        )}
-        {phase === 1 && (
-          <Button
-            size="lg"
-            className="w-full"
-            onClick={submit}
-            disabled={picked.size === 0 || busy || typing}
-          >
-            {busy ? "맞춰보는 중…" : "이걸로 시작"}
-          </Button>
-        )}
-        {phase === 2 && (
-          <Button
-            size="lg"
-            className="w-full"
-            onClick={finish}
-            disabled={typing}
-          >
-            박람회 보러 가기
-          </Button>
+        {step === DONE_STEP && (
+          <>
+            <h1 className="text-[26px] font-extrabold leading-snug">
+              이런 스타일이네
+            </h1>
+            <p className="max-w-[19rem] text-[15px] leading-relaxed text-foreground/90">
+              {result}
+            </p>
+          </>
         )}
       </div>
+
+      {/* 도트 인디케이터 */}
+      <div className="flex justify-center gap-2 pb-6">
+        {Array.from({ length: STEPS }).map((_, i) => (
+          <span
+            key={i}
+            className={cn(
+              "h-2 rounded-full transition-all",
+              i === step ? "w-5 bg-primary" : "w-2 bg-secondary",
+            )}
+          />
+        ))}
+      </div>
+
+      <Button size="lg" className="w-full" onClick={next} disabled={ctaDisabled}>
+        {cta}
+      </Button>
     </div>
   );
 }
