@@ -5,13 +5,7 @@ import { narrateVisit } from "@/lib/ai/companion";
 import { MEMORY_TUNING } from "@/lib/constants";
 import { getRepository } from "@/lib/repositories";
 import { VALUE_TAGS, boothValueSlugs } from "@/lib/values";
-import type {
-  Booth,
-  RoutePlan,
-  SignalKind,
-  UserBrain,
-  VisitDigest,
-} from "@/lib/types";
+import type { SignalKind, UserBrain, VisitDigest } from "@/lib/types";
 import {
   addVisitDigest,
   buildVisitDigest,
@@ -88,43 +82,50 @@ export async function readBrain(userId: string): Promise<UserBrain> {
   return (await repo.getUserBrain(userId)) ?? emptyBrain(userId);
 }
 
+/** 회고 재료가 되는 신호 — 실제로 보거나 끌린 것만(스킵/단순클릭 제외). */
+const REFLECT_KINDS: ReadonlySet<SignalKind> = new Set<SignalKind>([
+  "booth_visited",
+  "reaction_interested",
+  "reaction_later",
+  "booth_bookmarked",
+]);
+
 /**
- * 관람 종료 회고 = L3 에피소드 → L4 증류쓰기(Reflection Agent). 결정론, LLM 없음.
- * 완료된 route로 VisitDigest를 만들어 브레인 visits에 접는다. visitId = routeId.
+ * 신호 기반 회고(동선 비의존). 동선 제거로 route가 없어져 reflectOnVisit을 대체 —
+ * 최근 이 전시의 방문/반응 신호를 모아 부스별로 접고 VisitDigest를 만들어 브레인에
+ * 접는다(Reflection Agent, 결정론·LLM 무). 회고 재료 없으면 no-op → RecapSheet는
+ * 기존 최신 회고를 보여준다. companion-reframe Phase A 회고 정책.
  */
-export async function reflectOnVisit(
+export async function reflectFromSignals(
   userId: string,
-  route: RoutePlan,
-): Promise<void> {
+  exhibitionId: string,
+): Promise<VisitDigest | null> {
   const repo = await getRepository();
+  const signals = await repo.listUserSignals(userId, { exhibitionId });
 
-  // 실제 방문 부스 우선, 없으면 계획 부스로 폴백.
-  const boothIds =
-    route.visitedBoothIds.length > 0 ? route.visitedBoothIds : route.boothIds;
-  if (boothIds.length === 0) return;
-
-  const booths = await repo.listBoothsByExhibitionId(route.exhibitionId);
-  const byId = new Map(booths.map((b): [string, Booth] => [b.id, b]));
-  const boothCodes: string[] = [];
-  const boothTagLists: string[][] = [];
-  for (const id of boothIds) {
-    const b = byId.get(id);
-    if (!b) continue;
-    boothCodes.push(b.code ?? b.id);
-    boothTagLists.push(boothValueSlugs(b)); // 가치 축(없으면 분야 폴백)
+  // 부스(코드)별로 접기 — 같은 부스 여러 신호는 한 번만. slug는 합집합.
+  const byBooth = new Map<string, Set<string>>();
+  for (const s of signals) {
+    if (!REFLECT_KINDS.has(s.kind) || !s.boothCode) continue;
+    const set = byBooth.get(s.boothCode) ?? new Set<string>();
+    for (const slug of s.slugs) set.add(slug);
+    byBooth.set(s.boothCode, set);
   }
-  if (boothCodes.length === 0) return;
+  if (byBooth.size === 0) return null;
+
+  const boothCodes = [...byBooth.keys()];
+  const boothTagLists = boothCodes.map((c) => [...(byBooth.get(c) ?? [])]);
 
   const labels: Record<string, string> = {};
-  for (const c of await repo.listCategories(route.exhibitionId)) {
+  for (const c of await repo.listCategories(exhibitionId))
     labels[c.slug] = c.name;
-  }
   for (const v of VALUE_TAGS) labels[v.slug] = v.label;
 
   const nowMs = Date.now();
+  // visitId = 전시+시각 — 신호 기반 세션 1건.
   const digest = buildVisitDigest({
-    exhibitionId: route.exhibitionId,
-    visitId: route.id,
+    exhibitionId,
+    visitId: `sig-${exhibitionId}-${nowMs}`,
     boothCodes,
     boothTagLists,
     nowMs,
@@ -135,6 +136,7 @@ export async function reflectOnVisit(
     (await repo.getUserBrain(userId)) ??
     emptyBrain(userId, new Date(nowMs).toISOString());
   await repo.saveUserBrain(addVisitDigest(brain, digest, nowMs));
+  return digest;
 }
 
 /**

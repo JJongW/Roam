@@ -13,6 +13,7 @@ import { AppBar } from "@/components/common/app-bar";
 import { AccountButton } from "@/components/auth/account-button";
 import { InterestFeed } from "@/components/feed/interest-feed";
 import { ValueOnboarding } from "@/components/onboarding/value-onboarding";
+import { FinishVisit } from "@/components/companion/finish-visit";
 import { getCurrentUser } from "@/lib/api/session";
 import { curateFeed } from "@/lib/feed/curate";
 import { readBrain } from "@/lib/memory/service";
@@ -134,6 +135,8 @@ export default async function ExhibitionDetailPage({ params }: Props) {
             categoryById={categoryById}
             memoryLine={memoryLine}
           />
+
+          {feedItems.length > 0 && <FinishVisit slug={slug} />}
         </div>
       </main>
     </div>

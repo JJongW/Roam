@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MapPin, Sparkles } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { api } from "@/lib/api/client";
+import { RoamMotion } from "@/components/companion/roam-motion";
 import {
   Sheet,
   SheetContent,
@@ -56,7 +57,9 @@ export function RecapSheet({
       <SheetContent side="bottom" className="px-5 pb-8">
         <SheetHeader>
           <SheetTitle className="flex items-center gap-2">
-            <Sparkles className="size-5 text-primary" aria-hidden />
+            <span className="flex size-8 items-center justify-center overflow-hidden rounded-full ring-1 ring-border">
+              <RoamMotion src="/walk_see.mp4" />
+            </span>
             오늘의 관람
           </SheetTitle>
           <SheetDescription>함께한 하루를 돌아봤어.</SheetDescription>
@@ -79,7 +82,7 @@ export function RecapSheet({
         {!loading && visit && visit.boothsVisited.length > 0 && (
           <div className="mt-3 flex items-center gap-1.5 px-1 text-sm text-muted-foreground">
             <MapPin className="size-4" aria-hidden />
-            {visit.boothsVisited.length}곳을 둘러봤어요
+            {visit.boothsVisited.length}곳을 둘러봤어
           </div>
         )}
 
