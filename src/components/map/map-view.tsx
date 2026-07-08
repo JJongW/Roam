@@ -70,6 +70,10 @@ export function MapView({
   );
   const visitedIds = useMemo(() => idsByStatus(records, "visited"), [records]);
   const skippedIds = useMemo(() => idsByStatus(records, "skipped"), [records]);
+  const interestedIds = useMemo(
+    () => idsByStatus(records, "interested"),
+    [records],
+  );
 
   // First-visit map guide + one-time landscape hint (see ui store).
   const mapGuideSeen = useUiStore((s) => s.mapGuideSeen);
@@ -102,7 +106,8 @@ export function MapView({
   }, []);
 
   function handleBack() {
-    router.push("/");
+    // 지도는 전시 상세에서 들어온 부가 화면 — 홈이 아니라 그 전시로 돌아간다.
+    router.push(`/exhibitions/${detail.exhibition.slug}`);
   }
 
   // Toggle the crowd heatmap; fetch the aggregate once, then just show/hide.
@@ -143,6 +148,7 @@ export function MapView({
         controlsClassName="right-3 top-16"
         visitedIds={visitedIds}
         skippedIds={skippedIds}
+        interestedIds={interestedIds}
         selectedId={selectedId}
         centerOn={centerOn}
         focusBottomInset={320}
@@ -155,7 +161,7 @@ export function MapView({
       <div className="pointer-events-none absolute inset-x-0 top-0 z-30 flex items-center gap-2 bg-gradient-to-b from-background/85 to-transparent px-3 pb-4 pt-safe">
         <button
           type="button"
-          aria-label="홈으로"
+          aria-label="전시로 돌아가기"
           onClick={handleBack}
           className="pointer-events-auto flex size-10 items-center justify-center rounded-full bg-card shadow-[var(--shadow-card)] active:bg-secondary"
         >

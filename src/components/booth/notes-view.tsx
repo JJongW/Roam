@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Check, ChevronRight, Star, MapPin, NotebookPen } from "lucide-react";
+import {
+  Check,
+  ChevronRight,
+  Star,
+  X,
+  MapPin,
+  NotebookPen,
+} from "lucide-react";
 import { AppBar } from "@/components/common/app-bar";
 import { EmptyState } from "@/components/common/states";
 import { Button } from "@/components/ui/button";
@@ -12,8 +19,9 @@ import { useHydrated } from "@/lib/hooks/use-hydrated";
 import type { Booth, Category } from "@/lib/types";
 
 const STATUS = {
-  visited: { label: "방문함", Icon: Check },
-  skipped: { label: "관심", Icon: Star },
+  visited: { label: "가봄", Icon: Check },
+  interested: { label: "끌림", Icon: Star },
+  skipped: { label: "별로", Icon: X },
 } as const;
 
 /**
