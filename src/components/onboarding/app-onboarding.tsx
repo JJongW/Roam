@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api/client";
 import { cn } from "@/lib/utils";
 import { RoamMotion } from "@/components/companion/roam-motion";
 import { RoamTyping } from "@/components/companion/roam-typing";
+import { ChatBubble } from "@/components/companion/chat-bubble";
 import { useAuthStore } from "@/lib/stores/auth";
 import { VALUE_TAGS, valueLabel } from "@/lib/values";
 import { Button } from "@/components/ui/button";
@@ -238,35 +238,6 @@ export function AppOnboardingGate() {
           </Button>
         )}
       </div>
-    </div>
-  );
-}
-
-function ChatBubble({ from, text }: { from: "roam" | "you"; text: string }) {
-  if (from === "you") {
-    return (
-      <div className="animate-in fade-in slide-in-from-bottom-1 flex justify-end duration-300">
-        <span className="max-w-[80%] rounded-2xl rounded-br-sm bg-primary px-3.5 py-2 text-sm font-medium text-primary-foreground">
-          {text}
-        </span>
-      </div>
-    );
-  }
-  return (
-    <div className="animate-in fade-in slide-in-from-bottom-1 flex items-end gap-2 duration-300">
-      <span className="flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-full ring-1 ring-border">
-        <Image
-          src="/logo.svg"
-          alt="Roam"
-          width={32}
-          height={32}
-          className="size-full object-cover"
-          unoptimized
-        />
-      </span>
-      <span className="max-w-[85%] rounded-2xl rounded-bl-sm bg-secondary px-3.5 py-2 text-sm leading-relaxed">
-        {text}
-      </span>
     </div>
   );
 }

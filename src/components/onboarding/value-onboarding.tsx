@@ -1,25 +1,29 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ChevronRight, Compass, Sparkles } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { api } from "@/lib/api/client";
 import { cn } from "@/lib/utils";
 import { VALUE_TAGS, valueLabel } from "@/lib/values";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-} from "@/components/ui/sheet";
+import { RoamMotion } from "@/components/companion/roam-motion";
+import { RoamTyping } from "@/components/companion/roam-typing";
+import { ChatBubble } from "@/components/companion/chat-bubble";
+import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 
-type Step = "intro" | "orientation" | "pick" | "done";
+const STEPS = 3; // 인사·오리엔테이션 → 가치 → 마무리
+type Phase = 0 | 1 | 2;
+interface Bubble {
+  id: string;
+  from: "roam" | "you";
+  text: string;
+}
 
 /**
- * 관람 가치 온보딩 — Roam 첫인사 → 오리엔테이션(전시 큰 개념) → "무엇을 남기고 싶은가"(가치 선택)
- * → 결과 문장. 동선 최적화가 아니라 의미를 먼저 묻는 진입(companion-reframe §7.1·§7.2).
+ * 전시별 관람 가치 온보딩 — 앱 최초진입 온보딩과 같은 대화형. 전시에 처음 들어온 순간
+ * Roam이 큰 그림을 설명하고(오리엔테이션) "무엇을 남길지"를 함께 정한다. 진행 표시 +
+ * 목적·사용법 안내. companion-reframe §7.1·§7.2, Phase C 대화형 통일.
  */
 export function ValueOnboarding({
   slug,
@@ -36,15 +40,61 @@ export function ValueOnboarding({
 }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [step, setStep] = useState<Step>("intro");
+  const [phase, setPhase] = useState<Phase>(0);
+  const [bubbles, setBubbles] = useState<Bubble[]>([]);
+  const [typing, setTyping] = useState(false);
   const [picked, setPicked] = useState<Set<string>>(new Set());
   const [busy, setBusy] = useState(false);
+  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const themes = categoryNames.slice(0, 4).join(" · ");
+  const INTRO = [
+    `안녕, 나는 Roam이야. ${exhibitionName} 왔구나 👋`,
+    description,
+    `홀 ${hallCount}개에 ${themes} 같은 게 있어. 이 안에서 오늘 뭘 남길지 같이 정하자.`,
+  ];
+
+  function clearTimers() {
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+  }
+
+  function revealSequential(texts: string[]) {
+    setTyping(true);
+    let acc = 400;
+    texts.forEach((text, i) => {
+      const t = setTimeout(() => {
+        setBubbles((prev) => [
+          ...prev,
+          { id: `r-${Date.now()}-${i}`, from: "roam", text },
+        ]);
+        setTyping(i !== texts.length - 1);
+      }, acc);
+      timers.current.push(t);
+      acc += 600 + text.length * 11;
+    });
+  }
 
   function start() {
-    setStep("intro");
+    clearTimers();
+    setPhase(0);
     setPicked(new Set());
+    setBubbles([]);
+    setTyping(false);
     setOpen(true);
+    revealSequential(INTRO);
   }
+
+  useEffect(() => () => clearTimers(), []);
+
+  useEffect(() => {
+    scrollRef.current?.scrollTo({
+      top: scrollRef.current.scrollHeight,
+      behavior: "smooth",
+    });
+  }, [bubbles, typing]);
+
   function toggle(v: string) {
     setPicked((prev) => {
       const next = new Set(prev);
@@ -53,8 +103,25 @@ export function ValueOnboarding({
       return next;
     });
   }
+
+  function goValues() {
+    setBubbles((prev) => [
+      ...prev,
+      { id: "you-ok", from: "you", text: "좋아, 정해보자" },
+    ]);
+    setPhase(1);
+    revealSequential([
+      "오늘 뭘 남기고 싶어? 끌리는 걸 골라줘 — 그걸로 부스를 골라둘게. 언제든 바꿔도 돼.",
+    ]);
+  }
+
   async function submit() {
     if (picked.size === 0 || busy) return;
+    const labels = [...picked].map(valueLabel);
+    setBubbles((prev) => [
+      ...prev,
+      { id: "you-vals", from: "you", text: labels.join(" · ") },
+    ]);
     setBusy(true);
     try {
       await api.post("/api/me/values", {
@@ -65,19 +132,18 @@ export function ValueOnboarding({
       // 실패해도 진행.
     } finally {
       setBusy(false);
-      setStep("done");
+      setPhase(2);
+      revealSequential([
+        `좋아, ${labels.slice(0, 2).join("·")} 쪽으로 골라올게.`,
+        "피드에서 내가 고른 곳부터 보면 돼. 끌리면 '끌림'을 눌러줘 — 볼수록 더 잘 맞춰줄게.",
+      ]);
     }
   }
+
   function finish() {
     setOpen(false);
     router.refresh();
   }
-
-  const themes = categoryNames.slice(0, 5).join(" · ");
-  const result = `이번 관람은 "많이 보기"보다 ${[...picked]
-    .slice(0, 2)
-    .map(valueLabel)
-    .join("·")} 쪽으로 골라올게. 맞춰서 발견을 도와줄게.`;
 
   return (
     <>
@@ -86,78 +152,60 @@ export function ValueOnboarding({
         onClick={start}
         className="flex w-full items-center gap-3 rounded-2xl border border-primary/30 bg-accent/40 p-4 text-left shadow-[var(--shadow-card)] active:scale-[0.99]"
       >
-        <div className="flex size-11 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-          <Sparkles className="size-5" />
-        </div>
+        <span className="flex size-11 items-center justify-center overflow-hidden rounded-xl ring-1 ring-border">
+          <RoamMotion src="/head.mp4" />
+        </span>
         <div className="min-w-0 flex-1">
           <p className="font-bold">오늘 뭘 남기고 싶어?</p>
           <p className="text-sm text-muted-foreground">
-            나랑 오늘 관람의 관심 가치를 먼저 정하자
+            나랑 잠깐 얘기하고 관심 가치를 정하자
           </p>
         </div>
         <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
       </button>
 
       <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent side="bottom" className="px-5 pb-8">
-          {step === "intro" && (
-            <>
-              <SheetHeader>
-                <SheetTitle className="flex items-center gap-2">
-                  <Sparkles className="size-5 text-primary" aria-hidden />
-                  안녕, 나는 Roam이야
-                </SheetTitle>
-                <SheetDescription>
-                  오늘 많은 걸 다 보게 하기보다, 너한테 의미 있을 순간을 놓치지
-                  않게 같이 볼게.
-                </SheetDescription>
-              </SheetHeader>
-              <Button
-                size="lg"
-                className="mt-6 w-full"
-                onClick={() => setStep("orientation")}
-              >
-                좋아, 시작하자
-              </Button>
-            </>
-          )}
+        <SheetContent
+          side="bottom"
+          className="flex max-h-[85vh] flex-col gap-0 px-0 pb-0"
+        >
+          <SheetTitle className="sr-only">관람 가치 정하기</SheetTitle>
+          {/* 진행 표시 */}
+          <div className="flex items-center gap-3 px-5 pb-3 pt-5">
+            <span className="flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-full ring-1 ring-border">
+              <RoamMotion src="/walking.mp4" />
+            </span>
+            <div className="flex flex-1 gap-1.5">
+              {Array.from({ length: STEPS }).map((_, i) => (
+                <span
+                  key={i}
+                  className={cn(
+                    "h-1 flex-1 rounded-full transition-colors",
+                    i <= phase ? "bg-primary" : "bg-secondary",
+                  )}
+                />
+              ))}
+            </div>
+            <span className="text-xs font-semibold tabular-nums text-muted-foreground">
+              {phase + 1}/{STEPS}
+            </span>
+          </div>
 
-          {step === "orientation" && (
-            <>
-              <SheetHeader>
-                <SheetTitle className="flex items-center gap-2">
-                  <Compass className="size-5 text-primary" aria-hidden />
-                  {exhibitionName}, 먼저 큰 그림부터
-                </SheetTitle>
-              </SheetHeader>
-              <div className="mt-3 rounded-2xl border border-border bg-card p-4 text-sm leading-relaxed text-foreground/90">
-                <p>{description}</p>
-                <p className="mt-2 text-muted-foreground">
-                  홀 {hallCount}개 · 테마: {themes}
-                </p>
-              </div>
-              <p className="mt-3 px-1 text-sm text-muted-foreground">
-                이 안에서 오늘 무엇을 남기고 싶은지 같이 골라볼까?
-              </p>
-              <Button
-                size="lg"
-                className="mt-4 w-full"
-                onClick={() => setStep("pick")}
-              >
-                관심 가치 고르기
-              </Button>
-            </>
-          )}
+          {/* 대화 스레드 */}
+          <div
+            ref={scrollRef}
+            className="min-h-[220px] flex-1 space-y-3 overflow-y-auto px-5 py-3"
+          >
+            {bubbles.map((b) => (
+              <ChatBubble key={b.id} from={b.from} text={b.text} />
+            ))}
+            {typing && <RoamTyping />}
+          </div>
 
-          {step === "pick" && (
-            <>
-              <SheetHeader>
-                <SheetTitle>오늘 뭘 남기고 싶어?</SheetTitle>
-                <SheetDescription>
-                  이번 박람회에서 챙기고 싶은 걸 골라줘. 여러 개도 좋아.
-                </SheetDescription>
-              </SheetHeader>
-              <div className="mt-4 flex flex-wrap gap-2">
+          {/* 액션 영역 */}
+          <div className="border-t border-border px-5 pb-8 pt-4">
+            {phase === 1 && (
+              <div className="mb-3 flex flex-wrap gap-2">
                 {VALUE_TAGS.map((v) => {
                   const on = picked.has(v.slug);
                   return (
@@ -179,33 +227,39 @@ export function ValueOnboarding({
                   );
                 })}
               </div>
+            )}
+
+            {phase === 0 && (
               <Button
                 size="lg"
-                className="mt-5 w-full"
+                className="w-full"
+                onClick={goValues}
+                disabled={typing}
+              >
+                좋아, 시작하자
+              </Button>
+            )}
+            {phase === 1 && (
+              <Button
+                size="lg"
+                className="w-full"
                 onClick={submit}
-                disabled={picked.size === 0 || busy}
+                disabled={picked.size === 0 || busy || typing}
               >
                 {busy ? "맞춰보는 중…" : "이걸로 정했어"}
               </Button>
-            </>
-          )}
-
-          {step === "done" && (
-            <>
-              <SheetHeader>
-                <SheetTitle className="flex items-center gap-2">
-                  <Sparkles className="size-5 text-primary" aria-hidden />
-                  좋아, 이렇게 볼게
-                </SheetTitle>
-              </SheetHeader>
-              <p className="mt-4 rounded-2xl border border-primary/25 bg-accent/40 p-4 text-[15px] font-medium leading-relaxed text-foreground/90">
-                {result}
-              </p>
-              <Button size="lg" className="mt-5 w-full" onClick={finish}>
+            )}
+            {phase === 2 && (
+              <Button
+                size="lg"
+                className="w-full"
+                onClick={finish}
+                disabled={typing}
+              >
                 둘러보기
               </Button>
-            </>
-          )}
+            )}
+          </div>
         </SheetContent>
       </Sheet>
     </>
