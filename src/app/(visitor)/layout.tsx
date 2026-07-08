@@ -1,3 +1,5 @@
+import { CompanionBar } from "@/components/companion/companion-bar";
+
 export default function VisitorLayout({
   children,
 }: {
@@ -9,6 +11,7 @@ export default function VisitorLayout({
       className="mx-auto flex min-h-dvh w-full max-w-md flex-col bg-background"
     >
       {children}
+      <CompanionBar />
     </div>
   );
 }
