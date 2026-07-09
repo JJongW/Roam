@@ -134,9 +134,9 @@ export default async function ExhibitionDetailPage({
                 <MapIcon className="size-5 text-foreground" />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="font-bold">관심 밀도 지도</p>
+                <p className="font-bold">{t("booth.mapCard")}</p>
                 <p className="text-sm text-muted-foreground">
-                  전시장을 직접 둘러보고 끌리는 부스에 반응해봐
+                  {t("booth.mapCardDesc")}
                 </p>
               </div>
               <ChevronRight className="size-5 shrink-0 text-muted-foreground" />

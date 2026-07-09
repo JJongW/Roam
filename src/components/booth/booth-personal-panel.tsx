@@ -57,7 +57,7 @@ export function BoothPersonalPanel({ boothId }: { boothId: string }) {
 
   return (
     <section className="space-y-2.5">
-      <h2 className="text-base font-bold">나의 기록</h2>
+      <h2 className="text-base font-bold">{t("booth.recordHeading")}</h2>
 
       <>
         <div className="grid grid-cols-2 gap-2">
