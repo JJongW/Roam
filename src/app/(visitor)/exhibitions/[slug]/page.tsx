@@ -118,13 +118,7 @@ export default async function ExhibitionDetailPage({
           </section>
 
           <div className="space-y-2.5">
-            <ValueOnboarding
-              slug={slug}
-              exhibitionName={exhibition.name}
-              description={exhibition.description}
-              hallCount={detail.halls.length}
-              categoryNames={detail.categories.map((c) => c.name)}
-            />
+            <ValueOnboarding slug={slug} />
 
             <Link
               href={`/exhibitions/${slug}/map`}

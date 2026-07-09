@@ -4,6 +4,7 @@ import { ExhibitionCard } from "@/components/exhibition/exhibition-card";
 import { EmptyState } from "@/components/common/states";
 import { AppOnboardingGate } from "@/components/onboarding/app-onboarding";
 import { AccountButton } from "@/components/auth/account-button";
+import { RoamMotion } from "@/components/companion/roam-motion";
 import { getI18n } from "@/lib/i18n/server";
 
 export const metadata = {
@@ -36,13 +37,17 @@ export default async function HomePage() {
         <AccountButton />
       </header>
 
-      <section className="space-y-1 px-5 pb-2 pt-6">
-        <h2 className="text-2xl font-extrabold leading-tight">
-          {t("home.headingA")}
-          <br />
-          {t("home.headingB")}
+      {/* Romi 히어로 — 냅다 전시가 아니라 로미가 먼저 맞이한다. */}
+      <section className="flex flex-col items-center gap-3 px-6 pb-2 pt-8 text-center">
+        <span className="flex size-24 items-center justify-center overflow-hidden rounded-[2rem]">
+          <RoamMotion src="/walking.mp4" />
+        </span>
+        <h2 className="text-xl font-extrabold leading-snug">
+          {t("home.heroGreeting")}
         </h2>
-        <p className="text-sm text-muted-foreground">{t("home.subtitle")}</p>
+        <p className="max-w-[18rem] text-sm text-muted-foreground">
+          {t("home.subtitle")}
+        </p>
       </section>
 
       <section className="space-y-3 px-4 py-4">
