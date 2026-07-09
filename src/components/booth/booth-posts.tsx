@@ -162,7 +162,7 @@ export function BoothPosts({
       {status === "error" && (
         <ErrorState
           title={t("post.loadFailed")}
-          description="네트워크 상태를 확인하고 다시 시도해 주세요."
+          description={t("post.networkError")}
           onRetry={retry}
         />
       )}
@@ -193,7 +193,7 @@ export function BoothPosts({
                     <button
                       type="button"
                       onClick={() => remove(p.id)}
-                      aria-label="내 글 삭제"
+                      aria-label={t("post.deleteMine")}
                       className="rounded-full p-1 text-muted-foreground hover:bg-secondary hover:text-destructive"
                     >
                       <Trash2 className="size-4" />
@@ -217,7 +217,7 @@ export function BoothPosts({
             className="w-full"
             onClick={() => setShowAll(true)}
           >
-            방문자 정보 {posts.length - previewCount}개 더보기
+            {t("post.moreCount", { n: posts.length - previewCount })}
           </Button>
         )}
     </section>
