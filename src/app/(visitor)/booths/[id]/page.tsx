@@ -13,6 +13,7 @@ import { ReviewSection } from "@/components/booth/review-section";
 import { EventList } from "@/components/booth/event-list";
 import { AnalyticsTracker } from "@/components/common/analytics-tracker";
 import { Icon } from "@/components/common/icon";
+import { getI18n } from "@/lib/i18n/server";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -35,6 +36,7 @@ export default async function BoothDetailPage({ params }: Props) {
 
   const { booth, category, welcomeKit, events, reviews, reviewSummary } =
     detail;
+  const { t } = await getI18n();
 
   return (
     <div className="contents landscape:fixed landscape:inset-0 landscape:z-30 landscape:flex landscape:flex-col landscape:overflow-hidden landscape:bg-background">
@@ -75,8 +77,8 @@ export default async function BoothDetailPage({ params }: Props) {
               <div className="mt-1.5 flex items-center gap-2">
                 <span className="text-xs text-muted-foreground">
                   {reviewSummary.count > 0
-                    ? `후기 ${reviewSummary.count}`
-                    : "후기 없음"}
+                    ? t("booth.reviewCount", { n: reviewSummary.count })
+                    : t("booth.noReview")}
                 </span>
               </div>
             </div>
@@ -87,7 +89,7 @@ export default async function BoothDetailPage({ params }: Props) {
             <div className="flex flex-wrap items-center gap-2">
               {booth.code && (
                 <span className="rounded-full border border-border bg-card px-3 py-1 text-sm font-bold tabular">
-                  부스 {booth.code}
+                  {t("booth.code", { code: booth.code })}
                 </span>
               )}
               <CategoryChip category={category} />
@@ -107,14 +109,18 @@ export default async function BoothDetailPage({ params }: Props) {
                 <div className="space-y-6">
                   {events.length > 0 && (
                     <section className="space-y-2.5">
-                      <h2 className="text-base font-bold">이벤트</h2>
+                      <h2 className="text-base font-bold">
+                        {t("booth.events")}
+                      </h2>
                       <EventList events={events} />
                     </section>
                   )}
 
                   {welcomeKit?.enabled && (
                     <section className="space-y-2.5">
-                      <h2 className="text-base font-bold">웰컴 키트</h2>
+                      <h2 className="text-base font-bold">
+                        {t("booth.welcomeKit")}
+                      </h2>
                       <div className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-[var(--shadow-card)]">
                         <div className="flex size-11 items-center justify-center rounded-xl bg-primary/10">
                           <Ticket className="size-5 text-primary" />
@@ -126,14 +132,16 @@ export default async function BoothDetailPage({ params }: Props) {
                           </p>
                         </div>
                         <span className="shrink-0 rounded-full bg-secondary px-2.5 py-1 text-xs font-bold tabular text-secondary-foreground">
-                          {welcomeKit.remainingCount}개 남음
+                          {t("booth.remaining", {
+                            n: welcomeKit.remainingCount,
+                          })}
                         </span>
                       </div>
                     </section>
                   )}
 
                   <section className="space-y-1.5">
-                    <h2 className="text-base font-bold">소개</h2>
+                    <h2 className="text-base font-bold">{t("booth.about")}</h2>
                     <div className="space-y-1.5 text-[15px] leading-relaxed text-foreground/90">
                       {booth.longDescription
                         .split(/(?<=[.!?])\s+/)
@@ -152,7 +160,9 @@ export default async function BoothDetailPage({ params }: Props) {
                       <section className="space-y-2.5">
                         {booth.enrichment.goodsKeywords.length > 0 && (
                           <div className="space-y-1.5">
-                            <h2 className="text-base font-bold">굿즈</h2>
+                            <h2 className="text-base font-bold">
+                              {t("booth.goods")}
+                            </h2>
                             <div className="flex flex-wrap gap-1.5">
                               {booth.enrichment.goodsKeywords.map((g) => (
                                 <span
@@ -167,7 +177,9 @@ export default async function BoothDetailPage({ params }: Props) {
                         )}
                         {booth.enrichment.tips && (
                           <div className="rounded-2xl border border-border bg-secondary/40 p-3">
-                            <p className="text-sm font-bold">관람 팁</p>
+                            <p className="text-sm font-bold">
+                              {t("booth.tip")}
+                            </p>
                             <p className="mt-1 text-sm leading-relaxed text-foreground/80">
                               {booth.enrichment.tips}
                             </p>

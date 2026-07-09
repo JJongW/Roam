@@ -7,6 +7,7 @@ import { formatPostTime } from "@/lib/utils";
 import { api, ApiClientError } from "@/lib/api/client";
 import { addMyPostId, getMyPostIds, removeMyPostId } from "@/lib/my-posts";
 import { useHydrated } from "@/lib/hooks/use-hydrated";
+import { useT } from "@/lib/i18n/provider";
 import { useAuthStore } from "@/lib/stores/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,6 +27,7 @@ export function BoothPosts({
   /** Show only the most recent N; the rest reveal behind a "더보기". */
   previewCount?: number;
 }) {
+  const t = useT();
   const user = useAuthStore((s) => s.user);
   const [posts, setPosts] = useState<CommunityPost[]>([]);
   const [status, setStatus] = useState<"loading" | "ready" | "error">(
@@ -44,10 +46,10 @@ export function BoothPosts({
       await api.del(`/api/community/${id}`);
       removeMyPostId(id);
       setPosts((prev) => prev.filter((p) => p.id !== id));
-      toast.success("글을 삭제했어요");
+      toast.success(t("post.deleted"));
     } catch (e) {
       const msg =
-        e instanceof ApiClientError ? e.error.message : "삭제하지 못했어요";
+        e instanceof ApiClientError ? e.error.message : t("post.deleteFailed");
       toast.error(msg);
     }
   }
@@ -87,7 +89,7 @@ export function BoothPosts({
     const text = body.trim();
     if (!text || busy) return;
     setBusy(true);
-    const authorName = name.trim() || "익명";
+    const authorName = name.trim() || t("post.anon");
     if (!user && name.trim())
       localStorage.setItem("roam-author-name", name.trim());
     try {
@@ -100,7 +102,7 @@ export function BoothPosts({
       setBody("");
     } catch (e) {
       const msg =
-        e instanceof ApiClientError ? e.error.message : "전송에 실패했어요";
+        e instanceof ApiClientError ? e.error.message : t("post.sendFailed");
       toast.error(msg);
     } finally {
       setBusy(false);
@@ -119,21 +121,21 @@ export function BoothPosts({
           <Input
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="닉네임 (선택)"
+            placeholder={t("post.nickOptional")}
             maxLength={30}
             className="h-9"
-            aria-label="닉네임"
+            aria-label={t("post.nick")}
           />
         )}
         <div className="flex items-end gap-2">
           <Textarea
             value={body}
             onChange={(e) => setBody(e.target.value)}
-            placeholder="이 부스 정보를 공유해 주세요 (굿즈·대기·꿀팁 등)"
+            placeholder={t("post.placeholder")}
             rows={2}
             maxLength={500}
             className="flex-1 resize-none"
-            aria-label="부스 정보 작성"
+            aria-label={t("post.write")}
             onKeyDown={(e) => {
               if (e.nativeEvent.isComposing) return;
               if ((e.metaKey || e.ctrlKey) && e.key === "Enter") submit();
@@ -144,7 +146,7 @@ export function BoothPosts({
             className="size-11 shrink-0"
             onClick={submit}
             disabled={busy || !body.trim()}
-            aria-label="전송"
+            aria-label={t("post.send")}
           >
             {busy ? (
               <Loader2 className="size-5 animate-spin" />
@@ -155,11 +157,11 @@ export function BoothPosts({
         </div>
       </div>
 
-      {status === "loading" && <LoadingScreen label="정보 불러오는 중" />}
+      {status === "loading" && <LoadingScreen label={t("post.loading")} />}
 
       {status === "error" && (
         <ErrorState
-          title="정보를 불러오지 못했어요"
+          title={t("post.loadFailed")}
           description="네트워크 상태를 확인하고 다시 시도해 주세요."
           onRetry={retry}
         />

@@ -8,6 +8,7 @@ import { useVisitStore, pushNote } from "@/lib/stores/visit";
 import { useAuthStore } from "@/lib/stores/auth";
 import { Textarea } from "@/components/ui/textarea";
 import { NotePhotos } from "@/components/booth/note-photos";
+import { useT } from "@/lib/i18n/provider";
 
 /**
  * Per-visitor controls for a booth: mark visited (4-a), save for later /
@@ -15,6 +16,7 @@ import { NotePhotos } from "@/components/booth/note-photos";
  * persisted locally (localStorage). Signing in only adds cross-device sync.
  */
 export function BoothPersonalPanel({ boothId }: { boothId: string }) {
+  const t = useT();
   const user = useAuthStore((s) => s.user);
   const ready = useAuthStore((s) => s.ready);
   const openLogin = useAuthStore((s) => s.openLogin);
@@ -50,7 +52,7 @@ export function BoothPersonalPanel({ boothId }: { boothId: string }) {
     if (memo.trim() === prev.trim()) return;
     setMemo(boothId, memo);
     if (user) void pushNote(boothId);
-    toast.success(memo.trim() ? "메모를 저장했어요" : "메모를 지웠어요");
+    toast.success(memo.trim() ? t("map.memoSaved") : t("map.memoCleared"));
   }
 
   return (
@@ -94,11 +96,11 @@ export function BoothPersonalPanel({ boothId }: { boothId: string }) {
             disabled={!hydrated}
             onChange={(e) => setLocalMemo(e.target.value)}
             onBlur={onMemoBlur}
-            placeholder="이 부스에 대한 메모를 남겨보세요 (예: 리필 노트 사기, 친구 선물)"
+            placeholder={t("notes.memoPlaceholder")}
             rows={2}
             maxLength={300}
             className="resize-none pl-9"
-            aria-label="부스 메모"
+            aria-label={t("notes.memoAria")}
           />
         </div>
 

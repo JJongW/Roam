@@ -19,6 +19,7 @@ import { formatPostTime } from "@/lib/utils";
 import { api, ApiClientError } from "@/lib/api/client";
 import { addMyPostId, getMyPostIds, removeMyPostId } from "@/lib/my-posts";
 import { useHydrated } from "@/lib/hooks/use-hydrated";
+import { useT } from "@/lib/i18n/provider";
 import { watchPosts } from "@/lib/realtime";
 import { AppBar } from "@/components/common/app-bar";
 import { EmptyState } from "@/components/common/states";
@@ -42,6 +43,7 @@ export function CommunityView({
   aiEnabled?: boolean;
   mediaEnabled?: boolean;
 }) {
+  const t = useT();
   const [posts, setPosts] = useState<CommunityPost[]>(initialPosts);
   const [body, setBody] = useState("");
   const [name, setName] = useState("");
@@ -71,28 +73,33 @@ export function CommunityView({
       await api.del(`/api/community/${id}`);
       removeMyPostId(id);
       setPosts((prev) => prev.filter((p) => p.id !== id));
-      toast.success("글을 삭제했어요");
+      toast.success(t("community.deleted"));
     } catch (e) {
       const msg =
-        e instanceof ApiClientError ? e.error.message : "삭제하지 못했어요";
+        e instanceof ApiClientError
+          ? e.error.message
+          : t("community.deleteFailed");
       toast.error(msg);
     }
   }
 
   async function report(id: string) {
     if (reportedIds.includes(id)) return;
-    if (!window.confirm("이 글을 신고할까요? 여러 명이 신고하면 숨겨져요."))
-      return;
+    if (!window.confirm(t("community.reportConfirm"))) return;
     try {
       const r = await api.post<{ already: boolean }>(
         `/api/community/${id}/report`,
         {},
       );
       setReportedIds((prev) => (prev.includes(id) ? prev : [...prev, id]));
-      toast.success(r.already ? "이미 신고한 글이에요" : "신고를 접수했어요");
+      toast.success(
+        r.already ? t("community.alreadyReported") : t("community.reported"),
+      );
     } catch (e) {
       const msg =
-        e instanceof ApiClientError ? e.error.message : "신고하지 못했어요";
+        e instanceof ApiClientError
+          ? e.error.message
+          : t("community.reportFailed");
       toast.error(msg);
     }
   }
@@ -175,7 +182,7 @@ export function CommunityView({
         publicId: j.public_id as string,
       });
     } catch {
-      toast.error("미디어 업로드에 실패했어요");
+      toast.error(t("community.mediaFailed"));
     } finally {
       setUploading(false);
     }
@@ -185,7 +192,7 @@ export function CommunityView({
     const text = body.trim();
     if ((!text && !media) || submitting) return;
     setSubmitting(true);
-    const authorName = name.trim() || "익명";
+    const authorName = name.trim() || t("community.anon");
     if (name.trim()) localStorage.setItem(NAME_KEY, name.trim());
     try {
       const { post } = await api.post<{ post: CommunityPost }>(
@@ -207,7 +214,9 @@ export function CommunityView({
       setMedia(null);
     } catch (e) {
       const msg =
-        e instanceof ApiClientError ? e.error.message : "전송에 실패했어요";
+        e instanceof ApiClientError
+          ? e.error.message
+          : t("community.sendFailed");
       toast.error(msg);
     } finally {
       setSubmitting(false);
@@ -216,7 +225,7 @@ export function CommunityView({
 
   return (
     <div className="flex h-dvh flex-col">
-      <AppBar title="실시간 커뮤니티" />
+      <AppBar title={t("community.title")} />
 
       <div className="flex-1 overflow-y-auto px-4 py-3">
         {summaryLoading && summary.length === 0 && (
@@ -228,7 +237,10 @@ export function CommunityView({
                 AI 정리 중…
               </span>
             </div>
-            <div className="mt-2 space-y-1.5" aria-label="요약 불러오는 중">
+            <div
+              className="mt-2 space-y-1.5"
+              aria-label={t("community.summaryLoading")}
+            >
               <div className="h-3 w-5/6 animate-pulse rounded bg-secondary" />
               <div className="h-3 w-2/3 animate-pulse rounded bg-secondary" />
             </div>
@@ -260,8 +272,8 @@ export function CommunityView({
           <div className="flex h-full items-center justify-center">
             <EmptyState
               icon={MessagesSquare}
-              title="아직 글이 없어요"
-              description="현장 소식을 가장 먼저 공유해 보세요!"
+              title={t("community.empty")}
+              description={t("community.emptyDesc")}
             />
           </div>
         ) : (
@@ -283,7 +295,7 @@ export function CommunityView({
                         <button
                           type="button"
                           onClick={() => remove(p.id)}
-                          aria-label="내 글 삭제"
+                          aria-label={t("community.deleteMine")}
                           className="rounded-full p-1 text-muted-foreground hover:bg-secondary hover:text-destructive"
                         >
                           <Trash2 className="size-4" />
@@ -294,7 +306,9 @@ export function CommunityView({
                           onClick={() => report(p.id)}
                           disabled={reportedIds.includes(p.id)}
                           aria-label={
-                            reportedIds.includes(p.id) ? "신고 완료" : "글 신고"
+                            reportedIds.includes(p.id)
+                              ? t("community.reportDone")
+                              : t("community.report")
                           }
                           className="rounded-full p-1 text-muted-foreground hover:bg-secondary hover:text-destructive disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-muted-foreground"
                         >
@@ -356,10 +370,10 @@ export function CommunityView({
           <Input
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="닉네임 (선택)"
+            placeholder={t("community.nickOptional")}
             maxLength={30}
             className="h-9"
-            aria-label="닉네임"
+            aria-label={t("community.nick")}
           />
           <BoothTagPicker
             booths={booths}
@@ -387,13 +401,13 @@ export function CommunityView({
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={media.url}
-                  alt="첨부 미리보기"
+                  alt={t("community.attachPreview")}
                   className="h-full w-full object-cover"
                 />
               )}
               <button
                 type="button"
-                aria-label="첨부 제거"
+                aria-label={t("community.attachRemove")}
                 onClick={() => setMedia(null)}
                 className="absolute right-1 top-1 flex size-5 items-center justify-center rounded-full bg-black/60 text-white"
               >
@@ -407,11 +421,11 @@ export function CommunityView({
             <Textarea
               value={body}
               onChange={(e) => setBody(e.target.value)}
-              placeholder="현장 소식을 공유해 보세요 (굿즈·이벤트·꿀팁 등)"
+              placeholder={t("community.placeholder")}
               rows={2}
               maxLength={500}
               className={`resize-none ${mediaEnabled ? "pl-11" : ""}`}
-              aria-label="내용"
+              aria-label={t("community.content")}
               onKeyDown={(e) => {
                 // Ignore Enter fired while composing Hangul (IME).
                 if (e.nativeEvent.isComposing) return;
@@ -431,7 +445,7 @@ export function CommunityView({
                   type="button"
                   onClick={() => fileRef.current?.click()}
                   disabled={uploading || Boolean(media)}
-                  aria-label="사진·영상 첨부"
+                  aria-label={t("community.attach")}
                   className="absolute bottom-2 left-2 flex size-8 items-center justify-center rounded-full text-muted-foreground hover:bg-secondary hover:text-foreground disabled:opacity-40 disabled:hover:bg-transparent"
                 >
                   {uploading ? (
@@ -448,7 +462,7 @@ export function CommunityView({
             className="size-11 shrink-0"
             onClick={submit}
             disabled={submitting || (!body.trim() && !media)}
-            aria-label="전송"
+            aria-label={t("community.send")}
           >
             {submitting ? (
               <Loader2 className="size-5 animate-spin" />
@@ -472,6 +486,7 @@ function BoothTagPicker({
   value: string;
   onChange: (id: string) => void;
 }) {
+  const t = useT();
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const selected = value ? booths.find((b) => b.id === value) : undefined;
@@ -487,7 +502,7 @@ function BoothTagPicker({
         <button
           type="button"
           onClick={() => onChange("")}
-          aria-label="부스 태그 제거"
+          aria-label={t("community.boothTagRemove")}
           className="rounded-full p-0.5 hover:bg-secondary"
         >
           <X className="size-4" />
@@ -514,9 +529,9 @@ function BoothTagPicker({
         }}
         onFocus={() => setOpen(true)}
         onBlur={() => setTimeout(() => setOpen(false), 150)}
-        placeholder="부스 태그 검색 (선택)"
+        placeholder={t("community.boothSearch")}
         className="h-9 pl-8"
-        aria-label="관련 부스 검색"
+        aria-label={t("community.boothSearchLabel")}
       />
       {open && matches.length > 0 && (
         <ul className="absolute bottom-full z-10 mb-1 max-h-56 w-full overflow-y-auto rounded-md border border-border bg-card py-1 shadow-[var(--shadow-pop)]">

@@ -29,6 +29,7 @@ import { ReactionBar } from "@/components/feed/reaction-bar";
 import { ValueChips } from "@/components/values/value-chips";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useT } from "@/lib/i18n/provider";
 import type { Booth, ExhibitionDetail } from "@/lib/types";
 
 /**
@@ -47,6 +48,7 @@ export function MapView({
   initialFocusId?: string;
 }) {
   const router = useRouter();
+  const t = useT();
   const [selectedId, setSelectedId] = useState<string | null>(
     initialFocusId ?? null,
   );
@@ -88,7 +90,7 @@ export function MapView({
       typeof window !== "undefined" &&
       window.matchMedia("(orientation: portrait)").matches
     ) {
-      toast("가로로 돌리면 지도를 더 넓게 볼 수 있어요");
+      toast(t("map.rotateHint"));
     }
     markLandscapeHintSeen();
   }, [hydrated, showCoachmark, landscapeHintSeen, markLandscapeHintSeen]);
@@ -124,9 +126,9 @@ export function MapView({
         .then((d) => {
           setHeat(d);
           if (Object.keys(d.booths).length === 0)
-            toast("아직 밀도 데이터가 쌓이는 중이에요");
+            toast(t("map.densityBuilding"));
         })
-        .catch(() => toast.error("밀도 정보를 불러오지 못했어요"))
+        .catch(() => toast.error(t("map.densityFailed")))
         .finally(() => setHeatLoading(false));
     }
   }
@@ -161,13 +163,13 @@ export function MapView({
       <div className="pointer-events-none absolute inset-x-0 top-0 z-30 flex items-center gap-2 bg-gradient-to-b from-background/85 to-transparent px-3 pb-4 pt-safe">
         <button
           type="button"
-          aria-label="전시로 돌아가기"
+          aria-label={t("map.back")}
           onClick={handleBack}
           className="pointer-events-auto flex size-10 items-center justify-center rounded-full bg-card shadow-[var(--shadow-card)] active:bg-secondary"
         >
           <ChevronLeft className="size-5" />
         </button>
-        <h1 className="text-base font-extrabold">전시장 지도</h1>
+        <h1 className="text-base font-extrabold">{t("map.title")}</h1>
         <div className="pointer-events-auto ml-auto flex items-center gap-1.5">
           <button
             type="button"
@@ -185,19 +187,19 @@ export function MapView({
             ) : (
               <Flame className="size-3.5" />
             )}
-            {heatLoading ? "밀도…" : "관심 밀도"}
+            {heatLoading ? t("map.densityShort") : t("map.density")}
           </button>
           <button
             type="button"
             onClick={() => setNotesOpen(true)}
-            aria-label="내 메모장"
+            aria-label={t("map.notes")}
             className="flex size-10 items-center justify-center rounded-full bg-card text-muted-foreground shadow-[var(--shadow-card)] active:bg-secondary"
           >
             <NotebookPen className="size-5" />
           </button>
           <Link
             href={`/exhibitions/${detail.exhibition.slug}/community`}
-            aria-label="실시간 커뮤니티"
+            aria-label={t("map.community")}
             className="flex size-10 items-center justify-center rounded-full bg-card text-muted-foreground shadow-[var(--shadow-card)] active:bg-secondary"
           >
             <MessagesSquare className="size-5" />
@@ -208,15 +210,15 @@ export function MapView({
       {/* 관심 밀도 범례 */}
       {heatOn && (
         <div className="pointer-events-none absolute left-3 top-16 z-20 flex flex-col gap-1 rounded-xl border border-border bg-card/90 px-2.5 py-2 text-[11px] font-semibold shadow-[var(--shadow-card)] backdrop-blur">
-          <span className="text-muted-foreground">관심 밀도</span>
+          <span className="text-muted-foreground">{t("map.density")}</span>
           <div className="flex items-center gap-2">
-            {HEAT_TIERS.map((t) => (
-              <span key={t.key} className="flex items-center gap-1">
+            {HEAT_TIERS.map((tier) => (
+              <span key={tier.key} className="flex items-center gap-1">
                 <span
                   className="size-3 rounded-[3px]"
-                  style={{ backgroundColor: t.fill }}
+                  style={{ backgroundColor: tier.fill }}
                 />
-                {t.key}
+                {t(`map.${tier.i18nKey}`)}
               </span>
             ))}
           </div>
@@ -246,12 +248,12 @@ export function MapView({
               </div>
               <Button asChild size="sm">
                 <Link href={`/booths/${selected.id}`}>
-                  상세 <ChevronRight className="size-4" />
+                  {t("common.detail")} <ChevronRight className="size-4" />
                 </Link>
               </Button>
               <button
                 type="button"
-                aria-label="닫기"
+                aria-label={t("common.close")}
                 onClick={() => setSelectedId(null)}
                 className="flex size-8 shrink-0 items-center justify-center rounded-full text-muted-foreground active:bg-secondary"
               >
@@ -297,6 +299,7 @@ export function MapView({
  * Local-first; signing in syncs it. Keyed by boothId so it resets per booth.
  */
 function BoothPopupMemo({ boothId }: { boothId: string }) {
+  const t = useT();
   const user = useAuthStore((s) => s.user);
   const initial = useVisitStore((s) => s.records[boothId]?.memo ?? "");
   const setMemo = useVisitStore((s) => s.setMemo);
@@ -306,7 +309,7 @@ function BoothPopupMemo({ boothId }: { boothId: string }) {
     if (value.trim() === initial.trim()) return;
     setMemo(boothId, value.trim());
     if (user) void pushNote(boothId);
-    toast.success(value.trim() ? "메모를 저장했어요" : "메모를 지웠어요");
+    toast.success(value.trim() ? t("map.memoSaved") : t("map.memoCleared"));
   }
 
   return (
@@ -321,9 +324,9 @@ function BoothPopupMemo({ boothId }: { boothId: string }) {
             if (e.nativeEvent.isComposing) return;
             if (e.key === "Enter") e.currentTarget.blur();
           }}
-          placeholder="메모 남기기 (입력 후 Enter로 저장)"
+          placeholder={t("map.memoPlaceholder")}
           maxLength={100}
-          aria-label="부스 메모"
+          aria-label={t("map.memoAria")}
           className="h-9 pl-8 text-sm"
         />
       </div>

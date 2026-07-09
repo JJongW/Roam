@@ -5,6 +5,7 @@ import Image from "next/image";
 import { ImagePlus, Loader2, X } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { useT } from "@/lib/i18n/provider";
 import { useVisitStore, pushNote } from "@/lib/stores/visit";
 import { useAuthStore } from "@/lib/stores/auth";
 import {
@@ -29,6 +30,7 @@ export function NotePhotos({
   boothId: string;
   compact?: boolean;
 }) {
+  const t = useT();
   const user = useAuthStore((s) => s.user);
   // Select the raw value (stable ref) — applying `?? []` *inside* the selector
   // would return a fresh array each render and loop the store forever.
@@ -66,10 +68,10 @@ export function NotePhotos({
       toast.success(
         urls.length > 1
           ? `사진 ${urls.length}장을 첨부했어요`
-          : "사진을 첨부했어요",
+          : t("notes.photoAttached"),
       );
     } catch {
-      toast.error("사진 업로드에 실패했어요");
+      toast.error(t("notes.photoFailed"));
     } finally {
       setBusy(false);
     }
@@ -97,7 +99,7 @@ export function NotePhotos({
         >
           <Image
             src={url}
-            alt="부스 메모 사진"
+            alt={t("notes.photoAria")}
             fill
             sizes="80px"
             className="object-cover"
@@ -106,7 +108,7 @@ export function NotePhotos({
           <button
             type="button"
             onClick={() => remove(url)}
-            aria-label="사진 삭제"
+            aria-label={t("notes.photoDelete")}
             className="absolute right-0.5 top-0.5 flex size-5 items-center justify-center rounded-full bg-black/55 text-white"
           >
             <X className="size-3" />
@@ -119,7 +121,7 @@ export function NotePhotos({
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={busy}
-          aria-label="사진 첨부"
+          aria-label={t("notes.photoAdd")}
           className={cn(
             "flex flex-col items-center justify-center gap-0.5 rounded-lg border border-dashed border-border bg-card text-muted-foreground transition-colors active:bg-accent/40 disabled:opacity-60",
             thumb,

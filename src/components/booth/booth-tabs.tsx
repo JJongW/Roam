@@ -2,14 +2,15 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useT } from "@/lib/i18n/provider";
 
 type TabKey = "intro" | "record" | "reviews" | "posts";
 
-const TABS: { key: TabKey; label: string }[] = [
-  { key: "intro", label: "소개" },
-  { key: "record", label: "나의 기록" },
-  { key: "reviews", label: "리뷰" },
-  { key: "posts", label: "방문자" },
+const TAB_KEYS: { key: TabKey; i18nKey: string }[] = [
+  { key: "intro", i18nKey: "booth.tabIntro" },
+  { key: "record", i18nKey: "booth.tabRecord" },
+  { key: "reviews", i18nKey: "booth.tabReviews" },
+  { key: "posts", i18nKey: "booth.tabPosts" },
 ];
 
 /**
@@ -28,6 +29,7 @@ export function BoothTabs({
   reviews: React.ReactNode;
   posts: React.ReactNode;
 }) {
+  const tr = useT();
   const [tab, setTab] = useState<TabKey>("intro");
   const panels: Record<TabKey, React.ReactNode> = {
     intro,
@@ -42,20 +44,20 @@ export function BoothTabs({
         role="tablist"
         className="sticky top-14 z-30 -mx-5 flex gap-1 border-b border-border bg-background/90 px-5 backdrop-blur-xl landscape:top-0"
       >
-        {TABS.map((t) => (
+        {TAB_KEYS.map((tk) => (
           <button
-            key={t.key}
+            key={tk.key}
             type="button"
             role="tab"
-            aria-selected={tab === t.key}
-            onClick={() => setTab(t.key)}
+            aria-selected={tab === tk.key}
+            onClick={() => setTab(tk.key)}
             className={cn(
               "relative flex-1 py-3 text-sm font-bold transition-colors",
-              tab === t.key ? "text-primary" : "text-muted-foreground",
+              tab === tk.key ? "text-primary" : "text-muted-foreground",
             )}
           >
-            {t.label}
-            {tab === t.key && (
+            {tr(tk.i18nKey)}
+            {tab === tk.key && (
               <span className="absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-primary" />
             )}
           </button>

@@ -26,10 +26,15 @@ const BOOTH_GAP = 3;
  *  orange at varying opacity, so the four levels read apart at a glance. Drawn
  *  with mix-blend multiply so a booth's name still shows through the tint. */
 export const HEAT_TIERS = [
-  { key: "여유", fill: "#facc15", opacity: 0.55 },
-  { key: "보통", fill: "#fb923c", opacity: 0.62 },
-  { key: "혼잡", fill: "#f97316", opacity: 0.74 },
-  { key: "매우 혼잡", fill: "#dc2626", opacity: 0.85 },
+  { key: "여유", i18nKey: "crowdQuiet", fill: "#facc15", opacity: 0.55 },
+  { key: "보통", i18nKey: "crowdModerate", fill: "#fb923c", opacity: 0.62 },
+  { key: "혼잡", i18nKey: "crowdBusy", fill: "#f97316", opacity: 0.74 },
+  {
+    key: "매우 혼잡",
+    i18nKey: "crowdVeryBusy",
+    fill: "#dc2626",
+    opacity: 0.85,
+  },
 ] as const;
 
 /** Wrap a label into up to `maxLines` lines of ~`perLine` chars (word-first,
