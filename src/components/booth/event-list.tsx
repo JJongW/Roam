@@ -17,14 +17,14 @@ import { Badge } from "@/components/ui/badge";
 import { useT } from "@/lib/i18n/provider";
 import type { BoothEvent } from "@/lib/types";
 
-const WEEKDAY = ["일", "월", "화", "수", "목", "금", "토"];
-
 function isLiveNow(e: BoothEvent, now = Date.now()) {
   return Date.parse(e.startTime) <= now && Date.parse(e.endTime) >= now;
 }
 
 /** "상시" group first, then one group per date (sorted), each sorted by time. */
 function groupByDate(events: BoothEvent[], t: ReturnType<typeof useT>) {
+  const weekday = t("event.weekdays").split(",");
+  const dateFmt = t("event.dateFmt");
   const standing = events.filter((e) => e.standing);
   const timed = events.filter((e) => !e.standing);
   const byDate = new Map<string, BoothEvent[]>();
@@ -38,7 +38,7 @@ function groupByDate(events: BoothEvent[], t: ReturnType<typeof useT>) {
   for (const key of [...byDate.keys()].sort()) {
     const d = new Date(`${key}T00:00:00+09:00`);
     groups.push({
-      label: `${format(d, "M월 d일")} (${WEEKDAY[d.getDay()]})`,
+      label: `${format(d, dateFmt)} (${weekday[d.getDay()]})`,
       events: byDate
         .get(key)!
         .sort((a, b) => a.startTime.localeCompare(b.startTime)),
@@ -65,13 +65,9 @@ export function EventList({ events }: { events: BoothEvent[] }) {
     await api
       .post("/api/bookmarks", { targetType: "event", targetId: e.id })
       .catch(() => {});
-    scheduleReminder(
-      `${e.title} 곧 시작`,
-      "북마크한 이벤트가 곧 시작돼요.",
-      Date.parse(e.startTime),
-    );
+    scheduleReminder(e.title, t("event.bookmarkSoon"), Date.parse(e.startTime));
     setReminded((s) => new Set(s).add(e.id));
-    toast.success("이벤트 알림을 예약했어요");
+    toast.success(t("event.notifScheduled"));
   }
 
   const groups = groupByDate(events, t);
@@ -98,7 +94,11 @@ export function EventList({ events }: { events: BoothEvent[] }) {
                             {e.tag}
                           </span>
                         )}
-                        {live && <Badge variant="destructive">진행 중</Badge>}
+                        {live && (
+                          <Badge variant="destructive">
+                            {t("event.inProgress")}
+                          </Badge>
+                        )}
                       </div>
                       <p className="font-bold leading-snug">{e.title}</p>
                       {e.speaker && (
@@ -115,7 +115,7 @@ export function EventList({ events }: { events: BoothEvent[] }) {
                       <div className="mt-1.5 flex items-center gap-1 text-xs text-muted-foreground">
                         <Clock className="size-3.5" />
                         {e.standing
-                          ? "상시 운영"
+                          ? t("event.standingOp")
                           : `${format(new Date(e.startTime), "HH:mm")} – ${format(new Date(e.endTime), "HH:mm")}`}
                       </div>
                     </div>
@@ -124,7 +124,7 @@ export function EventList({ events }: { events: BoothEvent[] }) {
                         variant={on ? "secondary" : "outline"}
                         size="sm"
                         onClick={() => remind(e)}
-                        aria-label="이벤트 알림 받기"
+                        aria-label={t("event.notifBtn")}
                         className={cn("shrink-0", on && "text-primary")}
                       >
                         {on ? (

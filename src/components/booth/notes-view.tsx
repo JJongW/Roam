@@ -92,15 +92,14 @@ export function NotesView({
           />
           <Button asChild>
             <Link href={`/exhibitions/${slug}/map`}>
-              <MapPin className="size-4" /> 지도에서 부스 둘러보기
+              <MapPin className="size-4" /> {t("notes.browseMap")}
             </Link>
           </Button>
         </div>
       ) : (
         <>
           <p className="px-4 pb-1 pt-3 text-sm text-muted-foreground">
-            <span className="font-bold text-foreground">{noted.length}곳</span>
-            에 메모를 남겼어요
+            {t("notes.notedCount", { n: noted.length })}
           </p>
           <ul className="space-y-3 p-4 pt-2">
             {noted.map((b) => {
@@ -149,7 +148,7 @@ export function NotesView({
                         <img
                           key={src}
                           src={src}
-                          alt={`${b.name} 메모 사진`}
+                          alt={t("notes.photoAlt", { name: b.name })}
                           loading="lazy"
                           className="aspect-square w-full rounded-lg object-cover"
                         />
@@ -165,7 +164,7 @@ export function NotesView({
                         className="flex-1"
                         onClick={() => onLocate(b.id)}
                       >
-                        <MapPin className="size-4" /> 지도에서 보기
+                        <MapPin className="size-4" /> {t("notes.viewOnMap")}
                       </Button>
                     ) : (
                       <Button
@@ -175,7 +174,7 @@ export function NotesView({
                         className="flex-1"
                       >
                         <Link href={`/exhibitions/${slug}/map?booth=${b.id}`}>
-                          <MapPin className="size-4" /> 지도에서 보기
+                          <MapPin className="size-4" /> {t("notes.viewOnMap")}
                         </Link>
                       </Button>
                     )}
@@ -186,7 +185,7 @@ export function NotesView({
                       className="flex-1"
                     >
                       <Link href={`/booths/${b.id}`}>
-                        상세 보기 <ChevronRight className="size-4" />
+                        {t("common.detail")} <ChevronRight className="size-4" />
                       </Link>
                     </Button>
                   </div>
@@ -200,7 +199,7 @@ export function NotesView({
       {hydrated && noted.length > 0 && (
         <p className="px-4 pb-4 text-center text-xs text-muted-foreground">
           <NotebookPen className="mb-0.5 mr-1 inline size-3.5" />
-          메모는 이 기기에 저장돼요. 로그인하면 다른 기기와도 동기화돼요.
+          {t("notes.syncNote")}
         </p>
       )}
     </main>

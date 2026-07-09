@@ -132,7 +132,9 @@ export function NotePhotos({
           ) : (
             <>
               <ImagePlus className="size-5" />
-              {!compact && <span className="text-[11px]">사진</span>}
+              {!compact && (
+                <span className="text-[11px]">{t("notes.photoLabel")}</span>
+              )}
             </>
           )}
         </button>

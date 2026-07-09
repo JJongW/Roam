@@ -152,7 +152,7 @@ export function CommunityView({
     const isVideo = file.type.startsWith("video/");
     const maxMb = isVideo ? 30 : 10;
     if (file.size > maxMb * 1024 * 1024) {
-      toast.error(`${maxMb}MB 이하만 올릴 수 있어요`);
+      toast.error(t("community.sizeLimit", { mb: maxMb }));
       return;
     }
     setUploading(true);
@@ -232,9 +232,11 @@ export function CommunityView({
           <div className="mb-3 rounded-2xl border border-border bg-secondary/40 p-3.5">
             <div className="flex items-center gap-1.5">
               <Sparkles className="size-4 text-muted-foreground" aria-hidden />
-              <p className="text-sm font-bold">방문자 제보 요약</p>
+              <p className="text-sm font-bold">
+                {t("community.summaryHeading")}
+              </p>
               <span className="rounded-full bg-secondary px-1.5 py-0.5 text-[10px] font-bold text-muted-foreground">
-                AI 정리 중…
+                {t("community.aiSummarizing")}
               </span>
             </div>
             <div
@@ -250,9 +252,11 @@ export function CommunityView({
           <div className="mb-3 rounded-2xl border border-border bg-secondary/40 p-3.5">
             <div className="flex items-center gap-1.5">
               <Sparkles className="size-4 text-muted-foreground" aria-hidden />
-              <p className="text-sm font-bold">방문자 제보 요약</p>
+              <p className="text-sm font-bold">
+                {t("community.summaryHeading")}
+              </p>
               <span className="rounded-full bg-secondary px-1.5 py-0.5 text-[10px] font-bold text-muted-foreground">
-                AI · 공식 정보 아님
+                {t("community.aiNotOfficial")}
               </span>
             </div>
             <ul className="mt-1.5 space-y-1">
@@ -381,8 +385,7 @@ export function CommunityView({
             onChange={setBoothId}
           />
           <p className="px-0.5 text-[11px] text-muted-foreground">
-            닉네임 없이 익명으로 게시할 수 있어요. 게시글은 전시 참가자에게
-            공개되며, 본인이 쓴 글은 삭제하고, 부적절한 글은 신고할 수 있어요.
+            {t("community.anonNote")}
           </p>
         </div>
         {media && (
