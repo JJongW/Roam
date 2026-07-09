@@ -16,12 +16,13 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useVisitStore } from "@/lib/stores/visit";
 import { useHydrated } from "@/lib/hooks/use-hydrated";
+import { useT } from "@/lib/i18n/provider";
 import type { Booth, Category } from "@/lib/types";
 
 const STATUS = {
-  visited: { label: "가봄", Icon: Check },
-  interested: { label: "끌림", Icon: Star },
-  skipped: { label: "별로", Icon: X },
+  visited: { i18nKey: "seen", Icon: Check },
+  interested: { i18nKey: "interested", Icon: Star },
+  skipped: { i18nKey: "skip", Icon: X },
 } as const;
 
 /**
@@ -48,6 +49,7 @@ export function NotesView({
   onLocate?: (boothId: string) => void;
 }) {
   const router = useRouter();
+  const t = useT();
   const hydrated = useHydrated();
   const records = useVisitStore((s) => s.records);
   const catById = new Map(categories.map((c) => [c.id, c]));
@@ -73,7 +75,7 @@ export function NotesView({
       }
     >
       <AppBar
-        title="내 메모장"
+        title={t("notes.title")}
         onBack={onClose ?? (() => router.push(`/exhibitions/${slug}/map`))}
       />
 
@@ -85,8 +87,8 @@ export function NotesView({
       ) : noted.length === 0 ? (
         <div className="flex flex-1 flex-col items-center justify-center gap-5 px-6 text-center">
           <EmptyState
-            title="아직 메모한 부스가 없어요"
-            description="부스를 누르고 떠오른 생각이나 사진을 남기면, 여기에 모아서 다시 볼 수 있어요."
+            title={t("notes.empty")}
+            description={t("notes.emptyDesc")}
           />
           <Button asChild>
             <Link href={`/exhibitions/${slug}/map`}>
@@ -128,7 +130,8 @@ export function NotesView({
                     </div>
                     {status && (
                       <span className="flex shrink-0 items-center gap-1 rounded-full bg-secondary px-2 py-0.5 text-xs font-semibold text-muted-foreground">
-                        <status.Icon className="size-3.5" /> {status.label}
+                        <status.Icon className="size-3.5" />{" "}
+                        {t("notes." + status.i18nKey)}
                       </span>
                     )}
                   </div>

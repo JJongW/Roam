@@ -14,6 +14,7 @@ import {
 } from "@/lib/push/notify";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useT } from "@/lib/i18n/provider";
 import type { BoothEvent } from "@/lib/types";
 
 const WEEKDAY = ["일", "월", "화", "수", "목", "금", "토"];
@@ -23,7 +24,7 @@ function isLiveNow(e: BoothEvent, now = Date.now()) {
 }
 
 /** "상시" group first, then one group per date (sorted), each sorted by time. */
-function groupByDate(events: BoothEvent[]) {
+function groupByDate(events: BoothEvent[], t: ReturnType<typeof useT>) {
   const standing = events.filter((e) => e.standing);
   const timed = events.filter((e) => !e.standing);
   const byDate = new Map<string, BoothEvent[]>();
@@ -32,7 +33,8 @@ function groupByDate(events: BoothEvent[]) {
     (byDate.get(key) ?? byDate.set(key, []).get(key)!).push(e);
   }
   const groups: { label: string; events: BoothEvent[] }[] = [];
-  if (standing.length) groups.push({ label: "상시", events: standing });
+  if (standing.length)
+    groups.push({ label: t("event.standing"), events: standing });
   for (const key of [...byDate.keys()].sort()) {
     const d = new Date(`${key}T00:00:00+09:00`);
     groups.push({
@@ -46,16 +48,17 @@ function groupByDate(events: BoothEvent[]) {
 }
 
 export function EventList({ events }: { events: BoothEvent[] }) {
+  const t = useT();
   const [reminded, setReminded] = useState<Set<string>>(new Set());
 
   async function remind(e: BoothEvent) {
     if (!isPushSupported()) {
-      toast.error("이 브라우저는 알림을 지원하지 않아요");
+      toast.error(t("event.noSupport"));
       return;
     }
     const perm = await requestPermission();
     if (perm !== "granted") {
-      toast.error("알림 권한이 필요해요");
+      toast.error(t("event.needPermission"));
       return;
     }
     await registerForPush();
@@ -71,7 +74,7 @@ export function EventList({ events }: { events: BoothEvent[] }) {
     toast.success("이벤트 알림을 예약했어요");
   }
 
-  const groups = groupByDate(events);
+  const groups = groupByDate(events, t);
 
   return (
     <div className="space-y-4">

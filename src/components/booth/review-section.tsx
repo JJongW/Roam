@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useT } from "@/lib/i18n/provider";
 import type { Review } from "@/lib/types";
 
 export function ReviewSection({
@@ -25,6 +26,7 @@ export function ReviewSection({
   /** Show only the most recent N; the rest reveal behind a "더보기". */
   previewCount?: number;
 }) {
+  const t = useT();
   const [reviews, setReviews] = useState(initialReviews);
   const [summary, setSummary] = useState(initialSummary);
   const [open, setOpen] = useState(false);
@@ -36,10 +38,10 @@ export function ReviewSection({
   async function submit() {
     const parsed = reviewInputSchema.safeParse({
       comment,
-      authorName: author || "익명",
+      authorName: author || t("review.anon"),
     });
     if (!parsed.success) {
-      toast.error(parsed.error.issues[0]?.message ?? "입력을 확인해 주세요");
+      toast.error(parsed.error.issues[0]?.message ?? t("review.checkInput"));
       return;
     }
     setBusy(true);
@@ -54,10 +56,10 @@ export function ReviewSection({
       setComment("");
       setAuthor("");
       setOpen(false);
-      toast.success("리뷰가 등록되었어요");
+      toast.success(t("review.posted"));
     } catch (e) {
       toast.error(
-        e instanceof ApiClientError ? e.error.message : "등록에 실패했어요",
+        e instanceof ApiClientError ? e.error.message : t("review.failed"),
       );
     } finally {
       setBusy(false);
@@ -88,7 +90,7 @@ export function ReviewSection({
               id="rv-comment"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
-              placeholder="부스는 어땠나요?"
+              placeholder={t("review.prompt")}
               maxLength={500}
             />
           </div>
@@ -98,7 +100,7 @@ export function ReviewSection({
               id="rv-author"
               value={author}
               onChange={(e) => setAuthor(e.target.value)}
-              placeholder="익명"
+              placeholder={t("review.anon")}
               maxLength={30}
             />
           </div>
@@ -120,8 +122,8 @@ export function ReviewSection({
 
       {reviews.length === 0 ? (
         <EmptyState
-          title="아직 후기가 없어요"
-          description="첫 번째 후기를 남겨보세요."
+          title={t("review.empty")}
+          description={t("review.emptyDesc")}
         />
       ) : (
         <>
@@ -154,7 +156,7 @@ export function ReviewSection({
                 className="w-full"
                 onClick={() => setShowAll(true)}
               >
-                후기 {reviews.length - previewCount}개 더보기
+                후기 {reviews.length - previewCount}개 {t("review.more")}
               </Button>
             )}
         </>
