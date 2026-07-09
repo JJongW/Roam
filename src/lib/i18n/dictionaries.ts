@@ -146,6 +146,16 @@ const ko = {
     tabRecord: "나의 기록",
     tabReviews: "리뷰",
     tabPosts: "방문자",
+    recordHeading: "나의 기록",
+    postsHeading: "방문자 정보",
+    mapCard: "관심 밀도 지도",
+    mapCardDesc: "전시장을 직접 둘러보고 끌리는 부스에 반응해봐",
+  },
+  notFound: {
+    title: "찾을 수 없는 페이지예요",
+    desc: "부스가 삭제되었거나 링크가 잘못되었을 수 있어요.",
+    back: "이전으로",
+    toList: "전시 목록으로",
   },
   event: {
     standing: "상시",
@@ -168,6 +178,8 @@ const ko = {
     prompt: "부스는 어땠나요?",
     empty: "아직 후기가 없어요",
     emptyDesc: "첫 번째 후기를 남겨보세요.",
+    content: "내용",
+    nick: "닉네임",
   },
   notes: {
     title: "내 메모장",
@@ -454,6 +466,16 @@ const en: Dict = {
     tabRecord: "My notes",
     tabReviews: "Reviews",
     tabPosts: "Visitors",
+    recordHeading: "My notes",
+    postsHeading: "Visitor posts",
+    mapCard: "Interest-density map",
+    mapCardDesc: "Explore the venue and react to booths that draw you",
+  },
+  notFound: {
+    title: "Page not found",
+    desc: "The booth may be deleted or the link is wrong.",
+    back: "Back",
+    toList: "To exhibitions",
   },
   event: {
     standing: "Anytime",
@@ -476,6 +498,8 @@ const en: Dict = {
     prompt: "How was the booth?",
     empty: "No reviews yet",
     emptyDesc: "Be the first to review.",
+    content: "Content",
+    nick: "Nickname",
   },
   notes: {
     title: "My notes",

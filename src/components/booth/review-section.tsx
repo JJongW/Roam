@@ -85,7 +85,7 @@ export function ReviewSection({
       ) : (
         <div className="space-y-3 rounded-2xl border border-border bg-card p-4">
           <div className="space-y-1.5">
-            <Label htmlFor="rv-comment">내용</Label>
+            <Label htmlFor="rv-comment">{t("review.content")}</Label>
             <Textarea
               id="rv-comment"
               value={comment}
@@ -95,7 +95,7 @@ export function ReviewSection({
             />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="rv-author">닉네임</Label>
+            <Label htmlFor="rv-author">{t("review.nick")}</Label>
             <Input
               id="rv-author"
               value={author}

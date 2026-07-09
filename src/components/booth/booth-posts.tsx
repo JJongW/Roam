@@ -112,7 +112,7 @@ export function BoothPosts({
   return (
     <section className="space-y-3">
       <div className="flex items-baseline justify-between">
-        <h2 className="text-base font-bold">방문자 정보</h2>
+        <h2 className="text-base font-bold">{t("booth.postsHeading")}</h2>
         <span className="text-xs text-muted-foreground">{posts.length}개</span>
       </div>
 
