@@ -191,6 +191,9 @@ const ko = {
     photoAlt: "{name} 메모 사진",
     photoLabel: "사진",
     syncNote: "메모는 이 기기에 저장돼요. 로그인하면 다른 기기와도 동기화돼요.",
+    photoMaxCount: "사진은 최대 {n}장까지 첨부할 수 있어요",
+    photoMaxSize: "{mb}MB 이하 사진만 올릴 수 있어요",
+    photoAttachedN: "사진 {n}장을 첨부했어요",
   },
   post: {
     more: "더보기",
@@ -496,6 +499,9 @@ const en: Dict = {
     photoAlt: "{name} note photo",
     photoLabel: "Photos",
     syncNote: "Notes are saved on this device. Log in to sync across devices.",
+    photoMaxCount: "You can attach up to {n} photos",
+    photoMaxSize: "Only photos under {mb}MB",
+    photoAttachedN: "Attached {n} photos",
   },
   post: {
     more: "More",
