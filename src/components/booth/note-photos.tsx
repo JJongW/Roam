@@ -47,7 +47,7 @@ export function NotePhotos({
     if (files.length === 0) return;
     const room = NOTE_PHOTO_MAX_COUNT - photos.length;
     if (room <= 0) {
-      toast.error(`사진은 최대 ${NOTE_PHOTO_MAX_COUNT}장까지 첨부할 수 있어요`);
+      toast.error(t("notes.photoMaxCount", { n: NOTE_PHOTO_MAX_COUNT }));
       return;
     }
     const picked = files.slice(0, room);
@@ -56,7 +56,7 @@ export function NotePhotos({
       const urls: string[] = [];
       for (const file of picked) {
         if (file.size > NOTE_PHOTO_MAX_MB * 1024 * 1024) {
-          toast.error(`${NOTE_PHOTO_MAX_MB}MB 이하 사진만 올릴 수 있어요`);
+          toast.error(t("notes.photoMaxSize", { mb: NOTE_PHOTO_MAX_MB }));
           continue;
         }
         urls.push(await uploadNotePhoto(file));
@@ -67,7 +67,7 @@ export function NotePhotos({
       if (user) void pushNote(boothId);
       toast.success(
         urls.length > 1
-          ? `사진 ${urls.length}장을 첨부했어요`
+          ? t("notes.photoAttachedN", { n: urls.length })
           : t("notes.photoAttached"),
       );
     } catch {
