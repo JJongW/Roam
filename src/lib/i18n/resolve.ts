@@ -2,16 +2,21 @@ import type { Dict } from "@/lib/i18n/dictionaries";
 
 type Params = Record<string, string | number>;
 
+// 사전은 2단계(namespace → 평면 키). 첫 점에서만 분리하므로 키에 점이 있어도 OK
+// (예: onboardingQ["app1.a"]). 없으면 키 그대로 반환(폴백/디버깅 가시성).
 function getPath(obj: unknown, path: string): string {
-  let cur: unknown = obj;
-  for (const seg of path.split(".")) {
-    if (cur && typeof cur === "object" && seg in cur) {
-      cur = (cur as Record<string, unknown>)[seg];
-    } else {
-      return path; // 없으면 키 그대로(폴백/디버깅 가시성).
+  const dot = path.indexOf(".");
+  if (dot === -1) return path;
+  const ns = path.slice(0, dot);
+  const key = path.slice(dot + 1);
+  if (obj && typeof obj === "object" && ns in obj) {
+    const nsObj = (obj as Record<string, unknown>)[ns];
+    if (nsObj && typeof nsObj === "object" && key in nsObj) {
+      const v = (nsObj as Record<string, unknown>)[key];
+      if (typeof v === "string") return v;
     }
   }
-  return typeof cur === "string" ? cur : path;
+  return path;
 }
 
 function interpolate(s: string, params?: Params): string {
