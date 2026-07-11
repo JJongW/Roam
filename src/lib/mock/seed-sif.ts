@@ -5,6 +5,7 @@
 import sifFloor from "@/lib/floorplan-sif.json";
 import sifMedia from "@/lib/booth/media-sif-2026.json";
 import sifEnrich from "@/lib/booth/enrichment-sif-2026.json";
+import sifLinks from "@/lib/booth/links-sif-2026.json";
 import { deriveValueTags } from "@/lib/values/derive";
 import type { Booth, Category, Exhibition, Hall } from "@/lib/types";
 
@@ -21,6 +22,13 @@ const media = sifMedia as Record<
 const enrich = sifEnrich as Record<
   string,
   { goodsKeywords?: string[]; storyImages?: string[] }
+>;
+
+// 부스별 링크·소개 — ocreo userProfileByUserId에서 이관. 인스타/웹 링크는 부스
+// 외부 링크로, 작가 자기소개(intro)는 부스 요약(enrichment.summary)으로.
+const links = sifLinks as Record<
+  string,
+  { instagram?: string; website?: string; intro?: string }
 >;
 
 // 참가자 4분류(작가/기업 × 국내/해외). floorplan의 cat 키 → Roam 카테고리.
@@ -122,14 +130,20 @@ export const sifBooths: Booth[] = (sifFloor.booths as SifFloorBooth[]).map(
     const tags = [cat.slug];
     const m = media[b.code];
     const en = enrich[b.code];
+    const lk = links[b.code];
     const goodsKeywords = en?.goodsKeywords ?? [];
     // 포트폴리오 이미지 우선, 부족하면 스토리(굿즈) 이미지로 보강(중복 제거, 6장 캡).
     const images = [
       ...new Set([...(m?.images ?? []), ...(en?.storyImages ?? [])]),
     ].slice(0, 6);
+    // 굿즈 키워드나 작가 소개가 있으면 enrichment 구성(소개=요약).
     const enrichment =
-      goodsKeywords.length > 0
-        ? { goodsKeywords, themeTags: [] as string[] }
+      goodsKeywords.length > 0 || lk?.intro
+        ? {
+            goodsKeywords,
+            themeTags: [] as string[],
+            ...(lk?.intro ? { summary: lk.intro } : {}),
+          }
         : undefined;
     return {
       id: `sif_${b.code.toLowerCase()}`,
@@ -144,7 +158,8 @@ export const sifBooths: Booth[] = (sifFloor.booths as SifFloorBooth[]).map(
       longDescription: `${b.name}의 부스입니다. 부스 번호 ${b.code}. 2026 서울일러스트레이션페어 참가 ${cat.name}입니다.`,
       images,
       logoUrl: m?.logo ?? undefined,
-      websiteUrl: undefined,
+      websiteUrl: lk?.website ?? undefined,
+      instagramUrl: lk?.instagram ?? undefined,
       tags,
       // goodsKeywords를 넣어 가치 태그 도출을 강화(굿즈 성향 반영).
       valueTags: deriveValueTags({ categorySlugs: tags, goodsKeywords }),

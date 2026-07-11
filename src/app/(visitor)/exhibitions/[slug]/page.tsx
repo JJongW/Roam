@@ -16,6 +16,7 @@ import { RhythmPicker } from "@/components/feed/rhythm-picker";
 import { ValueOnboarding } from "@/components/onboarding/value-onboarding";
 import { FinishVisit } from "@/components/companion/finish-visit";
 import { PosterViewer } from "@/components/exhibition/poster-viewer";
+import { RoamMotion } from "@/components/companion/roam-motion";
 import { DEFAULT_RHYTHM, isRhythm } from "@/lib/feed/rhythm";
 import { getI18n } from "@/lib/i18n/server";
 import { VALUE_SLUGS } from "@/lib/values";
@@ -126,8 +127,41 @@ export default async function ExhibitionDetailPage({
             </div>
           </section>
 
+          {/* Romi 맥락 인사 — "이 전시가 뭔지"를 사용자 취향(브레인 상위 가치)으로
+              해석해준다. 그냥 소개가 아니라 "너는 이런 취향이었지 → 그 기준으로
+              훑어서 N곳 골라뒀어"로 오늘 관람의 진입을 연다(companion 라이팅 가이드). */}
+          {user && (
+            <div className="flex gap-3 rounded-2xl border border-primary/20 bg-accent/30 p-4">
+              <span className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full ring-1 ring-border">
+                <RoamMotion src="/head.mp4" />
+              </span>
+              <div className="min-w-0 space-y-1 text-sm leading-relaxed">
+                <p className="font-semibold">
+                  {topValues.length
+                    ? t("feed.entryWithValues", {
+                        values: topValues.join("·"),
+                      })
+                    : t("feed.entryNoValues")}
+                </p>
+                <p className="text-muted-foreground">
+                  {feedItems.length
+                    ? t("feed.entryPicked", { n: feedItems.length })
+                    : t("feed.entryEmpty")}
+                </p>
+              </div>
+            </div>
+          )}
+
           <div className="space-y-2.5">
-            <ValueOnboarding slug={slug} />
+            <ValueOnboarding
+              slug={slug}
+              exhibitionName={exhibition.name}
+              hallCount={detail.halls.length}
+              themes={detail.categories
+                .slice(0, 3)
+                .map((c) => c.name)
+                .join("·")}
+            />
 
             <Link
               href={`/exhibitions/${slug}/map`}
