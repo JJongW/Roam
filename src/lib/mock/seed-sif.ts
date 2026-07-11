@@ -4,6 +4,7 @@
 // 색은 안 가져온다 — 지도는 Roam 상태색, 카테고리는 Roam 팔레트.
 import sifFloor from "@/lib/floorplan-sif.json";
 import sifMedia from "@/lib/booth/media-sif-2026.json";
+import sifEnrich from "@/lib/booth/enrichment-sif-2026.json";
 import { deriveValueTags } from "@/lib/values/derive";
 import type { Booth, Category, Exhibition, Hall } from "@/lib/types";
 
@@ -12,6 +13,14 @@ import type { Booth, Category, Exhibition, Hall } from "@/lib/types";
 const media = sifMedia as Record<
   string,
   { images: string[]; logo: string | null }
+>;
+
+// 부스별 굿즈 enrichment — ocreo fairStory(굿즈 프리뷰)에서 이관.
+// goodsKeywords는 deriveValueTags에 들어가 추천 가치신호를 강화하고,
+// storyImages는 포트폴리오가 적은 부스의 이미지를 보강한다.
+const enrich = sifEnrich as Record<
+  string,
+  { goodsKeywords?: string[]; storyImages?: string[] }
 >;
 
 // 참가자 4분류(작가/기업 × 국내/해외). floorplan의 cat 키 → Roam 카테고리.
@@ -112,6 +121,16 @@ export const sifBooths: Booth[] = (sifFloor.booths as SifFloorBooth[]).map(
     const cat = CAT_BY_KEY[b.cat] ?? CAT_BY_KEY["dom-artist"];
     const tags = [cat.slug];
     const m = media[b.code];
+    const en = enrich[b.code];
+    const goodsKeywords = en?.goodsKeywords ?? [];
+    // 포트폴리오 이미지 우선, 부족하면 스토리(굿즈) 이미지로 보강(중복 제거, 6장 캡).
+    const images = [
+      ...new Set([...(m?.images ?? []), ...(en?.storyImages ?? [])]),
+    ].slice(0, 6);
+    const enrichment =
+      goodsKeywords.length > 0
+        ? { goodsKeywords, themeTags: [] as string[] }
+        : undefined;
     return {
       id: `sif_${b.code.toLowerCase()}`,
       exhibitionId: sifExhibition.id,
@@ -123,11 +142,13 @@ export const sifBooths: Booth[] = (sifFloor.booths as SifFloorBooth[]).map(
       company: cat.name,
       description: `${b.name} · 부스 ${b.code}`,
       longDescription: `${b.name}의 부스입니다. 부스 번호 ${b.code}. 2026 서울일러스트레이션페어 참가 ${cat.name}입니다.`,
-      images: m?.images ?? [],
+      images,
       logoUrl: m?.logo ?? undefined,
       websiteUrl: undefined,
       tags,
-      valueTags: deriveValueTags({ categorySlugs: tags }),
+      // goodsKeywords를 넣어 가치 태그 도출을 강화(굿즈 성향 반영).
+      valueTags: deriveValueTags({ categorySlugs: tags, goodsKeywords }),
+      enrichment,
       x: b.x,
       y: b.y,
       popularity: 50,
