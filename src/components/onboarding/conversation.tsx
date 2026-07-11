@@ -74,24 +74,26 @@ export function Conversation({
         </div>
       )}
 
-      {/* Romi 중앙 + 질문 */}
+      {/* Romi 중앙 + 질문 — 화면 상단 2/3에 여유롭게 (ingan.ai 톤) */}
       <div
         key={index}
-        className="animate-in fade-in slide-in-from-bottom-1 flex flex-col items-center gap-4 pt-8 text-center duration-300"
+        className="animate-in fade-in slide-in-from-bottom-1 flex flex-1 flex-col items-center justify-center gap-5 text-center duration-300"
       >
-        <span className="flex size-28 items-center justify-center overflow-hidden rounded-[2rem]">
+        <span className="flex size-32 items-center justify-center overflow-hidden rounded-[2.5rem]">
           <RoamMotion src="/walking.mp4" />
         </span>
-        <p className="text-[13px] text-muted-foreground">{t(subtitleKey)}</p>
-        <h1 className="max-w-[20rem] text-xl font-extrabold leading-relaxed">
+        <p className="text-[13px] font-medium text-muted-foreground">
+          {t(subtitleKey)}
+        </p>
+        <h1 className="max-w-[18rem] text-2xl font-extrabold leading-snug">
           {t(`onboardingQ.${q.id}.prompt`)}
         </h1>
       </div>
 
-      {/* 답변 카드 */}
+      {/* 답변 카드 — 하단 고정 */}
       <div
         key={`opts-${index}`}
-        className="animate-in fade-in mt-6 flex flex-col gap-2.5 duration-300"
+        className="animate-in fade-in flex flex-col gap-2.5 pt-4 duration-300"
       >
         {q.options.map((o) => (
           <button

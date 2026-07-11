@@ -38,19 +38,24 @@ export default async function HomePage() {
       </header>
 
       {/* Romi 히어로 — 냅다 전시가 아니라 로미가 먼저 맞이한다. */}
-      <section className="flex flex-col items-center gap-3 px-6 pb-2 pt-8 text-center">
-        <span className="flex size-24 items-center justify-center overflow-hidden rounded-[2rem]">
+      <section className="flex flex-col items-center gap-4 px-6 pb-4 pt-12 text-center">
+        <span className="flex size-32 items-center justify-center overflow-hidden rounded-[2.5rem]">
           <RoamMotion src="/walking.mp4" />
         </span>
-        <h2 className="text-xl font-extrabold leading-snug">
+        <h2 className="text-2xl font-extrabold leading-snug">
           {t("home.heroGreeting")}
         </h2>
-        <p className="max-w-[18rem] text-sm text-muted-foreground">
+        <p className="max-w-[18rem] text-[15px] leading-relaxed text-muted-foreground">
           {t("home.subtitle")}
         </p>
       </section>
 
-      <section className="space-y-3 px-4 py-4">
+      <section className="space-y-3 px-4 pb-6 pt-2">
+        {exhibitions.length > 0 && (
+          <h3 className="px-1 text-sm font-bold text-muted-foreground">
+            {t("home.listHeading")}
+          </h3>
+        )}
         {exhibitions.length === 0 ? (
           <EmptyState
             title={t("home.emptyTitle")}

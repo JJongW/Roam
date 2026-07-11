@@ -156,6 +156,7 @@ const ko = {
     recommended: "로미 추천",
     guide: "여기부터 볼까? 네 취향이랑 맞을 것 같아.",
     heroGreeting: "어떤 전시부터 볼까?",
+    listHeading: "로미가 골라둔 전시",
   },
   feed: {
     heading: "내가 미리 골라뒀어",
@@ -554,6 +555,7 @@ const en: Dict = {
     recommended: "Romi's pick",
     guide: "Start here? I think it fits your taste.",
     heroGreeting: "Which fair shall we start with?",
+    listHeading: "Fairs Romi picked for you",
   },
   feed: {
     heading: "I picked these for you",
