@@ -3,8 +3,16 @@
 // 참가자(코드·상호·국내외·작가/기업)는 ocreo fairParticipantList에서 이관.
 // 색은 안 가져온다 — 지도는 Roam 상태색, 카테고리는 Roam 팔레트.
 import sifFloor from "@/lib/floorplan-sif.json";
+import sifMedia from "@/lib/booth/media-sif-2026.json";
 import { deriveValueTags } from "@/lib/values/derive";
 import type { Booth, Category, Exhibition, Hall } from "@/lib/types";
+
+// 부스별 미디어(포트폴리오 이미지·로고) — ocreo fairParticipantList에서 이관.
+// code → { images, logo }. 상세 갤러리·히어로 로고에 노출.
+const media = sifMedia as Record<
+  string,
+  { images: string[]; logo: string | null }
+>;
 
 // 참가자 4분류(작가/기업 × 국내/해외). floorplan의 cat 키 → Roam 카테고리.
 export const sifCategories: Category[] = [
@@ -103,6 +111,7 @@ export const sifBooths: Booth[] = (sifFloor.booths as SifFloorBooth[]).map(
   (b) => {
     const cat = CAT_BY_KEY[b.cat] ?? CAT_BY_KEY["dom-artist"];
     const tags = [cat.slug];
+    const m = media[b.code];
     return {
       id: `sif_${b.code.toLowerCase()}`,
       exhibitionId: sifExhibition.id,
@@ -114,7 +123,8 @@ export const sifBooths: Booth[] = (sifFloor.booths as SifFloorBooth[]).map(
       company: cat.name,
       description: `${b.name} · 부스 ${b.code}`,
       longDescription: `${b.name}의 부스입니다. 부스 번호 ${b.code}. 2026 서울일러스트레이션페어 참가 ${cat.name}입니다.`,
-      images: [],
+      images: m?.images ?? [],
+      logoUrl: m?.logo ?? undefined,
       websiteUrl: undefined,
       tags,
       valueTags: deriveValueTags({ categorySlugs: tags }),

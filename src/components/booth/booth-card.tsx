@@ -22,6 +22,7 @@ export function BoothCard({
   action?: React.ReactNode;
   className?: string;
 }) {
+  const thumb = booth.images?.[0] ?? booth.logoUrl;
   if (compact) {
     return (
       <Link
@@ -69,14 +70,23 @@ export function BoothCard({
       )}
     >
       <div
-        className="relative flex size-11 shrink-0 items-center justify-center rounded-xl"
+        className="relative flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-xl"
         style={{
           backgroundColor: category
             ? `${category.color}1a`
             : "var(--secondary)",
         }}
       >
-        {category ? (
+        {thumb ? (
+          // 작품/로고 썸네일(있으면) — 일러스트·창작 부스는 이미지가 첫인상.
+          // eslint-disable-next-line @next/next/no-img-element -- 외부 CDN 이미지
+          <img
+            src={thumb}
+            alt=""
+            loading="lazy"
+            className="size-full object-cover"
+          />
+        ) : category ? (
           <Icon name={category.icon} className="size-5" />
         ) : (
           <span className="text-base font-bold">{booth.name.slice(0, 1)}</span>
