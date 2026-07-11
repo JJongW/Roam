@@ -58,6 +58,10 @@ export function LoginForm() {
         <p className="mt-2 text-sm text-muted-foreground">
           {t("login.subtitle")}
         </p>
+        {/* 로그인은 계정 벽이 아니라 기억 설정 — 취향을 다음 전시로 잇는다는 걸 명시. */}
+        <p className="mx-auto mt-2 max-w-[17rem] text-xs leading-relaxed text-muted-foreground/80">
+          {t("login.memoryNote")}
+        </p>
       </div>
 
       {hasSupabase && (

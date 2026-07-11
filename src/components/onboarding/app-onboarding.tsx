@@ -46,7 +46,14 @@ export function AppOnboardingGate() {
   }
 
   return (
-    <div className="fixed inset-0 z-[100] flex flex-col bg-background">
+    // aria-modal: 온보딩 활성 동안 뒤 홈 콘텐츠를 보조기술 트리에서 비활성으로 —
+    // 스크린리더가 질문과 배경 카드를 동시에 읽지 않도록. 시각적으론 불투명 bg가 덮음.
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={t("onboardingQ.introTitle")}
+      className="fixed inset-0 z-[100] flex flex-col bg-background"
+    >
       {phase === "intro" && (
         <div className="flex flex-1 flex-col px-6 pb-8 pt-safe">
           {/* 로미 + 카피 — 상단 2/3 중앙 (ingan.ai 톤) */}

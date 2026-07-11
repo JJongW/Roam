@@ -50,7 +50,7 @@ export default async function BoothDetailPage({ params }: Props) {
         title={booth.name}
         right={<BookmarkButton targetType="booth" targetId={booth.id} />}
       />
-      <main className="flex-1 pb-10 landscape:flex landscape:min-h-0 landscape:flex-1 landscape:flex-row landscape:pb-0">
+      <main className="flex-1 pb-28 landscape:flex landscape:min-h-0 landscape:flex-1 landscape:flex-row landscape:pb-0">
         {/* Landscape: identity column (hero + 정보 + AI 요약) on the left. */}
         <div className="contents landscape:flex landscape:w-[360px] landscape:shrink-0 landscape:flex-col landscape:overflow-y-auto landscape:border-r landscape:border-border">
           {/* hero */}

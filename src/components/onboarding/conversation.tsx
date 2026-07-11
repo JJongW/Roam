@@ -74,6 +74,24 @@ export function Conversation({
         </div>
       )}
 
+      {/* adaptive: 문항 수가 유동적(5~풀 소진)이라 정확한 n/N 대신 부드러운 진행 표시.
+          최소 문항(5) 기준으로 차오르고, 막바지엔 안심 문구. 거짓 "1/5" 약속 안 함. */}
+      {mode === "adaptive" && (
+        <div className="flex items-center gap-3 pb-2 pt-4">
+          <div className="h-1 flex-1 overflow-hidden rounded-full bg-secondary">
+            <span
+              className="block h-full rounded-full bg-primary transition-all duration-500"
+              style={{ width: `${Math.min(((index + 1) / 5) * 100, 100)}%` }}
+            />
+          </div>
+          {index >= 3 && (
+            <span className="animate-in fade-in text-xs font-semibold text-muted-foreground">
+              {t("onboardingQ.almostThere")}
+            </span>
+          )}
+        </div>
+      )}
+
       {/* Romi 중앙 + 질문 — 화면 상단 2/3에 여유롭게 (ingan.ai 톤) */}
       <div
         key={index}

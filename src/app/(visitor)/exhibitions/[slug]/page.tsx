@@ -15,6 +15,7 @@ import { InterestFeed } from "@/components/feed/interest-feed";
 import { RhythmPicker } from "@/components/feed/rhythm-picker";
 import { ValueOnboarding } from "@/components/onboarding/value-onboarding";
 import { FinishVisit } from "@/components/companion/finish-visit";
+import { PosterViewer } from "@/components/exhibition/poster-viewer";
 import { DEFAULT_RHYTHM, isRhythm } from "@/lib/feed/rhythm";
 import { getI18n } from "@/lib/i18n/server";
 import { VALUE_SLUGS } from "@/lib/values";
@@ -98,6 +99,13 @@ export default async function ExhibitionDetailPage({
             )}
             aria-hidden
           />
+          {/* 크롭된 포스터 원본을 요구 시 전체 비율로 — 히어로 임팩트는 유지. */}
+          {exhibition.coverImageUrl && (
+            <PosterViewer
+              src={exhibition.coverImageUrl}
+              name={exhibition.name}
+            />
+          )}
           <div className="relative text-white">
             <h1 className="text-2xl font-extrabold leading-tight drop-shadow-sm">
               {exhibition.name}
@@ -105,7 +113,8 @@ export default async function ExhibitionDetailPage({
           </div>
         </div>
 
-        <div className="space-y-4 px-5 py-5 landscape:w-[420px] landscape:shrink-0 landscape:self-stretch landscape:overflow-y-auto landscape:border-l landscape:border-border">
+        {/* pb-28: 하단 상주 컴패니언 필이 카드/버튼을 가리지 않도록 여백 확보. */}
+        <div className="space-y-4 px-5 pt-5 pb-28 landscape:w-[420px] landscape:shrink-0 landscape:self-stretch landscape:overflow-y-auto landscape:border-l landscape:border-border">
           <section className="space-y-1.5">
             <div className="flex items-center gap-2 text-sm font-medium">
               <MapPin className="size-4 text-muted-foreground" aria-hidden />

@@ -64,12 +64,22 @@ export default async function HomePage() {
         ) : (
           exhibitions.map((ex, i) => (
             // 첫 전시를 로미 추천으로 강조(멀티 전시 대비 — 추후 가치 매칭으로 고도화).
-            <ExhibitionCard
-              key={ex.id}
-              exhibition={ex}
-              recommended={i === 0}
-              recommendedLabel={t("home.recommended")}
-            />
+            <div key={ex.id} className="space-y-1.5">
+              <ExhibitionCard
+                exhibition={ex}
+                recommended={i === 0}
+                recommendedLabel={t("home.recommended")}
+              />
+              {/* 추천 근거 한 줄 — 결정론 템플릿(LLM 없음)이라 Gemini 실패에도 살아있다.
+                  전시가 하나뿐이면 솔직하게, 여럿이면 취향 기준으로. 데이터 지어내지 않음. */}
+              {i === 0 && (
+                <p className="px-1 text-xs leading-relaxed text-muted-foreground">
+                  {exhibitions.length === 1
+                    ? t("home.singleReason")
+                    : t("home.recommendedReason")}
+                </p>
+              )}
+            </div>
           ))
         )}
       </section>

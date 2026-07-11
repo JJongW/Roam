@@ -1293,6 +1293,19 @@ export function ExhibitionMap({
                           </text>
                         );
                       })()}
+                      {/* 끌림 부스는 색만으론 기본 줌에서 잘 안 보인다 — 우상단에
+                          작은 점 마커를 얹어 라벨을 읽지 않아도 눈에 띄게. 색맹 대비
+                          형태 단서(색 의존 회피). */}
+                      {isInterested && !isSel && (
+                        <circle
+                          cx={g.w / 2 - BOOTH_GAP - 3}
+                          cy={-g.h / 2 + BOOTH_GAP + 3}
+                          r={clamp(Math.min(g.w, g.h) / 9, 3, 6)}
+                          fill="var(--warning)"
+                          stroke="white"
+                          strokeWidth={1.2}
+                        />
+                      )}
                       {isSel && (
                         <text
                           textAnchor="middle"
