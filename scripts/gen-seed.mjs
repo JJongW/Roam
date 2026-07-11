@@ -30,9 +30,14 @@ const allHalls = [...seed.halls, ...sif.sifHalls];
 const allCategories = [...seed.categories, ...sif.sifCategories];
 const allBooths = [...seed.booths, ...sif.sifBooths];
 
+// 이관 텍스트(작가 소개 등)에 U+2028/U+2029(LS/PS) 같은 비정상 줄종결자가 섞여
+// 들어온다. Postgres는 받지만 에디터가 경고하고 일부 도구가 깨지므로 개행으로 치환.
+const clean = (s) => s.replace(/[\u2028\u2029]/g, "\n");
 const q = (v) =>
-  v === undefined || v === null ? "null" : `'${String(v).replace(/'/g, "''")}'`;
-const jb = (v) => `'${JSON.stringify(v).replace(/'/g, "''")}'::jsonb`;
+  v === undefined || v === null
+    ? "null"
+    : `'${clean(String(v)).replace(/'/g, "''")}'`;
+const jb = (v) => `'${clean(JSON.stringify(v)).replace(/'/g, "''")}'::jsonb`;
 const n = (v) => (v === undefined || v === null ? "null" : String(v));
 const b = (v) => (v ? "true" : "false");
 
@@ -95,7 +100,34 @@ lines.push(
     )
     .join(",\n"),
 );
-lines.push("on conflict (id) do nothing;");
+// 시드 데이터라 재적용 시 최신 소스로 갱신되도록 do update(이미지·링크·소개 등
+// 후속 이관이 기존 행에 반영되게). 키(id) 제외 전 컬럼 덮어씀.
+lines.push(
+  "on conflict (id) do update set " +
+    [
+      "exhibition_id",
+      "hall_id",
+      "category_id",
+      "code",
+      "kind",
+      "name",
+      "company",
+      "aliases",
+      "description",
+      "long_description",
+      "images",
+      "logo_url",
+      "instagram_url",
+      "website_url",
+      "tags",
+      "x",
+      "y",
+      "popularity",
+    ]
+      .map((c) => `${c} = excluded.${c}`)
+      .join(", ") +
+    ";",
+);
 lines.push("");
 
 // booth_enrichment — 수동 주입 추가정보가 있는 부스만(현재 비어 있으면 블록 생략).
@@ -112,7 +144,13 @@ if (enriched.length) {
       )
       .join(",\n"),
   );
-  lines.push("on conflict (booth_id) do nothing;");
+  lines.push(
+    "on conflict (booth_id) do update set " +
+      ["goods_keywords", "theme_tags", "summary", "tips", "source_url"]
+        .map((c) => `${c} = excluded.${c}`)
+        .join(", ") +
+      ";",
+  );
   lines.push("");
 }
 
