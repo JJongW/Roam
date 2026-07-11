@@ -6,6 +6,7 @@ import { BookmarkButton } from "@/components/booth/bookmark-button";
 import { BoothAiSummary } from "@/components/booth/booth-ai-summary";
 import { BoothPersonalPanel } from "@/components/booth/booth-personal-panel";
 import { BoothHighlights } from "@/components/booth/booth-highlights";
+import { BoothGallery } from "@/components/booth/booth-gallery";
 import { BoothTabs } from "@/components/booth/booth-tabs";
 import { BoothPosts } from "@/components/booth/booth-posts";
 import { CategoryChip } from "@/components/booth/category-chip";
@@ -50,7 +51,7 @@ export default async function BoothDetailPage({ params }: Props) {
         title={booth.name}
         right={<BookmarkButton targetType="booth" targetId={booth.id} />}
       />
-      <main className="flex-1 pb-10 landscape:flex landscape:min-h-0 landscape:flex-1 landscape:flex-row landscape:pb-0">
+      <main className="flex-1 pb-28 landscape:flex landscape:min-h-0 landscape:flex-1 landscape:flex-row landscape:pb-0">
         {/* Landscape: identity column (hero + 정보 + AI 요약) on the left. */}
         <div className="contents landscape:flex landscape:w-[360px] landscape:shrink-0 landscape:flex-col landscape:overflow-y-auto landscape:border-r landscape:border-border">
           {/* hero */}
@@ -60,15 +61,25 @@ export default async function BoothDetailPage({ params }: Props) {
               background: `linear-gradient(135deg, ${category.color}22, transparent)`,
             }}
           >
-            <div
-              className="flex size-16 items-center justify-center rounded-2xl"
-              style={{
-                backgroundColor: `${category.color}26`,
-                color: category.color,
-              }}
-            >
-              <Icon name={category.icon} className="size-8" />
-            </div>
+            {booth.logoUrl ? (
+              // 참가자 로고(있으면) — 카테고리 아이콘 대신 정체성이 바로 보인다.
+              // eslint-disable-next-line @next/next/no-img-element -- 외부 CDN 로고
+              <img
+                src={booth.logoUrl}
+                alt={booth.name}
+                className="size-16 shrink-0 rounded-2xl border border-border object-cover"
+              />
+            ) : (
+              <div
+                className="flex size-16 items-center justify-center rounded-2xl"
+                style={{
+                  backgroundColor: `${category.color}26`,
+                  color: category.color,
+                }}
+              >
+                <Icon name={category.icon} className="size-8" />
+              </div>
+            )}
             <div className="min-w-0">
               <h1 className="truncate text-xl font-extrabold">{booth.name}</h1>
               <p className="truncate text-sm text-muted-foreground">
@@ -83,6 +94,12 @@ export default async function BoothDetailPage({ params }: Props) {
               </div>
             </div>
           </div>
+
+          {booth.images.length > 0 && (
+            <div className="px-5 pt-1 pb-2">
+              <BoothGallery images={booth.images} name={booth.name} />
+            </div>
+          )}
 
           <div className="px-5 py-2">
             {/* At-a-glance 정보 + AI 요약 stay above the tabs (always visible). */}

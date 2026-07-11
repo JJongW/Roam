@@ -2,9 +2,14 @@ import { NextResponse, type NextRequest } from "next/server";
 import { USER_COOKIE } from "@/lib/constants";
 
 /**
- * Global auth gate. The service requires a signed-in identity (`roam_user`) —
- * unauthenticated visitors are bounced to /login with a `next` param so they
- * return to where they were headed after logging in.
+ * Global auth gate. Personalized/interactive visitor pages require a signed-in
+ * identity (`roam_user`) — unauthenticated visitors are bounced to /login with a
+ * `next` param so they return to where they were headed after logging in.
+ *
+ * The home page (`/`) is intentionally public: it's the landing that shows the
+ * open exhibitions (some info) plus why signing in helps. A hard wall on the
+ * very first screen felt like an arbitrary account gate; login is framed as
+ * memory/continuity, so browsing the shelf without it should be possible.
  *
  * Exempt prefixes:
  *  - /login  : the gate itself
@@ -17,11 +22,14 @@ import { USER_COOKIE } from "@/lib/constants";
  * reachable so the gate is passable).
  */
 const EXEMPT_PREFIXES = ["/login", "/auth", "/admin"];
+/** Public pages reachable without an identity (exact match). */
+const PUBLIC_PATHS = ["/"];
 
 export function proxy(req: NextRequest) {
   const { pathname, search } = req.nextUrl;
 
   if (
+    PUBLIC_PATHS.includes(pathname) ||
     EXEMPT_PREFIXES.some((p) => pathname === p || pathname.startsWith(`${p}/`))
   ) {
     return NextResponse.next();

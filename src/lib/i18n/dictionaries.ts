@@ -18,6 +18,7 @@ const ko = {
     back: "뒤로",
     loading: "불러오는 중…",
     detail: "상세",
+    viewPoster: "포스터 보기",
   },
   lang: {
     title: "언어를 골라줘",
@@ -26,6 +27,8 @@ const ko = {
   romi: { name: "로미" },
   login: {
     subtitle: "로그인하면 너에게 맞는 부스를 골라 함께 둘러볼게.",
+    memoryNote:
+      "네 취향을 다음 전시에도 이어가려고 닉네임을 만들어요. 비밀번호는 없어요.",
     sheetDesc: "관심 저장·메모·기억을 쓰려면 로그인이 필요해요.",
     google: "Google로 계속하기",
     orNickname: "또는 닉네임",
@@ -35,6 +38,21 @@ const ko = {
     noPassword: "비밀번호는 없어요. 이미 쓰이는 닉네임은 선택할 수 없어요.",
     failed: "로그인에 실패했어요",
     sheetTitle: "시작하기",
+  },
+  legal: {
+    privacy: "개인정보처리방침",
+    terms: "서비스 이용약관",
+  },
+  loading: {
+    exhibition: "전시 정보를 불러오고 있어요.",
+    map: "전시장 지도를 준비하고 있어요.",
+    booth: "부스 정보를 확인하고 있어요.",
+    longWait: "조금만 더 기다려줘. 부스 데이터를 맞추는 중이에요.",
+  },
+  errorState: {
+    title: "불러오지 못했어요.",
+    desc: "잠깐 문제가 생겼어. 다시 시도할까요?",
+    retry: "다시 시도",
   },
   appOnboarding: {
     intro1a: "안녕, 나는",
@@ -79,6 +97,7 @@ const ko = {
     introCta: "좋아, 시작하자",
     learningApp: "로미가 너를 알아가는 중…",
     learningExhibition: "이 전시에서 네 취향을 맞춰보는 중…",
+    almostThere: "거의 다 왔어",
     analyzing: "네 취향을 정리하는 중…",
     resultTitle: "첫 관람 분석 완료!",
     resultDesc: "네 답변으로 관람 프로필을 그렸어.",
@@ -157,6 +176,13 @@ const ko = {
     guide: "여기부터 볼까? 네 취향이랑 맞을 것 같아.",
     heroGreeting: "어떤 전시부터 볼까?",
     listHeading: "로미가 골라둔 전시",
+    recommendedReason: "네가 고른 관람 성향을 기준으로 먼저 보여줄게.",
+    singleReason:
+      "지금 열 수 있는 전시는 하나야. 안에서는 네 취향에 맞춰 부스를 골라줄게.",
+    loginReasonTitle: "로그인하면 로미가 너를 기억해",
+    loginReasonBody:
+      "로그인하면 네 관람 취향을 다음 전시에도 이어갈 수 있어. 지금은 열린 전시만 둘러봐도 돼.",
+    loginCta: "로그인하고 시작하기",
   },
   feed: {
     heading: "내가 미리 골라뒀어",
@@ -207,6 +233,10 @@ const ko = {
     coachCommunityD: "현장 소식을 실시간으로 나눠.",
     coachColorsL: "부스 색",
     coachColorsD: "초록=가봄, 노랑=끌린 곳. 반응할수록 관심이 진해져.",
+    guideReopen: "지도 사용법",
+    legendVisited: "가봄",
+    legendInterested: "끌림",
+    legendSelected: "선택",
   },
   booth: {
     events: "이벤트",
@@ -216,6 +246,7 @@ const ko = {
     tip: "관람 팁",
     noReview: "후기 없음",
     reviewCount: "후기 {n}",
+    viewImage: "작품 {n} 크게 보기",
     code: "부스 {code}",
     remaining: "{n}개 남음",
     tabIntro: "소개",
@@ -415,6 +446,7 @@ const en: Dict = {
     back: "Back",
     loading: "Loading…",
     detail: "Details",
+    viewPoster: "View poster",
   },
   lang: {
     title: "Choose your language",
@@ -423,6 +455,8 @@ const en: Dict = {
   romi: { name: "Romi" },
   login: {
     subtitle: "Log in and I'll pick booths that fit you and explore together.",
+    memoryNote:
+      "Your nickname carries your taste to the next fair too. No password.",
     sheetDesc: "Log in to save interests, notes, and memories.",
     google: "Continue with Google",
     orNickname: "or nickname",
@@ -432,6 +466,21 @@ const en: Dict = {
     noPassword: "No password. Nicknames already in use can't be chosen.",
     failed: "Login failed",
     sheetTitle: "Get started",
+  },
+  legal: {
+    privacy: "Privacy Policy",
+    terms: "Terms of Service",
+  },
+  loading: {
+    exhibition: "Loading the fair details.",
+    map: "Getting the venue map ready.",
+    booth: "Checking booth details.",
+    longWait: "Hang on a sec — lining up the booth data.",
+  },
+  errorState: {
+    title: "Couldn't load that.",
+    desc: "Something hiccuped. Want to try again?",
+    retry: "Try again",
   },
   appOnboarding: {
     intro1a: "Hi, I'm",
@@ -478,6 +527,7 @@ const en: Dict = {
     introCta: "Okay, let's start",
     learningApp: "Romi is getting to know you…",
     learningExhibition: "Reading your taste for this fair…",
+    almostThere: "Almost there",
     analyzing: "Sorting out your taste…",
     resultTitle: "First analysis complete!",
     resultDesc: "I drew your viewing profile from your answers.",
@@ -556,6 +606,13 @@ const en: Dict = {
     guide: "Start here? I think it fits your taste.",
     heroGreeting: "Which fair shall we start with?",
     listHeading: "Fairs Romi picked for you",
+    recommendedReason: "Showing this first based on the taste you chose.",
+    singleReason:
+      "There's only one fair open right now. Inside, I'll pick booths to fit you.",
+    loginReasonTitle: "Log in and Romi remembers you",
+    loginReasonBody:
+      "Log in to carry your taste to the next fair too. For now, feel free to just browse the open fairs.",
+    loginCta: "Log in to start",
   },
   feed: {
     heading: "I picked these for you",
@@ -603,6 +660,10 @@ const en: Dict = {
     coachColorsL: "Booth colors",
     coachColorsD:
       "Green = seen, yellow = liked. Interest deepens as you react.",
+    guideReopen: "Map guide",
+    legendVisited: "Seen",
+    legendInterested: "Liked",
+    legendSelected: "Selected",
   },
   booth: {
     events: "Events",
@@ -612,6 +673,7 @@ const en: Dict = {
     tip: "Visit tip",
     noReview: "No reviews",
     reviewCount: "{n} reviews",
+    viewImage: "View work {n} larger",
     code: "Booth {code}",
     remaining: "{n} left",
     tabIntro: "About",

@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { LoginForm } from "./login-form";
+import { LegalLinks } from "@/components/common/legal-links";
 
 export const metadata = {
   title: "로그인 · Roam",
@@ -16,6 +17,7 @@ export default function LoginPage() {
       <Suspense>
         <LoginForm />
       </Suspense>
+      <LegalLinks className="mt-8 pb-safe" />
     </main>
   );
 }

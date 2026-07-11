@@ -1,42 +1,20 @@
 "use client";
 
-import {
-  Maximize2,
-  Plus,
-  RotateCw,
-  NotebookPen,
-  MessagesSquare,
-  Palette,
-} from "lucide-react";
+import { Maximize2, Plus, Palette } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useT } from "@/lib/i18n/provider";
 import type { TFn } from "@/lib/i18n/resolve";
 
 /**
  * First-visit map guide. Shown once after onboarding when the visitor first
- * lands on the map, explaining what each control + the booth colours mean.
- * Dismissing it flips the persisted `mapGuideSeen` flag so it never reappears.
- * 지도는 길찾기가 아니라 "관심 밀도 지도"(동선 제거) — 안내도 그에 맞춘다.
+ * lands on the map. 시작에 꼭 필요한 것만(전체보기·줌·색) — 나머지 컨트롤은
+ * 아이콘으로 자명하니 뺐다. 지도를 오래 가리지 않게 짧게. `?`로 재열람 가능.
+ * Dismissing flips the persisted `mapGuideSeen` flag so it never auto-reappears.
  */
 function items(t: TFn): { Icon: typeof Plus; label: string; desc: string }[] {
   return [
     { Icon: Maximize2, label: t("map.coachFitL"), desc: t("map.coachFitD") },
     { Icon: Plus, label: t("map.coachZoomL"), desc: t("map.coachZoomD") },
-    {
-      Icon: RotateCw,
-      label: t("map.coachRotateL"),
-      desc: t("map.coachRotateD"),
-    },
-    {
-      Icon: NotebookPen,
-      label: t("map.coachNotesL"),
-      desc: t("map.coachNotesD"),
-    },
-    {
-      Icon: MessagesSquare,
-      label: t("map.coachCommunityL"),
-      desc: t("map.coachCommunityD"),
-    },
     {
       Icon: Palette,
       label: t("map.coachColorsL"),

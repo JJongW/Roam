@@ -15,6 +15,7 @@ import {
   SheetDescription,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { LegalLinks } from "@/components/common/legal-links";
 import type { UserBrain } from "@/lib/types";
 
 /**
@@ -153,6 +154,8 @@ export function BrainSheet({
             {t("common.close")}
           </Button>
         </div>
+
+        <LegalLinks className="mt-4" />
       </SheetContent>
     </Sheet>
   );

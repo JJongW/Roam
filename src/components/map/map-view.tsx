@@ -7,8 +7,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Flame,
+  HelpCircle,
   Loader2,
-  MessagesSquare,
   NotebookPen,
   X,
 } from "lucide-react";
@@ -56,6 +56,8 @@ export function MapView({
     initialFocusId ?? null,
   );
   const [notesOpen, setNotesOpen] = useState(false);
+  // 가이드 재열람(`?` 버튼) — 최초 1회 자동 표시와 별개로 언제든 다시 열 수 있게.
+  const [guideOpen, setGuideOpen] = useState(false);
   // Crowd heatmap (관심 밀도). Lazy-loaded the first time it's on.
   const [heatOn, setHeatOn] = useState(false);
   const [heat, setHeat] = useState<{
@@ -82,7 +84,7 @@ export function MapView({
   const markMapGuideSeen = useUiStore((s) => s.markMapGuideSeen);
   const landscapeHintSeen = useUiStore((s) => s.landscapeHintSeen);
   const markLandscapeHintSeen = useUiStore((s) => s.markLandscapeHintSeen);
-  const showCoachmark = hydrated && !mapGuideSeen;
+  const showCoachmark = (hydrated && !mapGuideSeen) || guideOpen;
 
   useEffect(() => {
     if (!hydrated || showCoachmark || landscapeHintSeen) return;
@@ -135,7 +137,14 @@ export function MapView({
 
   return (
     <div className="relative h-dvh w-full overflow-hidden overscroll-none bg-background">
-      {showCoachmark && <MapCoachmark onClose={markMapGuideSeen} />}
+      {showCoachmark && (
+        <MapCoachmark
+          onClose={() => {
+            markMapGuideSeen();
+            setGuideOpen(false);
+          }}
+        />
+      )}
 
       {/* 전체화면 지도 */}
       <ExhibitionMap
@@ -191,21 +200,50 @@ export function MapView({
           </button>
           <button
             type="button"
+            onClick={() => setGuideOpen(true)}
+            aria-label={t("map.guideReopen")}
+            className="flex size-10 items-center justify-center rounded-full bg-card text-muted-foreground shadow-[var(--shadow-card)] active:bg-secondary"
+          >
+            <HelpCircle className="size-5" />
+          </button>
+          <button
+            type="button"
             onClick={() => setNotesOpen(true)}
             aria-label={t("map.notes")}
             className="flex size-10 items-center justify-center rounded-full bg-card text-muted-foreground shadow-[var(--shadow-card)] active:bg-secondary"
           >
             <NotebookPen className="size-5" />
           </button>
-          <Link
-            href={`/exhibitions/${detail.exhibition.slug}/community`}
-            aria-label={t("map.community")}
-            className="flex size-10 items-center justify-center rounded-full bg-card text-muted-foreground shadow-[var(--shadow-card)] active:bg-secondary"
-          >
-            <MessagesSquare className="size-5" />
-          </Link>
         </div>
       </div>
+
+      {/* 상시 범례 — 색만으로 상태 못 읽는 걸 막는다(가봄·끌림·선택). 밀도 켜면
+          밀도 범례가 이 자리를 대신하므로 그때만 숨김. */}
+      {!heatOn && (
+        <div className="pointer-events-none absolute left-3 top-16 z-20 flex flex-col gap-1 rounded-xl border border-border bg-card/90 px-2.5 py-2 text-[11px] font-semibold shadow-[var(--shadow-card)] backdrop-blur">
+          <span className="flex items-center gap-1.5">
+            <span
+              className="size-3 rounded-[3px]"
+              style={{ backgroundColor: "var(--route-visited)" }}
+            />
+            {t("map.legendVisited")}
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span
+              className="size-3 rounded-[3px]"
+              style={{ backgroundColor: "var(--warning)" }}
+            />
+            {t("map.legendInterested")}
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span
+              className="size-3 rounded-[3px] border-2"
+              style={{ borderColor: "var(--primary)" }}
+            />
+            {t("map.legendSelected")}
+          </span>
+        </div>
+      )}
 
       {/* 관심 밀도 범례 */}
       {heatOn && (
