@@ -7,7 +7,11 @@ import { RoamMotion } from "@/components/companion/roam-motion";
 import { Conversation } from "@/components/onboarding/conversation";
 import { useAuthStore } from "@/lib/stores/auth";
 import { useT } from "@/lib/i18n/provider";
-import { APP_QUESTIONS, topValues, type Tally } from "@/lib/onboarding/questions";
+import {
+  APP_QUESTIONS,
+  topValues,
+  type Tally,
+} from "@/lib/onboarding/questions";
 import { Button } from "@/components/ui/button";
 
 const FLAG = "roam-app-onboarded";
@@ -44,21 +48,21 @@ export function AppOnboardingGate() {
   return (
     <div className="fixed inset-0 z-[100] flex flex-col bg-background">
       {phase === "intro" && (
-        <div className="flex flex-1 flex-col items-center justify-center gap-5 px-6 pb-8 pt-safe text-center">
-          <span className="flex size-32 items-center justify-center overflow-hidden rounded-[2.5rem]">
-            <RoamMotion src="/walking.mp4" />
-          </span>
-          <h1 className="text-2xl font-extrabold leading-snug">
-            {t("onboardingQ.introTitle")}
-          </h1>
-          <p className="max-w-[20rem] text-[15px] leading-relaxed text-muted-foreground">
-            {t("onboardingQ.introSub")}
-          </p>
-          <Button
-            size="lg"
-            className="mt-2 w-full max-w-xs"
-            onClick={() => setPhase("quiz")}
-          >
+        <div className="flex flex-1 flex-col px-6 pb-8 pt-safe">
+          {/* 로미 + 카피 — 상단 2/3 중앙 (ingan.ai 톤) */}
+          <div className="flex flex-1 flex-col items-center justify-center gap-5 text-center">
+            <span className="flex size-32 items-center justify-center overflow-hidden rounded-[2.5rem]">
+              <RoamMotion src="/walking.mp4" />
+            </span>
+            <h1 className="text-2xl font-extrabold leading-snug">
+              {t("onboardingQ.introTitle")}
+            </h1>
+            <p className="max-w-[20rem] text-[15px] leading-relaxed text-muted-foreground">
+              {t("onboardingQ.introSub")}
+            </p>
+          </div>
+          {/* 하단 고정 CTA */}
+          <Button size="lg" className="w-full" onClick={() => setPhase("quiz")}>
             {t("onboardingQ.introCta")}
           </Button>
         </div>
