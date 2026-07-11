@@ -455,11 +455,21 @@ export class SupabaseRepository implements Repository {
       .select("*")
       .eq("exhibition_id", exhibition.id)
       .order("sort", { ascending: true });
-    const { data: categories } = await db.from("category").select("*");
+    // 멀티 전시: 카테고리는 전역 테이블이라 이 전시 부스가 실제 쓰는 것만 노출
+    // (다른 전시 카테고리가 온보딩·필터에 새는 것 방지). MockRepository와 동일.
+    const [{ data: categories }, { data: boothCats }] = await Promise.all([
+      db.from("category").select("*"),
+      db.from("booth").select("category_id").eq("exhibition_id", exhibition.id),
+    ]);
+    const usedCatIds = new Set(
+      (boothCats ?? []).map((r) => (r as { category_id: string }).category_id),
+    );
     return {
       exhibition,
       halls: (halls ?? []).map(mapHall),
-      categories: (categories ?? []).map(mapCategory),
+      categories: (categories ?? [])
+        .map(mapCategory)
+        .filter((c) => usedCatIds.has(c.id)),
     };
   }
 
