@@ -9,7 +9,6 @@ import {
   Flame,
   HelpCircle,
   Loader2,
-  MessagesSquare,
   NotebookPen,
   X,
 } from "lucide-react";
@@ -215,13 +214,6 @@ export function MapView({
           >
             <NotebookPen className="size-5" />
           </button>
-          <Link
-            href={`/exhibitions/${detail.exhibition.slug}/community`}
-            aria-label={t("map.community")}
-            className="flex size-10 items-center justify-center rounded-full bg-card text-muted-foreground shadow-[var(--shadow-card)] active:bg-secondary"
-          >
-            <MessagesSquare className="size-5" />
-          </Link>
         </div>
       </div>
 

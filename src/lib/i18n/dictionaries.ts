@@ -39,6 +39,10 @@ const ko = {
     failed: "로그인에 실패했어요",
     sheetTitle: "시작하기",
   },
+  legal: {
+    privacy: "개인정보처리방침",
+    terms: "서비스 이용약관",
+  },
   loading: {
     exhibition: "전시 정보를 불러오고 있어요.",
     map: "전시장 지도를 준비하고 있어요.",
@@ -175,6 +179,10 @@ const ko = {
     recommendedReason: "네가 고른 관람 성향을 기준으로 먼저 보여줄게.",
     singleReason:
       "지금 열 수 있는 전시는 하나야. 안에서는 네 취향에 맞춰 부스를 골라줄게.",
+    loginReasonTitle: "로그인하면 로미가 너를 기억해",
+    loginReasonBody:
+      "로그인하면 네 관람 취향을 다음 전시에도 이어갈 수 있어. 지금은 열린 전시만 둘러봐도 돼.",
+    loginCta: "로그인하고 시작하기",
   },
   feed: {
     heading: "내가 미리 골라뒀어",
@@ -458,6 +466,10 @@ const en: Dict = {
     failed: "Login failed",
     sheetTitle: "Get started",
   },
+  legal: {
+    privacy: "Privacy Policy",
+    terms: "Terms of Service",
+  },
   loading: {
     exhibition: "Loading the fair details.",
     map: "Getting the venue map ready.",
@@ -596,6 +608,10 @@ const en: Dict = {
     recommendedReason: "Showing this first based on the taste you chose.",
     singleReason:
       "There's only one fair open right now. Inside, I'll pick booths to fit you.",
+    loginReasonTitle: "Log in and Romi remembers you",
+    loginReasonBody:
+      "Log in to carry your taste to the next fair too. For now, feel free to just browse the open fairs.",
+    loginCta: "Log in to start",
   },
   feed: {
     heading: "I picked these for you",

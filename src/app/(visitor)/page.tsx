@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 import { getRepository } from "@/lib/repositories";
 import { ExhibitionCard } from "@/components/exhibition/exhibition-card";
 import { EmptyState } from "@/components/common/states";
@@ -6,6 +8,7 @@ import { AppOnboardingGate } from "@/components/onboarding/app-onboarding";
 import { AccountButton } from "@/components/auth/account-button";
 import { RoamMotion } from "@/components/companion/roam-motion";
 import { getI18n } from "@/lib/i18n/server";
+import { getCurrentUser } from "@/lib/api/session";
 
 export const metadata = {
   title: "Roam",
@@ -15,6 +18,9 @@ export default async function HomePage() {
   const repo = await getRepository();
   const { data: exhibitions } = await repo.listExhibitions({ limit: 20 });
   const { t } = await getI18n();
+  // 홈은 공개 랜딩 — 로그인 없이도 열린 전시를 둘러본다(proxy.ts). 미로그인 시
+  // '왜 로그인?' 배너로 기억·연속성을 설명(계정 벽이 아니라 기억 설정).
+  const user = await getCurrentUser();
 
   return (
     <main className="flex-1 pb-safe">
@@ -49,6 +55,26 @@ export default async function HomePage() {
           {t("home.subtitle")}
         </p>
       </section>
+
+      {/* 미로그인 랜딩 배너 — 계정 벽이 아니라 기억 설정임을 설명 + 로그인 진입. */}
+      {!user && (
+        <div className="px-4 pb-2">
+          <Link
+            href="/login?next=%2F"
+            className="flex items-center gap-3 rounded-2xl border border-primary/30 bg-primary/5 p-4 active:scale-[0.99]"
+          >
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-bold text-primary">
+                {t("home.loginReasonTitle")}
+              </p>
+              <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
+                {t("home.loginReasonBody")}
+              </p>
+            </div>
+            <ChevronRight className="size-5 shrink-0 text-primary" />
+          </Link>
+        </div>
+      )}
 
       <section className="space-y-3 px-4 pb-6 pt-2">
         {exhibitions.length > 0 && (
