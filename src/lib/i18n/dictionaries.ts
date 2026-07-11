@@ -188,6 +188,13 @@ const ko = {
     heading: "내가 미리 골라뒀어",
     subFallback: "네 반응 볼수록 더 잘 맞춰줄게.",
     memoryLine: "요즘 {values}에 끌리더라 — 그쪽으로 골라왔어.",
+    entryWithValues:
+      "너는 {values} 쪽에 끌리는 편이었지. 그 기준으로 이 전시를 먼저 훑어봤어.",
+    entryNoValues:
+      "이 전시, 네 반응을 보면서 같이 좁혀보자. 끌리는 곳에 반응만 해줘.",
+    entryPicked:
+      "먼저 볼 만한 {n}곳을 아래에 골라뒀어. 여기부터 가볍게 시작하자.",
+    entryEmpty: "아래에서 관심 가는 곳에 반응해줘. 볼수록 더 잘 맞춰줄게.",
     similar: "비슷한 곳 {n}",
     collapse: "접기",
     pickStable: "확실히 네 취향이라",
@@ -618,6 +625,14 @@ const en: Dict = {
     heading: "I picked these for you",
     subFallback: "The more you react, the better I'll fit.",
     memoryLine: "You've been drawn to {values} lately — I picked around that.",
+    entryWithValues:
+      "You lean toward {values}. I skimmed this fair with that in mind first.",
+    entryNoValues:
+      "Let's narrow this fair down together — just react to what draws you.",
+    entryPicked:
+      "I lined up {n} worth-seeing spots below. Let's start light from here.",
+    entryEmpty:
+      "React to what interests you below. The more you look, the better I fit.",
     similar: "Similar {n}",
     collapse: "Collapse",
     pickStable: "Definitely your taste",
