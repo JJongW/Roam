@@ -1,6 +1,12 @@
 import { uid, shortId } from "@/lib/utils";
 import { REPORT_HIDE_THRESHOLD } from "@/lib/constants";
 import { freshSeed } from "@/lib/mock/seed";
+import {
+  sifExhibition,
+  sifHalls,
+  sifCategories,
+  sifBooths,
+} from "@/lib/mock/seed-sif";
 import type { ListBoothQuery, Repository } from "@/lib/repositories/types";
 import type {
   AiQueryLog,
@@ -75,10 +81,11 @@ const g = globalThis as unknown as { __roamStore?: Store };
 function buildStore(): Store {
   const s = freshSeed();
   return {
-    exhibitions: [s.exhibition],
-    halls: s.halls,
-    categories: s.categories,
-    booths: s.booths,
+    // SIBF + SIF 공존(멀티 전시). 홀·카테고리·부스는 exhibitionId로 구분돼 섞여도 안전.
+    exhibitions: [s.exhibition, structuredClone(sifExhibition)],
+    halls: [...s.halls, ...structuredClone(sifHalls)],
+    categories: [...s.categories, ...structuredClone(sifCategories)],
+    booths: [...s.booths, ...structuredClone(sifBooths)],
     events: s.events,
     welcomeKits: s.welcomeKits,
     reviews: s.reviews,
@@ -128,12 +135,18 @@ export class MockRepository implements Repository {
   async getExhibition(slug: string): Promise<ExhibitionDetail | null> {
     const exhibition = store().exhibitions.find((e) => e.slug === slug);
     if (!exhibition) return null;
+    // 멀티 전시: 카테고리를 이 전시 부스가 실제 쓰는 것만 노출(전시 간 누수 방지).
+    const usedCatIds = new Set(
+      store()
+        .booths.filter((b) => b.exhibitionId === exhibition.id)
+        .map((b) => b.categoryId),
+    );
     return {
       exhibition,
       halls: store()
         .halls.filter((h) => h.exhibitionId === exhibition.id)
         .sort((a, b) => a.sort - b.sort),
-      categories: store().categories,
+      categories: store().categories.filter((c) => usedCatIds.has(c.id)),
     };
   }
 

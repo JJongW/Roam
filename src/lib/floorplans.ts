@@ -5,6 +5,7 @@
 // booth content (detail/route) is keyed by the real stand code.
 // ---------------------------------------------------------------------------
 import sibf from "@/lib/floorplan-sibf.json";
+import sif from "@/lib/floorplan-sif.json";
 
 export interface FloorplanBooth {
   code: string;
@@ -285,6 +286,37 @@ function buildSibf(): Floorplan {
   };
 }
 
+// SIF: 격자 부스만 있는 단순 도면(홀/장식 없음). 색은 전부 중립 존색 —
+// 지도는 Roam 상태색만 얹으므로 ocreo 색은 쓰지 않는다. 내부 walkable = 부스 bbox.
+function buildSif(): Floorplan {
+  const booths: FloorplanBooth[] = sif.booths.map((b) => ({
+    code: b.code,
+    x: b.x,
+    y: b.y,
+    w: b.w,
+    h: b.h,
+    color: ZONE.general,
+  }));
+  const centers = booths.map((b) => ({
+    x: b.x + b.w / 2,
+    y: b.y + b.h / 2,
+    w: b.w,
+    h: b.h,
+  }));
+  const box = bbox(centers);
+  return {
+    width: sif.width,
+    height: sif.height,
+    halls: [],
+    decor: [],
+    booths,
+    interior: [box],
+    entrance: { x: sif.width / 2, y: sif.height - 60 },
+    exit: { x: sif.width / 2, y: sif.height - 60 },
+  };
+}
+
 export const FLOORPLANS: Record<string, Floorplan> = {
   "sibf-2026": buildSibf(),
+  "sif-2026": buildSif(),
 };
