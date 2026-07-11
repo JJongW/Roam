@@ -76,10 +76,10 @@ export const sifExhibition: Exhibition = {
   name: "2026 서울일러스트레이션페어",
   venue: "코엑스 C홀, 서울 (COEX Hall C)",
   description:
-    "국내외 일러스트레이터·창작 브랜드가 한자리에 모이는 국내 최대 규모의 일러스트레이션 페어. 공식 부스배치도를 그대로 옮겨 실제 위치로 안내하고, 관심 가는 작가·부스를 골라 둘러봐요.",
+    "‘평행우주의 만남(V.21)’을 주제로 열리는 국내 최대 규모의 일러스트레이션 페어. 국내외 일러스트레이터·창작 브랜드 부스가 코엑스 C홀에 들어섭니다. 공식 부스배치도를 그대로 옮겨 실제 위치로 안내하고, 관심 가는 작가·부스를 골라 둘러봐요.",
   startDate: "2026-07-30",
   endDate: "2026-08-02",
-  coverImageUrl: undefined,
+  coverImageUrl: "/sif-2026-cover.webp",
   mapImageUrl: undefined,
   mapWidth: sifFloor.width,
   mapHeight: sifFloor.height,
