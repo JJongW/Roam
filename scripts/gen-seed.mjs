@@ -157,11 +157,11 @@ lines.push("on conflict (booth_id) do nothing;");
 lines.push("");
 
 lines.push(
-  "insert into review (id, booth_id, session_id, rating, comment, author_name, created_at) values",
+  "insert into review (id, booth_id, session_id, comment, author_name, created_at) values",
 );
 lines.push(
   seed.reviews
-    .map((r) => `  (${q(r.id)}, ${q(r.boothId)}, ${q(r.sessionId)}, ${n(r.rating)}, ${q(r.comment)}, ${q(r.authorName)}, ${q(r.createdAt)})`)
+    .map((r) => `  (${q(r.id)}, ${q(r.boothId)}, ${q(r.sessionId)}, ${q(r.comment)}, ${q(r.authorName)}, ${q(r.createdAt)})`)
     .join(",\n"),
 );
 lines.push("on conflict (id) do nothing;");
