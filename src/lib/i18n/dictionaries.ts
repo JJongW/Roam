@@ -195,6 +195,8 @@ const ko = {
     entryPicked:
       "먼저 볼 만한 {n}곳을 아래에 골라뒀어. 여기부터 가볍게 시작하자.",
     entryEmpty: "아래에서 관심 가는 곳에 반응해줘. 볼수록 더 잘 맞춰줄게.",
+    searchPlaceholder: "부스 이름·작가로 검색",
+    searchEmpty: "'{q}' 검색 결과가 없어. 다른 이름으로 찾아볼까?",
     similar: "비슷한 곳 {n}",
     collapse: "접기",
     pickStable: "확실히 네 취향이라",
@@ -633,6 +635,8 @@ const en: Dict = {
       "I lined up {n} worth-seeing spots below. Let's start light from here.",
     entryEmpty:
       "React to what interests you below. The more you look, the better I fit.",
+    searchPlaceholder: "Search booths by name or artist",
+    searchEmpty: "No results for '{q}'. Try another name?",
     similar: "Similar {n}",
     collapse: "Collapse",
     pickStable: "Definitely your taste",

@@ -2,22 +2,22 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { ChevronDown, Clock3 } from "lucide-react";
+import Link from "next/link";
+import { ChevronDown, ChevronRight, Clock3, Lightbulb } from "lucide-react";
 import { api } from "@/lib/api/client";
-import { BoothCard } from "@/components/booth/booth-card";
 import { ValueChips } from "@/components/values/value-chips";
-import { GroundingCard } from "@/components/feed/grounding-card";
+import { CategoryChip } from "@/components/booth/category-chip";
 import { ReactionBar } from "@/components/feed/reaction-bar";
 import { useT } from "@/lib/i18n/provider";
 import { cn } from "@/lib/utils";
-import type { Category } from "@/lib/types";
+import type { Booth, Category } from "@/lib/types";
 import type { FeedItem, PickKind } from "@/lib/feed/curate";
 
 /**
- * 관심 피드 — Instagram Threads 앱형 세로 스레드 피드. 각 항목은 Roam이 건네는 "게시물":
- * 아바타 + 발화(왜 골랐는지) + 인용된 부스 카드 + 가치칩·실시간 큐·반응. 관련 부스는
- * 스레드의 "답글"처럼 아바타 컬럼 아래로 이어지는 세로선에 물려 인라인 확장된다
- * (companion-reframe §5-b). 클릭·펼치기가 관심 신호로 브레인에 피드백된다. 로직 무변경.
+ * 관심 피드 — Roam이 건네는 추천을 항목별로 **하나의 카드 단위**로 묶는다. 각 카드는
+ * 같은 형태: [로미 발화(왜 골랐는지) → 부스 → 근거·큐 → 반응 → 관련]. 예전엔 부스 카드·
+ * 근거 카드·칩이 따로 떠 흩어져 보였는데, 한 카드 안에 seam 없이 담아 일관되게 읽히게 함.
+ * 클릭·펼치기가 관심 신호로 브레인에 피드백된다(로직 무변경).
  */
 export function InterestFeed({
   items,
@@ -34,13 +34,12 @@ export function InterestFeed({
   if (items.length === 0) return null;
 
   function fire(boothId: string) {
-    // fire-and-forget — 이동을 막지 않는다.
     void api
       .post("/api/me/signal", { boothId, kind: "feed_click" })
       .catch(() => {});
   }
   function toggle(boothId: string) {
-    fire(boothId); // 관련 펼치기 = 관심 신호
+    fire(boothId);
     setExpanded((prev) => {
       const next = new Set(prev);
       if (next.has(boothId)) next.delete(boothId);
@@ -51,106 +50,155 @@ export function InterestFeed({
 
   return (
     <section className="mt-6">
-      <div className="mb-1 px-1">
+      <div className="mb-2 px-1">
         <h2 className="text-base font-bold">{t("feed.heading")}</h2>
         <p className="mt-0.5 text-sm text-muted-foreground">
           {memoryLine ?? t("feed.subFallback")}
         </p>
       </div>
 
-      <div>
+      <div className="space-y-3">
         {items.map(({ booth, related, pick, cue, grounding }) => {
           const open = expanded.has(booth.id);
           return (
             <article
               key={booth.id}
-              className="flex gap-3 border-b border-border/60 py-4 last:border-b-0"
+              className="overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-card)]"
             >
-              {/* 아바타 컬럼 + 스레드 세로선 */}
-              <div className="flex flex-col items-center">
+              {/* 1) 로미 발화 — 왜 골랐는지(카드의 머리) */}
+              <div className="flex items-start gap-2.5 px-4 pt-3.5">
                 <RoamAvatar />
-                {(related.length > 0 && open) || cue ? (
-                  <span className="mt-1 w-px flex-1 bg-border" aria-hidden />
-                ) : null}
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-sm font-bold">{t("romi.name")}</span>
+                    <span className="text-xs text-muted-foreground">
+                      · {t(PICK_KEY[pick])}
+                    </span>
+                  </div>
+                  <p className="mt-1 flex items-start gap-1.5 text-sm font-medium leading-relaxed text-foreground/90">
+                    <Lightbulb
+                      className="mt-0.5 size-3.5 shrink-0 text-primary"
+                      aria-hidden
+                    />
+                    <span>{grounding.why}</span>
+                  </p>
+                </div>
               </div>
 
-              {/* 게시물 본문 */}
-              <div className="min-w-0 flex-1">
-                <div className="flex items-baseline gap-1.5">
-                  <span className="text-sm font-bold">{t("romi.name")}</span>
-                  <span className="text-xs text-muted-foreground">
-                    · {t(PICK_KEY[pick])}
-                  </span>
+              {/* 2) 부스 아이덴티티 — 카드에 seam 없이 인라인(카드-인-카드 아님) */}
+              <Link
+                href={`/booths/${booth.id}`}
+                onClick={() => fire(booth.id)}
+                className="mt-3 flex items-center gap-3 px-4 py-2.5 active:bg-accent/40"
+              >
+                <BoothThumb booth={booth} category={categoryById[booth.categoryId]} />
+                <div className="min-w-0 flex-1">
+                  <p className="truncate font-bold">{booth.name}</p>
+                  <p className="truncate text-sm text-muted-foreground">
+                    {booth.company}
+                  </p>
                 </div>
+                <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
+              </Link>
 
-                <div className="mt-2" onClick={() => fire(booth.id)}>
-                  <BoothCard
-                    booth={booth}
-                    category={categoryById[booth.categoryId]}
-                  />
-                </div>
-
-                {booth.valueTags && booth.valueTags.length > 0 && (
-                  <div className="mt-2">
+              {/* 3) 태그·근거·큐 — 같은 카드 안 얇은 구분선으로 묶음 */}
+              <div className="space-y-2 border-t border-border/60 px-4 py-2.5">
+                <div className="flex flex-wrap items-center gap-1.5">
+                  {categoryById[booth.categoryId] && (
+                    <CategoryChip category={categoryById[booth.categoryId]} />
+                  )}
+                  {booth.valueTags && booth.valueTags.length > 0 && (
                     <ValueChips tags={booth.valueTags} />
+                  )}
+                </div>
+
+                {grounding.evidence.length > 0 && (
+                  <div className="flex flex-wrap gap-1">
+                    {grounding.evidence.map((ev, i) => (
+                      <span
+                        key={i}
+                        className="rounded-md bg-secondary px-1.5 py-0.5 text-xs text-muted-foreground"
+                      >
+                        {ev}
+                      </span>
+                    ))}
                   </div>
                 )}
 
-                <GroundingCard grounding={grounding} />
+                {grounding.todo.length > 0 && (
+                  <p className="text-xs leading-relaxed text-muted-foreground">
+                    {t("grounding.todo", { items: grounding.todo.join(" · ") })}
+                  </p>
+                )}
 
                 {cue && (
-                  <div className="mt-2 flex items-start gap-1.5 text-xs leading-relaxed text-muted-foreground">
+                  <p className="flex items-start gap-1.5 text-xs leading-relaxed text-muted-foreground">
                     <Clock3 className="mt-0.5 size-3.5 shrink-0" aria-hidden />
                     <span>{cue}</span>
-                  </div>
+                  </p>
                 )}
 
-                <div className="mt-2.5">
-                  <ReactionBar boothId={booth.id} />
+                <div className="flex items-center gap-1.5">
+                  <span
+                    className={cn("size-1.5 rounded-full", CONF_DOT[grounding.confidence])}
+                    aria-hidden
+                  />
+                  <span className="text-[11px] text-muted-foreground">
+                    {t(CONF_KEY[grounding.confidence])}
+                  </span>
                 </div>
-
-                {related.length > 0 && (
-                  <>
-                    <button
-                      type="button"
-                      onClick={() => toggle(booth.id)}
-                      aria-expanded={open}
-                      className="mt-2 flex items-center gap-1 py-1 text-xs font-semibold text-muted-foreground active:opacity-70"
-                    >
-                      <ChevronDown
-                        className={cn(
-                          "size-3.5 transition-transform",
-                          open && "rotate-180",
-                        )}
-                        aria-hidden
-                      />
-                      {open
-                        ? t("feed.collapse")
-                        : t("feed.similar", { n: related.length })}
-                    </button>
-
-                    {open && (
-                      <div className="mt-2 space-y-2">
-                        {related.map((rb) => (
-                          <div key={rb.id} className="flex gap-2.5">
-                            <RoamAvatar small />
-                            <div
-                              className="min-w-0 flex-1"
-                              onClick={() => fire(rb.id)}
-                            >
-                              <BoothCard
-                                booth={rb}
-                                category={categoryById[rb.categoryId]}
-                                compact
-                              />
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </>
-                )}
               </div>
+
+              {/* 4) 반응 */}
+              <div className="border-t border-border/60 px-4 py-2.5">
+                <ReactionBar boothId={booth.id} />
+              </div>
+
+              {/* 5) 관련 부스 — 같은 카드 하단으로 인라인 확장 */}
+              {related.length > 0 && (
+                <div className="border-t border-border/60 px-4 py-2">
+                  <button
+                    type="button"
+                    onClick={() => toggle(booth.id)}
+                    aria-expanded={open}
+                    className="flex items-center gap-1 py-1 text-xs font-semibold text-muted-foreground active:opacity-70"
+                  >
+                    <ChevronDown
+                      className={cn(
+                        "size-3.5 transition-transform",
+                        open && "rotate-180",
+                      )}
+                      aria-hidden
+                    />
+                    {open
+                      ? t("feed.collapse")
+                      : t("feed.similar", { n: related.length })}
+                  </button>
+
+                  {open && (
+                    <div className="mt-1 space-y-1">
+                      {related.map((rb) => (
+                        <Link
+                          key={rb.id}
+                          href={`/booths/${rb.id}`}
+                          onClick={() => fire(rb.id)}
+                          className="flex items-center gap-2.5 rounded-xl px-1 py-2 active:bg-accent/40"
+                        >
+                          <BoothThumb
+                            booth={rb}
+                            category={categoryById[rb.categoryId]}
+                            small
+                          />
+                          <span className="min-w-0 flex-1 truncate text-sm font-semibold">
+                            {rb.name}
+                          </span>
+                          <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
             </article>
           );
         })}
@@ -159,20 +207,53 @@ export function InterestFeed({
   );
 }
 
-/** 스레드 게시자 = Roam. 로고 아바타. */
-function RoamAvatar({ small = false }: { small?: boolean }) {
+/** 부스 썸네일 — 작품/로고 있으면 이미지, 없으면 카테고리색 이니셜. 피드·관련 공통. */
+function BoothThumb({
+  booth,
+  category,
+  small = false,
+}: {
+  booth: Booth;
+  category?: Category;
+  small?: boolean;
+}) {
+  const thumb = booth.images?.[0] ?? booth.logoUrl;
   return (
     <span
       className={cn(
-        "flex shrink-0 items-center justify-center overflow-hidden rounded-full ring-1 ring-border",
-        small ? "size-7" : "size-9",
+        "flex shrink-0 items-center justify-center overflow-hidden rounded-xl",
+        small ? "size-9" : "size-11",
       )}
+      style={{
+        backgroundColor: category ? `${category.color}1a` : "var(--secondary)",
+      }}
     >
+      {thumb ? (
+        // eslint-disable-next-line @next/next/no-img-element -- 외부 CDN 이미지
+        <img
+          src={thumb}
+          alt=""
+          loading="lazy"
+          className="size-full object-cover"
+        />
+      ) : (
+        <span className="text-base font-bold" style={{ color: category?.color }}>
+          {booth.name.slice(0, 1)}
+        </span>
+      )}
+    </span>
+  );
+}
+
+/** 스레드 게시자 = Roam. 로고 아바타. */
+function RoamAvatar() {
+  return (
+    <span className="flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full ring-1 ring-border">
       <Image
         src="/logo.svg"
         alt="Roam"
-        width={small ? 28 : 36}
-        height={small ? 28 : 36}
+        width={36}
+        height={36}
         className="size-full object-cover"
         unoptimized
       />
@@ -180,9 +261,18 @@ function RoamAvatar({ small = false }: { small?: boolean }) {
   );
 }
 
-/** pick 갈래 → 사전 키(로미의 발화 한 조각). */
 const PICK_KEY: Record<PickKind, string> = {
   stable: "feed.pickStable",
   unfamiliar: "feed.pickUnfamiliar",
   adventure: "feed.pickAdventure",
 };
+const CONF_KEY = {
+  high: "grounding.confHigh",
+  medium: "grounding.confMedium",
+  low: "grounding.confLow",
+} as const;
+const CONF_DOT = {
+  high: "bg-primary",
+  medium: "bg-primary/50",
+  low: "bg-muted-foreground/40",
+} as const;
