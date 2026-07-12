@@ -528,19 +528,16 @@ export class SupabaseRepository implements Repository {
     let q = db.from("booth").select(BOOTH_LIST_COLS).eq("exhibition_id", exId);
     if (query?.hallId) q = q.eq("hall_id", query.hallId);
     if (query?.categoryId) q = q.eq("category_id", query.categoryId);
-    const { data } = await q;
-    let list = (data ?? []).map(mapBooth);
+    // 검색은 서버(ilike)로 — 부스가 많으면(예: SIF 913) fetch-all 후 JS 필터는
+    // PostgREST 기본 row 제한에 걸려 일부만 걸러진다. 이름·상호를 DB에서 직접 매칭.
     if (query?.q) {
-      const term = query.q.toLowerCase();
-      list = list.filter(
-        (b) =>
-          b.name.toLowerCase().includes(term) ||
-          b.company.toLowerCase().includes(term),
-      );
+      const term = query.q.replace(/[%,]/g, " ").trim();
+      if (term) q = q.or(`name.ilike.%${term}%,company.ilike.%${term}%`);
     }
-    list = list.sort(
-      (a, b) => b.popularity - a.popularity || a.id.localeCompare(b.id),
-    );
+    const { data } = await q;
+    const list = (data ?? [])
+      .map(mapBooth)
+      .sort((a, b) => b.popularity - a.popularity || a.id.localeCompare(b.id));
     return paginate(list, query?.cursor, query?.limit);
   }
 
