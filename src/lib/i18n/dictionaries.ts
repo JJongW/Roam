@@ -93,8 +93,9 @@ const ko = {
   onboardingQ: {
     introTitle: "안녕, 나는 로미야",
     introSub:
-      "몇 가지 물어보면서 네 취향을 알아갈게. 정답은 없어, 끌리는 걸 골라줘.",
+      "부스가 워낙 많아서, 네 취향을 알면 딱 맞는 곳만 골라줄 수 있어. 몇 개만 물어볼게 — 정답은 없어, 끌리는 걸 골라줘.",
     introCta: "좋아, 시작하자",
+    introSkip: "먼저 둘러볼게",
     learningApp: "로미가 너를 알아가는 중…",
     learningExhibition: "이 전시에서 네 취향을 맞춰보는 중…",
     almostThere: "거의 다 왔어",
@@ -181,7 +182,7 @@ const ko = {
       "지금 열 수 있는 전시는 하나야. 안에서는 네 취향에 맞춰 부스를 골라줄게.",
     loginReasonTitle: "로그인하면 로미가 너를 기억해",
     loginReasonBody:
-      "로그인하면 네 관람 취향을 다음 전시에도 이어갈 수 있어. 지금은 열린 전시만 둘러봐도 돼.",
+      "둘러보는 건 로그인 없이도 돼. 근데 네 취향에 맞는 추천·저장·다음 전시로 잇기는 로그인해야 이어져.",
     loginCta: "로그인하고 시작하기",
   },
   feed: {
@@ -532,8 +533,9 @@ const en: Dict = {
   onboardingQ: {
     introTitle: "Hi, I'm Romi",
     introSub:
-      "I'll get to know your taste with a few questions. No right answers — pick what draws you.",
+      "There are so many booths — knowing your taste lets me pick just the right ones. Just a few questions, no right answers.",
     introCta: "Okay, let's start",
+    introSkip: "I'll look around first",
     learningApp: "Romi is getting to know you…",
     learningExhibition: "Reading your taste for this fair…",
     almostThere: "Almost there",
@@ -620,7 +622,7 @@ const en: Dict = {
       "There's only one fair open right now. Inside, I'll pick booths to fit you.",
     loginReasonTitle: "Log in and Romi remembers you",
     loginReasonBody:
-      "Log in to carry your taste to the next fair too. For now, feel free to just browse the open fairs.",
+      "Browsing works without login. But taste-matched picks, saving, and carrying over to the next fair need you signed in.",
     loginCta: "Log in to start",
   },
   feed: {
