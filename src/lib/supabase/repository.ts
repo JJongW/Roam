@@ -531,8 +531,10 @@ export class SupabaseRepository implements Repository {
     // 검색은 서버(ilike)로 — 부스가 많으면(예: SIF 913) fetch-all 후 JS 필터는
     // PostgREST 기본 row 제한에 걸려 일부만 걸러진다. 이름·상호를 DB에서 직접 매칭.
     if (query?.q) {
-      const term = query.q.replace(/[%,]/g, " ").trim();
-      if (term) q = q.or(`name.ilike.%${term}%,company.ilike.%${term}%`);
+      // PostgREST .or() 안의 ilike 와일드카드는 %가 아니라 * (raw 필터 문법).
+      // 필터 구분자를 깨는 문자는 공백 처리.
+      const term = query.q.replace(/[%*,()]/g, " ").trim();
+      if (term) q = q.or(`name.ilike.*${term}*,company.ilike.*${term}*`);
     }
     const { data } = await q;
     const list = (data ?? [])
