@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { api } from "@/lib/api/client";
 import { RoamMotion } from "@/components/companion/roam-motion";
 import { Conversation } from "@/components/onboarding/conversation";
-import { useAuthStore } from "@/lib/stores/auth";
+import { useAuthStore, PENDING_VALUES_KEY } from "@/lib/stores/auth";
 import { useT } from "@/lib/i18n/provider";
 import {
   APP_QUESTIONS,
@@ -31,12 +31,20 @@ export function AppOnboardingGate() {
   );
   const [phase, setPhase] = useState<Phase>("intro");
 
-  if (onboarded || !ready || !user) return null;
+  // 로그인 전에도 뜬다(공개 온보딩) — 취향을 먼저 파악하고, 끝나면 홈 배너로
+  // 로그인 가치(추천·저장·다음 전시로 잇기)를 안내한다. ready(하이드레이션)만 기다림.
+  if (onboarded || !ready) return null;
 
   async function complete(tally: Tally) {
     setPhase("saving");
+    const values = topValues(tally, 3);
     try {
-      await api.post("/api/me/values", { values: topValues(tally, 3) });
+      if (user) {
+        await api.post("/api/me/values", { values });
+      } else if (typeof window !== "undefined") {
+        // 미로그인: 취향을 로컬에 담아두고, 로그인 시 브레인에 동기화(auth store).
+        localStorage.setItem(PENDING_VALUES_KEY, JSON.stringify(values));
+      }
     } catch {
       // 실패해도 진행.
     }

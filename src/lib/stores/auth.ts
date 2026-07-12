@@ -29,6 +29,22 @@ async function loadNotes() {
   }
 }
 
+/** 로그인 전 공개 온보딩에서 고른 취향(localStorage)을 로그인 시 브레인에 올린다. */
+export const PENDING_VALUES_KEY = "roam-pending-values";
+async function syncPendingValues() {
+  if (typeof window === "undefined") return;
+  const raw = localStorage.getItem(PENDING_VALUES_KEY);
+  if (!raw) return;
+  localStorage.removeItem(PENDING_VALUES_KEY);
+  try {
+    const values = JSON.parse(raw);
+    if (Array.isArray(values) && values.length)
+      await api.post("/api/me/values", { values });
+  } catch {
+    /* 실패해도 무시 — 관람 반응으로 다시 쌓인다 */
+  }
+}
+
 export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   ready: false,
@@ -43,7 +59,10 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       // Signed in → merge the server's notes on top. Signed out → keep whatever
       // is in the local cache: anonymous visitors save memos/visits locally and
       // must not lose them on reload. Only an explicit logout clears.
-      if (user) await loadNotes();
+      if (user) {
+        await syncPendingValues();
+        await loadNotes();
+      }
     } catch {
       set({ ready: true });
     }
@@ -55,6 +74,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         nickname,
       });
       set({ user, loginOpen: false });
+      await syncPendingValues();
       await loadNotes();
     } catch (e) {
       if (e instanceof ApiClientError) throw e;
