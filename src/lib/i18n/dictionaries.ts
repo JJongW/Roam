@@ -95,6 +95,7 @@ const ko = {
     introSub:
       "몇 가지 물어보면서 네 취향을 알아갈게. 정답은 없어, 끌리는 걸 골라줘.",
     introCta: "좋아, 시작하자",
+    introSkip: "먼저 둘러볼게",
     learningApp: "로미가 너를 알아가는 중…",
     learningExhibition: "이 전시에서 네 취향을 맞춰보는 중…",
     almostThere: "거의 다 왔어",
@@ -534,6 +535,7 @@ const en: Dict = {
     introSub:
       "I'll get to know your taste with a few questions. No right answers — pick what draws you.",
     introCta: "Okay, let's start",
+    introSkip: "I'll look around first",
     learningApp: "Romi is getting to know you…",
     learningExhibition: "Reading your taste for this fair…",
     almostThere: "Almost there",

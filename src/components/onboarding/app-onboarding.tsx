@@ -45,6 +45,13 @@ export function AppOnboardingGate() {
     router.refresh();
   }
 
+  // 강제하지 않는다 — 먼저 둘러보고 싶으면 넘어갈 수 있게(플래그만 세팅해 다시 안 뜨게).
+  // 취향은 관람하며 반응으로 쌓인다(빈 브레인=인기순 폴백).
+  function skip() {
+    if (typeof window !== "undefined") localStorage.setItem(FLAG, "1");
+    setOnboarded(true);
+  }
+
   return (
     // aria-modal: 온보딩 활성 동안 뒤 홈 콘텐츠를 보조기술 트리에서 비활성으로 —
     // 스크린리더가 질문과 배경 카드를 동시에 읽지 않도록. 시각적으론 불투명 bg가 덮음.
@@ -68,10 +75,23 @@ export function AppOnboardingGate() {
               {t("onboardingQ.introSub")}
             </p>
           </div>
-          {/* 하단 고정 CTA */}
-          <Button size="lg" className="w-full" onClick={() => setPhase("quiz")}>
-            {t("onboardingQ.introCta")}
-          </Button>
+          {/* 하단 고정 CTA + 스킵(강제 아님) */}
+          <div className="space-y-2">
+            <Button
+              size="lg"
+              className="w-full"
+              onClick={() => setPhase("quiz")}
+            >
+              {t("onboardingQ.introCta")}
+            </Button>
+            <button
+              type="button"
+              onClick={skip}
+              className="w-full py-2 text-sm font-medium text-muted-foreground active:opacity-70"
+            >
+              {t("onboardingQ.introSkip")}
+            </button>
+          </div>
         </div>
       )}
 
