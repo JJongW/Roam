@@ -62,8 +62,8 @@ export function EmptyState({
 }
 
 export function ErrorState({
-  title = "문제가 발생했어요",
-  description = "잠시 후 다시 시도해 주세요.",
+  title = "문제가 생겼어",
+  description = "잠깐 뒤에 다시 해보자.",
   onRetry,
 }: {
   title?: string;
@@ -84,7 +84,7 @@ export function ErrorState({
       </div>
       {onRetry && (
         <Button variant="outline" size="sm" onClick={onRetry}>
-          다시 시도
+          다시 해보기
         </Button>
       )}
     </div>
