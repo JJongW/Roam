@@ -13,9 +13,11 @@ import {
   topValues,
   type Tally,
 } from "@/lib/onboarding/questions";
+import { RHYTHMS, DEFAULT_RHYTHM, type Rhythm } from "@/lib/feed/rhythm";
+import { cn } from "@/lib/utils";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 
-type Phase = "intro" | "quiz" | "saving" | "result";
+type Phase = "intro" | "quiz" | "rhythm" | "saving" | "result";
 
 /**
  * 전시별 관람 가치 온보딩 — Romi 중앙 대화형(고정 4문항, n/N 진행바). 질문 전에 왜 묻는지
@@ -37,18 +39,29 @@ export function ValueOnboarding({
   const t = useT();
   const [open, setOpen] = useState(false);
   const [phase, setPhase] = useState<Phase>("intro");
+  // 가치 집계는 rhythm 스텝을 거쳐 저장하므로 잠깐 들고 있는다.
+  const [tally, setTally] = useState<Tally | null>(null);
+  // 온보딩에서 고른 오늘의 리듬 — 완료 시 ?rhythm= 으로 피드에 반영.
+  const [rhythm, setRhythm] = useState<Rhythm>(DEFAULT_RHYTHM);
 
   function start() {
     setPhase("intro");
     setOpen(true);
   }
 
-  async function complete(tally: Tally) {
+  // 가치 4문항 완료 → 바로 저장하지 않고 "오늘 어떻게 볼까"(리듬) 스텝으로.
+  function afterQuiz(result: Tally) {
+    setTally(result);
+    setPhase("rhythm");
+  }
+
+  async function complete(picked: Rhythm) {
+    setRhythm(picked);
     setPhase("saving");
     try {
       await api.post("/api/me/values", {
         exhibitionSlug: slug,
-        values: topValues(tally, 3),
+        values: tally ? topValues(tally, 3) : [],
       });
     } catch {
       // 실패해도 결과로 진행.
@@ -58,6 +71,8 @@ export function ValueOnboarding({
 
   function finish() {
     setOpen(false);
+    // 고른 리듬을 쿼리로 반영 → 서버가 그 밀도로 피드를 다시 큐레이션.
+    router.replace(`/exhibitions/${slug}?rhythm=${rhythm}`, { scroll: false });
     router.refresh();
   }
 
@@ -124,8 +139,42 @@ export function ValueOnboarding({
               mode="fixed"
               questions={EXHIBITION_QUESTIONS}
               subtitleKey="onboardingQ.learningExhibition"
-              onComplete={complete}
+              onComplete={afterQuiz}
             />
+          )}
+          {phase === "rhythm" && (
+            <div className="flex flex-1 flex-col px-6 pb-8 pt-safe">
+              <div className="flex flex-1 flex-col justify-center gap-6">
+                <div className="flex flex-col items-center gap-4 text-center">
+                  <span className="flex size-24 items-center justify-center overflow-hidden rounded-[2rem]">
+                    <RoamMotion src="/head.mp4" />
+                  </span>
+                  <h1 className="text-2xl font-extrabold leading-snug">
+                    {t("rhythm.question")}
+                  </h1>
+                </div>
+                <div className="flex flex-col gap-2.5">
+                  {RHYTHMS.map((r) => (
+                    <button
+                      key={r.key}
+                      type="button"
+                      onClick={() => complete(r.key)}
+                      className={cn(
+                        "flex items-center gap-3 rounded-2xl border border-border bg-card px-5 py-4 text-left active:scale-[0.99]",
+                      )}
+                    >
+                      <div className="min-w-0 flex-1">
+                        <p className="font-bold">{t(`rhythm.${r.key}`)}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {t(`rhythm.${r.key}Hint`)}
+                        </p>
+                      </div>
+                      <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
           )}
           {phase === "saving" && (
             <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
