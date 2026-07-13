@@ -111,7 +111,14 @@ export function MapView({
 
   function handleBack() {
     // 지도는 전시 상세에서 들어온 부가 화면 — 홈이 아니라 그 전시로 돌아간다.
-    router.push(`/exhibitions/${detail.exhibition.slug}`);
+    // history가 있으면 back()으로 pop → Next Router Cache에서 전시 페이지를 복원해
+    // 즉시 돌아간다(push는 새 내비라 RSC/데이터를 매번 다시 불러와 느림). 공유 링크로
+    // 지도에 바로 진입해 history가 없을 때만 전시로 push.
+    if (typeof window !== "undefined" && window.history.length > 1) {
+      router.back();
+    } else {
+      router.push(`/exhibitions/${detail.exhibition.slug}`);
+    }
   }
 
   // Toggle the crowd heatmap; fetch the aggregate once, then just show/hide.
