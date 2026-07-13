@@ -13,7 +13,6 @@ import { AppBar } from "@/components/common/app-bar";
 import { AccountButton } from "@/components/auth/account-button";
 import { InterestFeed } from "@/components/feed/interest-feed";
 import { BoothSearch } from "@/components/feed/booth-search";
-import { RhythmPicker } from "@/components/feed/rhythm-picker";
 import { ValueOnboarding } from "@/components/onboarding/value-onboarding";
 import { FinishVisit } from "@/components/companion/finish-visit";
 import { PosterViewer } from "@/components/exhibition/poster-viewer";
@@ -183,8 +182,6 @@ export default async function ExhibitionDetailPage({
 
           {/* 피드 상단 부스 검색 — 추천 몇 개 말고 전체 부스를 이름·작가로 찾기. */}
           {user && <BoothSearch slug={slug} categoryById={categoryById} />}
-
-          {feedItems.length > 0 && <RhythmPicker />}
 
           <InterestFeed
             items={feedItems}
