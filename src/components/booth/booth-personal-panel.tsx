@@ -108,7 +108,7 @@ export function BoothPersonalPanel({ boothId }: { boothId: string }) {
 
         {ready && !user && (
           <p className="text-xs text-muted-foreground">
-            이 기기에 저장돼요.{" "}
+            이 기기에 저장돼.{" "}
             <button
               type="button"
               onClick={openLogin}
@@ -116,7 +116,7 @@ export function BoothPersonalPanel({ boothId }: { boothId: string }) {
             >
               로그인
             </button>
-            하면 다른 기기와 동기화돼요.
+            하면 다른 기기와 동기화돼.
           </p>
         )}
       </>

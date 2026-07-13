@@ -41,7 +41,7 @@ export function BookmarkButton({
 
   async function toggle() {
     if (!user) {
-      promptLogin("가고 싶은 부스로 저장하려면 로그인이 필요해요");
+      promptLogin("가고 싶은 부스로 저장하려면 로그인해야 해");
       return;
     }
     if (busy) return;
@@ -53,7 +53,7 @@ export function BookmarkButton({
       else await api.del("/api/bookmarks", { targetType, targetId });
     } catch {
       setSaved(!next);
-      toast.error("북마크 처리에 실패했어요");
+      toast.error("북마크 처리 못 했어");
     } finally {
       setBusy(false);
     }

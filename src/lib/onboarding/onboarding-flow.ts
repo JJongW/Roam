@@ -37,7 +37,7 @@ export type StepId = (typeof STEP_IDS)[number];
 const startStep: OnboardingStepDef = {
   id: "start",
   message: () =>
-    "안녕? 나는 안내 도우미 Roam이야.\n전시를 더 편하게 둘러볼 수 있도록 같이 도와줄게.",
+    "안녕? 나는 관람 동행자 로미야.\n전시를 더 편하게 둘러볼 수 있도록 같이 도와줄게.",
   question: () => "혹시 이미 가보고 싶은 부스가 있어?",
   options: () => [
     {

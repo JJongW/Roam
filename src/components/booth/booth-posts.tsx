@@ -169,7 +169,7 @@ export function BoothPosts({
 
       {status === "ready" && posts.length === 0 && (
         <p className="px-1 py-4 text-center text-sm text-muted-foreground">
-          아직 공유된 정보가 없어요. 첫 정보를 남겨보세요.
+          아직 공유된 정보가 없어. 첫 정보를 남겨봐.
         </p>
       )}
 

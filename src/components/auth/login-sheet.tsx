@@ -48,11 +48,11 @@ export function LoginSheet() {
     setError(null);
     try {
       await login(name);
-      toast.success(`${name}님 환영해요!`);
+      toast.success(`${name} 왔구나, 반가워!`);
       setNickname("");
     } catch (e) {
       const msg =
-        e instanceof ApiClientError ? e.error.message : "로그인에 실패했어요";
+        e instanceof ApiClientError ? e.error.message : "로그인 못 했어";
       setError(msg);
     } finally {
       setBusy(false);
@@ -121,7 +121,7 @@ export function LoginSheet() {
             {busy ? t("login.checking") : t("login.sheetTitle")}
           </Button>
           <p className="text-center text-xs text-muted-foreground">
-            이미 쓰이는 닉네임은 선택할 수 없어요.
+            이미 쓰는 닉네임은 못 골라.
           </p>
         </div>
       </SheetContent>
@@ -138,7 +138,7 @@ export function AuthBootstrap() {
     // query param so a reload doesn't re-toast.
     const params = new URLSearchParams(window.location.search);
     if (params.get("login_error")) {
-      toast.error("로그인에 실패했어요. 다시 시도해 주세요.");
+      toast.error("로그인 못 했어. 다시 해줘.");
       params.delete("login_error");
       const qs = params.toString();
       window.history.replaceState(

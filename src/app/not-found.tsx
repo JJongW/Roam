@@ -9,8 +9,10 @@ export default function NotFound() {
         <Compass className="size-7 text-primary" />
       </div>
       <div className="space-y-1">
-        <h1 className="text-2xl font-extrabold">페이지를 찾을 수 없어요</h1>
-        <p className="text-sm text-muted-foreground">주소가 변경되었거나 삭제되었을 수 있어요.</p>
+        <h1 className="text-2xl font-extrabold">페이지를 찾을 수 없어</h1>
+        <p className="text-sm text-muted-foreground">
+          주소가 바뀌었거나 삭제됐을 수 있어.
+        </p>
       </div>
       <Button asChild>
         <Link href="/">홈으로</Link>
