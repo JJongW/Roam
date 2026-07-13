@@ -384,6 +384,8 @@ const ko = {
     whyLeadStable: "{lead} 쪽 부스야.",
     whyLeadNew: "{lead} 쪽이라 평소랑 좀 다른데, 넓혀볼 만해.",
     whyNone: "둘러보면 취향이 더 또렷해질 거야.",
+    whyComposed: "{what}. {reason}",
+    whatGoods: "여기 {goods} 있어",
   },
   rhythm: {
     question: "오늘은 어떻게 볼까?",
@@ -823,6 +825,8 @@ const en: Dict = {
     whyLeadStable: "It's a {lead} booth.",
     whyLeadNew: "It's {lead} — a bit different, worth widening to.",
     whyNone: "A look will sharpen your taste.",
+    whyComposed: "{what}. {reason}",
+    whatGoods: "Has {goods}",
   },
   rhythm: {
     question: "How do you want to look today?",

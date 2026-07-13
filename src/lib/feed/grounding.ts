@@ -29,6 +29,15 @@ function firstClause(text: string, max = 46): string {
 }
 
 /**
+ * 부스 요약을 발화에 얹을 한 조각으로. firstClause와 달리 중점(·)에서 자르지 않는다
+ * (요약은 "A·B·C" 나열이 흔해 ·에서 끊으면 정보가 날아간다). 문장부호에서만 첫 문장.
+ */
+function summaryClause(text: string, max = 44): string {
+  const cut = text.split(/[.。\n]/)[0]?.trim() ?? text.trim();
+  return cut.length > max ? `${cut.slice(0, max)}…` : cut;
+}
+
+/**
  * 부스 + 사용자 상위 관심 가치(slug)로 근거 카드를 만든다. pick 갈래에 따라 왜맞음 톤이
  * 달라진다(안정=겹침 강조, 낯선/모험=새로 넓히기).
  */
@@ -54,18 +63,33 @@ export function buildGrounding(
     why = matchedReasons.slice(0, 2).join(" ");
   } else if (e?.roamInterpretation) {
     why = e.roamInterpretation;
-  } else if (overlap.length > 0) {
-    why = t("grounding.whyOverlap", {
-      values: overlap.slice(0, 2).map(vl).join("·"),
-    });
-  } else if (boothVals.length > 0) {
-    const lead = vl(boothVals[0]);
-    why =
-      pick === "stable"
-        ? t("grounding.whyLeadStable", { lead })
-        : t("grounding.whyLeadNew", { lead });
   } else {
-    why = t("grounding.whyNone");
+    // 저작 없음 — 매 카드가 같은 말이 되지 않게, 부스의 구체(summary 한 조각)를 주어로
+    // 삼고 매칭 이유를 붙인다. summary 있는 부스는 부스마다 다른 문장이 된다(지어내기 없음).
+    let reason: string;
+    if (overlap.length > 0) {
+      reason = t("grounding.whyOverlap", {
+        values: overlap.slice(0, 2).map(vl).join("·"),
+      });
+    } else if (boothVals.length > 0) {
+      const lead = vl(boothVals[0]);
+      reason =
+        pick === "stable"
+          ? t("grounding.whyLeadStable", { lead })
+          : t("grounding.whyLeadNew", { lead });
+    } else {
+      reason = t("grounding.whyNone");
+    }
+    // 구체 근거를 주어로 — summary 한 조각 우선, 없으면 굿즈 키워드를 로미 목소리로.
+    // (둘 다 없으면 매칭 이유만. 지어내지 않음.)
+    const whatClause = e?.summary
+      ? summaryClause(e.summary, 44)
+      : e?.goodsKeywords?.[0]
+        ? t("grounding.whatGoods", { goods: e.goodsKeywords[0] })
+        : null;
+    why = whatClause
+      ? t("grounding.whyComposed", { what: whatClause, reason })
+      : reason;
   }
 
   // 근거 — 확인 가능한 사실(굿즈 우선, 없으면 팁 한 조각).
