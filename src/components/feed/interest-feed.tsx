@@ -142,19 +142,6 @@ export function InterestFeed({
                     <span>{cue}</span>
                   </p>
                 )}
-
-                <div className="flex items-center gap-1.5">
-                  <span
-                    className={cn(
-                      "size-1.5 rounded-full",
-                      CONF_DOT[grounding.confidence],
-                    )}
-                    aria-hidden
-                  />
-                  <span className="text-[11px] text-muted-foreground">
-                    {t(CONF_KEY[grounding.confidence])}
-                  </span>
-                </div>
               </div>
 
               {/* 4) 반응 */}
@@ -288,13 +275,3 @@ const PICK_KEY: Record<PickKind, string> = {
   unfamiliar: "feed.pickUnfamiliar",
   adventure: "feed.pickAdventure",
 };
-const CONF_KEY = {
-  high: "grounding.confHigh",
-  medium: "grounding.confMedium",
-  low: "grounding.confLow",
-} as const;
-const CONF_DOT = {
-  high: "bg-primary",
-  medium: "bg-primary/50",
-  low: "bg-muted-foreground/40",
-} as const;
