@@ -34,7 +34,7 @@ const REACTIONS: {
     key: "later",
     label: "나중에",
     kind: "reaction_later",
-    status: "interested",
+    status: "later",
     Icon: Clock3,
   },
   {
@@ -82,6 +82,7 @@ function keyForStatus(s: BoothStatus | undefined): string | null {
   if (s === "visited") return "seen";
   if (s === "skipped") return "skip";
   if (s === "interested") return "interested";
+  if (s === "later") return "later";
   return null;
 }
 
