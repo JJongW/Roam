@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useAuthStore } from "@/lib/stores/auth";
@@ -27,7 +27,10 @@ export function CompanionBar() {
   const home = useCompanionStore((s) => s.home);
   const flash = useCompanionStore((s) => s.flash);
   const clearFlash = useCompanionStore((s) => s.clearFlash);
+  const say = useCompanionStore((s) => s.say);
+  const progress = useCompanionStore((s) => s.progress);
   const [open, setOpen] = useState(false);
+  const doneRef = useRef(false);
 
   // 즉답(flash)은 잠깐 띄우고 스스로 사라진다 → 맥락 발화로 복귀.
   useEffect(() => {
@@ -38,6 +41,14 @@ export function CompanionBar() {
 
   // 전시 홈(상세)에선 상단 고정 배너 대신 여기서 취향·개수 맞춤 발화를 회전시킨다.
   const isExhibitionHome = /\/exhibitions\/[^/]+$/.test(pathname);
+
+  // 파악도 100% 도달 = 온보딩 마무리 — 로미가 한 번 선언한다(중복 금지).
+  useEffect(() => {
+    if (isExhibitionHome && progress >= 100 && !doneRef.current) {
+      doneRef.current = true;
+      say(t("companion.progressDone"));
+    }
+  }, [isExhibitionHome, progress, say, t]);
   const lines = useMemo(() => {
     if (isExhibitionHome && home) return homeLines(home, t);
     return [contextLine(pathname, t)];
@@ -62,6 +73,13 @@ export function CompanionBar() {
           className="pointer-events-auto flex max-w-full items-center gap-2 rounded-full border border-border bg-background/90 py-2 pl-2 pr-4 shadow-[var(--shadow-card)] backdrop-blur-xl active:scale-[0.98]"
         >
           <RoamAvatar />
+          {isExhibitionHome && home && progress > 0 && (
+            <span className="shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-bold text-primary">
+              {progress >= 100
+                ? "✓"
+                : t("companion.progressLabel", { pct: progress })}
+            </span>
+          )}
           <span className="truncate text-sm font-semibold">{line}</span>
         </button>
       </div>
