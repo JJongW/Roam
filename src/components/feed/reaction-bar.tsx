@@ -98,6 +98,8 @@ export function ReactionBar({
   const setStatus = useVisitStore((s) => s.setStatus);
   const say = useCompanionStore((s) => s.say);
   const bumpProgress = useCompanionStore((s) => s.bumpProgress);
+  const tickReaction = useCompanionStore((s) => s.tickReaction);
+  const progress = useCompanionStore((s) => s.progress);
   const [picked, setPicked] = useState<string | null>(() =>
     keyForStatus(storeStatus),
   );
@@ -116,8 +118,14 @@ export function ReactionBar({
       // 로미 즉답 — 취소가 아니라 새 반응일 때만. 내 행동에 바로 반응한다는 느낌.
       const line = reactionLine(r.key, valueLabel, t);
       if (line) say(line);
-      // 반응 하나가 취향 파악도를 올린다 — '별로'도 취향을 좁히는 신호라 함께 오른다.
-      bumpProgress(r.key === "skip" ? 5 : 9);
+      // 파악도 상승 — 남은 거리(100-현재)에 비례한 감쇠 증가라 서버 포화 곡선을 따라가
+      // 재접속 시 값 점프가 작고, 100까지 대략 15~20번의 반응이 필요하다(완만). '별로'도
+      // 취향을 좁히는 신호라 함께 오르되 절반만.
+      const factor = r.key === "skip" ? 0.06 : 0.13;
+      const floor = r.key === "skip" ? 1 : 2;
+      bumpProgress(Math.max(floor, Math.round((100 - progress) * factor)));
+      // 재추천 트리거 — 버스트가 멎으면 컨트롤러가 피드를 갱신 브레인으로 다시 부른다.
+      tickReaction();
     }
   }
 

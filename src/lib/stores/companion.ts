@@ -36,6 +36,14 @@ interface CompanionState {
   setProgress: (n: number) => void;
   /** 새 반응 등으로 파악도를 올린다(0~100 클램프). */
   bumpProgress: (delta: number) => void;
+
+  /**
+   * 반응이 일어날 때마다 증가하는 틱. 피드 재큐레이션 컨트롤러가 이를 구독해, 반응
+   * 버스트가 멎으면(디바운스) 서버 피드를 갱신된 브레인으로 다시 불러온다("취향 반영해서
+   * 다시 골라줄게"). 신호는 별도로 서버에 적재되고, 여기선 재추천 트리거만 담당.
+   */
+  reactionTick: number;
+  tickReaction: () => void;
 }
 
 const clampPct = (n: number) => Math.max(0, Math.min(100, Math.round(n)));
@@ -50,4 +58,6 @@ export const useCompanionStore = create<CompanionState>((set) => ({
   setProgress: (n) => set({ progress: clampPct(n) }),
   bumpProgress: (delta) =>
     set((s) => ({ progress: clampPct(s.progress + delta) })),
+  reactionTick: 0,
+  tickReaction: () => set((s) => ({ reactionTick: s.reactionTick + 1 })),
 }));
