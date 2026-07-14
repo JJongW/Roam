@@ -243,7 +243,7 @@ const ko = {
     coachCommunityD: "현장 소식을 실시간으로 나눠.",
     coachColorsL: "부스 색",
     coachColorsD:
-      "초록=가봄, 노랑=끌림, 파랑=나중에, 흐림=별로. 반응할수록 쌓여.",
+      "초록=끌림, 남색=가봄, 노랑=나중에, 흐림=별로. 반응할수록 쌓여.",
     guideReopen: "지도 사용법",
     legendVisited: "가봄",
     legendInterested: "끌림",
@@ -697,7 +697,7 @@ const en: Dict = {
     coachCommunityD: "Share live news in real time.",
     coachColorsL: "Booth colors",
     coachColorsD:
-      "Green = seen, yellow = liked, blue = later, dim = passed. It builds as you react.",
+      "Green = liked, indigo = seen, yellow = later, dim = passed. It builds as you react.",
     guideReopen: "Map guide",
     legendVisited: "Seen",
     legendInterested: "Liked",

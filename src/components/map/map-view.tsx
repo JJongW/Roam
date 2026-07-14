@@ -235,19 +235,19 @@ export function MapView({
               className="size-3 rounded-[3px]"
               style={{ backgroundColor: "var(--route-visited)" }}
             />
+            {t("map.legendInterested")}
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span
+              className="size-3 rounded-[3px]"
+              style={{ backgroundColor: "var(--primary)" }}
+            />
             {t("map.legendVisited")}
           </span>
           <span className="flex items-center gap-1.5">
             <span
               className="size-3 rounded-[3px]"
               style={{ backgroundColor: "var(--warning)" }}
-            />
-            {t("map.legendInterested")}
-          </span>
-          <span className="flex items-center gap-1.5">
-            <span
-              className="size-3 rounded-[3px]"
-              style={{ backgroundColor: "#3b82f6" }}
             />
             {t("map.legendLater")}
           </span>
