@@ -1192,25 +1192,26 @@ export function ExhibitionMap({
                 {(() => {
                   const color = cat?.color ?? "var(--primary)";
                   const zone = g.color ?? `${color}26`;
-                  // Map uses STATE colors only — 가봄(초록)/끌림(노랑)/나중에(파랑)/별로(흐림).
-                  // Category hue lives in chips/detail, not on the booth.
-                  const fill = isVisited
+                  // Map uses STATE colors only — 끌림(초록)/가봄(대표색)/나중에(노랑)/별로(흐림).
+                  // 끌림=우리 대표 상태색 초록, 가봄=대표색(primary). Category hue는 칩/상세에만.
+                  const fill = isInterested
                     ? "var(--route-visited)"
-                    : isInterested
-                      ? "var(--warning)"
+                    : isVisited
+                      ? "var(--primary)"
                       : isLater
-                        ? "#3b82f6"
+                        ? "var(--warning)"
                         : isSkipped
                           ? "var(--muted)"
                           : zone;
+                  // primary(남보라)·초록은 어두워 흰 글씨, 노랑(나중에)은 밝아 어두운 글씨.
                   const darkText =
-                    isVisited || isInterested || isLater || fill === "#3a3d44";
+                    isVisited || isInterested || fill === "#3a3d44";
                   const stroke = isSel
                     ? "var(--primary)"
                     : isInterested
-                      ? "var(--warning)"
+                      ? "var(--route-visited)"
                       : isLater
-                        ? "#3b82f6"
+                        ? "var(--warning)"
                         : g.color && g.color !== "#d8dade"
                           ? g.color
                           : "var(--border)";
