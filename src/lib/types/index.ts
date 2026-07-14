@@ -345,7 +345,8 @@ export type SignalKind =
   | "route_saved"
   | "feed_click"
   | "reaction_interested" // 끌림
-  | "reaction_later"; // 나중에
+  | "reaction_later" // 나중에
+  | "search_query"; // 특정 부스 검색 = 강한 능동 관심
 
 /** 원장 1행 — 사용자 행동 신호. append-only, 재증류 소스. */
 export interface UserSignal {

@@ -161,6 +161,8 @@ export const SIGNAL_WEIGHTS: Record<
   // 반응 버튼: 끌림=명시 강, 나중에=약한 명시. 별로/이미봄은 skip/visited 재사용.
   reaction_interested: { explicit: 1.2, implicit: 0, negative: 0 },
   reaction_later: { explicit: 0.5, implicit: 0, negative: 0 },
+  // 특정 부스를 직접 검색 = 능동적 강한 관심(끌림에 준함).
+  search_query: { explicit: 1.3, implicit: 0, negative: 0 },
 };
 
 /** Reasoner/Planner 튜닝. 피로도 가중 + 재계획 시 피로 페널티. */
