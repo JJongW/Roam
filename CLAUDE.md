@@ -82,7 +82,7 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
 - `seed.ts`가 부스에 attach. `themeTags`(=slug)는 `booth.tags`에 병합 → 추천 스코어링에 **LLM 없이 즉시** 반영. 굿즈/요약/팁은 부스 상세 노출 + 온보딩 추론 프롬프트 어휘로 주입.
 - **근거 카드(Phase F)**: 피드 각 부스에 "무엇/왜맞음/근거/뭘하면/신뢰" = `src/lib/feed/grounding.ts`(순수) → `curateFeed`가 FeedItem에 attach, `components/feed/grounding-card.tsx` 렌더. 왜맞음은 저작 `recommendationReasons`(가치별) > `roamInterpretation` > **런타임 겹침**(사용자 브레인 상위 가치 ∩ 부스 valueSlugs) 순. 저작 없으면 자연 degrade(블로커 아님).
 - **최소 필수 6종**(운영 입력 시 반드시): `summary`(공식+한줄해석)·`valueTags`·`recommendationReasons`·`thingsToDo`·`timing`·`memoryHooks`. 가장 중요 4=공식정보+해석+가치태그+근거. 양식 `docs/booth-enrichment.md`, 저작 예시 `A1001`·`A1101`. ⚠️ 현재 저작 필드(roamInterpretation·valueTags·recommendationReasons 등)는 2개 부스만 채워짐 — 나머지는 런타임 파생 중.
-- Supabase `booth_enrichment` 테이블(`0013`), repo `getBoothDetail` attach. ⚠️ 신규 필드(recommendationReasons·thingsToDo)는 아직 Supabase 컬럼 미반영(mock만) — 데이터레이어 후속.
+- Supabase `booth_enrichment` 테이블(`0013` 기본 + `0021` 근거카드 컬럼: value_tags·roam_interpretation·recommendation_reasons·things_to_do·timing·memory_hooks 등), repo `getBoothDetail`가 전 필드 매핑. 데이터 동기화: `0023_booth_enrichment_sync.sql`이 mock JSON 전체(97행)를 멱등 UPSERT(재생성 시 이 마이그레이션 갱신). ⚠️ seed.sql의 enrichment 블록은 구 6컬럼·구 데이터라 stale — prod 진실은 마이그레이션.
 
 ## 데이터 주입 (SIBF 시드)
 - 소스: `src/lib/floorplan-sibf.json`(부스 좌표·코드·kind·분야) + `official-sibf-2026.json`(공동입점) → `seed.ts`. 런북 `.claude/skills/booth-data-entry`.
