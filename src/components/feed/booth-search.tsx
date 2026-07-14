@@ -53,6 +53,13 @@ export function BoothSearch({
 
   const active = q.trim().length > 0;
 
+  // 검색해서 연 부스 = 능동적 강한 관심 → 브레인에 신호로 남긴다(로미가 인지·반영).
+  function fireSearchOpen(boothId: string) {
+    void api
+      .post("/api/me/signal", { boothId, kind: "search_query" })
+      .catch(() => {});
+  }
+
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-2 rounded-2xl border border-border bg-card px-3.5 py-2.5 shadow-[var(--shadow-card)] focus-within:border-primary/50">
@@ -93,6 +100,7 @@ export function BoothSearch({
                 <Link
                   key={b.id}
                   href={`/booths/${b.id}`}
+                  onClick={() => fireSearchOpen(b.id)}
                   className={cn(
                     "flex items-center gap-3 px-4 py-2.5 active:bg-accent/40",
                     i > 0 && "border-t border-border/60",

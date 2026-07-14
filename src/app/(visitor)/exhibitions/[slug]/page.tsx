@@ -23,6 +23,7 @@ import { VALUE_SLUGS } from "@/lib/values";
 import { getCurrentUser } from "@/lib/api/session";
 import { curateFeed } from "@/lib/feed/curate";
 import { readBrain } from "@/lib/memory/service";
+import { tasteProgress } from "@/lib/memory/progress";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -67,17 +68,9 @@ export default async function ExhibitionDetailPage({
   const memoryLine = topValues.length
     ? t("feed.memoryLine", { values: topValues.join("·") })
     : undefined;
-  // 로미의 취향 파악도(0~100) — 관심 노드 수 + 확신도로 파생. 반응이 쌓일수록 오른다.
-  // 하단 컴패니언이 %로 보여주고, 100%면 온보딩을 마무리한다(스테이터스바 대체).
-  const engaged = (brain?.interests ?? []).filter((n) => n.confidence >= 0.25);
-  const avgConf = engaged.length
-    ? engaged.slice(0, 4).reduce((s, n) => s + n.confidence, 0) /
-      Math.min(4, engaged.length)
-    : 0;
-  const tasteProgress = Math.min(
-    100,
-    Math.round(engaged.length * 12 + avgConf * 55),
-  );
+  // 로미의 취향 파악도(0~100) — 브레인 파생 순수 함수(정직·영속). 하단 컴패니언이
+  // %로 보여주고, 100%면 온보딩을 마무리한다(스테이터스바 대체).
+  const progressPct = brain ? tasteProgress(brain) : 0;
   const categoryById = Object.fromEntries(
     detail.categories.map((c) => [c.id, c]),
   );
@@ -145,7 +138,7 @@ export default async function ExhibitionDetailPage({
             <HomeCompanionContextBridge
               values={topValues}
               picked={feedItems.length}
-              progress={tasteProgress}
+              progress={progressPct}
             />
           )}
 
