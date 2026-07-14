@@ -9,7 +9,9 @@ import { ValueChips } from "@/components/values/value-chips";
 import { CategoryChip } from "@/components/booth/category-chip";
 import { ReactionBar } from "@/components/feed/reaction-bar";
 import { useT } from "@/lib/i18n/provider";
+import type { TFn } from "@/lib/i18n/resolve";
 import { cn } from "@/lib/utils";
+import { VALUE_SLUGS } from "@/lib/values";
 import type { Booth, Category } from "@/lib/types";
 import type { FeedItem, PickKind } from "@/lib/feed/curate";
 
@@ -91,7 +93,10 @@ export function InterestFeed({
                 onClick={() => fire(booth.id)}
                 className="mt-3 flex items-center gap-3 px-4 py-2.5 active:bg-accent/40"
               >
-                <BoothThumb booth={booth} category={categoryById[booth.categoryId]} />
+                <BoothThumb
+                  booth={booth}
+                  category={categoryById[booth.categoryId]}
+                />
                 <div className="min-w-0 flex-1">
                   <p className="truncate font-bold">{booth.name}</p>
                   <p className="truncate text-sm text-muted-foreground">
@@ -140,7 +145,10 @@ export function InterestFeed({
 
                 <div className="flex items-center gap-1.5">
                   <span
-                    className={cn("size-1.5 rounded-full", CONF_DOT[grounding.confidence])}
+                    className={cn(
+                      "size-1.5 rounded-full",
+                      CONF_DOT[grounding.confidence],
+                    )}
                     aria-hidden
                   />
                   <span className="text-[11px] text-muted-foreground">
@@ -151,7 +159,10 @@ export function InterestFeed({
 
               {/* 4) 반응 */}
               <div className="border-t border-border/60 px-4 py-2.5">
-                <ReactionBar boothId={booth.id} />
+                <ReactionBar
+                  boothId={booth.id}
+                  valueLabel={leadValueLabel(booth, t)}
+                />
               </div>
 
               {/* 5) 관련 부스 — 같은 카드 하단으로 인라인 확장 */}
@@ -237,7 +248,10 @@ function BoothThumb({
           className="size-full object-cover"
         />
       ) : (
-        <span className="text-base font-bold" style={{ color: category?.color }}>
+        <span
+          className="text-base font-bold"
+          style={{ color: category?.color }}
+        >
           {booth.name.slice(0, 1)}
         </span>
       )}
@@ -259,6 +273,14 @@ function RoamAvatar() {
       />
     </span>
   );
+}
+
+/** 부스의 대표 관심 가치 라벨 — 가장 강한 valueTag가 가치 슬러그면 번역해 반환. */
+function leadValueLabel(booth: Booth, t: TFn): string | undefined {
+  const top = [...(booth.valueTags ?? [])]
+    .filter((v) => VALUE_SLUGS.includes(v.slug))
+    .sort((a, b) => b.strength - a.strength)[0];
+  return top ? t(`values.${top.slug}`) : undefined;
 }
 
 const PICK_KEY: Record<PickKind, string> = {
