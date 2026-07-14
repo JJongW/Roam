@@ -46,7 +46,7 @@ export default async function HomePage() {
       {/* Romi 히어로 — 냅다 전시가 아니라 로미가 먼저 맞이한다. */}
       <section className="flex flex-col items-center gap-4 px-6 pb-4 pt-12 text-center">
         <span className="flex size-32 items-center justify-center overflow-hidden rounded-[2.5rem]">
-          <RoamMotion src="/walking.mp4" />
+          <RoamMotion src="/headbunting.webm" />
         </span>
         <h2 className="text-2xl font-extrabold leading-snug">
           {t("home.heroGreeting")}

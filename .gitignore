@@ -52,3 +52,6 @@ next-env.d.ts
 
 # Supabase SQL (migrations/seed/reset) — applied manually via SQL Editor, not versioned
 supabase/
+
+# 투명 로미 영상 원본(ProRes, 대용량) — 배포엔 변환된 .webm만
+public/*.mov

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import { api } from "@/lib/api/client";
 import { useT } from "@/lib/i18n/provider";
-import { RoamMotion } from "@/components/companion/roam-motion";
+import { RoamMotion, THINKING_POOL } from "@/components/companion/roam-motion";
 import { Conversation } from "@/components/onboarding/conversation";
 import { OnboardingResult } from "@/components/onboarding/onboarding-result";
 import {
@@ -90,7 +90,7 @@ export function ValueOnboarding({
           className="flex w-full items-center gap-3 rounded-2xl bg-gradient-to-br from-primary to-[#4338ca] p-4 text-left text-primary-foreground shadow-[var(--shadow-pop)] active:scale-[0.99]"
         >
           <span className="flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white/15 ring-1 ring-white/25">
-            <RoamMotion src="/head.mp4" />
+            <RoamMotion src="/walk_think.webm" />
           </span>
           <div className="min-w-0 flex-1">
             <p className="font-bold">{t("valueOnboarding.cardTitle")}</p>
@@ -116,7 +116,7 @@ export function ValueOnboarding({
             <div className="flex flex-1 flex-col px-6 pb-8 pt-safe">
               <div className="flex flex-1 flex-col items-center justify-center gap-5 text-center">
                 <span className="flex size-28 items-center justify-center overflow-hidden rounded-[2.25rem]">
-                  <RoamMotion src="/head.mp4" />
+                  <RoamMotion src="/walk_think.webm" />
                 </span>
                 <h1 className="text-2xl font-extrabold leading-snug">
                   {t("valueOnboarding.intro1", { name: exhibitionName ?? "" })}
@@ -152,7 +152,7 @@ export function ValueOnboarding({
               <div className="flex flex-1 flex-col justify-center gap-6">
                 <div className="flex flex-col items-center gap-4 text-center">
                   <span className="flex size-24 items-center justify-center overflow-hidden rounded-[2rem]">
-                    <RoamMotion src="/head.mp4" />
+                    <RoamMotion src="/walk_think.webm" />
                   </span>
                   <h1 className="text-2xl font-extrabold leading-snug">
                     {t("rhythm.question")}
@@ -184,7 +184,7 @@ export function ValueOnboarding({
           {phase === "saving" && (
             <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
               <span className="flex size-24 items-center justify-center overflow-hidden rounded-[2rem]">
-                <RoamMotion src="/head.mp4" />
+                <RoamMotion pool={THINKING_POOL} />
               </span>
               <p className="text-[15px] font-medium text-muted-foreground">
                 {t("onboardingQ.analyzing")}

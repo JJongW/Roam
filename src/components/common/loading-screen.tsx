@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { RoamMotion, THINKING_POOL } from "@/components/companion/roam-motion";
 import { useT } from "@/lib/i18n/provider";
 
 type Topic = "exhibition" | "map" | "booth";
@@ -24,7 +24,9 @@ export function LoadingScreen({ topic }: { topic: Topic }) {
   return (
     <div className="flex flex-1 flex-col">
       <div className="flex items-center gap-2.5 px-5 pt-6 text-sm font-semibold text-foreground">
-        <Loader2 className="size-4 shrink-0 animate-spin text-primary" />
+        <span className="flex size-8 shrink-0 items-center justify-center overflow-hidden">
+          <RoamMotion pool={THINKING_POOL} />
+        </span>
         <span>{t(`loading.${topic}`)}</span>
       </div>
       {longWait && (
