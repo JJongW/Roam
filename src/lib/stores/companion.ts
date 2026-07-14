@@ -26,7 +26,19 @@ interface CompanionState {
   /** 즉답 발화를 띄운다. 컴패니언 바가 잠시 뒤 스스로 지운다. */
   say: (text: string) => void;
   clearFlash: () => void;
+
+  /**
+   * 로미가 스스로 인지하는 "취향 파악도" 0~100. 기존 온보딩의 스테이터스바 대신,
+   * 로미가 반응·검색으로 사용자를 이해한 정도를 %로 보여준다. 서버 브레인으로 시드하고
+   * 반응할 때마다 낙관적으로 오른다. 결정론(수학), LLM 없음.
+   */
+  progress: number;
+  setProgress: (n: number) => void;
+  /** 새 반응 등으로 파악도를 올린다(0~100 클램프). */
+  bumpProgress: (delta: number) => void;
 }
+
+const clampPct = (n: number) => Math.max(0, Math.min(100, Math.round(n)));
 
 export const useCompanionStore = create<CompanionState>((set) => ({
   home: null,
@@ -34,4 +46,8 @@ export const useCompanionStore = create<CompanionState>((set) => ({
   flash: null,
   say: (text) => set({ flash: text }),
   clearFlash: () => set({ flash: null }),
+  progress: 0,
+  setProgress: (n) => set({ progress: clampPct(n) }),
+  bumpProgress: (delta) =>
+    set((s) => ({ progress: clampPct(s.progress + delta) })),
 }));

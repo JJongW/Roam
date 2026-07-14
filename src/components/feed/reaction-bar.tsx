@@ -97,6 +97,7 @@ export function ReactionBar({
   const storeStatus = useVisitStore((s) => s.records[boothId]?.status);
   const setStatus = useVisitStore((s) => s.setStatus);
   const say = useCompanionStore((s) => s.say);
+  const bumpProgress = useCompanionStore((s) => s.bumpProgress);
   const [picked, setPicked] = useState<string | null>(() =>
     keyForStatus(storeStatus),
   );
@@ -115,6 +116,8 @@ export function ReactionBar({
       // 로미 즉답 — 취소가 아니라 새 반응일 때만. 내 행동에 바로 반응한다는 느낌.
       const line = reactionLine(r.key, valueLabel, t);
       if (line) say(line);
+      // 반응 하나가 취향 파악도를 올린다 — '별로'도 취향을 좁히는 신호라 함께 오른다.
+      bumpProgress(r.key === "skip" ? 5 : 9);
     }
   }
 

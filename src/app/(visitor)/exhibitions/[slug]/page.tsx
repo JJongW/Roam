@@ -67,6 +67,17 @@ export default async function ExhibitionDetailPage({
   const memoryLine = topValues.length
     ? t("feed.memoryLine", { values: topValues.join("·") })
     : undefined;
+  // 로미의 취향 파악도(0~100) — 관심 노드 수 + 확신도로 파생. 반응이 쌓일수록 오른다.
+  // 하단 컴패니언이 %로 보여주고, 100%면 온보딩을 마무리한다(스테이터스바 대체).
+  const engaged = (brain?.interests ?? []).filter((n) => n.confidence >= 0.25);
+  const avgConf = engaged.length
+    ? engaged.slice(0, 4).reduce((s, n) => s + n.confidence, 0) /
+      Math.min(4, engaged.length)
+    : 0;
+  const tasteProgress = Math.min(
+    100,
+    Math.round(engaged.length * 12 + avgConf * 55),
+  );
   const categoryById = Object.fromEntries(
     detail.categories.map((c) => [c.id, c]),
   );
@@ -134,6 +145,7 @@ export default async function ExhibitionDetailPage({
             <HomeCompanionContextBridge
               values={topValues}
               picked={feedItems.length}
+              progress={tasteProgress}
             />
           )}
 

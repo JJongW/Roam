@@ -14,6 +14,7 @@ import {
   type Tally,
 } from "@/lib/onboarding/questions";
 import { RHYTHMS, DEFAULT_RHYTHM, type Rhythm } from "@/lib/feed/rhythm";
+import { useCompanionStore } from "@/lib/stores/companion";
 import { cn } from "@/lib/utils";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 
@@ -37,6 +38,7 @@ export function ValueOnboarding({
 }) {
   const router = useRouter();
   const t = useT();
+  const progress = useCompanionStore((s) => s.progress);
   const [open, setOpen] = useState(false);
   const [phase, setPhase] = useState<Phase>("intro");
   // 가치 집계는 rhythm 스텝을 거쳐 저장하므로 잠깐 들고 있는다.
@@ -79,23 +81,26 @@ export function ValueOnboarding({
   return (
     <>
       {/* 이 전시의 메인 액션 — 관람 가치 정하기. 눈에 띄게 primary 강조(다른 카드에
-          묻히지 않도록). companion 톤: 로미가 먼저 제안. */}
-      <button
-        type="button"
-        onClick={start}
-        className="flex w-full items-center gap-3 rounded-2xl bg-gradient-to-br from-primary to-[#4338ca] p-4 text-left text-primary-foreground shadow-[var(--shadow-pop)] active:scale-[0.99]"
-      >
-        <span className="flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white/15 ring-1 ring-white/25">
-          <RoamMotion src="/head.mp4" />
-        </span>
-        <div className="min-w-0 flex-1">
-          <p className="font-bold">{t("valueOnboarding.cardTitle")}</p>
-          <p className="text-sm text-primary-foreground/80">
-            {t("valueOnboarding.cardSub")}
-          </p>
-        </div>
-        <ChevronRight className="size-5 shrink-0 text-primary-foreground/80" />
-      </button>
+          묻히지 않도록). companion 톤: 로미가 먼저 제안. 취향 파악도 100%면 온보딩을
+          이미 마친 것이라 진입 카드를 숨긴다(추가 온보딩 버튼 불필요). */}
+      {progress < 100 && (
+        <button
+          type="button"
+          onClick={start}
+          className="flex w-full items-center gap-3 rounded-2xl bg-gradient-to-br from-primary to-[#4338ca] p-4 text-left text-primary-foreground shadow-[var(--shadow-pop)] active:scale-[0.99]"
+        >
+          <span className="flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white/15 ring-1 ring-white/25">
+            <RoamMotion src="/head.mp4" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="font-bold">{t("valueOnboarding.cardTitle")}</p>
+            <p className="text-sm text-primary-foreground/80">
+              {t("valueOnboarding.cardSub")}
+            </p>
+          </div>
+          <ChevronRight className="size-5 shrink-0 text-primary-foreground/80" />
+        </button>
+      )}
 
       {/* 대화형(고정 진행바) — 전체화면 시트 */}
       <Sheet open={open && phase !== "result"} onOpenChange={setOpen}>
