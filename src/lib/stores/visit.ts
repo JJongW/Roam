@@ -7,7 +7,7 @@ import type { BoothNote } from "@/lib/types";
 
 /** A visitor's personal status for a booth, independent of the active route.
  *  "interested"(끌림)은 로컬 전용 — 지도 관심 색칠용. 서버 노트는 visited|skipped만 동기화. */
-export type BoothStatus = "visited" | "skipped" | "interested";
+export type BoothStatus = "visited" | "skipped" | "interested" | "later";
 
 export interface BoothRecord {
   status?: BoothStatus;

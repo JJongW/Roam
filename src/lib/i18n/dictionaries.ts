@@ -242,10 +242,12 @@ const ko = {
     coachCommunityL: "커뮤니티",
     coachCommunityD: "현장 소식을 실시간으로 나눠.",
     coachColorsL: "부스 색",
-    coachColorsD: "초록=가봄, 노랑=끌린 곳. 반응할수록 관심이 진해져.",
+    coachColorsD:
+      "초록=가봄, 노랑=끌림, 파랑=나중에, 흐림=별로. 반응할수록 쌓여.",
     guideReopen: "지도 사용법",
     legendVisited: "가봄",
     legendInterested: "끌림",
+    legendLater: "나중에",
     legendSelected: "선택",
   },
   booth: {
@@ -305,6 +307,7 @@ const ko = {
       "부스를 누르고 떠오른 생각이나 사진을 남기면, 여기에 모아서 다시 볼 수 있어.",
     seen: "가봄",
     interested: "끌림",
+    later: "나중에",
     skip: "별로",
     memoPlaceholder: "이 부스 메모 남겨봐 (예: 리필 노트 사기, 친구 선물)",
     memoAria: "부스 메모",
@@ -694,10 +697,11 @@ const en: Dict = {
     coachCommunityD: "Share live news in real time.",
     coachColorsL: "Booth colors",
     coachColorsD:
-      "Green = seen, yellow = liked. Interest deepens as you react.",
+      "Green = seen, yellow = liked, blue = later, dim = passed. It builds as you react.",
     guideReopen: "Map guide",
     legendVisited: "Seen",
     legendInterested: "Liked",
+    legendLater: "Later",
     legendSelected: "Selected",
   },
   booth: {
@@ -757,6 +761,7 @@ const en: Dict = {
       "Tap a booth and leave a thought or photo — they'll gather here to revisit.",
     seen: "Seen",
     interested: "Liked",
+    later: "Later",
     skip: "Passed",
     memoPlaceholder:
       "Leave a note about this booth (e.g. buy refill, gift for friend)",

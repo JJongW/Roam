@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import {
   Check,
   ChevronRight,
+  Clock3,
   Star,
   X,
   MapPin,
@@ -22,6 +23,7 @@ import type { Booth, Category } from "@/lib/types";
 const STATUS = {
   visited: { i18nKey: "seen", Icon: Check },
   interested: { i18nKey: "interested", Icon: Star },
+  later: { i18nKey: "later", Icon: Clock3 },
   skipped: { i18nKey: "skip", Icon: X },
 } as const;
 

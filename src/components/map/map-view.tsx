@@ -74,6 +74,7 @@ export function MapView({
   );
   const visitedIds = useMemo(() => idsByStatus(records, "visited"), [records]);
   const skippedIds = useMemo(() => idsByStatus(records, "skipped"), [records]);
+  const laterIds = useMemo(() => idsByStatus(records, "later"), [records]);
   const interestedIds = useMemo(
     () => idsByStatus(records, "interested"),
     [records],
@@ -166,6 +167,7 @@ export function MapView({
         controlsClassName="right-3 top-16"
         visitedIds={visitedIds}
         skippedIds={skippedIds}
+        laterIds={laterIds}
         interestedIds={interestedIds}
         selectedId={selectedId}
         centerOn={centerOn}
@@ -241,6 +243,13 @@ export function MapView({
               style={{ backgroundColor: "var(--warning)" }}
             />
             {t("map.legendInterested")}
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span
+              className="size-3 rounded-[3px]"
+              style={{ backgroundColor: "#3b82f6" }}
+            />
+            {t("map.legendLater")}
           </span>
           <span className="flex items-center gap-1.5">
             <span
