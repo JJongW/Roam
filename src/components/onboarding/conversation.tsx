@@ -98,7 +98,7 @@ export function Conversation({
         className="animate-in fade-in slide-in-from-bottom-1 flex flex-1 flex-col items-center justify-center gap-5 text-center duration-300"
       >
         <span className="flex size-32 items-center justify-center overflow-hidden rounded-[2.5rem]">
-          <RoamMotion src="/walking.mp4" />
+          <RoamMotion src="/walk_think.webm" />
         </span>
         <p className="text-[13px] font-medium text-muted-foreground">
           {t(subtitleKey)}

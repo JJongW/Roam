@@ -26,7 +26,7 @@ export function LanguageGate() {
   return (
     <div className="fixed inset-0 z-[110] flex flex-col items-center justify-center gap-6 bg-background px-6 pb-8 pt-safe">
       <span className="flex size-24 items-center justify-center overflow-hidden rounded-[2rem]">
-        <RoamMotion src="/walking.mp4" />
+        <RoamMotion src="/walk_think.webm" />
       </span>
       <div className="text-center">
         <h1 className="text-2xl font-extrabold">언어를 골라줘</h1>

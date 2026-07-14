@@ -45,7 +45,7 @@ export function ValueMindMap({
         className="absolute flex size-14 items-center justify-center overflow-hidden rounded-full ring-2 ring-primary/30"
         style={{ left: c - 28, top: c - 28 }}
       >
-        <RoamMotion src="/walking.mp4" />
+        <RoamMotion src="/walk_think.webm" />
       </span>
 
       {/* 가치 노드 */}

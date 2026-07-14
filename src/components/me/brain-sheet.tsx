@@ -83,7 +83,7 @@ export function BrainSheet({
         <SheetHeader>
           <SheetTitle className="flex items-center gap-2">
             <span className="flex size-7 items-center justify-center overflow-hidden rounded-full ring-1 ring-border">
-              <RoamMotion src="/head.mp4" />
+              <RoamMotion src="/walk_think.webm" />
             </span>
             {t("myPage.title")}
           </SheetTitle>

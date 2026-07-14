@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api/client";
-import { RoamMotion } from "@/components/companion/roam-motion";
+import { RoamMotion, THINKING_POOL } from "@/components/companion/roam-motion";
 import { Conversation } from "@/components/onboarding/conversation";
 import { useAuthStore, PENDING_VALUES_KEY } from "@/lib/stores/auth";
 import { useT } from "@/lib/i18n/provider";
@@ -74,7 +74,7 @@ export function AppOnboardingGate() {
           {/* 로미 + 카피 — 상단 2/3 중앙 (ingan.ai 톤) */}
           <div className="flex flex-1 flex-col items-center justify-center gap-5 text-center">
             <span className="flex size-32 items-center justify-center overflow-hidden rounded-[2.5rem]">
-              <RoamMotion src="/walking.mp4" />
+              <RoamMotion src="/walk_think.webm" />
             </span>
             <h1 className="text-2xl font-extrabold leading-snug">
               {t("onboardingQ.introTitle")}
@@ -115,7 +115,7 @@ export function AppOnboardingGate() {
       {phase === "saving" && (
         <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
           <span className="flex size-24 items-center justify-center overflow-hidden rounded-[2rem]">
-            <RoamMotion src="/head.mp4" />
+            <RoamMotion pool={THINKING_POOL} />
           </span>
           <p className="text-[15px] font-medium text-muted-foreground">
             {t("onboardingQ.analyzing")}

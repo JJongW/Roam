@@ -5,6 +5,7 @@ import { BookOpen, Gift } from "lucide-react";
 import { api } from "@/lib/api/client";
 import { LOADING_MESSAGES } from "@/lib/loading-messages";
 import { useRotatingMessage } from "@/lib/hooks/use-rotating-message";
+import { RoamMotion, THINKING_POOL } from "@/components/companion/roam-motion";
 
 type Extract = { summary: string; newReleases: string[]; goods: string[] };
 
@@ -63,7 +64,12 @@ export function BoothHighlights({
         <h2 className="flex items-center gap-1.5 text-base font-bold">
           <Gift className="size-4 text-primary" aria-hidden /> 신간·굿즈
         </h2>
-        <p className="text-sm text-muted-foreground">{goodsMsg}…</p>
+        <p className="flex items-center gap-2 text-sm text-muted-foreground">
+          <span className="flex size-7 shrink-0 items-center justify-center overflow-hidden">
+            <RoamMotion pool={THINKING_POOL} />
+          </span>
+          {goodsMsg}…
+        </p>
         <div className="flex flex-wrap gap-1.5" aria-hidden>
           {[64, 88, 52, 72, 60].map((w, i) => (
             <span

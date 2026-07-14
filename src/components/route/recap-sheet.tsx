@@ -60,7 +60,7 @@ export function RecapSheet({
         <SheetHeader>
           <SheetTitle className="flex items-center gap-2">
             <span className="flex size-8 items-center justify-center overflow-hidden rounded-full ring-1 ring-border">
-              <RoamMotion src="/walk_see.mp4" />
+              <RoamMotion src="/walk_think.webm" />
             </span>
             {t("recap.title")}
           </SheetTitle>
