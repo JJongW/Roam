@@ -5,7 +5,9 @@ import { Check, Clock3, Heart, X } from "lucide-react";
 import { api } from "@/lib/api/client";
 import { cn } from "@/lib/utils";
 import { useVisitStore, pushNote, type BoothStatus } from "@/lib/stores/visit";
+import { useCompanionStore } from "@/lib/stores/companion";
 import { useT } from "@/lib/i18n/provider";
+import type { TFn } from "@/lib/i18n/resolve";
 import type { SignalKind } from "@/lib/types";
 
 /**
@@ -51,6 +53,30 @@ const REACTIONS: {
   },
 ];
 
+/** 반응 종류 + 대표 가치 → 로미 즉답. 가치 라벨 있으면 그 결로 구체화. */
+function reactionLine(
+  key: string,
+  valueLabel: string | undefined,
+  t: TFn,
+): string | null {
+  switch (key) {
+    case "interested":
+      return valueLabel
+        ? t("companion.reactInterested", { value: valueLabel })
+        : t("companion.reactInterestedPlain");
+    case "later":
+      return t("companion.reactLater");
+    case "skip":
+      return valueLabel
+        ? t("companion.reactSkip", { value: valueLabel })
+        : t("companion.reactSkipPlain");
+    case "seen":
+      return t("companion.reactSeen");
+    default:
+      return null;
+  }
+}
+
 /** 저장된 상태 → 초기 선택 버튼 키. */
 function keyForStatus(s: BoothStatus | undefined): string | null {
   if (s === "visited") return "seen";
@@ -59,10 +85,18 @@ function keyForStatus(s: BoothStatus | undefined): string | null {
   return null;
 }
 
-export function ReactionBar({ boothId }: { boothId: string }) {
+export function ReactionBar({
+  boothId,
+  valueLabel,
+}: {
+  boothId: string;
+  /** 이 부스의 대표 관심 가치 라벨 — 로미 즉답을 그 가치에 맞춰 말하게 한다. */
+  valueLabel?: string;
+}) {
   const t = useT();
   const storeStatus = useVisitStore((s) => s.records[boothId]?.status);
   const setStatus = useVisitStore((s) => s.setStatus);
+  const say = useCompanionStore((s) => s.say);
   const [picked, setPicked] = useState<string | null>(() =>
     keyForStatus(storeStatus),
   );
@@ -74,10 +108,14 @@ export function ReactionBar({ boothId }: { boothId: string }) {
     // 방문/별로(visited·skipped)는 서버 노트에 동기화 → 새로고침·재로그인 후에도 유지
     // (setFromNotes가 병합하므로 지도 색이 사라지지 않음). interested는 로컬 전용.
     void pushNote(boothId).catch(() => {});
-    if (!isSame)
+    if (!isSame) {
       void api
         .post("/api/me/signal", { boothId, kind: r.kind })
         .catch(() => {});
+      // 로미 즉답 — 취소가 아니라 새 반응일 때만. 내 행동에 바로 반응한다는 느낌.
+      const line = reactionLine(r.key, valueLabel, t);
+      if (line) say(line);
+    }
   }
 
   return (
