@@ -16,19 +16,41 @@
     "sourceUrl": "https://psbooks.kr",
     "roamInterpretation": "유명인의 서재를 엿보듯, 한 사람의 독서 취향을 따라가며 인문서를 발견하는 부스야.",
     "valueTags": [
-      { "slug": "learning", "strength": 0.9 },
-      { "slug": "trend", "strength": 0.8 },
-      { "slug": "social", "strength": 0.5 }
+      {
+        "slug": "learning",
+        "strength": 0.9
+      },
+      {
+        "slug": "trend",
+        "strength": 0.8
+      },
+      {
+        "slug": "social",
+        "strength": 0.5
+      }
     ],
     "recommendationReasons": {
       "learning": "추천도서 큐레이션을 따라가며 인문 주제를 깊게 파기 좋아.",
       "trend": "올해 도서전에서 가장 화제인 부스라, 지금 뭐가 회자되는지 감이 와.",
       "social": "즉석 북토크가 열려서 저자·독자와 같은 공기를 느낄 수 있어."
     },
-    "thingsToDo": ["추천도서 코너 훑기", "필사노트 살펴보기", "북토크 일정 확인"],
-    "timing": ["6/24 오후 문재인 등장 전후 인파 최대", "북토크 시간대 밖이 여유로움"],
-    "memoryHooks": ["대통령의 서재", "인문 큐레이션", "화제의 부스"],
-    "conversationPrompts": ["이 중에 네가 먼저 집어들 책은 뭐야?"],
+    "thingsToDo": [
+      "추천도서 코너 훑기",
+      "필사노트 살펴보기",
+      "북토크 일정 확인"
+    ],
+    "timing": [
+      "6/24 오후 문재인 등장 전후 인파 최대",
+      "북토크 시간대 밖이 여유로움"
+    ],
+    "memoryHooks": [
+      "대통령의 서재",
+      "인문 큐레이션",
+      "화제의 부스"
+    ],
+    "conversationPrompts": [
+      "이 중에 네가 먼저 집어들 책은 뭐야?"
+    ],
     "confidence": "high"
   },
   "A104": {
@@ -42,18 +64,37 @@
     "tips": "예상혼잡 중·소요 10~20분. 가족·유아 동반 관람객이 꾸준한 그림책 전문 중견사. 화제신간 '매미와 늙은 소'·'초록을 좋아하는 고양이'.",
     "roamInterpretation": "아이랑 같이 왔거나 그림책 감성이 그리우면, 부담 없이 넘겨보기 좋은 부스야.",
     "valueTags": [
-      { "slug": "rest", "strength": 0.75 },
-      { "slug": "discovery", "strength": 0.6 },
-      { "slug": "inspiration", "strength": 0.5 }
+      {
+        "slug": "rest",
+        "strength": 0.75
+      },
+      {
+        "slug": "discovery",
+        "strength": 0.6
+      },
+      {
+        "slug": "inspiration",
+        "strength": 0.5
+      }
     ],
     "recommendationReasons": {
       "rest": "감성 그림책이라 가볍게 넘겨보며 쉬어가기 좋아.",
       "discovery": "'매미와 늙은 소'·'초록을 좋아하는 고양이' 같은 화제 신간을 새로 만나볼 수 있어.",
       "inspiration": "그림책 특유의 그림 감성이 마음을 말랑하게 해."
     },
-    "thingsToDo": ["화제 신간 그림책 넘겨보기", "아이와 함께 고르기", "그림 감상하기"],
-    "timing": ["가족·유아 동반이 꾸준해 주말 오후 붐빔"],
-    "memoryHooks": ["감성 그림책", "매미와 늙은 소", "가족 관람"]
+    "thingsToDo": [
+      "화제 신간 그림책 넘겨보기",
+      "아이와 함께 고르기",
+      "그림 감상하기"
+    ],
+    "timing": [
+      "가족·유아 동반이 꾸준해 주말 오후 붐빔"
+    ],
+    "memoryHooks": [
+      "감성 그림책",
+      "매미와 늙은 소",
+      "가족 관람"
+    ]
   },
   "A105": {
     "goodsKeywords": [
@@ -69,7 +110,13 @@
       "캡슐 토이",
       "듄",
       "드래곤 라자",
-      "셜록 홈즈 전집"
+      "셜록 홈즈 전집",
+      "마킹 액세서리",
+      "액정 클리너",
+      "스탬프",
+      "컵 피규어",
+      "렌티큘러 책갈피",
+      "북커버 노트"
     ],
     "themeTags": [
       "lit",
@@ -80,25 +127,50 @@
     "tips": "인지도 메이저·혼잡 상·소요 20~40분, 도서전 최고 인기 부스. 세계문학전집·캡슐토이 가챠로 결제 대기줄 혼잡. 듄·드래곤 라자 장르문학 팬덤.",
     "roamInterpretation": "익숙한 이름값만 믿고 지나치기 아까운, 장르문학 팬심이 모이는 부스야.",
     "valueTags": [
-      { "slug": "goods", "strength": 0.9 },
-      { "slug": "discovery", "strength": 0.7 },
-      { "slug": "trend", "strength": 0.6 }
+      {
+        "slug": "goods",
+        "strength": 0.9
+      },
+      {
+        "slug": "discovery",
+        "strength": 0.7
+      },
+      {
+        "slug": "trend",
+        "strength": 0.6
+      }
     ],
     "recommendationReasons": {
       "goods": "캡슐토이 가챠·세계문학전집 같은 소장각 굿즈가 많아.",
       "discovery": "듄·드래곤 라자처럼 팬덤 두꺼운 장르문학을 한자리에서 파볼 수 있어."
     },
-    "thingsToDo": ["캡슐토이 가챠 뽑기", "세계문학전집 구경", "장르문학 신간 훑기"],
-    "timing": ["결제 대기줄이 길어 이른 시간대 추천", "점심 직후 혼잡 절정"],
-    "memoryHooks": ["캡슐토이 가챠", "장르문학 팬심", "세계문학전집"],
-    "conversationPrompts": ["가챠 뽑으면 뭐가 나오면 좋겠어?"],
+    "thingsToDo": [
+      "캡슐토이 가챠 뽑기",
+      "세계문학전집 구경",
+      "장르문학 신간 훑기"
+    ],
+    "timing": [
+      "결제 대기줄이 길어 이른 시간대 추천",
+      "점심 직후 혼잡 절정",
+      "[사인회] 6/24 14:00 김화진 · 6/25 16:00 천쓰홍 · 6/26 14:00 나하늘 · 6/26 16:00 쩜 · 6/27 14:00 천쓰홍 · 6/27 15:30 이다 · 6/27 17:00 최혜진 · 6/28 14:00 이정화·신새벽·이한솔",
+      "[번호표] 오전 10시부터 해당 작가 도서 구매/지참 시 5번 카운터. 조기 마감"
+    ],
+    "memoryHooks": [
+      "캡슐토이 가챠",
+      "장르문학 팬심",
+      "세계문학전집"
+    ],
+    "conversationPrompts": [
+      "가챠 뽑으면 뭐가 나오면 좋겠어?"
+    ],
     "confidence": "high"
   },
   "A1102": {
     "goodsKeywords": [
       "NFC 키링",
       "위글위글 리유저블백",
-      "오디오북"
+      "오디오북",
+      "감다살 LP 에디션"
     ],
     "themeTags": [
       "humanities",
@@ -109,18 +181,38 @@
     "tips": "인지도 중견·혼잡 상·소요 20~40분. 윌라·윌라스토리 공동 '스토리 온에어' 체험 부스. 오디오북 체험·라디오 포토존·NFC 키링. 윌라 낭독 콘서트+신소율 사인회.",
     "roamInterpretation": "귀로 듣는 책이 궁금하면, 오디오북을 직접 체험해보고 굿즈까지 챙기는 부스야.",
     "valueTags": [
-      { "slug": "experience", "strength": 0.85 },
-      { "slug": "goods", "strength": 0.6 },
-      { "slug": "social", "strength": 0.5 }
+      {
+        "slug": "experience",
+        "strength": 0.85
+      },
+      {
+        "slug": "goods",
+        "strength": 0.6
+      },
+      {
+        "slug": "social",
+        "strength": 0.5
+      }
     ],
     "recommendationReasons": {
       "experience": "오디오북 체험·라디오 포토존처럼 직접 해볼 거리가 많아.",
       "goods": "NFC 키링·리유저블백 같은 챙길 굿즈가 쏠쏠해.",
       "social": "윌라 낭독 콘서트랑 신소율 사인회로 저자·성우를 가까이서 볼 수 있어."
     },
-    "thingsToDo": ["오디오북 체험하기", "라디오 포토존 찍기", "낭독 콘서트 시간 확인"],
-    "timing": ["신소율 사인회 시간대 인파 몰림"],
-    "memoryHooks": ["오디오북 체험", "낭독 콘서트", "NFC 키링"]
+    "thingsToDo": [
+      "오디오북 체험하기",
+      "라디오 포토존 찍기",
+      "낭독 콘서트 시간 확인"
+    ],
+    "timing": [
+      "신소율 사인회 시간대 인파 몰림",
+      "[낭독콘서트] 6/27 16:00 김신지·신소율 · [사인회] 6/27 17:30 신소율"
+    ],
+    "memoryHooks": [
+      "오디오북 체험",
+      "낭독 콘서트",
+      "NFC 키링"
+    ]
   },
   "A1301": {
     "goodsKeywords": [],
@@ -155,7 +247,10 @@
     ],
     "summary": "국내 최초 독립출판물 전문 서점 겸 출판사",
     "tips": "예상혼잡 중·소요 15~30분. 독립출판 1세대 대표 서점이자 언리미티드 에디션(UE) 주최사로 독립출판 구역 집객력이 큼.",
-    "sourceUrl": "https://your-mind.com"
+    "sourceUrl": "https://your-mind.com",
+    "thingsToDo": [
+      "BOOKMARKS Express — 책갈피 사면 어울리는 타 출판사 책 추천"
+    ]
   },
   "A1405": {
     "goodsKeywords": [],
@@ -168,18 +263,37 @@
     "tips": "예상혼잡 하·소요 5~10분. 6개사 공동부스(A1405) 일부 테이블 규모의 신생 소형 기독교 출판사. 화제신간 '믿지만, 거기까지'.",
     "roamInterpretation": "신앙과 삶의 질문이 궁금하면, 붐비지 않게 잠깐 들러 훑어보기 좋은 작은 부스야.",
     "valueTags": [
-      { "slug": "learning", "strength": 0.65 },
-      { "slug": "rest", "strength": 0.6 },
-      { "slug": "discovery", "strength": 0.55 }
+      {
+        "slug": "learning",
+        "strength": 0.65
+      },
+      {
+        "slug": "rest",
+        "strength": 0.6
+      },
+      {
+        "slug": "discovery",
+        "strength": 0.55
+      }
     ],
     "recommendationReasons": {
       "learning": "기독교·신앙 주제를 차분히 파고들며 읽어보기 좋아.",
       "rest": "혼잡이 낮아 5~10분이면 부담 없이 훑고 나올 수 있어.",
       "discovery": "신생 소형 출판사라 화제신간 '믿지만, 거기까지'처럼 새 목소리를 발견하게 돼."
     },
-    "thingsToDo": ["화제신간 '믿지만, 거기까지' 살펴보기", "신앙 에세이 훑기", "작은 출판사 목록 구경"],
-    "timing": ["혼잡 낮음·5~10분이면 충분"],
-    "memoryHooks": ["기독교·신앙", "믿지만 거기까지", "작은 출판사"]
+    "thingsToDo": [
+      "화제신간 '믿지만, 거기까지' 살펴보기",
+      "신앙 에세이 훑기",
+      "작은 출판사 목록 구경"
+    ],
+    "timing": [
+      "혼잡 낮음·5~10분이면 충분"
+    ],
+    "memoryHooks": [
+      "기독교·신앙",
+      "믿지만 거기까지",
+      "작은 출판사"
+    ]
   },
   "A1406": {
     "goodsKeywords": [
@@ -207,7 +321,10 @@
   },
   "A1501": {
     "goodsKeywords": [
-      "책등계산법 키링"
+      "책등계산법 키링",
+      "북브러쉬 키링",
+      "폰트 확대경 키링",
+      "뗀석기 독서링"
     ],
     "themeTags": [
       "children",
@@ -217,7 +334,11 @@
       "general"
     ],
     "summary": "그림책·예술·장르문학 메이저 종합 출판사",
-    "tips": "메이저 종합 출판사, 혼잡 중·15~25분. 2025년 공사장 콘셉트·키링 품절·산성비 타자 게임 인기(2026 콘셉트 미정)."
+    "tips": "메이저 종합 출판사, 혼잡 중·15~25분. 2025년 공사장 콘셉트·키링 품절·산성비 타자 게임 인기(2026 콘셉트 미정).",
+    "thingsToDo": [
+      "고고트윈스 발굴단 퀴즈(6/24·6/26 14~15시)",
+      "발굴 스톤 초콜릿 받기"
+    ]
   },
   "A1502": {
     "goodsKeywords": [],
@@ -240,7 +361,11 @@
       "children"
     ],
     "summary": "베르베르·에코 등 유럽문학 전문 출판사",
-    "tips": "메이저 부스, 혼잡 상·15~30분. 베르베르 내한 6/25 14:00 책마당 대담, 6/27 프랑스관 사인회로 2030 인파 집중."
+    "tips": "메이저 부스, 혼잡 상·15~30분. 베르베르 내한 6/25 14:00 책마당 대담, 6/27 프랑스관 사인회로 2030 인파 집중.",
+    "timing": [
+      "[부스 지킴이] 베르베르 6/24·6/28 출몰(시간은 공식 SNS)",
+      "[북토크] 7/2 19:00 청년문화공간 JU(알라딘 티켓)"
+    ]
   },
   "A1701": {
     "goodsKeywords": [
@@ -252,7 +377,13 @@
       "그래픽 티셔츠",
       "아크릴 키링",
       "레더 북마크",
-      "양초"
+      "양초",
+      "문장수집 책갈피",
+      "교보 키캡 키링",
+      "열전사 스티커팩",
+      "북 티셔츠",
+      "표지석 캔들",
+      "반다나"
     ],
     "themeTags": [
       "general",
@@ -262,7 +393,14 @@
     ],
     "summary": "교보문고 오리지널 책갈피·티셔츠 등 굿즈",
     "tips": "굿즈는 현장 판매만 진행, 가격은 현장 공개",
-    "sourceUrl": "https://instagram.com/kyobobook_online"
+    "sourceUrl": "https://instagram.com/kyobobook_online",
+    "thingsToDo": [
+      "티키타카 — 45년 베스트셀러 아카이브",
+      "교보생명 서재에 문장 기록"
+    ],
+    "timing": [
+      "[사인회] 6/24 14:00 김연수 · 6/26 14:00 송길영 · 6/27 13:00 정영한"
+    ]
   },
   "A1702": {
     "goodsKeywords": [
@@ -270,7 +408,8 @@
       "에코백",
       "밀리 오리지널스",
       "북키퍼 앤솔러지",
-      "미니북 키링"
+      "미니북 키링",
+      "집으로 가는 버튼 키캡 키링"
     ],
     "themeTags": [
       "lit",
@@ -279,14 +418,23 @@
     ],
     "summary": "비즈 책갈피·에코백 등 10주년 굿즈",
     "tips": "링티·아로마티카 굿즈 매일 선착순 배부",
-    "sourceUrl": "https://instagram.com/millie_bookclub"
+    "sourceUrl": "https://instagram.com/millie_bookclub",
+    "thingsToDo": [
+      "『북키퍼』 최초공개(김초엽·신형철·장강명 등)",
+      "밀리하우스 사진꾸미기 프레임"
+    ],
+    "timing": [
+      "[사인회] 6/25 16:00 청예 · 6/26 15:00 조예은 · 6/27 14:00 쩜(신시연)",
+      "[번호표] 당일 오전 10시 오리지널스존"
+    ]
   },
   "A1703": {
     "goodsKeywords": [
       "NFC 메달 키링",
       "크레마 전자책",
       "한정 굿즈",
-      "경험 영수증"
+      "경험 영수증",
+      "공식 배지(리미티드 에디션)"
     ],
     "themeTags": [
       "science",
@@ -297,18 +445,37 @@
     "tips": "인지도 메이저·혼잡 상·소요 20~40분(체험 대기 포함). 개막 첫날 리딩런 약 1,700명. AI 낭독 체험·NFC 메달 키링·경험 영수증 포토존.",
     "roamInterpretation": "책을 사는 것 말고도, AI 낭독 체험하고 포토존에서 놀 거리가 있는 부스야.",
     "valueTags": [
-      { "slug": "experience", "strength": 0.8 },
-      { "slug": "trend", "strength": 0.7 },
-      { "slug": "goods", "strength": 0.6 }
+      {
+        "slug": "experience",
+        "strength": 0.8
+      },
+      {
+        "slug": "trend",
+        "strength": 0.7
+      },
+      {
+        "slug": "goods",
+        "strength": 0.6
+      }
     ],
     "recommendationReasons": {
       "experience": "AI 낭독 체험·포토존처럼 직접 해볼 거리가 많아.",
       "trend": "개막 리딩런에 1700명이 몰릴 만큼 도서전 화제의 중심이야.",
       "goods": "NFC 메달 키링·크레마·경험영수증 같은 챙길 굿즈가 있어."
     },
-    "thingsToDo": ["AI 낭독 체험하기", "포토존에서 찍기", "경험영수증 받기"],
-    "timing": ["개막 리딩런(1700명) 전후 인파 최대"],
-    "memoryHooks": ["AI 낭독", "리딩런", "경험영수증"]
+    "thingsToDo": [
+      "AI 낭독 체험하기",
+      "포토존에서 찍기",
+      "경험영수증 받기"
+    ],
+    "timing": [
+      "개막 리딩런(1700명) 전후 인파 최대"
+    ],
+    "memoryHooks": [
+      "AI 낭독",
+      "리딩런",
+      "경험영수증"
+    ]
   },
   "A1802": {
     "goodsKeywords": [
@@ -396,12 +563,18 @@
   "A209": {
     "goodsKeywords": [
       "에코백",
-      "엽서 세트"
+      "엽서 세트",
+      "문장 시향지 키링",
+      "니케북스 산-책가방"
     ],
     "themeTags": [],
     "summary": "페이퍼스토리·니케북스가 함께 쓰는 굿즈·사인회 부스",
     "tips": "김미라·이정은·이하영 작가 사인회, 인스타 인증 시 시집 증정",
-    "sourceUrl": "https://instagram.com/paperstory_book"
+    "sourceUrl": "https://instagram.com/paperstory_book",
+    "thingsToDo": [
+      "팔로우·좋아요 인증 시 헤세 시집 증정",
+      "『비올레타』 최초공개"
+    ]
   },
   "A210": {
     "goodsKeywords": [],
@@ -437,24 +610,45 @@
     "tips": "예상혼잡 상·소요 15~30분. 향·색이름 352 등 인기 굿즈와 감각적 부스 연출로 긴 줄(2025년 별도 대기공간). 화제신간 '산 239'.",
     "roamInterpretation": "한국적인 정서를 감각적으로 다시 푼, 향과 아트북으로 눈코가 즐거운 부스야.",
     "valueTags": [
-      { "slug": "inspiration", "strength": 0.85 },
-      { "slug": "goods", "strength": 0.75 },
-      { "slug": "discovery", "strength": 0.6 }
+      {
+        "slug": "inspiration",
+        "strength": 0.85
+      },
+      {
+        "slug": "goods",
+        "strength": 0.75
+      },
+      {
+        "slug": "discovery",
+        "strength": 0.6
+      }
     ],
     "recommendationReasons": {
       "inspiration": "한국 정서를 재해석한 감각적 연출이라 보는 것만으로 영감이 와.",
       "goods": "팔각성냥·선향·복캔들·향 같은 소장각 굿즈가 인기야.",
       "discovery": "디자인·아트북 스튜디오라 흔치 않은 물건을 새로 발견하기 좋아."
     },
-    "thingsToDo": ["향·색이름352 구경", "복캔들 골라보기", "아트북 훑기"],
-    "timing": ["감각적 연출로 줄이 길어, 여유 있을 때 방문"],
-    "memoryHooks": ["한국 정서 재해석", "향·색이름352", "아트북"]
+    "thingsToDo": [
+      "향·색이름352 구경",
+      "복캔들 골라보기",
+      "아트북 훑기"
+    ],
+    "timing": [
+      "감각적 연출로 줄이 길어, 여유 있을 때 방문"
+    ],
+    "memoryHooks": [
+      "한국 정서 재해석",
+      "향·색이름352",
+      "아트북"
+    ]
   },
   "A2103": {
     "goodsKeywords": [
       "읽기예보 굿즈",
       "한정 굿즈",
-      "행운 리워드"
+      "행운 리워드",
+      "읽기 예보 키링",
+      "읽기 예보 티셔츠"
     ],
     "themeTags": [
       "lit",
@@ -462,7 +656,16 @@
     ],
     "summary": "은행나무·휴머니스트 공유 부스 — 문학·인문교양",
     "tips": "인지도 중견·혼잡 중·소요 15~25분. 정유정·천선란 보유. '읽기예보(마음 날씨)' 테마 부스, 한정 굿즈·행운 리워드·RT 이벤트.",
-    "sourceUrl": "https://x.com/ehbook"
+    "sourceUrl": "https://x.com/ehbook",
+    "thingsToDo": [
+      "마음 날씨 엽서 12종(무료)",
+      "꽝 없는 행운주의보 복권",
+      "교환독서존"
+    ],
+    "timing": [
+      "[사인회] 6/26 14:00 황주리 · 6/27 16:00 정용준",
+      "[번호표] 도서 구매/지참 시 선착순 100명"
+    ]
   },
   "A2201": {
     "goodsKeywords": [],
@@ -488,22 +691,42 @@
     "tips": "메이저 부스, 혼잡 상·15~25분. 창립 50주년 골판지 도서관 부스가 SNS 인증 명소, 굿즈·시집 서명본·강연 운영(서명본 조기 품절 주의).",
     "roamInterpretation": "시와 순수문학을 좋아하면, 서명본 챙기고 골판지 도서관에서 사진 남기는 부스야.",
     "valueTags": [
-      { "slug": "discovery", "strength": 0.75 },
-      { "slug": "goods", "strength": 0.7 },
-      { "slug": "inspiration", "strength": 0.6 }
+      {
+        "slug": "discovery",
+        "strength": 0.75
+      },
+      {
+        "slug": "goods",
+        "strength": 0.7
+      },
+      {
+        "slug": "inspiration",
+        "strength": 0.6
+      }
     ],
     "recommendationReasons": {
       "discovery": "문학과지성사 계열 순수문학이라 묵직한 시·소설을 새로 파보기 좋아.",
       "goods": "시집 서명본·틴케이스·스티커 같은 소장각 굿즈가 있어.",
       "inspiration": "창립 50주년 골판지 도서관 연출이 SNS 명소라 눈이 즐거워."
     },
-    "thingsToDo": ["시집 서명본 찾기", "골판지 도서관 사진 찍기", "틴케이스 굿즈 챙기기"],
-    "timing": ["서명본은 조기 품절, 이른 시간 추천"],
-    "memoryHooks": ["순수문학 서명본", "골판지 도서관", "창립 50주년"]
+    "thingsToDo": [
+      "시집 서명본 찾기",
+      "골판지 도서관 사진 찍기",
+      "틴케이스 굿즈 챙기기"
+    ],
+    "timing": [
+      "서명본은 조기 품절, 이른 시간 추천"
+    ],
+    "memoryHooks": [
+      "순수문학 서명본",
+      "골판지 도서관",
+      "창립 50주년"
+    ]
   },
   "A2203": {
     "goodsKeywords": [
-      "타포린백"
+      "타포린백",
+      "소전 천권 북캔들"
     ],
     "themeTags": [
       "lit",
@@ -516,7 +739,11 @@
   },
   "A2302": {
     "goodsKeywords": [
-      "1318문고"
+      "1318문고",
+      "김초엽·정세랑 문장 타포린백",
+      "티셔츠",
+      "파우치",
+      "키링"
     ],
     "themeTags": [
       "lit",
@@ -525,11 +752,21 @@
       "children"
     ],
     "summary": "사계절출판사·마음산책 공유 부스 — 아동·인문 + 예술 에세이",
-    "tips": "중견 출판사, 혼잡 중·10~20분. 6/26 11:30~13:00 책마당 정세랑×박상영 합동 북토크 시간대 혼잡 급증."
+    "tips": "중견 출판사, 혼잡 중·10~20분. 6/26 11:30~13:00 책마당 정세랑×박상영 합동 북토크 시간대 혼잡 급증.",
+    "thingsToDo": [
+      "마음산책 리커버·신간 6종",
+      "사계절 쌈마켓(무료 부채)"
+    ],
+    "timing": [
+      "[사인회] 6/27 14:00 정세랑 · 6/28 13:00 김초엽",
+      "[번호표] 예약 없이 당일 배부"
+    ]
   },
   "A2303": {
     "goodsKeywords": [
-      "책갈피"
+      "책갈피",
+      "한정 럭키박스",
+      "한정 굿즈"
     ],
     "themeTags": [
       "art",
@@ -540,16 +777,32 @@
     "sourceUrl": "https://designhouse.co.kr",
     "roamInterpretation": "디자인 감각을 눈으로만 보지 말고, 갈피표 만들고 취향대로 꾸며보는 부스야.",
     "valueTags": [
-      { "slug": "inspiration", "strength": 0.85 },
-      { "slug": "experience", "strength": 0.75 }
+      {
+        "slug": "inspiration",
+        "strength": 0.85
+      },
+      {
+        "slug": "experience",
+        "strength": 0.75
+      }
     ],
     "recommendationReasons": {
       "inspiration": "월간 디자인이 큐레이션한 감각적인 물건과 지면을 실컷 볼 수 있어.",
       "experience": "갈피표 만들기·취향 테이블 꾸미기처럼 손으로 해보는 체험이 있어."
     },
-    "thingsToDo": ["갈피표 만들기", "취향 테이블 꾸미기", "책갈피 챙기기"],
-    "timing": ["갈피표 만들기 체험은 대기 생길 수 있음"],
-    "memoryHooks": ["월간 디자인", "갈피표 만들기", "취향 테이블"]
+    "thingsToDo": [
+      "갈피표 만들기",
+      "취향 테이블 꾸미기",
+      "책갈피 챙기기"
+    ],
+    "timing": [
+      "갈피표 만들기 체험은 대기 생길 수 있음"
+    ],
+    "memoryHooks": [
+      "월간 디자인",
+      "갈피표 만들기",
+      "취향 테이블"
+    ]
   },
   "A301": {
     "goodsKeywords": [
@@ -577,13 +830,18 @@
     "sourceUrl": "https://kachibooks.co.kr"
   },
   "A304": {
-    "goodsKeywords": [],
+    "goodsKeywords": [
+      "핸드메이드 책주머니"
+    ],
     "themeTags": [
       "humanities",
       "lit"
     ],
     "summary": "문학동네 계열 인문·역사·철학 교양 출판 브랜드",
-    "tips": "중견 인문 브랜드, 혼잡 중·10~20분. 도서 중심이라 회전 빠름. 6/28 13:00~14:30 책만남홀2 김유태 북토크."
+    "tips": "중견 인문 브랜드, 혼잡 중·10~20분. 도서 중심이라 회전 빠름. 6/28 13:00~14:30 책만남홀2 김유태 북토크.",
+    "thingsToDo": [
+      "한정 소책자 『텍스트힙의 주역을 찾아서』 받기"
+    ]
   },
   "A305": {
     "goodsKeywords": [
@@ -596,7 +854,13 @@
     "sourceUrl": "https://instagram.com/chunga_book"
   },
   "A307": {
-    "goodsKeywords": [],
+    "goodsKeywords": [
+      "세탁가방",
+      "수건",
+      "티셔츠",
+      "모자",
+      "말랑 연파 키링"
+    ],
     "themeTags": [
       "humanities",
       "lit",
@@ -606,16 +870,32 @@
     "tips": "인지도 중견·혼잡 중·소요 10~20분. 공지영·한비야·류시화 베스트셀러 보유. 2026 화제작 《다시 만난 세계》(김희교). 아동 임프린트 푸른숲주니어.",
     "roamInterpretation": "오래 쌓아온 인문·교양 목록을 천천히 훑으며 읽을 거리를 고르는 부스야.",
     "valueTags": [
-      { "slug": "learning", "strength": 0.8 },
-      { "slug": "discovery", "strength": 0.6 }
+      {
+        "slug": "learning",
+        "strength": 0.8
+      },
+      {
+        "slug": "discovery",
+        "strength": 0.6
+      }
     ],
     "recommendationReasons": {
       "learning": "공지영·한비야·류시화 같은 인문·교양 목록이 두터워 깊이 읽기 좋아.",
       "discovery": "화제작 《다시 만난 세계》부터 아동 임프린트까지 폭이 넓어 새로 파볼 게 있어."
     },
-    "thingsToDo": ["화제작 《다시 만난 세계》 살펴보기", "인문·교양 신간 훑기", "푸른숲주니어 아동책 구경"],
-    "timing": ["화제작 코너는 사람 몰릴 수 있음"],
-    "memoryHooks": ["인문·교양", "다시 만난 세계", "푸른숲주니어"]
+    "thingsToDo": [
+      "화제작 《다시 만난 세계》 살펴보기",
+      "인문·교양 신간 훑기",
+      "푸른숲주니어 아동책 구경"
+    ],
+    "timing": [
+      "화제작 코너는 사람 몰릴 수 있음"
+    ],
+    "memoryHooks": [
+      "인문·교양",
+      "다시 만난 세계",
+      "푸른숲주니어"
+    ]
   },
   "A401": {
     "goodsKeywords": [
@@ -633,18 +913,37 @@
     "sourceUrl": "https://instagram.com/borimbook",
     "roamInterpretation": "우리 옛이야기 그림책의 원조 격이라, 아이 책 고르는 어른이 믿고 찾는 부스야.",
     "valueTags": [
-      { "slug": "rest", "strength": 0.65 },
-      { "slug": "discovery", "strength": 0.6 },
-      { "slug": "learning", "strength": 0.55 }
+      {
+        "slug": "rest",
+        "strength": 0.65
+      },
+      {
+        "slug": "discovery",
+        "strength": 0.6
+      },
+      {
+        "slug": "learning",
+        "strength": 0.55
+      }
     ],
     "recommendationReasons": {
       "rest": "익숙한 그림책들이라 가볍게 넘겨보며 쉬어가기 좋아.",
       "discovery": "솔거나라·까치호랑이 같은 1세대 그림책의 뿌리를 다시 발견하게 돼.",
       "learning": "우리 옛이야기·전통을 아이 눈높이로 배우기 좋아."
     },
-    "thingsToDo": ["대표 그림책 솔거나라 찾기", "전통 그림책 넘겨보기", "아이 책 고르기"],
-    "timing": ["학부모·교사 방문이 꾸준해 주말 붐빔"],
-    "memoryHooks": ["1세대 그림책", "까치호랑이", "옛이야기"]
+    "thingsToDo": [
+      "대표 그림책 솔거나라 찾기",
+      "전통 그림책 넘겨보기",
+      "아이 책 고르기"
+    ],
+    "timing": [
+      "학부모·교사 방문이 꾸준해 주말 붐빔"
+    ],
+    "memoryHooks": [
+      "1세대 그림책",
+      "까치호랑이",
+      "옛이야기"
+    ]
   },
   "A402": {
     "goodsKeywords": [
@@ -658,11 +957,19 @@
       "art"
     ],
     "summary": "국내 최대 웹툰 플랫폼, 웹툰 IP 단행본·굿즈 전개",
-    "tips": "인지도 메이저·혼잡 상·소요 20~40분. 마루는 강쥐·냐한남자 캐릭터 굿즈 오픈런 단골. 젊은층 유입 큼."
+    "tips": "인지도 메이저·혼잡 상·소요 20~40분. 마루는 강쥐·냐한남자 캐릭터 굿즈 오픈런 단골. 젊은층 유입 큼.",
+    "thingsToDo": [
+      "방문 쿠키 10개·설문 20개",
+      "캐릭터 파츠로 볼펜 꾸미기",
+      "책갈피존에서 취향 책갈피 고르기"
+    ]
   },
   "A403": {
     "goodsKeywords": [
-      "책갈피"
+      "책갈피",
+      "구병모 파쇄 키링북",
+      "위픽 카라비너 키링",
+      "위픽 북트래커"
     ],
     "themeTags": [
       "lit",
@@ -671,7 +978,14 @@
       "humanities"
     ],
     "summary": "단행본·웹툰·웹소설 IP 병행 중견 출판사",
-    "tips": "예상혼잡 상·소요 15~25분. 위픽 단편소설 시리즈 전권 전시와 책 커버 활용 책갈피 굿즈로 개막일부터 붐빔."
+    "tips": "예상혼잡 상·소요 15~25분. 위픽 단편소설 시리즈 전권 전시와 책 커버 활용 책갈피 굿즈로 개막일부터 붐빔.",
+    "thingsToDo": [
+      "위픽 클래식·리커버 한정본 보기"
+    ],
+    "timing": [
+      "[사인회] 6/24 15:00 구병모 · 6/25 15:00 함윤이 · 6/26 11:00 김호연 · 6/26 15:00 김서해 · 6/27 14:00 백은별 · 6/27 17:00 문가영 · 6/28 12:00 이옥토 · 6/28 15:00 임선우",
+      "[번호표] 당일 사인회별 선착순 100명"
+    ]
   },
   "A501": {
     "goodsKeywords": [
@@ -692,7 +1006,9 @@
     "goodsKeywords": [
       "글손실 티셔츠",
       "총균쇠질 굿즈",
-      "스포츠 타월"
+      "스포츠 타월",
+      "티셔츠",
+      "키링"
     ],
     "themeTags": [
       "humanities",
@@ -700,13 +1016,23 @@
       "children"
     ],
     "summary": "사피엔스·정의란 무엇인가의 메이저 종합 출판사",
-    "tips": "메이저 부스, 혼잡 상·15~30분. 'GYM영사' 헬스장 콘셉트·강도별 큐레이션, 캐치스틱 게임 체험, 한정 굿즈로 인파 몰림."
+    "tips": "메이저 부스, 혼잡 상·15~30분. 'GYM영사' 헬스장 콘셉트·강도별 큐레이션, 캐치스틱 게임 체험, 한정 굿즈로 인파 몰림.",
+    "thingsToDo": [
+      "독서 헬스장 GYM영사 4체험존(오독완 챌린지)"
+    ],
+    "timing": [
+      "[사인회] 6/26 11:00 문형배 · 6/27 15:00 정호근"
+    ]
   },
   "A503": {
     "goodsKeywords": [
       "팝업북",
       "컬러링북",
-      "도서전 한정 굿즈"
+      "도서전 한정 굿즈",
+      "취향 밑줄 하이라이터",
+      "집게 북스토퍼",
+      "티셔츠",
+      "무지노트"
     ],
     "themeTags": [
       "lit",
@@ -717,18 +1043,37 @@
     "tips": "인지도 메이저·혼잡 상·소요 20~35분. 도서전 한정 굿즈 오픈런·조기 품절. 팝업북 전시 + 운명 뽑기 이벤트. 김영사·이야기장수 인접 입구권.",
     "roamInterpretation": "해리포터·다빈치코드 팬이면, 한정 굿즈 오픈런하고 팝업북 구경하는 부스야.",
     "valueTags": [
-      { "slug": "goods", "strength": 0.85 },
-      { "slug": "experience", "strength": 0.65 },
-      { "slug": "trend", "strength": 0.55 }
+      {
+        "slug": "goods",
+        "strength": 0.85
+      },
+      {
+        "slug": "experience",
+        "strength": 0.65
+      },
+      {
+        "slug": "trend",
+        "strength": 0.55
+      }
     ],
     "recommendationReasons": {
       "goods": "팝업북·컬러링북·한정 굿즈가 많아 소장 욕구를 자극해.",
       "experience": "팝업북 전시랑 운명뽑기처럼 직접 해볼 거리가 있어.",
       "trend": "한정 굿즈 오픈런이 벌어질 만큼 화제인 부스야."
     },
-    "thingsToDo": ["한정 굿즈 오픈런", "팝업북 전시 구경", "운명뽑기 해보기"],
-    "timing": ["한정 굿즈 오픈런·조기 품절, 개장 직후 방문"],
-    "memoryHooks": ["해외 장르문학", "한정 굿즈 오픈런", "팝업북"]
+    "thingsToDo": [
+      "한정 굿즈 오픈런",
+      "팝업북 전시 구경",
+      "운명뽑기 해보기"
+    ],
+    "timing": [
+      "한정 굿즈 오픈런·조기 품절, 개장 직후 방문"
+    ],
+    "memoryHooks": [
+      "해외 장르문학",
+      "한정 굿즈 오픈런",
+      "팝업북"
+    ]
   },
   "A602": {
     "goodsKeywords": [
@@ -790,7 +1135,11 @@
     "goodsKeywords": [
       "더클래식 세계문학",
       "걸 클래식 컬렉션",
-      "빅팻캣 시리즈"
+      "빅팻캣 시리즈",
+      "도넛 책갈피",
+      "윌북 도넛북",
+      "핀뱃지",
+      "타포린백"
     ],
     "themeTags": [
       "lit",
@@ -802,21 +1151,42 @@
     "sourceUrl": "https://instagram.com/willbooks_pub",
     "roamInterpretation": "에세이부터 고전·어학까지 폭넓게 훑으며 읽을 거리를 고르는 부스야.",
     "valueTags": [
-      { "slug": "learning", "strength": 0.75 },
-      { "slug": "discovery", "strength": 0.6 },
-      { "slug": "social", "strength": 0.55 }
+      {
+        "slug": "learning",
+        "strength": 0.75
+      },
+      {
+        "slug": "discovery",
+        "strength": 0.6
+      },
+      {
+        "slug": "social",
+        "strength": 0.55
+      }
     ],
     "recommendationReasons": {
       "learning": "수전 손택·사노 요코 같은 묵직한 에세이와 클래식으로 깊이 읽기 좋아.",
       "discovery": "에세이·어학·클래식이 두루 있어 취향 밖 책도 새로 발견하기 좋아.",
       "social": "정관스님 북토크로 저자의 이야기를 직접 들어볼 수 있어."
     },
-    "thingsToDo": ["클래식 시리즈 구경", "에세이 신간 훑기", "정관스님 북토크 시간 확인"],
-    "timing": ["정관스님 북토크 시간대 사람 몰림"],
-    "memoryHooks": ["에세이·클래식", "수전 손택", "정관스님 북토크"]
+    "thingsToDo": [
+      "클래식 시리즈 구경",
+      "에세이 신간 훑기",
+      "정관스님 북토크 시간 확인"
+    ],
+    "timing": [
+      "정관스님 북토크 시간대 사람 몰림"
+    ],
+    "memoryHooks": [
+      "에세이·클래식",
+      "수전 손택",
+      "정관스님 북토크"
+    ]
   },
   "A903": {
-    "goodsKeywords": [],
+    "goodsKeywords": [
+      "출판계 큰 손 부채"
+    ],
     "themeTags": [
       "lit",
       "science"
@@ -825,18 +1195,38 @@
     "tips": "예상혼잡 상·소요 15~30분. 김초엽·천선란 등 스타 SF 작가 팬덤으로 신간 코너 혼잡. 화제신간 '새벽'(옥타비아 버틀러)·'토막 난 우주를 안고서'.",
     "roamInterpretation": "지금 한국 SF가 어디까지 왔는지 궁금하면, 스타 작가들 신간이 모이는 부스야.",
     "valueTags": [
-      { "slug": "discovery", "strength": 0.8 },
-      { "slug": "trend", "strength": 0.75 },
-      { "slug": "learning", "strength": 0.5 }
+      {
+        "slug": "discovery",
+        "strength": 0.8
+      },
+      {
+        "slug": "trend",
+        "strength": 0.75
+      },
+      {
+        "slug": "learning",
+        "strength": 0.5
+      }
     ],
     "recommendationReasons": {
       "discovery": "동아시아 SF를 파고드는 임프린트라 새로운 작가·세계관을 발견하기 좋아.",
       "trend": "김초엽·천선란처럼 지금 제일 회자되는 SF 신간이 다 모여 있어.",
       "learning": "SF로 사고실험하듯 세계를 넓혀볼 수 있어."
     },
-    "thingsToDo": ["화제신간 훑기", "김초엽·천선란 신간 찾기", "SF 세계관 파보기"],
-    "timing": ["스타 작가 신간대는 인파 몰림"],
-    "memoryHooks": ["한국 SF", "김초엽·천선란", "화제신간"]
+    "thingsToDo": [
+      "화제신간 훑기",
+      "김초엽·천선란 신간 찾기",
+      "SF 세계관 파보기"
+    ],
+    "timing": [
+      "스타 작가 신간대는 인파 몰림",
+      "[사인회·사전 온라인 신청] 6/24~28 다수 — 천선란·김상욱·김초엽·이유리 등"
+    ],
+    "memoryHooks": [
+      "한국 SF",
+      "김초엽·천선란",
+      "화제신간"
+    ]
   },
   "B104": {
     "goodsKeywords": [
@@ -960,10 +1350,19 @@
     ],
     "themeTags": [],
     "summary": "신간 2권과 실용적인 굿즈 준비",
-    "sourceUrl": "https://instagram.com/louderbooks"
+    "sourceUrl": "https://instagram.com/louderbooks",
+    "thingsToDo": [
+      "암호명 '대추'·'유튜브 보고 왔어요' 선물",
+      "신간 2종(제인 워드 등)"
+    ],
+    "timing": [
+      "[사인회] 요일별 — 수 윤이나·목 산호·금 Jane Ward·토 정해나·일 정도겸·상시 민지형"
+    ]
   },
   "B410": {
-    "goodsKeywords": [],
+    "goodsKeywords": [
+      "그래픽 콘텐츠 굿즈"
+    ],
     "themeTags": [
       "art"
     ],
@@ -975,12 +1374,17 @@
       "책갈피",
       "원화 엽서",
       "스티커",
-      "메시지 카드"
+      "메시지 카드",
+      "돌려돌려 뽑기 시크릿 굿즈"
     ],
     "themeTags": [],
     "summary": "원화 엽서·스티커 등 굿즈 준비",
     "tips": "돌려돌려 뽑기로 시크릿 굿즈 증정",
-    "sourceUrl": "https://instagram.com/604.jpg"
+    "sourceUrl": "https://instagram.com/604.jpg",
+    "thingsToDo": [
+      "5만↑ 시크릿 굿즈 뽑기",
+      "출품 6종(『혼자보는 일기』 등)"
+    ]
   },
   "B428": {
     "goodsKeywords": [
@@ -1023,12 +1427,18 @@
   "B449": {
     "goodsKeywords": [
       "굿즈",
-      "통영 커피 드립백"
+      "통영 커피 드립백",
+      "〈곁〉 코스터",
+      "재생종이 연필"
     ],
     "themeTags": [],
     "summary": "신간 굿즈와 통영 커피 드립백 사은품",
     "tips": "3만 원 이상 구매 시 사은품 증정",
-    "sourceUrl": "https://instagram.com/pencilandmug"
+    "sourceUrl": "https://instagram.com/pencilandmug",
+    "thingsToDo": [
+      "팔로우 시 재생종이 연필",
+      "신간 〈달리며 생각한 모든 것들〉"
+    ]
   },
   "B450": {
     "goodsKeywords": [
@@ -1048,7 +1458,13 @@
     ],
     "themeTags": [],
     "summary": "노트·스티커북 등 다양한 굿즈",
-    "sourceUrl": "https://instagram.com/etrebooks"
+    "sourceUrl": "https://instagram.com/etrebooks",
+    "thingsToDo": [
+      "신간·기존 도서 전종 구경"
+    ],
+    "timing": [
+      "[강연] 6/26 17:00 리디아 데이비스 번역 강연(서제인·이주혜)"
+    ]
   },
   "B471": {
     "goodsKeywords": [
@@ -1065,18 +1481,37 @@
     "sourceUrl": "https://indiepublisher.tw",
     "roamInterpretation": "국내에선 보기 힘든 대만·아시아 1인 출판을 한자리에서 파보는 부스야.",
     "valueTags": [
-      { "slug": "discovery", "strength": 0.9 },
-      { "slug": "inspiration", "strength": 0.65 },
-      { "slug": "social", "strength": 0.5 }
+      {
+        "slug": "discovery",
+        "strength": 0.9
+      },
+      {
+        "slug": "inspiration",
+        "strength": 0.65
+      },
+      {
+        "slug": "social",
+        "strength": 0.5
+      }
     ],
     "recommendationReasons": {
       "discovery": "대만·아시아 독립출판 40여 곳이 모여 새로운 책을 발견하기 딱이야.",
       "inspiration": "「독서 처방」 테마 연출이 독특해 감각적 자극이 있어.",
       "social": "1인 출판 제작자들과 직접 이야기 나눠볼 수 있어."
     },
-    "thingsToDo": ["대만 독립출판 훑기", "독서 처방 받아보기", "제작자에게 말 걸기"],
-    "timing": ["신설 국제 독립출판 구역이라 초반엔 한산"],
-    "memoryHooks": ["대만 독립출판", "독서 처방", "1인 출판"]
+    "thingsToDo": [
+      "대만 독립출판 훑기",
+      "독서 처방 받아보기",
+      "제작자에게 말 걸기"
+    ],
+    "timing": [
+      "신설 국제 독립출판 구역이라 초반엔 한산"
+    ],
+    "memoryHooks": [
+      "대만 독립출판",
+      "독서 처방",
+      "1인 출판"
+    ]
   },
   "B473": {
     "goodsKeywords": [
@@ -1135,21 +1570,34 @@
     "tips": "독립출판 인기 부스, 혼잡 중·10~20분. 부스 작아 회전 빠름. 유어마인드와 아트북·미니북·한정 굿즈, 한쪽책 4천원대."
   },
   "B601": {
-    "goodsKeywords": [],
+    "goodsKeywords": [
+      "열쇠 키링",
+      "체크 키링",
+      "장르 덤프 스티커"
+    ],
     "themeTags": [
       "lit",
       "general",
       "art"
     ],
     "summary": "장르문학 전문 스토리 프로덕션 겸 출판사",
-    "tips": "예상혼잡 상·소요 15~30분. '굿즈·부스 콘셉트 맛집'으로 SNS 화제(체류시간 김). 2026 '장르 덤프' 콘셉트 부스로 복귀."
+    "tips": "예상혼잡 상·소요 15~30분. '굿즈·부스 콘셉트 맛집'으로 SNS 화제(체류시간 김). 2026 '장르 덤프' 콘셉트 부스로 복귀.",
+    "thingsToDo": [
+      "신간 3종 선공개",
+      "7권↑ 구매 시 종 울리기"
+    ],
+    "timing": [
+      "[사인회] 6/24 14:00 신간 3종 · 6/25 범유진·권혁일 · 6/26 윤혜성·이경희 · 6/27 김진영",
+      "[방법] 번호표 없음, 시작 10분 전 현장 대기"
+    ]
   },
   "B602": {
     "goodsKeywords": [
       "시 필사노트",
       "마스킹테이프",
       "한지부채",
-      "블라인드북"
+      "블라인드북",
+      "연어 30주년 한지 굿즈"
     ],
     "themeTags": [
       "lit",
@@ -1162,21 +1610,46 @@
     "sourceUrl": "https://munhakdongne.com",
     "roamInterpretation": "좋아하는 작가 사인 받고 한정 굿즈까지 노리는, 문학 팬이라면 오래 머물 부스야.",
     "valueTags": [
-      { "slug": "social", "strength": 0.9 },
-      { "slug": "goods", "strength": 0.8 },
-      { "slug": "trend", "strength": 0.6 }
+      {
+        "slug": "social",
+        "strength": 0.9
+      },
+      {
+        "slug": "goods",
+        "strength": 0.8
+      },
+      {
+        "slug": "trend",
+        "strength": 0.6
+      }
     ],
     "recommendationReasons": {
       "social": "최은영·김영하·은희경·김애란 사인회가 줄줄이라 좋아하는 작가를 직접 만날 수 있어.",
       "goods": "시필사노트·한지부채·블라인드북 같은 한정 굿즈가 다양해.",
       "trend": "화제 작가 사인회로 도서전에서 가장 사람 몰리는 축이야."
     },
-    "thingsToDo": ["사인회 일정 확인", "블라인드북 골라보기", "한정 리커버 챙기기"],
-    "timing": ["사인회 시간대 대기 10~30분+", "인기 작가 사인회 전 미리 줄서기"],
-    "memoryHooks": ["작가 사인회", "한정 리커버", "블라인드북"]
+    "thingsToDo": [
+      "사인회 일정 확인",
+      "블라인드북 골라보기",
+      "한정 리커버 챙기기"
+    ],
+    "timing": [
+      "사인회 시간대 대기 10~30분+",
+      "인기 작가 사인회 전 미리 줄서기",
+      "[사인회] 6/24 14:00 최은영 · 이후 매일 진행(추후 공개)",
+      "[번호표] 도서 구매 시 선착순 100명"
+    ],
+    "memoryHooks": [
+      "작가 사인회",
+      "한정 리커버",
+      "블라인드북"
+    ]
   },
   "B603": {
-    "goodsKeywords": [],
+    "goodsKeywords": [
+      "독서중 마그넷",
+      "티셔츠"
+    ],
     "themeTags": [
       "lit",
       "humanities",
@@ -1184,16 +1657,227 @@
     ],
     "summary": "한강·손원평의 대형 종합 출판사",
     "tips": "오픈런 대형 부스, 혼잡 상·20~40분. 신간 선공개 할인·인생문장 벽 참여·클럽창비 혜택.",
-    "sourceUrl": "https://x.com/changbi_books"
+    "sourceUrl": "https://x.com/changbi_books",
+    "thingsToDo": [
+      "도서전 한정판 책·굿즈 보기",
+      "클럽창비 3기 얼리버드"
+    ],
+    "timing": [
+      "[사인회] 6/24 13:00 천명관 · 6/25 13:00 김소영 · 6/26 13:00 청예 · 6/27 13:00 성해나 · 6/28 10:30 고선경",
+      "[현장접수] 각 타임 선착순 50명"
+    ]
   },
   "B604": {
-    "goodsKeywords": [],
+    "goodsKeywords": [
+      "『우정에 대답하는 시』 부채",
+      "도서별 책갈피·다이어리 스티커·포스터"
+    ],
     "themeTags": [
       "lit",
       "art",
       "general"
     ],
     "summary": "시집·현대시 전문 강소 출판사",
-    "tips": "시 전문 출판사, 혼잡 중·10~20분. 6/28 11:00~12:30 책만남홀2 만화가 재수 작가 토크·창작 워크숍."
+    "tips": "시 전문 출판사, 혼잡 중·10~20분. 6/28 11:00~12:30 책만남홀2 만화가 재수 작가 토크·창작 워크숍.",
+    "thingsToDo": [
+      "신간 시집 6종(『포옹이 풀어지는 계절』 등)",
+      "도서전 한정 판매본 보기"
+    ]
+  },
+  "A101": {
+    "goodsKeywords": [
+      "책갈피",
+      "노트"
+    ],
+    "themeTags": [],
+    "summary": "고스트북스 — 신간 에세이·그림책, 해외 아티스트북",
+    "thingsToDo": [
+      "리틀룸 포스터·아티스트북 구경"
+    ]
+  },
+  "A1302": {
+    "goodsKeywords": [
+      "루페 키링",
+      "교정지 책갈피"
+    ],
+    "themeTags": [],
+    "summary": "서사원 — 구매 혜택·굿즈와 방문 이벤트",
+    "thingsToDo": [
+      "3만↑ 스티커·5만↑ 북에코백",
+      "방문 시 인스타 부채"
+    ]
+  },
+  "B309": {
+    "goodsKeywords": [
+      "책벌레 티셔츠",
+      "도서별 큐레이션 노트"
+    ],
+    "themeTags": [],
+    "summary": "한겨레출판 — PAPYRUS-404 이벤트와 매일 사인회",
+    "thingsToDo": [
+      "PAPYRUS-404 별자리 운세·감정 채집기"
+    ],
+    "timing": [
+      "[사인회] 매일 11·13·15시 — 이윤주·최진영·조우리·조예은·서한나 등",
+      "[번호표] 매일 10시 B309, 선착순 80명"
+    ]
+  },
+  "A106": {
+    "goodsKeywords": [
+      "독서링",
+      "미니북 키링",
+      "블라인드북",
+      "클리커"
+    ],
+    "themeTags": [],
+    "summary": "밝은세상 — '밝은세상 안과' 콘셉트 장르소설 부스",
+    "thingsToDo": [
+      "문장 영양제 처방(장르별)",
+      "최초공개 신간 4종"
+    ],
+    "timing": [
+      "[사인회] 6/25 15:00 설재인"
+    ]
+  },
+  "A806": {
+    "goodsKeywords": [
+      "타포린백",
+      "독서불패 티셔츠",
+      "집돈책돈 티셔츠",
+      "책 키링",
+      "인덱스 북마크"
+    ],
+    "themeTags": [],
+    "summary": "클레이하우스 — 독서 감성 굿즈 부스"
+  },
+  "A902": {
+    "goodsKeywords": [
+      "피크닉 매트",
+      "스티커 팩"
+    ],
+    "themeTags": [],
+    "summary": "더중앙플러스 — 굿즈 부스"
+  },
+  "B306": {
+    "goodsKeywords": [
+      "번들 키링",
+      "반팔 티셔츠"
+    ],
+    "themeTags": [],
+    "summary": "나비클럽 — 번들 키링과 SNS 인증 특전"
+  },
+  "A1602": {
+    "goodsKeywords": [
+      "협업 티셔츠",
+      "키링",
+      "스티커"
+    ],
+    "themeTags": [],
+    "summary": "오팬하우스 — 원작소설 기반 협업 굿즈"
+  },
+  "A1306": {
+    "goodsKeywords": [
+      "플립북",
+      "키링",
+      "인형"
+    ],
+    "themeTags": [],
+    "summary": "쿵프레스 — 플립북·인형 굿즈"
+  },
+  "B405": {
+    "goodsKeywords": [
+      "파김치 띠부띠부씰",
+      "파대가리 책갈피",
+      "'파김치는 지지 않아' 수건",
+      "라마 반다나"
+    ],
+    "themeTags": [],
+    "summary": "라마북스 — 〈파김치〉 시리즈 독립출판",
+    "thingsToDo": [
+      "〈파김치 만화 클럽〉 신작 구경"
+    ],
+    "timing": [
+      "[사인회] 허안나 6/26~28 상주, 구매 시 친필 사인"
+    ]
+  },
+  "B425": {
+    "goodsKeywords": [
+      "책별 엽서",
+      "미니 일러스트 명함"
+    ],
+    "themeTags": [],
+    "summary": "돛과닻 — 단행본 11종과 즉석 캐리커처",
+    "thingsToDo": [
+      "나홀로 음악감상실",
+      "반반문고 5종 구경"
+    ],
+    "timing": [
+      "[사인회] 6/24~28 매일 — 김유미·김연재·김보람·정인혜·이재임·하라·김윤영",
+      "[이벤트] 6/27 14~17시 이재임 즉석 캐리커처"
+    ]
+  },
+  "B437": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "라우트 프레스 — 한국근대여성문학전집",
+    "thingsToDo": [
+      "지하련 『가을』 최초공개",
+      "우리는 서로에 기대어 2"
+    ]
+  },
+  "B418": {
+    "goodsKeywords": [
+      "도서전 한정 특별 노트",
+      "성냥(무료 증정)"
+    ],
+    "themeTags": [],
+    "summary": "검정프레스 — 미식 에세이 독립출판",
+    "thingsToDo": [
+      "방문 시 성냥 증정",
+      "신간(아카세가와 겐페이)"
+    ]
+  },
+  "B415": {
+    "goodsKeywords": [
+      "북캠퍼 병아리 티셔츠"
+    ],
+    "themeTags": [],
+    "summary": "유연성클럽 — 썸머북캠프"
+  },
+  "B433": {
+    "goodsKeywords": [
+      "북백"
+    ],
+    "themeTags": [],
+    "summary": "후루룩 — 여행·책방 에세이 시리즈",
+    "thingsToDo": [
+      "후루룩 시리즈 완결편 포함 10종"
+    ]
+  },
+  "B440": {
+    "goodsKeywords": [
+      "MJFF 대표 굿즈"
+    ],
+    "themeTags": [],
+    "summary": "무주산골영화제 — MJFF 도서·굿즈"
+  },
+  "B411": {
+    "goodsKeywords": [
+      "신간 엽서 2종"
+    ],
+    "themeTags": [],
+    "summary": "히스테리안 — 신간 『숨은신』과 무가지",
+    "thingsToDo": [
+      "편집부 신간 소개·무가지 받기"
+    ]
+  },
+  "B413": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "두낫프레스 — 『예수의 아들』 구매 인증 이벤트",
+    "thingsToDo": [
+      "구매 인증 시 강덕구 비평 책자·엽서",
+      "신간 〈길고도 짧은 축제〉"
+    ]
   }
 }
