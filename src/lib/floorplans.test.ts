@@ -144,6 +144,29 @@ describe("SIF floorplan", () => {
     }
   });
 
+  it("never overlaps two booth rectangles", () => {
+    // 914개 → 417k 쌍. 쌍마다 expect()를 부르면 느리므로 실패만 모아 한 번 단언한다.
+    const r = fp.booths.map((b) => ({
+      code: b.code,
+      l: b.x - b.w / 2,
+      rt: b.x + b.w / 2,
+      t: b.y - b.h / 2,
+      bt: b.y + b.h / 2,
+    }));
+    const bad: string[] = [];
+    for (let i = 0; i < r.length; i++) {
+      for (let j = i + 1; j < r.length; j++) {
+        const a = r[i];
+        const b = r[j];
+        // 변이 맞닿는 건(≤2px) 정상. 진짜 겹칠 때만 실패.
+        const ox = Math.min(a.rt, b.rt) - Math.max(a.l, b.l);
+        const oy = Math.min(a.bt, b.bt) - Math.max(a.t, b.t);
+        if (ox > 2 && oy > 2) bad.push(`${a.code}×${b.code}`);
+      }
+    }
+    expect(bad).toEqual([]);
+  });
+
   it("has a rect for every seeded SIF booth", () => {
     const codes = new Set(fp.booths.map((b) => b.code));
     for (const b of sifBooths)
