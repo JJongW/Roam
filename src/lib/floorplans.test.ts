@@ -123,6 +123,15 @@ describe("SIBF floorplan", () => {
 describe("SIF floorplan", () => {
   const fp = FLOORPLANS["sif-2026"];
 
+  // 아래 두 값은 의도적인 트립와이어다. 이 JSON은 외부 소스(파일명이
+  // content-hash라 매번 바뀌는 번들)에서 재추출되므로, 재추출로 개수나
+  // 캔버스 크기가 바뀌면 이 테스트가 실패해 "의식적으로" 갱신하게 만든다 —
+  // 조용히 통과시키지 않는다.
+  it("pins the extracted floorplan's size", () => {
+    expect(fp.booths.length).toBe(914);
+    expect([fp.width, fp.height]).toEqual([3028, 1637]);
+  });
+
   it("converts JSON top-left coords to centre coords", () => {
     const byCode = new Map(sifJson.booths.map((b) => [b.code, b]));
     for (const b of fp.booths) {
