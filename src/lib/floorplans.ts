@@ -288,22 +288,18 @@ function buildSibf(): Floorplan {
 
 // SIF: 격자 부스만 있는 단순 도면(홀/장식 없음). 색은 전부 중립 존색 —
 // 지도는 Roam 상태색만 얹으므로 ocreo 색은 쓰지 않는다. 내부 walkable = 부스 bbox.
+// JSON 좌표는 좌상단 기준, FloorplanBooth는 중심 기준 → 여기서 변환한다.
+// (exhibition-map이 translate(x,y) 안에 rect를 -w/2,-h/2로 그린다.)
 function buildSif(): Floorplan {
   const booths: FloorplanBooth[] = sif.booths.map((b) => ({
     code: b.code,
-    x: b.x,
-    y: b.y,
-    w: b.w,
-    h: b.h,
-    color: ZONE.general,
-  }));
-  const centers = booths.map((b) => ({
     x: b.x + b.w / 2,
     y: b.y + b.h / 2,
     w: b.w,
     h: b.h,
+    color: ZONE.general,
   }));
-  const box = bbox(centers);
+  const box = bbox(booths);
   return {
     width: sif.width,
     height: sif.height,

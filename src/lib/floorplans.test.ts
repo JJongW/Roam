@@ -3,6 +3,8 @@ import { FLOORPLANS } from "./floorplans";
 import { aisleRoute } from "./aisle-route";
 import { booths } from "./mock/seed";
 import sibf from "./floorplan-sibf.json";
+import sifJson from "./floorplan-sif.json";
+import { sifBooths } from "./mock/seed-sif";
 
 // displayZone 부스(책마을 B4xx 등)는 좌표 미트레이스 — 지도엔 존으로만 표시,
 // 개별 rect가 의도적으로 없다. rect 존재 검사에서 제외한다.
@@ -115,5 +117,37 @@ describe("SIBF floorplan", () => {
         ).toBe(true);
       }
     }
+  });
+});
+
+describe("SIF floorplan", () => {
+  const fp = FLOORPLANS["sif-2026"];
+
+  it("converts JSON top-left coords to centre coords", () => {
+    const byCode = new Map(sifJson.booths.map((b) => [b.code, b]));
+    for (const b of fp.booths) {
+      const src = byCode.get(b.code);
+      expect(src, `${b.code} missing from JSON`).toBeDefined();
+      expect(b.x, `${b.code} x`).toBe(src!.x + src!.w / 2);
+      expect(b.y, `${b.code} y`).toBe(src!.y + src!.h / 2);
+      expect(b.w, `${b.code} w`).toBe(src!.w);
+      expect(b.h, `${b.code} h`).toBe(src!.h);
+    }
+  });
+
+  it("keeps every booth inside the canvas", () => {
+    for (const b of fp.booths) {
+      expect(b.x - b.w / 2, `${b.code} left`).toBeGreaterThanOrEqual(0);
+      expect(b.x + b.w / 2, `${b.code} right`).toBeLessThanOrEqual(fp.width);
+      expect(b.y - b.h / 2, `${b.code} top`).toBeGreaterThanOrEqual(0);
+      expect(b.y + b.h / 2, `${b.code} bottom`).toBeLessThanOrEqual(fp.height);
+    }
+  });
+
+  it("has a rect for every seeded SIF booth", () => {
+    const codes = new Set(fp.booths.map((b) => b.code));
+    for (const b of sifBooths)
+      expect(codes.has(b.code!), `missing rect for ${b.code}`).toBe(true);
+    expect(fp.booths.length).toBe(sifBooths.length);
   });
 });
