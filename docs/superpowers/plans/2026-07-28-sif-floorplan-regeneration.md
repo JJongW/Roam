@@ -53,7 +53,9 @@ Task 1을 먼저 하는 이유: 좌표 변환을 고친 뒤에 정확한 데이�
 
 - [ ] **Step 1: 실패하는 테스트를 쓴다**
 
-`src/lib/floorplans.test.ts` 파일 **맨 끝에** 아래를 덧붙인다. 파일 상단 import 블록에는 두 줄을 추가한다:
+`src/lib/floorplans.test.ts` 파일 **맨 끝에** 아래를 덧붙인다. 파일 상단 import 블록에는 두 줄을 추가한다.
+
+> 겹침 불변식 테스트는 여기 없다. 겹침은 데이터의 성질이지 변환 로직의 성질이 아니고, 현재(구) `floorplan-sif.json`에는 실제로 겹치는 부스가 35쌍 있어서 이 시점엔 통과할 수 없다. Task 2에서 정확한 데이터와 함께 추가한다.
 
 ```ts
 import sifJson from "./floorplan-sif.json";
@@ -83,29 +85,6 @@ describe("SIF floorplan", () => {
       expect(b.y - b.h / 2, `${b.code} top`).toBeGreaterThanOrEqual(0);
       expect(b.y + b.h / 2, `${b.code} bottom`).toBeLessThanOrEqual(fp.height);
     }
-  });
-
-  it("never overlaps two booth rectangles", () => {
-    // 914개 → 417k 쌍. 쌍마다 expect()를 부르면 느리므로 실패만 모아 한 번 단언한다.
-    const r = fp.booths.map((b) => ({
-      code: b.code,
-      l: b.x - b.w / 2,
-      rt: b.x + b.w / 2,
-      t: b.y - b.h / 2,
-      bt: b.y + b.h / 2,
-    }));
-    const bad: string[] = [];
-    for (let i = 0; i < r.length; i++) {
-      for (let j = i + 1; j < r.length; j++) {
-        const a = r[i];
-        const b = r[j];
-        // 변이 맞닿는 건(≤2px) 정상. 진짜 겹칠 때만 실패.
-        const ox = Math.min(a.rt, b.rt) - Math.max(a.l, b.l);
-        const oy = Math.min(a.bt, b.bt) - Math.max(a.t, b.t);
-        if (ox > 2 && oy > 2) bad.push(`${a.code}×${b.code}`);
-      }
-    }
-    expect(bad).toEqual([]);
   });
 
   it("has a rect for every seeded SIF booth", () => {
@@ -159,7 +138,7 @@ function buildSif(): Floorplan {
 
 Run: `npx vitest run src/lib/floorplans.test.ts`
 
-Expected: PASS. SIBF 5개 + SIF 4개 전부 통과.
+Expected: PASS. SIBF 5개 + SIF 3개 전부 통과.
 
 - [ ] **Step 5: 전체 검증**
 
@@ -193,6 +172,7 @@ ocreo 번들에서 정확한 좌표를 추출해 JSON을 통째로 갈아끼운�
 
 **Files:**
 - Modify: `src/lib/floorplan-sif.json` (전면 교체)
+- Modify: `src/lib/floorplans.test.ts` (겹침 불변식 테스트 추가 — Step 6)
 - 스크래치패드 전용(커밋 안 함): `gen-sif-floorplan.mjs`, `check-sif-floorplan.mjs`, `main.js`
 
 **Interfaces:**
@@ -418,22 +398,52 @@ J49 intl-artist
 R14 intl-artist
 ```
 
-- [ ] **Step 6: 기존 테스트가 새 데이터로도 통과하는지 확인한다**
+- [ ] **Step 6: 겹침 불변식 테스트를 추가한다**
 
-Task 1에서 넣은 SIF 불변식 4개가 새 데이터를 그대로 검증한다.
+겹침은 데이터의 성질이라 정확한 데이터가 들어온 지금 추가한다(Task 1에서는 구 데이터에 실제 겹침이 35쌍 있어 통과할 수 없었다). `src/lib/floorplans.test.ts`의 `describe("SIF floorplan")` 블록 안, `keeps every booth inside the canvas` 다음에 넣는다.
+
+```ts
+  it("never overlaps two booth rectangles", () => {
+    // 914개 → 417k 쌍. 쌍마다 expect()를 부르면 느리므로 실패만 모아 한 번 단언한다.
+    const r = fp.booths.map((b) => ({
+      code: b.code,
+      l: b.x - b.w / 2,
+      rt: b.x + b.w / 2,
+      t: b.y - b.h / 2,
+      bt: b.y + b.h / 2,
+    }));
+    const bad: string[] = [];
+    for (let i = 0; i < r.length; i++) {
+      for (let j = i + 1; j < r.length; j++) {
+        const a = r[i];
+        const b = r[j];
+        // 변이 맞닿는 건(≤2px) 정상. 진짜 겹칠 때만 실패.
+        const ox = Math.min(a.rt, b.rt) - Math.max(a.l, b.l);
+        const oy = Math.min(a.bt, b.bt) - Math.max(a.t, b.t);
+        if (ox > 2 && oy > 2) bad.push(`${a.code}×${b.code}`);
+      }
+    }
+    expect(bad).toEqual([]);
+  });
+```
+
+이 테스트를 **구 데이터에서 먼저 돌려 RED를 확인할 필요는 없다** — Task 1 실행 중 실제로 35쌍 실패하는 것이 이미 확인됐다(`H27×V44` 등). 새 데이터에서 통과하는 것만 확인한다.
+
+- [ ] **Step 7: 전체 검증**
 
 Run:
 ```
 npx vitest run src/lib/floorplans.test.ts
 npx tsc --noEmit
 npx vitest run
+npx eslint src/lib/floorplans.test.ts
 ```
-Expected: 전부 PASS. `has a rect for every seeded SIF booth`도 통과해야 한다 — `seed-sif.ts`가 같은 JSON을 읽으므로 914개로 함께 늘어난다.
+Expected: 전부 PASS. SIBF 5개 + SIF 4개. `has a rect for every seeded SIF booth`도 통과해야 한다 — `seed-sif.ts`가 같은 JSON을 읽으므로 914개로 함께 늘어난다.
 
-- [ ] **Step 7: 커밋**
+- [ ] **Step 8: 커밋**
 
 ```bash
-git add src/lib/floorplan-sif.json
+git add src/lib/floorplan-sif.json src/lib/floorplans.test.ts
 git commit -m "fix(map): SIF 도면 좌표를 공식 도면과 일치시킴
 
 기존 데이터는 913개 부스가 42x40·52x46 두 크기로만 되어 있고 공식 도면
