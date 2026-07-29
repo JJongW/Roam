@@ -9,6 +9,13 @@ import { AccountButton } from "@/components/auth/account-button";
 import { RoamMotion } from "@/components/companion/roam-motion";
 import { getI18n } from "@/lib/i18n/server";
 import { getCurrentUser } from "@/lib/api/session";
+import {
+  byStartDate,
+  exhibitionValueProfile,
+  matchExhibition,
+  matchReason,
+  type ExhibitionMatch,
+} from "@/lib/feed/exhibition-match";
 
 export const metadata = {
   title: "Roam",
@@ -16,11 +23,42 @@ export const metadata = {
 
 export default async function HomePage() {
   const repo = await getRepository();
-  const { data: exhibitions } = await repo.listExhibitions({ limit: 20 });
+  const { data: rawExhibitions } = await repo.listExhibitions({ limit: 20 });
   const { t } = await getI18n();
   // 홈은 공개 랜딩 — 로그인 없이도 열린 전시를 둘러본다(proxy.ts). 미로그인 시
   // '왜 로그인?' 배너로 기억·연속성을 설명(계정 벽이 아니라 기억 설정).
   const user = await getCurrentUser();
+
+  // 전시 정렬 — 예전엔 저장소가 준 순서(운영은 id 오름차순)를 그대로 쓰면서 첫 전시에
+  // "네가 고른 관람 성향을 기준으로" 라는 문장을 붙였다. 정렬에 취향이 안 들어갔으므로
+  // 거짓이었다. 이제 실제로 겹치는 가치가 있을 때만 추천이라 부른다.
+  //
+  // 부스를 읽어야 전시의 가치 프로필이 나오는데(카테고리엔 전시 링크가 없다),
+  // 그 비용은 값어치가 있을 때만 낸다 — 로그인 + 브레인 관심이 있을 때만.
+  const brain = user ? await repo.getUserBrain(user.id) : null;
+  const hasInterest = (brain?.interests.length ?? 0) > 0;
+
+  let exhibitions = byStartDate(rawExhibitions);
+  let matchBySlug = new Map<string, ExhibitionMatch>();
+  if (hasInterest) {
+    const matches = await Promise.all(
+      rawExhibitions.map(async (ex) => {
+        const booths = await repo.listBoothsByExhibitionId(ex.id);
+        return [ex.slug, matchExhibition(brain, exhibitionValueProfile(booths))] as const;
+      }),
+    );
+    matchBySlug = new Map(matches);
+    // 겹침이 있는 전시를 점수 순으로 앞에, 나머지는 개막 임박 순으로 뒤에.
+    const scored = (ex: (typeof rawExhibitions)[number]) =>
+      matchBySlug.get(ex.slug)?.score ?? 0;
+    exhibitions = [...rawExhibitions].sort(
+      (a, b) => scored(b) - scored(a) || a.startDate.localeCompare(b.startDate),
+    );
+  }
+  // 첫 전시를 "추천"이라 부를 수 있는 건 실제로 겹친 가치가 있을 때뿐이다.
+  const top = exhibitions[0];
+  const topMatch = top ? matchBySlug.get(top.slug) : undefined;
+  const topReason = topMatch ? matchReason(topMatch.matched) : null;
 
   return (
     <main className="flex-1 pb-safe">
@@ -89,20 +127,18 @@ export default async function HomePage() {
           />
         ) : (
           exhibitions.map((ex, i) => (
-            // 첫 전시를 로미 추천으로 강조(멀티 전시 대비 — 추후 가치 매칭으로 고도화).
             <div key={ex.id} className="space-y-1.5">
+              {/* "로미 추천"은 겹친 가치가 실제로 있을 때만 — 근거 없이 주장하지 않는다. */}
               <ExhibitionCard
                 exhibition={ex}
-                recommended={i === 0}
+                recommended={i === 0 && topReason !== null}
                 recommendedLabel={t("home.recommended")}
               />
-              {/* 추천 근거 한 줄 — 결정론 템플릿(LLM 없음)이라 Gemini 실패에도 살아있다.
-                  전시가 하나뿐이면 솔직하게, 여럿이면 취향 기준으로. 데이터 지어내지 않음. */}
-              {i === 0 && (
+              {/* 근거 한 줄 — 결정론(LLM 없음). 겹친 가치를 그대로 말하고, 겹침이 없으면
+                  아무 말도 하지 않는다. 전시가 하나뿐일 때만 그 사실을 솔직히 알린다. */}
+              {i === 0 && (topReason || exhibitions.length === 1) && (
                 <p className="px-1 text-xs leading-relaxed text-muted-foreground">
-                  {exhibitions.length === 1
-                    ? t("home.singleReason")
-                    : t("home.recommendedReason")}
+                  {topReason ?? t("home.singleReason")}
                 </p>
               )}
             </div>

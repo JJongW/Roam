@@ -5,6 +5,7 @@ import { diversifyCandidates, interestScore } from "@/lib/engine/scoring";
 import { rankForExhibition } from "@/lib/engine/service";
 import { brainInterestWeights, mergeBrainInterests } from "@/lib/memory/apply";
 import { readBrain } from "@/lib/memory/service";
+import { getRepository } from "@/lib/repositories";
 import { deriveCue } from "@/lib/feed/cue";
 import { buildGrounding, type Grounding } from "@/lib/feed/grounding";
 import { DEFAULT_RHYTHM, RHYTHM_MIX, type Rhythm } from "@/lib/feed/rhythm";
@@ -71,8 +72,10 @@ export async function curateFeed(
   userId: string,
   rhythm: Rhythm = DEFAULT_RHYTHM,
   locale: Locale = DEFAULT_LOCALE,
+  /** 호출부가 이미 읽었으면 넘긴다 — 같은 요청에서 브레인을 두 번 읽지 않도록. */
+  preloadedBrain?: UserBrain,
 ): Promise<FeedItem[]> {
-  const brain = await readBrain(userId);
+  const brain = preloadedBrain ?? (await readBrain(userId));
   const interests = mergeBrainInterests([], brain);
   const interestWeights = brainInterestWeights([], brain);
   const rank = await rankForExhibition(
@@ -94,8 +97,18 @@ export async function curateFeed(
     .filter((n) => n.confidence >= 0.25 && VALUE_SLUGS.includes(n.key))
     .map((n) => n.key);
 
+  // '별로'(skipped)는 피드에서 뺀다 — 안 그러면 반응해도 같은 부스가 계속 올라와
+  // "내 반응이 아무것도 안 바꾼다"고 느껴진다. '가봄'(visited)은 남긴다(다시 볼 수
+  // 있어야 하고, 지도에서 색으로 이미 구분된다). 노트는 서버에 있어 재접속해도 유지.
+  const repo = await getRepository();
+  const skipped = new Set(
+    (await repo.listNotes(userId))
+      .filter((n) => n.status === "skipped")
+      .map((n) => n.boothId),
+  );
+
   const items: FeedItem[] = [];
-  const used = new Set<string>();
+  const used = new Set(skipped);
   const add = (booth: Booth, pick: PickKind) => {
     items.push({
       booth,

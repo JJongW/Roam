@@ -36,6 +36,25 @@ const CATEGORY_BASE: Record<string, Array<[string, number]>> = {
     ["inspiration", 0.3],
   ],
   general: [["discovery", 0.4]],
+  // SIF(서울일러스트레이션페어)의 참가자 4분류. 이게 없으면 913개 부스가 전부
+  // 아래 폴백(discovery 0.3) 하나로 떨어져 브레인이 부스를 구분하지 못한다 —
+  // 어떤 부스에 반응해도 같은 신호라 취향이 학습되지 않는다(2026-07-29 확인).
+  "kr-artist": [
+    ["inspiration", 0.5],
+    ["discovery", 0.3],
+  ],
+  "intl-artist": [
+    ["inspiration", 0.5],
+    ["discovery", 0.4],
+  ],
+  "kr-biz": [
+    ["goods", 0.5],
+    ["trend", 0.2],
+  ],
+  "intl-biz": [
+    ["goods", 0.5],
+    ["discovery", 0.2],
+  ],
   // HOUSE ARCHIVE의 다섯 테마(집)와 테이블 마켓.
   collect: [
     ["goods", 0.5],
