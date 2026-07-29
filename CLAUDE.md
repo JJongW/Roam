@@ -27,67 +27,73 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
 - **데이터 레이어** `src/lib/repositories`: `Repository` 인터페이스 + 두 구현
   (`MockRepository`, `SupabaseRepository`), 런타임 `getRepository()`가 선택.
   Supabase 키 있으면 Postgres, 없으면 in-memory mock(`src/lib/mock/seed.ts`). `src/lib/env.ts`의 `dataMode`.
-- **추천 엔진** `src/lib/engine`: 순수·결정론. `scoring.ts`(부스 점수)→`route.ts`(시간예산
-  그리디 + 최근접 정렬)→`navigation.ts`(턴바이턴)→`service.ts`(고수준). I/O 없음, 단위테스트 완비.
+- **추천 엔진** `src/lib/engine`: 순수·결정론. `scoring.ts`(부스 점수) + `service.ts`(`rankForExhibition` — 저장소에서 부스·이벤트·히트맵을 **병렬로** 읽어 랭킹).
+  ⚠️ 과거의 `route.ts`(시간예산 그리디)·`navigation.ts`(턴바이턴)는 **없다** — 동선 제품이 피드로 대체되며 제거됨.
 - **API** `src/app/api/*` Route Handlers: 모든 입력 Zod 검증(`src/lib/schemas`),
   envelope `{ data } | { error }`(`src/lib/api/http.ts`). 무계정 세션 `ensureSession`.
+- **쓰기 규약(중요)**: PostgREST는 실패해도 예외를 안 던진다. `supabase/repository.ts`의
+  모든 쓰기는 `wrote()`/`maybeWrote()`(도메인, 실패=throw) 또는 `loggedWrite()`(텔레메트리,
+  실패=에러 로그)를 **반드시** 통과시킨다. 이걸 빠뜨리면 FK 위반·스키마 드리프트가
+  201 성공으로 위장되고 로그에도 안 남는다(2026-07-27 감사에서 북마크·커뮤니티 전량 유실로 확인).
 - **상태**: 서버가 진실(RSC + Route Handlers). zustand는 휘발성 클라 상태만
-  (온보딩 draft·동선 진행·지도 뷰포트). localStorage 영속: `roam-onboarding/route/cart/visit/auth`.
-- **DB**: `supabase/migrations/000N_*.sql` + `supabase/seed.sql`(= mock seed 패리티, `scripts/gen-seed.mjs` 생성).
+  (지도 뷰포트·컴패니언·UI). localStorage 영속: `roam-visit/auth` 등.
+- **요청 단위 캐시**: 같은 렌더에서 전시를 여러 번 읽지 않도록 `repositories/cached.ts`의
+  `getExhibitionCached`(React `cache`)를 쓴다. 페이지·`generateMetadata`·`rankForExhibition`이 공유.
+- **DB**: `supabase/migrations/000N_*.sql`. `supabase/`는 gitignore라 **레포에 안 올라간다**(로컬/운영 각자 관리).
 
 ## 주요 도메인
-- **방문객 플로우**: 전시 열기 → 온보딩 → 개인화 동선 → 인터랙티브 지도 → 턴바이턴 →
-  부스 상세(리뷰·이벤트·실시간 대기·웰컴키트) → 관람 종료. 전부 익명.
+- **방문객 플로우**: 로그인 → 전시 홈(가치 온보딩 + 관심 피드 + 근거 카드) → 인터랙티브 지도 →
+  부스 상세(리뷰·이벤트·웰컴키트) → 노트·커뮤니티 → "오늘 관람 마치기"(회고). 로그인 필수.
 - **부스/이벤트**: `Booth`(code 자연키, kind exhibitor|facility, tags=카테고리 slug, aliases 공동입점), `BoothEvent`.
 - **주최자 콘솔** `/admin`: 전시·부스·이벤트·대기 관리 + 분석 대시보드(히트맵·인기부스·동선흐름·퍼널).
-- **부가**: 커뮤니티 포스트(미디어), 개인 메모장(visited/skip/메모/사진), 동선 저장·공유(닉네임), 푸시(FCM), 닉네임 인증.
+- **부가**: 커뮤니티 포스트(미디어), 개인 메모장(visited/skip/메모/사진), 북마크, 푸시(FCM — **현재 키 미설정이라 비활성**), 닉네임 인증.
+- **소유자 키**: 노트·브레인·신호·북마크는 `app_user.id`. ⚠️ 리뷰·커뮤니티 포스트는 아직
+  `visitor_session.id` 기준이라 계정에 안 묶인다(미해결, 감사 P1-2).
 - **로그인(필수 게이트)**: `app_user`(닉네임=공개키) 단일 계정 테이블. 닉네임 무비번 + **Google OAuth**(Supabase Auth). 신원은 앱 자체 쿠키 `roam_user`로 통일 — OAuth 콜백(`/auth/callback`)은 Supabase 세션으로 identity만 읽고 `signOut`, `app_user` upsert 후 `roam_user` 발급. mock 모드(Supabase 키 없음)엔 Google 버튼 숨김(닉네임만). **게이트** `src/proxy.ts`(Next 16 proxy 컨벤션): `roam_user` 없으면 `/login?next=`로 307. 예외=`/login`·`/auth`·`/admin`(자체 코드 게이트)·`/api`·정적. 로그인 화면 `src/app/login/`. 외부 설정·설계: `docs/decisions/2026-07-07_google-oauth-login.md`.
 - 도메인 타입 단일 소스: `src/lib/types/index.ts`. 설계 문서: `.claude/plans/`(architecture·erd·api-spec).
 
-## LLM 추천 + 속도 규칙
+## LLM 사용 + 속도 규칙
 - **탭(대화 턴)엔 LLM 금지** → 즉답(로컬 템플릿). companion 속도.
-- **동선 생성(명시적 액션, 로딩 UX 있음)엔 LLM이 실제로 일함**: retrieve → rerank+ground → order 하이브리드.
-  1. RETRIEVE(결정론): `rankBooths`로 후보 top-N(~30) 추림.
-  2. RERANK(Gemini, `src/lib/ai/booth-recommender.ts`): 후보 코퍼스 + 사용자 맥락 읽고
-     **Google Search grounding(웹검색) + URLContext(부스 인스타/웹 읽기) + 부스 RAG**로
-     선택·재정렬·키워드 확장. 출력 boothId는 실제 후보 ID로 검증(환각 차단).
-  3. ORDER(결정론): 엔진이 기하·시간으로 순서 확정(LLM은 좌표·시간 계산 못 함).
-  4. FALLBACK: 무키/실패/타임아웃 → 순수 결정론.
-- 적용: 온보딩 `POST /api/onboarding/route`(**grounded=false**, 내부 RAG만 → ~3~5초), 지도 "AI 추천" `POST /api/ai/quick-route`(**grounded=true**, 웹검색·URL → ~15~22초).
-- **순서 정렬**: `buildHallSweepRoute`(engine/route.ts) — 부스를 홀별로 묶어 입구 근접 홀부터 홀 내부 NN. A↔B 왕복(지그재그) 차단. 후보 20개로 제한(지연).
+- **피드 큐레이션엔 LLM 없음**: `curateFeed`(feed/curate.ts)는 브레인 + `rankForExhibition`
+  결과로 안정·낯선·모험 믹스를 만드는 **순수 결정론**이다.
+- 실제 Gemini 호출처는 4곳뿐: `/api/ai/booth-summary`(~1.8초) · `/api/ai/community-summary`(~2.5초) ·
+  `/api/ai/screenshot`(비전) · `/api/exhibitions/[slug]/keywords`.
 - **thinking off 필수**: gemini-2.5-flash는 thinking 기본 ON이라 응답이 8~15초+로 느려짐 → 모든 호출에 `thinkingConfig.thinkingBudget=0`(gemini.ts). 이거 빼면 LLM이 타임아웃돼 전부 결정론 폴백된다.
-- **AI 추천 쿼리 로그(RAG)**: quick-route가 입력 텍스트+추출 키워드를 `ai_query_log`(`0014`)에 적재. `topQueryKeywords`로 트렌딩 키워드 집계 → 다음 추천 프롬프트에 주입(`logAiQuery`/`topQueryKeywords` repo 메서드).
-- **AI 추천 기본=교체**: 텍스트 입력 의도를 그대로 반영. "기존 동선에 더하기" 토글 ON일 때만 keepBoothIds 병합.
-- 그 외 Gemini: 온보딩 요약 추론 `/api/onboarding/infer`(prefetch, 논블로킹) · enrichment 추출(오프라인) · 스크린샷 매칭(비전).
 - 래퍼 `src/lib/ai/gemini.ts`: `generateJSON`/`generateText`/**`generateGrounded`**(tools=googleSearch+urlContext, JSON 강제 불가 → `extractJSON`로 살림) · server-only · 재시도+모델 폴백 · `hasGemini` 게이트.
-- **지연 구간엔 무조건 로딩 UX + 라이팅**: `LOADING_MESSAGES.route`(단계별, `useRotatingMessage` 2.2s 회전).
+- **지연 구간엔 무조건 로딩 UX + 라이팅**: `src/lib/loading-messages.ts` + `useRotatingMessage`(2.2s 회전).
 
-## 온보딩 = AI Companion 대화 (폼 아님)
-- 진입 `/exhibitions/[slug]/onboarding` → `components/onboarding/ai-companion-onboarding.tsx`.
-- 스텝 그래프·문구 `src/lib/onboarding/onboarding-flow.ts`. **Step 1은 부스 단위로 분기**(`start`: "이미 가보고 싶은 부스 있어?" → `boothPlan` has_booths/open). 사용자는 이미 특정 전시 안에 있으니 "전시 선택"은 안 묻는다. 답마다 **즉시 로컬 템플릿 반응**.
-  - **has_booths**: `booth_pick`(검색+다중선택 부스 picker, 컴포넌트가 커스텀 렌더) → `booth_related`("관련 부스도?") → preference → visit_date → time → route_style → 요약.
-  - **open**: visit_date → `intent`(**복수 선택**, `intents[]`) → `followup`(선택한 **의도마다 순차 반복**, `currentFollowupIntent`/`followupAnsweredCount`로 진행) → preference → time → route_style → 요약.
-- 타입 `onboarding-types.ts`(`OnboardingContext`: `boothPlan`·`selectedBoothIds`·`wantRelatedBooths`·`intents[]`+대표 `intent`). ctx→`UserPreferenceInput` 변환 `route-profile-builder.ts`(순수, 클라 안전, 복수 의도 합집합). Gemini 추론 `onboarding-inference.ts`(server-only). 부스 목록은 page가 `listBoothsByExhibitionId`로 fetch해 picker에 전달.
-- 완료 "좋아, 같이 가자" → `POST /api/onboarding/route`(context 전송, LLM 주도 추천) → `useRouteStore.setRoute` → 지도 replace. (`buildProfileFromContext`는 클라 폴백·legacy 필드용.)
-  - **부스 keep/related**: `selectedBoothIds`는 항상 동선에 고정. `wantRelatedBooths=false`+선택 있으면 **고른 부스만**(LLM skip), true면 선택 고정 + 추천 병합. open 분기는 기존대로 전체 추천.
-- `useOnboardingStore.applyProfile`가 레거시 필드도 채워 route-view·ai-recommend-sheet 하위호환.
+### ⚠️ 데드코드 (지우거나 되살리기 전엔 믿지 말 것)
+동선 제품이 피드로 대체되며 호출부만 사라지고 남은 것들 — 참조 0:
+`ai/booth-recommender.ts`(`recommendBoothIds`) · `onboarding/onboarding-flow.ts` ·
+`onboarding/onboarding-inference.ts` · `onboarding/onboarding-types.ts` ·
+repo의 `logAiQuery`/`topQueryKeywords`(+ `ai_query_log` 테이블).
+
+## 온보딩 = 가치 선택 (전시 홈 안에서)
+- 별도 온보딩 페이지는 **없다**. 전시 홈이 `components/onboarding/value-onboarding.tsx`를 띄우고,
+  고른 가치를 `POST /api/me/values` → `recordSignal`(explicit) → 브레인 재증류 → 피드 즉시 반영.
+- 가치 slug 단일 소스 `src/lib/values/index.ts`(`discovery·experience·goods·social·learning·trend·inspiration·rest`).
+  ⚠️ 이 8개 밖의 값은 `/api/me/values`가 400으로 거른다.
+- 파악도(0~100)는 `memory/progress.ts`의 `tasteProgress(brain)` — 브레인 파생 순수 함수.
 
 ## 지도 동작
-- 뒤로가기(`map-view.tsx` `handleBack`): 동선 있으면 "관람이 끝나셨나요?" → 네=`PATCH /api/route/[id]{status:"completed"}`(데이터 유지)+홈 / 아니오=지도 유지.
-- 상단 "AI 추천"(`ai-recommend-sheet.tsx`): `keepBoothIds=cart`로 quick-route 호출 → 기존 동선에 **병합**(교체 아님).
+- 뒤로가기(`map-view.tsx` `handleBack`): history 있으면 `router.back()`(라우터 캐시로 즉시 복원),
+  공유 링크로 바로 진입해 history가 없을 때만 전시 홈으로 push. 종료 확인 다이얼로그는 없다.
+- 관람 종료는 지도가 아니라 전시 홈 하단 `FinishVisit`("오늘 관람 마치기") → `POST /api/me/reflect`.
 
 ## 부스 enrichment (수동 주입)
 - 인스타 자동 스크래핑 불가/금지 → **운영자 수동 입력**(`docs/booth-enrichment.md` 양식).
-- 소스 `src/lib/booth/enrichment-sibf-2026.json`(code 키, **현재 79/256 부스 채워짐**). 타입 `BoothEnrichment`.
+- 소스 `src/lib/booth/enrichment-sibf-2026.json`(code 키, **97개 항목**). 타입 `BoothEnrichment`.
+  채움 현황: `summary` 97 · `themeTags` 66 · `thingsToDo` 45 · `timing` 31 ·
+  `valueTags`/`roamInterpretation`/`recommendationReasons`/`memoryHooks` 각 **16**.
 - `seed.ts`가 부스에 attach. `themeTags`(=slug)는 `booth.tags`에 병합 → 추천 스코어링에 **LLM 없이 즉시** 반영. 굿즈/요약/팁은 부스 상세 노출 + 온보딩 추론 프롬프트 어휘로 주입.
-- **근거 카드(Phase F)**: 피드 각 부스에 "무엇/왜맞음/근거/뭘하면/신뢰" = `src/lib/feed/grounding.ts`(순수) → `curateFeed`가 FeedItem에 attach, `components/feed/grounding-card.tsx` 렌더. 왜맞음은 저작 `recommendationReasons`(가치별) > `roamInterpretation` > **런타임 겹침**(사용자 브레인 상위 가치 ∩ 부스 valueSlugs) 순. 저작 없으면 자연 degrade(블로커 아님).
-- **최소 필수 6종**(운영 입력 시 반드시): `summary`(공식+한줄해석)·`valueTags`·`recommendationReasons`·`thingsToDo`·`timing`·`memoryHooks`. 가장 중요 4=공식정보+해석+가치태그+근거. 양식 `docs/booth-enrichment.md`, 저작 예시 `A1001`·`A1101`. ⚠️ 현재 저작 필드(roamInterpretation·valueTags·recommendationReasons 등)는 2개 부스만 채워짐 — 나머지는 런타임 파생 중.
+- **근거 카드(Phase F)**: 피드 각 부스에 "무엇/왜맞음/근거/뭘하면/신뢰" = `src/lib/feed/grounding.ts`(순수) → `curateFeed`가 FeedItem에 attach, **`components/feed/interest-feed.tsx`가 인라인 렌더**(`grounding-card.tsx`도 있음). 왜맞음은 저작 `recommendationReasons`(가치별) > `roamInterpretation` > **런타임 겹침**(사용자 브레인 상위 가치 ∩ 부스 valueSlugs) 순. 저작 없으면 자연 degrade(블로커 아님).
+- **최소 필수 6종**(운영 입력 시 반드시): `summary`(공식+한줄해석)·`valueTags`·`recommendationReasons`·`thingsToDo`·`timing`·`memoryHooks`. 가장 중요 4=공식정보+해석+가치태그+근거. 양식 `docs/booth-enrichment.md`, 저작 예시 `A1001`·`A1101`. 저작 필드가 없는 부스는 런타임 겹침으로 파생된다.
 - Supabase `booth_enrichment` 테이블(`0013` 기본 + `0021` 근거카드 컬럼: value_tags·roam_interpretation·recommendation_reasons·things_to_do·timing·memory_hooks 등), repo `getBoothDetail`가 전 필드 매핑. 데이터 동기화: `0023_booth_enrichment_sync.sql`이 mock JSON 전체(97행)를 멱등 UPSERT(재생성 시 이 마이그레이션 갱신). ⚠️ seed.sql의 enrichment 블록은 구 6컬럼·구 데이터라 stale — prod 진실은 마이그레이션.
 
-## 데이터 주입 (SIBF 시드)
+## 데이터 주입 (전시 시드)
 - 소스: `src/lib/floorplan-sibf.json`(부스 좌표·코드·kind·분야) + `official-sibf-2026.json`(공동입점) → `seed.ts`. 런북 `.claude/skills/booth-data-entry`.
-- Supabase 동기화: 소스 편집 → `node scripts/gen-seed.mjs`로 seed.sql 재생성 → reset.sql/마이그레이션 반영.
-- ⚠️ `gen-seed.mjs`는 현재 `seed.waitings`(seed.ts에서 export 제거됨) 참조로 **깨져 있음** — 재생성 필요 시 waiting 블록부터 수정.
+- 운영 DB에는 **SIBF 외에 `sif-2026`(서울일러스트레이션페어)도 들어 있다** — 전시 추가는 데이터로 가능(코드 변경 불필요).
+- ⚠️ `node scripts/gen-seed.mjs`는 **실행 불가** — `supabase/seed.sql`을 열려는데 `supabase/`가 gitignore라 레포에 없다. 재생성이 필요하면 경로부터 손봐야 한다.
 
 ## 검증 (변경 후 필수)
 ```
