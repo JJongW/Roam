@@ -18,6 +18,7 @@ import { useVisitStore, idsByStatus, pushNote } from "@/lib/stores/visit";
 import { NotePhotos } from "@/components/booth/note-photos";
 import { useAuthStore } from "@/lib/stores/auth";
 import { useUiStore } from "@/lib/stores/ui";
+import { useCompanionStore } from "@/lib/stores/companion";
 import { useHydrated } from "@/lib/hooks/use-hydrated";
 import { MapCoachmark } from "@/components/map/map-coachmark";
 import { FLOORPLANS } from "@/lib/floorplans";
@@ -59,6 +60,17 @@ export function MapView({
     pairs: { from: string; to: string; count: number }[];
   } | null>(null);
   const [heatLoading, setHeatLoading] = useState(false);
+
+  // 반응 즉답(로미 발화) — companion-bar는 지도에서 숨겨지므로(자체 전체화면 UI)
+  // 여기서 flash를 구독해 토스트로 띄운다. 안 그러면 지도에서 끌림/별로를 눌러도
+  // 아무 반응이 없어 "내 반응이 아무것도 안 바꾼다"고 느껴진다.
+  const flash = useCompanionStore((s) => s.flash);
+  const clearFlash = useCompanionStore((s) => s.clearFlash);
+  useEffect(() => {
+    if (!flash) return;
+    toast(flash);
+    clearFlash();
+  }, [flash, clearFlash]);
 
   const hydrated = useHydrated();
   const storeRecords = useVisitStore((s) => s.records);

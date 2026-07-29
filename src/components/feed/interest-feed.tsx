@@ -7,6 +7,7 @@ import { ChevronDown, ChevronRight, Clock3, Lightbulb } from "lucide-react";
 import { api } from "@/lib/api/client";
 import { ValueChips } from "@/components/values/value-chips";
 import { CategoryChip } from "@/components/booth/category-chip";
+import { ThemeChip } from "@/components/booth/theme-chip";
 import { ReactionBar } from "@/components/feed/reaction-bar";
 import { useT } from "@/lib/i18n/provider";
 import type { TFn } from "@/lib/i18n/resolve";
@@ -109,6 +110,8 @@ export function InterestFeed({
               {/* 3) 태그·근거·큐 — 같은 카드 안 얇은 구분선으로 묶음 */}
               <div className="space-y-2 border-t border-border/60 px-4 py-2.5">
                 <div className="flex flex-wrap items-center gap-1.5">
+                  {/* 테마(무엇을 그리는가)를 먼저 — 취향이 붙는 축이다. */}
+                  <ThemeChip tags={booth.tags} />
                   {categoryById[booth.categoryId] && (
                     <CategoryChip category={categoryById[booth.categoryId]} />
                   )}

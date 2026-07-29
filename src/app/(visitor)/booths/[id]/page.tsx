@@ -4,6 +4,7 @@ import { getRepository } from "@/lib/repositories";
 import { AppBar } from "@/components/common/app-bar";
 import { BookmarkButton } from "@/components/booth/bookmark-button";
 import { BoothAiSummary } from "@/components/booth/booth-ai-summary";
+import { boothAbout } from "@/lib/booth/about";
 import { BoothPersonalPanel } from "@/components/booth/booth-personal-panel";
 import { BoothHighlights } from "@/components/booth/booth-highlights";
 import { BoothGallery } from "@/components/booth/booth-gallery";
@@ -38,6 +39,7 @@ export default async function BoothDetailPage({ params }: Props) {
   const { booth, category, welcomeKit, events, reviews, reviewSummary } =
     detail;
   const { t } = await getI18n();
+  const about = boothAbout(booth);
 
   return (
     <div className="contents landscape:fixed landscape:inset-0 landscape:z-30 landscape:flex landscape:flex-col landscape:overflow-hidden landscape:bg-background">
@@ -157,18 +159,40 @@ export default async function BoothDetailPage({ params }: Props) {
                     </section>
                   )}
 
-                  <section className="space-y-1.5">
-                    <h2 className="text-base font-bold">{t("booth.about")}</h2>
-                    <div className="space-y-1.5 text-[15px] leading-relaxed text-foreground/90">
-                      {booth.longDescription
-                        .split(/(?<=[.!?])\s+/)
-                        .map((s) => s.trim())
-                        .filter(Boolean)
-                        .map((s, i) => (
-                          <p key={i}>{s}</p>
-                        ))}
-                    </div>
-                  </section>
+                  {/* 소개 — longDescription은 seed 템플릿이라 914개가 같은 문장이었다.
+                      로미 발화는 테마·굿즈에서 파생하고(부스마다 다름), 작가 본인이 쓴
+                      글은 인용으로 분리한다(존댓말이어도 남의 말이라 고치지 않는다). */}
+                  {(about.romi || about.quote || about.fallback) && (
+                    <section className="space-y-2">
+                      <h2 className="text-base font-bold">{t("booth.about")}</h2>
+                      {about.romi && (
+                        <p className="text-[15px] leading-relaxed text-foreground/90">
+                          {about.romi}
+                        </p>
+                      )}
+                      {about.quote && (
+                        <figure className="space-y-1 border-l-2 border-border pl-3">
+                          <blockquote className="text-[15px] leading-relaxed text-foreground/80">
+                            {about.quote}
+                          </blockquote>
+                          <figcaption className="text-xs text-muted-foreground">
+                            {t("booth.aboutQuoteBy")}
+                          </figcaption>
+                        </figure>
+                      )}
+                      {about.fallback && (
+                        <div className="space-y-1.5 text-[15px] leading-relaxed text-foreground/90">
+                          {about.fallback
+                            .split(/(?<=[.!?])\s+/)
+                            .map((s) => s.trim())
+                            .filter(Boolean)
+                            .map((s, i) => (
+                              <p key={i}>{s}</p>
+                            ))}
+                        </div>
+                      )}
+                    </section>
+                  )}
 
                   {/* 수동 주입 추가정보(굿즈·팁) — 있을 때만. */}
                   {booth.enrichment &&

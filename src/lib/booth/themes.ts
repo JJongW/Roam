@@ -140,3 +140,12 @@ export function classifyBoothTheme(text: string): ThemeMatch {
     .map(([k]) => k);
   return { primary: groups[0], groups, fine };
 }
+
+/**
+ * booth.tags에서 대표 테마 대분류를 꺼낸다. tags는 [카테고리 slug, ...테마 대분류]
+ * 형태라(seed-sif.ts), 테마 키인 첫 항목이 대표다. 없으면 undefined —
+ * 호출부는 칩을 그리지 않아야 한다.
+ */
+export function primaryThemeFromTags(tags: string[]): ThemeKey | undefined {
+  return tags.find((t): t is ThemeKey => t in BOOTH_THEMES);
+}
