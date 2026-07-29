@@ -36,6 +36,31 @@ const CATEGORY_BASE: Record<string, Array<[string, number]>> = {
     ["inspiration", 0.3],
   ],
   general: [["discovery", 0.4]],
+  // HOUSE ARCHIVE의 다섯 테마(집)와 테이블 마켓.
+  collect: [
+    ["goods", 0.5],
+    ["discovery", 0.3],
+  ],
+  gather: [
+    ["social", 0.6],
+    ["experience", 0.2],
+  ],
+  make: [
+    ["inspiration", 0.5],
+    ["experience", 0.3],
+  ],
+  rest: [
+    ["rest", 0.6],
+    ["experience", 0.2],
+  ],
+  explore: [
+    ["discovery", 0.5],
+    ["experience", 0.3],
+  ],
+  table: [
+    ["goods", 0.5],
+    ["discovery", 0.2],
+  ],
 };
 
 /** tips 텍스트 → 가치 기여(정규식 키워드). */
