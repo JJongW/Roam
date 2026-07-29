@@ -61,3 +61,12 @@ public/*.mov
 # 부스 enrichment 원본 자료 — 참가자 스크랩 데이터와 아티스트 이미지 1738장(110MB).
 # 여기서 뽑은 결과만 src/lib/booth/*.json으로 커밋한다(재생성 절차는 커밋 8f9bae1 참조).
 public/SIF_booth_enrich/
+
+# 도면·명단·포스터 원본(코엑스 홀 평면도, 참여자 명단, dwg, 4~6MB PNG/JPG) — 좌표
+# 추출·enrichment 입력용 작업 자료다. public/에 두면 그대로 배포되므로 커밋하지
+# 않고, 여기서 뽑은 결과(floorplan-*.json, *-cover.webp)만 커밋한다.
+public/Hall_*
+public/fair-map.jpg
+public/*.dwg
+public/코엑스-*.png
+public/하우스아카이브*.png

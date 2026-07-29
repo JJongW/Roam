@@ -38,15 +38,23 @@ export function ExhibitionCard({
             ? {
                 backgroundImage: `url(${exhibition.coverImageUrl})`,
                 backgroundSize: "cover",
-                backgroundPosition: "center",
+                // 전시 홈 히어로와 같은 위 정렬(page.tsx 참조).
+                backgroundPosition: "center top",
               }
             : undefined
         }
       >
-        <span className="absolute right-3 top-3 rounded-full bg-white/20 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur">
-          {range}
-        </span>
-        <h3 className="text-xl font-bold leading-tight text-white drop-shadow-sm">
+        {/* 포스터를 깔면 흰 제목이 밝은 포스터(하늘색·크림) 위에서 사라진다 —
+            전시 홈 히어로와 같은 스크림으로 제목의 바닥을 만든다. 위는 비워
+            포스터의 로고·크레딧이 가려지지 않게 한다. */}
+        {exhibition.coverImageUrl && (
+          <div
+            className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent"
+            aria-hidden
+          />
+        )}
+        {/* 기간 필은 걷어냈다 — 아래 본문이 같은 날짜를 이미 말한다(중복). */}
+        <h3 className="relative text-xl font-bold leading-tight text-white drop-shadow-sm">
           {exhibition.name}
         </h3>
       </div>

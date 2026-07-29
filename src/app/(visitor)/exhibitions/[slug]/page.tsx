@@ -99,7 +99,11 @@ export default async function ExhibitionDetailPage({
               ? {
                   backgroundImage: `url(${exhibition.coverImageUrl})`,
                   backgroundSize: "cover",
-                  backgroundPosition: "center",
+                  // 위 정렬 — 포스터는 위부터 읽히게 만든다(로고·타이틀이 상단).
+                  // 가운데 정렬은 세로 긴 포스터에서 본문 덩어리(참가자 목록 같은
+                  // 잔글씨)만 잘라 보여준다. 이름은 아래 h1이 이미 말한다.
+                  // ponytail: 포스터별로 초점이 달라지면 그때 cover_position 컬럼.
+                  backgroundPosition: "center top",
                 }
               : undefined
           }
@@ -108,7 +112,7 @@ export default async function ExhibitionDetailPage({
             className={cn(
               "absolute inset-0",
               exhibition.coverImageUrl
-                ? "bg-gradient-to-t from-black/45 via-black/10 to-transparent"
+                ? "bg-gradient-to-t from-black/40 to-transparent"
                 : "bg-gradient-to-br from-primary/85 to-[#4338ca]",
             )}
             aria-hidden
@@ -120,11 +124,14 @@ export default async function ExhibitionDetailPage({
               name={exhibition.name}
             />
           )}
-          <div className="relative text-white">
-            <h1 className="text-2xl font-extrabold leading-tight drop-shadow-sm">
+          {/* 이름은 위 AppBar가 이미 h1으로 말한다 — 여기 또 h1을 두면 한 페이지에
+              h1이 둘이 되고, 포스터에 박힌 전시명 위에 같은 글자가 겹쳐 찍힌다.
+              포스터가 있으면 포스터가 제목이고, 없으면 그라디언트 위에 이름을 쓴다. */}
+          {!exhibition.coverImageUrl && (
+            <p className="relative text-2xl font-extrabold leading-tight text-white drop-shadow-sm">
               {exhibition.name}
-            </h1>
-          </div>
+            </p>
+          )}
         </div>
 
         {/* pb-28: 하단 상주 컴패니언 필이 카드/버튼을 가리지 않도록 여백 확보. */}

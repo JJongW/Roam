@@ -29,7 +29,9 @@ export const haExhibition: Exhibition = {
     "‘집’을 다섯 개의 방식으로 파고드는 홈 디깅 페어. 수집·관계·창작·쉼·탐험 다섯 테마의 집에 브랜드 부스와 테이블 마켓이 들어섭니다. 공식 부스배치도를 그대로 옮겨 실제 위치로 안내합니다.",
   startDate: "2026-08-13",
   endDate: "2026-08-16",
-  coverImageUrl: undefined,
+  // 공식 포스터(2309x3105 PNG 4.6MB) → 1289x1733 webp 178KB. 원본은 public에
+  // 두지 않는다(배포 용량) — 재생성은 sharp resize({height:1733}).webp({quality:82}).
+  coverImageUrl: "/house-archive-2026-cover.webp",
   mapImageUrl: undefined,
   mapWidth: haFloor.width,
   mapHeight: haFloor.height,
