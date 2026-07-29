@@ -25,7 +25,7 @@ export function FeedRecurator() {
       lastRefreshed.current = tick;
       say(t("companion.recurated"));
       router.refresh(); // 서버가 갱신된 브레인으로 피드 재큐레이션
-    }, 2800);
+    }, 1200);
     return () => clearTimeout(timer);
   }, [tick, router, say, t]);
 

@@ -10,6 +10,8 @@ import { CategoryChip } from "@/components/booth/category-chip";
 import { ThemeChip } from "@/components/booth/theme-chip";
 import { ReactionBar } from "@/components/feed/reaction-bar";
 import { useT } from "@/lib/i18n/provider";
+import { useVisitStore } from "@/lib/stores/visit";
+import { useHydrated } from "@/lib/hooks/use-hydrated";
 import type { TFn } from "@/lib/i18n/resolve";
 import { cn } from "@/lib/utils";
 import { VALUE_SLUGS } from "@/lib/values";
@@ -34,7 +36,15 @@ export function InterestFeed({
 }) {
   const t = useT();
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
-  if (items.length === 0) return null;
+  // '별로'는 즉시 사라져야 한다. 서버 재큐레이션은 반응 버스트가 멎은 뒤에나 도는데
+  // (FeedRecurator), 그때까지 누른 카드가 그대로 있으면 "안 바뀐다"고 느낀다.
+  // 여기서 낙관적으로 걷어내고, 서버 응답이 오면 그게 진실이 된다.
+  const records = useVisitStore((s) => s.records);
+  const hydrated = useHydrated();
+  const visible = hydrated
+    ? items.filter(({ booth }) => records[booth.id]?.status !== "skipped")
+    : items;
+  if (visible.length === 0) return null;
 
   function fire(boothId: string) {
     void api
@@ -61,7 +71,7 @@ export function InterestFeed({
       </div>
 
       <div className="space-y-3">
-        {items.map(({ booth, related, pick, cue, grounding }) => {
+        {visible.map(({ booth, related, pick, cue, grounding }) => {
           const open = expanded.has(booth.id);
           return (
             <article

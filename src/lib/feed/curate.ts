@@ -107,12 +107,21 @@ export async function curateFeed(
       .map((n) => n.boothId),
   );
 
+  // 후보 풀에서 먼저 걷어낸다. used에만 넣으면 안정픽이 rank.ranked를 그대로
+  // 훑으면서 add()가 used를 검사하지 않고 push하므로 '별로' 부스가 그대로 남는다
+  // — 가장 위에 보이는 픽이라 "반응해도 안 바뀐다"로 느껴진다.
+  const eligible = rank.ranked.filter((s) => !skipped.has(s.booth.id));
+
   const items: FeedItem[] = [];
   const used = new Set(skipped);
   const add = (booth: Booth, pick: PickKind) => {
     items.push({
       booth,
-      related: relatedBooths(rank.booths, booth, 3),
+      related: relatedBooths(
+        rank.booths.filter((b) => !skipped.has(b.id)),
+        booth,
+        3,
+      ),
       pick,
       cue: deriveCue(booth, rank.eventsByBooth[booth.id] ?? []),
       grounding: buildGrounding(booth, userValueSlugs, pick, locale),
@@ -122,10 +131,10 @@ export async function curateFeed(
 
   const mix = RHYTHM_MIX[rhythm];
   // 안정픽 — 상위 개인화(다양화)
-  for (const s of diversifyCandidates(rank.ranked, mix.stable))
+  for (const s of diversifyCandidates(eligible, mix.stable))
     add(s.booth, "stable");
   // 낯선픽 — 남은 랭킹에서 인접 발견
-  const rest = rank.ranked.filter((s) => !used.has(s.booth.id));
+  const rest = eligible.filter((s) => !used.has(s.booth.id));
   for (const s of diversifyCandidates(rest, mix.unfamiliar))
     add(s.booth, "unfamiliar");
   // 모험픽 — 미접촉 가치에서 발굴
