@@ -53,6 +53,11 @@
   --route-visited: #15c47e;
   --booth-fill: #f2f4f6;
   --booth-active: #4f46e5;
+  /* '별로' 부스 — 기본 존색(#dcdee3)보다 밝은 --muted를 쓰면 구분이 안 된다.
+     제외됐다는 뜻이 읽히도록 옅은 로즈로 빼둔다(끌림 초록·가봄 남보라·나중에
+     노랑 어느 것과도 겹치지 않는 색상각). */
+  --booth-skipped: #f3dadd;
+  --booth-skipped-stroke: #e0a8ae;
 }
 
 .dark {
@@ -96,6 +101,8 @@
   --route-visited: #2ad48f;
   --booth-fill: #1c2024;
   --booth-active: #818cf8;
+  --booth-skipped: #40272b;
+  --booth-skipped-stroke: #7a4a51;
 }
 
 @theme inline {

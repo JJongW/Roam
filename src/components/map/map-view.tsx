@@ -1,13 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   ChevronLeft,
   ChevronRight,
   Flame,
-  HelpCircle,
   Loader2,
   NotebookPen,
   X,
@@ -23,7 +22,6 @@ import { useHydrated } from "@/lib/hooks/use-hydrated";
 import { MapCoachmark } from "@/components/map/map-coachmark";
 import { FLOORPLANS } from "@/lib/floorplans";
 import { ExhibitionMap, HEAT_TIERS } from "@/components/map/exhibition-map";
-import { NotesView } from "@/components/booth/notes-view";
 import { CategoryChip } from "@/components/booth/category-chip";
 import { ReactionBar } from "@/components/feed/reaction-bar";
 import { ValueChips } from "@/components/values/value-chips";
@@ -52,12 +50,8 @@ export function MapView({
   const [selectedId, setSelectedId] = useState<string | null>(
     initialFocusId ?? null,
   );
-  const [centerOn, setCenterOn] = useState<string | null>(
-    initialFocusId ?? null,
-  );
-  const [notesOpen, setNotesOpen] = useState(false);
-  // 가이드 재열람(`?` 버튼) — 최초 1회 자동 표시와 별개로 언제든 다시 열 수 있게.
-  const [guideOpen, setGuideOpen] = useState(false);
+  // 딥링크(메모장 "지도에서 보기") 전용 — 진입 시 한 번 중앙 정렬하고 이후 안 바뀐다.
+  const centerOn = initialFocusId ?? null;
   // Crowd heatmap (관심 밀도). Lazy-loaded the first time it's on.
   const [heatOn, setHeatOn] = useState(false);
   const [heat, setHeat] = useState<{
@@ -85,7 +79,7 @@ export function MapView({
   const markMapGuideSeen = useUiStore((s) => s.markMapGuideSeen);
   const landscapeHintSeen = useUiStore((s) => s.landscapeHintSeen);
   const markLandscapeHintSeen = useUiStore((s) => s.markLandscapeHintSeen);
-  const showCoachmark = (hydrated && !mapGuideSeen) || guideOpen;
+  const showCoachmark = hydrated && !mapGuideSeen;
 
   useEffect(() => {
     if (!hydrated || showCoachmark || landscapeHintSeen) return;
@@ -105,10 +99,6 @@ export function MapView({
   const selected = booths.find((b) => b.id === selectedId) ?? null;
   const selectedCat = selected ? catById.get(selected.categoryId) : undefined;
 
-  const locate = useCallback((id: string) => {
-    setSelectedId(id);
-    setCenterOn(id);
-  }, []);
 
   function handleBack() {
     // 지도는 전시 상세에서 들어온 부가 화면 — 홈이 아니라 그 전시로 돌아간다.
@@ -146,12 +136,7 @@ export function MapView({
   return (
     <div className="relative h-dvh w-full overflow-hidden overscroll-none bg-background">
       {showCoachmark && (
-        <MapCoachmark
-          onClose={() => {
-            markMapGuideSeen();
-            setGuideOpen(false);
-          }}
-        />
+        <MapCoachmark onClose={markMapGuideSeen} />
       )}
 
       {/* 전체화면 지도 */}
@@ -164,7 +149,7 @@ export function MapView({
         floorplan={FLOORPLANS[detail.exhibition.slug]}
         fillHeight
         viewportClassName="inset-0"
-        controlsClassName="right-3 top-16"
+        controlsClassName="right-3 top-20 mt-safe"
         visitedIds={visitedIds}
         skippedIds={skippedIds}
         laterIds={laterIds}
@@ -177,56 +162,45 @@ export function MapView({
         onSelect={(id) => setSelectedId(id)}
       />
 
-      {/* 상단 크롬: 뒤로가기 + 관심 밀도 + 메모/커뮤니티 */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-30 flex items-center gap-2 bg-gradient-to-b from-background/85 to-transparent px-3 pb-4 pt-safe">
-        <button
-          type="button"
-          aria-label={t("map.back")}
-          onClick={handleBack}
-          className="pointer-events-auto flex size-10 items-center justify-center rounded-full bg-card shadow-[var(--shadow-card)] active:bg-secondary"
-        >
-          <ChevronLeft className="size-5" />
-        </button>
-        <h1 className="text-base font-extrabold">{t("map.title")}</h1>
-        <div className="pointer-events-auto ml-auto flex items-center gap-1.5">
-          <button
-            type="button"
-            onClick={toggleHeat}
-            aria-pressed={heatOn}
-            className={cn(
-              "inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-sm font-semibold shadow-[var(--shadow-card)]",
-              heatOn
-                ? "border-[#f97316] bg-[#f97316]/12 text-[#c2410c]"
-                : "border-border bg-card text-foreground",
-            )}
-          >
-            {heatLoading ? (
-              <Loader2 className="size-3.5 animate-spin" />
-            ) : (
-              <Flame className="size-3.5" />
-            )}
-            {heatLoading ? t("map.densityShort") : t("map.density")}
-          </button>
-          <button
-            type="button"
-            onClick={() => setGuideOpen(true)}
-            aria-label={t("map.guideReopen")}
-            className="flex size-10 items-center justify-center rounded-full bg-card text-muted-foreground shadow-[var(--shadow-card)] active:bg-secondary"
-          >
-            <HelpCircle className="size-5" />
-          </button>
-          <button
-            type="button"
-            onClick={() => setNotesOpen(true)}
-            aria-label={t("map.notes")}
-            className="flex size-10 items-center justify-center rounded-full bg-card text-muted-foreground shadow-[var(--shadow-card)] active:bg-secondary"
-          >
-            <NotebookPen className="size-5" />
-          </button>
-        </div>
-      </div>
+      {/* 지도 화면은 거의 지도만이어야 한다 — 상단바가 있으면 현장에서 방향을 잡기
+          전에 앱 chrome이 먼저 보인다(ai-companion-ux-writing-patterns.md §379).
+          그래서 뒤로가기 하나만 좌상단에 띄운다. 밀도·메모는 전시 홈에서 들어오고,
+          지도 사용법은 첫 진입 시 코치마크가 알아서 뜬다.
+          6/24 결정("상단바 고정")이 막으려던 건 상단바가 **접혔다 펴지며** 지도
+          컨테이너 크기를 바꿔 확대·축소가 튀는 것이었다. 여기선 아예 없애므로
+          크기가 변할 일이 없다 — 그 문제는 재발하지 않는다. */}
+      <button
+        type="button"
+        aria-label={t("map.back")}
+        onClick={handleBack}
+        className="absolute left-3 top-3 z-30 flex size-10 items-center justify-center rounded-full bg-card shadow-[var(--shadow-card)] active:bg-secondary mt-safe"
+      >
+        <ChevronLeft className="size-5" />
+      </button>
 
-      {/* 상시 범례 — 색만으로 상태 못 읽는 걸 막는다(가봄·끌림·선택). 밀도 켜면
+      {/* 밀도 토글 — 지도 위에 떠 있는 독립 필. 우측 컨트롤 4개(회전·확대·축소·전체)
+          클러스터와는 분리해 둔다(같은 묶음이 되면 "컨트롤 5개"가 되어 문서 규칙과
+          어긋난다). 지도 상태를 바꾸는 버튼이라 지도를 떠날 수 없다. */}
+      <button
+        type="button"
+        onClick={toggleHeat}
+        aria-pressed={heatOn}
+        className={cn(
+          "absolute right-3 top-3 z-30 mt-safe inline-flex items-center gap-1 rounded-full border px-3 py-2 text-sm font-semibold shadow-[var(--shadow-card)]",
+          heatOn
+            ? "border-[#f97316] bg-[#f97316]/12 text-[#c2410c]"
+            : "border-border bg-card text-foreground",
+        )}
+      >
+        {heatLoading ? (
+          <Loader2 className="size-3.5 animate-spin" />
+        ) : (
+          <Flame className="size-3.5" />
+        )}
+        {heatLoading ? t("map.densityShort") : t("map.density")}
+      </button>
+
+      {/* 상시 범례 — 색만으로 상태 못 읽는 걸 막는다(끌림·가봄·나중에·별로·선택). 밀도 켜면
           밀도 범례가 이 자리를 대신하므로 그때만 숨김. */}
       {!heatOn && (
         <div className="pointer-events-none absolute left-3 top-16 z-20 flex flex-col gap-1 rounded-xl border border-border bg-card/90 px-2.5 py-2 text-[11px] font-semibold shadow-[var(--shadow-card)] backdrop-blur">
@@ -250,6 +224,16 @@ export function MapView({
               style={{ backgroundColor: "var(--warning)" }}
             />
             {t("map.legendLater")}
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span
+              className="size-3 rounded-[3px] border"
+              style={{
+                backgroundColor: "var(--booth-skipped)",
+                borderColor: "var(--booth-skipped-stroke)",
+              }}
+            />
+            {t("map.legendSkipped")}
           </span>
           <span className="flex items-center gap-1.5">
             <span
@@ -332,18 +316,6 @@ export function MapView({
       )}
 
       {/* 메모장 — overlay on top of the (still-mounted) map. */}
-      {notesOpen && (
-        <NotesView
-          slug={detail.exhibition.slug}
-          booths={booths}
-          categories={detail.categories}
-          onClose={() => setNotesOpen(false)}
-          onLocate={(id) => {
-            setNotesOpen(false);
-            locate(id);
-          }}
-        />
-      )}
     </div>
   );
 }

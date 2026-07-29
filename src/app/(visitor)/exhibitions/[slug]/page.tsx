@@ -4,10 +4,11 @@ import {
   CalendarDays,
   MapPin,
   Map as MapIcon,
+  NotebookPen,
   ChevronRight,
 } from "lucide-react";
 import { format } from "date-fns";
-import { getRepository } from "@/lib/repositories";
+import { getExhibitionCached } from "@/lib/repositories/cached";
 import { cn } from "@/lib/utils";
 import { AppBar } from "@/components/common/app-bar";
 import { AccountButton } from "@/components/auth/account-button";
@@ -33,8 +34,8 @@ type Props = {
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
-  const repo = await getRepository();
-  const detail = await repo.getExhibition(slug);
+  // 페이지 본문과 같은 요청 캐시를 타서 전시 조회가 한 번만 나간다.
+  const detail = await getExhibitionCached(slug);
   if (!detail) return { title: "전시" };
   return {
     title: detail.exhibition.name,
@@ -49,19 +50,26 @@ export default async function ExhibitionDetailPage({
   const { slug } = await params;
   const { rhythm: rhythmRaw } = await searchParams;
   const rhythm = isRhythm(rhythmRaw) ? rhythmRaw : DEFAULT_RHYTHM;
-  const repo = await getRepository();
-  const detail = await repo.getExhibition(slug);
+  // 전시·로케일·로그인은 서로 독립이라 같이 기다린다(감사 P1-3).
+  const [detail, { locale, t }, user] = await Promise.all([
+    getExhibitionCached(slug),
+    getI18n(),
+    getCurrentUser(),
+  ]);
   if (!detail) notFound();
 
   const { exhibition } = detail;
   const range = `${format(new Date(exhibition.startDate), "yyyy.M.d")} – ${format(new Date(exhibition.endDate), "M.d")}`;
 
-  const { locale, t } = await getI18n();
-  // 관심 피드: 로그인 사용자의 브레인 + 오늘의 리듬으로 큐레이션(빈 브레인=인기순).
-  const user = await getCurrentUser();
-  const feedItems = user ? await curateFeed(slug, user.id, rhythm, locale) : [];
-  // 기억 발화: 브레인 상위 관심 가치로 인사(로케일 라벨). VALUE_SLUGS면 t로 번역.
+  // 브레인은 한 번만 읽고 피드 큐레이션에 그대로 넘긴다(예전엔 여기서 한 번, curateFeed
+  // 안에서 또 한 번 읽었다).
   const brain = user ? await readBrain(user.id) : null;
+  // 관심 피드: 로그인 사용자의 브레인 + 오늘의 리듬으로 큐레이션(빈 브레인=인기순).
+  const feedItems =
+    user && brain
+      ? await curateFeed(slug, user.id, rhythm, locale, brain)
+      : [];
+  // 기억 발화: 브레인 상위 관심 가치로 인사(로케일 라벨). VALUE_SLUGS면 t로 번역.
   const topValues = (brain?.interests ?? [])
     .filter((n) => n.confidence >= 0.25)
     .slice(0, 2)
@@ -169,6 +177,26 @@ export default async function ExhibitionDetailPage({
               </div>
               <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
             </Link>
+
+            {/* 메모장 — 예전엔 지도 상단바에서 열었는데, 지도는 현장에서 방향을 잡는
+                화면이라 chrome을 걷어냈다(ux-writing §379). 진입점을 여기로 옮긴다. */}
+            {user && (
+              <Link
+                href={`/exhibitions/${slug}/notes`}
+                className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-[var(--shadow-card)] active:scale-[0.99]"
+              >
+                <div className="flex size-11 items-center justify-center rounded-xl bg-secondary">
+                  <NotebookPen className="size-5 text-foreground" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="font-bold">{t("booth.notesCard")}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {t("booth.notesCardDesc")}
+                  </p>
+                </div>
+                <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
+              </Link>
+            )}
           </div>
 
           {/* 피드 상단 부스 검색 — 추천 몇 개 말고 전체 부스를 이름·작가로 찾기. */}

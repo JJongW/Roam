@@ -248,6 +248,7 @@ const ko = {
     legendVisited: "가봄",
     legendInterested: "끌림",
     legendLater: "나중에",
+    legendSkipped: "별로",
     legendSelected: "선택",
   },
   booth: {
@@ -269,6 +270,8 @@ const ko = {
     postsHeading: "방문자 정보",
     mapCard: "관심 밀도 지도",
     mapCardDesc: "전시장을 직접 둘러보고 끌리는 부스에 반응해봐",
+    notesCard: "내 메모장",
+    notesCardDesc: "가봤거나 남겨둔 부스, 적어둔 메모를 여기서 봐",
   },
   notFound: {
     title: "찾을 수 없는 페이지야",
@@ -702,6 +705,7 @@ const en: Dict = {
     legendVisited: "Seen",
     legendInterested: "Liked",
     legendLater: "Later",
+    legendSkipped: "Not for me",
     legendSelected: "Selected",
   },
   booth: {
@@ -723,6 +727,8 @@ const en: Dict = {
     postsHeading: "Visitor posts",
     mapCard: "Interest-density map",
     mapCardDesc: "Explore the venue and react to booths that draw you",
+    notesCard: "My notes",
+    notesCardDesc: "Booths you've seen or saved, and what you wrote",
   },
   notFound: {
     title: "Page not found",

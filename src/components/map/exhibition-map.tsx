@@ -1201,7 +1201,7 @@ export function ExhibitionMap({
                       : isLater
                         ? "var(--warning)"
                         : isSkipped
-                          ? "var(--muted)"
+                          ? "var(--booth-skipped)"
                           : zone;
                   // primary(남보라)·초록은 어두워 흰 글씨, 노랑(나중에)은 밝아 어두운 글씨.
                   const darkText =
@@ -1212,9 +1212,11 @@ export function ExhibitionMap({
                       ? "var(--route-visited)"
                       : isLater
                         ? "var(--warning)"
-                        : g.color && g.color !== "#d8dade"
-                          ? g.color
-                          : "var(--border)";
+                        : isSkipped
+                          ? "var(--booth-skipped-stroke)"
+                          : g.color && g.color !== "#d8dade"
+                            ? g.color
+                            : "var(--border)";
                   const codeColor = darkText ? "white" : "#3a3d44";
                   const name =
                     b.name.length > 9 ? `${b.name.slice(0, 9)}…` : b.name;
