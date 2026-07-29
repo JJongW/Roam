@@ -3,6 +3,8 @@ import { FLOORPLANS } from "./floorplans";
 import { aisleRoute } from "./aisle-route";
 import { booths } from "./mock/seed";
 import sibf from "./floorplan-sibf.json";
+import sifJson from "./floorplan-sif.json";
+import { sifBooths } from "./mock/seed-sif";
 
 // displayZone 부스(책마을 B4xx 등)는 좌표 미트레이스 — 지도엔 존으로만 표시,
 // 개별 rect가 의도적으로 없다. rect 존재 검사에서 제외한다.
@@ -115,5 +117,69 @@ describe("SIBF floorplan", () => {
         ).toBe(true);
       }
     }
+  });
+});
+
+describe("SIF floorplan", () => {
+  const fp = FLOORPLANS["sif-2026"];
+
+  // 아래 두 값은 의도적인 트립와이어다. 이 JSON은 외부 소스(파일명이
+  // content-hash라 매번 바뀌는 번들)에서 재추출되므로, 재추출로 개수나
+  // 캔버스 크기가 바뀌면 이 테스트가 실패해 "의식적으로" 갱신하게 만든다 —
+  // 조용히 통과시키지 않는다.
+  it("pins the extracted floorplan's size", () => {
+    expect(fp.booths.length).toBe(914);
+    expect([fp.width, fp.height]).toEqual([3028, 1637]);
+  });
+
+  it("converts JSON top-left coords to centre coords", () => {
+    const byCode = new Map(sifJson.booths.map((b) => [b.code, b]));
+    for (const b of fp.booths) {
+      const src = byCode.get(b.code);
+      expect(src, `${b.code} missing from JSON`).toBeDefined();
+      expect(b.x, `${b.code} x`).toBe(src!.x + src!.w / 2);
+      expect(b.y, `${b.code} y`).toBe(src!.y + src!.h / 2);
+      expect(b.w, `${b.code} w`).toBe(src!.w);
+      expect(b.h, `${b.code} h`).toBe(src!.h);
+    }
+  });
+
+  it("keeps every booth inside the canvas", () => {
+    for (const b of fp.booths) {
+      expect(b.x - b.w / 2, `${b.code} left`).toBeGreaterThanOrEqual(0);
+      expect(b.x + b.w / 2, `${b.code} right`).toBeLessThanOrEqual(fp.width);
+      expect(b.y - b.h / 2, `${b.code} top`).toBeGreaterThanOrEqual(0);
+      expect(b.y + b.h / 2, `${b.code} bottom`).toBeLessThanOrEqual(fp.height);
+    }
+  });
+
+  it("never overlaps two booth rectangles", () => {
+    // 914개 → 417k 쌍. 쌍마다 expect()를 부르면 느리므로 실패만 모아 한 번 단언한다.
+    const r = fp.booths.map((b) => ({
+      code: b.code,
+      l: b.x - b.w / 2,
+      rt: b.x + b.w / 2,
+      t: b.y - b.h / 2,
+      bt: b.y + b.h / 2,
+    }));
+    const bad: string[] = [];
+    for (let i = 0; i < r.length; i++) {
+      for (let j = i + 1; j < r.length; j++) {
+        const a = r[i];
+        const b = r[j];
+        // 변이 맞닿는 건(≤2px) 정상. 진짜 겹칠 때만 실패.
+        const ox = Math.min(a.rt, b.rt) - Math.max(a.l, b.l);
+        const oy = Math.min(a.bt, b.bt) - Math.max(a.t, b.t);
+        if (ox > 2 && oy > 2) bad.push(`${a.code}×${b.code}`);
+      }
+    }
+    expect(bad).toEqual([]);
+  });
+
+  it("has a rect for every seeded SIF booth", () => {
+    const codes = new Set(fp.booths.map((b) => b.code));
+    for (const b of sifBooths)
+      expect(codes.has(b.code!), `missing rect for ${b.code}`).toBe(true);
+    expect(fp.booths.length).toBe(sifBooths.length);
   });
 });
