@@ -1,4 +1,5 @@
 import { getRepository } from "@/lib/repositories";
+import { getExhibitionCached } from "@/lib/repositories/cached";
 import { exhibitorBooths } from "@/lib/booth/normalize";
 import { attachDwellMinutes } from "@/lib/booth/dwell";
 import { rankBooths, type ScoreContext } from "@/lib/engine/scoring";
@@ -20,16 +21,21 @@ export async function rankForExhibition(
   opts?: { interestWeights?: Record<string, number> },
 ): Promise<RankResult | null> {
   const repo = await getRepository();
-  const detail = await repo.getExhibition(exhibitionSlug);
+  const detail = await getExhibitionCached(exhibitionSlug);
   if (!detail) return null;
 
+  // 부스·이벤트·히트맵은 서로를 기다릴 이유가 없다 — 순차로 돌리면 각 1초짜리 쿼리가
+  // 그대로 렌더 지연으로 쌓인다(2026-07-27 감사 P1-3).
+  const [boothRows, events, heat] = await Promise.all([
+    repo.listBoothsByExhibitionId(detail.exhibition.id),
+    repo.listEvents(exhibitionSlug),
+    repo.boothHeatmap(detail.exhibition.id),
+  ]);
+
   // Recommend exhibitors only — facility areas (lounge/stage) never get ranked.
-  const booths = exhibitorBooths(
-    await repo.listBoothsByExhibitionId(detail.exhibition.id),
-  );
+  const booths = exhibitorBooths(boothRows);
   // 부스 크기로 체류 시간 주입(시간예산·소요시간에 반영). floorplan 기하 사용.
   attachDwellMinutes(exhibitionSlug, booths);
-  const events = await repo.listEvents(exhibitionSlug);
 
   const eventsByBooth: Record<string, BoothEvent[]> = {};
   for (const e of events) (eventsByBooth[e.boothId] ??= []).push(e);
@@ -38,7 +44,6 @@ export async function rankForExhibition(
   // sharpens as visitors build routes (usage → better recommendations).
   // Crowd signal from real saved routes — normalized to 0..1. 동선 제거로 소스가
   // 없어져 현재는 빈 히트맵(스텁) → crowd 0. 인기/관심 스코어로 자연 degrade.
-  const heat = await repo.boothHeatmap(detail.exhibition.id);
   const maxCount = Math.max(1, ...Object.values(heat.booths));
   const crowdByBooth: Record<string, number> = {};
   for (const [id, c] of Object.entries(heat.booths))
