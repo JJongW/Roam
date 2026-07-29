@@ -5,6 +5,7 @@ import { booths } from "./mock/seed";
 import sibf from "./floorplan-sibf.json";
 import sifJson from "./floorplan-sif.json";
 import { sifBooths } from "./mock/seed-sif";
+import haJson from "./floorplan-house-archive.json";
 
 // displayZone 부스(책마을 B4xx 등)는 좌표 미트레이스 — 지도엔 존으로만 표시,
 // 개별 rect가 의도적으로 없다. rect 존재 검사에서 제외한다.
@@ -181,5 +182,54 @@ describe("SIF floorplan", () => {
     for (const b of sifBooths)
       expect(codes.has(b.code!), `missing rect for ${b.code}`).toBe(true);
     expect(fp.booths.length).toBe(sifBooths.length);
+  });
+});
+
+describe("HOUSE ARCHIVE floorplan", () => {
+  const fp = FLOORPLANS["house-archive-2026"];
+
+  // 재추출로 데이터가 잘려도 조용히 통과하지 않게 절대값을 박는다.
+  // 캔버스도 리터럴로 박아야 한다 — haJson.width와 비교하면 buildHouseArchive가
+  // 그 값을 그대로 넘기므로 양쪽이 같은 출처가 되어 트립와이어가 안 걸린다.
+  it("pins the extracted floorplan's size", () => {
+    expect(fp.booths.length).toBe(104);
+    expect(haJson.unitsPerMeter).toBe(32);
+    expect([fp.width, fp.height]).toEqual([2614, 1128]);
+  });
+
+  it("converts JSON top-left coords to centre coords", () => {
+    const byCode = new Map(haJson.booths.map((b) => [b.code, b]));
+    for (const b of fp.booths) {
+      const src = byCode.get(b.code);
+      expect(src, `${b.code} missing from JSON`).toBeDefined();
+      expect(b.x, `${b.code} x`).toBe(src!.x + src!.w / 2);
+      expect(b.y, `${b.code} y`).toBe(src!.y + src!.h / 2);
+    }
+  });
+
+  it("keeps every booth inside the canvas", () => {
+    for (const b of fp.booths) {
+      expect(b.x - b.w / 2, `${b.code} left`).toBeGreaterThanOrEqual(0);
+      expect(b.x + b.w / 2, `${b.code} right`).toBeLessThanOrEqual(fp.width);
+      expect(b.y - b.h / 2, `${b.code} top`).toBeGreaterThanOrEqual(0);
+      expect(b.y + b.h / 2, `${b.code} bottom`).toBeLessThanOrEqual(fp.height);
+    }
+  });
+
+  it("never overlaps two booth rectangles", () => {
+    const r = fp.booths.map((b) => ({
+      code: b.code,
+      l: b.x - b.w / 2, rt: b.x + b.w / 2,
+      t: b.y - b.h / 2, bt: b.y + b.h / 2,
+    }));
+    const bad: string[] = [];
+    for (let i = 0; i < r.length; i++)
+      for (let j = i + 1; j < r.length; j++) {
+        const a = r[i], b = r[j];
+        const ox = Math.min(a.rt, b.rt) - Math.max(a.l, b.l);
+        const oy = Math.min(a.bt, b.bt) - Math.max(a.t, b.t);
+        if (ox > 2 && oy > 2) bad.push(`${a.code}×${b.code}`);
+      }
+    expect(bad).toEqual([]);
   });
 });

@@ -7,6 +7,12 @@ import {
   sifCategories,
   sifBooths,
 } from "@/lib/mock/seed-sif";
+import {
+  haExhibition,
+  haHalls,
+  haCategories,
+  haBooths,
+} from "@/lib/mock/seed-house-archive";
 import type { ListBoothQuery, Repository } from "@/lib/repositories/types";
 import type {
   AiQueryLog,
@@ -82,10 +88,10 @@ function buildStore(): Store {
   const s = freshSeed();
   return {
     // SIBF + SIF 공존(멀티 전시). 홀·카테고리·부스는 exhibitionId로 구분돼 섞여도 안전.
-    exhibitions: [s.exhibition, structuredClone(sifExhibition)],
-    halls: [...s.halls, ...structuredClone(sifHalls)],
-    categories: [...s.categories, ...structuredClone(sifCategories)],
-    booths: [...s.booths, ...structuredClone(sifBooths)],
+    exhibitions: [s.exhibition, structuredClone(sifExhibition), structuredClone(haExhibition)],
+    halls: [...s.halls, ...structuredClone(sifHalls), ...structuredClone(haHalls)],
+    categories: [...s.categories, ...structuredClone(sifCategories), ...structuredClone(haCategories)],
+    booths: [...s.booths, ...structuredClone(sifBooths), ...structuredClone(haBooths)],
     events: s.events,
     welcomeKits: s.welcomeKits,
     reviews: s.reviews,
