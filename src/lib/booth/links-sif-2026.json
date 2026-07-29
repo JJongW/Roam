@@ -631,8 +631,9 @@
     "intro": "Gift Shop. 오늘도 반짝반짝 귀여운 하루."
   },
   "I03": {
-    "instagram": "www.instagram.com/la_fille_de_paris__/",
-    "intro": "﻿짧지만 길었던 파리와 런던에서의 생활을 추억 하며,  추억의 이야기를 일러스트로 표현해 보았다."
+    "instagram": "https://www.instagram.com/la_fille_de_paris__",
+    "intro": "소소한 일상을 공유해요. digital illustration.",
+    "website": "https://youtube.com/@jungheelafilledeparis"
   },
   "F22": {
     "instagram": "https://www.instagram.com/lalangheej",
@@ -1889,8 +1890,9 @@
     "intro": "글씨 쓰고 그림 그리는 유라입니다"
   },
   "I53": {
-    "instagram": "https://www.instagram.com/gionharo/",
-    "intro": "웹툰 작가, 데뷔작 (유럽에서 100일)"
+    "instagram": "https://www.instagram.com/gionharo",
+    "intro": "웹툰작가 김지효",
+    "website": "https://blog.naver.com/gionharo_eu"
   },
   "I27": {
     "instagram": "https://www.instagram.com/urr.official",
@@ -1936,7 +1938,8 @@
   },
   "J53": {
     "instagram": "https://www.instagram.com/22yyung",
-    "intro": "piece of peace 🏝️"
+    "intro": "piece of peace 🏝️",
+    "website": "https://grafolio.ogq.me/profile/2%EC%9C%B5/project"
   },
   "M31": {
     "instagram": "https://www.instagram.com/__eunhwan",
@@ -4173,5 +4176,10 @@
     "intro": "💭말랑말랑 말랭이야 ⌯ᵔ⩊ᵔ⌯ಣ 🍌서일페V.21 <<V52>>",
     "instagram": "https://www.instagram.com/malaengs",
     "website": "https://linktr.ee/malaengii"
+  },
+  "B18": {
+    "intro": "달콤한 일러스트. 모모찌와 함께하는 달콤한 일상.",
+    "instagram": "https://www.instagram.com/yunji_illust",
+    "website": "https://www.picturebook-illust.com/author-gallery/room/54141"
   }
 }
