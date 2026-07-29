@@ -55,3 +55,7 @@ supabase/
 
 # 투명 로미 영상 원본(ProRes, 대용량) — 배포엔 변환된 .webm만
 public/*.mov
+
+# 부스 enrichment 원본 자료 — 참가자 스크랩 데이터와 아티스트 이미지 1738장(110MB).
+# 여기서 뽑은 결과만 src/lib/booth/*.json으로 커밋한다(재생성 절차는 커밋 8f9bae1 참조).
+public/SIF_booth_enrich/
