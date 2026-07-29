@@ -463,25 +463,22 @@ export class MockRepository implements Repository {
     return r;
   }
 
-  async listBookmarks(sessionId: string) {
-    return store().bookmarks.filter((b) => b.sessionId === sessionId);
+  async listBookmarks(userId: string) {
+    return store().bookmarks.filter((b) => b.userId === userId);
   }
 
-  async addBookmark(
-    sessionId: string,
-    input: BookmarkInput,
-  ): Promise<Bookmark> {
+  async addBookmark(userId: string, input: BookmarkInput): Promise<Bookmark> {
     const s = store();
     const existing = s.bookmarks.find(
       (b) =>
-        b.sessionId === sessionId &&
+        b.userId === userId &&
         b.targetType === input.targetType &&
         b.targetId === input.targetId,
     );
     if (existing) return existing;
     const bm: Bookmark = {
       id: uid("bm"),
-      sessionId,
+      userId,
       createdAt: now(),
       ...input,
     };
@@ -489,11 +486,11 @@ export class MockRepository implements Repository {
     return bm;
   }
 
-  async removeBookmark(sessionId: string, input: BookmarkInput) {
+  async removeBookmark(userId: string, input: BookmarkInput) {
     const s = store();
     const i = s.bookmarks.findIndex(
       (b) =>
-        b.sessionId === sessionId &&
+        b.userId === userId &&
         b.targetType === input.targetType &&
         b.targetId === input.targetId,
     );

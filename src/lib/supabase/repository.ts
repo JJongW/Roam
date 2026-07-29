@@ -62,6 +62,44 @@ function now(): string {
   return new Date().toISOString();
 }
 
+/**
+ * 쓰기 결과 게이트. PostgREST는 실패해도 예외를 던지지 않고 `{ data: null, error }`를
+ * 돌려주므로, error를 안 보면 실패가 조용히 성공으로 위장된다(FK 위반·스키마 드리프트가
+ * 201 응답으로 나가고 로그에도 안 남는다). 도메인 쓰기는 전부 이걸 통과시킨다.
+ */
+type WriteResult<T> = {
+  data: T | null;
+  error: { message: string; code?: string } | null;
+};
+
+/** 대상 행이 없을 수 있는 쓰기(update/delete). 에러만 던지고 미매치는 null. */
+function maybeWrote<T>(res: WriteResult<T>, what: string): T | null {
+  if (res.error) {
+    throw new Error(
+      `${what} 실패: ${res.error.message}${res.error.code ? ` (${res.error.code})` : ""}`,
+    );
+  }
+  return res.data;
+}
+
+/** 반드시 행이 남아야 하는 쓰기(insert/upsert). */
+function wrote<T>(res: WriteResult<T>, what: string): T {
+  const data = maybeWrote(res, what);
+  if (data == null) throw new Error(`${what} 실패: 저장된 행이 없습니다`);
+  return data;
+}
+
+/**
+ * 텔레메트리 전용. 유실돼도 사용자 요청을 깨뜨리진 않지만, `wrote`와 달리 조용히 넘기지
+ * 않고 반드시 흔적을 남긴다.
+ */
+function loggedWrite(
+  res: { error: { message: string } | null },
+  what: string,
+): void {
+  if (res.error) console.error(`[repo] ${what} 실패: ${res.error.message}`);
+}
+
 // snake_case 키셋 페이지네이션. MockRepository.paginate 와 동일 의미.
 function paginate<T extends { id: string }>(
   items: T[],
@@ -326,7 +364,7 @@ function mapNote(r: Row): BoothNote {
 function mapBookmark(r: Row): Bookmark {
   return {
     id: str(r.id),
-    sessionId: str(r.session_id),
+    userId: str(r.user_id),
     targetType: str(r.target_type) as BookmarkTarget,
     targetId: str(r.target_id),
     createdAt: str(r.created_at),
@@ -480,12 +518,8 @@ export class SupabaseRepository implements Repository {
       created_at: now(),
       ...exhibitionToRow(input),
     };
-    const { data } = await db
-      .from("exhibition")
-      .insert(row)
-      .select("*")
-      .single();
-    return mapExhibition((data ?? row) as Row);
+    const res = await db.from("exhibition").insert(row).select("*").single();
+    return mapExhibition(wrote(res, "전시 생성") as Row);
   }
 
   async updateExhibition(
@@ -493,12 +527,13 @@ export class SupabaseRepository implements Repository {
     input: Partial<ExhibitionInput>,
   ): Promise<Exhibition | null> {
     const db = await this.db();
-    const { data } = await db
+    const res = await db
       .from("exhibition")
       .update(exhibitionToRow(input))
       .eq("id", id)
       .select("*")
       .maybeSingle();
+    const data = maybeWrote(res, "전시 수정");
     return data ? mapExhibition(data as Row) : null;
   }
 
@@ -616,8 +651,8 @@ export class SupabaseRepository implements Repository {
   async createBooth(input: BoothInput): Promise<Booth> {
     const db = await this.db();
     const row = { id: uid("booth"), created_at: now(), ...boothToRow(input) };
-    const { data } = await db.from("booth").insert(row).select("*").single();
-    return mapBooth((data ?? row) as Row);
+    const res = await db.from("booth").insert(row).select("*").single();
+    return mapBooth(wrote(res, "부스 생성") as Row);
   }
 
   async updateBooth(
@@ -625,12 +660,13 @@ export class SupabaseRepository implements Repository {
     input: Partial<BoothInput>,
   ): Promise<Booth | null> {
     const db = await this.db();
-    const { data } = await db
+    const res = await db
       .from("booth")
       .update(boothToRow(input))
       .eq("id", id)
       .select("*")
       .maybeSingle();
+    const data = maybeWrote(res, "부스 수정");
     return data ? mapBooth(data as Row) : null;
   }
 
@@ -695,8 +731,8 @@ export class SupabaseRepository implements Repository {
   async createEvent(input: EventInput): Promise<BoothEvent> {
     const db = await this.db();
     const row = { id: uid("ev"), ...eventToRow(input) };
-    const { data } = await db.from("event").insert(row).select("*").single();
-    return mapEvent((data ?? row) as Row);
+    const res = await db.from("event").insert(row).select("*").single();
+    return mapEvent(wrote(res, "이벤트 생성") as Row);
   }
 
   async updateEvent(
@@ -704,12 +740,13 @@ export class SupabaseRepository implements Repository {
     input: Partial<EventInput>,
   ): Promise<BoothEvent | null> {
     const db = await this.db();
-    const { data } = await db
+    const res = await db
       .from("event")
       .update(eventToRow(input))
       .eq("id", id)
       .select("*")
       .maybeSingle();
+    const data = maybeWrote(res, "이벤트 수정");
     return data ? mapEvent(data as Row) : null;
   }
 
@@ -747,12 +784,12 @@ export class SupabaseRepository implements Repository {
       image_url: input.imageUrl ?? null,
       remaining_count: input.remainingCount,
     };
-    const { data } = await db
+    const res = await db
       .from("welcome_kit")
       .upsert(row, { onConflict: "booth_id" })
       .select("*")
       .single();
-    return mapWelcomeKit((data ?? row) as Row);
+    return mapWelcomeKit(wrote(res, "웰컴키트 저장") as Row);
   }
 
   // --- reviews -------------------------------------------------------------
@@ -790,8 +827,8 @@ export class SupabaseRepository implements Repository {
       author_name: input.authorName,
       created_at: now(),
     };
-    const { data } = await db.from("review").insert(row).select("*").single();
-    return mapReview((data ?? row) as Row);
+    const res = await db.from("review").insert(row).select("*").single();
+    return mapReview(wrote(res, "리뷰 작성") as Row);
   }
 
   // --- sessions / preference -----------------------------------------------
@@ -805,12 +842,12 @@ export class SupabaseRepository implements Repository {
       created_at: ts,
       last_seen_at: ts,
     };
-    const { data } = await db
+    const res = await db
       .from("visitor_session")
       .insert(row)
       .select("*")
       .single();
-    return mapSession((data ?? row) as Row);
+    return mapSession(wrote(res, "세션 생성") as Row);
   }
 
   async getSession(id: string): Promise<VisitorSession | null> {
@@ -847,12 +884,12 @@ export class SupabaseRepository implements Repository {
       companion_type: input.companionType,
       updated_at: now(),
     };
-    const { data } = await db
+    const res = await db
       .from("user_preference")
       .upsert(row, { onConflict: "session_id" })
       .select("*")
       .single();
-    return mapPreference((data ?? row) as Row);
+    return mapPreference(wrote(res, "선호 저장") as Row);
   }
 
   // --- route ---------------------------------------------------------------
@@ -893,12 +930,8 @@ export class SupabaseRepository implements Repository {
       title: title ?? null,
       created_at: now(),
     };
-    const { data } = await db
-      .from("route_plan")
-      .insert(row)
-      .select("*")
-      .single();
-    return mapRoute((data ?? row) as Row);
+    const res = await db.from("route_plan").insert(row).select("*").single();
+    return mapRoute(wrote(res, "동선 저장") as Row);
   }
 
   async getRoute(id: string): Promise<RoutePlan | null> {
@@ -939,12 +972,12 @@ export class SupabaseRepository implements Repository {
       : existing.sessionId === owner.sessionId;
     if (!owned) return false;
     const db = await this.db();
-    const { data } = await db
+    const res = await db
       .from("route_plan")
       .delete()
       .eq("id", id)
       .select("id");
-    return (data?.length ?? 0) > 0;
+    return (maybeWrote(res, "동선 삭제")?.length ?? 0) > 0;
   }
 
   async patchRoute(id: string, patch: RoutePatch): Promise<RoutePlan | null> {
@@ -962,12 +995,13 @@ export class SupabaseRepository implements Repository {
     if (Object.keys(update).length === 0) {
       return this.getRoute(id);
     }
-    const { data } = await db
+    const res = await db
       .from("route_plan")
       .update(update)
       .eq("id", id)
       .select("*")
       .maybeSingle();
+    const data = maybeWrote(res, "동선 수정");
     return data ? mapRoute(data as Row) : null;
   }
 
@@ -984,12 +1018,13 @@ export class SupabaseRepository implements Repository {
       share_id: existing.shareId ?? input.shareId,
     };
     if (input.userId && !existing.userId) update.user_id = input.userId;
-    const { data } = await db
+    const res = await db
       .from("route_plan")
       .update(update)
       .eq("id", id)
       .select("*")
       .maybeSingle();
+    const data = maybeWrote(res, "동선 공개");
     return data ? mapRoute(data as Row) : null;
   }
 
@@ -1070,8 +1105,8 @@ export class SupabaseRepository implements Repository {
   async createUser(nickname: string): Promise<User> {
     const db = await this.db();
     const row = { id: uid("user"), nickname, created_at: now() };
-    const { data } = await db.from("app_user").insert(row).select("*").single();
-    return mapUser((data ?? row) as Row);
+    const res = await db.from("app_user").insert(row).select("*").single();
+    return mapUser(wrote(res, "계정 생성") as Row);
   }
 
   async getUser(id: string): Promise<User | null> {
@@ -1119,8 +1154,8 @@ export class SupabaseRepository implements Repository {
       email: identity.email ?? null,
       avatar_url: identity.avatarUrl ?? null,
     };
-    const { data } = await db.from("app_user").insert(row).select("*").single();
-    return mapUser((data ?? row) as Row);
+    const res = await db.from("app_user").insert(row).select("*").single();
+    return mapUser(wrote(res, "소셜 계정 생성") as Row);
   }
 
   // --- booth notes ---------------------------------------------------------
@@ -1145,11 +1180,14 @@ export class SupabaseRepository implements Repository {
     const photos = input.photos ?? [];
     // Empty note → delete so the gallery/back-end stays clean.
     if (!status && (memo == null || !memo.trim()) && photos.length === 0) {
-      await db
-        .from("booth_note")
-        .delete()
-        .eq("user_id", userId)
-        .eq("booth_id", boothId);
+      maybeWrote(
+        await db
+          .from("booth_note")
+          .delete()
+          .eq("user_id", userId)
+          .eq("booth_id", boothId),
+        "메모 삭제",
+      );
       return { userId, boothId, updatedAt: now() };
     }
     const row = {
@@ -1160,12 +1198,12 @@ export class SupabaseRepository implements Repository {
       photos,
       updated_at: now(),
     };
-    const { data } = await db
+    const res = await db
       .from("booth_note")
       .upsert(row, { onConflict: "user_id,booth_id" })
       .select("*")
       .single();
-    return mapNote((data ?? row) as Row);
+    return mapNote(wrote(res, "메모 저장") as Row);
   }
 
   async listExhibitionNotes(
@@ -1193,48 +1231,45 @@ export class SupabaseRepository implements Repository {
 
   // --- bookmarks -----------------------------------------------------------
 
-  async listBookmarks(sessionId: string): Promise<Bookmark[]> {
+  async listBookmarks(userId: string): Promise<Bookmark[]> {
     const db = await this.db();
     const { data } = await db
       .from("bookmark")
       .select("*")
-      .eq("session_id", sessionId);
+      .eq("user_id", userId);
     return (data ?? []).map(mapBookmark);
   }
 
-  async addBookmark(
-    sessionId: string,
-    input: BookmarkInput,
-  ): Promise<Bookmark> {
+  async addBookmark(userId: string, input: BookmarkInput): Promise<Bookmark> {
     const db = await this.db();
     const { data: existing } = await db
       .from("bookmark")
       .select("*")
-      .eq("session_id", sessionId)
+      .eq("user_id", userId)
       .eq("target_type", input.targetType)
       .eq("target_id", input.targetId)
       .maybeSingle();
     if (existing) return mapBookmark(existing as Row);
     const row = {
       id: uid("bm"),
-      session_id: sessionId,
+      user_id: userId,
       target_type: input.targetType,
       target_id: input.targetId,
       created_at: now(),
     };
-    const { data } = await db.from("bookmark").insert(row).select("*").single();
-    return mapBookmark((data ?? row) as Row);
+    const res = await db.from("bookmark").insert(row).select("*").single();
+    return mapBookmark(wrote(res, "북마크 저장") as Row);
   }
 
   async removeBookmark(
-    sessionId: string,
+    userId: string,
     input: BookmarkInput,
   ): Promise<boolean> {
     const db = await this.db();
     const { error, count } = await db
       .from("bookmark")
       .delete({ count: "exact" })
-      .eq("session_id", sessionId)
+      .eq("user_id", userId)
       .eq("target_type", input.targetType)
       .eq("target_id", input.targetId);
     return !error && (count ?? 0) > 0;
@@ -1291,12 +1326,12 @@ export class SupabaseRepository implements Repository {
       media_public_id: input.mediaPublicId ?? null,
       created_at: now(),
     };
-    const { data } = await db
+    const res = await db
       .from("community_post")
       .insert(row)
       .select("*")
       .single();
-    return mapPost((data ?? row) as Row);
+    return mapPost(wrote(res, "글 작성") as Row);
   }
 
   async getPost(id: string): Promise<CommunityPost | null> {
@@ -1311,13 +1346,13 @@ export class SupabaseRepository implements Repository {
 
   async deletePost(id: string, sessionId: string): Promise<DeletePostResult> {
     const db = await this.db();
-    const { data } = await db
+    const res = await db
       .from("community_post")
       .delete()
       .eq("id", id)
       .eq("session_id", sessionId)
       .select("media_public_id, media_type");
-    const row = data?.[0];
+    const row = maybeWrote(res, "글 삭제")?.[0];
     if (!row) return { deleted: false };
     return {
       deleted: true,
@@ -1367,7 +1402,7 @@ export class SupabaseRepository implements Repository {
     input: AnalyticsEventInput,
   ): Promise<void> {
     const db = await this.db();
-    await db.from("analytics_event").insert({
+    const res = await db.from("analytics_event").insert({
       id: uid("an"),
       session_id: sessionId,
       exhibition_id: exhibitionId,
@@ -1378,6 +1413,7 @@ export class SupabaseRepository implements Repository {
       meta: input.meta ?? null,
       created_at: now(),
     });
+    loggedWrite(res, "분석 이벤트 적재");
   }
 
   async _allAnalytics(exhibitionId: string): Promise<AnalyticsEvent[]> {
@@ -1395,7 +1431,7 @@ export class SupabaseRepository implements Repository {
     input: { text: string; keywords: string[] },
   ): Promise<void> {
     const db = await this.db();
-    await db.from("ai_query_log").insert({
+    const res = await db.from("ai_query_log").insert({
       id: uid("aq"),
       session_id: sessionId,
       exhibition_id: exhibitionId,
@@ -1403,6 +1439,7 @@ export class SupabaseRepository implements Repository {
       keywords: input.keywords,
       created_at: now(),
     });
+    loggedWrite(res, "AI 쿼리 로그 적재");
   }
 
   async topQueryKeywords(
@@ -1437,7 +1474,7 @@ export class SupabaseRepository implements Repository {
     sig: Omit<UserSignal, "id" | "createdAt">,
   ): Promise<void> {
     const db = await this.db();
-    await db.from("user_signal_log").insert({
+    const res = await db.from("user_signal_log").insert({
       id: uid("sig"),
       user_id: sig.userId,
       exhibition_id: sig.exhibitionId,
@@ -1446,6 +1483,7 @@ export class SupabaseRepository implements Repository {
       slugs: sig.slugs,
       created_at: now(),
     });
+    maybeWrote(res, "사용자 신호 적재");
   }
 
   async listUserSignals(
@@ -1489,11 +1527,12 @@ export class SupabaseRepository implements Repository {
 
   async saveUserBrain(brain: UserBrain): Promise<void> {
     const db = await this.db();
-    await db.from("user_brain").upsert({
+    const res = await db.from("user_brain").upsert({
       user_id: brain.userId,
       data: brain,
       updated_at: now(),
     });
+    maybeWrote(res, "브레인 저장");
   }
 
   async analyticsHeatmap(

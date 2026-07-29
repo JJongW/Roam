@@ -174,9 +174,9 @@ export interface Repository {
   ): Promise<{ boothId: string; memo: string }[]>;
 
   // bookmarks
-  listBookmarks(sessionId: string): Promise<Bookmark[]>;
-  addBookmark(sessionId: string, input: BookmarkInput): Promise<Bookmark>;
-  removeBookmark(sessionId: string, input: BookmarkInput): Promise<boolean>;
+  listBookmarks(userId: string): Promise<Bookmark[]>;
+  addBookmark(userId: string, input: BookmarkInput): Promise<Bookmark>;
+  removeBookmark(userId: string, input: BookmarkInput): Promise<boolean>;
 
   // community
   listPosts(

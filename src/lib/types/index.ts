@@ -302,7 +302,8 @@ export interface SharedRoute {
 
 export interface Bookmark {
   id: string;
-  sessionId: string;
+  /** 소유자 = 계정(app_user.id). 세션 만료로 사라지면 안 되는 저장이라 계정에 묶는다. */
+  userId: string;
   targetType: BookmarkTarget;
   targetId: string;
   createdAt: string;

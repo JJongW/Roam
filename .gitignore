@@ -50,8 +50,10 @@ next-env.d.ts
 # local agent tooling
 .claude/
 
-# Supabase SQL (migrations/seed/reset) — applied manually via SQL Editor, not versioned
-supabase/
+# Supabase SQL (migrations/seed/reset) — applied manually via SQL Editor, not versioned.
+# 앵커(/) 필수 — 없으면 src/lib/supabase/ 같은 하위 디렉터리까지 잡아서, 거기 새로
+# 만든 파일이 조용히 커밋에서 빠진다(앱 코드가 통째로 무시될 뻔했다).
+/supabase/
 
 # 투명 로미 영상 원본(ProRes, 대용량) — 배포엔 변환된 .webm만
 public/*.mov
