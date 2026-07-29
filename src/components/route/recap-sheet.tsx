@@ -14,6 +14,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { ValueChips } from "@/components/values/value-chips";
 import { useT } from "@/lib/i18n/provider";
+import {
+  closingLine,
+  type ReflectQuestion,
+} from "@/lib/memory/reflect-questions";
+import { valueLabel } from "@/lib/values";
+import { themeLabel } from "@/lib/booth/themes";
 import type { VisitDigest } from "@/lib/types";
 
 /**
@@ -30,6 +36,8 @@ export function RecapSheet({
 }) {
   const t = useT();
   const [visit, setVisit] = useState<VisitDigest | null>(null);
+  const [question, setQuestion] = useState<ReflectQuestion | null>(null);
+  const [answered, setAnswered] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -37,9 +45,13 @@ export function RecapSheet({
     let cancelled = false;
     // loading 기본 true — 시트는 관람당 1회 열리므로 동기 리셋 불필요(cascading render 회피).
     api
-      .get<{ data: VisitDigest | null }>("/api/me/recap")
+      .get<{ data: { visit: VisitDigest | null; question: ReflectQuestion | null } }>(
+        "/api/me/recap",
+      )
       .then((r) => {
-        if (!cancelled) setVisit(r.data);
+        if (cancelled) return;
+        setVisit(r.data.visit);
+        setQuestion(r.data.question);
       })
       .catch(() => {
         if (!cancelled) setVisit(null);
@@ -53,6 +65,22 @@ export function RecapSheet({
   }, [open]);
 
   const text = visit?.narrative ?? visit?.summary ?? null;
+
+  // 답은 브레인 preferences로 간다 — 클릭으로는 알 수 없는 축이라 여기서만 채워진다.
+  // 실패해도 대화는 계속된다(회고를 막지 않는다).
+  function answer(opt: { label: string; value: string | number }) {
+    if (!question || answered) return;
+    setAnswered(opt.label);
+    void api
+      .post("/api/me/reflect/answer", { key: question.key, value: opt.value })
+      .catch(() => {});
+  }
+
+  // themesEngaged는 slug — 사람 말로 바꿔서 넘긴다(가치 slug 우선, 테마 대분류도 커버).
+  const themeLabels = (visit?.themesEngaged ?? []).map(
+    (slug) => valueLabel(slug) || themeLabel(slug) || slug,
+  );
+  const closing = closingLine(themeLabels, question, answered ?? undefined);
 
   return (
     <Sheet open={open} onOpenChange={(o) => !o && onClose()}>
@@ -101,10 +129,32 @@ export function RecapSheet({
           </div>
         )}
 
-        {/* C(다음으로 잇기) — 종단 프로필 연결. */}
+        {/* C(다음으로 잇기) — 관찰만 하고 끝내지 않는다. 클릭으로 알 수 없는 걸
+            하나 물어 다음 전시를 더 잘 고르게 한다. 다 답했으면 질문은 없다. */}
+        {!loading && visit && question && !answered && (
+          <div className="mt-4 space-y-2 rounded-xl border border-primary/25 bg-accent/30 p-3">
+            <p className="text-sm font-semibold leading-relaxed">
+              {question.prompt}
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {question.options.map((o) => (
+                <button
+                  key={String(o.value)}
+                  type="button"
+                  onClick={() => answer(o)}
+                  className="rounded-full border border-border bg-card px-3 py-1.5 text-sm font-medium active:opacity-70"
+                >
+                  {o.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* 마무리 — "잘 봤다"가 아니라 "다음엔 이렇게 해줄게"여야 관람이 닫힌다. */}
         {!loading && visit && (
           <p className="mt-4 rounded-xl border border-border bg-card p-3 text-sm leading-relaxed text-muted-foreground">
-            {t("recap.next")}
+            {closing ?? t("recap.next")}
           </p>
         )}
 
