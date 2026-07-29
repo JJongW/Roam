@@ -73,7 +73,9 @@ export function InterestFeed({
                 <RoamAvatar />
                 <div className="min-w-0 flex-1">
                   <div className="flex items-baseline gap-1.5">
-                    <span className="text-sm font-bold">{t("romi.name")}</span>
+                    <span className="text-xs font-semibold text-muted-foreground">
+                      {t("romi.name")}
+                    </span>
                     <span className="text-xs text-muted-foreground">
                       · {t(PICK_KEY[pick])}
                     </span>
@@ -99,7 +101,9 @@ export function InterestFeed({
                   category={categoryById[booth.categoryId]}
                 />
                 <div className="min-w-0 flex-1">
-                  <p className="truncate font-bold">{booth.name}</p>
+                  <p className="truncate text-[17px] font-extrabold tracking-tight">
+                    {booth.name}
+                  </p>
                   <p className="truncate text-sm text-muted-foreground">
                     {booth.company}
                   </p>

@@ -118,9 +118,9 @@ export function ValueOnboarding({
                 <span className="flex size-28 items-center justify-center overflow-hidden rounded-[2.25rem]">
                   <RoamMotion src="/walk_think.webm" />
                 </span>
-                <h1 className="text-2xl font-extrabold leading-snug">
+                <h2 className="text-2xl font-extrabold leading-snug">
                   {t("valueOnboarding.intro1", { name: exhibitionName ?? "" })}
-                </h1>
+                </h2>
                 <p className="max-w-[20rem] text-[15px] leading-relaxed text-muted-foreground">
                   {hallCount && themes
                     ? t("valueOnboarding.intro3", {
@@ -154,9 +154,9 @@ export function ValueOnboarding({
                   <span className="flex size-24 items-center justify-center overflow-hidden rounded-[2rem]">
                     <RoamMotion src="/walk_think.webm" />
                   </span>
-                  <h1 className="text-2xl font-extrabold leading-snug">
+                  <h2 className="text-2xl font-extrabold leading-snug">
                     {t("rhythm.question")}
-                  </h1>
+                  </h2>
                 </div>
                 <div className="flex flex-col gap-2.5">
                   {RHYTHMS.map((r) => (

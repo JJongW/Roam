@@ -86,9 +86,9 @@ export default async function HomePage() {
         <span className="flex size-32 items-center justify-center overflow-hidden rounded-[2.5rem]">
           <RoamMotion src="/headbunting.webm" />
         </span>
-        <h2 className="text-2xl font-extrabold leading-snug">
+        <h1 className="text-2xl font-extrabold leading-snug">
           {t("home.heroGreeting")}
-        </h2>
+        </h1>
         <p className="max-w-[18rem] text-[15px] leading-relaxed text-muted-foreground">
           {t("home.subtitle")}
         </p>
@@ -116,9 +116,9 @@ export default async function HomePage() {
 
       <section className="space-y-3 px-4 pb-6 pt-2">
         {exhibitions.length > 0 && (
-          <h3 className="px-1 text-sm font-bold text-muted-foreground">
+          <h2 className="px-1 text-sm font-bold text-muted-foreground">
             {t("home.listHeading")}
-          </h3>
+          </h2>
         )}
         {exhibitions.length === 0 ? (
           <EmptyState
