@@ -1,0 +1,41 @@
+// 운영자가 지금 관리해야 할 전시를 고른다. 순수·I/O 없음.
+//
+// 왜 필요한가: admin의 부스·이벤트·분석 화면이 `listExhibitions({limit:1})`의 첫
+// 항목을 썼는데, 저장소 정렬이 id 오름차순이라 "가장 먼저 만든 전시"도 "지금 열리는
+// 전시"도 아닌 **id가 알파벳순으로 앞선 전시**가 잡혔다. HOUSE ARCHIVE
+// (exh_house_archive_2026)가 추가되자 개막이 2주 뒤인 전시가 운영 화면을 차지하고,
+// 이벤트·분석 데이터가 없어 빈 대시보드가 됐다.
+import type { Exhibition } from "@/lib/types";
+
+/**
+ * 오늘 기준으로 가장 관리할 만한 전시:
+ *   1) 지금 열려 있는 것(가장 먼저 시작한 순)
+ *   2) 없으면 개막이 가장 가까운 예정 전시
+ *   3) 그것도 없으면 가장 최근에 끝난 전시
+ * 목록이 비면 undefined.
+ *
+ * 날짜는 `YYYY-MM-DD` 문자열이라 사전순 비교가 곧 시간순 비교다.
+ */
+export function pickAdminExhibition(
+  exhibitions: Exhibition[],
+  today: string,
+): Exhibition | undefined {
+  if (exhibitions.length === 0) return undefined;
+
+  const running = exhibitions
+    .filter((e) => e.startDate <= today && today <= e.endDate)
+    .sort((a, b) => a.startDate.localeCompare(b.startDate));
+  if (running.length > 0) return running[0];
+
+  const upcoming = exhibitions
+    .filter((e) => e.startDate > today)
+    .sort((a, b) => a.startDate.localeCompare(b.startDate));
+  if (upcoming.length > 0) return upcoming[0];
+
+  return [...exhibitions].sort((a, b) => b.endDate.localeCompare(a.endDate))[0];
+}
+
+/** 오늘 날짜를 `YYYY-MM-DD`로. 서버 로컬 시간 기준. */
+export function todayISO(now = new Date()): string {
+  return now.toISOString().slice(0, 10);
+}
