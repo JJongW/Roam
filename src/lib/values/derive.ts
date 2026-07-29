@@ -55,6 +55,45 @@ const CATEGORY_BASE: Record<string, Array<[string, number]>> = {
     ["goods", 0.5],
     ["discovery", 0.2],
   ],
+  // 부스 테마 대분류(booth/themes.ts) — 무엇을 그리는가. 참가자 분류(kr-artist 등)
+  // 와 함께 tags에 실려 온다. 이게 있어야 "고양이 부스만 누르는 사람"과 "문구 부스만
+  // 누르는 사람"이 서로 다른 가치 프로필로 갈린다.
+  character: [
+    ["inspiration", 0.4],
+    ["discovery", 0.2],
+  ],
+  animal: [
+    ["inspiration", 0.35],
+    ["rest", 0.2],
+  ],
+  daily: [
+    ["rest", 0.4],
+    ["inspiration", 0.2],
+  ],
+  fantasy: [
+    ["inspiration", 0.5],
+    ["discovery", 0.3],
+  ],
+  nature: [
+    ["rest", 0.35],
+    ["discovery", 0.3],
+  ],
+  people: [
+    ["trend", 0.35],
+    ["inspiration", 0.3],
+  ],
+  subculture: [
+    ["experience", 0.35],
+    ["trend", 0.3],
+  ],
+  stationery: [
+    ["goods", 0.45],
+    ["experience", 0.2],
+  ],
+  craft: [
+    ["learning", 0.4],
+    ["discovery", 0.25],
+  ],
   // HOUSE ARCHIVE의 다섯 테마(집)와 테이블 마켓.
   collect: [
     ["goods", 0.5],

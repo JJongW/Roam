@@ -7,6 +7,7 @@ import sifMedia from "@/lib/booth/media-sif-2026.json";
 import sifEnrich from "@/lib/booth/enrichment-sif-2026.json";
 import sifLinks from "@/lib/booth/links-sif-2026.json";
 import { deriveValueTags } from "@/lib/values/derive";
+import { classifyBoothTheme } from "@/lib/booth/themes";
 import type { Booth, Category, Exhibition, Hall } from "@/lib/types";
 
 // 부스별 미디어(포트폴리오 이미지·로고) — ocreo fairParticipantList에서 이관.
@@ -127,11 +128,18 @@ type SifFloorBooth = {
 export const sifBooths: Booth[] = (sifFloor.booths as SifFloorBooth[]).map(
   (b) => {
     const cat = CAT_BY_KEY[b.cat] ?? CAT_BY_KEY["dom-artist"];
-    const tags = [cat.slug];
     const m = media[b.code];
     const en = enrich[b.code];
     const lk = links[b.code];
     const goodsKeywords = en?.goodsKeywords ?? [];
+    // 테마(무엇을 그리는가) — 이름·소개·굿즈에서 도출. 참가자 4분류만으로는
+    // "굿즈 많이 파는 국내 작가"가 전부 같아 보여 브레인이 취향을 못 가른다.
+    // 근거가 없으면 빈 배열 — 없는 걸 지어내지 않는다.
+    const theme = classifyBoothTheme(
+      [b.name, lk?.intro ?? "", goodsKeywords.join(" ")].join(" "),
+    );
+    // 대분류를 tags에 얹어 추천 스코어링·신호에 바로 태운다(카테고리 slug와 공존).
+    const tags = [cat.slug, ...theme.groups];
     // 포트폴리오 이미지 우선, 부족하면 스토리(굿즈) 이미지로 보강(중복 제거, 6장 캡).
     const images = [
       ...new Set([...(m?.images ?? []), ...(en?.storyImages ?? [])]),
@@ -141,7 +149,8 @@ export const sifBooths: Booth[] = (sifFloor.booths as SifFloorBooth[]).map(
       goodsKeywords.length > 0 || lk?.intro
         ? {
             goodsKeywords,
-            themeTags: [] as string[],
+            // 소분류 — 상세·검색용. 대분류는 tags로 갔다.
+            themeTags: theme.fine,
             ...(lk?.intro ? { summary: lk.intro } : {}),
           }
         : undefined;
