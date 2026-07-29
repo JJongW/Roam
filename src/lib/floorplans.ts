@@ -6,6 +6,7 @@
 // ---------------------------------------------------------------------------
 import sibf from "@/lib/floorplan-sibf.json";
 import sif from "@/lib/floorplan-sif.json";
+import ha from "@/lib/floorplan-house-archive.json";
 
 export interface FloorplanBooth {
   code: string;
@@ -312,7 +313,32 @@ function buildSif(): Floorplan {
   };
 }
 
+// HOUSE ARCHIVE: 더 플라츠홀 단일 공간. 홀/장식 없음, 부스만.
+// SIF와 같은 규약 — JSON은 좌상단, FloorplanBooth는 중심.
+function buildHouseArchive(): Floorplan {
+  const booths: FloorplanBooth[] = ha.booths.map((b) => ({
+    code: b.code,
+    x: b.x + b.w / 2,
+    y: b.y + b.h / 2,
+    w: b.w,
+    h: b.h,
+    color: b.kind === "facility" ? FACILITY_FILL : ZONE.general,
+  }));
+  const box = bbox(booths);
+  return {
+    width: ha.width,
+    height: ha.height,
+    halls: [],
+    decor: [],
+    booths,
+    interior: [box],
+    entrance: { x: ha.width / 2, y: ha.height - 40 },
+    exit: { x: ha.width / 2, y: ha.height - 40 },
+  };
+}
+
 export const FLOORPLANS: Record<string, Floorplan> = {
   "sibf-2026": buildSibf(),
   "sif-2026": buildSif(),
+  "house-archive-2026": buildHouseArchive(),
 };
