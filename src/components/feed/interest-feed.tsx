@@ -3,7 +3,9 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronDown, ChevronRight, Clock3, Lightbulb } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useCompanionStore } from "@/lib/stores/companion";
+import { ChevronDown, ChevronRight, Clock3, Lightbulb, RefreshCw } from "lucide-react";
 import { api } from "@/lib/api/client";
 import { ValueChips } from "@/components/values/value-chips";
 import { CategoryChip } from "@/components/booth/category-chip";
@@ -33,11 +35,13 @@ export function InterestFeed({
   memoryLine?: string;
 }) {
   const t = useT();
+  const router = useRouter();
+  const say = useCompanionStore((s) => s.say);
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
-  // 반응한 카드는 즉시 사라져야 한다. 서버 재큐레이션은 반응 버스트가 멎은 뒤에나
-  // 도는데(FeedRecurator), 그때까지 누른 카드가 그대로 있으면 "안 바뀐다"고 느낀다.
-  // 여기서 낙관적으로 걷어내고, 서버 응답이 오면 그게 진실이 된다(curate.ts도 상태
-  // 있는 부스를 제외한다). 피드는 6칸짜리 결정 큐다 — 아직 안 정한 것만 담는다.
+  const [repicking, setRepicking] = useState(false);
+  // 반응한 카드는 즉시 사라진다 — 서버를 기다리면 "눌러도 안 바뀐다"고 느낀다.
+  // 낙관적으로 걷어내고, 아래 새로 고르기를 누를 때 서버 목록이 진실이 된다
+  // (curate.ts도 상태 있는 부스를 제외한다). 피드는 6칸짜리 결정 큐다.
   const records = useVisitStore((s) => s.records);
   const hydrated = useHydrated();
   const visible = hydrated
@@ -68,6 +72,16 @@ export function InterestFeed({
   const byId = new Map(visible.map((v) => [v.booth.id, v]));
   const ordered = nextIds.map((id) => byId.get(id)!);
 
+  // 새로 고르기는 **사용자가 부를 때만**, 그리고 목록 맨 아래에서. 예전엔 반응할
+  // 때마다 1.2초 뒤 자동으로 전체 라우트를 새로고침해서, 읽고 있는 도중에 화면 위쪽이
+  // 다시 그려지고 목록이 움직였다. 스크롤을 되돌리지 않으려면 새 내용은 아래에서만
+  // 자라야 한다 — 버튼도 아래 두고, 누르기 전엔 아무것도 안 움직인다.
+  function repick() {
+    setRepicking(true);
+    say(t("companion.recurated"));
+    router.refresh();
+  }
+
   if (visible.length === 0) {
     // 큐를 다 비웠을 때 섹션이 통째로 사라지면 화면에 구멍이 남는다.
     return (
@@ -75,9 +89,16 @@ export function InterestFeed({
         <div className="mb-2 px-1">
           <h2 className="text-base font-bold">{t("feed.heading")}</h2>
         </div>
-        <p className="rounded-2xl border border-dashed border-border px-4 py-6 text-center text-sm text-muted-foreground">
-          {t("feed.allDecided")}
-        </p>
+        <div className="rounded-2xl border border-dashed border-border px-4 py-6 text-center">
+          <p className="text-sm text-muted-foreground">{t("feed.allDecided")}</p>
+          <button
+            type="button"
+            onClick={repick}
+            className="mt-3 min-h-11 rounded-xl border border-border px-4 text-sm font-semibold active:bg-accent/40"
+          >
+            {t("feed.repick")}
+          </button>
+        </div>
       </section>
     );
   }
@@ -266,6 +287,20 @@ export function InterestFeed({
             </div>
           );
         })}
+
+        {/* 목록의 끝 — 새로 고르기는 여기서만 일어난다(위에서 자동으로 바뀌지 않는다). */}
+        <button
+          type="button"
+          onClick={repick}
+          disabled={repicking}
+          className="flex min-h-11 w-full items-center justify-center gap-1.5 rounded-2xl border border-dashed border-border text-sm font-semibold text-muted-foreground active:bg-accent/40 disabled:opacity-60"
+        >
+          <RefreshCw
+            className={cn("size-4", repicking && "animate-spin")}
+            aria-hidden
+          />
+          {repicking ? t("feed.repicking") : t("feed.repick")}
+        </button>
       </div>
     </section>
   );

@@ -71,7 +71,6 @@ export function ReactionBar({
   const setStatus = useVisitStore((s) => s.setStatus);
   const say = useCompanionStore((s) => s.say);
   const bumpProgress = useCompanionStore((s) => s.bumpProgress);
-  const tickReaction = useCompanionStore((s) => s.tickReaction);
   const progress = useCompanionStore((s) => s.progress);
   // 눌린 버튼은 스토어에서 파생한다 — 복사본을 두면 부스가 바뀌어도 앞 부스의 상태가
   // 남아, 실제로는 아무 반응도 없는 부스에 버튼이 눌린 채로 보인다(지도에서 부스를
@@ -95,8 +94,6 @@ export function ReactionBar({
       const factor = r.key === "skip" ? 0.06 : 0.13;
       const floor = r.key === "skip" ? 1 : 2;
       bumpProgress(Math.max(floor, Math.round((100 - progress) * factor)));
-      // 재추천 트리거 — 버스트가 멎으면 컨트롤러가 피드를 갱신 브레인으로 다시 부른다.
-      tickReaction();
     }
   }
 
