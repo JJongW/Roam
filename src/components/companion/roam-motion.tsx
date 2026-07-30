@@ -33,6 +33,13 @@ export function RoamMotion({
       muted
       loop
       playsInline
+      // poster = 정적 로미. 영상이 안 뜨면(자동재생 차단·webm 미지원·로드 스톨)
+      // 지금까지는 빈 구멍이 남았다 — 로미가 있어야 할 자리가 그냥 비었다.
+      // poster는 첫 프레임이 그려지면 사라지니, 재생될 땐 아무것도 안 바뀐다.
+      poster="/logo.svg"
+      // 기본 preload="metadata"는 브라우저가 로드를 미룰 수 있다(백그라운드 탭·
+      // 절전에서 networkState=loading·readyState=0으로 멈춘 채 요청조차 안 나감).
+      preload="auto"
       aria-hidden
       className={cn("size-full object-cover", className)}
     />
