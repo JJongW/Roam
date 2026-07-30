@@ -38,7 +38,7 @@ describe("buildGrounding", () => {
       },
       thingsToDo: ["신간 훑기", "제작 과정 물어보기"],
     });
-    const g = buildGrounding(b, ["discovery"], "stable");
+    const g = buildGrounding(b, ["discovery"]);
     expect(g.why).toContain("제작자 취향");
     expect(g.why).not.toContain("social"); // 관심 없는 가치 근거는 안 붙임
     expect(g.todo).toEqual(["신간 훑기", "제작 과정 물어보기"]);
@@ -46,7 +46,7 @@ describe("buildGrounding", () => {
     expect(g.what).toBe("독립 에세이 출판사");
   });
 
-  it("저작 근거 없으면 가치 겹침으로 런타임 왜맞음 생성", () => {
+  it("가치 이름은 발화에 넣지 않는다 — 부스 사실만 말한다", () => {
     const b = booth({
       goodsKeywords: ["엽서", "에코백"],
       themeTags: [],
@@ -54,17 +54,32 @@ describe("buildGrounding", () => {
       valueTags: [{ slug: "goods", strength: 0.8 }],
       tips: "오후 혼잡",
     });
-    const g = buildGrounding(b, ["goods"], "stable");
-    expect(g.why).toContain("겹쳐");
+    const g = buildGrounding(b, ["goods"]);
+    // "굿즈 쪽이랑 겹쳐" 같은 분류 되읽기는 현장에서 아무 정보가 아니다.
+    expect(g.why).toBe("그림책 부스");
     expect(g.evidence).toContain("엽서");
     expect(g.todo).toEqual([]);
   });
 
-  it("enrichment 없으면 low + 회사명 폴백 + 넓히기 톤", () => {
+  it("근거는 내가 실제로 누른 부스로 말한다", () => {
+    const b = booth({
+      goodsKeywords: [],
+      themeTags: [],
+      roamInterpretation: "손으로 엮은 책만 만드는 곳이야.",
+    });
+    const g = buildGrounding(b, ["goods"], "ko", {
+      name: "비온뒤",
+      kind: "interested",
+    });
+    expect(g.why).toContain("손으로 엮은 책");
+    expect(g.why).toContain("비온뒤");
+  });
+
+  it("말할 사실도 근거도 없으면 한 줄을 비운다 — 빈말을 만들지 않는다", () => {
     const b = booth(undefined, "무명출판");
-    const g = buildGrounding(b, ["learning"], "adventure");
+    const g = buildGrounding(b, ["learning"]);
     expect(g.confidence).toBe("low");
     expect(g.what).toBe("무명출판");
-    expect(g.why.length).toBeGreaterThan(0);
+    expect(g.why).toBe("");
   });
 });

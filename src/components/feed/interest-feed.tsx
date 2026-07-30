@@ -154,13 +154,16 @@ export function InterestFeed({
                       · {t(PICK_KEY[pick])}
                     </span>
                   </div>
-                  <p className="mt-1 flex items-start gap-1.5 text-sm font-medium leading-relaxed text-foreground/90">
-                    <Lightbulb
-                      className="mt-0.5 size-3.5 shrink-0 text-primary"
-                      aria-hidden
-                    />
-                    <span>{grounding.why}</span>
-                  </p>
+                  {/* 할 말이 없으면 줄을 비운다 — 빈말로 채우지 않는다(grounding.ts). */}
+                  {grounding.why && (
+                    <p className="mt-1 flex items-start gap-1.5 text-sm font-medium leading-relaxed text-foreground/90">
+                      <Lightbulb
+                        className="mt-0.5 size-3.5 shrink-0 text-primary"
+                        aria-hidden
+                      />
+                      <span>{grounding.why}</span>
+                    </p>
+                  )}
                 </div>
               </div>
 

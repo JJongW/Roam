@@ -103,11 +103,47 @@ export async function curateFeed(
   // 반응할수록 같은 카드가 1번 자리에 눌러앉는 구조였다. 다시 보는 곳은 지도(색)와
   // 내 메모장(네 상태 다 표시)이다. 노트는 서버에 있어 재접속해도 유지된다.
   const repo = await getRepository();
-  const decided = new Set(
-    (await repo.listNotes(userId))
-      .filter((n) => n.status)
-      .map((n) => n.boothId),
-  );
+  const notes = await repo.listNotes(userId);
+  const decided = new Set(notes.filter((n) => n.status).map((n) => n.boothId));
+
+  // "왜 지금 너한테"를 가치 이름이 아니라 **내가 실제로 누른 부스**로 말하기 위한 표.
+  // 최근에 긍정 반응한 부스부터 보고, 후보와 가치가 겹치는 첫 부스를 근거로 삼는다.
+  // (겹치는 게 없으면 근거를 안 붙인다 — 없는 이유를 지어내지 않는다.)
+  const boothById = new Map(rank.booths.map((b) => [b.id, b]));
+  const positives = notes
+    .filter((n) => n.status === "interested" || n.status === "visited")
+    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
+    .map((n) => ({
+      booth: boothById.get(n.boothId),
+      kind: n.status as "interested" | "visited",
+    }))
+    .filter((p): p is { booth: Booth; kind: "interested" | "visited" } =>
+      Boolean(p.booth),
+    );
+
+  // 근거는 피드에서 **한 번만** 말한다. 여섯 장에 다 붙이면 "아까 X에 끌림 눌러서"가
+  // 여섯 번 반복돼, 라벨만 다르고 본문은 같던 예전 문제로 되돌아간다. 그리고 부스가
+  // 무엇인지 말할 수 없는 카드엔 붙이지 않는다 — 근거만 덩그러니 남으면 이 부스가
+  // 뭔지도 모른 채 이유만 듣는 꼴이다.
+  let linkUsed = false;
+  const hasFact = (b: Booth) =>
+    Boolean(
+      b.enrichment?.roamInterpretation ||
+        b.enrichment?.summary ||
+        b.enrichment?.goodsKeywords?.length,
+    );
+  const becauseOf = (booth: Booth) => {
+    if (linkUsed || !hasFact(booth)) return undefined;
+    const vals = new Set(boothValueSlugs(booth));
+    const hit = positives.find(
+      (p) =>
+        p.booth.id !== booth.id &&
+        boothValueSlugs(p.booth).some((v) => vals.has(v)),
+    );
+    if (!hit) return undefined;
+    linkUsed = true;
+    return { name: hit.booth.name, kind: hit.kind };
+  };
 
   // 후보 풀에서 먼저 걷어낸다. used에만 넣으면 안정픽이 rank.ranked를 그대로
   // 훑으면서 add()가 used를 검사하지 않고 push하므로 이미 정한 부스가 그대로 남는다
@@ -126,7 +162,7 @@ export async function curateFeed(
       ),
       pick,
       cue: deriveCue(booth, rank.eventsByBooth[booth.id] ?? []),
-      grounding: buildGrounding(booth, userValueSlugs, pick, locale),
+      grounding: buildGrounding(booth, userValueSlugs, locale, becauseOf(booth)),
     });
     used.add(booth.id);
   };

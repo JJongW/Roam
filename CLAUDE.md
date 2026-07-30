@@ -56,6 +56,10 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
 - **탭(대화 턴)엔 LLM 금지** → 즉답(로컬 템플릿). companion 속도.
 - **피드 큐레이션엔 LLM 없음**: `curateFeed`(feed/curate.ts)는 브레인 + `rankForExhibition`
   결과로 안정·낯선·모험 믹스를 만드는 **순수 결정론**이다.
+- **피드는 6칸짜리 결정 큐다**(`rhythm.ts`): 반응(끌림·나중에·별로·이미봄)한 부스는 **전부**
+  큐에서 빠지고, 되돌아보는 곳은 지도 색과 내 메모장이다. 새로 고르기는 **자동이 아니라
+  목록 맨 아래 버튼**으로만 — 읽는 중에 화면이 다시 그려지면 안 된다. 새로 온 카드는
+  '여기부터 새로 골랐어' 아래에만 붙는다(위에 끼워 넣지 않는다).
 - 실제 Gemini 호출처는 4곳뿐: `/api/ai/booth-summary`(~1.8초) · `/api/ai/community-summary`(~2.5초) ·
   `/api/ai/screenshot`(비전) · `/api/exhibitions/[slug]/keywords`.
 - **thinking off 필수**: gemini-2.5-flash는 thinking 기본 ON이라 응답이 8~15초+로 느려짐 → 모든 호출에 `thinkingConfig.thinkingBudget=0`(gemini.ts). 이거 빼면 LLM이 타임아웃돼 전부 결정론 폴백된다.
@@ -86,7 +90,9 @@ repo의 `logAiQuery`/`topQueryKeywords`(+ `ai_query_log` 테이블).
   채움 현황: `summary` 97 · `themeTags` 66 · `thingsToDo` 45 · `timing` 31 ·
   `valueTags`/`roamInterpretation`/`recommendationReasons`/`memoryHooks` 각 **16**.
 - `seed.ts`가 부스에 attach. `themeTags`(=slug)는 `booth.tags`에 병합 → 추천 스코어링에 **LLM 없이 즉시** 반영. 굿즈/요약/팁은 부스 상세 노출 + 온보딩 추론 프롬프트 어휘로 주입.
-- **근거 카드(Phase F)**: 피드 각 부스에 "무엇/왜맞음/근거/뭘하면/신뢰" = `src/lib/feed/grounding.ts`(순수) → `curateFeed`가 FeedItem에 attach, **`components/feed/interest-feed.tsx`가 인라인 렌더**(`grounding-card.tsx`도 있음). 왜맞음은 저작 `recommendationReasons`(가치별) > `roamInterpretation` > **런타임 겹침**(사용자 브레인 상위 가치 ∩ 부스 valueSlugs) 순. 저작 없으면 자연 degrade(블로커 아님).
+- **하우스 아카이브**: `enrichment-house-archive-2026.json`(68/104, `summary`+`sourceUrl`+`roamInterpretation` 68). 원본은 주최 측 브랜드 디렉터리 CSV(`public/house_archive_br/`, gitignore) → `node scripts/gen-house-archive-enrichment.mjs`로 생성하며 **저작 필드는 재생성 때 보존**된다.
+- **근거 카드(Phase F)**: 피드 각 부스에 "무엇/왜맞음/근거/뭘하면/신뢰" = `src/lib/feed/grounding.ts`(순수) → `curateFeed`가 FeedItem에 attach, **`components/feed/interest-feed.tsx`가 인라인 렌더**.
+  ⚠️ **로미 발화에 가치 이름을 쓰지 않는다.** 한 줄은 두 절 = **부스가 무엇인지(사실)** + **왜 지금 너한테(내가 실제로 누른 부스)**. 사실은 저작 `roamInterpretation` > 가치별 `recommendationReasons` > 공식 `summary` 순. 근거 절은 `curateFeed`가 최근 긍정 반응(끌림·가봄) 중 가치가 겹치는 부스를 찾아 넘기고, **피드당 한 번만** 붙인다. 둘 다 없으면 **한 줄을 비운다**(빈말 금지). 예전엔 "발견 쪽 부스야"·"네 관심 가치랑 겹쳐"로 분류를 되읽어줬는데, 현장에서 그건 정보가 아니었다.
 - **최소 필수 6종**(운영 입력 시 반드시): `summary`(공식+한줄해석)·`valueTags`·`recommendationReasons`·`thingsToDo`·`timing`·`memoryHooks`. 가장 중요 4=공식정보+해석+가치태그+근거. 양식 `docs/booth-enrichment.md`, 저작 예시 `A1001`·`A1101`. 저작 필드가 없는 부스는 런타임 겹침으로 파생된다.
 - Supabase `booth_enrichment` 테이블(`0013` 기본 + `0021` 근거카드 컬럼: value_tags·roam_interpretation·recommendation_reasons·things_to_do·timing·memory_hooks 등), repo `getBoothDetail`가 전 필드 매핑. 데이터 동기화: `0023_booth_enrichment_sync.sql`이 mock JSON 전체(97행)를 멱등 UPSERT(재생성 시 이 마이그레이션 갱신). ⚠️ seed.sql의 enrichment 블록은 구 6컬럼·구 데이터라 stale — prod 진실은 마이그레이션.
 

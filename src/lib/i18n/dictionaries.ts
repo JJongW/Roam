@@ -391,11 +391,9 @@ const ko = {
     confMedium: "근거 보통",
     confLow: "정보 적음",
     todo: "여기서 {items} 해보면 좋아.",
-    whyOverlap: "네가 관심 둔 {values} 쪽이랑 겹쳐.",
-    whyLeadStable: "{lead} 쪽 부스야.",
-    whyLeadNew: "{lead} 쪽이라 평소랑 좀 다른데, 넓혀볼 만해.",
-    whyNone: "둘러보면 취향이 더 또렷해질 거야.",
-    whyComposed: "{what}. {reason}",
+    // 근거는 가치 이름이 아니라 내가 실제로 누른 부스로 말한다.
+    becauseInterested: "아까 ‘{booth}’에 끌림 눌러서 같이 꺼냈어.",
+    becauseVisited: "‘{booth}’ 가봤다길래 같이 꺼냈어.",
     whatGoods: "여기 {goods} 있어",
   },
   rhythm: {
@@ -860,11 +858,8 @@ const en: Dict = {
     confMedium: "Some basis",
     confLow: "Little info",
     todo: "Try {items} here.",
-    whyOverlap: "Overlaps with your {values}.",
-    whyLeadStable: "It's a {lead} booth.",
-    whyLeadNew: "It's {lead} — a bit different, worth widening to.",
-    whyNone: "A look will sharpen your taste.",
-    whyComposed: "{what}. {reason}",
+    becauseInterested: "You liked “{booth}”, so I pulled this too.",
+    becauseVisited: "You saw “{booth}”, so I pulled this too.",
     whatGoods: "Has {goods}",
   },
   rhythm: {

@@ -2,11 +2,20 @@
 // 부스 좌표는 공식 부스배치도를 옮긴 격자를 floorplan-house-archive.json으로.
 // 카테고리는 존(기획존/부스존/테이블마켓)이 아니라 5개 테마(수집·관계·창작·쉼·탐험)로
 // 잡는다 — 테마가 Roam 가치 슬러그와 거의 1:1로 붙어 deriveValueTags가 enrichment
-// 없이도 첫날부터 의미 있는 추천 신호를 만든다. 부스 상세(media·links·enrichment)는
-// 이번 범위 밖이라 읽지 않는다 — 나중에 파일만 추가해 채운다.
+// 없이도 첫날부터 의미 있는 추천 신호를 만든다. 부스 소개는 주최 측 브랜드 디렉터리에서
+// 뽑아 enrichment-house-archive-2026.json으로 붙인다(68/104). 이미지·링크는 아직 없다.
 import haFloor from "@/lib/floorplan-house-archive.json";
+import haEnrichData from "@/lib/booth/enrichment-house-archive-2026.json";
 import { deriveValueTags } from "@/lib/values/derive";
-import type { Booth, Category, Exhibition, Hall } from "@/lib/types";
+import type {
+  Booth,
+  BoothEnrichment,
+  Category,
+  Exhibition,
+  Hall,
+} from "@/lib/types";
+
+const haEnrich = haEnrichData as Record<string, Partial<BoothEnrichment>>;
 
 // 5개 테마 + 테이블 마켓. floorplan의 cat 키가 그대로 slug라 매핑 테이블이 필요 없다.
 export const haCategories: Category[] = [
@@ -71,6 +80,14 @@ export const haBooths: Booth[] = (haFloor.booths as HaFloorBooth[]).map((b) => {
   const cat = CAT_BY_SLUG.get(b.cat) ?? CAT_BY_SLUG.get("table")!;
   const isPlanZone = b.code.startsWith("H");
   const tags = isPlanZone ? [cat.slug, "기획존"] : [cat.slug];
+  // 주최 측 브랜드 디렉터리에서 뽑은 소개(68/104). 있으면 부스 상세에 노출되고,
+  // 피드 카드에선 로미가 "발견 쪽 부스야" 같은 분류 대신 이 부스가 무엇을 하는
+  // 곳인지를 말하는 재료가 된다(feed/grounding.ts). 재생성:
+  // node scripts/gen-house-archive-enrichment.mjs
+  const e = haEnrich[b.code];
+  const enrichment: BoothEnrichment | undefined = e
+    ? { ...e, goodsKeywords: e.goodsKeywords ?? [], themeTags: e.themeTags ?? [] }
+    : undefined;
   return {
     id: `ha_${b.code.toLowerCase().replace(/-/g, "_")}`,
     exhibitionId: haExhibition.id,
@@ -80,15 +97,15 @@ export const haBooths: Booth[] = (haFloor.booths as HaFloorBooth[]).map((b) => {
     kind: b.kind,
     name: b.name,
     company: cat.name,
-    description: `${b.name} · 부스 ${b.code}`,
+    description: e?.summary ?? `${b.name} · 부스 ${b.code}`,
     longDescription: `${b.name}(${b.nameEn})의 부스입니다. 부스 번호 ${b.code}. 하우스 아카이브 ${cat.name} 참가 브랜드입니다.`,
     images: [],
     logoUrl: undefined,
     websiteUrl: undefined,
-    instagramUrl: undefined,
+    instagramUrl: e?.sourceUrl,
     tags,
     valueTags: deriveValueTags({ categorySlugs: tags }),
-    enrichment: undefined,
+    enrichment,
     x: b.x,
     y: b.y,
     popularity: 50,

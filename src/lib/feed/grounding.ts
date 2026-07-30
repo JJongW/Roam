@@ -1,19 +1,21 @@
 // 근거 카드 — "무엇 / 왜 너에게 맞음 / 무슨 근거 / 얼마나 확실" 을 부스에서 뽑는다.
 // 정보 전달이 아니라 사용자가 스스로 판단할 재료(companion-reframe §근거카드). 순수·LLM 없음.
-// v1: 저작 roamInterpretation 데이터가 아직 0%라, 왜맞음은 사용자 가치 ∩ 부스 가치 겹침으로
-// 런타임 생성(더 정직 — 실제 매칭 신호를 그대로 보여준다). 저작 데이터가 차면 우선 채택.
+//
+// 로미의 한 줄은 두 절이다: **이 부스가 무엇인지(사실)** + **왜 지금 너한테(내 행동)**.
+// 예전엔 두 번째 절을 가치 이름으로 말했다("발견 쪽 부스야", "네 관심 가치랑 겹쳐").
+// 현장에서 그 말은 정보가 아니다 — 온보딩에서 고른 단어를 되읽어줄 뿐이고, 부스가
+// 뭘 하는 곳인지는 끝내 안 알려준다. 지금은 가치 이름을 아예 쓰지 않는다.
+// 둘 다 없으면 한 줄을 비운다(빈말 금지).
 import { boothValueSlugs } from "@/lib/values";
 import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n/config";
 import { DICTS } from "@/lib/i18n/dictionaries";
 import { makeT } from "@/lib/i18n/resolve";
 import type { Booth } from "@/lib/types";
 
-type PickKind = "stable" | "unfamiliar" | "adventure";
-
 export interface Grounding {
   /** 무엇 — 한 줄 소개. */
   what: string | null;
-  /** 왜 너에게 맞을 수 있는지(판단 근거). 항상 한 줄 생성. */
+  /** 왜 너에게 맞을 수 있는지(판단 근거). 말할 게 없으면 빈 문자열. */
   why: string;
   /** 근거 조각 — 굿즈/현장 팁 등 확인 가능한 사실. */
   evidence: string[];
@@ -38,59 +40,49 @@ function summaryClause(text: string, max = 44): string {
 }
 
 /**
- * 부스 + 사용자 상위 관심 가치(slug)로 근거 카드를 만든다. pick 갈래에 따라 왜맞음 톤이
- * 달라진다(안정=겹침 강조, 낯선/모험=새로 넓히기).
+ * 부스 + 사용자 상위 관심 가치(slug)로 근거 카드를 만든다.
  */
 export function buildGrounding(
   booth: Booth,
   userValueSlugs: string[],
-  pick: PickKind,
   locale: Locale = DEFAULT_LOCALE,
+  /** 이 부스를 꺼낸 계기가 된 내 지난 반응 — 근거를 가치 이름이 아니라 내 행동으로 말한다. */
+  because?: { name: string; kind: "interested" | "visited" },
 ): Grounding {
   const t = makeT(DICTS[locale]);
-  const vl = (slug: string) => t(`values.${slug}`);
   const e = booth.enrichment;
   const boothVals = boothValueSlugs(booth);
   const overlap = boothVals.filter((v) => userValueSlugs.includes(v));
 
-  // 왜 맞음 — 저작 데이터 최우선: 사용자 관심 가치에 대한 추천 근거 > 한 줄 해석 > 런타임 겹침.
-  // (저작 recommendationReasons·roamInterpretation은 한국어 데이터라 미번역, 겹침 문장만 로케일.)
-  let why: string;
+  // 1절 = 이 부스가 무엇인지(사실). 저작 한 줄 > 가치별 저작 근거 > 공식 소개 한 조각.
+  // 가치 이름("발견 쪽 부스야")은 쓰지 않는다 — 현장에서 그 말은 아무 정보가 아니고,
+  // 사용자가 온보딩에서 고른 단어를 되읽어줄 뿐이다.
   const matchedReasons = overlap
     .map((v) => e?.recommendationReasons?.[v])
     .filter((r): r is string => Boolean(r));
-  if (matchedReasons.length > 0) {
-    why = matchedReasons.slice(0, 2).join(" ");
-  } else if (e?.roamInterpretation) {
-    why = e.roamInterpretation;
-  } else {
-    // 저작 없음 — 매 카드가 같은 말이 되지 않게, 부스의 구체(summary 한 조각)를 주어로
-    // 삼고 매칭 이유를 붙인다. summary 있는 부스는 부스마다 다른 문장이 된다(지어내기 없음).
-    let reason: string;
-    if (overlap.length > 0) {
-      reason = t("grounding.whyOverlap", {
-        values: overlap.slice(0, 2).map(vl).join("·"),
-      });
-    } else if (boothVals.length > 0) {
-      const lead = vl(boothVals[0]);
-      reason =
-        pick === "stable"
-          ? t("grounding.whyLeadStable", { lead })
-          : t("grounding.whyLeadNew", { lead });
-    } else {
-      reason = t("grounding.whyNone");
-    }
-    // 구체 근거를 주어로 — summary 한 조각 우선, 없으면 굿즈 키워드를 로미 목소리로.
-    // (둘 다 없으면 매칭 이유만. 지어내지 않음.)
-    const whatClause = e?.summary
-      ? summaryClause(e.summary, 44)
-      : e?.goodsKeywords?.[0]
-        ? t("grounding.whatGoods", { goods: e.goodsKeywords[0] })
-        : null;
-    why = whatClause
-      ? t("grounding.whyComposed", { what: whatClause, reason })
-      : reason;
-  }
+  const fact =
+    e?.roamInterpretation ??
+    (matchedReasons.length > 0
+      ? matchedReasons.slice(0, 2).join(" ")
+      : e?.summary
+        ? summaryClause(e.summary, 70)
+        : e?.goodsKeywords?.[0]
+          ? t("grounding.whatGoods", { goods: e.goodsKeywords[0] })
+          : null);
+
+  // 2절 = 왜 지금 너한테. 근거는 내가 실제로 누른 부스다. 없으면 붙이지 않는다 —
+  // 억지로 채우면 "둘러보면 취향이 더 또렷해질 거야" 같은 빈말이 된다.
+  const link = because
+    ? t(
+        because.kind === "interested"
+          ? "grounding.becauseInterested"
+          : "grounding.becauseVisited",
+        { booth: because.name },
+      )
+    : null;
+
+  // 말할 사실도 근거도 없으면 한 줄을 비운다(카드가 부스 정보만 보여준다).
+  const why = [fact, link].filter(Boolean).join(" ");
 
   // 근거 — 확인 가능한 사실(굿즈 우선, 없으면 팁 한 조각).
   const evidence: string[] = [];
