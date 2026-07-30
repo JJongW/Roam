@@ -351,10 +351,12 @@ function mapNote(r: Row): BoothNote {
   return {
     userId: str(r.user_id),
     boothId: str(r.booth_id),
+    // 값 목록의 진실은 BoothStatus와 0029의 체크 제약이다 — 여기서 좁게 캐스팅하면
+    // 새 상태(interested·later)가 타입상 없는 값처럼 보인다(런타임엔 그대로 흐른다).
     status:
       r.status == null
         ? undefined
-        : (String(r.status) as "visited" | "skipped"),
+        : (String(r.status) as BoothNote["status"]),
     memo: r.memo == null ? undefined : String(r.memo),
     photos: Array.isArray(r.photos) ? r.photos.map(String) : undefined,
     updatedAt: str(r.updated_at),
