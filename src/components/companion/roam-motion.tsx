@@ -1,6 +1,6 @@
 "use client";
 
-import { useId } from "react";
+import { useEffect, useId, useRef } from "react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -9,6 +9,12 @@ import { cn } from "@/lib/utils";
  *
  * `pool`을 주면 그 중 하나를 인스턴스별로 골라 튼다("생각중/로딩"에서 head_spinning·
  * walk_think 두 영상을 번갈아 쓰는 용도). 고정 영상은 `src`.
+ *
+ * 포맷이 두 갈래다: WebKit(사파리·아이폰의 모든 브라우저)은 투명 webm의 알파를
+ * 버려서 로미가 안 보이거나 검은 사각형이 된다 → 애플이 지원하는 alpha HEVC mp4를
+ * 준다(같은 이름 .mp4, ffmpeg으로 webm에서 변환). 나머지는 더 작은 webm.
+ * <source> 목록으로는 안 된다 — 크롬도 hvc1을 재생 가능하다고 답하고 mp4를 골라
+ * 알파를 잃는다. 그래서 엔진을 보고 코드에서 고른다.
  */
 export function RoamMotion({
   src,
@@ -25,10 +31,21 @@ export function RoamMotion({
     pool && pool.length > 0
       ? pool[hashStr(id) % pool.length]
       : (src ?? pool?.[0] ?? "");
+  // 서버 렌더엔 navigator가 없다 → 마크업은 poster(정적 로미)만 내보내고, 마운트 뒤
+  // 엔진에 맞는 파일을 엘리먼트에 직접 건다(하이드레이션 불일치도, 리렌더도 없다).
+  // vendor는 WebKit 계열만 "Apple Computer, Inc."다 — 아이폰의 크롬·파이어폭스도
+  // WebKit이라 같이 잡힌다(그게 맞다, 알파 문제는 엔진 문제니까).
+  const ref = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const v = ref.current;
+    if (!v) return;
+    const webkit = navigator.vendor === "Apple Computer, Inc.";
+    v.src = webkit ? chosen.replace(/\.webm$/, ".mp4") : chosen;
+  }, [chosen]);
   return (
     <video
       key={chosen}
-      src={chosen}
+      ref={ref}
       autoPlay
       muted
       loop
