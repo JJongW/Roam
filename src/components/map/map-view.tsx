@@ -297,7 +297,9 @@ export function MapView({
                 </div>
               </div>
               <Button asChild size="sm">
-                <Link href={`/booths/${selected.id}`}>
+                {/* prefetch — 시트를 읽는 1~2초 사이에 상세를 미리 받아둔다. 기본값은
+                    로딩 경계까지만 받아서, 탭하면 그때부터 서버 왕복이 시작됐다. */}
+                <Link href={`/booths/${selected.id}`} prefetch>
                   {t("common.detail")} <ChevronRight className="size-4" />
                 </Link>
               </Button>
@@ -321,7 +323,7 @@ export function MapView({
 
             {/* 저장 대신 반응 — 끌림/나중에/별로/이미봄 → 신호로 브레인에 반영. */}
             <div className="mt-2.5 border-t border-border pt-2.5">
-              <ReactionBar boothId={selected.id} />
+              <ReactionBar boothId={selected.id} boothName={selected.name} />
             </div>
           </div>
         </div>

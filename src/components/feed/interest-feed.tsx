@@ -12,9 +12,7 @@ import { ReactionBar } from "@/components/feed/reaction-bar";
 import { useT } from "@/lib/i18n/provider";
 import { useVisitStore } from "@/lib/stores/visit";
 import { useHydrated } from "@/lib/hooks/use-hydrated";
-import type { TFn } from "@/lib/i18n/resolve";
 import { cn } from "@/lib/utils";
-import { VALUE_SLUGS } from "@/lib/values";
 import type { Booth, Category } from "@/lib/types";
 import type { FeedItem, PickKind } from "@/lib/feed/curate";
 
@@ -36,15 +34,53 @@ export function InterestFeed({
 }) {
   const t = useT();
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
-  // '별로'는 즉시 사라져야 한다. 서버 재큐레이션은 반응 버스트가 멎은 뒤에나 도는데
-  // (FeedRecurator), 그때까지 누른 카드가 그대로 있으면 "안 바뀐다"고 느낀다.
-  // 여기서 낙관적으로 걷어내고, 서버 응답이 오면 그게 진실이 된다.
+  // 반응한 카드는 즉시 사라져야 한다. 서버 재큐레이션은 반응 버스트가 멎은 뒤에나
+  // 도는데(FeedRecurator), 그때까지 누른 카드가 그대로 있으면 "안 바뀐다"고 느낀다.
+  // 여기서 낙관적으로 걷어내고, 서버 응답이 오면 그게 진실이 된다(curate.ts도 상태
+  // 있는 부스를 제외한다). 피드는 6칸짜리 결정 큐다 — 아직 안 정한 것만 담는다.
   const records = useVisitStore((s) => s.records);
   const hydrated = useHydrated();
   const visible = hydrated
-    ? items.filter(({ booth }) => records[booth.id]?.status !== "skipped")
+    ? items.filter(({ booth }) => !records[booth.id]?.status)
     : items;
-  if (visible.length === 0) return null;
+
+  // 재큐레이션이 와도 이미 보고 있던 카드는 자리를 지키고, 새로 고른 것만 아래에
+  // 따로 붙인다. 서버는 매번 랭킹대로 새 목록을 주므로, 그대로 그리면 사라진 카드
+  // 자리에 낯선 부스가 슬쩍 끼워 넣어져 무엇이 새 추천인지 알 수 없었다.
+  // 위가 아니라 아래에 붙이는 이유: 방금 버튼을 누른 손가락 아래에서 목록이 밀려
+  // 올라가면 안 된다.
+  // 구분선 위치까지 **상태에 같이** 넣는다. 렌더 중 setState는 즉시 다시 렌더하는데,
+  // 그때는 새 id들이 이미 seen에 들어가 있어 "새로 온 것"이 없어진다 — 위치를 매번
+  // 다시 계산하면 구분선이 버려지는 렌더에만 잠깐 존재하고 화면엔 절대 안 나온다.
+  const [seen, setSeen] = useState<{ ids: string[]; freshFrom: number }>({
+    ids: [],
+    freshFrom: -1,
+  });
+  const ids = visible.map((v) => v.booth.id);
+  const known = seen.ids.filter((id) => ids.includes(id));
+  const fresh = ids.filter((id) => !seen.ids.includes(id));
+  const nextIds = [...known, ...fresh];
+  // 첫 페인트는 전부 '새 카드'라 구분선이 의미가 없다 — 두 번째부터만 가른다.
+  const nextFreshFrom = known.length > 0 && fresh.length > 0 ? known.length : -1;
+  const changed = nextIds.join() !== seen.ids.join();
+  if (changed) setSeen({ ids: nextIds, freshFrom: nextFreshFrom });
+  const freshFrom = changed ? nextFreshFrom : seen.freshFrom;
+  const byId = new Map(visible.map((v) => [v.booth.id, v]));
+  const ordered = nextIds.map((id) => byId.get(id)!);
+
+  if (visible.length === 0) {
+    // 큐를 다 비웠을 때 섹션이 통째로 사라지면 화면에 구멍이 남는다.
+    return (
+      <section className="mt-6">
+        <div className="mb-2 px-1">
+          <h2 className="text-base font-bold">{t("feed.heading")}</h2>
+        </div>
+        <p className="rounded-2xl border border-dashed border-border px-4 py-6 text-center text-sm text-muted-foreground">
+          {t("feed.allDecided")}
+        </p>
+      </section>
+    );
+  }
 
   function fire(boothId: string) {
     void api
@@ -71,11 +107,18 @@ export function InterestFeed({
       </div>
 
       <div className="space-y-3">
-        {visible.map(({ booth, related, pick, cue, grounding }) => {
+        {ordered.map(({ booth, related, pick, cue, grounding }, idx) => {
           const open = expanded.has(booth.id);
           return (
+            <div key={booth.id} className="space-y-3">
+              {idx === freshFrom && (
+                <p className="flex items-center gap-2 px-1 pt-1 text-xs font-semibold text-muted-foreground">
+                  <span className="h-px flex-1 bg-border" aria-hidden />
+                  {t("feed.freshDivider")}
+                  <span className="h-px flex-1 bg-border" aria-hidden />
+                </p>
+              )}
             <article
-              key={booth.id}
               className="overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-card)]"
             >
               {/* 1) 로미 발화 — 왜 골랐는지(카드의 머리) */}
@@ -111,8 +154,14 @@ export function InterestFeed({
                   category={categoryById[booth.categoryId]}
                 />
                 <div className="min-w-0 flex-1">
+                  {/* 부스 번호 — 현장에선 이름보다 번호로 찾는다. 지도 팝업과 같은 형태. */}
                   <p className="truncate text-[17px] font-extrabold tracking-tight">
                     {booth.name}
+                    {booth.code && (
+                      <span className="ml-1.5 text-xs font-semibold text-muted-foreground">
+                        {booth.code}
+                      </span>
+                    )}
                   </p>
                   <p className="truncate text-sm text-muted-foreground">
                     {booth.company}
@@ -163,31 +212,30 @@ export function InterestFeed({
 
               {/* 4) 반응 */}
               <div className="border-t border-border/60 px-4 py-2.5">
-                <ReactionBar
-                  boothId={booth.id}
-                  valueLabel={leadValueLabel(booth, t)}
-                />
+                <ReactionBar boothId={booth.id} boothName={booth.name} />
               </div>
 
               {/* 5) 관련 부스 — 같은 카드 하단으로 인라인 확장 */}
               {related.length > 0 && (
-                <div className="border-t border-border/60 px-4 py-2">
+                <div className="border-t border-border/60 px-4">
+                  {/* 행 전체가 손가락 과녁이다 — 아이콘+글자 폭만 눌리던 걸 넓혔다.
+                      높이 44px는 손끝으로 정확히 겨눌 수 있는 최소치(HIG). */}
                   <button
                     type="button"
                     onClick={() => toggle(booth.id)}
                     aria-expanded={open}
-                    className="flex items-center gap-1 py-1 text-xs font-semibold text-muted-foreground active:opacity-70"
+                    className="-mx-4 flex min-h-11 w-[calc(100%+2rem)] items-center justify-between gap-1 px-4 text-xs font-semibold text-muted-foreground active:bg-accent/40"
                   >
+                    {open
+                      ? t("feed.collapse")
+                      : t("feed.similar", { n: related.length })}
                     <ChevronDown
                       className={cn(
-                        "size-3.5 transition-transform",
+                        "size-4 shrink-0 transition-transform",
                         open && "rotate-180",
                       )}
                       aria-hidden
                     />
-                    {open
-                      ? t("feed.collapse")
-                      : t("feed.similar", { n: related.length })}
                   </button>
 
                   {open && (
@@ -215,6 +263,7 @@ export function InterestFeed({
                 </div>
               )}
             </article>
+            </div>
           );
         })}
       </div>
@@ -277,14 +326,6 @@ function RoamAvatar() {
       />
     </span>
   );
-}
-
-/** 부스의 대표 관심 가치 라벨 — 가장 강한 valueTag가 가치 슬러그면 번역해 반환. */
-function leadValueLabel(booth: Booth, t: TFn): string | undefined {
-  const top = [...(booth.valueTags ?? [])]
-    .filter((v) => VALUE_SLUGS.includes(v.slug))
-    .sort((a, b) => b.strength - a.strength)[0];
-  return top ? t(`values.${top.slug}`) : undefined;
 }
 
 const PICK_KEY: Record<PickKind, string> = {

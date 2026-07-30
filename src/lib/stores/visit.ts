@@ -6,7 +6,7 @@ import { api } from "@/lib/api/client";
 import type { BoothNote } from "@/lib/types";
 
 /** A visitor's personal status for a booth, independent of the active route.
- *  "interested"(끌림)은 로컬 전용 — 지도 관심 색칠용. 서버 노트는 visited|skipped만 동기화. */
+ *  네 가지 모두 서버 노트에 동기화된다(0029) — 폰을 바꿔도 지도 색이 따라온다. */
 export type BoothStatus = "visited" | "skipped" | "interested" | "later";
 
 export interface BoothRecord {
@@ -37,9 +37,9 @@ export async function pushNote(boothId: string): Promise<void> {
   const r = useVisitStore.getState().records[boothId];
   try {
     await api.put(`/api/me/notes/${boothId}`, {
-      // 서버 노트는 visited|skipped만 안다 — interested는 로컬 색칠 전용이라 제외.
-      status:
-        r?.status === "visited" || r?.status === "skipped" ? r.status : null,
+      // 네 상태 그대로 보낸다. 예전엔 visited|skipped만 보내고 나머지는 null로
+      // 깎았는데, 그게 끌림을 누를 때 서버의 '가봄'을 지우는 경로였다.
+      status: r?.status ?? null,
       memo: r?.memo ?? "",
       photos: r?.photos ?? [],
     });

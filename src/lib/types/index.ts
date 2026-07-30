@@ -277,11 +277,12 @@ export interface OAuthIdentity {
   avatarUrl?: string;
 }
 
-/** A signed-in visitor's personal record for a booth (visited / skip / memo). */
+/** A signed-in visitor's personal record for a booth (반응 / 메모 / 사진). */
 export interface BoothNote {
   userId: string;
   boothId: string;
-  status?: "visited" | "skipped";
+  /** 부스 반응 네 가지. 0029 이전엔 visited|skipped만 서버에 남았다. */
+  status?: "visited" | "skipped" | "interested" | "later";
   memo?: string;
   /** Personal photos (Cloudinary URLs) attached to this booth note. */
   photos?: string[];

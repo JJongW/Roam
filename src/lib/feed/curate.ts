@@ -97,28 +97,30 @@ export async function curateFeed(
     .filter((n) => n.confidence >= 0.25 && VALUE_SLUGS.includes(n.key))
     .map((n) => n.key);
 
-  // '별로'(skipped)는 피드에서 뺀다 — 안 그러면 반응해도 같은 부스가 계속 올라와
-  // "내 반응이 아무것도 안 바꾼다"고 느껴진다. '가봄'(visited)은 남긴다(다시 볼 수
-  // 있어야 하고, 지도에서 색으로 이미 구분된다). 노트는 서버에 있어 재접속해도 유지.
+  // 판단이 끝난 부스는 피드에서 뺀다 — 네 반응 전부. 피드는 6칸짜리 결정 큐라
+  // (rhythm.ts) 이미 정한 부스가 칸을 차지하면 새 후보가 올라올 자리가 없다.
+  // 특히 '끌림'은 그 가치의 가중치를 올려서 같은 부스를 **더 위로** 끌어올렸다 —
+  // 반응할수록 같은 카드가 1번 자리에 눌러앉는 구조였다. 다시 보는 곳은 지도(색)와
+  // 내 메모장(네 상태 다 표시)이다. 노트는 서버에 있어 재접속해도 유지된다.
   const repo = await getRepository();
-  const skipped = new Set(
+  const decided = new Set(
     (await repo.listNotes(userId))
-      .filter((n) => n.status === "skipped")
+      .filter((n) => n.status)
       .map((n) => n.boothId),
   );
 
   // 후보 풀에서 먼저 걷어낸다. used에만 넣으면 안정픽이 rank.ranked를 그대로
-  // 훑으면서 add()가 used를 검사하지 않고 push하므로 '별로' 부스가 그대로 남는다
+  // 훑으면서 add()가 used를 검사하지 않고 push하므로 이미 정한 부스가 그대로 남는다
   // — 가장 위에 보이는 픽이라 "반응해도 안 바뀐다"로 느껴진다.
-  const eligible = rank.ranked.filter((s) => !skipped.has(s.booth.id));
+  const eligible = rank.ranked.filter((s) => !decided.has(s.booth.id));
 
   const items: FeedItem[] = [];
-  const used = new Set(skipped);
+  const used = new Set(decided);
   const add = (booth: Booth, pick: PickKind) => {
     items.push({
       booth,
       related: relatedBooths(
-        rank.booths.filter((b) => !skipped.has(b.id)),
+        rank.booths.filter((b) => !decided.has(b.id)),
         booth,
         3,
       ),

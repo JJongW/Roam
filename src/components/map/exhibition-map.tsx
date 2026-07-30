@@ -433,6 +433,32 @@ export function ExhibitionMap({
     return () => ro.disconnect();
   }, [fit]);
 
+  // 지도 위 제스처는 지도만 움직인다 — 페이지가 확대되면 안 된다.
+  //
+  // 지도는 pan/pinch를 pointer 이벤트로 직접 구현하는데, 브라우저가 그 전에 터치
+  // 제스처를 가져가 **페이지 전체**를 확대해버렸다(양옆이 잘리는 그 증상). 막는 건
+  // 세 겹이다:
+  //  1) touch-action: none — 두 손가락 확대·더블탭 확대를 이 엘리먼트에서 끈다.
+  //  2) gesturestart/change — 사파리 비표준 확대 이벤트. touch-action만으론 iOS에서
+  //     페이지 확대가 남는 경우가 있다. 다른 브라우저엔 없는 이벤트라 무해하다.
+  //  3) wheel(passive:false) — 트랙패드 핀치(ctrl+wheel)의 페이지 확대. React의
+  //     onWheel은 루트에 passive로 붙어 preventDefault가 먹지 않으므로 직접 건다.
+  // 지도 밖에서는 확대가 그대로 된다 — 전역 user-scalable=no는 쓰지 않는다(iOS는
+  // 무시하고, 글자를 키워야 하는 사용자를 앱 전체에서 막는다).
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const stop = (e: Event) => e.preventDefault();
+    el.addEventListener("gesturestart", stop);
+    el.addEventListener("gesturechange", stop);
+    el.addEventListener("wheel", stop, { passive: false });
+    return () => {
+      el.removeEventListener("gesturestart", stop);
+      el.removeEventListener("gesturechange", stop);
+      el.removeEventListener("wheel", stop);
+    };
+  }, []);
+
   // The SVG transform is driven imperatively (not via JSX style), so any
   // re-render that recreates inline styles would otherwise drop it. Re-assert
   // the current view after every render — cheap (one style write).
@@ -811,7 +837,8 @@ export function ExhibitionMap({
       <div
         ref={containerRef}
         className={cn(
-          "absolute cursor-grab active:cursor-grabbing",
+          // touch-none: 확대·스크롤을 브라우저가 가로채지 못하게 한다(위 useEffect 참조).
+          "absolute cursor-grab touch-none active:cursor-grabbing",
           viewportClassName,
         )}
         onPointerDown={onPointerDown}

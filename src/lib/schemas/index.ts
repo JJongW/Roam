@@ -191,7 +191,11 @@ export const loginSchema = z.object({
 export type LoginInput = z.infer<typeof loginSchema>;
 
 export const boothNoteInputSchema = z.object({
-  status: z.enum(["visited", "skipped"]).nullish(),
+  // 반응 네 가지 전부 계정에 남는다(0029). 끌림·나중에가 로컬 전용이던 동안엔
+  // 폰을 바꾸면 지도 색이 사라졌고, 끌림이 서버의 visited를 null로 덮어썼다.
+  status: z
+    .enum(["visited", "skipped", "interested", "later"])
+    .nullish(),
   memo: z.string().max(300).optional(),
   /** Personal photos (Cloudinary URLs). Capped to keep notes lightweight. */
   photos: z.array(z.string().url()).max(4).optional(),

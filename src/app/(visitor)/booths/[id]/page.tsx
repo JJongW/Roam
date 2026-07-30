@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { Ticket, ExternalLink, Globe } from "lucide-react";
-import { getRepository } from "@/lib/repositories";
+import { getBoothDetailCached } from "@/lib/repositories/cached";
 import { AppBar } from "@/components/common/app-bar";
 import { BookmarkButton } from "@/components/booth/bookmark-button";
 import { BoothAiSummary } from "@/components/booth/booth-ai-summary";
@@ -21,8 +21,7 @@ type Props = { params: Promise<{ id: string }> };
 
 export async function generateMetadata({ params }: Props) {
   const { id } = await params;
-  const repo = await getRepository();
-  const detail = await repo.getBoothDetail(id);
+  const detail = await getBoothDetailCached(id);
   if (!detail) return { title: "부스" };
   return {
     title: `${detail.booth.name} · ${detail.booth.company}`,
@@ -32,8 +31,9 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function BoothDetailPage({ params }: Props) {
   const { id } = await params;
-  const repo = await getRepository();
-  const detail = await repo.getBoothDetail(id);
+  // generateMetadata가 이미 부른 조회를 요청 캐시로 나눠 쓴다 — 예전엔 같은 부스를
+  // 한 페이지에서 두 번 읽어 DB 왕복이 두 세트였다.
+  const detail = await getBoothDetailCached(id);
   if (!detail) notFound();
 
   const { booth, category, welcomeKit, events, reviews, reviewSummary } =
