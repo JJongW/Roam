@@ -2,8 +2,8 @@
 // 부스 좌표는 공식 부스배치도를 옮긴 격자를 floorplan-house-archive.json으로.
 // 카테고리는 존(기획존/부스존/테이블마켓)이 아니라 5개 테마(수집·관계·창작·쉼·탐험)로
 // 잡는다 — 테마가 Roam 가치 슬러그와 거의 1:1로 붙어 deriveValueTags가 enrichment
-// 없이도 첫날부터 의미 있는 추천 신호를 만든다. 부스 소개는 주최 측 브랜드 디렉터리에서
-// 뽑아 enrichment-house-archive-2026.json으로 붙인다(68/104). 이미지·링크는 아직 없다.
+// 없이도 첫날부터 의미 있는 추천 신호를 만든다. 부스 소개·이미지·인스타는 주최 측 브랜드
+// 디렉터리에서 뽑아 enrichment-house-archive-2026.json으로 붙인다(68/104).
 import haFloor from "@/lib/floorplan-house-archive.json";
 import haEnrichData from "@/lib/booth/enrichment-house-archive-2026.json";
 import { deriveValueTags } from "@/lib/values/derive";
@@ -15,7 +15,11 @@ import type {
   Hall,
 } from "@/lib/types";
 
-const haEnrich = haEnrichData as Record<string, Partial<BoothEnrichment>>;
+// image는 BoothEnrichment에 없는 생성 산출물 — 부스 이미지 경로다(스크립트가 채운다).
+const haEnrich = haEnrichData as Record<
+  string,
+  Partial<BoothEnrichment> & { image?: string }
+>;
 
 // 5개 테마 + 테이블 마켓. floorplan의 cat 키가 그대로 slug라 매핑 테이블이 필요 없다.
 export const haCategories: Category[] = [
@@ -99,8 +103,8 @@ export const haBooths: Booth[] = (haFloor.booths as HaFloorBooth[]).map((b) => {
     company: cat.name,
     description: e?.summary ?? `${b.name} · 부스 ${b.code}`,
     longDescription: `${b.name}(${b.nameEn})의 부스입니다. 부스 번호 ${b.code}. 하우스 아카이브 ${cat.name} 참가 브랜드입니다.`,
-    images: [],
-    logoUrl: undefined,
+    images: e?.image ? [e.image] : [],
+    logoUrl: e?.image,
     websiteUrl: undefined,
     instagramUrl: e?.sourceUrl,
     tags,

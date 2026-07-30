@@ -8,9 +8,12 @@
 //
 // 손으로 쓴 필드(roamInterpretation 등 저작 문구)는 기존 JSON에서 보존한다 — 재생성이
 // 저작물을 덮어쓰면 아무도 저작을 안 하게 된다.
-import { readFileSync, writeFileSync, existsSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync, readdirSync, mkdirSync } from "node:fs";
+import sharp from "sharp";
 
 const CSV = "public/house_archive_br/house_archive_full_directory.csv";
+const IMG_SRC = "public/house_archive_br/house_archive_images";
+const IMG_OUT = "public/booths/house-archive";
 const OUT = "src/lib/booth/enrichment-house-archive-2026.json";
 const FLOORPLAN = "src/lib/floorplan-house-archive.json";
 const NAMES = "src/lib/booth/house-archive-2026.json";
@@ -127,10 +130,49 @@ for (const [code, e] of Object.entries(out)) {
   }
 }
 
+// 브랜드 이미지 — 원본은 1568x662 캔버스에 세로 포스터가 검은 여백과 함께 박혀 있고,
+// 위아래로 페어 공통 크롬(HOUSE ARCHIVE 헤더 / 날짜 바)이 붙어 있다. 여백을 트림하고
+// 크롬을 잘라내면 브랜드 사진만 남는다(부스마다 다른 그림 = 썸네일로 쓸 값어치가 생김).
+// 파일명은 `{브랜드}_{인스타핸들}.jpg`라 핸들로 부스 코드에 잇는다.
+const handleToCode = new Map();
+for (const r of data) {
+  const h = (r[col.instagram_handle] || "").trim();
+  const c = (r[col.booth_code] || "").trim() ||
+    codeByName.get(r[col.vendor_name].replace(/\s/g, "")) || "";
+  if (h && c && out[c]) handleToCode.set(h, c);
+}
+let images = 0;
+if (existsSync(IMG_SRC)) {
+  mkdirSync(IMG_OUT, { recursive: true });
+  for (const file of readdirSync(IMG_SRC)) {
+    const handle = file.replace(/\.[a-z]+$/i, "").split("_").slice(1).join("_");
+    const code = handleToCode.get(handle);
+    if (!code) {
+      warn.push(`이미지 매칭 실패: ${file}`);
+      continue;
+    }
+    const src = `${IMG_SRC}/${file}`;
+    const trimmed = await sharp(src)
+      .trim({ threshold: 10 })
+      .toBuffer({ resolveWithObject: true });
+    const { width, height } = trimmed.info;
+    const top = Math.round(height * 0.15); // 페어 헤더
+    const bottom = Math.round(height * 0.08); // 날짜 바
+    await sharp(trimmed.data)
+      .extract({ left: 0, top, width, height: height - top - bottom })
+      .resize({ width: 480 })
+      .webp({ quality: 72 })
+      .toFile(`${IMG_OUT}/${code}.webp`);
+    out[code].image = `/booths/house-archive/${code}.webp`;
+    images++;
+  }
+}
+
 const sorted = Object.fromEntries(
   Object.entries(out).sort(([a], [b]) => a.localeCompare(b)),
 );
 writeFileSync(OUT, `${JSON.stringify(sorted, null, 2)}\n`);
+console.log(`이미지 ${images}장 → ${IMG_OUT}`);
 
 console.log(`${OUT} — ${Object.keys(sorted).length}개 부스`);
 console.log(`도면 부스 ${floorCodes.size}개 중 소개 없는 부스 ${floorCodes.size - Object.keys(sorted).length}개`);
