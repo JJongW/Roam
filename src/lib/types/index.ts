@@ -283,11 +283,14 @@ export interface BoothNote {
   boothId: string;
   /** 부스 반응 네 가지. 0029 이전엔 visited|skipped만 서버에 남았다. */
   status?: "visited" | "skipped" | "interested" | "later";
+  /** 이 반응 판정 시점의 확신 등급 — 취향 정확도 채점용(0031). visited 자체는
+   *  무판정이라 되묻기 전엔 null/undefined일 수 있다. */
+  judgedClass?: "confident" | "uncertain";
+  /** '가봄'에 대한 뒤늦은 호불호 답('여기 어땠어?'). visited일 때만 의미 있다. */
+  retro?: "liked" | "disliked";
   memo?: string;
   /** Personal photos (Cloudinary URLs) attached to this booth note. */
   photos?: string[];
-  /** "가봄" 상태의 되묻기 답(좋았어 / 별로였어). 취향 정확도 채점에 사용. */
-  retro?: "liked" | "disliked";
   updatedAt: string;
 }
 
