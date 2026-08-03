@@ -28,23 +28,17 @@ interface CompanionState {
   clearFlash: () => void;
 
   /**
-   * 로미가 스스로 인지하는 "취향 파악도" 0~100. 기존 온보딩의 스테이터스바 대신,
-   * 로미가 반응·검색으로 사용자를 이해한 정도를 %로 보여준다. 서버 브레인으로 시드하고
-   * 반응할 때마다 낙관적으로 오른다. 결정론(수학), LLM 없음.
+   * 취향 정확도 — "로미의 예측을 사용자가 확인해준 정도"(예측 정확도, taste.ts).
+   * 접촉량이 아니다: 카드 클릭·검색은 관여 안 하고, 반응(끌림·나중에·별로·가봄
+   * 되묻기)만 판정으로 센다. 서버가 유일한 진실이다 — 이 스토어는 매 쓰기 응답의
+   * 값을 그대로 반영할 뿐 자체 공식으로 계산하지 않는다(이전 bumpProgress 감쇠
+   * 휴리스틱이 서버 값과 어긋나던 문제를 이렇게 없앤다).
    */
-  progress: number;
-  setProgress: (n: number) => void;
-  /** 새 반응 등으로 파악도를 올린다(0~100 클램프). */
-  bumpProgress: (delta: number) => void;
-
-  /**
-   * 반응이 일어날 때마다 증가하는 틱. 피드 재큐레이션 컨트롤러가 이를 구독해, 반응
-   * 버스트가 멎으면(디바운스) 서버 피드를 갱신된 브레인으로 다시 불러온다("취향 반영해서
-   * 다시 골라줄게"). 신호는 별도로 서버에 적재되고, 여기선 재추천 트리거만 담당.
-   */
+  tasteJudged: number;
+  /** 판정 5개 미만이면 null(말로만 표시) — companion-bar.tsx가 분기한다. */
+  tastePct: number | null;
+  setTaste: (judged: number, pct: number | null) => void;
 }
-
-const clampPct = (n: number) => Math.max(0, Math.min(100, Math.round(n)));
 
 export const useCompanionStore = create<CompanionState>((set) => ({
   home: null,
@@ -52,8 +46,7 @@ export const useCompanionStore = create<CompanionState>((set) => ({
   flash: null,
   say: (text) => set({ flash: text }),
   clearFlash: () => set({ flash: null }),
-  progress: 0,
-  setProgress: (n) => set({ progress: clampPct(n) }),
-  bumpProgress: (delta) =>
-    set((s) => ({ progress: clampPct(s.progress + delta) })),
+  tasteJudged: 0,
+  tastePct: null,
+  setTaste: (judged, pct) => set({ tasteJudged: judged, tastePct: pct }),
 }));
