@@ -24,7 +24,7 @@ import { VALUE_SLUGS } from "@/lib/values";
 import { getCurrentUser } from "@/lib/api/session";
 import { curateFeed } from "@/lib/feed/curate";
 import { readBrain } from "@/lib/memory/service";
-import { tasteProgress } from "@/lib/memory/progress";
+import { getRepository } from "@/lib/repositories";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -76,9 +76,15 @@ export default async function ExhibitionDetailPage({
   const memoryLine = topValues.length
     ? t("feed.memoryLine", { values: topValues.join("·") })
     : undefined;
-  // 로미의 취향 파악도(0~100) — 브레인 파생 순수 함수(정직·영속). 하단 컴패니언이
-  // %로 보여주고, 100%면 온보딩을 마무리한다(스테이터스바 대체).
-  const progressPct = brain ? tasteProgress(brain) : 0;
+  // 취향 정확도 — 브레인 파생이 아니라 booth_note 직접 집계(브레인이 아니라
+  // "반응이 로미의 예측을 맞혔는가"로 잰다). 예전 tasteProgress(접촉량 기반)는
+  // 삭제됐다.
+  const taste = user
+    ? await (await getRepository()).getTasteAccuracy(
+        user.id,
+        detail.exhibition.id,
+      )
+    : { judgedCount: 0, pct: null };
   const categoryById = Object.fromEntries(
     detail.categories.map((c) => [c.id, c]),
   );
@@ -153,7 +159,8 @@ export default async function ExhibitionDetailPage({
             <HomeCompanionContextBridge
               values={topValues}
               picked={feedItems.length}
-              progress={progressPct}
+              tasteJudged={taste.judgedCount}
+              tastePct={taste.pct}
             />
           )}
 
@@ -166,6 +173,7 @@ export default async function ExhibitionDetailPage({
                 .slice(0, 3)
                 .map((c) => c.name)
                 .join("·")}
+              hasChosenValues={topValues.length > 0}
             />
 
             <Link

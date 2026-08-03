@@ -14,7 +14,6 @@ import {
   type Tally,
 } from "@/lib/onboarding/questions";
 import { RHYTHMS, DEFAULT_RHYTHM, type Rhythm } from "@/lib/feed/rhythm";
-import { useCompanionStore } from "@/lib/stores/companion";
 import { cn } from "@/lib/utils";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 
@@ -30,15 +29,20 @@ export function ValueOnboarding({
   exhibitionName,
   hallCount,
   themes,
+  hasChosenValues,
 }: {
   slug: string;
   exhibitionName?: string;
   hallCount?: number;
   themes?: string;
+  /** 이미 확신 가치가 있으면(온보딩을 거쳤든 반응으로 쌓였든) 진입 카드를 숨긴다.
+   *  예전엔 취향 % 100 도달로 판단했는데, 그 %는 이제 예측 정확도라 5개 판정만
+   *  맞아도 100이 되고 하나 틀리면 다시 내려간다 — 카드가 나타났다 사라졌다 하는
+   *  근거로 못 쓴다. 확신 가치 존재 여부는 오르내리지 않는다. */
+  hasChosenValues: boolean;
 }) {
   const router = useRouter();
   const t = useT();
-  const progress = useCompanionStore((s) => s.progress);
   const [open, setOpen] = useState(false);
   const [phase, setPhase] = useState<Phase>("intro");
   // 가치 집계는 rhythm 스텝을 거쳐 저장하므로 잠깐 들고 있는다.
@@ -83,7 +87,7 @@ export function ValueOnboarding({
       {/* 이 전시의 메인 액션 — 관람 가치 정하기. 눈에 띄게 primary 강조(다른 카드에
           묻히지 않도록). companion 톤: 로미가 먼저 제안. 취향 파악도 100%면 온보딩을
           이미 마친 것이라 진입 카드를 숨긴다(추가 온보딩 버튼 불필요). */}
-      {progress < 100 && (
+      {!hasChosenValues && (
         <button
           type="button"
           onClick={start}
