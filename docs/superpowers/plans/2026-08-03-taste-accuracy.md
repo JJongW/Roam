@@ -917,7 +917,7 @@ git commit -m "feat(repo): 부스 판정·정확도 저장소 메서드 추가"
 - Modify: `src/lib/memory/service.ts`
 
 **Interfaces:**
-- Consumes: Task 2의 `classifyBooth`(`@/lib/memory/taste`), Task 3의 `repo.getBooth`·`repo.getTasteAccuracy`·`repo.setBoothRetro`·`repo.listPendingRetro`·`repo.upsertNote(…, judgedClass)`.
+- Consumes: Task 2의 `classifyBooth`(`@/lib/memory/taste`), Task 3의 `repo.getBooth`·`repo.getTasteAccuracy`·`repo.setBoothRetro`·`repo.listPendingRetro`·`repo.upsertNote(…, judgedClass)`, 기존 `repo.listNotes(userId)`(상태 변경 여부 판단용 — PUT이 기존 상태와 비교해야 메모만 고치는 쓰기에서 이미 얼린 판정을 안 건드린다).
 - Produces:
   - `PUT /api/me/notes/[boothId]` 응답이 `{ note: BoothNote; taste: TasteAccuracy }`로 확장(기존 `{ note }`에서 확장 — 호환 유지).
   - `POST /api/me/notes/[boothId]/retro { liked: boolean }` → `{ note: BoothNote | null; taste: TasteAccuracy }`. `note`가 null이면 해당 부스가 visited가 아니었다는 뜻(400은 아니고 조용히 무시 — 지도 시트가 낙관적으로 이미 사라졌을 가능성).
@@ -971,11 +971,11 @@ const SIGNAL_BY_STATUS: Record<string, SignalKind | undefined> = {
   later: "reaction_later",
 };
 
-/** 이 상태 값이 확신·부정 반응이면 true — 이때만 판정을 새로 계산한다.
- *  visited(가봄)는 무판정(되묻기 전엔), 메모만 고치는 쓰기(status 그대로)는
- *  라우트가 구분할 수 없어 항상 재계산하지만 upsertNote가 결과를 그대로 반영해도
- *  안전하다(같은 status면 같은 분류가 나오므로 덮어써도 값이 안 바뀐다 — visited만
- *  예외적으로 판정 자체가 없다). */
+/** 이 상태 값이 확신·부정 반응이면 true — 상태가 실제로 "바뀔 때"만 판정을 새로
+ *  계산한다(호출부에서 statusChanged와 함께 쓴다). 상태가 그대로인데(메모만 고치는
+ *  쓰기 등) 여기 걸리면, 이미 얼려둔 judged_class를 지금 브레인 상태로 조용히
+ *  재채점하게 된다 — "판정은 그 순간에 얼린다"는 원칙을 메모 편집 한 번으로 깨뜨리는
+ *  것이다. visited(가봄)는 무판정(되묻기 전엔) — 그 자체로는 재계산 대상이 아니다. */
 function needsJudgment(status: string | null | undefined): boolean {
   return status === "interested" || status === "later" || status === "skipped";
 }
@@ -989,13 +989,23 @@ export async function PUT(req: Request, { params }: Ctx) {
   const repo = await getRepository();
 
   const status = parsed.data.status ?? null;
+  // 이 쓰기가 상태를 실제로 바꾸는지 먼저 확인한다 — 안 그러면 메모만 고치는 쓰기
+  // (status는 그대로 보내지는데 memo만 다른 PUT, 예: 부스 상세의 메모 편집)에서도
+  // 매번 judged_class가 지금 브레인으로 재계산돼 이미 확정된 판정이 조용히 바뀐다.
+  const existing = (await repo.listNotes(user.id)).find(
+    (n) => n.boothId === boothId,
+  );
+  const statusChanged = (existing?.status ?? null) !== status;
+
   let judgedClass: JudgedClass | null | undefined;
-  if (needsJudgment(status)) {
-    const booth = await repo.getBooth(boothId);
-    judgedClass = booth ? await classifyForUser(booth, user.id) : null;
-  } else if (!status) {
-    judgedClass = null; // 해제 — 판정도 지운다
-  } // else: status === "visited" → undefined로 남겨 판정을 안 건드린다.
+  if (statusChanged) {
+    if (needsJudgment(status)) {
+      const booth = await repo.getBooth(boothId);
+      judgedClass = booth ? await classifyForUser(booth, user.id) : null;
+    } else if (!status) {
+      judgedClass = null; // 해제 — 판정도 지운다
+    } // else: status === "visited"로 새로 바뀜 → undefined로 남겨 무판정 유지.
+  } // else: 상태 불변(메모/사진만 편집) → undefined, 기존 판정을 안 건드린다.
 
   const note = await repo.upsertNote(user.id, boothId, parsed.data, judgedClass);
 
@@ -1122,7 +1132,17 @@ curl -s -X PUT http://localhost:3111/api/me/notes/b_a101 \
   -d '{"status":"interested"}' | head -c 500
 ```
 
-Expected: `{"data":{"note":{...,"status":"interested","judgedClass":"confident"|"uncertain",...},"taste":{"judgedCount":1,"pct":null}}}`
+Expected: `{"data":{"note":{...,"status":"interested","judgedClass":"confident"|"uncertain",...},"taste":{"judgedCount":1,"pct":null}}}`. `note.judgedClass` 값을 기록해 둔다(다음 확인에 쓴다).
+
+```bash
+# 같은 부스, 같은 status — 메모만 추가. judgedClass가 방금 값과 그대로여야 한다
+# (재계산되면 안 된다 — 상태가 안 바뀐 쓰기는 이미 얼린 판정을 건드리지 않는다).
+curl -s -X PUT http://localhost:3111/api/me/notes/b_a101 \
+  -H "Content-Type: application/json" -H "Cookie: $COOKIE" \
+  -d '{"status":"interested","memo":"다시 가보기"}' | head -c 500
+```
+
+Expected: `note.judgedClass`가 바로 위 호출에서 나온 값과 **동일**. (다르면 Task 4의 `statusChanged` 분기가 잘못된 것 — 버그로 다룬다.)
 
 ```bash
 curl -s -X PUT http://localhost:3111/api/me/notes/b_a102 \
