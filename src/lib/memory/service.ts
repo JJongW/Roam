@@ -5,13 +5,14 @@ import { narrateVisit } from "@/lib/ai/companion";
 import { MEMORY_TUNING } from "@/lib/constants";
 import { getRepository } from "@/lib/repositories";
 import { VALUE_TAGS, boothValueSlugs } from "@/lib/values";
-import type { SignalKind, UserBrain, VisitDigest } from "@/lib/types";
+import type { Booth, SignalKind, UserBrain, VisitDigest } from "@/lib/types";
 import {
   addVisitDigest,
   buildVisitDigest,
   emptyBrain,
   updateBrainWithSignals,
 } from "./distill";
+import { classifyBooth, type JudgedClass } from "./taste";
 
 export interface RecordSignalInput {
   kind: SignalKind;
@@ -80,6 +81,15 @@ export async function recordSignal(
 export async function readBrain(userId: string): Promise<UserBrain> {
   const repo = await getRepository();
   return (await repo.getUserBrain(userId)) ?? emptyBrain(userId);
+}
+
+/** 이 부스가 지금 사용자의 확신 가치와 겹치는지 — 반응 판정 등급에 쓴다. */
+export async function classifyForUser(
+  booth: Booth,
+  userId: string,
+): Promise<JudgedClass> {
+  const brain = await readBrain(userId);
+  return classifyBooth(booth, brain);
 }
 
 /** 회고 재료가 되는 신호 — 실제로 보거나 끌린 것만(스킵/단순클릭 제외). */
