@@ -13,6 +13,7 @@ import {
   haCategories,
   haBooths,
 } from "@/lib/mock/seed-house-archive";
+import { computeTasteAccuracy, type TasteAccuracy } from "@/lib/memory/taste";
 import type { ListBoothQuery, Repository } from "@/lib/repositories/types";
 import type {
   AiQueryLog,
@@ -697,6 +698,7 @@ export class MockRepository implements Repository {
     userId: string,
     boothId: string,
     input: BoothNoteInput,
+    judgedClass: "confident" | "uncertain" | null | undefined,
   ): Promise<BoothNote> {
     const s = store();
     let n = s.notes.find((x) => x.userId === userId && x.boothId === boothId);
@@ -707,6 +709,7 @@ export class MockRepository implements Repository {
         status: input.status ?? undefined,
         memo: input.memo,
         photos: input.photos,
+        judgedClass: judgedClass === undefined ? undefined : (judgedClass ?? undefined),
         updatedAt: now(),
       };
       s.notes.push(n);
@@ -714,6 +717,11 @@ export class MockRepository implements Repository {
       if (input.status !== undefined) n.status = input.status ?? undefined;
       if (input.memo !== undefined) n.memo = input.memo;
       if (input.photos !== undefined) n.photos = input.photos;
+      // Supabase 구현과 같은 규칙: judgedClass가 undefined면 판정 필드를 안 건드린다.
+      if (judgedClass !== undefined) {
+        n.judgedClass = judgedClass ?? undefined;
+        n.retro = undefined;
+      }
       n.updatedAt = now();
     }
     // Drop empty notes so the store stays compact.
@@ -721,6 +729,72 @@ export class MockRepository implements Repository {
       s.notes = s.notes.filter((x) => x !== n);
     }
     return n;
+  }
+
+  async getBooth(id: string): Promise<Booth | null> {
+    const s = store();
+    return s.booths.find((b) => b.id === id) ?? null;
+  }
+
+  async getTasteAccuracy(
+    userId: string,
+    exhibitionId: string,
+  ): Promise<TasteAccuracy> {
+    const s = store();
+    const boothIds = new Set(
+      s.booths.filter((b) => b.exhibitionId === exhibitionId).map((b) => b.id),
+    );
+    const notes = s.notes.filter(
+      (n) => n.userId === userId && boothIds.has(n.boothId),
+    );
+    return computeTasteAccuracy(
+      notes.map((n) => ({
+        status: n.status,
+        judgedClass: n.judgedClass,
+        retro: n.retro,
+      })),
+    );
+  }
+
+  async setBoothRetro(
+    userId: string,
+    boothId: string,
+    retro: "liked" | "disliked",
+    judgedClass: "confident" | "uncertain",
+  ): Promise<BoothNote | null> {
+    const s = store();
+    const n = s.notes.find(
+      (x) =>
+        x.userId === userId && x.boothId === boothId && x.status === "visited",
+    );
+    if (!n) return null;
+    n.retro = retro;
+    n.judgedClass = judgedClass;
+    n.updatedAt = now();
+    return n;
+  }
+
+  async listPendingRetro(
+    userId: string,
+    exhibitionId: string,
+    limit: number,
+  ): Promise<{ boothId: string; boothName: string }[]> {
+    const s = store();
+    const byId = new Map(
+      s.booths
+        .filter((b) => b.exhibitionId === exhibitionId)
+        .map((b) => [b.id, b.name]),
+    );
+    return s.notes
+      .filter(
+        (n) =>
+          n.userId === userId &&
+          n.status === "visited" &&
+          !n.retro &&
+          byId.has(n.boothId),
+      )
+      .slice(0, limit)
+      .map((n) => ({ boothId: n.boothId, boothName: byId.get(n.boothId)! }));
   }
 
   async listExhibitionNotes(

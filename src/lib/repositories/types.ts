@@ -24,6 +24,7 @@ import type {
   VisitorSession,
   WelcomeKit,
 } from "@/lib/types";
+import type { TasteAccuracy } from "@/lib/memory/taste";
 import type {
   AnalyticsEventInput,
   BookmarkInput,
@@ -166,7 +167,31 @@ export interface Repository {
     userId: string,
     boothId: string,
     input: BoothNoteInput,
+    /** 이 쓰기의 확신 등급. interested·later·skipped·해제(status=null)일 때만 준다.
+     *  undefined면 저장소가 judged_class·retro를 건드리지 않는다(visited·메모 편집 등
+     *  status 자체의 판정 의미가 없는 쓰기) — 그래야 메모만 고칠 때 이미 답한 되묻기가
+     *  조용히 지워지지 않는다. */
+    judgedClass: "confident" | "uncertain" | null | undefined,
   ): Promise<BoothNote>;
+  /** 부스 하나(가벼운 조회 — 목록 컬럼 + enrichment). getBoothDetail과 달리
+   *  리뷰·이벤트·웰컴키트는 안 읽는다. 반응 판정 시 확신도 대조에 쓴다. */
+  getBooth(id: string): Promise<Booth | null>;
+  /** 전시 스코프 취향 정확도. */
+  getTasteAccuracy(userId: string, exhibitionId: string): Promise<TasteAccuracy>;
+  /** '가봄' 되묻기 답 저장. status가 'visited'인 기존 노트에만 적용 — 없으면 null
+   *  (호출부가 400 처리). */
+  setBoothRetro(
+    userId: string,
+    boothId: string,
+    retro: "liked" | "disliked",
+    judgedClass: "confident" | "uncertain",
+  ): Promise<BoothNote | null>;
+  /** 'visited'이면서 아직 되묻기에 답 안 한 부스(관람 마치기용, 최대 limit개). */
+  listPendingRetro(
+    userId: string,
+    exhibitionId: string,
+    limit: number,
+  ): Promise<{ boothId: string; boothName: string }[]>;
   /** Every visitor memo for booths in this exhibition (boothId + memo text).
    *  Powers crowd-sourced keyword extraction for onboarding. */
   listExhibitionNotes(

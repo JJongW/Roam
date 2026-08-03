@@ -2,6 +2,11 @@ import { uid } from "@/lib/utils";
 import { REPORT_HIDE_THRESHOLD } from "@/lib/constants";
 import { deriveValueTags } from "@/lib/values/derive";
 import { createServerClient } from "@/lib/supabase/server";
+import {
+  computeTasteAccuracy,
+  type JudgedClass,
+  type TasteAccuracy,
+} from "@/lib/memory/taste";
 import type { ListBoothQuery, Repository } from "@/lib/repositories/types";
 import type {
   AnalyticsEvent,
@@ -357,6 +362,12 @@ function mapNote(r: Row): BoothNote {
       r.status == null
         ? undefined
         : (String(r.status) as BoothNote["status"]),
+    judgedClass:
+      r.judged_class == null
+        ? undefined
+        : (String(r.judged_class) as BoothNote["judgedClass"]),
+    retro:
+      r.retro == null ? undefined : (String(r.retro) as BoothNote["retro"]),
     memo: r.memo == null ? undefined : String(r.memo),
     photos: Array.isArray(r.photos) ? r.photos.map(String) : undefined,
     updatedAt: str(r.updated_at),
@@ -1175,6 +1186,7 @@ export class SupabaseRepository implements Repository {
     userId: string,
     boothId: string,
     input: BoothNoteInput,
+    judgedClass: "confident" | "uncertain" | null | undefined,
   ): Promise<BoothNote> {
     const db = await this.db();
     const status = input.status ?? null;
@@ -1192,7 +1204,7 @@ export class SupabaseRepository implements Repository {
       );
       return { userId, boothId, updatedAt: now() };
     }
-    const row = {
+    const row: Row = {
       user_id: userId,
       booth_id: boothId,
       status,
@@ -1200,12 +1212,120 @@ export class SupabaseRepository implements Repository {
       photos,
       updated_at: now(),
     };
+    // status가 확신·부정 반응(interested·later·skipped)이거나 해제일 때만 판정을
+    // 새로 쓴다. visited(가봄)나 메모만 고치는 쓰기는 judged_class·retro를 SET
+    // 절에서 아예 뺀다 — upsert가 명시 안 한 컬럼은 충돌 시(기존 행 업데이트) 그대로
+    // 두는 성질을 그대로 이용한다. 안 그러면 이미 답한 되묻기가 메모 수정 한 번에
+    // 조용히 지워진다.
+    if (judgedClass !== undefined) {
+      row.judged_class = judgedClass;
+      row.retro = null;
+    }
     const res = await db
       .from("booth_note")
       .upsert(row, { onConflict: "user_id,booth_id" })
       .select("*")
       .single();
     return mapNote(wrote(res, "메모 저장") as Row);
+  }
+
+  async getBooth(id: string): Promise<Booth | null> {
+    const db = await this.db();
+    const { data } = await db
+      .from("booth")
+      .select(BOOTH_LIST_COLS)
+      .eq("id", id)
+      .maybeSingle();
+    if (!data) return null;
+    const booth = mapBooth(data as Row);
+    const { data: enrichRow } = await db
+      .from("booth_enrichment")
+      .select("*")
+      .eq("booth_id", id)
+      .maybeSingle();
+    if (enrichRow) attachEnrichment(booth, enrichRow as Row);
+    return booth;
+  }
+
+  async getTasteAccuracy(
+    userId: string,
+    exhibitionId: string,
+  ): Promise<TasteAccuracy> {
+    const db = await this.db();
+    const { data: booths } = await db
+      .from("booth")
+      .select("id")
+      .eq("exhibition_id", exhibitionId);
+    const ids = (booths ?? []).map((b) => str((b as Row).id));
+    if (ids.length === 0) return { judgedCount: 0, pct: null };
+    const { data } = await db
+      .from("booth_note")
+      .select("status, judged_class, retro")
+      .eq("user_id", userId)
+      .in("booth_id", ids);
+    return computeTasteAccuracy(
+      (data ?? []).map((r) => ({
+        status:
+          (r as Row).status == null
+            ? undefined
+            : (String((r as Row).status) as BoothNote["status"]),
+        judgedClass:
+          (r as Row).judged_class == null
+            ? null
+            : (String((r as Row).judged_class) as JudgedClass),
+        retro:
+          (r as Row).retro == null
+            ? undefined
+            : (String((r as Row).retro) as BoothNote["retro"]),
+      })),
+    );
+  }
+
+  async setBoothRetro(
+    userId: string,
+    boothId: string,
+    retro: "liked" | "disliked",
+    judgedClass: "confident" | "uncertain",
+  ): Promise<BoothNote | null> {
+    const db = await this.db();
+    const res = await db
+      .from("booth_note")
+      .update({ retro, judged_class: judgedClass, updated_at: now() })
+      .eq("user_id", userId)
+      .eq("booth_id", boothId)
+      .eq("status", "visited")
+      .select("*")
+      .maybeSingle();
+    const data = maybeWrote(res, "되묻기 저장");
+    return data ? mapNote(data as Row) : null;
+  }
+
+  async listPendingRetro(
+    userId: string,
+    exhibitionId: string,
+    limit: number,
+  ): Promise<{ boothId: string; boothName: string }[]> {
+    const db = await this.db();
+    const { data: booths } = await db
+      .from("booth")
+      .select("id, name")
+      .eq("exhibition_id", exhibitionId);
+    const nameById = new Map(
+      (booths ?? []).map((b) => [str((b as Row).id), str((b as Row).name)]),
+    );
+    if (nameById.size === 0) return [];
+    const { data } = await db
+      .from("booth_note")
+      .select("booth_id")
+      .eq("user_id", userId)
+      .eq("status", "visited")
+      .is("retro", null)
+      .in("booth_id", [...nameById.keys()])
+      .limit(limit);
+    return (data ?? [])
+      .map((r) => str((r as Row).booth_id))
+      .filter((id) => nameById.has(id))
+      .map((id) => ({ boothId: id, boothName: nameById.get(id)! }));
   }
 
   async listExhibitionNotes(

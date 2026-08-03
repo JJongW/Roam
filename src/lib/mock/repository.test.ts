@@ -90,9 +90,108 @@ describe("MockRepository", () => {
   });
 
   it("lists exhibition notes for keyword extraction", async () => {
-    await repo.upsertNote("u_test", "b_a101", { memo: "리필 노트 사기" });
+    await repo.upsertNote(
+      "u_test",
+      "b_a101",
+      { memo: "리필 노트 사기" },
+      undefined,
+    );
     const notes = await repo.listExhibitionNotes("exh_sibf_2026");
     const mine = notes.find((n) => n.boothId === "b_a101");
     expect(mine?.memo).toContain("리필");
+  });
+
+  it("getBooth: 존재하면 부스를, 없으면 null을 돌려준다", async () => {
+    const b = await repo.getBooth("b_a101");
+    expect(b).not.toBeNull();
+    expect(b!.id).toBe("b_a101");
+    expect(await repo.getBooth("no_such_booth")).toBeNull();
+  });
+
+  it("upsertNote: judgedClass가 undefined면 기존 판정을 안 건드린다", async () => {
+    await repo.upsertNote(
+      "u_taste",
+      "b_a101",
+      { status: "interested" },
+      "confident",
+    );
+    // 메모만 고친다 — 판정은 그대로여야 한다.
+    await repo.upsertNote(
+      "u_taste",
+      "b_a101",
+      { status: "interested", memo: "다시 와보기" },
+      undefined,
+    );
+    const notes = await repo.listNotes("u_taste");
+    const n = notes.find((x) => x.boothId === "b_a101");
+    expect(n?.judgedClass).toBe("confident");
+    expect(n?.memo).toBe("다시 와보기");
+  });
+
+  it("getTasteAccuracy: 판정 5개 미만이면 pct는 null, judgedCount는 정확", async () => {
+    await repo.upsertNote(
+      "u_taste2",
+      "b_a101",
+      { status: "interested" },
+      "confident",
+    );
+    const r = await repo.getTasteAccuracy("u_taste2", "exh_sibf_2026");
+    expect(r.judgedCount).toBe(1);
+    expect(r.pct).toBeNull();
+  });
+
+  it("setBoothRetro: visited가 아니면 null(되묻기 답 거부)", async () => {
+    await repo.upsertNote(
+      "u_taste3",
+      "b_a101",
+      { status: "interested" },
+      "confident",
+    );
+    const result = await repo.setBoothRetro(
+      "u_taste3",
+      "b_a101",
+      "liked",
+      "confident",
+    );
+    expect(result).toBeNull();
+  });
+
+  it("setBoothRetro: visited면 retro·judgedClass를 저장한다", async () => {
+    await repo.upsertNote(
+      "u_taste4",
+      "b_a101",
+      { status: "visited" },
+      undefined,
+    );
+    const result = await repo.setBoothRetro(
+      "u_taste4",
+      "b_a101",
+      "liked",
+      "uncertain",
+    );
+    expect(result?.retro).toBe("liked");
+    expect(result?.judgedClass).toBe("uncertain");
+  });
+
+  it("listPendingRetro: visited이고 retro 없는 부스만, limit 적용", async () => {
+    await repo.upsertNote(
+      "u_taste5",
+      "b_a101",
+      { status: "visited" },
+      undefined,
+    );
+    await repo.upsertNote(
+      "u_taste5",
+      "b_a1902",
+      { status: "visited" },
+      undefined,
+    );
+    const pending = await repo.listPendingRetro(
+      "u_taste5",
+      "exh_sibf_2026",
+      10,
+    );
+    expect(pending.length).toBe(2);
+    expect(pending.every((p) => p.boothName.length > 0)).toBe(true);
   });
 });
