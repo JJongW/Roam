@@ -286,6 +286,8 @@ export interface BoothNote {
   memo?: string;
   /** Personal photos (Cloudinary URLs) attached to this booth note. */
   photos?: string[];
+  /** "가봄" 상태의 되묻기 답(좋았어 / 별로였어). 취향 정확도 채점에 사용. */
+  retro?: "liked" | "disliked";
   updatedAt: string;
 }
 
