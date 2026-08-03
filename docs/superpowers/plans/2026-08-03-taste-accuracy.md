@@ -1470,11 +1470,14 @@ git commit -m "feat(store): companion progress를 tasteJudged/tastePct로 교체
 **Files:**
 - Modify: `src/components/companion/home-companion-context.tsx`
 - Modify: `src/app/(visitor)/exhibitions/[slug]/page.tsx`
+- Modify: `src/components/onboarding/value-onboarding.tsx`
 - Delete: `src/lib/memory/progress.ts`
 
 **Interfaces:**
 - Consumes: Task 3의 `repo.getTasteAccuracy(userId, exhibitionId)`, Task 6의 `setTaste`.
-- Produces: `HomeCompanionContextBridge`가 `tasteJudged`/`tastePct` props를 받는다 — Task 8(companion-bar)이 이 시딩된 스토어 값을 읽는다.
+- Produces: `HomeCompanionContextBridge`가 `tasteJudged`/`tastePct` props를 받는다 — Task 8(companion-bar)이 이 시딩된 스토어 값을 읽는다. `ValueOnboarding`이 `hasChosenValues: boolean` prop을 받는다(신규, Task 6이 제거한 `progress` 필드를 대체).
+
+⚠️ **Task 6 실행 중 발견된 플랜 갭**: `src/components/onboarding/value-onboarding.tsx`가 옛 `useCompanionStore().progress`를 읽어 `progress < 100`일 때만 "가치 정하기" 진입 카드를 보여준다("파악도 100%면 온보딩을 이미 마친 것"이라는 옛 가정). Task 6이 `progress`를 지우면서 이 파일도 깨지는데, 원래 계획엔 이 파일이 어느 태스크에도 없었다 — 정확도(취향 %)와 "온보딩 위저드를 이미 했는가"는 애초에 다른 개념이었는데 옛 코드가 하나로 뭉뚱그렸던 것이다. 이 태스크에서 같이 고친다: 새 신호는 `topValues.length > 0`(이미 `page.tsx`가 계산해 둔, 확신 가치가 있는지)를 쓴다 — 값이 100에서 왔다 갔다 하는 정확도보다 훨씬 안정적이고 의미도 정확하다(있다 없다이지 오르내리지 않는다).
 
 - [ ] **Step 1: `HomeCompanionContextBridge` 수정**
 
@@ -1582,6 +1585,100 @@ import { getRepository } from "@/lib/repositories";
           )}
 ```
 
+`ValueOnboarding` 호출부(`page.tsx`, 위 `HomeCompanionContextBridge` 호출부보다 아래에 있다)를 찾아:
+
+```typescript
+            <ValueOnboarding
+              slug={slug}
+              exhibitionName={exhibition.name}
+              hallCount={detail.halls.length}
+              themes={detail.categories
+                .slice(0, 3)
+                .map((c) => c.name)
+                .join("·")}
+            />
+```
+
+을 다음으로 교체(`hasChosenValues` prop 추가, 나머지는 그대로):
+
+```typescript
+            <ValueOnboarding
+              slug={slug}
+              exhibitionName={exhibition.name}
+              hallCount={detail.halls.length}
+              themes={detail.categories
+                .slice(0, 3)
+                .map((c) => c.name)
+                .join("·")}
+              hasChosenValues={topValues.length > 0}
+            />
+```
+
+- [ ] **Step 2b: `ValueOnboarding`이 취향 %가 아니라 "확신 가치 있음"으로 진입 카드를 숨긴다**
+
+`src/components/onboarding/value-onboarding.tsx`의 import 블록에서 다음 줄을 삭제(더 이상 안 씀):
+
+```typescript
+import { useCompanionStore } from "@/lib/stores/companion";
+```
+
+컴포넌트 시그니처(약 28~41행)를 찾아:
+
+```typescript
+export function ValueOnboarding({
+  slug,
+  exhibitionName,
+  hallCount,
+  themes,
+}: {
+  slug: string;
+  exhibitionName?: string;
+  hallCount?: number;
+  themes?: string;
+}) {
+  const router = useRouter();
+  const t = useT();
+  const progress = useCompanionStore((s) => s.progress);
+  const [open, setOpen] = useState(false);
+```
+
+을 다음으로 교체:
+
+```typescript
+export function ValueOnboarding({
+  slug,
+  exhibitionName,
+  hallCount,
+  themes,
+  hasChosenValues,
+}: {
+  slug: string;
+  exhibitionName?: string;
+  hallCount?: number;
+  themes?: string;
+  /** 이미 확신 가치가 있으면(온보딩을 거쳤든 반응으로 쌓였든) 진입 카드를 숨긴다.
+   *  예전엔 취향 % 100 도달로 판단했는데, 그 %는 이제 예측 정확도라 5개 판정만
+   *  맞아도 100이 되고 하나 틀리면 다시 내려간다 — 카드가 나타났다 사라졌다 하는
+   *  근거로 못 쓴다. 확신 가치 존재 여부는 오르내리지 않는다. */
+  hasChosenValues: boolean;
+}) {
+  const router = useRouter();
+  const t = useT();
+  const [open, setOpen] = useState(false);
+```
+
+마지막으로 진입 카드 표시 조건(약 86행)을 찾아:
+
+```typescript
+      {progress < 100 && (
+```
+
+을:
+
+```typescript
+      {!hasChosenValues && (
+```
+
 - [ ] **Step 3: `progress.ts` 삭제**
 
 ```bash
@@ -1594,13 +1691,14 @@ Expected: 빈 출력(다른 참조가 남아 있으면 안 됨 — 있다면 그
 - [ ] **Step 4: 타입체크**
 
 Run: `npx tsc --noEmit`
-Expected: `home-companion-context.tsx`·`page.tsx` 관련 에러 없음. (`companion-bar.tsx`·`reaction-bar.tsx`는 Task 8·9까지 여전히 에러 — 정상.)
+Expected: `home-companion-context.tsx`·`page.tsx`·`value-onboarding.tsx` 관련 에러 없음. (`companion-bar.tsx`·`reaction-bar.tsx`는 Task 8·9까지 여전히 에러 — 정상. 그 두 파일 외의 에러가 남아 있으면 이 태스크에서 마저 고친다.)
 
 - [ ] **Step 5: 커밋**
 
 ```bash
 git add src/components/companion/home-companion-context.tsx \
-  "src/app/(visitor)/exhibitions/[slug]/page.tsx"
+  "src/app/(visitor)/exhibitions/[slug]/page.tsx" \
+  src/components/onboarding/value-onboarding.tsx
 git rm src/lib/memory/progress.ts
 git commit -m "feat(page): 취향 정확도를 booth_note 집계로 시딩, 접촉량 공식 삭제"
 ```
