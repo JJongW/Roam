@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Heart, X } from "lucide-react";
 import { api } from "@/lib/api/client";
-import { pushRetro } from "@/lib/stores/visit";
+import { useVisitStore, pushRetro } from "@/lib/stores/visit";
 import { useT } from "@/lib/i18n/provider";
 
 interface PendingBooth {
@@ -26,6 +26,7 @@ export function VisitedRetroPrompt({
   onDone: () => void;
 }) {
   const t = useT();
+  const setRetro = useVisitStore((s) => s.setRetro);
   const [pending, setPending] = useState<PendingBooth[] | null>(null);
 
   useEffect(() => {
@@ -51,6 +52,7 @@ export function VisitedRetroPrompt({
 
   function answer(boothId: string, liked: boolean) {
     setPending((prev) => (prev ? prev.filter((b) => b.boothId !== boothId) : prev));
+    setRetro(boothId, liked ? "liked" : "disliked");
     void pushRetro(boothId, liked);
   }
 

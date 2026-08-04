@@ -1294,6 +1294,7 @@ export class SupabaseRepository implements Repository {
       .eq("user_id", userId)
       .eq("booth_id", boothId)
       .eq("status", "visited")
+      .is("retro", null)
       .select("*")
       .maybeSingle();
     const data = maybeWrote(res, "되묻기 저장");

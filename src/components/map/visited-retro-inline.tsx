@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import { useVisitStore, pushRetro } from "@/lib/stores/visit";
 import { useCompanionStore } from "@/lib/stores/companion";
 import { useT } from "@/lib/i18n/provider";
@@ -15,7 +16,6 @@ export function VisitedRetroInline({ boothId }: { boothId: string }) {
   const record = useVisitStore((s) => s.records[boothId]);
   const setRetro = useVisitStore((s) => s.setRetro);
   const setTaste = useCompanionStore((s) => s.setTaste);
-  const say = useCompanionStore((s) => s.say);
 
   if (record?.status !== "visited" || record?.retro) return null;
 
@@ -26,7 +26,7 @@ export function VisitedRetroInline({ boothId }: { boothId: string }) {
       if (!taste) return;
       setTaste(taste.judgedCount, taste.pct);
       if (prevJudged < 5 && taste.judgedCount >= 5) {
-        say(t("companion.tasteInsight"));
+        toast.success(t("companion.tasteInsight"));
       }
     });
   }
