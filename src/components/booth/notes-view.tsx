@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import {
   Check,
   ChevronRight,
@@ -50,7 +49,6 @@ export function NotesView({
    *  instead of navigating to /map?booth=. */
   onLocate?: (boothId: string) => void;
 }) {
-  const router = useRouter();
   const t = useT();
   const hydrated = useHydrated();
   const records = useVisitStore((s) => s.records);
@@ -76,10 +74,10 @@ export function NotesView({
           : "flex flex-1 flex-col pb-safe"
       }
     >
-      <AppBar
-        title={t("notes.title")}
-        onBack={onClose ?? (() => router.push(`/exhibitions/${slug}/map`))}
-      />
+      {/* onClose 없으면(독립 페이지 모드) AppBar 기본 동작(router.back())에 맡긴다 —
+          메모장 유일한 진입점이 전시 홈 카드라 back()이 항상 그리로 돌아간다. 예전엔
+          지도로 하드코딩돼 있어서, 전시 홈에서 들어와도 뒤로가면 지도로 튀었다. */}
+      <AppBar title={t("notes.title")} onBack={onClose} />
 
       {!hydrated ? (
         <div className="space-y-3 p-4">
