@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useAuthStore } from "@/lib/stores/auth";
@@ -27,10 +27,9 @@ export function CompanionBar() {
   const home = useCompanionStore((s) => s.home);
   const flash = useCompanionStore((s) => s.flash);
   const clearFlash = useCompanionStore((s) => s.clearFlash);
-  const say = useCompanionStore((s) => s.say);
-  const progress = useCompanionStore((s) => s.progress);
+  const tasteJudged = useCompanionStore((s) => s.tasteJudged);
+  const tastePct = useCompanionStore((s) => s.tastePct);
   const [open, setOpen] = useState(false);
-  const doneRef = useRef(false);
 
   // 즉답(flash)은 잠깐 띄우고 스스로 사라진다 → 맥락 발화로 복귀.
   useEffect(() => {
@@ -42,17 +41,11 @@ export function CompanionBar() {
   // 전시 홈(상세)에선 상단 고정 배너 대신 여기서 취향·개수 맞춤 발화를 회전시킨다.
   const isExhibitionHome = /\/exhibitions\/[^/]+$/.test(pathname);
 
-  // 파악도 100% 도달 = 온보딩 마무리 — 로미가 한 번 선언한다(중복 금지).
-  useEffect(() => {
-    if (isExhibitionHome && progress >= 100 && !doneRef.current) {
-      doneRef.current = true;
-      say(t("companion.progressDone"));
-    }
-  }, [isExhibitionHome, progress, say, t]);
   const lines = useMemo(() => {
-    if (isExhibitionHome && home) return homeLines(home, t);
+    if (isExhibitionHome && home)
+      return homeLines(home, tasteJudged, tastePct, t);
     return [contextLine(pathname, t)];
-  }, [isExhibitionHome, home, pathname, t]);
+  }, [isExhibitionHome, home, tasteJudged, tastePct, pathname, t]);
   // 여러 변주면 천천히 돌려 "말이 계속 바뀌는" 동행 느낌(휘발성).
   const rotating = useRotatingMessage(lines, lines.length > 1, 5000);
   // 방금 행동에 대한 즉답이 있으면 그걸 먼저, 없으면 맥락 발화.
@@ -73,11 +66,9 @@ export function CompanionBar() {
           className="pointer-events-auto flex max-w-full items-center gap-2 rounded-full border border-border bg-background/90 py-2 pl-2 pr-4 shadow-[var(--shadow-card)] backdrop-blur-xl active:scale-[0.98]"
         >
           <RoamAvatar />
-          {isExhibitionHome && home && progress > 0 && (
+          {isExhibitionHome && home && tastePct !== null && (
             <span className="shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-bold text-primary">
-              {progress >= 100
-                ? "✓"
-                : t("companion.progressLabel", { pct: progress })}
+              {t("companion.tastePct", { pct: tastePct })}
             </span>
           )}
           <span className="truncate text-sm font-semibold">{line}</span>
@@ -165,20 +156,35 @@ function RoamAvatar() {
   );
 }
 
-/** 전시 홈 발화 풀 — 취향·개수로 조립, 여러 변주를 회전시킨다. */
+/**
+ * 전시 홈 발화 풀 — 취향·개수로 조립, 여러 변주를 회전시킨다.
+ * 판정 5개 미만(tastePct===null)이면 취향 말 상태 한 줄을 맨 앞에 섞는다 —
+ * 숫자가 없을 때도 로미가 뭘 하고 있는지는 들려준다.
+ */
 function homeLines(
   home: { values: string[]; picked: number },
+  tasteJudged: number,
+  tastePct: number | null,
   t: TFn,
 ): string[] {
-  if (home.picked <= 0) return [t("companion.homeEmpty")];
-  if (home.values.length === 0)
-    return [t("companion.homeEmpty"), t("companion.homeAsk")];
-  const values = home.values.slice(0, 2).join("·");
-  return [
-    t("companion.homeValues", { values, n: home.picked }),
-    t("companion.homePicked", { n: home.picked }),
-    t("companion.homeAsk"),
-  ];
+  const tasteLine =
+    tastePct !== null
+      ? null
+      : tasteJudged === 0
+        ? t("companion.tasteUnknown")
+        : t("companion.tasteWarming");
+  const base = (() => {
+    if (home.picked <= 0) return [t("companion.homeEmpty")];
+    if (home.values.length === 0)
+      return [t("companion.homeEmpty"), t("companion.homeAsk")];
+    const values = home.values.slice(0, 2).join("·");
+    return [
+      t("companion.homeValues", { values, n: home.picked }),
+      t("companion.homePicked", { n: home.picked }),
+      t("companion.homeAsk"),
+    ];
+  })();
+  return tasteLine ? [tasteLine, ...base] : base;
 }
 
 /** 화면 맥락별 한 줄 발화. */
