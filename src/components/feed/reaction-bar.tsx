@@ -70,8 +70,7 @@ export function ReactionBar({
   const storeStatus = useVisitStore((s) => s.records[boothId]?.status);
   const setStatus = useVisitStore((s) => s.setStatus);
   const say = useCompanionStore((s) => s.say);
-  const bumpProgress = useCompanionStore((s) => s.bumpProgress);
-  const progress = useCompanionStore((s) => s.progress);
+  const setTaste = useCompanionStore((s) => s.setTaste);
   // 눌린 버튼은 스토어에서 파생한다 — 복사본을 두면 부스가 바뀌어도 앞 부스의 상태가
   // 남아, 실제로는 아무 반응도 없는 부스에 버튼이 눌린 채로 보인다(지도에서 부스를
   // 옮겨 다닐 때 실제로 그랬다). 진실은 visitStore 한 곳뿐이다.
@@ -80,21 +79,28 @@ export function ReactionBar({
   function react(r: (typeof REACTIONS)[number]) {
     const isSame = picked === r.key;
     setStatus(boothId, isSame ? null : r.status);
-    // 네 상태 모두 서버 노트로 동기화 → 폰을 바꾸거나 재로그인해도 지도 색이 남는다.
-    // 신호 적재도 이 요청 하나가 겸한다(notes 라우트가 상태를 보고 기록) — 예전처럼
-    // /api/me/signal을 따로 치면 가봄·별로만 신호가 두 번 쌓인다.
-    void pushNote(boothId).catch(() => {});
     if (!isSame) {
       // 로미 즉답 — 취소가 아니라 새 반응일 때만. 내 행동에 바로 반응한다는 느낌.
       const line = reactionLine(r.key, boothName, t);
       if (line) say(line);
-      // 파악도 상승 — 남은 거리(100-현재)에 비례한 감쇠 증가라 서버 포화 곡선을 따라가
-      // 재접속 시 값 점프가 작고, 100까지 대략 15~20번의 반응이 필요하다(완만). '별로'도
-      // 취향을 좁히는 신호라 함께 오르되 절반만.
-      const factor = r.key === "skip" ? 0.06 : 0.13;
-      const floor = r.key === "skip" ? 1 : 2;
-      bumpProgress(Math.max(floor, Math.round((100 - progress) * factor)));
     }
+    // 네 상태 모두 서버 노트로 동기화 → 폰을 바꾸거나 재로그인해도 지도 색이 남는다.
+    // 신호 적재도 이 요청 하나가 겸한다(notes 라우트가 상태를 보고 기록) — 예전처럼
+    // /api/me/signal을 따로 치면 가봄·별로만 신호가 두 번 쌓인다.
+    //
+    // 취향 정확도는 서버 응답을 그대로 반영한다 — 예전엔 클라이언트가 감쇠 곡선으로
+    // 낙관적 bump를 했는데, 서버 공식과 어긋나 새로고침하면 값이 오르내렸다. 취소
+    // (isSame) 때도 pushNote는 항상 나간다 — 반응을 지우면 판정도 같이 지워지므로
+    // 정확도가 내려갈 수 있고, 그것도 서버가 계산해 알려준다.
+    const prevJudged = useCompanionStore.getState().tasteJudged;
+    void pushNote(boothId).then((taste) => {
+      if (!taste) return;
+      setTaste(taste.judgedCount, taste.pct);
+      // "감 잡았다" — 판정 5개를 막 넘기는 순간에만, 1회.
+      if (prevJudged < 5 && taste.judgedCount >= 5) {
+        say(t("companion.tasteInsight"));
+      }
+    });
   }
 
   return (
