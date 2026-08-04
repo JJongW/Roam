@@ -100,6 +100,12 @@ describe("judgmentScore", () => {
   it("상태 없음(해제)은 채점 제외", () => {
     expect(judgmentScore(undefined, null, undefined)).toBeNull();
   });
+
+  it("판정이 없으면(judgedClass null) 상태와 무관하게 채점 제외 — 소급 채점 금지", () => {
+    expect(judgmentScore("interested", null, undefined)).toBeNull();
+    expect(judgmentScore("later", null, undefined)).toBeNull();
+    expect(judgmentScore("skipped", null, undefined)).toBeNull();
+  });
 });
 
 describe("computeTasteAccuracy", () => {

@@ -765,7 +765,10 @@ export class MockRepository implements Repository {
     const s = store();
     const n = s.notes.find(
       (x) =>
-        x.userId === userId && x.boothId === boothId && x.status === "visited",
+        x.userId === userId &&
+        x.boothId === boothId &&
+        x.status === "visited" &&
+        !x.retro,
     );
     if (!n) return null;
     n.retro = retro;

@@ -9,7 +9,7 @@ import type { Booth, BoothNote, UserBrain } from "@/lib/types";
 
 export type JudgedClass = "confident" | "uncertain";
 
-/** curate.ts·progress.ts와 같은 "확신 관심" 임계값. */
+/** curate.ts와 같은 "확신 관심" 임계값. */
 const CONFIDENT_THRESHOLD = 0.25;
 
 /** 부스가 사용자의 확신 가치와 겹치는지 — 판정 시점에 얼려서 저장한다. */
@@ -29,6 +29,9 @@ export function judgmentScore(
   judgedClass: JudgedClass | null | undefined,
   retro: BoothNote["retro"],
 ): number | null {
+  // 판정 없이 쌓인 반응(0031 이전 행, 또는 아직 채점 안 된 행)은 채점 대상이 아니다 —
+  // 소급 채점 금지. status가 뭐든 judgedClass가 없으면 무조건 제외한다.
+  if (judgedClass == null) return null;
   switch (status) {
     case "interested":
       return 1;
