@@ -25,6 +25,7 @@ import { FLOORPLANS } from "@/lib/floorplans";
 import { ExhibitionMap, HEAT_TIERS } from "@/components/map/exhibition-map";
 import { CategoryChip } from "@/components/booth/category-chip";
 import { ReactionBar } from "@/components/feed/reaction-bar";
+import { VisitedRetroInline } from "@/components/map/visited-retro-inline";
 import { ValueChips } from "@/components/values/value-chips";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -325,6 +326,8 @@ export function MapView({
             <div className="mt-2.5 border-t border-border pt-2.5">
               <ReactionBar boothId={selected.id} boothName={selected.name} />
             </div>
+
+            <VisitedRetroInline boothId={selected.id} />
           </div>
         </div>
       )}
