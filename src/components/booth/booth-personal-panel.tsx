@@ -43,15 +43,16 @@ export function BoothPersonalPanel({ boothId }: { boothId: string }) {
 
   function onToggle(next: "visited" | "skipped") {
     toggleStatus(boothId, next);
-    // Local store always holds it; sync to server only when signed in.
-    if (user) void pushNote(boothId);
+    // pushNote는 비로그인이면 401로 조용히 실패하면서 소급 반영 플래그를 켠다
+    // (visit.ts) — 로그인 여부와 무관하게 항상 호출해야 그 플래그가 켜진다.
+    void pushNote(boothId);
   }
 
   function onMemoBlur() {
     const prev = useVisitStore.getState().records[boothId]?.memo ?? "";
     if (memo.trim() === prev.trim()) return;
     setMemo(boothId, memo);
-    if (user) void pushNote(boothId);
+    void pushNote(boothId);
     toast.success(memo.trim() ? t("map.memoSaved") : t("map.memoCleared"));
   }
 

@@ -72,14 +72,45 @@ async function syncPendingReactions(): Promise<boolean> {
   return true;
 }
 
+/** 비로그인 상태로 완료한 전시별 관람 가치 온보딩(ValueOnboarding) 답변을 로그인 시
+ *  브레인에 올린다. 앱 온보딩(PENDING_VALUES_KEY)과 별도 키를 쓴다 — 이쪽은
+ *  exhibitionSlug가 같이 필요하다. */
+export const PENDING_EXHIBITION_VALUES_KEY = "roam-pending-exhibition-values";
+async function syncPendingExhibitionValues(): Promise<boolean> {
+  if (typeof window === "undefined") return false;
+  const raw = localStorage.getItem(PENDING_EXHIBITION_VALUES_KEY);
+  if (!raw) return false;
+  localStorage.removeItem(PENDING_EXHIBITION_VALUES_KEY);
+  try {
+    const parsed = JSON.parse(raw);
+    if (
+      parsed &&
+      typeof parsed.exhibitionSlug === "string" &&
+      Array.isArray(parsed.values) &&
+      parsed.values.length
+    ) {
+      await api.post("/api/me/values", {
+        exhibitionSlug: parsed.exhibitionSlug,
+        values: parsed.values,
+      });
+      return true;
+    }
+  } catch {
+    /* 실패해도 무시 */
+  }
+  return false;
+}
+
 /** 온보딩 답변 + 부스 반응을 함께 소급 반영하고, 뭔가 반영됐으면 완료 토스트를
  *  한 번 띄운다. login()과 refresh()(OAuth 콜백 포함) 양쪽에서 호출한다. */
 async function syncAndAnnounce() {
-  const [syncedValues, syncedReactions] = await Promise.all([
-    syncPendingValues(),
-    syncPendingReactions(),
-  ]);
-  if (syncedValues || syncedReactions) {
+  const [syncedValues, syncedExhibitionValues, syncedReactions] =
+    await Promise.all([
+      syncPendingValues(),
+      syncPendingExhibitionValues(),
+      syncPendingReactions(),
+    ]);
+  if (syncedValues || syncedExhibitionValues || syncedReactions) {
     toast("아까 둘러본 것도 다 반영했어. 이제부터 제대로 골라줄게.");
   }
 }

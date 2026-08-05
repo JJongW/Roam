@@ -7,6 +7,7 @@ import { RoamMotion, THINKING_POOL } from "@/components/companion/roam-motion";
 import { Conversation } from "@/components/onboarding/conversation";
 import { useAuthStore, PENDING_VALUES_KEY } from "@/lib/stores/auth";
 import { useCompanionStore } from "@/lib/stores/companion";
+import { isAppOnboardingDismissed } from "@/lib/onboarding/app-onboarding-gate";
 import { useT } from "@/lib/i18n/provider";
 import {
   APP_QUESTIONS,
@@ -22,13 +23,11 @@ type Phase = "intro" | "quiz" | "saving";
  * 앱 최초진입 온보딩 — Romi 중앙 대화형(ingan.ai 스타일). 짧은 인사 → 적응형 시나리오 Q&A
  * (진행바 없음, 충분히 파악될 때까지) → 답변을 관람 가치로 집계해 브레인에 시드.
  *
- * 재노출 조건이 계정 유무로 갈린다:
- * - 비로그인: localStorage 플래그(이 브라우저에서 이미 봤음) — 계정이 없어 서버에
- *   물을 게 없다. 완료·건너뛰기 둘 다 이 플래그로 기억한다.
- * - 로그인: 서버 신호(brain.interests가 비었는지, useAuthStore.needsOnboarding) —
- *   계정에 묶이므로 로그인 후엔 정확하고 재노출도 안 된다. 이게 "로그인할 때마다
- *   온보딩이 다시 뜬다"는 문제를 해소하는 지점이다(비로그인 때 답한 것도 로그인 시
- *   소급 반영되어 이 신호가 이미 false로 들어온다, auth.ts 참고).
+ * 재노출 판정은 isAppOnboardingDismissed(로컬 dismiss 우선, 로그인 상태에선 서버
+ * 신호가 추가 조건) — 완료든 건너뛰기든 로그인 여부와 무관하게 항상 로컬(localStorage)
+ * 에도 기록한다. 로그인 응답의 needsOnboarding은 로그인 시점(소급 반영 전) 기준이라
+ * 낡을 수 있어서, 로컬 dismiss가 없으면 그 낡은 값 때문에 방금 끝낸 온보딩이 로그인
+ * 직후 다시 뜨는 버그가 있었다 — 로컬 dismiss를 항상 같이 남겨 방지한다.
  */
 export function AppOnboardingGate() {
   const router = useRouter();
@@ -45,8 +44,18 @@ export function AppOnboardingGate() {
   );
   const [phase, setPhase] = useState<Phase>("intro");
 
-  const onboarded = user ? !needsOnboarding : anonDismissed;
+  const onboarded = isAppOnboardingDismissed({
+    user,
+    needsOnboarding,
+    anonDismissed,
+  });
   if (onboarded || !ready) return null;
+
+  // 로그인 여부와 무관하게 항상 로컬에도 dismiss를 남긴다(위 문서 주석 참고).
+  function dismissLocally() {
+    if (typeof window !== "undefined") localStorage.setItem(FLAG, "1");
+    setAnonDismissed(true);
+  }
 
   async function complete(tally: Tally) {
     setPhase("saving");
@@ -61,27 +70,19 @@ export function AppOnboardingGate() {
     } catch {
       // 실패해도 진행.
     }
-    if (user) {
-      setNeedsOnboarding(false);
-    } else if (typeof window !== "undefined") {
-      localStorage.setItem(FLAG, "1");
-      setAnonDismissed(true);
-    }
+    if (user) setNeedsOnboarding(false);
+    dismissLocally();
     // 지금 전시 페이지에 있으면 그 전시의 관람 가치 온보딩으로 자동으로 이어준다
     // (ValueOnboarding이 구독). 건너뛰기(skip)는 이 신호를 안 보낸다.
     signalAppOnboardingComplete();
     router.refresh();
   }
 
-  // 강제하지 않는다 — 먼저 둘러보고 싶으면 넘어갈 수 있게(플래그만 세팅해 다시 안 뜨게).
-  // 취향은 관람하며 반응으로 쌓인다(빈 브레인=인기순 폴백).
+  // 강제하지 않는다 — 먼저 둘러보고 싶으면 넘어갈 수 있게(로컬에 dismiss만 남겨
+  // 다시 안 뜨게). 취향은 관람하며 반응으로 쌓인다(빈 브레인=인기순 폴백).
   function skip() {
-    if (user) {
-      setNeedsOnboarding(false);
-    } else if (typeof window !== "undefined") {
-      localStorage.setItem(FLAG, "1");
-      setAnonDismissed(true);
-    }
+    if (user) setNeedsOnboarding(false);
+    dismissLocally();
   }
 
   return (
