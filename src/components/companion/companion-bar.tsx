@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useAuthStore } from "@/lib/stores/auth";
 import { useCompanionStore } from "@/lib/stores/companion";
 import { useRotatingMessage } from "@/lib/hooks/use-rotating-message";
 import { useT } from "@/lib/i18n/provider";
 import type { TFn } from "@/lib/i18n/resolve";
+import { RoamAvatar } from "@/components/companion/roam-avatar";
 import {
   Sheet,
   SheetContent,
@@ -138,21 +138,6 @@ function CompanionChat({ t }: { t: TFn }) {
         ))}
       </div>
     </div>
-  );
-}
-
-function RoamAvatar() {
-  return (
-    <span className="flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-full ring-1 ring-border">
-      <Image
-        src="/logo.svg"
-        alt="Roam"
-        width={32}
-        height={32}
-        className="size-full object-cover"
-        unoptimized
-      />
-    </span>
   );
 }
 

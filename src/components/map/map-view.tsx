@@ -27,6 +27,7 @@ import { CategoryChip } from "@/components/booth/category-chip";
 import { ReactionBar } from "@/components/feed/reaction-bar";
 import { VisitedRetroInline } from "@/components/map/visited-retro-inline";
 import { ValueChips } from "@/components/values/value-chips";
+import { RoamAvatar } from "@/components/companion/roam-avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useT } from "@/lib/i18n/provider";
@@ -69,7 +70,7 @@ export function MapView({
   const clearFlash = useCompanionStore((s) => s.clearFlash);
   useEffect(() => {
     if (!flash) return;
-    toast(flash);
+    toast(flash, { icon: <RoamAvatar className="size-5" /> });
     clearFlash();
   }, [flash, clearFlash]);
 
