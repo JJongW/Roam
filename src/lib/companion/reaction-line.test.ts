@@ -22,8 +22,9 @@ describe("buildReactionLine", () => {
   it("interested, 매칭 없음 → 기존 문장", () => {
     const result = buildReactionLine(
       "interested",
-      { tags: ["illust"] },
+      ["discovery"],
       "책방나비",
+      "일러스트",
       [],
       t,
     );
@@ -33,9 +34,10 @@ describe("buildReactionLine", () => {
   it("interested, 매칭 confidence<0.25 → tentative", () => {
     const result = buildReactionLine(
       "interested",
-      { tags: ["illust"] },
+      ["discovery"],
       "책방나비",
-      [node("illust", 0.1, "일러스트")],
+      "일러스트",
+      [node("discovery", 0.1, "발견")],
       t,
     );
     expect(result).toBe(
@@ -49,9 +51,10 @@ describe("buildReactionLine", () => {
   it("interested, 매칭 confidence>=0.25 → confident", () => {
     const result = buildReactionLine(
       "interested",
-      { tags: ["illust"] },
+      ["discovery"],
       "책방나비",
-      [node("illust", 0.4, "일러스트")],
+      "일러스트",
+      [node("discovery", 0.4, "발견")],
       t,
     );
     expect(result).toBe(
@@ -62,12 +65,25 @@ describe("buildReactionLine", () => {
     );
   });
 
-  it("skip, 확신 분야(>=0.25) → 헤지된 문장", () => {
+  it("interested, 매칭 있어도 categoryLabel 없으면 기존 문장", () => {
+    const result = buildReactionLine(
+      "interested",
+      ["discovery"],
+      "책방나비",
+      undefined,
+      [node("discovery", 0.9, "발견")],
+      t,
+    );
+    expect(result).toBe(t("companion.reactInterested", { booth: "책방나비" }));
+  });
+
+  it("skip, 확신 매칭(>=0.25) → 헤지된 문장", () => {
     const result = buildReactionLine(
       "skip",
-      { tags: ["illust"] },
+      ["discovery"],
       "책방나비",
-      [node("illust", 0.5, "일러스트")],
+      "일러스트",
+      [node("discovery", 0.5, "발견")],
       t,
     );
     expect(result).toBe(
@@ -78,9 +94,10 @@ describe("buildReactionLine", () => {
   it("skip, 매칭 있어도 confidence<0.25 → 기존 문장(단정 안 함)", () => {
     const result = buildReactionLine(
       "skip",
-      { tags: ["illust"] },
+      ["discovery"],
       "책방나비",
-      [node("illust", 0.1, "일러스트")],
+      "일러스트",
+      [node("discovery", 0.1, "발견")],
       t,
     );
     expect(result).toBe(t("companion.reactSkip", { booth: "책방나비" }));
@@ -89,20 +106,22 @@ describe("buildReactionLine", () => {
   it("skip, 매칭 없음 → 기존 문장", () => {
     const result = buildReactionLine(
       "skip",
-      { tags: ["illust"] },
+      ["discovery"],
       "책방나비",
+      "일러스트",
       [],
       t,
     );
     expect(result).toBe(t("companion.reactSkip", { booth: "책방나비" }));
   });
 
-  it("later는 확신 분야가 있어도 분야 언급 없이 기존 문장(판정 가중치가 약함)", () => {
+  it("later는 확신 매칭이 있어도 분야 언급 없이 기존 문장(판정 가중치가 약함)", () => {
     const result = buildReactionLine(
       "later",
-      { tags: ["illust"] },
+      ["discovery"],
       "책방나비",
-      [node("illust", 0.9, "일러스트")],
+      "일러스트",
+      [node("discovery", 0.9, "발견")],
       t,
     );
     expect(result).toBe(t("companion.reactLater", { booth: "책방나비" }));
@@ -111,20 +130,22 @@ describe("buildReactionLine", () => {
   it("seen은 항상 기존 문장", () => {
     const result = buildReactionLine(
       "seen",
-      { tags: ["illust"] },
+      ["discovery"],
       "책방나비",
-      [node("illust", 0.9, "일러스트")],
+      "일러스트",
+      [node("discovery", 0.9, "발견")],
       t,
     );
     expect(result).toBe(t("companion.reactSeen", { booth: "책방나비" }));
   });
 
-  it("여러 분야가 매칭되면 confidence 최고(정렬상 첫 매치)를 말한다", () => {
+  it("여러 가치 slug가 매칭되면 confidence 최고(정렬상 첫 매치)를 말한다", () => {
     const result = buildReactionLine(
       "interested",
-      { tags: ["illust", "photobook"] },
+      ["discovery", "goods"],
       "책방나비",
-      [node("illust", 0.6, "일러스트"), node("photobook", 0.3, "포토북")],
+      "일러스트",
+      [node("discovery", 0.6, "발견"), node("goods", 0.3, "굿즈")],
       t,
     );
     expect(result).toBe(
@@ -138,9 +159,10 @@ describe("buildReactionLine", () => {
   it("부스 이름이 없으면 Plain 판본으로 자연 degrade", () => {
     const result = buildReactionLine(
       "interested",
-      { tags: ["illust"] },
+      ["discovery"],
       undefined,
-      [node("illust", 0.4, "일러스트")],
+      "일러스트",
+      [node("discovery", 0.4, "발견")],
       t,
     );
     expect(result).toBe(

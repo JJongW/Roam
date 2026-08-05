@@ -35,14 +35,17 @@ function keyForStatus(s: BoothStatus | undefined): string | null {
 export function ReactionBar({
   boothId,
   boothName,
-  boothTags,
+  interestSlugs,
+  categoryLabel,
 }: {
   boothId: string;
   /** 로미가 이 부스를 이름으로 부르게 한다. 없으면 이름 없는 판본으로 떨어진다. */
   boothName?: string;
-  /** 분야 slug(카테고리 tags) — 반응 즉답이 브레인 관심 분야와 매칭하는 데 쓴다
-   *  (reaction-line.ts). 없으면 매칭 없이 기존 문장으로 떨어진다. */
-  boothTags: string[];
+  /** boothValueSlugs(booth) — 가치 축 slug. 반응 즉답이 브레인 관심(interests)과
+   *  매칭하는 데 쓴다(reaction-line.ts). brain.interests는 이 축으로 쌓인다. */
+  interestSlugs: string[];
+  /** 발화에 얹을 구체적 분야 이름(카테고리) — 가치 이름은 절대 쓰지 않는다. */
+  categoryLabel: string | undefined;
 }) {
   const t = useT();
   const storeStatus = useVisitStore((s) => s.records[boothId]?.status);
@@ -60,7 +63,7 @@ export function ReactionBar({
     setStatus(boothId, isSame ? null : r.status);
     if (!isSame) {
       // 로미 즉답 — 취소가 아니라 새 반응일 때만. 내 행동에 바로 반응한다는 느낌.
-      say(buildReactionLine(r.key, { tags: boothTags }, boothName, interests, t));
+      say(buildReactionLine(r.key, interestSlugs, boothName, categoryLabel, interests, t));
     }
     // 네 상태 모두 서버 노트로 동기화 → 폰을 바꾸거나 재로그인해도 지도 색이 남는다.
     // 신호 적재도 이 요청 하나가 겸한다(notes 라우트가 상태를 보고 기록) — 예전처럼

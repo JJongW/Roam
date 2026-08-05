@@ -31,6 +31,7 @@ import { RoamAvatar } from "@/components/companion/roam-avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useT } from "@/lib/i18n/provider";
+import { boothValueSlugs } from "@/lib/values";
 import type { Booth, ExhibitionDetail } from "@/lib/types";
 
 /**
@@ -328,7 +329,8 @@ export function MapView({
               <ReactionBar
                 boothId={selected.id}
                 boothName={selected.name}
-                boothTags={selected.tags}
+                interestSlugs={boothValueSlugs(selected)}
+                categoryLabel={selectedCat?.name}
               />
             </div>
 
