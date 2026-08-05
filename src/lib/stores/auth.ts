@@ -55,11 +55,20 @@ async function syncPendingValues(): Promise<boolean> {
 }
 
 /** 비로그인 동안 로컬(zustand)에만 남아 있던 부스 반응을 로그인 시 서버에 소급
- *  반영한다. 반환값: 실제로 반영한 게 있었는지. */
+ *  반영한다. 반환값: 실제로 반영을 시도했는지(하나라도 실패해 남아있던 게 있었는지 —
+ *  visit.ts의 hasPendingSync가 근거라, 이미 다 동기화된 상태에서 매번 재시도하지
+ *  않는다). */
 async function syncPendingReactions(): Promise<boolean> {
+  if (!useVisitStore.getState().hasPendingSync) return false;
   const boothIds = Object.keys(useVisitStore.getState().records);
-  if (boothIds.length === 0) return false;
-  await Promise.all(boothIds.map((id) => pushNote(id)));
+  if (boothIds.length === 0) {
+    useVisitStore.getState().clearPendingSync();
+    return false;
+  }
+  const results = await Promise.all(boothIds.map((id) => pushNote(id)));
+  if (results.every((r) => r !== null)) {
+    useVisitStore.getState().clearPendingSync();
+  }
   return true;
 }
 
