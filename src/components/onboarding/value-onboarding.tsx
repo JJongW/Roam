@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useCompanionStore } from "@/lib/stores/companion";
 import { ChevronRight } from "lucide-react";
 import { api } from "@/lib/api/client";
 import { useT } from "@/lib/i18n/provider";
@@ -49,6 +50,25 @@ export function ValueOnboarding({
   const [tally, setTally] = useState<Tally | null>(null);
   // 온보딩에서 고른 오늘의 리듬 — 완료 시 ?rhythm= 으로 피드에 반영.
   const [rhythm, setRhythm] = useState<Rhythm>(DEFAULT_RHYTHM);
+
+  // 앱 온보딩을 방금 끝냈고(건너뛰기 아님) 이 전시가 아직 확신 가치가 없으면
+  // 자동으로 이어서 연다 — 사용자가 카드를 따로 탭할 필요 없이 "온보딩 하나로
+  // 느껴지게" 한다.
+  const appOnboardingJustCompleted = useCompanionStore(
+    (s) => s.appOnboardingJustCompleted,
+  );
+  const clearAppOnboardingJustCompleted = useCompanionStore(
+    (s) => s.clearAppOnboardingJustCompleted,
+  );
+  useEffect(() => {
+    if (appOnboardingJustCompleted && !hasChosenValues) {
+      start();
+      clearAppOnboardingJustCompleted();
+    }
+    // start는 리렌더마다 새로 만들어지는 함수라 deps에 넣지 않는다(무한 루프 방지) —
+    // appOnboardingJustCompleted가 true → false로 바뀌는 그 순간에만 반응하면 된다.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [appOnboardingJustCompleted, hasChosenValues, clearAppOnboardingJustCompleted]);
 
   function start() {
     setPhase("intro");
