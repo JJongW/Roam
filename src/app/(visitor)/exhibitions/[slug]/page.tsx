@@ -220,6 +220,7 @@ export default async function ExhibitionDetailPage({
             items={feedItems}
             categoryById={categoryById}
             memoryLine={memoryLine}
+            slug={slug}
           />
 
           {feedItems.length > 0 && <FinishVisit slug={slug} />}

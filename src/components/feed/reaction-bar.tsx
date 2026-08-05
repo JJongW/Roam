@@ -4,6 +4,7 @@ import { Check, Clock3, Heart, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useVisitStore, pushNote, type BoothStatus } from "@/lib/stores/visit";
 import { useCompanionStore } from "@/lib/stores/companion";
+import { useAuthStore, promptLoginOncePerExhibition } from "@/lib/stores/auth";
 import { useT } from "@/lib/i18n/provider";
 import { buildReactionLine, type ReactionKey } from "@/lib/companion/reaction-line";
 
@@ -11,6 +12,11 @@ import { buildReactionLine, type ReactionKey } from "@/lib/companion/reaction-li
  * 부스 반응 버튼(끌림/나중에/별로/이미봄). 스스로 갈지 말지 판단한 결과를 상태로 남기면
  * 지도 부스 색이 칠해지고(초록=가봄, 노랑=끌림), 서버가 그 상태 변화를 신호로 적재해
  * 브레인에 반영한다. companion-reframe §7.5 — 명령이 아니라 사용자의 반응을 받는다.
+ *
+ * 비로그인이어도 버튼은 그대로 토글된다(로컬 visitStore) — 다만 로미는 "동작"하지
+ * 않는다: 즉답이 없고(promptLoginOncePerExhibition만 전시당 1회) 서버 저장도 안 된다
+ * (pushNote가 401을 조용히 삼킴). 로그인하면 그동안 쌓인 반응이 소급 반영된다
+ * (auth.ts의 syncPendingReactions).
  */
 const REACTIONS: {
   key: ReactionKey;
@@ -37,6 +43,7 @@ export function ReactionBar({
   boothName,
   interestSlugs,
   categoryLabel,
+  exhibitionSlug,
 }: {
   boothId: string;
   /** 로미가 이 부스를 이름으로 부르게 한다. 없으면 이름 없는 판본으로 떨어진다. */
@@ -46,8 +53,11 @@ export function ReactionBar({
   interestSlugs: string[];
   /** 발화에 얹을 구체적 분야 이름(카테고리) — 가치 이름은 절대 쓰지 않는다. */
   categoryLabel: string | undefined;
+  /** 비로그인일 때 "저장 안 됨" 안내를 전시당 1회로 제한하는 데 쓴다. */
+  exhibitionSlug: string;
 }) {
   const t = useT();
+  const user = useAuthStore((s) => s.user);
   const storeStatus = useVisitStore((s) => s.records[boothId]?.status);
   const setStatus = useVisitStore((s) => s.setStatus);
   const say = useCompanionStore((s) => s.say);
@@ -62,8 +72,13 @@ export function ReactionBar({
     const isSame = picked === r.key;
     setStatus(boothId, isSame ? null : r.status);
     if (!isSame) {
-      // 로미 즉답 — 취소가 아니라 새 반응일 때만. 내 행동에 바로 반응한다는 느낌.
-      say(buildReactionLine(r.key, interestSlugs, boothName, categoryLabel, interests, t));
+      // 로미 즉답 — 로그인했을 때만. 비로그인은 로미가 "동작"하지 않는다(전시당
+      // 1회만 저장 안내).
+      if (user) {
+        say(buildReactionLine(r.key, interestSlugs, boothName, categoryLabel, interests, t));
+      } else {
+        promptLoginOncePerExhibition(exhibitionSlug);
+      }
     }
     // 네 상태 모두 서버 노트로 동기화 → 폰을 바꾸거나 재로그인해도 지도 색이 남는다.
     // 신호 적재도 이 요청 하나가 겸한다(notes 라우트가 상태를 보고 기록) — 예전처럼
@@ -72,7 +87,8 @@ export function ReactionBar({
     // 취향 정확도는 서버 응답을 그대로 반영한다 — 예전엔 클라이언트가 감쇠 곡선으로
     // 낙관적 bump를 했는데, 서버 공식과 어긋나 새로고침하면 값이 오르내렸다. 취소
     // (isSame) 때도 pushNote는 항상 나간다 — 반응을 지우면 판정도 같이 지워지므로
-    // 정확도가 내려갈 수 있고, 그것도 서버가 계산해 알려준다.
+    // 정확도가 내려갈 수 있고, 그것도 서버가 계산해 알려준다. 비로그인이면 401로
+    // 조용히 실패한다(로컬 캐시는 유지, syncPendingReactions가 로그인 시 다시 시도).
     const prevJudged = useCompanionStore.getState().tasteJudged;
     void pushNote(boothId).then((taste) => {
       if (!taste) return;
