@@ -331,6 +331,7 @@ export function MapView({
                 boothName={selected.name}
                 interestSlugs={boothValueSlugs(selected)}
                 categoryLabel={selectedCat?.name}
+                exhibitionSlug={detail.exhibition.slug}
               />
             </div>
 
