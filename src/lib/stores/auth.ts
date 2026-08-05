@@ -3,7 +3,7 @@
 import { create } from "zustand";
 import { toast } from "sonner";
 import { api, ApiClientError } from "@/lib/api/client";
-import { useVisitStore } from "@/lib/stores/visit";
+import { useVisitStore, pushNote } from "@/lib/stores/visit";
 import type { BoothNote, User } from "@/lib/types";
 
 interface AuthState {
@@ -12,6 +12,11 @@ interface AuthState {
   ready: boolean;
   /** Controls the global login sheet. */
   loginOpen: boolean;
+  /** 로그인 계정에 아직 취향(브레인 관심)이 없으면 true — 앱 온보딩을 다시 띄울지
+   *  판정하는 서버 신호(AppOnboardingGate가 씀). 비로그인은 이 값 대신
+   *  localStorage로 따로 판정한다(계정이 없어 서버에 물을 게 없음). */
+  needsOnboarding: boolean;
+  setNeedsOnboarding: (v: boolean) => void;
   openLogin: () => void;
   closeLogin: () => void;
   refresh: () => Promise<void>;
@@ -29,38 +34,68 @@ async function loadNotes() {
   }
 }
 
-/** 로그인 전 공개 온보딩에서 고른 취향(localStorage)을 로그인 시 브레인에 올린다. */
+/** 로그인 전 공개 온보딩에서 고른 취향(localStorage)을 로그인 시 브레인에 올린다.
+ *  반환값: 실제로 올릴 게 있었는지(소급 반영 완료 토스트 표시 여부 판단용). */
 export const PENDING_VALUES_KEY = "roam-pending-values";
-async function syncPendingValues() {
-  if (typeof window === "undefined") return;
+async function syncPendingValues(): Promise<boolean> {
+  if (typeof window === "undefined") return false;
   const raw = localStorage.getItem(PENDING_VALUES_KEY);
-  if (!raw) return;
+  if (!raw) return false;
   localStorage.removeItem(PENDING_VALUES_KEY);
   try {
     const values = JSON.parse(raw);
-    if (Array.isArray(values) && values.length)
+    if (Array.isArray(values) && values.length) {
       await api.post("/api/me/values", { values });
+      return true;
+    }
   } catch {
     /* 실패해도 무시 — 관람 반응으로 다시 쌓인다 */
   }
+  return false;
 }
 
-export const useAuthStore = create<AuthState>((set, get) => ({
+/** 비로그인 동안 로컬(zustand)에만 남아 있던 부스 반응을 로그인 시 서버에 소급
+ *  반영한다. 반환값: 실제로 반영한 게 있었는지. */
+async function syncPendingReactions(): Promise<boolean> {
+  const boothIds = Object.keys(useVisitStore.getState().records);
+  if (boothIds.length === 0) return false;
+  await Promise.all(boothIds.map((id) => pushNote(id)));
+  return true;
+}
+
+/** 온보딩 답변 + 부스 반응을 함께 소급 반영하고, 뭔가 반영됐으면 완료 토스트를
+ *  한 번 띄운다. login()과 refresh()(OAuth 콜백 포함) 양쪽에서 호출한다. */
+async function syncAndAnnounce() {
+  const [syncedValues, syncedReactions] = await Promise.all([
+    syncPendingValues(),
+    syncPendingReactions(),
+  ]);
+  if (syncedValues || syncedReactions) {
+    toast("아까 둘러본 것도 다 반영했어. 이제부터 제대로 골라줄게.");
+  }
+}
+
+export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   ready: false,
   loginOpen: false,
+  needsOnboarding: false,
+  setNeedsOnboarding: (v) => set({ needsOnboarding: v }),
   openLogin: () => set({ loginOpen: true }),
   closeLogin: () => set({ loginOpen: false }),
 
   refresh: async () => {
     try {
-      const { user } = await api.get<{ user: User | null }>("/api/auth/me");
-      set({ user, ready: true });
+      const { user, needsOnboarding } = await api.get<{
+        user: User | null;
+        needsOnboarding: boolean;
+      }>("/api/auth/me");
+      set({ user, ready: true, needsOnboarding });
       // Signed in → merge the server's notes on top. Signed out → keep whatever
       // is in the local cache: anonymous visitors save memos/visits locally and
       // must not lose them on reload. Only an explicit logout clears.
       if (user) {
-        await syncPendingValues();
+        await syncAndAnnounce();
         await loadNotes();
       }
     } catch {
@@ -70,11 +105,12 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   login: async (nickname: string) => {
     try {
-      const { user } = await api.post<{ user: User }>("/api/auth/login", {
-        nickname,
-      });
-      set({ user, loginOpen: false });
-      await syncPendingValues();
+      const { user, needsOnboarding } = await api.post<{
+        user: User;
+        needsOnboarding: boolean;
+      }>("/api/auth/login", { nickname });
+      set({ user, loginOpen: false, needsOnboarding });
+      await syncAndAnnounce();
       await loadNotes();
     } catch (e) {
       if (e instanceof ApiClientError) throw e;
@@ -91,7 +127,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     } catch {
       /* ignore */
     }
-    set({ user: null });
+    set({ user: null, needsOnboarding: false });
     useVisitStore.getState().clear();
   },
 }));
@@ -108,4 +144,15 @@ export function promptLogin(message = "로그인이 필요해요") {
       onClick: () => useAuthStore.getState().openLogin(),
     },
   });
+}
+
+/** 비로그인 반응에서 전시당(세션 기준) 첫 반응 1회만 저장 안내를 띄운다.
+ *  sessionStorage라 탭을 닫으면 리셋된다 — 영구로 기억할 필요는 없다(다음 방문 때
+ *  한 번 더 알려줘도 무해하다). */
+export function promptLoginOncePerExhibition(exhibitionSlug: string) {
+  if (typeof window === "undefined") return;
+  const key = `roam-promptlogin-seen-${exhibitionSlug}`;
+  if (sessionStorage.getItem(key)) return;
+  sessionStorage.setItem(key, "1");
+  promptLogin("지금 누른 건 로미가 기억 못 해 — 로그인하면 이제부터 다 기억할게");
 }
