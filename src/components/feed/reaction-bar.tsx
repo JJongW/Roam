@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { useVisitStore, pushNote, type BoothStatus } from "@/lib/stores/visit";
 import { useCompanionStore } from "@/lib/stores/companion";
 import { useT } from "@/lib/i18n/provider";
-import type { TFn } from "@/lib/i18n/resolve";
+import { buildReactionLine, type ReactionKey } from "@/lib/companion/reaction-line";
 
 /**
  * 부스 반응 버튼(끌림/나중에/별로/이미봄). 스스로 갈지 말지 판단한 결과를 상태로 남기면
@@ -13,7 +13,7 @@ import type { TFn } from "@/lib/i18n/resolve";
  * 브레인에 반영한다. companion-reframe §7.5 — 명령이 아니라 사용자의 반응을 받는다.
  */
 const REACTIONS: {
-  key: string;
+  key: ReactionKey;
   status: BoothStatus;
   Icon: typeof Heart;
 }[] = [
@@ -22,32 +22,6 @@ const REACTIONS: {
   { key: "skip", status: "skipped", Icon: X },
   { key: "seen", status: "visited", Icon: Check },
 ];
-
-/**
- * 반응 → 로미 즉답. 말하는 대상은 **그 부스**다.
- *
- * 예전엔 부스의 대표 가치를 주어로 삼아 "영감은 별로였구나"처럼 말했다. 부스 하나를
- * 뺐다고 가치 전체를 부정하는 말인데, 실제 학습은 그렇게 세지 않다(별로 가중치는
- * 끌림의 절반이다). 말이 학습보다 앞서면 사용자가 "얘가 날 잘못 알아들었다"고 느낀다.
- * 이름은 따옴표로 묶고 조사 대신 쉼표를 써서 은/는 선택 문제를 아예 없앤다.
- */
-function reactionLine(
-  key: string,
-  boothName: string | undefined,
-  t: TFn,
-): string | null {
-  const k = {
-    interested: "reactInterested",
-    later: "reactLater",
-    skip: "reactSkip",
-    seen: "reactSeen",
-  }[key];
-  if (!k) return null;
-  // 이름을 모르면(호출부가 안 넘겼으면) 부스 없는 판본으로 자연 degrade.
-  return boothName
-    ? t(`companion.${k}`, { booth: boothName })
-    : t(`companion.${k}Plain`);
-}
 
 /** 저장된 상태 → 초기 선택 버튼 키. */
 function keyForStatus(s: BoothStatus | undefined): string | null {
@@ -61,16 +35,21 @@ function keyForStatus(s: BoothStatus | undefined): string | null {
 export function ReactionBar({
   boothId,
   boothName,
+  boothTags,
 }: {
   boothId: string;
   /** 로미가 이 부스를 이름으로 부르게 한다. 없으면 이름 없는 판본으로 떨어진다. */
   boothName?: string;
+  /** 분야 slug(카테고리 tags) — 반응 즉답이 브레인 관심 분야와 매칭하는 데 쓴다
+   *  (reaction-line.ts). 없으면 매칭 없이 기존 문장으로 떨어진다. */
+  boothTags: string[];
 }) {
   const t = useT();
   const storeStatus = useVisitStore((s) => s.records[boothId]?.status);
   const setStatus = useVisitStore((s) => s.setStatus);
   const say = useCompanionStore((s) => s.say);
   const setTaste = useCompanionStore((s) => s.setTaste);
+  const interests = useCompanionStore((s) => s.interests);
   // 눌린 버튼은 스토어에서 파생한다 — 복사본을 두면 부스가 바뀌어도 앞 부스의 상태가
   // 남아, 실제로는 아무 반응도 없는 부스에 버튼이 눌린 채로 보인다(지도에서 부스를
   // 옮겨 다닐 때 실제로 그랬다). 진실은 visitStore 한 곳뿐이다.
@@ -81,8 +60,7 @@ export function ReactionBar({
     setStatus(boothId, isSame ? null : r.status);
     if (!isSame) {
       // 로미 즉답 — 취소가 아니라 새 반응일 때만. 내 행동에 바로 반응한다는 느낌.
-      const line = reactionLine(r.key, boothName, t);
-      if (line) say(line);
+      say(buildReactionLine(r.key, { tags: boothTags }, boothName, interests, t));
     }
     // 네 상태 모두 서버 노트로 동기화 → 폰을 바꾸거나 재로그인해도 지도 색이 남는다.
     // 신호 적재도 이 요청 하나가 겸한다(notes 라우트가 상태를 보고 기록) — 예전처럼
