@@ -50,6 +50,17 @@ interface CompanionState {
    */
   interests: InterestNode[];
   setInterests: (interests: InterestNode[]) => void;
+
+  /**
+   * 앱 온보딩(층 전체 공통)을 방금 완료했다는 1회성 신호 — 지금 보고 있는 전시의
+   * ValueOnboarding이 이걸 보고 자동으로 이어서 열린다(AppOnboardingGate가 layout
+   * 레벨이라 어느 전시인지 몰라, "방금 끝났다"는 사실만 넘기고 소비 쪽이 판단한다).
+   * flash/clearFlash와 같은 펄스 패턴 — 건너뛰기(skip)는 이 신호를 안 보낸다(사용자가
+   * 안 하겠다고 한 걸 곧바로 또 물으면 안 됨).
+   */
+  appOnboardingJustCompleted: boolean;
+  signalAppOnboardingComplete: () => void;
+  clearAppOnboardingJustCompleted: () => void;
 }
 
 export const useCompanionStore = create<CompanionState>((set) => ({
@@ -63,4 +74,7 @@ export const useCompanionStore = create<CompanionState>((set) => ({
   setTaste: (judged, pct) => set({ tasteJudged: judged, tastePct: pct }),
   interests: [],
   setInterests: (interests) => set({ interests }),
+  appOnboardingJustCompleted: false,
+  signalAppOnboardingComplete: () => set({ appOnboardingJustCompleted: true }),
+  clearAppOnboardingJustCompleted: () => set({ appOnboardingJustCompleted: false }),
 }));
