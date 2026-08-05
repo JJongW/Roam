@@ -324,7 +324,11 @@ export function MapView({
 
             {/* 저장 대신 반응 — 끌림/나중에/별로/이미봄 → 신호로 브레인에 반영. */}
             <div className="mt-2.5 border-t border-border pt-2.5">
-              <ReactionBar boothId={selected.id} boothName={selected.name} />
+              <ReactionBar
+                boothId={selected.id}
+                boothName={selected.name}
+                boothTags={selected.tags}
+              />
             </div>
 
             <VisitedRetroInline boothId={selected.id} />

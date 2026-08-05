@@ -236,7 +236,11 @@ export function InterestFeed({
 
               {/* 4) 반응 */}
               <div className="border-t border-border/60 px-4 py-2.5">
-                <ReactionBar boothId={booth.id} boothName={booth.name} />
+                <ReactionBar
+                  boothId={booth.id}
+                  boothName={booth.name}
+                  boothTags={booth.tags}
+                />
               </div>
 
               {/* 5) 관련 부스 — 같은 카드 하단으로 인라인 확장 */}
