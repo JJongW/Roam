@@ -11,6 +11,7 @@ import { ValueChips } from "@/components/values/value-chips";
 import { CategoryChip } from "@/components/booth/category-chip";
 import { ThemeChip } from "@/components/booth/theme-chip";
 import { ReactionBar } from "@/components/feed/reaction-bar";
+import { boothValueSlugs } from "@/lib/values";
 import { useT } from "@/lib/i18n/provider";
 import { useVisitStore } from "@/lib/stores/visit";
 import { useHydrated } from "@/lib/hooks/use-hydrated";
@@ -239,7 +240,8 @@ export function InterestFeed({
                 <ReactionBar
                   boothId={booth.id}
                   boothName={booth.name}
-                  boothTags={booth.tags}
+                  interestSlugs={boothValueSlugs(booth)}
+                  categoryLabel={categoryById[booth.categoryId]?.name}
                 />
               </div>
 
