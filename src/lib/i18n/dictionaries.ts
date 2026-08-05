@@ -431,12 +431,12 @@ const ko = {
     reactSeenPlain: "이미 봤구나. 다음 걸로 넘어가자.",
     // 분야 매칭 즉답(reaction-line.ts) — 확신도(0.25 임계값)에 따라 조심스러움→확신.
     // skip은 확신 분야에서만 이름을 말하고, 그때도 "안에서도 다는 아니다"로 헤지한다.
-    reactInterestedTentative: "'{booth}', 기억해둘게 — '{theme}' 쪽에 관심 있나 봐.",
-    reactInterestedTentativePlain: "'{theme}' 쪽에 관심 있나 봐.",
-    reactInterestedConfident: "'{booth}'도 그렇고, '{theme}' 확실히 좋아하는구나.",
-    reactInterestedConfidentPlain: "'{theme}' 확실히 좋아하는구나.",
-    reactSkipConfident: "'{booth}'는 아니었구나. '{theme}' 안에서도 다 취향은 아닌가 봐.",
-    reactSkipConfidentPlain: "'{theme}' 안에서도 다 취향은 아닌가 봐.",
+    reactInterestedTentative: "‘{booth}’, 기억해둘게 — ‘{theme}’ 쪽에 관심 있나 봐.",
+    reactInterestedTentativePlain: "‘{theme}’ 쪽에 관심 있나 봐.",
+    reactInterestedConfident: "‘{booth}’도 그렇고, ‘{theme}’ 확실히 좋아하는구나.",
+    reactInterestedConfidentPlain: "‘{theme}’ 확실히 좋아하는구나.",
+    reactSkipConfident: "‘{booth}’는 아니었구나. ‘{theme}’ 안에서도 다 취향은 아닌가 봐.",
+    reactSkipConfidentPlain: "‘{theme}’ 안에서도 다 취향은 아닌가 봐.",
     // 취향 정확도 4단계. 판정 0개/1~4개는 홈 발화 로테이션(homeLines)에 섞이고,
     // 5개를 막 넘기는 순간(1회)은 reaction-bar.tsx가 say()로 띄운다. 5개 이상은
     // 상주 배지가 tastePct로 대체한다.
