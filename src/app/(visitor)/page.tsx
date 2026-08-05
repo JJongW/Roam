@@ -4,7 +4,6 @@ import { ChevronRight } from "lucide-react";
 import { getRepository } from "@/lib/repositories";
 import { ExhibitionCard } from "@/components/exhibition/exhibition-card";
 import { EmptyState } from "@/components/common/states";
-import { AppOnboardingGate } from "@/components/onboarding/app-onboarding";
 import { AccountButton } from "@/components/auth/account-button";
 import { RoamMotion } from "@/components/companion/roam-motion";
 import { getI18n } from "@/lib/i18n/server";
@@ -62,7 +61,6 @@ export default async function HomePage() {
 
   return (
     <main className="flex-1 pb-safe">
-      <AppOnboardingGate />
       <header className="sticky top-0 z-40 flex h-14 items-center justify-between border-b border-border bg-background/80 px-4 pt-safe backdrop-blur-xl">
         <span className="flex items-center gap-1.5 text-lg font-extrabold tracking-tight">
           <span className="flex size-7 items-center justify-center overflow-hidden rounded-full ring-1 ring-border">
