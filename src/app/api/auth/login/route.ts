@@ -1,6 +1,13 @@
 import { getRepository } from "@/lib/repositories";
-import { created, fail, getUserId, parseBody, setUserCookie } from "@/lib/api/http";
+import {
+  created,
+  fail,
+  getUserId,
+  parseBody,
+  setUserCookie,
+} from "@/lib/api/http";
 import { loginSchema } from "@/lib/schemas";
+import { readBrain } from "@/lib/memory/service";
 
 /**
  * Nickname login. The nickname is a unique public key:
@@ -23,10 +30,12 @@ export async function POST(req: Request) {
       });
     }
     await setUserCookie(existing.id);
-    return created({ user: existing });
+    const needsOnboarding = (await readBrain(existing.id)).interests.length === 0;
+    return created({ user: existing, needsOnboarding });
   }
 
   const user = await repo.createUser(nickname);
   await setUserCookie(user.id);
-  return created({ user });
+  // 새 계정은 브레인이 비어 있으니 항상 온보딩이 필요하다(브레인 조회 불필요).
+  return created({ user, needsOnboarding: true });
 }
