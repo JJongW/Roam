@@ -29,6 +29,13 @@ export interface TasteUpdate {
 
 interface VisitState {
   records: Record<string, BoothRecord>;
+  /** true면 로컬에 서버로 못 올라간 반응이 있다는 뜻 — pushNote 실패(비로그인·네트워크
+   *  등) 때 켜지고, 소급 반영이 전부 성공하면 꺼진다. records가 비어있지 않다고 해서
+   *  미반영은 아니다(로그인 시 서버 노트가 merge돼 들어오므로 항상 채워져 있다) —
+   *  auth.ts의 syncPendingReactions가 "정말 반영할 게 있었는지" 판정하는 유일한 근거. */
+  hasPendingSync: boolean;
+  setPendingSync: () => void;
+  clearPendingSync: () => void;
   /** Toggle a status; selecting the active status clears it. */
   toggleStatus: (boothId: string, status: BoothStatus) => void;
   setStatus: (boothId: string, status: BoothStatus | null) => void;
@@ -61,6 +68,7 @@ export async function pushNote(boothId: string): Promise<TasteUpdate | null> {
     return res.taste;
   } catch {
     /* offline / not signed in — local cache still holds it */
+    useVisitStore.getState().setPendingSync();
     return null;
   }
 }
@@ -99,6 +107,9 @@ export const useVisitStore = create<VisitState>()(
   persist(
     (set) => ({
       records: {},
+      hasPendingSync: false,
+      setPendingSync: () => set({ hasPendingSync: true }),
+      clearPendingSync: () => set({ hasPendingSync: false }),
       toggleStatus: (boothId, status) =>
         set((s) => ({
           records: patch(s.records, boothId, {
