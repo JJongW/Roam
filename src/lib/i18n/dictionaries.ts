@@ -197,6 +197,9 @@ const ko = {
       "먼저 볼 만한 {n}곳을 아래에 골라뒀어. 여기부터 가볍게 시작하자.",
     entryEmpty: "아래에서 관심 가는 곳에 반응해줘. 볼수록 더 잘 맞춰줄게.",
     searchPlaceholder: "부스 이름·작가로 검색",
+    loginCtaTitle: "로그인하면 로미가 이 전시에서 널 도와줄게",
+    loginCtaBody:
+      "지금은 그냥 둘러보는 거야. 로그인하면 반응한 것들을 기억해서 너한테 맞는 부스를 골라줄게.",
     searchEmpty: "'{q}' 검색 결과가 없어. 다른 이름으로 찾아볼까?",
     similar: "비슷한 곳 {n}",
     collapse: "접기",
@@ -684,6 +687,9 @@ const en: Dict = {
     entryEmpty:
       "React to what interests you below. The more you look, the better I fit.",
     searchPlaceholder: "Search booths by name or artist",
+    loginCtaTitle: "Log in and Romi will help you through this fair",
+    loginCtaBody:
+      "You're just browsing for now. Log in and I'll remember what you react to, and pick booths that fit you.",
     searchEmpty: "No results for '{q}'. Try another name?",
     similar: "Similar {n}",
     collapse: "Collapse",

@@ -216,12 +216,31 @@ export default async function ExhibitionDetailPage({
 
           {/* 피드 상단 부스 검색 — 추천 몇 개 말고 전체 부스를 이름·작가로 찾기. */}
           {user && <BoothSearch slug={slug} categoryById={categoryById} />}
-          <InterestFeed
-            items={feedItems}
-            categoryById={categoryById}
-            memoryLine={memoryLine}
-            slug={slug}
-          />
+          {user ? (
+            <InterestFeed
+              items={feedItems}
+              categoryById={categoryById}
+              memoryLine={memoryLine}
+              slug={slug}
+            />
+          ) : (
+            // 비로그인 — 로미는 개인화 피드를 만들지 않는다(curateFeed 호출 자체를
+            // 안 함, feedItems는 항상 빈 배열). 대신 로그인하면 뭐가 좋은지 안내.
+            <Link
+              href={`/login?next=${encodeURIComponent(`/exhibitions/${slug}`)}`}
+              className="flex items-center gap-3 rounded-2xl border border-primary/30 bg-primary/5 p-4 active:scale-[0.99]"
+            >
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-bold text-primary">
+                  {t("feed.loginCtaTitle")}
+                </p>
+                <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
+                  {t("feed.loginCtaBody")}
+                </p>
+              </div>
+              <ChevronRight className="size-5 shrink-0 text-primary" />
+            </Link>
+          )}
 
           {feedItems.length > 0 && <FinishVisit slug={slug} />}
         </div>
