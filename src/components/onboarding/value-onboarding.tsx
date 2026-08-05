@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuthStore, PENDING_EXHIBITION_VALUES_KEY } from "@/lib/stores/auth";
 import { useCompanionStore } from "@/lib/stores/companion";
 import { ChevronRight } from "lucide-react";
 import { api } from "@/lib/api/client";
@@ -44,6 +45,7 @@ export function ValueOnboarding({
 }) {
   const router = useRouter();
   const t = useT();
+  const user = useAuthStore((s) => s.user);
   const [open, setOpen] = useState(false);
   const [phase, setPhase] = useState<Phase>("intro");
   // 가치 집계는 rhythm 스텝을 거쳐 저장하므로 잠깐 들고 있는다.
@@ -84,11 +86,18 @@ export function ValueOnboarding({
   async function complete(picked: Rhythm) {
     setRhythm(picked);
     setPhase("saving");
+    const values = tally ? topValues(tally, 3) : [];
     try {
-      await api.post("/api/me/values", {
-        exhibitionSlug: slug,
-        values: tally ? topValues(tally, 3) : [],
-      });
+      if (user) {
+        await api.post("/api/me/values", { exhibitionSlug: slug, values });
+      } else if (typeof window !== "undefined") {
+        // 미로그인: 로컬에 담아두고, 로그인 시 브레인에 동기화(auth.ts의
+        // syncPendingExhibitionValues) — 안 그러면 방금 답한 게 그냥 사라진다.
+        localStorage.setItem(
+          PENDING_EXHIBITION_VALUES_KEY,
+          JSON.stringify({ exhibitionSlug: slug, values }),
+        );
+      }
     } catch {
       // 실패해도 결과로 진행.
     }
