@@ -161,6 +161,7 @@ export default async function ExhibitionDetailPage({
               picked={feedItems.length}
               tasteJudged={taste.judgedCount}
               tastePct={taste.pct}
+              interests={brain?.interests ?? []}
             />
           )}
 

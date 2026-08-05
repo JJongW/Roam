@@ -1,6 +1,7 @@
 "use client";
 
 import { create } from "zustand";
+import type { InterestNode } from "@/lib/types";
 
 /**
  * 전시 홈에서 서버가 계산한 맥락(상위 관심 가치·골라둔 개수)을 상주 컴패니언 바에
@@ -38,6 +39,17 @@ interface CompanionState {
   /** 판정 5개 미만이면 null(말로만 표시) — companion-bar.tsx가 분기한다. */
   tastePct: number | null;
   setTaste: (judged: number, pct: number | null) => void;
+
+  /**
+   * 브레인 상위 관심 분야(신뢰도 내림차순, distill.ts가 이미 정렬해서 준다). 지도
+   * 반응 즉답(reaction-line.ts)이 부스 분야와 매칭해 톤을 정하는 데 쓴다.
+   * tasteJudged/tastePct와 같은 생명주기 — 화면을 벗어나도 비우지 않는다(지도가
+   * 전시 홈을 떠난 뒤에도 이 값이 필요하기 때문). 이 세션에서 전시 홈을 한 번도
+   * 안 거치고 지도로 바로 딥링크하면 빈 배열 — 그때 반응 즉답은 분야 언급 없는
+   * 기존 문장으로 자연히 떨어진다(별도 처리 없음, 의도된 단순화).
+   */
+  interests: InterestNode[];
+  setInterests: (interests: InterestNode[]) => void;
 }
 
 export const useCompanionStore = create<CompanionState>((set) => ({
@@ -49,4 +61,6 @@ export const useCompanionStore = create<CompanionState>((set) => ({
   tasteJudged: 0,
   tastePct: null,
   setTaste: (judged, pct) => set({ tasteJudged: judged, tastePct: pct }),
+  interests: [],
+  setInterests: (interests) => set({ interests }),
 }));
