@@ -1,4 +1,5 @@
 import { primaryThemeFromTags, themeLabel } from "@/lib/booth/themes";
+import { Chip } from "@/components/ui/chip";
 
 /**
  * 부스의 대표 테마(무엇을 그리는가) 한 개. 카테고리 칩(국내작가/기업)이 "누구인가"를
@@ -8,9 +9,5 @@ import { primaryThemeFromTags, themeLabel } from "@/lib/booth/themes";
 export function ThemeChip({ tags }: { tags: string[] }) {
   const key = primaryThemeFromTags(tags);
   if (!key) return null;
-  return (
-    <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-bold text-primary">
-      {themeLabel(key)}
-    </span>
-  );
+  return <Chip className="font-bold">{themeLabel(key)}</Chip>;
 }

@@ -6,6 +6,7 @@ import { api } from "@/lib/api/client";
 import { LOADING_MESSAGES } from "@/lib/loading-messages";
 import { useRotatingMessage } from "@/lib/hooks/use-rotating-message";
 import { RoamMotion, THINKING_POOL } from "@/components/companion/roam-motion";
+import { Chip } from "@/components/ui/chip";
 
 type Extract = { summary: string; newReleases: string[]; goods: string[] };
 
@@ -94,12 +95,9 @@ export function BoothHighlights({
           </h2>
           <div className="flex flex-wrap gap-1.5">
             {newReleases.map((k) => (
-              <span
-                key={k}
-                className="rounded-full border border-border bg-card px-2.5 py-1 text-sm font-medium text-foreground/90"
-              >
+              <Chip key={k} variant="outline" size="md" className="font-medium">
                 {k}
-              </span>
+              </Chip>
             ))}
           </div>
         </section>
@@ -111,12 +109,9 @@ export function BoothHighlights({
           </h2>
           <div className="flex flex-wrap gap-1.5">
             {goods.map((k) => (
-              <span
-                key={k}
-                className="rounded-full border border-border bg-card px-2.5 py-1 text-sm font-medium text-foreground/90"
-              >
+              <Chip key={k} variant="outline" size="md" className="font-medium">
                 {k}
-              </span>
+              </Chip>
             ))}
           </div>
         </section>
