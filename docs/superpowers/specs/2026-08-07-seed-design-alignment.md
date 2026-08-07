@@ -89,7 +89,11 @@ const pretendard = localFont({
 
 ### A-1. Spacing (신규 — 지금 토큰 자체가 없음)
 
-`globals.css` `@theme inline`에 원시 스케일 + 의미 토큰을 추가:
+`globals.css` `:root`에 원시 스케일 + 의미 토큰을 추가한다 — **`@theme inline`이 아니라
+`:root`**: Tailwind v4는 `@theme` 블록의 `--spacing-*` 네임스페이스를 자동으로
+`p-x4`/`gap-x4` 같은 새 유틸리티 클래스로 만들어버린다. 지금은 `var(--spacing-x4)`로
+명시적으로만 쓰이길 원하는 참고용 토큰이라(2·3단계 전까지) 의도치 않은 유틸리티
+생성을 피해 `:root`에 둔다.
 
 ```css
 /* raw scale (SEED $dimension.x*) */
@@ -144,17 +148,14 @@ const pretendard = localFont({
 --radius-lg: 0.875rem; /* 14px = r3_5 (정확히 일치) */
 --radius-xl: 1.25rem;  /* 20px = r5 (정확히 일치) */
 --radius-2xl: 1.5rem;  /* 24px = r6 (기존 26px에서 반올림) */
-
-/* SEED 전체 스케일(더 세밀한 값이 필요할 때, 신규 컴포넌트용) */
---radius-r0-5: 0.125rem; /* 2px */
---radius-r1: 0.25rem;    /* 4px */
---radius-r1-5: 0.375rem; /* 6px */
---radius-r2-5: 0.625rem; /* 10px */
---radius-full: 9999px;
 ```
 
 `rounded-sm`/`rounded-md`/`rounded-lg`/`rounded-xl`/`rounded-2xl`를 쓰는 기존
 컴포넌트는 코드 변경 없이 새 값을 자동으로 받는다.
+
+SEED엔 이보다 세밀한 단계(`r0.5`=2px, `r1`=4px, `r1.5`=6px, `r2.5`=10px)도 있지만
+Phase 1엔 이 값을 쓸 소비처가 없다 — 안 만든다(YAGNI). 실제로 필요한 컴포넌트가
+생기면 그때 `:root`에 추가한다.
 
 ### A-3. Shadow (기존 이름 유지, SEED s1/s2/s3로 매핑)
 
@@ -176,7 +177,9 @@ const pretendard = localFont({
 
 ### A-4. Motion (신규 — 지금 토큰 없음, `duration-150/200/300/500`이 기준 없이 혼재)
 
-`globals.css`에 CSS 변수 추가:
+`globals.css` `:root`에 CSS 변수 추가(spacing과 같은 이유로 `@theme inline`이 아니라
+`:root>` — Tailwind v4엔 duration/easing 전용 네임스페이스가 없어 실질적 차이는 없지만
+일관성을 위해 같은 위치에 둔다):
 ```css
 /* durations */
 --motion-d1: 50ms;
@@ -226,14 +229,20 @@ export const MOTION_EASE = {
 자체 타이포 변수를 덮어써서 기존 컴포넌트 코드 변경 없이 적용:
 
 ```css
---text-xs: 0.75rem;    /* 12px = t2 */  --text-xs--line-height: 1rem;      /* 16px */
---text-sm: 0.875rem;   /* 14px = t4 */  --text-sm--line-height: 1.25rem;   /* 20px */
---text-base: 1rem;     /* 16px = t5 */  --text-base--line-height: 1.5rem;  /* 24px */
---text-lg: 1.125rem;   /* 18px = t6 */  --text-lg--line-height: 1.625rem;  /* 26px */
---text-xl: 1.25rem;    /* 20px = t7 */  --text-xl--line-height: 1.75rem;   /* 28px */
---text-2xl: 1.5rem;    /* 24px = t9 */  --text-2xl--line-height: 2rem;     /* 32px */
---text-3xl: 1.75rem;   /* 28px = t11(가장 가까운 값, 기존 30px에서 반올림) */
+--text-xs: 0.75rem;    /* 12px = t2 */  --text-xs--line-height: 1rem;        /* 16px */
+--text-sm: 0.875rem;   /* 14px = t4 */  --text-sm--line-height: 1.1875rem;   /* 19px */
+--text-base: 1rem;     /* 16px = t5 */  --text-base--line-height: 1.375rem;  /* 22px */
+--text-lg: 1.125rem;   /* 18px = t6 */  --text-lg--line-height: 1.5rem;      /* 24px */
+--text-xl: 1.25rem;    /* 20px = t7 */  --text-xl--line-height: 1.6875rem;   /* 27px */
+--text-2xl: 1.5rem;    /* 24px = t9 */  --text-2xl--line-height: 2rem;       /* 32px */
+--text-3xl: 1.75rem;   /* 28px = t11(반올림 없이 정확히 일치) */ --text-3xl--line-height: 2.375rem; /* 38px */
 ```
+
+> **1차 확인 수정 (2026-08-07):** 최초 조사에서 sm/base/lg/xl의 line-height를
+> Tailwind 구값(20/24/26/28)에 맞춰 잘못 옮겨적었었다. SEED 공식 `$line-height.t*`
+> 표를 재조회해 t4=19px·t5=22px·t6=24px·t7=27px로 바로잡음(font-size는 원래도
+> 맞았음). t11(3xl)의 line-height 38px도 이번에 새로 확인해 채움 — 최초 스펙엔
+> 빠져 있었다.
 
 굵기는 SEED와 동일하게 400/500/700 세 단만 쓰는 게 이미 Roam 코드 관례라
 (`font-medium`/`font-bold`/`font-extrabold` 위주) 손 안 댐 — `/admin/design-system`
