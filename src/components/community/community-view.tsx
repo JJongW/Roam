@@ -22,6 +22,17 @@ import { useHydrated } from "@/lib/hooks/use-hydrated";
 import { useT } from "@/lib/i18n/provider";
 import { watchPosts } from "@/lib/realtime";
 import { AppBar } from "@/components/common/app-bar";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { EmptyState } from "@/components/common/states";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -85,7 +96,6 @@ export function CommunityView({
 
   async function report(id: string) {
     if (reportedIds.includes(id)) return;
-    if (!window.confirm(t("community.reportConfirm"))) return;
     try {
       const r = await api.post<{ already: boolean }>(
         `/api/community/${id}/report`,
@@ -305,19 +315,36 @@ export function CommunityView({
                           <Trash2 className="size-4" />
                         </button>
                       ) : (
-                        <button
-                          type="button"
-                          onClick={() => report(p.id)}
-                          disabled={reportedIds.includes(p.id)}
-                          aria-label={
-                            reportedIds.includes(p.id)
-                              ? t("community.reportDone")
-                              : t("community.report")
-                          }
-                          className="rounded-full p-1 text-muted-foreground hover:bg-secondary hover:text-destructive disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-muted-foreground"
-                        >
-                          <Flag className="size-4" />
-                        </button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <button
+                              type="button"
+                              disabled={reportedIds.includes(p.id)}
+                              aria-label={
+                                reportedIds.includes(p.id)
+                                  ? t("community.reportDone")
+                                  : t("community.report")
+                              }
+                              className="rounded-full p-1 text-muted-foreground hover:bg-secondary hover:text-destructive disabled:opacity-40 disabled:hover:bg-transparent disabled:hover:text-muted-foreground"
+                            >
+                              <Flag className="size-4" />
+                            </button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>{t("community.report")}</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                {t("community.reportConfirm")}
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
+                              <AlertDialogAction onClick={() => report(p.id)}>
+                                {t("community.report")}
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       )}
                     </div>
                   </div>

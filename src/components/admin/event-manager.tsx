@@ -15,6 +15,17 @@ import { Textarea } from "@/components/ui/textarea";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from "@/components/ui/sheet";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { EmptyState } from "@/components/common/states";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import type { Booth, BoothEvent } from "@/lib/types";
 
 interface Draft {
@@ -66,7 +77,6 @@ export function EventManager({ events, booths }: { events: BoothEvent[]; booths:
   }
 
   async function remove(ev: BoothEvent) {
-    if (!confirm(`'${ev.title}' 이벤트를 삭제할까요?`)) return;
     try {
       await api.del(`/api/events/${ev.id}`);
       toast.success("삭제했어요");
@@ -98,9 +108,27 @@ export function EventManager({ events, booths }: { events: BoothEvent[]; booths:
                   {format(new Date(ev.startTime), "M.d HH:mm")} – {format(new Date(ev.endTime), "HH:mm")}
                 </p>
               </div>
-              <Button variant="ghost" size="icon" aria-label="삭제" onClick={() => remove(ev)}>
-                <Trash2 className="size-4 text-destructive" />
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="ghost" size="icon" aria-label="삭제">
+                    <Trash2 className="size-4 text-destructive" />
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>이벤트 삭제</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      {`'${ev.title}' 이벤트를 삭제할까요?`}
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>취소</AlertDialogCancel>
+                    <AlertDialogAction variant="destructive" onClick={() => remove(ev)}>
+                      삭제
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </Card>
           ))}
         </div>

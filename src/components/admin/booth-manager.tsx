@@ -21,6 +21,17 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { CategoryChip } from "@/components/booth/category-chip";
 import { EmptyState } from "@/components/common/states";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import type { Booth, Category, Hall } from "@/lib/types";
 
 interface Props {
@@ -93,7 +104,6 @@ export function BoothManager({ exhibitionId, booths, categories, halls }: Props)
   }
 
   async function remove(b: Booth) {
-    if (!confirm(`'${b.name}' 부스를 삭제할까요?`)) return;
     try {
       await api.del(`/api/booths/${b.id}`);
       toast.success("삭제했어요");
@@ -126,9 +136,27 @@ export function BoothManager({ exhibitionId, booths, categories, halls }: Props)
               <Button variant="ghost" size="icon" aria-label="수정" onClick={() => startEdit(b)}>
                 <Pencil className="size-4" />
               </Button>
-              <Button variant="ghost" size="icon" aria-label="삭제" onClick={() => remove(b)}>
-                <Trash2 className="size-4 text-destructive" />
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="ghost" size="icon" aria-label="삭제">
+                    <Trash2 className="size-4 text-destructive" />
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>부스 삭제</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      {`'${b.name}' 부스를 삭제할까요?`}
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>취소</AlertDialogCancel>
+                    <AlertDialogAction variant="destructive" onClick={() => remove(b)}>
+                      삭제
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </Card>
           ))}
         </div>
