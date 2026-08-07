@@ -32,7 +32,7 @@ export function BoothGallery({
 
   return (
     <>
-      <div className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1">
+      <div className="-mx-[var(--spacing-global-gutter)] flex gap-2 overflow-x-auto px-[var(--spacing-global-gutter)] pb-1">
         {images.map((src, i) => (
           <button
             key={src}
