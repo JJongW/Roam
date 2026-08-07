@@ -8,7 +8,7 @@
 *값*만 바꿔 기존 코드가 무변경으로 새 값을 받도록 했다. 이번 2단계가 다루는 spacing/motion은
 애초에 Tailwind 네임스페이스 밖(`:root`, `@theme inline` 아님)에 뒀기 때문에 그 방식이 안
 통한다 — 컴포넌트마다 클래스 자체를 `px-[var(--spacing-global-gutter)]`,
-`duration-[var(--motion-d*)]`처럼 Tailwind v4의 임의값(arbitrary value) 문법으로 직접
+`duration-[var(--motion-d6)]`처럼 Tailwind v4의 임의값(arbitrary value) 문법으로 직접
 바꿔야 한다. 새 백엔드·새 컴포넌트 없음, 전부 기존 파일의 className 교체.
 
 ## Global Constraints
@@ -19,7 +19,7 @@
   SEED 스케일로 바꾸려면 각 전환이 enter/exit/functional 중 무엇인지 새로 판단해야 해서
   훨씬 큰 작업이고, 로드맵 문서에도 2단계 항목으로 없었다.
 - 그림자(`shadow-[...]`) 항목은 로드맵에 있었지만 실사용 조사 결과 전부 이미
-  `shadow-[var(--shadow-*)]` 형태로 토큰을 쓰고 있어 할 일이 없다 — 이번 스코프에서 제외.
+  `shadow-[var(--shadow-card)]` 같은 형태로 토큰을 쓰고 있어 할 일이 없다 — 이번 스코프에서 제외.
 - **Roam은 라이트 모드만 지원한다** — 다크모드 검증은 하지 않는다(기존 `.dark` CSS·
   `ThemeToggle`은 남아있지만 이번 작업의 수동 확인 대상 아님).
 - 관리자 콘솔의 반응형 여백(`md:px-8`)은 1단계에서 정한 "브레이크포인트는 관리자 전용"
