@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { MOTION_DURATION, MOTION_EASE } from "./motion";
 
@@ -26,5 +28,34 @@ describe("motion tokens", () => {
       expect(MOTION_EASE[key]).toHaveLength(4);
     }
     expect(MOTION_EASE.linear).toEqual([0, 0, 1, 1]);
+  });
+});
+
+describe("motion tokens stay in sync with globals.css", () => {
+  const css = readFileSync(
+    join(process.cwd(), "src/app/globals.css"),
+    "utf-8",
+  );
+
+  function cssVar(name: string): string {
+    const match = css.match(new RegExp(`--${name}:\\s*([^;]+);`));
+    if (!match) throw new Error(`--${name} not found in globals.css`);
+    return match[1].trim();
+  }
+
+  it("durations match --motion-d1..d6 (ms)", () => {
+    for (const [key, seconds] of Object.entries(MOTION_DURATION)) {
+      expect(cssVar(`motion-${key}`)).toBe(`${Math.round(seconds * 1000)}ms`);
+    }
+  });
+
+  it("easings match --motion-ease-*", () => {
+    const kebab = (key: string) =>
+      key.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`);
+    for (const [key, curve] of Object.entries(MOTION_EASE)) {
+      expect(cssVar(`motion-ease-${kebab(key)}`)).toBe(
+        `cubic-bezier(${curve.join(", ")})`,
+      );
+    }
   });
 });

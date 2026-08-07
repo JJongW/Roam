@@ -5,20 +5,8 @@ import { getLocale, hasLocaleCookie } from "@/lib/i18n/server";
 import "./globals.css";
 
 const pretendard = localFont({
-  src: [
-    {
-      path: "../../node_modules/pretendard/dist/web/static/woff2/Pretendard-Regular.woff2",
-      weight: "400",
-    },
-    {
-      path: "../../node_modules/pretendard/dist/web/static/woff2/Pretendard-Medium.woff2",
-      weight: "500",
-    },
-    {
-      path: "../../node_modules/pretendard/dist/web/static/woff2/Pretendard-Bold.woff2",
-      weight: "700",
-    },
-  ],
+  src: "../../node_modules/pretendard/dist/web/variable/woff2/PretendardVariable.woff2",
+  weight: "45 920",
   variable: "--font-pretendard",
   display: "swap",
 });

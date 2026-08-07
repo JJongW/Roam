@@ -34,7 +34,9 @@ const TYPE_STEPS = [
 const WEIGHTS = [
   { name: "Regular", className: "font-normal" },
   { name: "Medium", className: "font-medium" },
+  { name: "SemiBold", className: "font-semibold" },
   { name: "Bold", className: "font-bold" },
+  { name: "ExtraBold", className: "font-extrabold" },
 ] as const;
 
 const SPACING_STEPS = [
@@ -111,7 +113,7 @@ export default function DesignSystemPage() {
 
       <AdminSection
         title="타이포(Typography)"
-        description="Pretendard · 400/500/700만 사용 · SEED t-scale 위계"
+        description="Pretendard · 400/500/600/700/800 실사용 · SEED t-scale 위계"
       >
         <div className="space-y-4">
           {TYPE_STEPS.map((t) => (

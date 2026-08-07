@@ -27,7 +27,7 @@ export function MapCoachmark({ onClose }: { onClose: () => void }) {
   const t = useT();
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 p-4 backdrop-blur-sm animate-in fade-in sm:items-center">
-      <div className="w-full max-w-sm rounded-3xl border border-border bg-card p-5 shadow-[var(--shadow-pop)] animate-in slide-in-from-bottom-4">
+      <div className="w-full max-w-sm rounded-2xl border border-border bg-card p-5 shadow-[var(--shadow-pop)] animate-in slide-in-from-bottom-4">
         <h2 className="text-lg font-extrabold">{t("map.coachTitle")}</h2>
         <p className="mt-1 text-sm text-muted-foreground">
           {t("map.coachSub")}
