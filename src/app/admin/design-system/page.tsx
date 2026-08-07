@@ -1,5 +1,7 @@
 import { AdminSection } from "@/components/admin/section";
 import { MotionDemo } from "@/components/admin/design-system/motion-demo";
+import { ProgressCircleDemo } from "@/components/admin/design-system/progress-circle-demo";
+import { MenuDemo } from "@/components/admin/design-system/menu-demo";
 
 export const metadata = { title: "디자인 시스템" };
 
@@ -193,6 +195,20 @@ export default function DesignSystemPage() {
         description="duration 6단계 + easing 6종 — 버튼을 눌러 실제로 확인"
       >
         <MotionDemo />
+      </AdminSection>
+
+      <AdminSection
+        title="Progress Circle"
+        description="size 24/40 · determinate/indeterminate · neutral/brand"
+      >
+        <ProgressCircleDemo />
+      </AdminSection>
+
+      <AdminSection
+        title="Menu"
+        description="아직 실사용처 없음 — 관리자 타임라인에서 쓸 예정, 여기서만 검증"
+      >
+        <MenuDemo />
       </AdminSection>
     </div>
   );
