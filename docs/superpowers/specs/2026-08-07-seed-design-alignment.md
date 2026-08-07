@@ -1,13 +1,17 @@
 # SEED 디자인 토큰 정렬 — 1단계(토큰 뼈대 + /admin/design-system) Design
 
-**Goal:** 색(인디고 브랜드)과 폰트 패밀리(Inter)는 그대로 두고, 나머지 디자인 토큰
+**Goal:** 색(인디고 브랜드)은 그대로 두고, 폰트는 Inter→Pretendard로 바꾸고(한글
+글리프가 없는 Inter는 지금 한국어 텍스트에 전혀 적용 안 되고 OS 기본 폰트로 조용히
+폴백되고 있었다 — 사실상 "우리 폰트"가 없던 상태), 나머지 디자인 토큰
 체계(간격·radius·그림자·모션·타이포 위계·레이아웃 브레이크포인트)를 카카오모빌리티가
 아니라 당근마켓(Karrot)의 SEED 디자인 시스템(seed-design.io) 값으로 맞춘다. 관리자
 콘솔에 `/admin/design-system` 페이지를 새로 만들어, SEED 사이트 자체의 문서 구성
 방식(사이드바 카테고리 + 페이지 내 목차 + 스와치/실제 예시 + 스펙 표)을 그대로 본떠
 Roam이 가진 모든 디자인 토큰(색 포함)을 한눈에 보여준다.
 
-**Architecture:** `globals.css`의 `@theme inline` 블록에 SEED 값으로 채운 새 CSS
+**Architecture:** `pretendard` 패키지를 설치하고 `src/app/layout.tsx`의 폰트 로딩을
+`next/font/google`(Inter)에서 `next/font/local`(Pretendard, 정적 400/500/700 woff2)로
+교체한다. `globals.css`의 `@theme inline` 블록에 SEED 값으로 채운 새 CSS
 커스텀 프로퍼티를 추가한다. 기존 Tailwind 시맨틱 이름(`--radius-sm/md/lg/xl/2xl`,
 `--text-xs/sm/base/lg/xl/2xl/3xl`)은 대부분 SEED 스케일과 값이 정확히 일치해
 **이름은 그대로 두고 값만 교체**한다 — 이렇게 하면 기존 컴포넌트 코드를 한 줄도
@@ -20,8 +24,8 @@ Roam이 가진 모든 디자인 토큰(색 포함)을 한눈에 보여준다.
 - **색은 안 건드린다** — `globals.css`의 기존 `--primary`/`--secondary`/`--success`
   등 모든 색상 값은 그대로. `/admin/design-system`에도 SEED 색이 아니라 **Roam
   자체 팔레트**를 스와치로 보여준다.
-- **폰트 패밀리는 Inter 유지** — `--font-sans`는 안 바꾼다. 크기·행간·굵기·이름
-  체계(위계)만 SEED `t1~t14` 스케일을 따른다.
+- **폰트는 Pretendard로 교체** — `next/font/local`로 자체 호스팅(구글 폰트에 없음).
+  크기·행간·굵기·이름 체계(위계)는 SEED `t1~t14` 스케일을 따른다.
 - 기존 컴포넌트 코드(className)는 이번 스코프에서 **거의 안 건드린다** — 이름이
   같은 토큰은 값만 바꾸는 방식으로 자동 적용. 기존 코드가 새 토큰을 "제대로" 쓰도록
   정리하는 건 2단계(이번 스펙 밖).
@@ -34,6 +38,54 @@ Roam이 가진 모든 디자인 토큰(색 포함)을 한눈에 보여준다.
 ---
 
 ## 섹션 A — 토큰 값 매핑
+
+### A-0. 폰트 — Inter → Pretendard
+
+`pretendard` npm 패키지(확인됨, 최신 1.3.9) 설치. 400/500/700 세 굵기만 쓰는
+기존 관례(A-5)에 맞춰 정적 woff2 3개만 로드한다(가변 폰트 TTF는 6.7MB로
+과함 — 정적 굵기별 woff2는 각 750~800KB, 한글 폰트 특성상 필요한 크기).
+
+`src/app/layout.tsx` 기존:
+```tsx
+import { Inter } from "next/font/google";
+// ...
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  display: "swap",
+});
+```
+
+교체:
+```tsx
+import localFont from "next/font/local";
+// ...
+const pretendard = localFont({
+  src: [
+    {
+      path: "../../node_modules/pretendard/dist/web/static/woff2/Pretendard-Regular.woff2",
+      weight: "400",
+    },
+    {
+      path: "../../node_modules/pretendard/dist/web/static/woff2/Pretendard-Medium.woff2",
+      weight: "500",
+    },
+    {
+      path: "../../node_modules/pretendard/dist/web/static/woff2/Pretendard-Bold.woff2",
+      weight: "700",
+    },
+  ],
+  variable: "--font-pretendard",
+  display: "swap",
+});
+```
+
+같은 파일 안 `className={\`${inter.variable} ...\`}`도 `${pretendard.variable}`로.
+
+`globals.css`:
+```css
+--font-sans: var(--font-pretendard), ui-sans-serif, system-ui, -apple-system, sans-serif;
+```
 
 ### A-1. Spacing (신규 — 지금 토큰 자체가 없음)
 
@@ -167,7 +219,7 @@ export const MOTION_EASE = {
 기존 `duration-150`류 Tailwind 유틸은 이번엔 안 건드린다(2단계에서 정리) — 새 변수는
 `/admin/design-system` 페이지의 모션 데모와, 앞으로 새로 짜는 코드부터 적용.
 
-### A-5. Typography (폰트는 Inter 유지, 크기·행간·이름 체계는 SEED)
+### A-5. Typography (폰트는 Pretendard로 교체(A-0), 크기·행간·이름 체계는 SEED)
 
 실사용 조사 결과 Tailwind 기본 스텝 7개(`xs/sm/base/lg/xl/2xl/3xl`)만 쓰이고
 있고(230회 중 219회가 xs~2xl), SEED `t`-스케일과 대부분 정확히 일치한다. Tailwind
@@ -199,8 +251,9 @@ export const MOTION_EASE = {
 
 1. **색(Color)** — Roam 팔레트(라이트/다크 각각) 스와치. `--primary`부터
    `--booth-skipped` 계열 상태색까지 전부. 각 스와치에 변수명 + hex 값 표시.
-2. **타이포(Typography)** — `text-xs`~`text-3xl` 실제 텍스트 샘플(Inter로 렌더) +
-   각 단계의 px/rem/line-height 표. 400/500/700 굵기 3종 나란히.
+2. **타이포(Typography)** — `text-xs`~`text-3xl` 실제 텍스트 샘플(Pretendard로 렌더,
+   한글·영문·숫자 예시 문구 같이) + 각 단계의 px/rem/line-height 표. 400/500/700
+   굵기 3종 나란히.
 3. **간격(Spacing)** — `x0_5`~`x16` 각 값을 실제 폭의 색칠된 바(bar)로 시각화 +
    의미 토�큰(`global-gutter` 등) 표.
 4. **Radius** — 각 단계를 실제 둥근 사각형 스와치로.
