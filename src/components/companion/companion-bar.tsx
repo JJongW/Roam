@@ -14,6 +14,8 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { Chip } from "@/components/ui/chip";
+import { ProgressCircle } from "@/components/ui/progress-circle";
 
 /**
  * 상주 컴패니언 바 — 방문객 전 화면에 뜨는 Roam 플로팅 필(로고 + 맥락 발화). 탭하면
@@ -67,9 +69,12 @@ export function CompanionBar() {
         >
           <RoamAvatar />
           {isExhibitionHome && home && tastePct !== null && (
-            <span className="shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-bold text-primary">
+            <Chip
+              icon={<ProgressCircle size={24} value={tastePct} tone="brand" />}
+              className="pl-0.5"
+            >
               {t("companion.tastePct", { pct: tastePct })}
-            </span>
+            </Chip>
           )}
           <span className="truncate text-sm font-semibold">{line}</span>
         </button>
