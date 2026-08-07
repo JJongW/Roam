@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const chipVariants = cva(
-  "inline-flex w-fit shrink-0 items-center gap-1 whitespace-nowrap rounded-full font-semibold",
+  "inline-flex w-fit shrink-0 items-center gap-1 rounded-full font-semibold",
   {
     variants: {
       variant: {
@@ -11,9 +11,9 @@ const chipVariants = cva(
         outline: "border border-border bg-card text-foreground/90",
       },
       size: {
-        sm: "h-8 px-2.5 text-xs",
-        md: "h-9 px-3 text-sm",
-        lg: "h-10 px-3.5 text-sm",
+        sm: "min-h-8 px-2.5 text-xs",
+        md: "min-h-9 px-3 text-sm",
+        lg: "min-h-10 px-3.5 text-sm",
       },
     },
     defaultVariants: { variant: "tint", size: "sm" },
