@@ -61,7 +61,7 @@ export default async function HomePage() {
 
   return (
     <main className="flex-1 pb-safe">
-      <header className="sticky top-0 z-40 flex h-14 items-center justify-between border-b border-border bg-background/80 px-4 pt-safe backdrop-blur-xl">
+      <header className="sticky top-0 z-40 flex h-14 items-center justify-between border-b border-border bg-background/80 px-[var(--spacing-global-gutter)] pt-safe backdrop-blur-xl">
         <span className="flex items-center gap-1.5 text-lg font-extrabold tracking-tight">
           <span className="flex size-7 items-center justify-center overflow-hidden rounded-full ring-1 ring-border">
             <Image
@@ -94,7 +94,7 @@ export default async function HomePage() {
 
       {/* 미로그인 랜딩 배너 — 계정 벽이 아니라 기억 설정임을 설명 + 로그인 진입. */}
       {!user && (
-        <div className="px-4 pb-2">
+        <div className="px-[var(--spacing-global-gutter)] pb-2">
           <Link
             href="/login?next=%2F"
             className="flex items-center gap-3 rounded-2xl border border-primary/30 bg-primary/5 p-4 active:scale-[0.99]"
@@ -112,7 +112,7 @@ export default async function HomePage() {
         </div>
       )}
 
-      <section className="space-y-3 px-4 pb-6 pt-2">
+      <section className="space-y-3 px-[var(--spacing-global-gutter)] pb-6 pt-2">
         {exhibitions.length > 0 && (
           <h2 className="px-1 text-sm font-bold text-muted-foreground">
             {t("home.listHeading")}

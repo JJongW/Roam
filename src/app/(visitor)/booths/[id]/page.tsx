@@ -98,12 +98,12 @@ export default async function BoothDetailPage({ params }: Props) {
           </div>
 
           {booth.images.length > 0 && (
-            <div className="px-5 pt-1 pb-2">
+            <div className="px-[var(--spacing-global-gutter)] pt-1 pb-2">
               <BoothGallery images={booth.images} name={booth.name} />
             </div>
           )}
 
-          <div className="px-5 py-2">
+          <div className="px-[var(--spacing-global-gutter)] py-2">
             {/* At-a-glance 정보 + AI 요약 stay above the tabs (always visible). */}
             <div className="flex flex-wrap items-center gap-2">
               {booth.code && (
@@ -122,7 +122,7 @@ export default async function BoothDetailPage({ params }: Props) {
 
         {/* Right pane (landscape) / continues below (portrait): the tabs. */}
         <div className="contents landscape:flex landscape:flex-1 landscape:flex-col landscape:overflow-y-auto">
-          <div className="px-5 py-2 landscape:py-4">
+          <div className="px-[var(--spacing-global-gutter)] py-2 landscape:py-4">
             <BoothTabs
               intro={
                 <div className="space-y-6">

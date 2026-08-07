@@ -18,7 +18,7 @@ export default async function AdminLayout({
         <AdminTopNav />
         <main
           id="main"
-          className="mx-auto w-full max-w-5xl flex-1 px-4 py-6 md:px-8"
+          className="mx-auto w-full max-w-5xl flex-1 px-[var(--spacing-global-gutter)] py-6 md:px-8"
         >
           {children}
         </main>

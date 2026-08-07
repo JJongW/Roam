@@ -140,7 +140,7 @@ export default async function ExhibitionDetailPage({
         </div>
 
         {/* pb-28: 하단 상주 컴패니언 필이 카드/버튼을 가리지 않도록 여백 확보. */}
-        <div className="space-y-4 px-5 pt-5 pb-28 landscape:w-[420px] landscape:shrink-0 landscape:self-stretch landscape:overflow-y-auto landscape:border-l landscape:border-border">
+        <div className="space-y-4 px-[var(--spacing-global-gutter)] pt-5 pb-28 landscape:w-[420px] landscape:shrink-0 landscape:self-stretch landscape:overflow-y-auto landscape:border-l landscape:border-border">
           <section className="space-y-1.5">
             <div className="flex items-center gap-2 text-sm font-medium">
               <MapPin className="size-4 text-muted-foreground" aria-hidden />
