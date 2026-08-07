@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { X } from "lucide-react";
+import { useState } from "react";
 import { useT } from "@/lib/i18n/provider";
+import { ImageLightbox } from "@/components/common/image-lightbox";
 
 /**
  * 부스 작품 갤러리 — 일러스트·창작 부스는 작품 이미지가 핵심 정보다. 상세 상단에
@@ -18,15 +18,6 @@ export function BoothGallery({
 }) {
   const t = useT();
   const [open, setOpen] = useState<number | null>(null);
-
-  useEffect(() => {
-    if (open === null) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(null);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
 
   if (!images.length) return null;
 
@@ -53,29 +44,7 @@ export function BoothGallery({
       </div>
 
       {open !== null && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-label={name}
-          onClick={() => setOpen(null)}
-          className="fixed inset-0 z-[110] flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm animate-in fade-in"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element -- 원본 비율 유지 */}
-          <img
-            src={images[open]}
-            alt={name}
-            onClick={(e) => e.stopPropagation()}
-            className="max-h-full max-w-full rounded-2xl object-contain"
-          />
-          <button
-            type="button"
-            onClick={() => setOpen(null)}
-            aria-label={t("common.close")}
-            className="absolute right-4 top-[calc(env(safe-area-inset-top)+1rem)] flex size-10 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur active:scale-95"
-          >
-            <X className="size-5" />
-          </button>
-        </div>
+        <ImageLightbox src={images[open]} alt={name} onClose={() => setOpen(null)} />
       )}
     </>
   );
