@@ -1,12 +1,25 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import { Providers } from "@/components/providers";
 import { getLocale, hasLocaleCookie } from "@/lib/i18n/server";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
+const pretendard = localFont({
+  src: [
+    {
+      path: "../../node_modules/pretendard/dist/web/static/woff2/Pretendard-Regular.woff2",
+      weight: "400",
+    },
+    {
+      path: "../../node_modules/pretendard/dist/web/static/woff2/Pretendard-Medium.woff2",
+      weight: "500",
+    },
+    {
+      path: "../../node_modules/pretendard/dist/web/static/woff2/Pretendard-Bold.woff2",
+      weight: "700",
+    },
+  ],
+  variable: "--font-pretendard",
   display: "swap",
 });
 
@@ -50,7 +63,7 @@ export default async function RootLayout({
   return (
     <html
       lang={locale}
-      className={`${inter.variable} h-full antialiased`}
+      className={`${pretendard.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-dvh bg-background text-foreground">

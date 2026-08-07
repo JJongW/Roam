@@ -137,7 +137,7 @@
   --color-booth-fill: var(--booth-fill);
   --color-booth-active: var(--booth-active);
 
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-sans: var(--font-pretendard), ui-sans-serif, system-ui, -apple-system, sans-serif;
 
   --radius-sm: calc(var(--radius) - 6px);
   --radius-md: calc(var(--radius) - 3px);
