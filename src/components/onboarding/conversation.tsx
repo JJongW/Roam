@@ -80,7 +80,7 @@ export function Conversation({
         <div className="flex items-center gap-3 pb-2 pt-4">
           <div className="h-1 flex-1 overflow-hidden rounded-full bg-secondary">
             <span
-              className="block h-full rounded-full bg-primary transition-all duration-500"
+              className="block h-full rounded-full bg-primary transition-all duration-[var(--motion-d6)]"
               style={{ width: `${Math.min(((index + 1) / 5) * 100, 100)}%` }}
             />
           </div>
@@ -95,7 +95,7 @@ export function Conversation({
       {/* Romi 중앙 + 질문 — 화면 상단 2/3에 여유롭게 (ingan.ai 톤) */}
       <div
         key={index}
-        className="animate-in fade-in slide-in-from-bottom-1 flex flex-1 flex-col items-center justify-center gap-5 text-center duration-300"
+        className="animate-in fade-in slide-in-from-bottom-1 flex flex-1 flex-col items-center justify-center gap-5 text-center duration-[var(--motion-d6)]"
       >
         <span className="flex size-32 items-center justify-center overflow-hidden rounded-[2.5rem]">
           <RoamMotion src="/walk_think.webm" />
@@ -111,7 +111,7 @@ export function Conversation({
       {/* 답변 카드 — 하단 고정 */}
       <div
         key={`opts-${index}`}
-        className="animate-in fade-in flex flex-col gap-2.5 pt-4 duration-300"
+        className="animate-in fade-in flex flex-col gap-2.5 pt-4 duration-[var(--motion-d6)]"
       >
         {q.options.map((o) => (
           <button
