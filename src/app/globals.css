@@ -87,6 +87,23 @@
   --spacing-screen-bottom: var(--spacing-x14); /* 56px — 화면 하단 여백 */
   --spacing-between-text: var(--spacing-x1-5); /* 6px — 텍스트 요소 간 */
   --spacing-between-chips: var(--spacing-x2); /* 8px — 칩 간 가로 간격 */
+
+  /* SEED 모션 토큰 — duration 6단계 + easing 6종 */
+  --motion-d1: 50ms;
+  --motion-d2: 100ms;
+  --motion-d3: 150ms;
+  --motion-d4: 200ms;
+  --motion-d5: 250ms;
+  --motion-d6: 300ms;
+  --motion-color-transition: var(--motion-d3);
+  --motion-pressed-scale: var(--motion-d3);
+
+  --motion-ease-linear: cubic-bezier(0, 0, 1, 1); /* 등속 — 스피너 등 반복 재생용 */
+  --motion-ease-functional: cubic-bezier(0.35, 0, 0.35, 1);
+  --motion-ease-enter: cubic-bezier(0, 0, 0.15, 1);
+  --motion-ease-exit: cubic-bezier(0.35, 0, 1, 1);
+  --motion-ease-enter-expressive: cubic-bezier(0.03, 0.4, 0.1, 1);
+  --motion-ease-exit-expressive: cubic-bezier(0.35, 0, 0.95, 0.55);
 }
 
 .dark {
