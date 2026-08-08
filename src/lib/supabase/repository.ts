@@ -1139,8 +1139,30 @@ export class SupabaseRepository implements Repository {
     return (data ?? []).map((row) => mapUser(row as Row));
   }
 
+  /**
+   * 계정 삭제(관리자). bookmark는 FK cascade(0025)로 자동 정리되지만
+   * user_signal_log·route_plan·user_brain·booth_note는 cascade 여부가
+   * 마이그레이션 히스토리로 확인 안 돼(로컬에 0001~0023 없음) 여기서
+   * 직접 먼저 지운다 — 안 그러면 app_user만 지워지고 나머지가 고아로 남을 수 있다.
+   */
   async deleteUser(id: string): Promise<boolean> {
     const db = await this.db();
+    maybeWrote(
+      await db.from("booth_note").delete().eq("user_id", id),
+      "계정 삭제(노트 정리)",
+    );
+    maybeWrote(
+      await db.from("route_plan").delete().eq("user_id", id),
+      "계정 삭제(동선 정리)",
+    );
+    maybeWrote(
+      await db.from("user_brain").delete().eq("user_id", id),
+      "계정 삭제(브레인 정리)",
+    );
+    loggedWrite(
+      await db.from("user_signal_log").delete().eq("user_id", id),
+      "계정 삭제(신호 로그 정리)",
+    );
     const { error, count } = await db
       .from("app_user")
       .delete({ count: "exact" })

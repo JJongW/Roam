@@ -5,41 +5,45 @@ import { RefreshCw } from "lucide-react";
 import { api } from "@/lib/api/client";
 import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/ui/chip";
-import { EmptyState } from "@/components/common/states";
+import { EmptyState, ErrorState } from "@/components/common/states";
 import { TimelineRow } from "@/components/admin/timeline-row";
 import { buildTimeline, type TimelineEvent } from "@/lib/admin/timeline";
-import type { AnalyticsEvent, Booth, Exhibition, User, UserSignal } from "@/lib/types";
+import type { AnalyticsEvent, Booth, Exhibition, UserSignal } from "@/lib/types";
 
 export default function AdminTimelinePage() {
   const [events, setEvents] = useState<TimelineEvent[]>([]);
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [exhibitionId, setExhibitionId] = useState<string | null>(null);
 
   async function load() {
     setLoading(true);
-    const [{ exhibition, signals, analytics, booths }, { users }] = await Promise.all([
-      api.get<{
+    setError(false);
+    try {
+      const { exhibition, signals, analytics, booths, nicknames } = await api.get<{
         exhibition: Exhibition | null;
         signals: UserSignal[];
         analytics: AnalyticsEvent[];
         booths: Booth[];
-      }>("/api/admin/timeline"),
-      api.get<{ users: User[] }>("/api/admin/users"),
-    ]);
-    if (!exhibition) {
-      setExhibitionId(null);
+        nicknames: Record<string, string>;
+      }>("/api/admin/timeline");
+      if (!exhibition) {
+        setExhibitionId(null);
+        return;
+      }
+      setExhibitionId(exhibition.id);
+      const nicknameMap = new Map(Object.entries(nicknames));
+      const byCode = new Map(
+        booths.filter((b) => b.code).map((b) => [b.code as string, b.name]),
+      );
+      const byId = new Map(booths.map((b) => [b.id, b.name]));
+      setEvents(buildTimeline(signals, analytics, nicknameMap, byCode, byId));
+    } catch {
+      setError(true);
+    } finally {
       setLoading(false);
-      return;
     }
-    setExhibitionId(exhibition.id);
-    const nicknames = new Map(users.map((u) => [u.id, u.nickname]));
-    const byCode = new Map(
-      booths.filter((b) => b.code).map((b) => [b.code as string, b.name]),
-    );
-    const byId = new Map(booths.map((b) => [b.id, b.name]));
-    setEvents(buildTimeline(signals, analytics, nicknames, byCode, byId));
-    setLoading(false);
   }
 
   useEffect(() => {
@@ -88,6 +92,8 @@ export default function AdminTimelinePage() {
 
       {loading ? (
         <p className="text-sm text-muted-foreground">불러오는 중…</p>
+      ) : error ? (
+        <ErrorState onRetry={() => void load()} />
       ) : !exhibitionId ? (
         <EmptyState title="전시가 없어요" />
       ) : filtered.length === 0 ? (

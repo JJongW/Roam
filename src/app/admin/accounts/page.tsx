@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { api, ApiClientError } from "@/lib/api/client";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { EmptyState } from "@/components/common/states";
+import { EmptyState, ErrorState } from "@/components/common/states";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -25,12 +25,19 @@ import type { User } from "@/lib/types";
 export default function AdminAccountsPage() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   async function load() {
     setLoading(true);
-    const { users } = await api.get<{ users: User[] }>("/api/admin/users");
-    setUsers(users);
-    setLoading(false);
+    setError(false);
+    try {
+      const { users } = await api.get<{ users: User[] }>("/api/admin/users");
+      setUsers(users);
+    } catch {
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -56,6 +63,8 @@ export default function AdminAccountsPage() {
 
       {loading ? (
         <p className="text-sm text-muted-foreground">불러오는 중…</p>
+      ) : error ? (
+        <ErrorState onRetry={() => void load()} />
       ) : users.length === 0 ? (
         <EmptyState title="계정이 없어요" />
       ) : (
