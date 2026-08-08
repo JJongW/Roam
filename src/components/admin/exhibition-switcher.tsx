@@ -1,8 +1,9 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
-import { api } from "@/lib/api/client";
+import { toast } from "sonner";
+import { api, ApiClientError } from "@/lib/api/client";
 import {
   Select,
   SelectContent,
@@ -20,7 +21,13 @@ export function ExhibitionSwitcher({
   selectedId: string | undefined;
 }) {
   const router = useRouter();
+  const pathname = usePathname();
   const [pending, setPending] = useState(false);
+  if (
+    pathname.startsWith("/admin/accounts") ||
+    pathname.startsWith("/admin/design-system")
+  )
+    return null;
   if (exhibitions.length === 0) return null;
 
   const sorted = [...exhibitions].sort((a, b) =>
@@ -32,6 +39,8 @@ export function ExhibitionSwitcher({
     try {
       await api.post("/api/admin/exhibition-selection", { exhibitionId });
       router.refresh();
+    } catch (e) {
+      toast.error(e instanceof ApiClientError ? e.error.message : "전시 전환 실패");
     } finally {
       setPending(false);
     }

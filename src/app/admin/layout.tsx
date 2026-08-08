@@ -3,7 +3,8 @@ import { AdminSidebar, AdminTopNav } from "@/components/admin/admin-nav";
 import { AdminUnlock } from "@/components/admin/admin-unlock";
 import { ExhibitionSwitcher } from "@/components/admin/exhibition-switcher";
 import { isAdminAuthed } from "@/lib/api/http";
-import { getRepository } from "@/lib/repositories";
+import { listExhibitionsCached } from "@/lib/repositories/cached";
+import { resolveAdminExhibition, todayISO } from "@/lib/exhibition/current";
 
 export const metadata = { title: "Admin" };
 
@@ -15,9 +16,9 @@ export default async function AdminLayout({
   // Organizer gate: when ORGANIZER_CODE is set, require the code (cookie) first.
   if (!(await isAdminAuthed())) return <AdminUnlock />;
 
-  const repo = await getRepository();
-  const { data: exhibitions } = await repo.listExhibitions({ limit: 100 });
-  const selectedId = (await cookies()).get("admin_exhibition_id")?.value;
+  const exhibitions = await listExhibitionsCached();
+  const cookieId = (await cookies()).get("admin_exhibition_id")?.value;
+  const resolved = resolveAdminExhibition(exhibitions.data, cookieId, todayISO());
 
   return (
     <div className="flex min-h-dvh">
@@ -29,7 +30,7 @@ export default async function AdminLayout({
           className="mx-auto w-full max-w-5xl flex-1 px-[var(--spacing-global-gutter)] py-6 md:px-8"
         >
           <div className="mb-5">
-            <ExhibitionSwitcher exhibitions={exhibitions} selectedId={selectedId} />
+            <ExhibitionSwitcher exhibitions={exhibitions.data} selectedId={resolved?.id} />
           </div>
           {children}
         </main>

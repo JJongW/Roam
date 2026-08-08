@@ -1,7 +1,7 @@
 import "server-only";
 import { cache } from "react";
 import { getRepository } from "@/lib/repositories";
-import type { BoothDetail, ExhibitionDetail } from "@/lib/types";
+import type { BoothDetail, Exhibition, ExhibitionDetail, Paginated } from "@/lib/types";
 
 /**
  * 요청 단위로 중복 제거된 전시 조회.
@@ -29,5 +29,19 @@ export const getBoothDetailCached = cache(
   async (id: string): Promise<BoothDetail | null> => {
     const repo = await getRepository();
     return repo.getBoothDetail(id);
+  },
+);
+
+/**
+ * 요청 단위로 중복 제거된 전시 목록 조회(admin 전용, limit 100 고정).
+ *
+ * admin 레이아웃(전시 선택기)이 추가되며 부스·이벤트·분석 페이지가 이미 하던
+ * `listExhibitions({ limit: 100 })` 호출에 레이아웃의 호출이 하나 더 겹치게
+ * 됐다 — 전시 상세·부스 상세와 같은 이유·같은 방법(react cache)으로 걷어낸다.
+ */
+export const listExhibitionsCached = cache(
+  async (): Promise<Paginated<Exhibition>> => {
+    const repo = await getRepository();
+    return repo.listExhibitions({ limit: 100 });
   },
 );
