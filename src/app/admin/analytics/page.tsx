@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { getRepository } from "@/lib/repositories";
 import { listExhibitionsCached } from "@/lib/repositories/cached";
 import { resolveAdminExhibition, todayISO } from "@/lib/exhibition/current";
+import { ADMIN_EXHIBITION_COOKIE } from "@/lib/constants";
 import { AdminSection } from "@/components/admin/section";
 import { PopularChart } from "@/components/charts/popular-chart";
 import { ConversionFunnel } from "@/components/charts/conversion-funnel";
@@ -13,7 +14,7 @@ export const metadata = { title: "분석" };
 export default async function AnalyticsPage() {
   const repo = await getRepository();
   const { data: exhibitions } = await listExhibitionsCached();
-  const cookieId = (await cookies()).get("admin_exhibition_id")?.value;
+  const cookieId = (await cookies()).get(ADMIN_EXHIBITION_COOKIE)?.value;
   const exhibition = resolveAdminExhibition(exhibitions, cookieId, todayISO());
 
   if (!exhibition) {

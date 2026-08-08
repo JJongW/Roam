@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { api, ApiClientError } from "@/lib/api/client";
@@ -20,12 +20,12 @@ export function ExhibitionSwitcher({
   exhibitions: Exhibition[];
   selectedId: string | undefined;
 }) {
-  const router = useRouter();
   const pathname = usePathname();
   const [pending, setPending] = useState(false);
   if (
     pathname.startsWith("/admin/accounts") ||
-    pathname.startsWith("/admin/design-system")
+    pathname.startsWith("/admin/design-system") ||
+    pathname.startsWith("/admin/exhibitions")
   )
     return null;
   if (exhibitions.length === 0) return null;
@@ -38,7 +38,7 @@ export function ExhibitionSwitcher({
     setPending(true);
     try {
       await api.post("/api/admin/exhibition-selection", { exhibitionId });
-      router.refresh();
+      window.location.reload();
     } catch (e) {
       toast.error(e instanceof ApiClientError ? e.error.message : "전시 전환 실패");
     } finally {
@@ -48,7 +48,7 @@ export function ExhibitionSwitcher({
 
   return (
     <Select value={selectedId} onValueChange={onChange} disabled={pending}>
-      <SelectTrigger className="w-full max-w-xs">
+      <SelectTrigger className="mb-5 w-full max-w-xs">
         <SelectValue placeholder="전시 선택" />
       </SelectTrigger>
       <SelectContent>

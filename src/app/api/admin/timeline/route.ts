@@ -3,13 +3,14 @@ import { getRepository } from "@/lib/repositories";
 import { listExhibitionsCached } from "@/lib/repositories/cached";
 import { resolveAdminExhibition, todayISO } from "@/lib/exhibition/current";
 import { ok, requireAdmin } from "@/lib/api/http";
+import { ADMIN_EXHIBITION_COOKIE } from "@/lib/constants";
 
 export async function GET() {
   const denied = await requireAdmin();
   if (denied) return denied;
   const repo = await getRepository();
   const { data: exhibitions } = await listExhibitionsCached();
-  const cookieId = (await cookies()).get("admin_exhibition_id")?.value;
+  const cookieId = (await cookies()).get(ADMIN_EXHIBITION_COOKIE)?.value;
   const exhibition = resolveAdminExhibition(exhibitions, cookieId, todayISO());
   if (!exhibition) {
     return ok({ exhibition: null, signals: [], analytics: [], booths: [], nicknames: {} });

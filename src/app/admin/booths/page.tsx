@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { getRepository } from "@/lib/repositories";
 import { listExhibitionsCached } from "@/lib/repositories/cached";
 import { resolveAdminExhibition, todayISO } from "@/lib/exhibition/current";
+import { ADMIN_EXHIBITION_COOKIE } from "@/lib/constants";
 import { BoothManager } from "@/components/admin/booth-manager";
 
 export const metadata = { title: "부스 관리" };
@@ -9,7 +10,7 @@ export const metadata = { title: "부스 관리" };
 export default async function AdminBoothsPage() {
   const repo = await getRepository();
   const { data: exhibitions } = await listExhibitionsCached();
-  const cookieId = (await cookies()).get("admin_exhibition_id")?.value;
+  const cookieId = (await cookies()).get(ADMIN_EXHIBITION_COOKIE)?.value;
   const exhibition = resolveAdminExhibition(exhibitions, cookieId, todayISO());
   if (!exhibition) return <p className="text-muted-foreground">전시가 없습니다.</p>;
 

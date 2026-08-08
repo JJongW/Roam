@@ -5,6 +5,7 @@ import { ExhibitionSwitcher } from "@/components/admin/exhibition-switcher";
 import { isAdminAuthed } from "@/lib/api/http";
 import { listExhibitionsCached } from "@/lib/repositories/cached";
 import { resolveAdminExhibition, todayISO } from "@/lib/exhibition/current";
+import { ADMIN_EXHIBITION_COOKIE } from "@/lib/constants";
 
 export const metadata = { title: "Admin" };
 
@@ -17,7 +18,7 @@ export default async function AdminLayout({
   if (!(await isAdminAuthed())) return <AdminUnlock />;
 
   const exhibitions = await listExhibitionsCached();
-  const cookieId = (await cookies()).get("admin_exhibition_id")?.value;
+  const cookieId = (await cookies()).get(ADMIN_EXHIBITION_COOKIE)?.value;
   const resolved = resolveAdminExhibition(exhibitions.data, cookieId, todayISO());
 
   return (
@@ -29,9 +30,7 @@ export default async function AdminLayout({
           id="main"
           className="mx-auto w-full max-w-5xl flex-1 px-[var(--spacing-global-gutter)] py-6 md:px-8"
         >
-          <div className="mb-5">
-            <ExhibitionSwitcher exhibitions={exhibitions.data} selectedId={resolved?.id} />
-          </div>
+          <ExhibitionSwitcher exhibitions={exhibitions.data} selectedId={resolved?.id} />
           {children}
         </main>
       </div>

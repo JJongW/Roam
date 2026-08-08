@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
 import {
   Building2,
   Store,
@@ -7,12 +8,16 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { getRepository } from "@/lib/repositories";
+import { listExhibitionsCached } from "@/lib/repositories/cached";
+import { resolveAdminExhibition, todayISO } from "@/lib/exhibition/current";
+import { ADMIN_EXHIBITION_COOKIE } from "@/lib/constants";
 import { Card } from "@/components/ui/card";
 
 export default async function AdminOverviewPage() {
   const repo = await getRepository();
-  const { data: exhibitions } = await repo.listExhibitions({ limit: 100 });
-  const primary = exhibitions[0];
+  const { data: exhibitions } = await listExhibitionsCached();
+  const cookieId = (await cookies()).get(ADMIN_EXHIBITION_COOKIE)?.value;
+  const primary = resolveAdminExhibition(exhibitions, cookieId, todayISO());
 
   let boothCount = 0;
   let eventCount = 0;

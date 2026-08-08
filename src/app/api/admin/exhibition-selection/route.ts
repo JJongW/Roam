@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { cookies } from "next/headers";
 import { noContent, parseBody, requireAdmin } from "@/lib/api/http";
+import { ADMIN_EXHIBITION_COOKIE } from "@/lib/constants";
 
 const bodySchema = z.object({ exhibitionId: z.string().min(1) });
 
@@ -16,7 +17,7 @@ export async function POST(req: Request) {
   if (!parsed.ok) return parsed.res;
 
   const store = await cookies();
-  store.set("admin_exhibition_id", parsed.data.exhibitionId, {
+  store.set(ADMIN_EXHIBITION_COOKIE, parsed.data.exhibitionId, {
     httpOnly: true,
     sameSite: "lax",
     path: "/",

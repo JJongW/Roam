@@ -1,11 +1,10 @@
-import { getRepository } from "@/lib/repositories";
+import { listExhibitionsCached } from "@/lib/repositories/cached";
 import { ExhibitionManager } from "@/components/admin/exhibition-manager";
 
 export const metadata = { title: "전시 관리" };
 
 export default async function AdminExhibitionsPage() {
-  const repo = await getRepository();
-  const { data: exhibitions } = await repo.listExhibitions({ limit: 100 });
+  const { data: exhibitions } = await listExhibitionsCached();
 
   return (
     <div className="space-y-5">
