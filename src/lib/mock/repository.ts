@@ -648,6 +648,26 @@ export class MockRepository implements Repository {
     return user;
   }
 
+  async listUsers(opts?: {
+    limit?: number;
+    offset?: number;
+  }): Promise<User[]> {
+    const rows = [...store().users].sort((a, b) =>
+      b.createdAt.localeCompare(a.createdAt),
+    );
+    const offset = opts?.offset ?? 0;
+    const sliced = rows.slice(offset);
+    return opts?.limit ? sliced.slice(0, opts.limit) : sliced;
+  }
+
+  async deleteUser(id: string): Promise<boolean> {
+    const s = store();
+    const i = s.users.findIndex((u) => u.id === id);
+    if (i < 0) return false;
+    s.users.splice(i, 1);
+    return true;
+  }
+
   async getUser(id: string): Promise<User | null> {
     return store().users.find((u) => u.id === id) ?? null;
   }
@@ -881,6 +901,16 @@ export class MockRepository implements Repository {
     if (opts?.exhibitionId) {
       rows = rows.filter((s) => s.exhibitionId === opts.exhibitionId);
     }
+    return opts?.limit ? rows.slice(0, opts.limit) : rows;
+  }
+
+  async listExhibitionSignals(
+    exhibitionId: string,
+    opts?: { limit?: number },
+  ): Promise<UserSignal[]> {
+    const rows = store()
+      .userSignals.filter((s) => s.exhibitionId === exhibitionId)
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
     return opts?.limit ? rows.slice(0, opts.limit) : rows;
   }
 

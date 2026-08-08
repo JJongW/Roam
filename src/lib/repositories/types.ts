@@ -144,6 +144,11 @@ export interface Repository {
     userId: string,
     opts?: { exhibitionId?: string; limit?: number },
   ): Promise<UserSignal[]>;
+  /** 전시 전체 사용자 신호 조회(관리자 타임라인용) — userId로 안 좁힘. */
+  listExhibitionSignals(
+    exhibitionId: string,
+    opts?: { limit?: number },
+  ): Promise<UserSignal[]>;
   /** 증류된 종단 브레인 조회. 없으면 null. */
   getUserBrain(userId: string): Promise<UserBrain | null>;
   /** 증류된 브레인 upsert. */
@@ -151,6 +156,10 @@ export interface Repository {
 
   // users (nickname + OAuth auth)
   createUser(nickname: string): Promise<User>;
+  /** 계정 목록(관리자용, 최신 가입순). */
+  listUsers(opts?: { limit?: number; offset?: number }): Promise<User[]>;
+  /** 계정 삭제(관리자용). 존재 안 하면 false. */
+  deleteUser(id: string): Promise<boolean>;
   getUser(id: string): Promise<User | null>;
   getUserByNickname(nickname: string): Promise<User | null>;
   /** Find an OAuth-linked account by provider identity, or null. */

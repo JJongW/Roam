@@ -1122,6 +1122,32 @@ export class SupabaseRepository implements Repository {
     return mapUser(wrote(res, "계정 생성") as Row);
   }
 
+  async listUsers(opts?: {
+    limit?: number;
+    offset?: number;
+  }): Promise<User[]> {
+    const db = await this.db();
+    let q = db
+      .from("app_user")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (opts?.limit) {
+      const offset = opts.offset ?? 0;
+      q = q.range(offset, offset + opts.limit - 1);
+    }
+    const { data } = await q;
+    return (data ?? []).map((row) => mapUser(row as Row));
+  }
+
+  async deleteUser(id: string): Promise<boolean> {
+    const db = await this.db();
+    const { error, count } = await db
+      .from("app_user")
+      .delete({ count: "exact" })
+      .eq("id", id);
+    return !error && (count ?? 0) > 0;
+  }
+
   async getUser(id: string): Promise<User | null> {
     const db = await this.db();
     const { data } = await db
@@ -1620,6 +1646,32 @@ export class SupabaseRepository implements Repository {
       .eq("user_id", userId)
       .order("created_at", { ascending: false });
     if (opts?.exhibitionId) q = q.eq("exhibition_id", opts.exhibitionId);
+    if (opts?.limit) q = q.limit(opts.limit);
+    const { data } = await q;
+    return (data ?? []).map((row) => {
+      const r = row as Row;
+      return {
+        id: String(r.id),
+        userId: String(r.user_id),
+        exhibitionId: String(r.exhibition_id),
+        kind: String(r.kind) as SignalKind,
+        boothCode: r.booth_code == null ? undefined : String(r.booth_code),
+        slugs: strArr(r.slugs),
+        createdAt: String(r.created_at),
+      };
+    });
+  }
+
+  async listExhibitionSignals(
+    exhibitionId: string,
+    opts?: { limit?: number },
+  ): Promise<UserSignal[]> {
+    const db = await this.db();
+    let q = db
+      .from("user_signal_log")
+      .select("*")
+      .eq("exhibition_id", exhibitionId)
+      .order("created_at", { ascending: false });
     if (opts?.limit) q = q.limit(opts.limit);
     const { data } = await q;
     return (data ?? []).map((row) => {

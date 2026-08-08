@@ -194,4 +194,49 @@ describe("MockRepository", () => {
     expect(pending.length).toBe(2);
     expect(pending.every((p) => p.boothName.length > 0)).toBe(true);
   });
+
+  it("listExhibitionSignals: 전시 단위로 전체 사용자 신호를 최신순 반환한다", async () => {
+    await repo.appendUserSignal({
+      userId: "u1",
+      exhibitionId: "ex1",
+      kind: "reaction_interested",
+      slugs: [],
+    });
+    await repo.appendUserSignal({
+      userId: "u2",
+      exhibitionId: "ex1",
+      kind: "reaction_later",
+      slugs: [],
+    });
+    await repo.appendUserSignal({
+      userId: "u1",
+      exhibitionId: "ex2",
+      kind: "reaction_interested",
+      slugs: [],
+    });
+    const rows = await repo.listExhibitionSignals("ex1");
+    expect(rows).toHaveLength(2);
+    expect(rows.every((r) => r.exhibitionId === "ex1")).toBe(true);
+  });
+
+  it("listUsers: 전체를 반환하고 limit을 적용한다", async () => {
+    // 주의: createdAt은 밀리초 단위(new Date().toISOString())라 빠르게 연속 생성하면
+    // 같은 타임스탬프가 나올 수 있다 — 정렬 순서(어느 게 "가장 최근"인지)는 단언하지
+    // 않고, 전체 개수와 limit 동작만 확인한다.
+    await repo.createUser("a");
+    await repo.createUser("b");
+    await repo.createUser("c");
+    const all = await repo.listUsers();
+    expect(all).toHaveLength(3);
+    expect(all.map((u) => u.nickname).sort()).toEqual(["a", "b", "c"]);
+    const limited = await repo.listUsers({ limit: 2 });
+    expect(limited).toHaveLength(2);
+  });
+
+  it("deleteUser: 존재하는 계정을 지우고 true를 반환, 없으면 false", async () => {
+    const u = await repo.createUser("temp");
+    expect(await repo.deleteUser(u.id)).toBe(true);
+    expect(await repo.getUser(u.id)).toBeNull();
+    expect(await repo.deleteUser("no-such-id")).toBe(false);
+  });
 });
