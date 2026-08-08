@@ -35,6 +35,22 @@ export function pickAdminExhibition(
   return [...exhibitions].sort((a, b) => b.endDate.localeCompare(a.endDate))[0];
 }
 
+/**
+ * 운영자가 admin 전시 선택기로 명시 선택한 전시(쿠키)가 있으면 그걸, 없거나
+ * 무효(삭제된 전시 id 등)하면 pickAdminExhibition 자동 선택으로 폴백한다.
+ */
+export function resolveAdminExhibition(
+  exhibitions: Exhibition[],
+  cookieExhibitionId: string | undefined,
+  today: string,
+): Exhibition | undefined {
+  if (cookieExhibitionId) {
+    const found = exhibitions.find((e) => e.id === cookieExhibitionId);
+    if (found) return found;
+  }
+  return pickAdminExhibition(exhibitions, today);
+}
+
 /** 오늘 날짜를 `YYYY-MM-DD`로. 서버 로컬 시간 기준. */
 export function todayISO(now = new Date()): string {
   return now.toISOString().slice(0, 10);

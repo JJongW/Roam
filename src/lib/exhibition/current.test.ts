@@ -67,3 +67,31 @@ describe("todayISO", () => {
     expect(todayISO(new Date("2026-07-29T15:04:05.000Z"))).toBe("2026-07-29");
   });
 });
+
+import { resolveAdminExhibition } from "./current";
+
+describe("resolveAdminExhibition", () => {
+  it("쿠키의 전시 id가 목록에 있으면 그 전시를 고른다", () => {
+    // sif가 자동 선택 대상이 아닌 날짜(2026-09-01, house_archive가 자동 선택됨)에도
+    // 쿠키가 sibf를 가리키면 sibf를 고른다.
+    expect(
+      resolveAdminExhibition(all, "exh_sibf_2026", "2026-09-01")?.id,
+    ).toBe("exh_sibf_2026");
+  });
+
+  it("쿠키가 없으면 pickAdminExhibition과 동일하게 자동 선택한다", () => {
+    expect(resolveAdminExhibition(all, undefined, "2026-07-31")?.id).toBe(
+      pickAdminExhibition(all, "2026-07-31")?.id,
+    );
+  });
+
+  it("쿠키의 전시 id가 목록에 없으면(삭제됨) 자동 선택으로 폴백한다", () => {
+    expect(
+      resolveAdminExhibition(all, "exh_deleted", "2026-07-31")?.id,
+    ).toBe(pickAdminExhibition(all, "2026-07-31")?.id);
+  });
+
+  it("목록이 비면 undefined", () => {
+    expect(resolveAdminExhibition([], "exh_sibf_2026", "2026-07-31")).toBeUndefined();
+  });
+});
