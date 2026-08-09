@@ -13,7 +13,7 @@ import {
   scheduleReminder,
 } from "@/lib/push/notify";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Chip } from "@/components/ui/chip";
 import { useT } from "@/lib/i18n/provider";
 import type { BoothEvent } from "@/lib/types";
 
@@ -95,9 +95,9 @@ export function EventList({ events }: { events: BoothEvent[] }) {
                           </span>
                         )}
                         {live && (
-                          <Badge variant="destructive">
+                          <Chip className="min-h-0 py-0.5 bg-destructive/12 text-destructive">
                             {t("event.inProgress")}
-                          </Badge>
+                          </Chip>
                         )}
                       </div>
                       <p className="font-bold leading-snug">{e.title}</p>
