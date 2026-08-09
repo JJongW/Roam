@@ -50,6 +50,10 @@
 thingsToDo·timing·memoryHooks)로 정규화. 예시 저작본: `enrichment-sibf-2026.json`의
 `A1001`·`A1101`.
 
+## ⚠️ 소스 이미지 백업
+
+`node scripts/gen-house-archive-enrichment.mjs`를 실행할 때, 원본 이미지 파일들도 자동으로 Supabase Storage의 private bucket(`booth-originals/house-archive-2026/`)에 백업된다. `public/house_archive_br/house_archive_images/` 폴더가 손상되거나 손실되면, 이 bucket에서 원본들을 다운로드해 폴더를 복구한 후 스크립트를 다시 실행한다.
+
 ## 입력 양식 (복사해서 채우기)
 
 ```

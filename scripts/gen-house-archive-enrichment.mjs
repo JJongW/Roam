@@ -158,10 +158,16 @@ for (const r of data) {
 }
 let images = 0;
 let originalsUploaded = 0;
+let originalsAttempted = 0;
 
 const creds = loadSupabaseCreds();
-const supabase =
-  creds.url && creds.key ? createClient(creds.url, creds.key) : null;
+const supabase = (() => {
+  try {
+    return creds.url && creds.key ? createClient(creds.url, creds.key) : null;
+  } catch {
+    return null;
+  }
+})();
 if (!supabase) {
   warn.push("Supabase 자격증명 없음 — 원본 백업 업로드를 건너뜀(크롭·JSON은 계속 진행)");
 }
@@ -191,15 +197,20 @@ if (existsSync(IMG_SRC)) {
     images++;
     if (supabase) {
       const ext = file.match(/\.[a-z]+$/i)?.[0] ?? ".jpg";
+      originalsAttempted++;
       try {
         const { error: uploadError } = await supabase.storage
           .from(ORIGINALS_BUCKET)
-          .upload(`${ORIGINALS_PREFIX}/${code}${ext}`, readFileSync(src), {
+          .upload(`${ORIGINALS_PREFIX}/${code}-${handle}${ext}`, readFileSync(src), {
             contentType: ext === ".png" ? "image/png" : "image/jpeg",
-            upsert: true,
+            upsert: false,
           });
         if (uploadError) {
-          warn.push(`원본 백업 업로드 실패: ${code} — ${uploadError.message}`);
+          if (/already exists|duplicate/i.test(uploadError.message)) {
+            originalsUploaded++;
+          } else {
+            warn.push(`원본 백업 업로드 실패: ${code} — ${uploadError.message}`);
+          }
         } else {
           originalsUploaded++;
         }
@@ -216,7 +227,7 @@ const sorted = Object.fromEntries(
 writeFileSync(OUT, `${JSON.stringify(sorted, null, 2)}\n`);
 console.log(`이미지 ${images}장 → ${IMG_OUT}`);
 if (supabase) {
-  console.log(`원본 백업 ${originalsUploaded}/${images}장 → Supabase '${ORIGINALS_BUCKET}/${ORIGINALS_PREFIX}'`);
+  console.log(`원본 백업 ${originalsUploaded}/${originalsAttempted}장 → Supabase '${ORIGINALS_BUCKET}/${ORIGINALS_PREFIX}'`);
 }
 
 console.log(`${OUT} — ${Object.keys(sorted).length}개 부스`);
