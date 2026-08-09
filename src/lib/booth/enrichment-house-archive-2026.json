@@ -335,6 +335,46 @@
     "roamInterpretation": "라운지에서 워크숍을 여는 곳이야.",
     "image": "/booths/house-archive/G14.webp"
   },
+  "H01": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "모든 오래된 것들에 대한 애정을 바탕으로, 한 사람의 진심 어린 취향을 담아 고르고 모아온 빈티지 소품을 선보이는 편집숍입니다. 이번 하우스 아카이브 '수집의 집'에서는 오랜 시간에 걸쳐 모아온 취향과 이야기가 담긴 공간을 선보입니다.",
+    "sourceUrl": "https://instagram.com/bigsleep_shop",
+    "roamInterpretation": "성산동 빈티지 쇼룸이 통째로 들어온 편집숍이야.",
+    "image": "/booths/house-archive/H01.webp"
+  },
+  "H02": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "'정해진 형태나 의미에 얽매이지 않은 자유로운 표현'을 이름에 담은 작가로, 회화·도자·가구디자인·설치 등을 아우릅니다. 이번 하우스 아카이브 '관계의 집'에서는 소브라메사(식탁 대화)에서 영감을 받아 식탁과 대화의 순간들을 그려내고, 직접 만든 식기·가구·오브제로 환대의 풍경을 확장합니다.",
+    "sourceUrl": "https://instagram.com/herncworkshop",
+    "roamInterpretation": "식탁 대화에서 영감받아 식기랑 가구를 직접 만드는 작가야.",
+    "image": "/booths/house-archive/H02.webp"
+  },
+  "H03": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "5인조 음악·비주얼 크리에이티브 그룹으로, 1st LP 《Memory Overdrive》를 발표했습니다. '창작의 집' 주제로 기획존 콜라보 부스에 참가합니다.",
+    "sourceUrl": "https://instagram.com/azikazinmagicworld",
+    "roamInterpretation": "5인조 음악·비주얼 그룹이 여는 콜라보 부스야.",
+    "image": "/booths/house-archive/H03.webp"
+  },
+  "H04": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "2005년부터 이어온 국내 대표 북스테이(Bookstay)로, 헤이리에 위치해 서재·아트스테이 프레농을 운영합니다. 이번 하우스 아카이브 '쉼의 집' 주제로 참가합니다.",
+    "sourceUrl": "https://instagram.com/motif.1",
+    "roamInterpretation": "2005년부터 이어온 헤이리 북스테이야.",
+    "image": "/booths/house-archive/H04.webp"
+  },
+  "H05": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "Sharon Kim, 부산·서울 기반 아티스트이자 포토그래퍼로 서핑·음악·사진 콘텐츠를 선보입니다. 이번 하우스 아카이브 '탐험의 집' 주제로 참가합니다.",
+    "sourceUrl": "https://instagram.com/sharon_loves_bigmac",
+    "roamInterpretation": "부산·서울 오가며 서핑이랑 사진을 찍는 아티스트야.",
+    "image": "/booths/house-archive/H05.webp"
+  },
   "M01": {
     "goodsKeywords": [],
     "themeTags": [],
@@ -354,9 +394,9 @@
   "M03": {
     "goodsKeywords": [],
     "themeTags": [],
-    "summary": "about 누아 - 그저 미술이 좋아서 인생의 절반 이상의 시간 동안 그림을 그렸다.",
+    "summary": "about 누아 - 그저 미술이 좋아서 인생의 절반 이상의 시간 동안 그림을 그렸다. 이번 하우스 아카이브에서는 누키트와 함께 'Mom's palette'를 주제로 콜라보 부스를 운영한다. / 누키트: 감도 높은 아트워크로 라이프스타일 전반의 홈패브릭 아이템을 제안하는 브랜드. 이번 하우스 아카이브에서는 누아(@libere_nuage)와 'Mom's palette'를 주제로 M03 부스를 공동 운영한다.",
     "sourceUrl": "https://instagram.com/libere_nuage",
-    "roamInterpretation": "인생 절반을 그림 그린 작가야.",
+    "roamInterpretation": "누아랑 누키트가 'Mom's palette'란 주제로 같이 여는 콜라보 부스야.",
     "image": "/booths/house-archive/M03.webp"
   },
   "M04": {
@@ -542,5 +582,213 @@
     "sourceUrl": "https://instagram.com/beaurit_official",
     "roamInterpretation": "여성용 홈필라테스 브랜드야.",
     "image": "/booths/house-archive/R13.webp"
+  },
+  "T01": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "생일의 장면을 식기로 담아내는 세라믹 브랜드.",
+    "sourceUrl": "https://instagram.com/boxgirl.studio",
+    "roamInterpretation": "생일의 한 장면을 그릇에 담는 세라믹 브랜드야.",
+    "image": "/booths/house-archive/T01.webp"
+  },
+  "T02": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "시간을 수놓은 빈티지 취향의 패브릭 브랜드.",
+    "sourceUrl": "https://instagram.com/ourhourourhour",
+    "roamInterpretation": "시간을 수놓는 빈티지 감성의 패브릭 브랜드야.",
+    "image": "/booths/house-archive/T02.webp"
+  },
+  "T03": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "일상의 감도를 채우는 프리미엄 디시 케어 브랜드.",
+    "sourceUrl": "https://instagram.com/naroe.official",
+    "roamInterpretation": "일상의 감도를 채우는 디시 케어 브랜드야.",
+    "image": "/booths/house-archive/T03.webp"
+  },
+  "T04": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "세상에 하나뿐인, 손의 흔적을 담은 비정형 세라믹 오브제.",
+    "sourceUrl": "https://instagram.com/a_0.zip",
+    "roamInterpretation": "손의 흔적을 그대로 살린 비정형 세라믹을 만들어.",
+    "image": "/booths/house-archive/T04.webp"
+  },
+  "T05": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "<액막이 붕어빵>을 비롯한 귀여운 빵을 굽는 도자기 베이커리.",
+    "sourceUrl": "https://instagram.com/seegoalsonyeo",
+    "roamInterpretation": "액막이 붕어빵 같은 귀여운 빵을 굽는 도자기 베이커리야.",
+    "image": "/booths/house-archive/T05.webp"
+  },
+  "T06": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "사소한 것들에 괜히 장난을 걸어보는 비주얼 프로덕션.",
+    "sourceUrl": "https://instagram.com/ctrl_a_visual",
+    "roamInterpretation": "사소한 것들에 장난을 걸어보는 비주얼 프로덕션이야.",
+    "image": "/booths/house-archive/T06.webp"
+  },
+  "T07": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "부드러운 원단과 포근한 재료로 만든 귀여운 소품 브랜드.",
+    "sourceUrl": "https://instagram.com/e1e_studio",
+    "roamInterpretation": "부드러운 원단으로 포근한 소품을 만들어.",
+    "image": "/booths/house-archive/T07.webp"
+  },
+  "T08": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "아트 프린트, 패브릭, 키링 등 일상의 빛을 전하는 라이프 아트 브랜드.",
+    "sourceUrl": "https://instagram.com/karangkarang__",
+    "roamInterpretation": "아트 프린트랑 키링으로 일상에 빛을 더하는 브랜드야.",
+    "image": "/booths/house-archive/T08.webp"
+  },
+  "T09": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "미묘한 감정과 순간들을 담아낸 전 세계 100가지 단어 아카이브.",
+    "sourceUrl": "https://instagram.com/t4hm.turf",
+    "roamInterpretation": "전 세계 100가지 단어를 감정으로 옮겨 담은 아카이브야.",
+    "image": "/booths/house-archive/T09.webp"
+  },
+  "T10": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "일상을 기록하고 간직하기 위해 자연을 담아 만든 도구.",
+    "sourceUrl": "https://instagram.com/sopoiyagi",
+    "roamInterpretation": "자연을 담아 일상을 기록하는 도구를 만들어.",
+    "image": "/booths/house-archive/T10.webp"
+  },
+  "T11": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "오일 파스텔로 풍경을 담아내는 일러스트레이터 순심 작가의 1인 독립 출판사.",
+    "sourceUrl": "https://instagram.com/bysoonsim",
+    "roamInterpretation": "오일 파스텔로 풍경을 그리는 일러스트레이터의 1인 출판사야.",
+    "image": "/booths/house-archive/T11.webp"
+  },
+  "T12": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "일상에 귀여움 한 조각을 더하는 3D프린팅 & 핸드메이드 굿즈 브랜드.",
+    "sourceUrl": "https://instagram.com/mmungjju",
+    "roamInterpretation": "3D프린팅과 손끝으로 귀여움을 더하는 굿즈 브랜드야.",
+    "image": "/booths/house-archive/T12.webp"
+  },
+  "T13": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "고양이 두 마리와 함께 살며 '고양이와 동그란 세상'을 그리는 일러스트레이터.",
+    "sourceUrl": "https://instagram.com/godongsang",
+    "roamInterpretation": "고양이 두 마리와 사는 일상을 그리는 일러스트레이터야.",
+    "image": "/booths/house-archive/T13.webp"
+  },
+  "T14": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "취향에 맞는 일러스트를 선택해 만드는 데스크테리어 제품.",
+    "sourceUrl": "https://instagram.com/cong_cafe",
+    "roamInterpretation": "취향대로 고르는 일러스트 데스크테리어야.",
+    "image": "/booths/house-archive/T14.webp"
+  },
+  "T15": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "40년 경력 디자이너 엄마와 따뜻한 감성을 사랑하는 딸이 운영하는 패브릭 공방.",
+    "sourceUrl": "https://instagram.com/hey.lazysoo",
+    "roamInterpretation": "40년 경력 디자이너 엄마랑 딸이 함께 하는 패브릭 공방이야.",
+    "image": "/booths/house-archive/T15.webp"
+  },
+  "T16": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "바느질로 이어진 우리, 일상에 작은 즐거움을 더하는 패브릭 소품 브랜드.",
+    "sourceUrl": "https://instagram.com/sewing._.us",
+    "roamInterpretation": "바느질로 일상에 즐거움을 더하는 패브릭 브랜드야.",
+    "image": "/booths/house-archive/T16.webp"
+  },
+  "T17": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "그림으로 전하는 작은 웃음과 위로, 그리고 안부.",
+    "sourceUrl": "https://instagram.com/pil.hwa",
+    "roamInterpretation": "그림 한 장으로 웃음이랑 안부를 전해.",
+    "image": "/booths/house-archive/T17.webp"
+  },
+  "T18": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "소소한 행복을 주는 음식과 자연을 담은 일러스트 브랜드.",
+    "sourceUrl": "https://instagram.com/nijiboku",
+    "roamInterpretation": "소소한 행복을 담은 음식·자연 일러스트 브랜드야.",
+    "image": "/booths/house-archive/T18.webp"
+  },
+  "T19": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "아름다운 자연에서 동화를 꿈꾸며 키덜트 문화를 추구하는 브랜드.",
+    "sourceUrl": "https://instagram.com/kiwoomaru",
+    "roamInterpretation": "동화 같은 자연을 꿈꾸는 키덜트 브랜드야.",
+    "image": "/booths/house-archive/T19.webp"
+  },
+  "T20": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "'재즈 일력'과 작품집 <너의 집>을 통해 집과 일상의 가치를 전하는 브랜드.",
+    "sourceUrl": "https://instagram.com/studio_padonamu",
+    "roamInterpretation": "'재즈 일력'으로 집과 일상의 가치를 전하는 브랜드야.",
+    "image": "/booths/house-archive/T20.webp"
+  },
+  "T21": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "냉장고와 현관에 붙여 식재료와 일정을 관리하는 자석 플래너보드.",
+    "sourceUrl": "https://instagram.com/ssub.official",
+    "roamInterpretation": "냉장고에 붙여 식재료랑 일정을 관리하는 자석 플래너보드야.",
+    "image": "/booths/house-archive/T21.webp"
+  },
+  "T22": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "마음속에 묻어둔 꿈을 시작할 수 있도록 용기와 응원을 전하는 디자인 오브제 브랜드.",
+    "sourceUrl": "https://instagram.com/likid_design",
+    "roamInterpretation": "묻어둔 꿈을 꺼내보게 응원하는 디자인 오브제 브랜드야.",
+    "image": "/booths/house-archive/T22.webp"
+  },
+  "T23": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "워리스톤 키링, 그립톡, 티 코스터 등 수작업으로 만드는 귀여운 아이템.",
+    "sourceUrl": "https://instagram.com/ppi_kan",
+    "roamInterpretation": "키링, 그립톡 같은 걸 손으로 만드는 브랜드야.",
+    "image": "/booths/house-archive/T23.webp"
+  },
+  "T24": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "세계적인 로스터리부터 국내의 보석 같은 원두까지 소개하는 스페셜티 커피 큐레이션.",
+    "sourceUrl": "https://instagram.com/hamsoosee_note",
+    "roamInterpretation": "세계 로스터리 원두를 소개하는 스페셜티 커피 큐레이션이야.",
+    "image": "/booths/house-archive/T24.webp"
+  },
+  "T25": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "귀여운 미니 식물과 희귀한 아프리카 식물로 돌보는 하루를 제안하는 브랜드.",
+    "sourceUrl": "https://instagram.com/billybeanmillim",
+    "roamInterpretation": "미니 식물이랑 희귀 아프리카 식물을 돌보는 브랜드야.",
+    "image": "/booths/house-archive/T25.webp"
+  },
+  "T26": {
+    "goodsKeywords": [],
+    "themeTags": [],
+    "summary": "인도 빈티지 칸타 퀼트와 우드 블럭 염색 패브릭 등으로 만드는 핸드메이드 소품.",
+    "sourceUrl": "https://instagram.com/mal_in.ko",
+    "roamInterpretation": "인도 빈티지 칸타 퀼트로 손수 만든 소품을 팔아.",
+    "image": "/booths/house-archive/T26.webp"
   }
 }
