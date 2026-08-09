@@ -32,9 +32,13 @@ const AUTHORED = [
 
 /** 이 스크립트는 node로 직접 실행되므로 Next.js의 .env 자동 로드를 못 받는다 — 직접 읽는다. */
 function loadSupabaseCreds() {
-  const text = readFileSync(new URL("../.env", import.meta.url), "utf8");
-  const get = (name) => text.match(new RegExp(`^${name}=(.*)$`, "m"))?.[1]?.trim();
-  return { url: get("NEXT_PUBLIC_SUPABASE_URL"), key: get("SUPABASE_SERVICE_ROLE_KEY") };
+  try {
+    const text = readFileSync(new URL("../.env", import.meta.url), "utf8");
+    const get = (name) => text.match(new RegExp(`^${name}=(.*)$`, "m"))?.[1]?.trim();
+    return { url: get("NEXT_PUBLIC_SUPABASE_URL"), key: get("SUPABASE_SERVICE_ROLE_KEY") };
+  } catch {
+    return { url: undefined, key: undefined };
+  }
 }
 
 const ORIGINALS_BUCKET = "booth-originals";
