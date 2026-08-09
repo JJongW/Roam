@@ -10,6 +10,7 @@
 // 저작물을 덮어쓰면 아무도 저작을 안 하게 된다.
 import { readFileSync, writeFileSync, existsSync, readdirSync, mkdirSync } from "node:fs";
 import sharp from "sharp";
+import { createClient } from "@supabase/supabase-js";
 
 const CSV = "public/house_archive_br/house_archive_full_directory.csv";
 const IMG_SRC = "public/house_archive_br/house_archive_images";
@@ -28,6 +29,16 @@ const AUTHORED = [
   "conversationPrompts",
   "tips",
 ];
+
+/** 이 스크립트는 node로 직접 실행되므로 Next.js의 .env 자동 로드를 못 받는다 — 직접 읽는다. */
+function loadSupabaseCreds() {
+  const text = readFileSync(new URL("../.env", import.meta.url), "utf8");
+  const get = (name) => text.match(new RegExp(`^${name}=(.*)$`, "m"))?.[1]?.trim();
+  return { url: get("NEXT_PUBLIC_SUPABASE_URL"), key: get("SUPABASE_SERVICE_ROLE_KEY") };
+}
+
+const ORIGINALS_BUCKET = "booth-originals";
+const ORIGINALS_PREFIX = "house-archive-2026";
 
 /** 따옴표 안의 콤마·개행을 지키는 최소 CSV 파서. */
 function parseCsv(text) {
@@ -142,6 +153,15 @@ for (const r of data) {
   if (h && c && out[c]) handleToCode.set(h, c);
 }
 let images = 0;
+let originalsUploaded = 0;
+
+const creds = loadSupabaseCreds();
+const supabase =
+  creds.url && creds.key ? createClient(creds.url, creds.key) : null;
+if (!supabase) {
+  warn.push("Supabase 자격증명 없음 — 원본 백업 업로드를 건너뜀(크롭·JSON은 계속 진행)");
+}
+
 if (existsSync(IMG_SRC)) {
   mkdirSync(IMG_OUT, { recursive: true });
   for (const file of readdirSync(IMG_SRC)) {
@@ -165,6 +185,24 @@ if (existsSync(IMG_SRC)) {
       .toFile(`${IMG_OUT}/${code}.webp`);
     out[code].image = `/booths/house-archive/${code}.webp`;
     images++;
+    if (supabase) {
+      const ext = file.match(/\.[a-z]+$/i)?.[0] ?? ".jpg";
+      try {
+        const { error: uploadError } = await supabase.storage
+          .from(ORIGINALS_BUCKET)
+          .upload(`${ORIGINALS_PREFIX}/${code}${ext}`, readFileSync(src), {
+            contentType: ext === ".png" ? "image/png" : "image/jpeg",
+            upsert: true,
+          });
+        if (uploadError) {
+          warn.push(`원본 백업 업로드 실패: ${code} — ${uploadError.message}`);
+        } else {
+          originalsUploaded++;
+        }
+      } catch (e) {
+        warn.push(`원본 백업 업로드 실패: ${code} — ${e.message}`);
+      }
+    }
   }
 }
 
@@ -173,6 +211,9 @@ const sorted = Object.fromEntries(
 );
 writeFileSync(OUT, `${JSON.stringify(sorted, null, 2)}\n`);
 console.log(`이미지 ${images}장 → ${IMG_OUT}`);
+if (supabase) {
+  console.log(`원본 백업 ${originalsUploaded}/${images}장 → Supabase '${ORIGINALS_BUCKET}/${ORIGINALS_PREFIX}'`);
+}
 
 console.log(`${OUT} — ${Object.keys(sorted).length}개 부스`);
 console.log(`도면 부스 ${floorCodes.size}개 중 소개 없는 부스 ${floorCodes.size - Object.keys(sorted).length}개`);
