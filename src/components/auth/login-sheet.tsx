@@ -148,6 +148,18 @@ export function LoginSheet() {
   );
 }
 
+/**
+ * `/auth/callback`이 실패했을 때 붙여 보내는 이유 → 사용자 문구.
+ * 원인마다 다음 행동이 다르므로 한 문장으로 뭉뚱그리지 않는다.
+ */
+const LOGIN_ERROR_MESSAGE: Record<string, string> = {
+  denied: "Google 로그인을 취소했어. 다시 해볼까?",
+  unavailable: "지금은 Google 로그인을 쓸 수 없어. 닉네임으로 시작해도 돼.",
+  exchange: "로그인 확인에 실패했어. 브라우저를 새로 열고 다시 해줄래?",
+  no_code: "로그인 정보가 오다가 끊겼어. 다시 해줘.",
+  no_user: "계정 정보를 못 받았어. 다시 해줘.",
+};
+
 /** Mounts once near the app root: runs the initial session check. */
 export function AuthBootstrap() {
   const refresh = useAuthStore((s) => s.refresh);
@@ -156,9 +168,17 @@ export function AuthBootstrap() {
     // Surface an OAuth failure bounced back from /auth/callback, then strip the
     // query param so a reload doesn't re-toast.
     const params = new URLSearchParams(window.location.search);
-    if (params.get("login_error")) {
-      toast.error("로그인 못 했어. 다시 해줘.");
+    const reason = params.get("login_error");
+    if (reason) {
+      // 이유를 반드시 콘솔에 남긴다 — 토스트 문구만으로는 어디서 깨졌는지 알 수 없고,
+      // 아래에서 쿼리 파라미터를 지우므로 여기서 안 찍으면 단서가 통째로 사라진다.
+      console.error("[login] OAuth 실패", {
+        reason,
+        detail: params.get("login_detail"),
+      });
+      toast.error(LOGIN_ERROR_MESSAGE[reason] ?? "로그인 못 했어. 다시 해줘.");
       params.delete("login_error");
+      params.delete("login_detail");
       const qs = params.toString();
       window.history.replaceState(
         {},
