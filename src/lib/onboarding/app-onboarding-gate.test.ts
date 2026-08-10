@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { isAppOnboardingDismissed } from "@/lib/onboarding/app-onboarding-gate";
+import {
+  canShowAppOnboarding,
+  isAppOnboardingDismissed,
+} from "@/lib/onboarding/app-onboarding-gate";
 
 describe("isAppOnboardingDismissed", () => {
   it("비로그인 + 로컬 dismiss 안 됨 → 안 끝남(다시 뜸)", () => {
@@ -53,5 +56,25 @@ describe("isAppOnboardingDismissed", () => {
         anonDismissed: true,
       }),
     ).toBe(true);
+  });
+});
+
+// 랜딩을 덮지 않는다 — 첫 화면이 전체화면 인트로면 이 서비스가 뭔지 알 수 없고,
+// Google OAuth 인증이 실제로 그 사유로 반려했다.
+describe("canShowAppOnboarding", () => {
+  it("랜딩(/)에서는 안 뜬다", () => {
+    expect(canShowAppOnboarding("/")).toBe(false);
+  });
+
+  it("전시 상세에서는 뜬다", () => {
+    expect(canShowAppOnboarding("/exhibitions/sibf-2026")).toBe(true);
+  });
+
+  it("지도에서도 뜬다 — 공유 링크로 바로 들어온 사람도 만나야 한다", () => {
+    expect(canShowAppOnboarding("/exhibitions/sibf-2026/map")).toBe(true);
+  });
+
+  it("부스 상세에서도 뜬다", () => {
+    expect(canShowAppOnboarding("/booths/b_a1406")).toBe(true);
   });
 });

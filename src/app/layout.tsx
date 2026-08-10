@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { Providers } from "@/components/providers";
-import { getLocale, hasLocaleCookie } from "@/lib/i18n/server";
+import { getLocale } from "@/lib/i18n/server";
 import "./globals.css";
 
 const pretendard = localFont({
@@ -48,10 +48,7 @@ export const viewport: Viewport = {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const [locale, hasLocale] = await Promise.all([
-    getLocale(),
-    hasLocaleCookie(),
-  ]);
+  const locale = await getLocale();
   return (
     <html
       lang={locale}
@@ -65,7 +62,7 @@ export default async function RootLayout({
         >
           {locale === "en" ? "Skip to content" : "본문으로 건너뛰기"}
         </a>
-        <Providers locale={locale} needsLang={!hasLocale}>
+        <Providers locale={locale}>
           {children}
         </Providers>
       </body>

@@ -1,14 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { api } from "@/lib/api/client";
 import { RoamMotion, THINKING_POOL } from "@/components/companion/roam-motion";
 import { Conversation } from "@/components/onboarding/conversation";
 import { LegalLinks } from "@/components/common/legal-links";
 import { useAuthStore, PENDING_VALUES_KEY } from "@/lib/stores/auth";
 import { useCompanionStore } from "@/lib/stores/companion";
-import { isAppOnboardingDismissed } from "@/lib/onboarding/app-onboarding-gate";
+import {
+  canShowAppOnboarding,
+  isAppOnboardingDismissed,
+} from "@/lib/onboarding/app-onboarding-gate";
 import { useT } from "@/lib/i18n/provider";
 import {
   APP_QUESTIONS,
@@ -32,6 +35,7 @@ type Phase = "intro" | "quiz" | "saving";
  */
 export function AppOnboardingGate() {
   const router = useRouter();
+  const pathname = usePathname();
   const t = useT();
   const user = useAuthStore((s) => s.user);
   const ready = useAuthStore((s) => s.ready);
@@ -50,7 +54,8 @@ export function AppOnboardingGate() {
     needsOnboarding,
     anonDismissed,
   });
-  if (onboarded || !ready) return null;
+  // 랜딩은 덮지 않는다 — 첫 화면은 이 서비스가 뭔지 알 수 있는 홈이어야 한다.
+  if (onboarded || !ready || !canShowAppOnboarding(pathname)) return null;
 
   // 로그인 여부와 무관하게 항상 로컬에도 dismiss를 남긴다(위 문서 주석 참고).
   function dismissLocally() {

@@ -6,6 +6,7 @@ import { ExhibitionCard } from "@/components/exhibition/exhibition-card";
 import { EmptyState } from "@/components/common/states";
 import { AccountButton } from "@/components/auth/account-button";
 import { LegalLinks } from "@/components/common/legal-links";
+import { LanguageSwitch } from "@/components/i18n/language-switch";
 import { RoamMotion } from "@/components/companion/roam-motion";
 import { getI18n } from "@/lib/i18n/server";
 import { getCurrentUser } from "@/lib/api/session";
@@ -64,8 +65,29 @@ export default async function HomePage() {
   const topMatch = top ? matchBySlug.get(top.slug) : undefined;
   const topReason = topMatch ? matchReason(topMatch.matched) : null;
 
+  // 구조화 데이터 — 앱 이름과 목적을 기계가 읽는 표준 경로로도 명시한다. Google OAuth
+  // 인증이 "홈페이지의 앱 이름이 동의 화면과 일치하지 않는다"로 반려한 이력이 있어,
+  // 화면 텍스트(h1·소개문)에만 의존하지 않고 여기에도 같은 값을 박아둔다.
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "Roam",
+    alternateName: "Roam — Exhibition Navigator",
+    applicationCategory: "TravelApplication",
+    operatingSystem: "Web",
+    url: "https://roam.ai.kr",
+    description: t("home.tagline"),
+    inLanguage: ["ko", "en"],
+    offers: { "@type": "Offer", price: "0", priceCurrency: "KRW" },
+  };
+
   return (
     <main className="flex-1 pb-safe">
+      <script
+        type="application/ld+json"
+        // 값은 위에서 우리가 만든 리터럴이라 사용자 입력이 섞이지 않는다.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <header className="sticky top-0 z-40 flex h-14 items-center justify-between border-b border-border bg-background/80 px-[var(--spacing-global-gutter)] pt-safe backdrop-blur-xl">
         <span className="flex items-center gap-1.5 text-lg font-extrabold tracking-tight">
           <span className="flex size-7 items-center justify-center overflow-hidden rounded-full ring-1 ring-border">
@@ -165,10 +187,12 @@ export default async function HomePage() {
         )}
       </section>
 
-      {/* 홈에서 개인정보처리방침으로 가는 길 — Google OAuth 인증의 명시 요구사항이다.
-          방침 페이지만 있고 링크가 없으면 심사관에겐 없는 것과 같다. */}
-      <footer className="border-t border-border px-[var(--spacing-global-gutter)] py-6">
+      {/* 홈에서 개인정보처리방침·약관으로 가는 길 — Google OAuth 인증의 명시
+          요구사항이다. 링크가 없으면 심사관에겐 없는 문서와 같다. 언어 전환도 여기 —
+          예전엔 첫 진입에 전체화면 게이트로 물었는데 그게 홈페이지를 가렸다. */}
+      <footer className="space-y-3 border-t border-border px-[var(--spacing-global-gutter)] py-6">
         <LegalLinks />
+        <LanguageSwitch />
       </footer>
     </main>
   );
