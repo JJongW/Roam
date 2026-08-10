@@ -8,9 +8,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const { data: exhibitions } = await repo.listExhibitions({ limit: 100 });
 
   const exhibitionUrls = exhibitions.flatMap((ex) => [
-    { url: `${base}/exhibitions/${ex.slug}`, changeFrequency: "daily" as const, priority: 0.8 },
-    { url: `${base}/exhibitions/${ex.slug}/map`, changeFrequency: "weekly" as const, priority: 0.5 },
+    {
+      url: `${base}/exhibitions/${ex.slug}`,
+      changeFrequency: "daily" as const,
+      priority: 0.8,
+    },
+    {
+      url: `${base}/exhibitions/${ex.slug}/map`,
+      changeFrequency: "weekly" as const,
+      priority: 0.5,
+    },
   ]);
 
-  return [{ url: base, changeFrequency: "daily", priority: 1 }, ...exhibitionUrls];
+  return [
+    { url: base, changeFrequency: "daily", priority: 1 },
+    ...exhibitionUrls,
+    { url: `${base}/privacy`, changeFrequency: "yearly", priority: 0.3 },
+  ];
 }
