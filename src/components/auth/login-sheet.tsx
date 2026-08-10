@@ -30,15 +30,33 @@ export function LoginSheet() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  function google() {
-    // Redirects the browser to Google; on return, /auth/callback issues the
-    // roam_user cookie. Preserve the current page as the post-login target.
+  // Redirects the browser to Google; on return, /auth/callback issues the
+  // roam_user cookie. Preserve the current page as the post-login target.
+  //
+  // 반환값을 버리면 안 된다 — 성공 시엔 리디렉트로 화면이 떠나므로, 여기서 error를
+  // 받았다는 건 실패했다는 뜻이다. 예전엔 통째로 버려서 버튼을 눌러도 아무 일도
+  // 일어나지 않았고 원인도 남지 않았다.
+  async function google() {
+    if (busy) return;
+    setBusy(true);
+    setError(null);
     const next = window.location.pathname + window.location.search;
     const redirectTo = `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`;
-    void createClient().auth.signInWithOAuth({
-      provider: "google",
-      options: { redirectTo },
-    });
+    try {
+      const { error: oauthError } = await createClient().auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo },
+      });
+      if (oauthError) {
+        console.error("[login] signInWithOAuth failed", oauthError);
+        setError(t("login.failed"));
+        setBusy(false);
+      }
+    } catch (e) {
+      console.error("[login] signInWithOAuth threw", e);
+      setError(t("login.failed"));
+      setBusy(false);
+    }
   }
 
   async function submit() {
@@ -77,6 +95,7 @@ export function LoginSheet() {
               size="lg"
               className="w-full"
               onClick={google}
+              disabled={busy}
             >
               <GoogleIcon />
               {t("login.google")}
