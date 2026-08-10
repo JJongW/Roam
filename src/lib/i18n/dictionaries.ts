@@ -179,8 +179,10 @@ const ko = {
     heroGreeting: "어떤 전시부터 볼까?",
     // 미로그인 홈 히어로 — 앱이 뭐 하는 것인지 한 문장. 인사말이 아니라 목적 설명이다
     // (Google OAuth 심사가 "홈페이지에 앱 목적 설명 없음"으로 반려한 자리).
+    // 문장이 반드시 "Roam은"으로 시작한다 — 제목의 워드마크와 소개가 따로 놀면
+    // "이 홈페이지의 앱 이름이 무엇인가"가 모호해진다(본문엔 '로미'가 계속 나온다).
     tagline:
-      "전시·박람회 관람 가이드. 관심 가는 부스를 찾고, 전시장에서 길을 잡고, 본 것을 기록해.",
+      "Roam은 전시·박람회 관람 가이드야. 관심 가는 부스를 찾고, 전시장에서 길을 잡고, 본 것을 기록해.",
     // 전체화면 인트로처럼 자리가 좁은 곳에 쓰는 짧은 판본.
     taglineShort: "전시·박람회 관람 가이드",
     listHeading: "로미가 골라둔 전시",
@@ -677,7 +679,7 @@ const en: Dict = {
     guide: "Start here? I think it fits your taste.",
     heroGreeting: "Which fair shall we start with?",
     tagline:
-      "A guide for exhibitions and trade fairs. Discover booths worth your time, find your way around the venue, and keep track of what you saw.",
+      "Roam is a guide for exhibitions and trade fairs. Discover booths worth your time, find your way around the venue, and keep track of what you saw.",
     taglineShort: "A guide for exhibitions and trade fairs",
     listHeading: "Fairs Romi picked for you",
     recommendedReason: "Showing this first based on the taste you chose.",

@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { LOCALES, LOCALE_LABEL, type Locale } from "@/lib/i18n/config";
 import { setLocale } from "@/lib/i18n/provider";
 import { RoamMotion } from "@/components/companion/roam-motion";
+import { LegalLinks } from "@/components/common/legal-links";
 import { Button } from "@/components/ui/button";
 
 /**
@@ -41,12 +42,12 @@ export function LanguageGate() {
         {/* 워드마크만 — 위 로미 영상이 이미 같은 마크(poster=logo.svg)라 배지를 또 달면 중복. */}
         <h1 className="text-3xl font-extrabold tracking-tight">Roam</h1>
         <p className="max-w-[20rem] text-[13px] leading-relaxed text-muted-foreground">
-          전시·박람회 관람 가이드. 관심 가는 부스를 찾고, 전시장에서 길을 잡고,
-          본 것을 기록해.
+          Roam은 전시·박람회 관람 가이드야. 관심 가는 부스를 찾고, 전시장에서
+          길을 잡고, 본 것을 기록해.
           <span className="mt-1.5 block">
-            A guide for exhibitions and trade fairs. Discover booths worth your
-            time, find your way around the venue, and keep track of what you
-            saw.
+            Roam is a guide for exhibitions and trade fairs. Discover booths
+            worth your time, find your way around the venue, and keep track of
+            what you saw.
           </span>
         </p>
       </div>
@@ -88,6 +89,10 @@ export function LanguageGate() {
       >
         {picked === "en" ? "Continue" : "계속"}
       </Button>
+
+      {/* 이 게이트가 화면 전체를 덮으므로 홈 푸터는 여기서 보이지 않는다. Google OAuth
+          인증은 홈페이지에서 개인정보처리방침에 닿을 것을 요구하니 링크를 여기에도 둔다. */}
+      <LegalLinks />
     </div>
   );
 }

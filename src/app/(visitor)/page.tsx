@@ -5,6 +5,7 @@ import { getRepository } from "@/lib/repositories";
 import { ExhibitionCard } from "@/components/exhibition/exhibition-card";
 import { EmptyState } from "@/components/common/states";
 import { AccountButton } from "@/components/auth/account-button";
+import { LegalLinks } from "@/components/common/legal-links";
 import { RoamMotion } from "@/components/companion/roam-motion";
 import { getI18n } from "@/lib/i18n/server";
 import { getCurrentUser } from "@/lib/api/session";
@@ -163,6 +164,12 @@ export default async function HomePage() {
           ))
         )}
       </section>
+
+      {/* 홈에서 개인정보처리방침으로 가는 길 — Google OAuth 인증의 명시 요구사항이다.
+          방침 페이지만 있고 링크가 없으면 심사관에겐 없는 것과 같다. */}
+      <footer className="border-t border-border px-[var(--spacing-global-gutter)] py-6">
+        <LegalLinks />
+      </footer>
     </main>
   );
 }

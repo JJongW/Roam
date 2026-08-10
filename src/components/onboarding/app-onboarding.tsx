@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { api } from "@/lib/api/client";
 import { RoamMotion, THINKING_POOL } from "@/components/companion/roam-motion";
 import { Conversation } from "@/components/onboarding/conversation";
+import { LegalLinks } from "@/components/common/legal-links";
 import { useAuthStore, PENDING_VALUES_KEY } from "@/lib/stores/auth";
 import { useCompanionStore } from "@/lib/stores/companion";
 import { isAppOnboardingDismissed } from "@/lib/onboarding/app-onboarding-gate";
@@ -136,6 +137,8 @@ export function AppOnboardingGate() {
             >
               {t("onboardingQ.introSkip")}
             </button>
+            {/* 이 인트로도 화면 전체를 덮어 홈 푸터를 가린다 — 방침 링크를 여기에도. */}
+            <LegalLinks className="pt-1" />
           </div>
         </div>
       )}
