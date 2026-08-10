@@ -114,7 +114,6 @@ export function MapView({
   const selected = booths.find((b) => b.id === selectedId) ?? null;
   const selectedCat = selected ? catById.get(selected.categoryId) : undefined;
 
-
   function handleBack() {
     // 지도는 전시 상세에서 들어온 부가 화면 — 홈이 아니라 그 전시로 돌아간다.
     // history가 있으면 back()으로 pop → Next Router Cache에서 전시 페이지를 복원해
@@ -150,9 +149,7 @@ export function MapView({
 
   return (
     <div className="relative h-dvh w-full overflow-hidden overscroll-none bg-background">
-      {showCoachmark && (
-        <MapCoachmark onClose={markMapGuideSeen} />
-      )}
+      {showCoachmark && <MapCoachmark onClose={markMapGuideSeen} />}
 
       {/* 전체화면 지도 */}
       <ExhibitionMap
@@ -378,7 +375,10 @@ function BoothPopupMemo({ boothId }: { boothId: string }) {
           placeholder={t("map.memoPlaceholder")}
           maxLength={100}
           aria-label={t("map.memoAria")}
-          className="h-9 pl-8 text-sm"
+          // 14px 이하 글꼴을 쓰지 않는다 — iOS는 16px 미만 입력에 포커스가 가면 페이지를
+          // 자동 확대하고, 지도는 핀치를 삼키므로 거기서 빠져나올 수 없다.
+          // 기본 Input이 이미 text-base(16px)라 크기 클래스를 얹지 않는다.
+          className="h-10 pl-8"
         />
       </div>
       <NotePhotos boothId={boothId} compact />
