@@ -141,6 +141,30 @@ iOS Safari는 **16px 미만 입력창에 포커스가 가면 페이지를 자동
 전역 `user-scalable=no`는 쓰지 않는다. iOS가 무시하고, 글자를 키워야 하는 사용자를
 앱 전체에서 막는다(기존 결정 유지).
 
+### 2-4. 로미 영상이 잘리는 문제 (같이 고친다)
+
+전시 홈 히어로의 로미가 잘려 보인다. 원인은 **종횡비 불일치 + `object-cover`**다.
+
+```
+headbunting.webm   478 × 620  (세로형)
+walk_think.webm    592 × 554
+head_spinning.webm 554 × 592
+```
+
+`RoamMotion`이 `object-cover`로 렌더하는데 감싸는 박스는 `size-32` 정사각형이다.
+cover는 박스를 채우려고 스케일을 키우고 넘치는 부분을 자른다 —
+`max(128/478, 128/620) = 0.268` → 렌더 128×166 → **세로 38px이 잘린다**(위아래 19px씩).
+머리와 발이 날아간다. `poster="/logo.svg"`도 같은 규칙으로 잘려서 영상이 뜨기 전
+로고까지 이상해 보였다.
+
+`rounded-full` 아바타로 쓰는 자리(브레인 시트·회고 시트)도 전부 같은 문제다.
+
+**고침**: `RoamMotion`의 기본을 `object-contain`으로 바꾼다. 규칙은 하나 —
+**로미는 자르지 않는다.** 박스가 정사각형이어도 캐릭터 전체가 들어간다. 아바타
+자리에서는 원 안에 여백이 조금 생기는데, 잘린 머리보다 낫다.
+
+호출부는 안 바꾼다 — 잘라야 할 자리가 생기면 그때 `className`으로 opt-in 한다.
+
 ---
 
 ## §3 지도 부스 하단 시트
@@ -221,6 +245,7 @@ ReactionBar(4칸), `VisitedRetroInline`("여기 어땠어?").
 | `lib/memory/distill.ts` | 뮤트 slug를 `interests`에서 제외 |
 | `app/api/me/values/[slug]/route.ts` | 신규 — `PUT { muted }` |
 | repo(mock·supabase) | 브레인 뮤트 읽기·쓰기 |
+| `components/companion/roam-motion.tsx` | `object-cover` → `object-contain` (§2-4) |
 | `components/map/map-view.tsx` | 시트 재구성, 메모 16px, 시트를 지도 밖으로 |
 | `components/booth/judgment-bar.tsx` | 상태 적응형 분기(§3-3) |
 | `components/booth/booth-personal-panel.tsx` | 같은 규칙 |
