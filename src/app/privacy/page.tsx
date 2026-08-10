@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import {
+  Section,
+  Table,
+  Ext,
+  LegalFooter,
+} from "@/components/legal/prose";
 
 /**
  * 개인정보처리방침 — Google OAuth Verification 제출용 공개 페이지.
@@ -35,85 +41,6 @@ export const metadata: Metadata = {
     type: "article",
   },
 };
-
-function Section({
-  id,
-  no,
-  title,
-  children,
-}: {
-  id?: string;
-  no: string;
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section id={id} className="scroll-mt-8">
-      <h2 className="mb-3 text-lg font-bold tracking-tight sm:text-xl">
-        <span className="mr-2 text-muted-foreground tabular-nums">{no}.</span>
-        {title}
-      </h2>
-      <div className="space-y-3 text-sm leading-relaxed text-muted-foreground sm:text-[15px]">
-        {children}
-      </div>
-    </section>
-  );
-}
-
-function Table({
-  head,
-  rows,
-}: {
-  head: string[];
-  rows: (string | React.ReactNode)[][];
-}) {
-  return (
-    <div className="overflow-x-auto rounded-xl border border-border">
-      <table className="w-full min-w-[32rem] border-collapse text-left text-sm">
-        <thead>
-          <tr className="bg-muted/50">
-            {head.map((h) => (
-              <th
-                key={h}
-                scope="col"
-                className="border-b border-border px-3 py-2.5 font-semibold text-foreground"
-              >
-                {h}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((r, i) => (
-            <tr key={i} className="align-top">
-              {r.map((c, j) => (
-                <td
-                  key={j}
-                  className="border-b border-border px-3 py-2.5 last:border-r-0 [tr:last-child_&]:border-b-0"
-                >
-                  {c}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-function Ext({ href, children }: { href: string; children: React.ReactNode }) {
-  return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="font-medium text-primary underline underline-offset-2"
-    >
-      {children}
-    </a>
-  );
-}
 
 export default function PrivacyPage() {
   return (
@@ -769,10 +696,7 @@ export default function PrivacyPage() {
           </Section>
         </div>
 
-        <footer className="mt-16 border-t border-border pt-8">
-          <p className="text-base font-bold tracking-tight">Roam</p>
-          <p className="mt-1 text-sm text-muted-foreground">© 2026 Roam</p>
-        </footer>
+        <LegalFooter />
       </main>
     </div>
   );

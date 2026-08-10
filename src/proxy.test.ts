@@ -39,6 +39,10 @@ describe("PUBLIC_PATHS", () => {
     expect(PUBLIC_PATHS).toContain("/privacy");
   });
 
+  it("서비스 약관도 로그인 없이 열려야 한다", () => {
+    expect(PUBLIC_PATHS).toContain("/terms");
+  });
+
   it("홈은 계속 공개", () => {
     expect(PUBLIC_PATHS).toContain("/");
   });

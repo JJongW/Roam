@@ -30,11 +30,11 @@ const EXEMPT_PREFIXES = ["/login", "/auth", "/admin"];
 /**
  * Public pages reachable without an identity (exact match).
  *
- * `/privacy` must stay public: Google's OAuth verification reviewers open the
- * privacy policy URL directly, without an account. If the gate bounces them to
+ * `/privacy` and `/terms` must stay public: Google's OAuth verification reviewers
+ * open those URLs directly, without an account. If the gate bounces them to
  * /login, verification is rejected on the spot.
  */
-export const PUBLIC_PATHS = ["/", "/privacy"];
+export const PUBLIC_PATHS = ["/", "/privacy", "/terms"];
 /** 정확한 패턴 매치 — 하위 경로(메모장·커뮤니티 등)는 자동으로 안 걸린다. */
 export const PUBLIC_PATH_PATTERNS = [
   /^\/exhibitions\/[^/]+$/,

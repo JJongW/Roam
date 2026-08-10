@@ -10,8 +10,7 @@
  */
 export const LEGAL_LINKS = {
   privacy: "/privacy",
-  terms:
-    "https://app.notion.com/p/akkin/Roam-39ab2cc3577580eb8163f9d58dbf7866?source=copy_link",
+  terms: "/terms",
 } as const;
 
 /** 외부 호스팅 링크만 새 탭으로 연다(자체 페이지는 같은 탭). */
