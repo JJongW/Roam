@@ -19,12 +19,16 @@ export const metadata: Metadata = {
     default: "Roam — Exhibition Navigator",
     template: "%s · Roam",
   },
+  // 앱 목적을 그대로 적는다 — Google OAuth 심사가 홈페이지 설명을 확인하는 자리이고,
+  // 예전 문구("no account needed")는 로그인 필수로 바뀐 뒤로 사실이 아니었다.
   description:
-    "Discover booths, skip the crowds, and get a personalized route through any exhibition — no account needed.",
+    "Roam is a guide for exhibitions and trade fairs. Discover booths worth your time, find your way around the venue, and keep track of what you saw.",
   applicationName: "Roam",
   openGraph: {
+    siteName: "Roam",
     title: "Roam — Exhibition Navigator",
-    description: "Personalized routes and live booth info for exhibitions.",
+    description:
+      "Roam is a guide for exhibitions and trade fairs. Discover booths worth your time, find your way around the venue, and keep track of what you saw.",
     type: "website",
   },
 };

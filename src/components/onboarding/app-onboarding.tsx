@@ -96,6 +96,18 @@ export function AppOnboardingGate() {
     >
       {phase === "intro" && (
         <div className="flex flex-1 flex-col px-6 pb-8 pt-safe">
+          {/* 앱 이름 + 한 줄 소개 — 이 인트로는 언어 게이트 다음, 홈보다 **먼저** 뜨는
+              전체화면이라 처음 온 사람(그리고 Google OAuth 심사관)이 실제로 보는 화면이다.
+              로미 인사만 있으면 "이게 무슨 앱인지"와 "앱 이름"이 어디에도 안 나온다 —
+              심사가 그 두 가지로 반려했다. 로미 톤을 해치지 않게 상단에 작게만 둔다. */}
+          <div className="flex flex-col items-center gap-0.5 pt-1">
+            <span className="text-base font-extrabold tracking-tight">
+              Roam
+            </span>
+            <span className="text-xs text-muted-foreground">
+              {t("home.taglineShort")}
+            </span>
+          </div>
           {/* 로미 + 카피 — 상단 2/3 중앙 (ingan.ai 톤) */}
           <div className="flex flex-1 flex-col items-center justify-center gap-5 text-center">
             <span className="flex size-32 items-center justify-center overflow-hidden rounded-[2.5rem]">

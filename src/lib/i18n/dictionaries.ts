@@ -177,6 +177,12 @@ const ko = {
     recommended: "로미 추천",
     guide: "여기부터 볼까? 네 취향이랑 맞을 것 같아.",
     heroGreeting: "어떤 전시부터 볼까?",
+    // 미로그인 홈 히어로 — 앱이 뭐 하는 것인지 한 문장. 인사말이 아니라 목적 설명이다
+    // (Google OAuth 심사가 "홈페이지에 앱 목적 설명 없음"으로 반려한 자리).
+    tagline:
+      "전시·박람회 관람 가이드. 관심 가는 부스를 찾고, 전시장에서 길을 잡고, 본 것을 기록해.",
+    // 전체화면 인트로처럼 자리가 좁은 곳에 쓰는 짧은 판본.
+    taglineShort: "전시·박람회 관람 가이드",
     listHeading: "로미가 골라둔 전시",
     recommendedReason: "네가 고른 관람 성향을 기준으로 먼저 보여줄게.",
     singleReason:
@@ -435,11 +441,14 @@ const ko = {
     reactSeenPlain: "이미 봤구나. 다음 걸로 넘어가자.",
     // 분야 매칭 즉답(reaction-line.ts) — 확신도(0.25 임계값)에 따라 조심스러움→확신.
     // skip은 확신 분야에서만 이름을 말하고, 그때도 "안에서도 다는 아니다"로 헤지한다.
-    reactInterestedTentative: "‘{booth}’, 기억해둘게 — ‘{theme}’ 쪽에 관심 있나 봐.",
+    reactInterestedTentative:
+      "‘{booth}’, 기억해둘게 — ‘{theme}’ 쪽에 관심 있나 봐.",
     reactInterestedTentativePlain: "‘{theme}’ 쪽에 관심 있나 봐.",
-    reactInterestedConfident: "‘{booth}’도 그렇고, ‘{theme}’ 확실히 좋아하는구나.",
+    reactInterestedConfident:
+      "‘{booth}’도 그렇고, ‘{theme}’ 확실히 좋아하는구나.",
     reactInterestedConfidentPlain: "‘{theme}’ 확실히 좋아하는구나.",
-    reactSkipConfident: "‘{booth}’는 아니었구나. ‘{theme}’ 안에서도 다 취향은 아닌가 봐.",
+    reactSkipConfident:
+      "‘{booth}’는 아니었구나. ‘{theme}’ 안에서도 다 취향은 아닌가 봐.",
     reactSkipConfidentPlain: "‘{theme}’ 안에서도 다 취향은 아닌가 봐.",
     // 취향 정확도 4단계. 판정 0개/1~4개는 홈 발화 로테이션(homeLines)에 섞이고,
     // 5개를 막 넘기는 순간(1회)은 reaction-bar.tsx가 say()로 띄운다. 5개 이상은
@@ -667,6 +676,9 @@ const en: Dict = {
     recommended: "Romi's pick",
     guide: "Start here? I think it fits your taste.",
     heroGreeting: "Which fair shall we start with?",
+    tagline:
+      "A guide for exhibitions and trade fairs. Discover booths worth your time, find your way around the venue, and keep track of what you saw.",
+    taglineShort: "A guide for exhibitions and trade fairs",
     listHeading: "Fairs Romi picked for you",
     recommendedReason: "Showing this first based on the taste you chose.",
     singleReason:
@@ -918,11 +930,13 @@ const en: Dict = {
     reactSkipPlain: "Got it. I'll show fewer like these.",
     reactSeen: "You've seen “{booth}”. On to the next.",
     reactSeenPlain: "Seen it already. Let's move on.",
-    reactInterestedTentative: "“{booth}” — noted. Looks like {theme} is catching your eye.",
+    reactInterestedTentative:
+      "“{booth}” — noted. Looks like {theme} is catching your eye.",
     reactInterestedTentativePlain: "Looks like {theme} is catching your eye.",
     reactInterestedConfident: "“{booth}” fits too — you really go for {theme}.",
     reactInterestedConfidentPlain: "You really go for {theme}.",
-    reactSkipConfident: "“{booth}” wasn't it. Guess not every {theme} booth is your thing.",
+    reactSkipConfident:
+      "“{booth}” wasn't it. Guess not every {theme} booth is your thing.",
     reactSkipConfidentPlain: "Guess not every {theme} booth is your thing.",
     tasteUnknown: "Don't know you yet. Show me around.",
     tasteWarming: "Getting a sense of it — need a bit more.",

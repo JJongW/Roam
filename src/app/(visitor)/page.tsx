@@ -17,7 +17,8 @@ import {
 } from "@/lib/feed/exhibition-match";
 
 export const metadata = {
-  title: "Roam",
+  // absolute — 레이아웃의 "%s · Roam" 템플릿에 "Roam"을 넣으면 "Roam · Roam"이 된다.
+  title: { absolute: "Roam — Exhibition Navigator" },
 };
 
 export default async function HomePage() {
@@ -43,7 +44,10 @@ export default async function HomePage() {
     const matches = await Promise.all(
       rawExhibitions.map(async (ex) => {
         const booths = await repo.listBoothsByExhibitionId(ex.id);
-        return [ex.slug, matchExhibition(brain, exhibitionValueProfile(booths))] as const;
+        return [
+          ex.slug,
+          matchExhibition(brain, exhibitionValueProfile(booths)),
+        ] as const;
       }),
     );
     matchBySlug = new Map(matches);
@@ -79,17 +83,33 @@ export default async function HomePage() {
         <AccountButton />
       </header>
 
-      {/* Romi 히어로 — 냅다 전시가 아니라 로미가 먼저 맞이한다. */}
+      {/* Romi 히어로 — 냅다 전시가 아니라 로미가 먼저 맞이한다.
+          미로그인일 땐 인사말 대신 **앱 이름과 목적**을 세운다: 처음 온 사람(그리고
+          Google OAuth 심사관·크롤러)에게는 "어떤 전시부터 볼까?"가 이 앱이 뭔지 알려주지
+          않는다. 로그인한 사람에겐 그 소개가 매번 소음이므로 원래 인사말을 유지한다. */}
       <section className="flex flex-col items-center gap-4 px-6 pb-4 pt-12 text-center">
         <span className="flex size-32 items-center justify-center overflow-hidden rounded-[2.5rem]">
           <RoamMotion src="/headbunting.webm" />
         </span>
-        <h1 className="text-2xl font-extrabold leading-snug">
-          {t("home.heroGreeting")}
-        </h1>
-        <p className="max-w-[18rem] text-[15px] leading-relaxed text-muted-foreground">
-          {t("home.subtitle")}
-        </p>
+        {user ? (
+          <>
+            <h1 className="text-2xl font-extrabold leading-snug">
+              {t("home.heroGreeting")}
+            </h1>
+            <p className="max-w-[18rem] text-[15px] leading-relaxed text-muted-foreground">
+              {t("home.subtitle")}
+            </p>
+          </>
+        ) : (
+          <>
+            <h1 className="text-[2rem] font-extrabold leading-none tracking-tight">
+              Roam
+            </h1>
+            <p className="max-w-[20rem] text-[15px] leading-relaxed text-muted-foreground">
+              {t("home.tagline")}
+            </p>
+          </>
+        )}
       </section>
 
       {/* 미로그인 랜딩 배너 — 계정 벽이 아니라 기억 설정임을 설명 + 로그인 진입. */}
