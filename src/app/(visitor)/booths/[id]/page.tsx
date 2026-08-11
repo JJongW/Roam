@@ -1,6 +1,9 @@
 import { notFound } from "next/navigation";
 import { Ticket, ExternalLink, Globe } from "lucide-react";
-import { getBoothDetailCached } from "@/lib/repositories/cached";
+import {
+  getBoothDetailCached,
+  listExhibitionsCached,
+} from "@/lib/repositories/cached";
 import { AppBar } from "@/components/common/app-bar";
 import { BookmarkButton } from "@/components/booth/bookmark-button";
 import { BoothAiSummary } from "@/components/booth/booth-ai-summary";
@@ -40,6 +43,12 @@ export default async function BoothDetailPage({ params }: Props) {
     detail;
   const { t } = await getI18n();
   const about = boothAbout(booth);
+  // 이 라우트는 전시 slug 없이(/booths/[id]) 부스 하나만 가리킨다 — JudgmentBar가
+  // 전시당 1회 로그인 안내에 쓰는 exhibitionSlug는 exhibitionId로 목록에서 찾아온다.
+  const { data: exhibitions } = await listExhibitionsCached();
+  const exhibitionSlug =
+    exhibitions.find((e) => e.id === booth.exhibitionId)?.slug ??
+    booth.exhibitionId;
 
   return (
     <div className="contents landscape:fixed landscape:inset-0 landscape:z-30 landscape:flex landscape:flex-col landscape:overflow-hidden landscape:bg-background">
@@ -164,7 +173,9 @@ export default async function BoothDetailPage({ params }: Props) {
                       글은 인용으로 분리한다(존댓말이어도 남의 말이라 고치지 않는다). */}
                   {(about.romi || about.quote || about.fallback) && (
                     <section className="space-y-2">
-                      <h2 className="text-base font-bold">{t("booth.about")}</h2>
+                      <h2 className="text-base font-bold">
+                        {t("booth.about")}
+                      </h2>
                       {about.romi && (
                         <p className="text-[15px] leading-relaxed text-foreground/90">
                           {about.romi}
@@ -285,7 +296,13 @@ export default async function BoothDetailPage({ params }: Props) {
                   )}
                 </div>
               }
-              record={<BoothPersonalPanel boothId={booth.id} />}
+              record={
+                <BoothPersonalPanel
+                  booth={booth}
+                  category={category}
+                  exhibitionSlug={exhibitionSlug}
+                />
+              }
               reviews={
                 <ReviewSection
                   boothId={booth.id}
