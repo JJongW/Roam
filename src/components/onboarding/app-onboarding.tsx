@@ -61,8 +61,8 @@ export function AppOnboardingGate() {
   const [anonDismissed, setAnonDismissed] = useState(
     () => typeof window !== "undefined" && !!localStorage.getItem(FLAG),
   );
-  // 뒤로가기가 이 오버레이를 언마운트시켰다 돌아와도(canShowAppOnboarding이 false인
-  // 경로로 잠깐 나갔다 온 경우 등) phase가 "intro"로 리셋되지 않게 sessionStorage에
+  // 뒤로가기가 이 오버레이를 언마운트시켰다 돌아와도(방문객 레이아웃 밖 — /privacy·
+  // /login 등으로 잠깐 나갔다 온 경우 등) phase가 "intro"로 리셋되지 않게 sessionStorage에
   // 같이 남긴다.
   const [phase, setPhase] = useSessionState<Phase>(
     "roam-onboarding-app-phase",
@@ -81,14 +81,17 @@ export function AppOnboardingGate() {
     needsOnboarding,
     anonDismissed,
   });
-  // 랜딩은 덮지 않는다 — 첫 화면은 이 서비스가 뭔지 알 수 있는 홈이어야 한다.
+  // 이제 랜딩(/)도 덮는다 — 이유는 canShowAppOnboarding의 문서 주석 참고(2026-08-11 판단).
   if (onboarded || !ready || !canShowAppOnboarding(pathname)) return null;
 
   // 로그인 여부와 무관하게 항상 로컬에도 dismiss를 남긴다(위 문서 주석 참고).
   function dismissLocally() {
     if (typeof window !== "undefined") localStorage.setItem(FLAG, "1");
     setAnonDismissed(true);
-    clearSessionState("roam-onboarding-app-phase");
+    clearSessionState(
+      "roam-onboarding-app-phase",
+      "roam-onboarding-app-guide-step",
+    );
   }
 
   // guide는 3장 다 보거나 건너뛰면 quiz로 — 둘 다 같은 목적지라 별도 분기가
@@ -239,7 +242,8 @@ function GuideSlide({
   onSkip: () => void;
   t: (key: string, params?: Record<string, string | number>) => string;
 }) {
-  const current = GUIDE_STEPS[step];
+  const current =
+    GUIDE_STEPS[Math.min(Math.max(step, 0), GUIDE_STEPS.length - 1)];
   const isLast = step === GUIDE_STEPS.length - 1;
 
   return (
@@ -267,7 +271,7 @@ function GuideSlide({
           {t(current.descKey)}
         </p>
 
-        <GuidePreview step={step} />
+        <GuidePreview step={step} t={t} />
       </div>
 
       <div className="space-y-2">
@@ -293,7 +297,13 @@ function GuideSlide({
 }
 
 /** 단계별 미니 미리보기 — 실제 색상 토큰·카드 형태를 그대로 쓴다. */
-function GuidePreview({ step }: { step: number }) {
+function GuidePreview({
+  step,
+  t,
+}: {
+  step: number;
+  t: (key: string, params?: Record<string, string | number>) => string;
+}) {
   if (step === 0) {
     // STEP 1: 취향 질문 카드 — Conversation의 답변 카드와 같은 모양.
     return (
@@ -326,10 +336,10 @@ function GuidePreview({ step }: { step: number }) {
               color: "var(--judge-must)",
             }}
           >
-            꼭 갈래
+            {t("judge.must")}
           </div>
           <div className="flex-1 rounded-lg border border-border py-1.5 text-center text-[11px] text-muted-foreground">
-            패스
+            {t("judge.pass")}
           </div>
         </div>
       </div>
@@ -340,10 +350,10 @@ function GuidePreview({ step }: { step: number }) {
     <div className="flex w-full max-w-[16rem] items-center justify-center gap-4 rounded-2xl border border-border bg-card px-4 py-6">
       {(
         [
-          ["var(--judge-must)", "꼭 갈래"],
-          ["var(--judge-good)", "좋았어"],
-          ["var(--judge-bad)", "아니었어"],
-          ["var(--judge-pass)", "패스"],
+          ["var(--judge-must)", t("judge.must")],
+          ["var(--judge-good)", t("judge.good")],
+          ["var(--judge-bad)", t("judge.bad")],
+          ["var(--judge-pass)", t("judge.pass")],
         ] as const
       ).map(([color, label]) => (
         <div key={label} className="flex flex-col items-center gap-1">
