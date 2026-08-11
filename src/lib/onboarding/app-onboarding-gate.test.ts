@@ -59,14 +59,12 @@ describe("isAppOnboardingDismissed", () => {
   });
 });
 
-// 랜딩을 덮지 않는다 — 첫 화면이 전체화면 인트로면 이 서비스가 뭔지 알 수 없고,
-// Google OAuth 인증이 실제로 그 사유로 반려했다.
 describe("canShowAppOnboarding", () => {
-  it("랜딩(/)에서는 안 뜬다", () => {
-    expect(canShowAppOnboarding("/")).toBe(false);
+  it("랜딩(/)에서도 뜬다 — 홈을 먼저 보여줘도 OAuth 재심사가 계속 반려돼서 이 제약을 없앴다", () => {
+    expect(canShowAppOnboarding("/")).toBe(true);
   });
 
-  it("전시 상세에서는 뜬다", () => {
+  it("전시 상세에서도 뜬다", () => {
     expect(canShowAppOnboarding("/exhibitions/sibf-2026")).toBe(true);
   });
 
