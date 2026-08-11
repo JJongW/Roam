@@ -1,3 +1,5 @@
+import { format } from "date-fns";
+
 import type { AnalyticsEvent, UserSignal } from "@/lib/types";
 
 export interface TimelineEvent {
@@ -70,7 +72,7 @@ export function buildTimeline(
 }
 
 /**
- * 최신순으로 정렬된 이벤트를 날짜(UTC 자정 기준) 그룹으로 묶는다 — 연속된
+ * 최신순으로 정렬된 이벤트를 날짜(로컬 자정 기준) 그룹으로 묶는다 — 연속된
  * 같은 날짜만 한 그룹으로 합친다(재정렬하지 않는다). buildTimeline이 이미
  * 최신순으로 정렬해 반환하므로 여기선 그 순서를 그대로 신뢰한다.
  */
@@ -79,11 +81,7 @@ export function groupEventsByDay(
 ): { dateLabel: string; events: TimelineEvent[] }[] {
   const groups: { dateLabel: string; events: TimelineEvent[] }[] = [];
   for (const event of events) {
-    const date = new Date(event.createdAt);
-    const year = date.getUTCFullYear();
-    const month = date.getUTCMonth() + 1;
-    const day = date.getUTCDate();
-    const dateLabel = `${year}년 ${month}월 ${day}일`;
+    const dateLabel = format(new Date(event.createdAt), "yyyy년 M월 d일");
     const last = groups[groups.length - 1];
     if (last && last.dateLabel === dateLabel) {
       last.events.push(event);
