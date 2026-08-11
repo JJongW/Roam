@@ -213,6 +213,37 @@ describe("MockRepository", () => {
       expect(after.visitedAt).toBe(seeded.visitedAt);
     });
 
+    it("메모를 지워 빈 문자열이 돼도(사진 없음) interest/verdict를 안 건드리는 요청이면 노트를 지우지 않는다 — Supabase upsertNote 델리트 오판 회귀", async () => {
+      // interest만 있고 메모·사진은 아직 없는 노트.
+      await repo.upsertNote(
+        "u_taste11",
+        "b_a101",
+        { interest: "must" },
+        "confident",
+      );
+      // 메모를 한 번 채웠다가(사진 없음) — 실제 UI(booth-personal-panel.tsx 등)는
+      // pushNote(id, {}) 로 이 편집을 보낸다: interest·verdict는 body에서 아예
+      // 빠지고 memo만 실린다.
+      await repo.upsertNote(
+        "u_taste11",
+        "b_a101",
+        { memo: "hello" },
+        undefined,
+      );
+      // 이제 그 메모를 다시 빈 문자열로 지운다 — interest·verdict는 여전히 안
+      // 건드리는 요청. 버그가 있으면 raw input만 보고 "다 비었다"고 오판해
+      // 행 전체를 지워 interest='must'까지 날린다.
+      const after = await repo.upsertNote(
+        "u_taste11",
+        "b_a101",
+        { memo: "" },
+        undefined,
+      );
+      expect(after.interest).toBe("must");
+      const notes = await repo.listNotes("u_taste11");
+      expect(notes.find((n) => n.boothId === "b_a101")?.interest).toBe("must");
+    });
+
     it("listPendingRetro: visitedAt 있고 verdict 없는 부스만", async () => {
       await repo.upsertNote(
         "u_taste5",

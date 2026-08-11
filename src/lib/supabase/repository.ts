@@ -1227,15 +1227,40 @@ export class SupabaseRepository implements Repository {
     judgedClass: "confident" | "uncertain" | null | undefined,
   ): Promise<BoothNote> {
     const db = await this.db();
-    const interest = input.interest ?? null;
-    const verdict = input.verdict ?? null;
-    const memo = input.memo ?? null;
-    const photos = input.photos ?? [];
-    // Empty note → delete so the gallery/back-end stays clean.
+    // 존재하는 노트를 먼저 읽는다 — 이번 요청이 안 건드리는 필드(undefined)는
+    // 기존 값을 그대로 들고 있어야 "이 쓰기 후 최종 상태가 비었는지"를 옳게
+    // 판단할 수 있다. 원본 input만 보면 메모만 고치는 요청이 매번 interest·
+    // verdict를 null로 오판해 기존 노트를 통째로 지워버린다.
+    const { data: existingData } = await db
+      .from("booth_note")
+      .select("*")
+      .eq("user_id", userId)
+      .eq("booth_id", boothId)
+      .maybeSingle();
+    const existingRow = existingData as Row | null;
+
+    const interest =
+      input.interest !== undefined
+        ? (input.interest ?? null)
+        : (existingRow?.interest ?? null);
+    const verdict =
+      input.verdict !== undefined
+        ? (input.verdict ?? null)
+        : (existingRow?.verdict ?? null);
+    const memo =
+      input.memo !== undefined
+        ? (input.memo ?? null)
+        : (existingRow?.memo ?? null);
+    const photos =
+      input.photos !== undefined
+        ? input.photos
+        : ((existingRow?.photos as string[] | undefined) ?? []);
+    // Empty note (after applying this write on top of the existing row) →
+    // delete so the gallery/back-end stays clean.
     if (
       !interest &&
       !verdict &&
-      (memo == null || !memo.trim()) &&
+      (memo == null || !(memo as string).trim()) &&
       photos.length === 0
     ) {
       maybeWrote(
