@@ -83,6 +83,35 @@ export async function readBrain(userId: string): Promise<UserBrain> {
   return (await repo.getUserBrain(userId)) ?? emptyBrain(userId);
 }
 
+/**
+ * 가치 하나를 끄거나 켠다. 멱등 — 같은 요청을 반복해도 목록이 중복되지 않는다.
+ *
+ * 신호 원장은 건드리지 않는다. 끄는 것은 과거 행동의 부정이 아니라 현재 상태
+ * 선언이므로, 풀면 그동안 쌓인 confidence가 그대로 돌아온다(distill.ts).
+ */
+export async function setValueMuted(
+  userId: string,
+  slug: string,
+  muted: boolean,
+): Promise<UserBrain> {
+  const repo = await getRepository();
+  const brain = await readBrain(userId);
+  const current = new Set(brain.mutedSlugs ?? []);
+  if (muted) current.add(slug);
+  else current.delete(slug);
+
+  // 뮤트가 바뀌면 interests를 다시 걸러야 하므로 재증류한다 — 목록만 갈아끼우면
+  // 방금 끈 가치가 interests에 그대로 남는다.
+  const signals = await repo.listUserSignals(userId);
+  const next = updateBrainWithSignals(
+    { ...brain, mutedSlugs: [...current] },
+    signals,
+    Date.now(),
+  );
+  await repo.saveUserBrain(next);
+  return next;
+}
+
 /** 이 부스가 지금 사용자의 확신 가치와 겹치는지 — 반응 판정 등급에 쓴다. */
 export async function classifyForUser(
   booth: Booth,
