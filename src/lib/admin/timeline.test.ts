@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { buildTimeline } from "./timeline";
+import {
+  buildTimeline,
+  groupEventsByDay,
+  type TimelineEvent,
+} from "./timeline";
 
 describe("buildTimeline", () => {
   it("signal과 analytics를 최신순으로 병합한다", () => {
@@ -60,5 +64,51 @@ describe("buildTimeline", () => {
       new Map(),
     );
     expect(result[0].label).toBe("unknown_kind");
+  });
+});
+
+describe("groupEventsByDay", () => {
+  function ev(id: string, createdAt: string): TimelineEvent {
+    return {
+      id,
+      createdAt,
+      source: "signal",
+      label: "테스트",
+      userLabel: "사용자",
+    };
+  }
+
+  it("같은 날 이벤트는 한 그룹으로 묶인다", () => {
+    const groups = groupEventsByDay([
+      ev("a", "2026-08-11T09:00:00Z"),
+      ev("b", "2026-08-11T15:00:00Z"),
+    ]);
+    expect(groups).toHaveLength(1);
+    expect(groups[0].events).toHaveLength(2);
+  });
+
+  it("날짜가 바뀌면 새 그룹이 생긴다", () => {
+    const groups = groupEventsByDay([
+      ev("a", "2026-08-11T09:00:00Z"),
+      ev("b", "2026-08-10T09:00:00Z"),
+    ]);
+    expect(groups).toHaveLength(2);
+    expect(groups[0].events.map((e) => e.id)).toEqual(["a"]);
+    expect(groups[1].events.map((e) => e.id)).toEqual(["b"]);
+  });
+
+  it("그룹 순서는 입력 순서를 그대로 따른다(재정렬 안 함)", () => {
+    const groups = groupEventsByDay([
+      ev("a", "2026-08-11T09:00:00Z"),
+      ev("b", "2026-08-09T09:00:00Z"),
+      ev("c", "2026-08-11T18:00:00Z"),
+    ]);
+    // b가 a보다 이전 날짜지만, 입력에서 a 다음에 나오는 c는 a와 같은 8/11 그룹으로
+    // 다시 합쳐지지 않는다 — 인접한 같은 날짜만 묶는다(연속 구간 그루핑).
+    expect(groups).toHaveLength(3);
+  });
+
+  it("빈 배열이면 빈 배열을 반환한다", () => {
+    expect(groupEventsByDay([])).toEqual([]);
   });
 });
