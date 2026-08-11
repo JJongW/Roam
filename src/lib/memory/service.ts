@@ -179,11 +179,13 @@ export async function classifyForUser(
   return classifyBooth(booth, brain);
 }
 
-/** 회고 재료가 되는 신호 — 실제로 보거나 끌린 것만(스킵/단순클릭 제외). */
+/** 회고 재료가 되는 신호 — 실제로 긍정적으로 관여한 것만(패스·부정 판정 제외,
+ *  기존 원칙 유지: 스킵/단순클릭은 회고 서술에 안 남긴다). */
 const REFLECT_KINDS: ReadonlySet<SignalKind> = new Set<SignalKind>([
-  "booth_visited",
-  "reaction_interested",
-  "reaction_later",
+  "reaction_must",
+  "reaction_curious",
+  "verdict_good",
+  "verdict_ok",
   "booth_bookmarked",
 ]);
 
