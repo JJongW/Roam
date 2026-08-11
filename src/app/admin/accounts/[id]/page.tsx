@@ -110,8 +110,8 @@ export default function AdminAccountDrilldownPage() {
           <EmptyState title="반응 기록이 없어요" />
         ) : (
           dayGroups.map((group) => (
-            <div key={group.dateLabel}>
-              <p className="mb-1 mt-3 text-xs font-bold text-muted-foreground first:mt-0">
+            <div key={group.dateLabel} className="mt-3 first:mt-0">
+              <p className="mb-1 text-xs font-bold text-muted-foreground">
                 {group.dateLabel}
               </p>
               {group.events.map((e) => (

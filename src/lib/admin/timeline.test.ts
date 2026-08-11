@@ -80,8 +80,8 @@ describe("groupEventsByDay", () => {
 
   it("같은 날 이벤트는 한 그룹으로 묶인다", () => {
     const groups = groupEventsByDay([
-      ev("a", "2026-08-11T04:00:00Z"),
-      ev("b", "2026-08-11T10:00:00Z"),
+      ev("a", new Date(2026, 7, 11, 9).toISOString()),
+      ev("b", new Date(2026, 7, 11, 15).toISOString()),
     ]);
     expect(groups).toHaveLength(1);
     expect(groups[0].events).toHaveLength(2);
