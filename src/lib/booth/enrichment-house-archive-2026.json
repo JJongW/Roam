@@ -725,7 +725,12 @@
     "summary": "소소한 행복을 주는 음식과 자연을 담은 일러스트 브랜드.",
     "sourceUrl": "https://instagram.com/nijiboku",
     "roamInterpretation": "소소한 행복을 담은 음식·자연 일러스트 브랜드야.",
-    "image": "/booths/house-archive/T18.webp"
+    "image": "/booths/house-archive/T18.webp",
+    "images": [
+      "/booths/house-archive/T18-1.webp",
+      "/booths/house-archive/T18-2.webp",
+      "/booths/house-archive/T18-3.webp"
+    ]
   },
   "T19": {
     "goodsKeywords": [],

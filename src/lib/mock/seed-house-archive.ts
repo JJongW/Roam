@@ -15,10 +15,12 @@ import type {
   Hall,
 } from "@/lib/types";
 
-// image는 BoothEnrichment에 없는 생성 산출물 — 부스 이미지 경로다(스크립트가 채운다).
+// image·images는 BoothEnrichment에 없는 생성 산출물 — 부스 이미지 경로다(스크립트/직접
+// 수집이 채운다). image는 대표 로고 썸네일 하나, images는 부스 상세 갤러리에 쓰는
+// 여러 장(있으면) — 인스타 최신 게시물 중 상품/작품샷을 골라 정사각으로 크롭한 것.
 const haEnrich = haEnrichData as Record<
   string,
-  Partial<BoothEnrichment> & { image?: string }
+  Partial<BoothEnrichment> & { image?: string; images?: string[] }
 >;
 
 // 5개 테마 + 테이블 마켓. floorplan의 cat 키가 그대로 slug라 매핑 테이블이 필요 없다.
@@ -103,7 +105,7 @@ export const haBooths: Booth[] = (haFloor.booths as HaFloorBooth[]).map((b) => {
     company: cat.name,
     description: e?.summary ?? `${b.name} · 부스 ${b.code}`,
     longDescription: `${b.name}(${b.nameEn})의 부스입니다. 부스 번호 ${b.code}. 하우스 아카이브 ${cat.name} 참가 브랜드입니다.`,
-    images: e?.image ? [e.image] : [],
+    images: e?.images ?? (e?.image ? [e.image] : []),
     logoUrl: e?.image,
     websiteUrl: undefined,
     instagramUrl: e?.sourceUrl,
