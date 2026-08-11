@@ -147,22 +147,29 @@ export function mergePurposeWeights(purposes: VisitPurpose[]): DimWeights {
 
 /**
  * L4 메모리 — 신호 종류별 가중치. 관심 confidence 수학(순수·결정론)의 입력.
- * booth_visited=암묵 강 / bookmark·route=명시 / skip=음의 신호.
+ *
+ * 원칙: 경험한 판정이 화면상의 판단을 이긴다. verdict_good(1.5) > reaction_must(1.2),
+ * verdict_bad(1.2) > reaction_pass(0.5) — 안 가보고 내린 판단보다 가보고 내린
+ * 판단을 무겁게 친다(judgment-vocabulary §5).
  */
 export const SIGNAL_WEIGHTS: Record<
   SignalKind,
   { explicit: number; implicit: number; negative: number }
 > = {
-  booth_visited: { explicit: 0, implicit: 1.0, negative: 0 },
   booth_bookmarked: { explicit: 1.2, implicit: 0, negative: 0 },
   route_saved: { explicit: 1.5, implicit: 0, negative: 0 },
-  booth_skipped: { explicit: 0, implicit: 0, negative: 0.8 },
   // 피드 카드 클릭 = 약한 암묵 관심(둘러봄). 방문보다 가볍게.
   feed_click: { explicit: 0, implicit: 0.3, negative: 0 },
-  // 반응 버튼: 끌림=명시 강, 나중에=약한 명시. 별로/이미봄은 skip/visited 재사용.
-  reaction_interested: { explicit: 1.2, implicit: 0, negative: 0 },
-  reaction_later: { explicit: 0.5, implicit: 0, negative: 0 },
-  // 특정 부스를 직접 검색 = 능동적 강한 관심(끌림에 준함).
+  // 관람 전(피드) — 가겠다고 정한 것이 가장 강한 명시 의사, 끌림은 그 절반.
+  reaction_must: { explicit: 1.2, implicit: 0, negative: 0 },
+  reaction_curious: { explicit: 0.6, implicit: 0, negative: 0 },
+  // 카드만 보고 내린 거절 — 근거가 얕아 약하게.
+  reaction_pass: { explicit: 0, implicit: 0, negative: 0.5 },
+  // 현장(판정) — 몸으로 확인한 긍정이 전체 최고. 가보고 아니었다가 가장 확실한 부정.
+  verdict_good: { explicit: 1.5, implicit: 0, negative: 0 },
+  verdict_ok: { explicit: 0, implicit: 0.3, negative: 0 },
+  verdict_bad: { explicit: 0, implicit: 0, negative: 1.2 },
+  // 특정 부스를 직접 검색 = 능동적 강한 관심(꼭 갈래에 준함).
   search_query: { explicit: 1.3, implicit: 0, negative: 0 },
 };
 
