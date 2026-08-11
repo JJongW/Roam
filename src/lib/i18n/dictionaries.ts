@@ -100,6 +100,16 @@ const ko = {
       "부스가 워낙 많아서, 네 취향을 알면 딱 맞는 곳만 골라줄 수 있어. 몇 개만 물어볼게 — 정답은 없어, 끌리는 걸 골라줘.",
     introCta: "좋아, 시작하자",
     introSkip: "먼저 둘러볼게",
+    guide1Title: "몇 가지만 물어볼게",
+    guide1Desc: "굿즈가 좋아, 새로운 걸 보는 게 좋아? 30초면 끝나.",
+    guide2Title: "그럼 이런 걸 골라올게",
+    guide2Desc:
+      "답한 대로 부스를 추려서 순서대로 보여줘. 맘에 들면 '꼭 갈래', 아니면 '패스' — 그걸로 또 다듬어져.",
+    guide3Title: "돌아다니면서 확인해",
+    guide3Desc:
+      "지도에서 찜한 곳이 색으로 바로 보여. 실제로 가본 다음엔 어땠는지 한 번 더 물어볼게 — 그래야 다음엔 더 정확해져.",
+    guideNext: "다음",
+    guideDone: "시작하자",
     learningApp: "로미가 너를 알아가는 중…",
     learningExhibition: "이 전시에서 네 취향을 맞춰보는 중…",
     almostThere: "거의 다 왔어",
@@ -763,6 +773,17 @@ const en: Dict = {
       "There are so many booths — knowing your taste lets me pick just the right ones. Just a few questions, no right answers.",
     introCta: "Okay, let's start",
     introSkip: "I'll look around first",
+    guide1Title: "Just a few questions",
+    guide1Desc:
+      "Into hands-on goods, or discovering new things? Takes 30 seconds.",
+    guide2Title: "Then I'll pick some for you",
+    guide2Desc:
+      "I'll narrow down booths based on your answers and show them in order. Like one? Tap 'Must-see'. Not for you? 'Pass' — either way I get sharper.",
+    guide3Title: "Check in as you walk around",
+    guide3Desc:
+      "Spots you're into show up in color on the map. Once you've actually been, I'll ask how it went — that's what makes me more accurate next time.",
+    guideNext: "Next",
+    guideDone: "Let's start",
     learningApp: "Romi is getting to know you…",
     learningExhibition: "Reading your taste for this fair…",
     almostThere: "Almost there",
