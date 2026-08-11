@@ -471,7 +471,11 @@ const ko = {
     tasteUnknown: "아직 널 모르겠어. 둘러보면서 알려줘.",
     tasteWarming: "조금씩 감이 오는데, 좀 더 봐야겠어.",
     tasteInsight: "이제 좀 감이 온다. 계속 맞춰볼게.",
-    tastePct: "취향 {pct}%",
+    tastePct: "취향 {pct}% · {n}건",
+    // 판정 표본(8~15개 안팎)에서 %가 크게 흔들리는 게 버그가 아니라 원래 그런
+    // 거라고 로미가 직접 알려준다 — 큰 폭으로 떨어질 때 한 번만(연속 알림 아님).
+    tasteDropInsight:
+      "방금 몇 개 판정으로 취향 %가 확 움직였을 거야 — 판정이 적을수록 원래 그래. 쌓일수록 잔잔해져.",
     retroBatchTitle: "오늘 갔던 데 중에 어디가 괜찮았어?",
     retroBatchSkip: "괜찮아, 넘어갈게",
     retroVisitedTitle: "여기도 가려고 했었네",
@@ -979,7 +983,9 @@ const en: Dict = {
     tasteUnknown: "Don't know you yet. Show me around.",
     tasteWarming: "Getting a sense of it — need a bit more.",
     tasteInsight: "Starting to get it. I'll keep guessing.",
-    tastePct: "Taste {pct}%",
+    tastePct: "Taste {pct}% · {n}",
+    tasteDropInsight:
+      "A few reactions just swung your taste % a lot — that's normal with a small sample. It settles as it grows.",
     retroBatchTitle: "Which of today's spots stood out?",
     retroBatchSkip: "Skip this",
     retroVisitedTitle: "You planned to visit these too",

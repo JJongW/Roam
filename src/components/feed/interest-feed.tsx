@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -48,7 +48,11 @@ export function InterestFeed({
   const router = useRouter();
   const say = useCompanionStore((s) => s.say);
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
-  const [repicking, setRepicking] = useState(false);
+  // router.refresh()는 완료 콜백이 없다 — 수동 boolean은 끄는 코드가 없으면
+  // 그대로 눌어붙는다(리페치가 새 items prop으로 들어와도 같은 컴포넌트
+  // 인스턴스가 유지돼 리마운트가 안 일어나기 때문). useTransition의 isPending은
+  // 감싼 갱신이 실제로 반영될 때 자동으로 꺼진다.
+  const [repicking, startRepick] = useTransition();
   // 반응한 카드는 즉시 사라진다 — 서버를 기다리면 "눌러도 안 바뀐다"고 느낀다.
   // 낙관적으로 걷어내고, 아래 새로 고르기를 누를 때 서버 목록이 진실이 된다
   // (curate.ts도 상태 있는 부스를 제외한다). 피드는 6칸짜리 결정 큐다.
@@ -91,9 +95,10 @@ export function InterestFeed({
   // 다시 그려지고 목록이 움직였다. 스크롤을 되돌리지 않으려면 새 내용은 아래에서만
   // 자라야 한다 — 버튼도 아래 두고, 누르기 전엔 아무것도 안 움직인다.
   function repick() {
-    setRepicking(true);
     say(t("companion.recurated"));
-    router.refresh();
+    startRepick(() => {
+      router.refresh();
+    });
   }
 
   if (visible.length === 0) {

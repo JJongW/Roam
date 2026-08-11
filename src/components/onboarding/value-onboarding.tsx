@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore, PENDING_EXHIBITION_VALUES_KEY } from "@/lib/stores/auth";
 import { useCompanionStore } from "@/lib/stores/companion";
@@ -9,6 +9,10 @@ import { api } from "@/lib/api/client";
 import { useT } from "@/lib/i18n/provider";
 import { RoamMotion, THINKING_POOL } from "@/components/companion/roam-motion";
 import { Conversation } from "@/components/onboarding/conversation";
+import {
+  clearSessionState,
+  useSessionState,
+} from "@/lib/hooks/use-session-state";
 import { OnboardingResult } from "@/components/onboarding/onboarding-result";
 import {
   EXHIBITION_QUESTIONS,
@@ -46,12 +50,21 @@ export function ValueOnboarding({
   const router = useRouter();
   const t = useT();
   const user = useAuthStore((s) => s.user);
-  const [open, setOpen] = useState(false);
-  const [phase, setPhase] = useState<Phase>("intro");
+  // 전시별로 키를 나눠 sessionStorage에 남긴다 — 뒤로가기가 이 페이지를 언마운트
+  // 시켰다 돌아와도(예전엔 phase가 "intro"로 리셋됐다) 있던 자리에서 이어진다.
+  const storeKey = (name: string) => `roam-onboarding-value-${slug}-${name}`;
+  const [open, setOpen] = useSessionState(storeKey("open"), false);
+  const [phase, setPhase] = useSessionState<Phase>(storeKey("phase"), "intro");
   // 가치 집계는 rhythm 스텝을 거쳐 저장하므로 잠깐 들고 있는다.
-  const [tally, setTally] = useState<Tally | null>(null);
+  const [tally, setTally] = useSessionState<Tally | null>(
+    storeKey("tally"),
+    null,
+  );
   // 온보딩에서 고른 오늘의 리듬 — 완료 시 ?rhythm= 으로 피드에 반영.
-  const [rhythm, setRhythm] = useState<Rhythm>(DEFAULT_RHYTHM);
+  const [rhythm, setRhythm] = useSessionState<Rhythm>(
+    storeKey("rhythm"),
+    DEFAULT_RHYTHM,
+  );
 
   // 앱 온보딩을 방금 끝냈고(건너뛰기 아님) 이 전시가 아직 확신 가치가 없으면
   // 자동으로 이어서 연다 — 사용자가 카드를 따로 탭할 필요 없이 "온보딩 하나로
@@ -70,7 +83,11 @@ export function ValueOnboarding({
     // start는 리렌더마다 새로 만들어지는 함수라 deps에 넣지 않는다(무한 루프 방지) —
     // appOnboardingJustCompleted가 true → false로 바뀌는 그 순간에만 반응하면 된다.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [appOnboardingJustCompleted, hasChosenValues, clearAppOnboardingJustCompleted]);
+  }, [
+    appOnboardingJustCompleted,
+    hasChosenValues,
+    clearAppOnboardingJustCompleted,
+  ]);
 
   function start() {
     setPhase("intro");
@@ -106,6 +123,14 @@ export function ValueOnboarding({
 
   function finish() {
     setOpen(false);
+    // 다 끝났다 — 남겨두면 다음에 이 전시에 다시 들어왔을 때 "result" 단계로
+    // 잘못 이어붙는다(이미 확신 가치가 생겨 카드 자체는 안 뜨지만, 방어적으로 지운다).
+    clearSessionState(
+      storeKey("open"),
+      storeKey("phase"),
+      storeKey("tally"),
+      storeKey("rhythm"),
+    );
     // 고른 리듬을 쿼리로 반영 → 서버가 그 밀도로 피드를 다시 큐레이션.
     router.replace(`/exhibitions/${slug}?rhythm=${rhythm}`, { scroll: false });
     router.refresh();
@@ -178,6 +203,7 @@ export function ValueOnboarding({
               questions={EXHIBITION_QUESTIONS}
               subtitleKey="onboardingQ.learningExhibition"
               onComplete={afterQuiz}
+              persistKey={storeKey("quiz")}
             />
           )}
           {phase === "rhythm" && (

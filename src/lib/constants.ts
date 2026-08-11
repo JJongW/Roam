@@ -196,6 +196,14 @@ export const REASONER_TUNING = {
  */
 export const CONFIDENT_THRESHOLD = 0.25;
 
+/**
+ * 취향 정확도(%) 급락 감지 폭 — 포인트(0~100 스케일). 판정 표본이 8~15개 안팎일 땐
+ * 반응 몇 개만으로 %가 크게 요동친다(원래 그런 수학이지 버그가 아니다). 이 폭보다
+ * 크게 떨어지면 로미가 한 번 짚어준다(companion.tasteDropInsight) — 안 그러면
+ * 사용자가 "왜 갑자기 확 줄었지"를 이유 없는 오류로 느낀다.
+ */
+export const TASTE_DROP_ALERT_POINTS = 15;
+
 /** L4 증류 튜닝. confidence = raw/(raw+K), 시간감쇠 반감기 halfLifeDays. */
 export const MEMORY_TUNING = {
   halfLifeDays: 90,

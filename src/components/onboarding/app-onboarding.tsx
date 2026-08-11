@@ -5,6 +5,10 @@ import { usePathname, useRouter } from "next/navigation";
 import { api } from "@/lib/api/client";
 import { RoamMotion, THINKING_POOL } from "@/components/companion/roam-motion";
 import { Conversation } from "@/components/onboarding/conversation";
+import {
+  clearSessionState,
+  useSessionState,
+} from "@/lib/hooks/use-session-state";
 import { LegalLinks } from "@/components/common/legal-links";
 import { useAuthStore, PENDING_VALUES_KEY } from "@/lib/stores/auth";
 import { useCompanionStore } from "@/lib/stores/companion";
@@ -47,7 +51,13 @@ export function AppOnboardingGate() {
   const [anonDismissed, setAnonDismissed] = useState(
     () => typeof window !== "undefined" && !!localStorage.getItem(FLAG),
   );
-  const [phase, setPhase] = useState<Phase>("intro");
+  // 뒤로가기가 이 오버레이를 언마운트시켰다 돌아와도(canShowAppOnboarding이 false인
+  // 경로로 잠깐 나갔다 온 경우 등) phase가 "intro"로 리셋되지 않게 sessionStorage에
+  // 같이 남긴다.
+  const [phase, setPhase] = useSessionState<Phase>(
+    "roam-onboarding-app-phase",
+    "intro",
+  );
 
   const onboarded = isAppOnboardingDismissed({
     user,
@@ -61,6 +71,7 @@ export function AppOnboardingGate() {
   function dismissLocally() {
     if (typeof window !== "undefined") localStorage.setItem(FLAG, "1");
     setAnonDismissed(true);
+    clearSessionState("roam-onboarding-app-phase");
   }
 
   async function complete(tally: Tally) {
@@ -154,6 +165,7 @@ export function AppOnboardingGate() {
           questions={APP_QUESTIONS}
           subtitleKey="onboardingQ.learningApp"
           onComplete={complete}
+          persistKey="roam-onboarding-app-quiz"
         />
       )}
 

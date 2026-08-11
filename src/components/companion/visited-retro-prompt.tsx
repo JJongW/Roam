@@ -5,6 +5,7 @@ import { api } from "@/lib/api/client";
 import { useVisitStore, pushNote } from "@/lib/stores/visit";
 import { useCompanionStore } from "@/lib/stores/companion";
 import { useT } from "@/lib/i18n/provider";
+import { TASTE_DROP_ALERT_POINTS } from "@/lib/constants";
 
 interface PendingBooth {
   boothId: string;
@@ -75,11 +76,20 @@ export function VisitedRetroPrompt({
     );
     setVerdict(boothId, verdict);
     const prevJudged = useCompanionStore.getState().tasteJudged;
+    const prevPct = useCompanionStore.getState().tastePct;
     void pushNote(boothId, { verdict: true }).then((taste) => {
       if (!taste) return;
       setTaste(taste.judgedCount, taste.pct);
       if (prevJudged < 5 && taste.judgedCount >= 5) {
         useCompanionStore.getState().say(t("companion.tasteInsight"));
+      } else if (
+        prevPct !== null &&
+        taste.pct !== null &&
+        prevPct - taste.pct >= TASTE_DROP_ALERT_POINTS
+      ) {
+        // 회고 되묻기에서 "아니었어"를 몇 번 연달아 누르면 % 낙폭이 가장 크게
+        // 나는 자리다 — 여기서 한 번 짚어주면 "왜 갑자기 확 줄었지"가 안 남는다.
+        useCompanionStore.getState().say(t("companion.tasteDropInsight"));
       }
     });
   }

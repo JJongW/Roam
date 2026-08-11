@@ -4,9 +4,20 @@ import { useState } from "react";
 import { useVisitStore, pushNote } from "@/lib/stores/visit";
 import type { InterestValue, VerdictValue } from "@/lib/stores/visit";
 import { useAuthStore, promptLoginOncePerExhibition } from "@/lib/stores/auth";
+import { TASTE_DROP_ALERT_POINTS } from "@/lib/constants";
 import { useCompanionStore } from "@/lib/stores/companion";
 import { buildJudgmentLine } from "@/lib/companion/reaction-line";
 import { useT } from "@/lib/i18n/provider";
+
+/** 지도·범례와 같은 색을 버튼에도 그대로 쓴다 — 어떤 판단인지 색으로도 바로 읽힌다. */
+const JUDGE_COLOR: Record<InterestValue | VerdictValue, string> = {
+  must: "var(--judge-must)",
+  curious: "var(--judge-curious)",
+  pass: "var(--judge-pass)",
+  good: "var(--judge-good)",
+  ok: "var(--judge-ok)",
+  bad: "var(--judge-bad)",
+};
 
 /**
  * 부스 판단 UI — 관심(피드, 관람 전)과 판정(현장, 관람 후)을 하나의 컴포넌트로
@@ -98,6 +109,7 @@ export function JudgmentBar({
     // touched: 이 호출이 실제로 바꾸는 필드만 서버로 보낸다(judgment-vocabulary
     // 최종 리뷰 Fix 1) — 나머지 필드 키는 아예 안 넣어 "안 건드림"으로 읽히게 한다.
     const prevJudged = useCompanionStore.getState().tasteJudged;
+    const prevPct = useCompanionStore.getState().tastePct;
     const touched =
       kind === "interest" ? { interest: true } : { verdict: true };
     void pushNote(boothId, touched).then((taste) => {
@@ -105,6 +117,12 @@ export function JudgmentBar({
       useCompanionStore.getState().setTaste(taste.judgedCount, taste.pct);
       if (prevJudged < 5 && taste.judgedCount >= 5) {
         useCompanionStore.getState().say(t("companion.tasteInsight"));
+      } else if (
+        prevPct !== null &&
+        taste.pct !== null &&
+        prevPct - taste.pct >= TASTE_DROP_ALERT_POINTS
+      ) {
+        useCompanionStore.getState().say(t("companion.tasteDropInsight"));
       }
     });
   }
@@ -149,6 +167,7 @@ export function JudgmentBar({
             screen === "interest"
               ? record?.interest === btn.key
               : record?.verdict === btn.key;
+          const color = JUDGE_COLOR[btn.key];
           return (
             <button
               key={btn.key}
@@ -159,10 +178,19 @@ export function JudgmentBar({
                   : react("verdict", btn.key as VerdictValue)
               }
               aria-pressed={active}
+              style={
+                active
+                  ? {
+                      borderColor: color,
+                      backgroundColor: `color-mix(in srgb, ${color} 16%, transparent)`,
+                      color,
+                    }
+                  : undefined
+              }
               className={
                 active
-                  ? "flex-1 rounded-lg border border-primary bg-accent/60 py-1.5 text-xs font-semibold text-primary"
-                  : "flex-1 rounded-lg border border-border py-1.5 text-xs font-semibold text-muted-foreground"
+                  ? "flex-1 scale-100 rounded-lg border py-1.5 text-xs font-semibold transition-all duration-200 active:scale-95"
+                  : "flex-1 scale-100 rounded-lg border border-border py-1.5 text-xs font-semibold text-muted-foreground transition-all duration-200 active:scale-95"
               }
             >
               {btn.label}
