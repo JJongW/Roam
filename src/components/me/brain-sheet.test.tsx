@@ -71,4 +71,56 @@ describe("BrainSheet 관심 고치기", () => {
     await user.click(screen.getByTestId("value-toggle-goods"));
     expect(put).toHaveBeenCalledWith("/api/me/values/goods", { muted: false });
   });
+
+  it("값이 없는 가치를 켜면 명시 긍정 신호도 함께 POST 한다 — 뮤트만 풀면 여전히 0이라 반응이 없어 보이기 때문", async () => {
+    vi.spyOn(api, "get").mockResolvedValue({
+      data: brain({ mutedSlugs: ["goods"] }),
+    });
+    const put = vi.spyOn(api, "put").mockResolvedValue(undefined);
+    const post = vi.spyOn(api, "post").mockResolvedValue(undefined);
+    const user = userEvent.setup();
+    render(<BrainSheet open onClose={() => {}} />);
+    await waitFor(() => screen.getByText("발견"));
+    await user.click(screen.getByRole("button", { name: /고치기|Edit/i }));
+    await user.click(screen.getByTestId("value-toggle-goods"));
+    expect(put).toHaveBeenCalledWith("/api/me/values/goods", { muted: false });
+    expect(post).toHaveBeenCalledWith("/api/me/values", { values: ["goods"] });
+  });
+
+  it("값이 있는 가치의 뮤트만 풀 때는 명시 긍정 신호를 보내지 않는다 — 이미 쌓인 게 있으니 굳이 또 안 남긴다", async () => {
+    vi.spyOn(api, "get").mockResolvedValue({
+      data: brain({
+        interests: [
+          {
+            key: "discovery",
+            label: "발견",
+            confidence: 0.8,
+            signals: { explicit: 3, implicit: 1, negative: 0 },
+            firstSeenAt: "",
+            lastSeenAt: "",
+            trend: "up",
+          },
+          {
+            key: "goods",
+            label: "굿즈",
+            confidence: 0.5,
+            signals: { explicit: 2, implicit: 0, negative: 0 },
+            firstSeenAt: "",
+            lastSeenAt: "",
+            trend: "up",
+          },
+        ],
+        mutedSlugs: ["goods"],
+      }),
+    });
+    const put = vi.spyOn(api, "put").mockResolvedValue(undefined);
+    const post = vi.spyOn(api, "post").mockResolvedValue(undefined);
+    const user = userEvent.setup();
+    render(<BrainSheet open onClose={() => {}} />);
+    await waitFor(() => screen.getByText("발견"));
+    await user.click(screen.getByRole("button", { name: /고치기|Edit/i }));
+    await user.click(screen.getByTestId("value-toggle-goods"));
+    expect(put).toHaveBeenCalledWith("/api/me/values/goods", { muted: false });
+    expect(post).not.toHaveBeenCalled();
+  });
 });
