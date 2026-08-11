@@ -11,13 +11,15 @@ export interface TimelineEvent {
 }
 
 const SIGNAL_LABELS: Record<string, string> = {
-  booth_visited: "가봄",
-  booth_skipped: "별로",
   booth_bookmarked: "북마크",
   route_saved: "동선 저장",
   feed_click: "피드 클릭",
-  reaction_interested: "끌림",
-  reaction_later: "나중에",
+  reaction_must: "꼭 갈래",
+  reaction_curious: "끌려",
+  reaction_pass: "패스",
+  verdict_good: "좋았어",
+  verdict_ok: "그냥그랬어",
+  verdict_bad: "아니었어",
   search_query: "검색",
 };
 

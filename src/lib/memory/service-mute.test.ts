@@ -60,7 +60,7 @@ describe("setValueMuted", () => {
     await repo.appendUserSignal({
       userId,
       exhibitionId: "exh_test",
-      kind: "reaction_interested",
+      kind: "reaction_must",
       slugs: ["trend"],
     });
 
@@ -82,7 +82,7 @@ describe("setValueMuted", () => {
 
     // recordSignal은 listCategories로 분야 라벨을 채워 브레인에 적어둔다.
     await recordSignal(userId, {
-      kind: "reaction_interested",
+      kind: "reaction_must",
       exhibitionId: exhibitions[0].id,
       slugs: [cat.slug],
     });
@@ -115,7 +115,7 @@ describe("setValueMuted", () => {
       await repo.appendUserSignal({
         userId,
         exhibitionId: "exh_test",
-        kind: "reaction_interested",
+        kind: "reaction_must",
         slugs: ["goods"],
       });
       await setValueMuted(userId, "goods", true);
@@ -131,7 +131,7 @@ describe("setValueMuted", () => {
       await repo.appendUserSignal({
         userId,
         exhibitionId: "exh_test",
-        kind: "reaction_interested",
+        kind: "reaction_must",
         slugs: ["goods"],
       });
       const { needsSeed } = await setValueMuted(userId, "goods", false);
@@ -147,7 +147,7 @@ describe("setValueMuted", () => {
       await repo.appendUserSignal({
         userId,
         exhibitionId: "exh_test",
-        kind: "reaction_interested",
+        kind: "reaction_must",
         slugs: ["goods"],
       });
       const { needsSeed } = await setValueMuted(userId, "goods", true);
@@ -196,7 +196,7 @@ describe("clearMutedSlugs", () => {
     // POST /api/me/values 핸들러가 하는 순서 그대로.
     await clearMutedSlugs(userId, ["goods"]);
     await recordSignal(userId, {
-      kind: "reaction_interested",
+      kind: "reaction_must",
       exhibitionId: exhibitions[0].id,
       slugs: ["goods"],
     });

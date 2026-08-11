@@ -256,19 +256,19 @@ describe("MockRepository", () => {
     await repo.appendUserSignal({
       userId: "u1",
       exhibitionId: "ex1",
-      kind: "reaction_interested",
+      kind: "reaction_must",
       slugs: [],
     });
     await repo.appendUserSignal({
       userId: "u2",
       exhibitionId: "ex1",
-      kind: "reaction_later",
+      kind: "reaction_curious",
       slugs: [],
     });
     await repo.appendUserSignal({
       userId: "u1",
       exhibitionId: "ex2",
-      kind: "reaction_interested",
+      kind: "reaction_must",
       slugs: [],
     });
     const rows = await repo.listExhibitionSignals("ex1");

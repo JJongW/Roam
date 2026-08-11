@@ -39,7 +39,7 @@ export async function POST(req: Request) {
 
   // 고른 가치를 명시 관심 신호로 시드 → 브레인 재증류 → 피드가 즉시 맞춰짐.
   await recordSignal(user.id, {
-    kind: "reaction_interested",
+    kind: "reaction_must",
     exhibitionId,
     slugs: values,
   });

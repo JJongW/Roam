@@ -8,11 +8,14 @@ const signalSchema = z.object({
   boothId: z.string().min(1),
   kind: z.enum([
     "feed_click",
-    "booth_visited",
-    "booth_skipped",
     "booth_bookmarked",
-    "reaction_interested",
-    "reaction_later",
+    "route_saved",
+    "reaction_must",
+    "reaction_curious",
+    "reaction_pass",
+    "verdict_good",
+    "verdict_ok",
+    "verdict_bad",
     "search_query",
   ]),
 });
