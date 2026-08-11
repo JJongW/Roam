@@ -4,9 +4,12 @@ import type { Locale } from "@/lib/i18n/config";
 // 부스 콘텐츠(요약·근거 등 데이터)는 한국어라 미번역 — UI 크롬만 로컬라이즈.
 // 값에 {name} 같은 토큰은 t(key, {name}) 로 치환.
 
-// 각 네임스페이스의 값 타입을 string으로 넓힘 — ko가 스키마, en은 같은 키·string 값.
+// 각 네임스페이스의 값 타입을 string|string[]으로 넓힘 — ko가 스키마, en은 같은 키.
+// 배열이면 t()가 매번 무작위로 하나를 고른다(카피 다양성 — 로미 반응 문구 등).
 export type Dict = {
-  [K in keyof typeof ko]: { [P in keyof (typeof ko)[K]]: string };
+  [K in keyof typeof ko]: {
+    [P in keyof (typeof ko)[K]]: string | readonly string[];
+  };
 };
 
 const ko = {
@@ -231,6 +234,7 @@ const ko = {
     visitedLink: "여기 다녀왔어 →",
     switchToVerdict: "다녀왔어 →",
     switchToInterest: "관심 바꾸기 →",
+    notVisitedYet: "아직 안 갔어 →",
   },
   map: {
     title: "전시장 지도",
@@ -434,37 +438,174 @@ const ko = {
     // 부스 하나 뺀 걸 취향 전체의 부정으로 말하는 셈이라 과장이다. 이름은 따옴표로
     // 묶고 조사 대신 쉼표를 써서 은/는 선택 문제를 없앤다.
     // interest(관람 전 의사): must·curious·pass. verdict(관람 후 판정): good·ok·bad.
-    reactMust: "‘{booth}’, 꼭 가야겠다. 챙겨둘게.",
-    reactMustPlain: "꼭 가야겠다. 챙겨둘게.",
-    reactCurious: "‘{booth}’, 끌리는구나. 기억해둘게.",
-    reactCuriousPlain: "끌리는구나. 기억해둘게.",
-    reactPass: "‘{booth}’, 알았어. 비슷한 건 덜 보여줄게.",
-    reactPassPlain: "알았어, 이런 건 덜 보여줄게.",
-    reactGood: "‘{booth}’, 좋았구나. 이런 결 더 찾아볼게.",
-    reactGoodPlain: "좋았구나. 이런 결 더 찾아볼게.",
+    // 각 키는 변주 풀(배열) — t()가 매번 무작위로 하나를 고른다(카피 다양성).
+    // 같은 배열 안 변주는 전부 같은 플레이스홀더({booth}/{theme})만 쓴다 — 어느 게
+    // 뽑히든 interpolate가 안전하게 치환되게.
+    reactMust: [
+      "‘{booth}’, 꼭 가야겠다. 챙겨둘게.",
+      "‘{booth}’ 찜. 잊지 않게 담아둘게.",
+      "‘{booth}’, 오케이 — 우선순위로 기억할게.",
+      "‘{booth}’ 꼭 들러야겠네. 잘 챙겨둘게.",
+    ],
+    reactMustPlain: [
+      "꼭 가야겠다. 챙겨둘게.",
+      "찜. 잊지 않게 담아둘게.",
+      "오케이 — 우선순위로 기억할게.",
+      "꼭 들러야겠네. 잘 챙겨둘게.",
+    ],
+    reactCurious: [
+      "‘{booth}’, 끌리는구나. 기억해둘게.",
+      "‘{booth}’ 눈에 담아둘게.",
+      "‘{booth}’, 괜찮아 보이나 보네.",
+      "‘{booth}’ — 마음이 가나 보다. 담아둘게.",
+    ],
+    reactCuriousPlain: [
+      "끌리는구나. 기억해둘게.",
+      "눈에 담아둘게.",
+      "괜찮아 보이나 보네.",
+      "마음이 가나 보다. 담아둘게.",
+    ],
+    reactPass: [
+      "‘{booth}’, 알았어. 비슷한 건 덜 보여줄게.",
+      "‘{booth}’ 넘어갈게. 참고할게.",
+      "‘{booth}’, 오케이 — 다음엔 다른 걸로.",
+      "‘{booth}’ 패스. 기억해둘게.",
+    ],
+    reactPassPlain: [
+      "알았어, 이런 건 덜 보여줄게.",
+      "넘어갈게. 참고할게.",
+      "오케이 — 다음엔 다른 걸로.",
+      "패스. 기억해둘게.",
+    ],
+    reactGood: [
+      "‘{booth}’, 좋았구나. 이런 결 더 찾아볼게.",
+      "‘{booth}’ 마음에 들었나 보네. 비슷한 데 더 찾아볼게.",
+      "‘{booth}’, 다행이다. 이런 느낌 계속 챙길게.",
+      "‘{booth}’ 좋았다니 다행. 비슷한 결로 더 봐둘게.",
+    ],
+    reactGoodPlain: [
+      "좋았구나. 이런 결 더 찾아볼게.",
+      "마음에 들었나 보네. 비슷한 데 더 찾아볼게.",
+      "다행이다. 이런 느낌 계속 챙길게.",
+      "좋았다니 다행. 비슷한 결로 더 봐둘게.",
+    ],
     // good이면서 직전 interest가 must/curious였던 경우(judgment-bar가 넘긴다) —
     // "몰랐는데 좋았다"가 아니라 "찍어둔 게 맞았다" 톤으로 갈린다.
-    reactGoodMatched: "‘{booth}’, 찍어둔 데가 맞았네.",
-    reactGoodMatchedPlain: "찍어둔 데가 맞았네.",
-    reactOk: "‘{booth}’, 그랬구나.",
-    reactOkPlain: "그랬구나.",
-    reactBad: "‘{booth}’, 알았어. 내가 잘못 짚었나 봐.",
-    reactBadPlain: "알았어. 내가 잘못 짚었나 봐.",
+    reactGoodMatched: [
+      "‘{booth}’, 찍어둔 데가 맞았네.",
+      "‘{booth}’ — 미리 봐둔 보람 있었네.",
+      "‘{booth}’, 예상대로였구나. 잘 짚었어.",
+      "‘{booth}’ 역시 괜히 눈여겨본 게 아니었네.",
+    ],
+    reactGoodMatchedPlain: [
+      "찍어둔 데가 맞았네.",
+      "미리 봐둔 보람 있었네.",
+      "예상대로였구나. 잘 짚었어.",
+      "역시 괜히 눈여겨본 게 아니었네.",
+    ],
+    reactOk: [
+      "‘{booth}’, 그랬구나.",
+      "‘{booth}’ — 그런 느낌이었구나.",
+      "‘{booth}’, 알겠어. 그 정도였구나.",
+      "‘{booth}’ 그랬구나. 기록해둘게.",
+    ],
+    reactOkPlain: [
+      "그랬구나.",
+      "그런 느낌이었구나.",
+      "알겠어. 그 정도였구나.",
+      "그랬구나. 기록해둘게.",
+    ],
+    reactBad: [
+      "‘{booth}’, 알았어. 내가 잘못 짚었나 봐.",
+      "‘{booth}’ — 아쉽네. 다르게 볼게.",
+      "‘{booth}’, 그랬구나. 참고할게.",
+      "‘{booth}’ 안 맞았구나. 다음엔 다르게 짚어볼게.",
+    ],
+    reactBadPlain: [
+      "알았어. 내가 잘못 짚었나 봐.",
+      "아쉽네. 다르게 볼게.",
+      "그랬구나. 참고할게.",
+      "안 맞았구나. 다음엔 다르게 짚어볼게.",
+    ],
     // 분야 매칭 즉답(reaction-line.ts) — 확신도(0.25 임계값)에 따라 조심스러움→확신.
     // pass·bad는 확신 분야에서만 이름을 말하고, 그때도 "안에서도 다는 아니다"로 헤지한다.
-    reactMustTentative: "‘{booth}’도 ‘{theme}’ 쪽이네 — 관심 있나 봐.",
-    reactMustTentativePlain: "‘{theme}’ 쪽에 관심 있나 봐.",
-    reactMustConfident: "‘{booth}’도 ‘{theme}’구나 — 확실히 좋아하네.",
-    reactMustConfidentPlain: "‘{theme}’ 확실히 좋아하는구나.",
-    reactCuriousTentative: "‘{booth}’도 ‘{theme}’ 쪽이네.",
-    reactCuriousTentativePlain: "‘{theme}’ 쪽인가 보네.",
-    reactCuriousConfident: "‘{booth}’도 ‘{theme}’구나.",
-    reactCuriousConfidentPlain: "‘{theme}’ 계속 끌리네.",
-    reactPassConfident: "‘{booth}’, 알았어. ‘{theme}’ 안에서도 다는 아닌가 봐.",
-    reactPassConfidentPlain: "‘{theme}’ 안에서도 다는 아닌가 봐.",
-    reactBadConfident:
-      "‘{booth}’, 알았어. ‘{theme}’ 안에서도 다는 아니었나 봐.",
-    reactBadConfidentPlain: "‘{theme}’ 안에서도 다는 아니었나 봐.",
+    // {theme}은 카테고리 실명(예: 독립출판) — 사용자가 직접 세운 '취향' 개념이 아니라
+    // 로미가 내부적으로 묶어보는 분류라, 문장 주어로 뚝 꽂으면 낯설게 읽힌다. 그래도
+    // 이 티어의 존재 이유가 "왜 지금 너한테"를 구체적으로 말하는 거라 {theme} 자체는
+    // 모든 변주에 반드시 남긴다(reaction-line.test.ts가 이걸 고정) — 대신 문장 안에서
+    // 주어로 뚝 꽂지 않고 되묻거나 곁가지로 자연스럽게 녹인다.
+    reactMustTentative: [
+      "‘{booth}’도 그렇고, 요즘 ‘{theme}’ 쪽에 자꾸 손이 가네.",
+      "‘{booth}’ — ‘{theme}’, 원래 좋아했었나?",
+      "‘{booth}’도 그러네. ‘{theme}’ 결, 익숙해지는 중인가 봐.",
+      "‘{booth}’, ‘{theme}’ 쪽 요즘 자주 걸리네.",
+    ],
+    reactMustTentativePlain: [
+      "요즘 ‘{theme}’ 쪽에 자꾸 손이 가네.",
+      "‘{theme}’, 원래 좋아했었나?",
+      "‘{theme}’ 결, 익숙해지는 중인가 봐.",
+      "‘{theme}’ 쪽 요즘 자주 걸리네.",
+    ],
+    reactMustConfident: [
+      "‘{booth}’도 그렇고, ‘{theme}’ 이런 건 진짜 좋아하나 보다.",
+      "‘{booth}’ — ‘{theme}’ 쪽은 매번 안 놓치네.",
+      "‘{booth}’도 그러네. ‘{theme}’, 이건 확실한 취향이구나.",
+      "‘{booth}’, ‘{theme}’ 이제 확실히 알겠다.",
+    ],
+    reactMustConfidentPlain: [
+      "‘{theme}’ 이런 건 진짜 좋아하나 보다.",
+      "‘{theme}’ 쪽은 매번 안 놓치네.",
+      "‘{theme}’, 이건 확실한 취향이구나.",
+      "‘{theme}’ 이제 확실히 알겠다.",
+    ],
+    reactCuriousTentative: [
+      "‘{booth}’도 그렇고, ‘{theme}’ 쪽에 눈이 자꾸 가네.",
+      "‘{booth}’ — ‘{theme}’, 이런 거 좀 끌리나?",
+      "‘{booth}’도 그러네. ‘{theme}’, 흥미가 생기는 중인가 봐.",
+      "‘{booth}’, ‘{theme}’ 느낌이 은근 자주 보이네.",
+    ],
+    reactCuriousTentativePlain: [
+      "‘{theme}’ 쪽에 눈이 자꾸 가네.",
+      "‘{theme}’, 이런 거 좀 끌리나?",
+      "‘{theme}’, 흥미가 생기는 중인가 봐.",
+      "‘{theme}’ 느낌이 은근 자주 보이네.",
+    ],
+    reactCuriousConfident: [
+      "‘{booth}’도 그렇고, ‘{theme}’엔 늘 눈이 가나 봐.",
+      "‘{booth}’ — ‘{theme}’ 쪽 취향, 이제 확실하네.",
+      "‘{booth}’도 그러네. ‘{theme}’, 매번 끌리는구나.",
+      "‘{booth}’, ‘{theme}’ 쪽은 진짜 꾸준하네.",
+    ],
+    reactCuriousConfidentPlain: [
+      "‘{theme}’엔 늘 눈이 가나 봐.",
+      "‘{theme}’ 쪽 취향, 이제 확실하네.",
+      "‘{theme}’, 매번 끌리는구나.",
+      "‘{theme}’ 쪽은 진짜 꾸준하네.",
+    ],
+    reactPassConfident: [
+      "‘{booth}’, 알았어 — ‘{theme}’라고 겉보기랑 다르게 이건 아니었나 봐.",
+      "‘{booth}’도 아니었네. ‘{theme}’라고 다 취향은 아닌가 봐.",
+      "‘{booth}’, 오케이. ‘{theme}’라고 다 맞는 건 아니구나.",
+      "‘{booth}’ 패스 — ‘{theme}’ 안에서도 다 같진 않나 보네.",
+    ],
+    reactPassConfidentPlain: [
+      "‘{theme}’라고 겉보기랑 다르게 이건 아니었나 봐.",
+      "‘{theme}’라고 다 취향은 아닌가 봐.",
+      "‘{theme}’라고 다 맞는 건 아니구나.",
+      "‘{theme}’ 안에서도 다 같진 않나 보네.",
+    ],
+    reactBadConfident: [
+      "‘{booth}’, 알았어 — ‘{theme}’라고 비슷해 보여도 다 맞는 건 아니었네.",
+      "‘{booth}’는 아니었구나. ‘{theme}’라고 겉보기랑 다르게 이건 아니었나 봐.",
+      "‘{booth}’, 그랬구나. ‘{theme}’라고 다 맞진 않네.",
+      "‘{booth}’ 안 맞았네 — ‘{theme}’ 안에서도 역시 다 같진 않구나.",
+    ],
+    reactBadConfidentPlain: [
+      "‘{theme}’라고 비슷해 보여도 다 맞는 건 아니었네.",
+      "‘{theme}’라고 겉보기랑 다르게 이건 아니었나 봐.",
+      "‘{theme}’라고 다 맞진 않네.",
+      "‘{theme}’ 안에서도 역시 다 같진 않구나.",
+    ],
     // 취향 정확도 4단계. 판정 0개/1~4개는 홈 발화 로테이션(homeLines)에 섞이고,
     // 5개를 막 넘기는 순간(1회)은 judgment-bar.tsx가 say()로 띄운다. 5개 이상은
     // 상주 배지가 tastePct로 대체한다.
@@ -749,6 +890,7 @@ const en: Dict = {
     visitedLink: "I went here →",
     switchToVerdict: "I went here →",
     switchToInterest: "Change interest →",
+    notVisitedYet: "Haven't been yet →",
   },
   map: {
     title: "Venue map",
@@ -951,35 +1093,162 @@ const en: Dict = {
     homePicked: "Here are {n} spots for your taste. How's the pick?",
     homeAsk: "Start with the picks, or the map?",
     homeEmpty: "React as you go and I'll pick better. Tap what draws you.",
-    reactMust: "“{booth}” — this one's a must. I'll hold onto it.",
-    reactMustPlain: "This one's a must. I'll hold onto it.",
-    reactCurious: "“{booth}” — you're drawn to this. I'll remember it.",
-    reactCuriousPlain: "You're drawn to this. I'll remember it.",
-    reactPass: "“{booth}” — got it. I'll show fewer like it.",
-    reactPassPlain: "Got it. I'll show fewer like these.",
-    reactGood: "“{booth}” — glad that landed. I'll find more like it.",
-    reactGoodPlain: "Glad that landed. I'll find more like it.",
-    reactGoodMatched: "“{booth}” — the pick paid off.",
-    reactGoodMatchedPlain: "The pick paid off.",
-    reactOk: "“{booth}” — noted.",
-    reactOkPlain: "Noted.",
-    reactBad: "“{booth}” — got it. Guess I read that one wrong.",
-    reactBadPlain: "Got it. Guess I read that one wrong.",
-    reactMustTentative:
-      "“{booth}” fits too — looks like {theme} is catching your eye.",
-    reactMustTentativePlain: "Looks like {theme} is catching your eye.",
-    reactMustConfident: "“{booth}” too — you really go for {theme}.",
-    reactMustConfidentPlain: "You really go for {theme}.",
-    reactCuriousTentative: "“{booth}” leans {theme} too.",
-    reactCuriousTentativePlain: "Looks like it's leaning {theme}.",
-    reactCuriousConfident: "“{booth}” fits — {theme} keeps drawing you in.",
-    reactCuriousConfidentPlain: "{theme} keeps drawing you in.",
-    reactPassConfident:
-      "“{booth}” — got it. Guess not every {theme} booth is your thing.",
-    reactPassConfidentPlain: "Guess not every {theme} booth is your thing.",
-    reactBadConfident:
-      "“{booth}” — got it. Guess not every {theme} booth landed.",
-    reactBadConfidentPlain: "Guess not every {theme} booth landed.",
+    reactMust: [
+      "“{booth}” — noting that as a must.",
+      "“{booth}”, saving that as a priority.",
+      "Got it — “{booth}” goes on the must list.",
+      "“{booth}” it is. I'll keep that front and center.",
+    ],
+    reactMustPlain: [
+      "Noting that as a must.",
+      "Saving that as a priority.",
+      "Got it — that goes on the must list.",
+      "I'll keep that front and center.",
+    ],
+    reactCurious: [
+      "“{booth}” caught your eye. Noted.",
+      "“{booth}” — keeping that in mind.",
+      "Sounds like “{booth}” is worth a look.",
+      "“{booth}”, filing that away.",
+    ],
+    reactCuriousPlain: [
+      "Caught your eye. Noted.",
+      "Keeping that in mind.",
+      "Sounds worth a look.",
+      "Filing that away.",
+    ],
+    reactPass: [
+      "“{booth}”, got it. I'll show fewer like that.",
+      "“{booth}” — noted, moving on.",
+      "Okay, skipping “{booth}”. I'll adjust.",
+      "“{booth}” passed. Keeping that in mind.",
+    ],
+    reactPassPlain: [
+      "Got it, fewer like that.",
+      "Noted, moving on.",
+      "Okay, adjusting for that.",
+      "Passed — keeping that in mind.",
+    ],
+    reactGood: [
+      "“{booth}” was good. I'll look for more like it.",
+      "Glad “{booth}” worked out. Noting the pattern.",
+      "“{booth}”, nice — I'll keep that in mind.",
+      "Good call on “{booth}”. More like that, coming up.",
+    ],
+    reactGoodPlain: [
+      "That was good. I'll look for more like it.",
+      "Glad that worked out. Noting the pattern.",
+      "Nice — I'll keep that in mind.",
+      "Good call. More like that, coming up.",
+    ],
+    reactGoodMatched: [
+      "“{booth}” — the one I flagged actually landed.",
+      "Told you “{booth}” was worth it.",
+      "“{booth}” checked out. Good call, both of us.",
+      "“{booth}”, that instinct was right.",
+    ],
+    reactGoodMatchedPlain: [
+      "The one I flagged actually landed.",
+      "Told you that one was worth it.",
+      "That checked out. Good call.",
+      "That instinct was right.",
+    ],
+    reactOk: [
+      "“{booth}”, fair enough.",
+      "“{booth}” — okay, noted.",
+      "Got it, “{booth}” was just okay.",
+      "“{booth}”, alright. Filing that.",
+    ],
+    reactOkPlain: [
+      "Fair enough.",
+      "Okay, noted.",
+      "Got it, just okay.",
+      "Alright. Filing that.",
+    ],
+    reactBad: [
+      "“{booth}”, got it. Guess I read that one wrong.",
+      "“{booth}” — noted, I'll rethink that one.",
+      "Okay, “{booth}” wasn't it. Adjusting.",
+      "“{booth}” missed. I'll aim differently.",
+    ],
+    reactBadPlain: [
+      "Got it. Guess I read that one wrong.",
+      "Noted, I'll rethink that.",
+      "Okay, wasn't it. Adjusting.",
+      "Missed. I'll aim differently.",
+    ],
+    reactMustTentative: [
+      "“{booth}” leans {theme} too — could be a pattern.",
+      "“{booth}”, another {theme} pick. Noted.",
+      "“{booth}” — {theme} keeps catching your eye.",
+      "“{booth}” is {theme} as well. Starting to see it.",
+    ],
+    reactMustTentativePlain: [
+      "Could be a {theme} pattern forming.",
+      "Another {theme} pick, noted.",
+      "{theme} keeps catching your eye.",
+      "Starting to see a {theme} thing.",
+    ],
+    reactMustConfident: [
+      "“{booth}” is {theme} too — you clearly go for that.",
+      "“{booth}”, {theme} again. You never skip those.",
+      "“{booth}” — {theme} is a sure thing for you.",
+      "“{booth}” is {theme}. That one's settled.",
+    ],
+    reactMustConfidentPlain: [
+      "You clearly go for {theme}.",
+      "{theme} again — you never skip those.",
+      "{theme} is a sure thing for you.",
+      "That {theme} preference is settled.",
+    ],
+    reactCuriousTentative: [
+      "“{booth}” leans {theme} too.",
+      "“{booth}”, another {theme}-ish one.",
+      "“{booth}” — {theme} is drawing you in a bit.",
+      "“{booth}” is {theme}. Interesting, noted.",
+    ],
+    reactCuriousTentativePlain: [
+      "Another {theme}-ish one.",
+      "{theme} is drawing you in a bit.",
+      "Noticing a {theme} thread.",
+      "{theme} keeps coming up for you.",
+    ],
+    reactCuriousConfident: [
+      "“{booth}” is {theme} too.",
+      "“{booth}”, {theme} keeps pulling you in.",
+      "“{booth}” — {theme} always catches your eye.",
+      "“{booth}” is {theme}. That taste is clear.",
+    ],
+    reactCuriousConfidentPlain: [
+      "{theme} keeps pulling you in.",
+      "{theme} always catches your eye.",
+      "That {theme} taste is clear.",
+      "{theme}, every time — noted.",
+    ],
+    reactPassConfident: [
+      "“{booth}”, got it. Not every {theme} booth lands.",
+      "“{booth}” — even within {theme}, it varies.",
+      "“{booth}”, okay. {theme} isn't a sure thing either.",
+      "“{booth}” passed. {theme} has range too, I guess.",
+    ],
+    reactPassConfidentPlain: [
+      "Not every {theme} booth lands.",
+      "Even within {theme}, it varies.",
+      "{theme} isn't a sure thing either.",
+      "{theme} has range too, I guess.",
+    ],
+    reactBadConfident: [
+      "“{booth}”, got it. Not every {theme} booth was it either.",
+      "“{booth}” — even {theme} isn't a guarantee.",
+      "“{booth}”, okay. {theme} has range, I guess.",
+      "“{booth}” missed. {theme} varies more than I thought.",
+    ],
+    reactBadConfidentPlain: [
+      "Not every {theme} booth was it either.",
+      "Even {theme} isn't a guarantee.",
+      "{theme} has range, I guess.",
+      "{theme} varies more than I thought.",
+    ],
     tasteUnknown: "Don't know you yet. Show me around.",
     tasteWarming: "Getting a sense of it — need a bit more.",
     tasteInsight: "Starting to get it. I'll keep guessing.",

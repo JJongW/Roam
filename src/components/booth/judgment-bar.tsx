@@ -140,26 +140,33 @@ export function JudgmentBar({
 
   return (
     <div className="space-y-1.5">
-      {mode === "adaptive" && (record?.interest || record?.verdict) && (
-        <div className="flex items-center justify-between text-xs text-muted-foreground">
-          <span>
-            {record?.interest && t(`judge.${record.interest}`)}
-            {record?.interest && record?.verdict && " · "}
-            {record?.verdict ? t("judge.visited") : ""}
-          </span>
-          <button
-            type="button"
-            className="underline underline-offset-2"
-            onClick={() =>
-              setForcedScreen(screen === "interest" ? "verdict" : "interest")
-            }
-          >
-            {screen === "interest"
-              ? t("judge.switchToVerdict")
-              : t("judge.switchToInterest")}
-          </button>
-        </div>
-      )}
+      {/* "다녀왔어" 링크로 넘어온 것뿐, interest·verdict 둘 다 아직 없는 경우도
+          아래 판정 화면에 걸린다 — 그런데 이 블록 조건이 record만 봐서 그 경우
+          되돌아갈 링크 자체가 안 떴다("다녀왔어"가 편도였다). forcedScreen도
+          같이 본다. */}
+      {mode === "adaptive" &&
+        (record?.interest || record?.verdict || forcedScreen) && (
+          <div className="flex items-center justify-between text-xs text-muted-foreground">
+            <span>
+              {record?.interest && t(`judge.${record.interest}`)}
+              {record?.interest && record?.verdict && " · "}
+              {record?.verdict ? t("judge.visited") : ""}
+            </span>
+            <button
+              type="button"
+              className="underline underline-offset-2"
+              onClick={() =>
+                setForcedScreen(screen === "interest" ? "verdict" : "interest")
+              }
+            >
+              {screen === "interest"
+                ? t("judge.switchToVerdict")
+                : record?.interest || record?.verdict
+                  ? t("judge.switchToInterest")
+                  : t("judge.notVisitedYet")}
+            </button>
+          </div>
+        )}
 
       <div className="flex gap-1.5">
         {(screen === "interest" ? interestBtns : verdictBtns).map((btn) => {
@@ -178,20 +185,20 @@ export function JudgmentBar({
                   : react("verdict", btn.key as VerdictValue)
               }
               aria-pressed={active}
-              style={
-                active
-                  ? {
-                      borderColor: color,
-                      backgroundColor: `color-mix(in srgb, ${color} 16%, transparent)`,
-                      color,
-                    }
-                  : undefined
-              }
-              className={
-                active
-                  ? "flex-1 scale-100 rounded-lg border py-1.5 text-xs font-semibold transition-all duration-200 active:scale-95"
-                  : "flex-1 scale-100 rounded-lg border border-border py-1.5 text-xs font-semibold text-muted-foreground transition-all duration-200 active:scale-95"
-              }
+              // 안 눌린 상태도 완전 무채색이면 어떤 버튼이 무슨 색인지 누르기 전엔
+              // 전혀 안 보인다 — 옅게라도 자기 색을 늘 깔고, 눌리면 진해진다.
+              style={{
+                borderColor: active
+                  ? color
+                  : `color-mix(in srgb, ${color} 35%, var(--border))`,
+                backgroundColor: active
+                  ? `color-mix(in srgb, ${color} 16%, transparent)`
+                  : `color-mix(in srgb, ${color} 7%, transparent)`,
+                color: active
+                  ? color
+                  : `color-mix(in srgb, ${color} 65%, var(--muted-foreground))`,
+              }}
+              className="flex-1 scale-100 rounded-lg border py-1.5 text-xs font-semibold transition-all duration-200 active:scale-95"
             >
               {btn.label}
             </button>

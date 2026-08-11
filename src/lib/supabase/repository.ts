@@ -1,7 +1,7 @@
 import { uid } from "@/lib/utils";
 import { REPORT_HIDE_THRESHOLD } from "@/lib/constants";
 import { deriveValueTags } from "@/lib/values/derive";
-import { createServerClient } from "@/lib/supabase/server";
+import { createServerClient, createServiceClient } from "@/lib/supabase/server";
 import { computeTasteAccuracy, type TasteAccuracy } from "@/lib/memory/taste";
 import type { ListBoothQuery, Repository } from "@/lib/repositories/types";
 import type {
@@ -658,8 +658,13 @@ export class SupabaseRepository implements Repository {
     };
   }
 
+  // 부스 쓰기 3종은 관리자 콘솔 전용(호출부는 /api/booths·[id] 뿐, requireAdmin으로
+  // 이미 서버측 인가를 마친다) — anon 키(this.db())가 아니라 서비스 롤로 쓴다.
+  // anon 키로 쓰면 booth 테이블 RLS가 방문객 세션엔 쓰기를 안 줘서 조용히 0행으로
+  // 끝나고(PostgREST는 그걸 에러로 안 던진다), 위 update가 null을 돌려줘 라우트가
+  // "부스를 못 찾음"으로 오인해 404를 냈다(createServiceClient 주석 참고).
   async createBooth(input: BoothInput): Promise<Booth> {
-    const db = await this.db();
+    const db = createServiceClient();
     const row = { id: uid("booth"), created_at: now(), ...boothToRow(input) };
     const res = await db.from("booth").insert(row).select("*").single();
     return mapBooth(wrote(res, "부스 생성") as Row);
@@ -669,7 +674,7 @@ export class SupabaseRepository implements Repository {
     id: string,
     input: Partial<BoothInput>,
   ): Promise<Booth | null> {
-    const db = await this.db();
+    const db = createServiceClient();
     const res = await db
       .from("booth")
       .update(boothToRow(input))
@@ -681,7 +686,7 @@ export class SupabaseRepository implements Repository {
   }
 
   async deleteBooth(id: string): Promise<boolean> {
-    const db = await this.db();
+    const db = createServiceClient();
     const { error, count } = await db
       .from("booth")
       .delete({ count: "exact" })
