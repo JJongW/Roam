@@ -1,9 +1,6 @@
 import { notFound } from "next/navigation";
 import { Ticket, ExternalLink, Globe } from "lucide-react";
-import {
-  getBoothDetailCached,
-  listExhibitionsCached,
-} from "@/lib/repositories/cached";
+import { getBoothDetailCached } from "@/lib/repositories/cached";
 import { AppBar } from "@/components/common/app-bar";
 import { BookmarkButton } from "@/components/booth/bookmark-button";
 import { BoothAiSummary } from "@/components/booth/booth-ai-summary";
@@ -43,12 +40,6 @@ export default async function BoothDetailPage({ params }: Props) {
     detail;
   const { t } = await getI18n();
   const about = boothAbout(booth);
-  // 이 라우트는 전시 slug 없이(/booths/[id]) 부스 하나만 가리킨다 — JudgmentBar가
-  // 전시당 1회 로그인 안내에 쓰는 exhibitionSlug는 exhibitionId로 목록에서 찾아온다.
-  const { data: exhibitions } = await listExhibitionsCached();
-  const exhibitionSlug =
-    exhibitions.find((e) => e.id === booth.exhibitionId)?.slug ??
-    booth.exhibitionId;
 
   return (
     <div className="contents landscape:fixed landscape:inset-0 landscape:z-30 landscape:flex landscape:flex-col landscape:overflow-hidden landscape:bg-background">
@@ -300,7 +291,12 @@ export default async function BoothDetailPage({ params }: Props) {
                 <BoothPersonalPanel
                   booth={booth}
                   category={category}
-                  exhibitionSlug={exhibitionSlug}
+                  // 이 라우트(/booths/[id])엔 전시 slug가 없다 — JudgmentBar가 쓰는
+                  // exhibitionSlug는 "전시당 고유"하기만 하면 되는 스코핑 키(로그인
+                  // 안내 1회 표시용 sessionStorage 키 접미사)라 실제 URL slug일
+                  // 필요가 없다. exhibitionId를 그대로 쓴다 — 라우트가 나중에
+                  // slug 파라미터를 갖게 되면 그때 진짜 slug로 바꾼다.
+                  exhibitionSlug={booth.exhibitionId}
                 />
               }
               reviews={
