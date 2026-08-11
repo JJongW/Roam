@@ -419,6 +419,17 @@ export interface UserBrain {
     boothsSeenCount: number;
   };
   interests: InterestNode[]; // top-N만 유지(증류)
+  /**
+   * 사용자가 "이건 내 취향 아니야"라고 끈 가치 slug.
+   *
+   * 브레인은 append-only 신호 원장에서 증류되므로 신호를 지울 수 없다. 음의 신호는
+   * confidence를 낮출 뿐 0이 안 되고, 전체 목록 멱등 쓰기는 하나 추가하려다 나머지를
+   * 부정하게 된다. 그래서 원장은 그대로 두고 여기에만 기록한다 — 끄는 것은 과거
+   * 행동의 부정이 아니라 현재 상태 선언이고, 풀면 그동안의 confidence가 그대로 돌아온다.
+   *
+   * 레거시 행(이 필드 이전에 저장된 브레인)엔 없을 수 있다 — 읽는 쪽이 `?? []`로 받는다.
+   */
+  mutedSlugs?: string[];
   preferences: {
     movement?: MovementPreference;
     companion?: CompanionType;

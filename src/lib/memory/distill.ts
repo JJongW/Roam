@@ -27,6 +27,7 @@ export function emptyBrain(
     updatedAt: nowIso,
     literacy: { overall: 0, byTheme: {}, visitsCount: 0, boothsSeenCount: 0 },
     interests: [],
+    mutedSlugs: [],
     preferences: {},
     goals: [],
     visits: [],
@@ -88,7 +89,12 @@ export function updateBrainWithSignals(
   tuning: DistillTuning = MEMORY_TUNING,
   labels: Record<string, string> = {},
 ): UserBrain {
-  const interests = distillInterests(allSignals, nowMs, tuning, labels);
+  // 뮤트된 가치는 증류 결과에서 뺀다. 신호는 그대로 두므로(원장 불변) 뮤트를 풀면
+  // 그동안 쌓인 confidence가 그대로 돌아온다.
+  const muted = new Set(brain.mutedSlugs ?? []);
+  const interests = distillInterests(allSignals, nowMs, tuning, labels).filter(
+    (n) => !muted.has(n.key),
+  );
 
   const byTheme: Record<string, number> = {};
   for (const node of interests) {
@@ -110,6 +116,7 @@ export function updateBrainWithSignals(
     version: brain.version + 1,
     updatedAt: nowIso,
     interests,
+    mutedSlugs: brain.mutedSlugs ?? [],
     literacy: {
       overall,
       byTheme,

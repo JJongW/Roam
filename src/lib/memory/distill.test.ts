@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import type { SignalKind, UserSignal, VisitDigest } from "@/lib/types";
+import type {
+  SignalKind,
+  UserBrain,
+  UserSignal,
+  VisitDigest,
+} from "@/lib/types";
 import {
   addVisitDigest,
   buildVisitDigest,
@@ -197,5 +202,72 @@ describe("addVisitDigest", () => {
     );
     expect(after.visits).toHaveLength(1);
     expect(after.literacy.visitsCount).toBe(1);
+  });
+});
+
+describe("mutedSlugs", () => {
+  // 사용자의 "이건 내 취향 아니야"는 과거 행동의 부정이 아니라 현재 상태 선언이다.
+  // 원장(신호)은 그대로 두고 표시·추천에서만 뺀다 — 그래야 되돌리기가 자연스럽다.
+  const signals: UserSignal[] = [
+    {
+      id: "s1",
+      userId: "u1",
+      exhibitionId: "e1",
+      kind: "reaction_interested",
+      slugs: ["goods"],
+      createdAt: new Date(0).toISOString(),
+    },
+    {
+      id: "s2",
+      userId: "u1",
+      exhibitionId: "e1",
+      kind: "reaction_interested",
+      slugs: ["discovery"],
+      createdAt: new Date(0).toISOString(),
+    },
+  ];
+
+  it("emptyBrain은 뮤트 목록이 빈 배열", () => {
+    expect(emptyBrain("u1").mutedSlugs).toEqual([]);
+  });
+
+  it("뮤트된 slug는 interests에서 빠진다", () => {
+    const base = { ...emptyBrain("u1"), mutedSlugs: ["goods"] };
+    const next = updateBrainWithSignals(base, signals, 0);
+    const keys = next.interests.map((n) => n.key);
+    expect(keys).toContain("discovery");
+    expect(keys).not.toContain("goods");
+  });
+
+  it("뮤트를 풀면 그동안 쌓인 confidence가 그대로 돌아온다", () => {
+    const muted = updateBrainWithSignals(
+      { ...emptyBrain("u1"), mutedSlugs: ["goods"] },
+      signals,
+      0,
+    );
+    const unmuted = updateBrainWithSignals(
+      { ...muted, mutedSlugs: [] },
+      signals,
+      0,
+    );
+    const goods = unmuted.interests.find((n) => n.key === "goods");
+    expect(goods).toBeDefined();
+    expect(goods!.confidence).toBeGreaterThan(0);
+  });
+
+  it("뮤트 목록은 재증류를 거쳐도 유지된다", () => {
+    const next = updateBrainWithSignals(
+      { ...emptyBrain("u1"), mutedSlugs: ["goods"] },
+      signals,
+      0,
+    );
+    expect(next.mutedSlugs).toEqual(["goods"]);
+  });
+
+  it("레거시 브레인(mutedSlugs 없음)도 깨지지 않는다", () => {
+    const legacy = { ...emptyBrain("u1") } as UserBrain;
+    delete (legacy as Partial<UserBrain>).mutedSlugs;
+    const next = updateBrainWithSignals(legacy, signals, 0);
+    expect(next.interests.map((n) => n.key)).toContain("goods");
   });
 });
