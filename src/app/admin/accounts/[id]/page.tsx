@@ -10,6 +10,8 @@ import { AdminSection } from "@/components/admin/section";
 import { EmptyState } from "@/components/common/states";
 import { Button } from "@/components/ui/button";
 import { TimelineRow } from "@/components/admin/timeline-row";
+import { TasteRadar } from "@/components/me/taste-radar";
+import { useT } from "@/lib/i18n/provider";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -21,14 +23,16 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { buildTimeline, type TimelineEvent } from "@/lib/admin/timeline";
+import { buildTimeline, groupEventsByDay, type TimelineEvent } from "@/lib/admin/timeline";
 import type { Bookmark, User, UserSignal } from "@/lib/types";
 
 export default function AdminAccountDrilldownPage() {
   const { id } = useParams<{ id: string }>();
+  const t = useT();
   const [user, setUser] = useState<User | null>(null);
   const [events, setEvents] = useState<TimelineEvent[]>([]);
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
+  const [values, setValues] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
 
@@ -39,9 +43,11 @@ export default function AdminAccountDrilldownPage() {
           user: User;
           signals: UserSignal[];
           bookmarks: Bookmark[];
+          values: Record<string, number>;
         }>(`/api/admin/users/${id}`);
         setUser(data.user);
         setBookmarks(data.bookmarks);
+        setValues(data.values);
         const nicknames = new Map([[data.user.id, data.user.nickname]]);
         setEvents(buildTimeline(data.signals, [], nicknames, new Map(), new Map()));
       } catch {
@@ -81,6 +87,8 @@ export default function AdminAccountDrilldownPage() {
     );
   }
 
+  const dayGroups = groupEventsByDay(events);
+
   return (
     <div className="space-y-6">
       <header>
@@ -93,11 +101,24 @@ export default function AdminAccountDrilldownPage() {
         <h1 className="text-2xl font-extrabold">{user.nickname}</h1>
       </header>
 
+      <AdminSection title="취향" description="8가치 축 확신도">
+        <TasteRadar values={values} label={(s) => t(`values.${s}`)} />
+      </AdminSection>
+
       <AdminSection title="반응 타임라인" description={`${events.length}건`}>
         {events.length === 0 ? (
           <EmptyState title="반응 기록이 없어요" />
         ) : (
-          events.map((e) => <TimelineRow key={e.id} event={e} />)
+          dayGroups.map((group) => (
+            <div key={group.dateLabel}>
+              <p className="mb-1 mt-3 text-xs font-bold text-muted-foreground first:mt-0">
+                {group.dateLabel}
+              </p>
+              {group.events.map((e) => (
+                <TimelineRow key={e.id} event={e} />
+              ))}
+            </div>
+          ))
         )}
       </AdminSection>
 
