@@ -1,6 +1,7 @@
 // 관심 피드 큐레이션 — L4 브레인(누적 관심)으로 안정·낯선·모험 믹스를 만든다(explore/exploit).
 // companion-reframe §7.4: 전부 가라가 아니라 "무엇을 남길지 고르는 재료". LLM 없음.
 import "server-only";
+import { CONFIDENT_THRESHOLD } from "@/lib/constants";
 import { diversifyCandidates, interestScore } from "@/lib/engine/scoring";
 import { rankForExhibition } from "@/lib/engine/service";
 import { brainInterestWeights, mergeBrainInterests } from "@/lib/memory/apply";
@@ -94,7 +95,9 @@ export async function curateFeed(
 
   // 사용자 상위 관심 가치(slug) — 근거 카드의 왜맞음 겹침 계산에 쓴다.
   const userValueSlugs = brain.interests
-    .filter((n) => n.confidence >= 0.25 && VALUE_SLUGS.includes(n.key))
+    .filter(
+      (n) => n.confidence >= CONFIDENT_THRESHOLD && VALUE_SLUGS.includes(n.key),
+    )
     .map((n) => n.key);
 
   // 판단이 끝난 부스는 피드에서 뺀다 — 네 반응 전부. 피드는 6칸짜리 결정 큐라
@@ -129,8 +132,8 @@ export async function curateFeed(
   const hasFact = (b: Booth) =>
     Boolean(
       b.enrichment?.roamInterpretation ||
-        b.enrichment?.summary ||
-        b.enrichment?.goodsKeywords?.length,
+      b.enrichment?.summary ||
+      b.enrichment?.goodsKeywords?.length,
     );
   const becauseOf = (booth: Booth) => {
     if (linkUsed || !hasFact(booth)) return undefined;
@@ -162,7 +165,12 @@ export async function curateFeed(
       ),
       pick,
       cue: deriveCue(booth, rank.eventsByBooth[booth.id] ?? []),
-      grounding: buildGrounding(booth, userValueSlugs, locale, becauseOf(booth)),
+      grounding: buildGrounding(
+        booth,
+        userValueSlugs,
+        locale,
+        becauseOf(booth),
+      ),
     });
     used.add(booth.id);
   };

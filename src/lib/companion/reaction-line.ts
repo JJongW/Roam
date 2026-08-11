@@ -3,7 +3,7 @@
 //
 // interested/skip만 매칭을 탄다. later는 판정 가중치가 interested의 0.3배라(taste.ts
 // judgmentScore) "확실히 좋아하는구나" 톤을 쓰면 신호보다 말이 앞선다. skip은 확신
-// 매칭(confidence>=0.25)에서만 분야를 말하고, 그마저도 "안에서도 다는 아니다"로
+// 매칭(confidence>=CONFIDENT_THRESHOLD)에서만 분야를 말하고, 그마저도 "안에서도 다는 아니다"로
 // 헤지한다 — 부스 하나 뺀 걸 분야 전체 부정으로 말하면 과장이다(reaction-bar.tsx의
 // 기존 교훈을 반복하지 않는다).
 //
@@ -13,13 +13,11 @@
 // 얹는 {theme}은 매칭된 노드의 라벨(가치 이름 — "가볍게" 등, 발화 금지 대상)이 아니라
 // 호출부가 넘기는 이 부스의 카테고리 이름(categoryLabel, 구체적 사실)이다 — 가치
 // 이름은 발화에 절대 쓰지 않는다는 원칙을 매칭 축과 발화 축을 분리해서 지킨다.
+import { CONFIDENT_THRESHOLD } from "@/lib/constants";
 import type { InterestNode } from "@/lib/types";
 import type { TFn } from "@/lib/i18n/resolve";
 
 export type ReactionKey = "interested" | "later" | "skip" | "seen";
-
-/** curate.ts·taste.ts와 같은 확신 임계값. */
-const CONFIDENT_THRESHOLD = 0.25;
 
 const BASE_KEY: Record<ReactionKey, string> = {
   interested: "reactInterested",
@@ -48,7 +46,8 @@ export function buildReactionLine(
   const match = interests.find((n) => interestSlugs.includes(n.key));
 
   if (key === "interested") {
-    if (!match || !categoryLabel) return line(BASE_KEY.interested, boothName, t);
+    if (!match || !categoryLabel)
+      return line(BASE_KEY.interested, boothName, t);
     const tier =
       match.confidence >= CONFIDENT_THRESHOLD
         ? "reactInterestedConfident"

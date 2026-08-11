@@ -2,15 +2,13 @@
 // I/O 없음. "취향 %"는 여기서 나온다: 반응이 로미의 예측을 맞혔는지 채점한다.
 //
 // 채점 규칙: 자신 있다고 한 것만 틀렸을 때 깎인다. 부스가 사용자의 확신 가치(브레인
-// confidence≥0.25)와 겹치면 confident, 아니면 uncertain — uncertain 부스는 맞으면
+// confidence≥CONFIDENT_THRESHOLD)와 겹치면 confident, 아니면 uncertain — uncertain 부스는 맞으면
 // 가산되고 틀려도 무해하다(낯선 부스를 찔러보는 탐색에 벌점을 주지 않는다).
+import { CONFIDENT_THRESHOLD } from "@/lib/constants";
 import { interestScore } from "@/lib/engine/scoring";
 import type { Booth, BoothNote, UserBrain } from "@/lib/types";
 
 export type JudgedClass = "confident" | "uncertain";
-
-/** curate.ts와 같은 "확신 관심" 임계값. */
-const CONFIDENT_THRESHOLD = 0.25;
 
 /** 부스가 사용자의 확신 가치와 겹치는지 — 판정 시점에 얼려서 저장한다. */
 export function classifyBooth(booth: Booth, brain: UserBrain): JudgedClass {

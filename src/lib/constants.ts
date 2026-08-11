@@ -173,6 +173,22 @@ export const REASONER_TUNING = {
   fatiguePenalty: 0.3, // 피로 1.0이면 남은 예산 30% 축소
 } as const;
 
+/**
+ * "확신 관심"의 단일 기준선 — 브레인 관심 노드의 confidence가 이 값 이상이면
+ * 로미가 "이건 네 취향이다"라고 취급한다.
+ *
+ * MEMORY_TUNING(증류 쪽 임계 thetaHi/thetaLo)과 다른 축이다. 이건 증류된 결과를
+ * *소비하는* 쪽의 선이라 별도 상수로 둔다. 쓰는 곳: 취향 채점(memory/taste.ts) ·
+ * 피드 큐레이션(feed/curate.ts) · 반응 즉답(companion/reaction-line.ts) · 전시 홈
+ * 기억 발화(exhibitions/[slug]/page.tsx) · 취향 레이더 점선 링(me/taste-radar.tsx) ·
+ * 브레인 관심 주입(memory/apply.ts의 minConfidence 기본값).
+ *
+ * 한 벌로 묶는 이유: 레이더가 이 선을 점선으로 **눈에 보이게** 그린다. 값이 갈리면
+ * 사용자가 보는 선과 추천이 실제로 자르는 선이 어긋나고, 그건 화면이 거짓말하는
+ * 것이다. 예전엔 다섯 군데에 0.25가 따로 적혀 있었다.
+ */
+export const CONFIDENT_THRESHOLD = 0.25;
+
 /** L4 증류 튜닝. confidence = raw/(raw+K), 시간감쇠 반감기 halfLifeDays. */
 export const MEMORY_TUNING = {
   halfLifeDays: 90,

@@ -1,3 +1,4 @@
+import { CONFIDENT_THRESHOLD } from "@/lib/constants";
 import { radarPoints, ringPolygon } from "@/lib/values/radar";
 
 /**
@@ -7,12 +8,11 @@ import { radarPoints, ringPolygon } from "@/lib/values/radar";
  * 못 읽고 값이 없는 가치는 아예 안 그려져 "어디로 치우쳤나"가 보이지 않았다.
  * 축을 고정하고 빈 축을 남기면 치우침이 모양 하나로 읽힌다.
  *
- * 점선 링 = 확신 임계 0.25. taste.ts·curate.ts·reaction-line.ts가 쓰는 그 값이다 —
- * 이 선 안쪽은 "아직 모르는 것", 바깥은 "확실한 것".
+ * 점선 링 = 확신 임계(CONFIDENT_THRESHOLD, constants.ts). taste.ts·curate.ts·
+ * reaction-line.ts가 쓰는 바로 그 상수다 — 이 화면이 그 선을 눈에 보이게 그리므로
+ * 따로 적어두면 "그려진 선"과 "추천이 자르는 선"이 갈릴 수 있다. 이 선 안쪽은
+ * "아직 모르는 것", 바깥은 "확실한 것".
  */
-
-/** curate.ts·taste.ts와 같은 확신 임계값. */
-const CONFIDENT_THRESHOLD = 0.25;
 
 const R = 100;
 /** 라벨이 잘리지 않게 반지름보다 넉넉히 잡는다. */
@@ -42,6 +42,8 @@ export function TasteRadar({
       </defs>
 
       <g transform={`translate(${C} ${C})`}>
+        {/* 눈금 링 25·50·75·100% — 여기 0.25는 눈금 간격이지 확신 임계가 아니다
+            (그건 아래 점선 하나뿐). 값이 같아 보여도 같은 개념이 아니라 상수로 안 묶는다. */}
         {[0.25, 0.5, 0.75, 1].map((f) => (
           <polygon
             key={f}
@@ -81,7 +83,9 @@ export function TasteRadar({
         />
 
         <polygon
-          points={points.map((p) => `${p.x.toFixed(2)},${p.y.toFixed(2)}`).join(" ")}
+          points={points
+            .map((p) => `${p.x.toFixed(2)},${p.y.toFixed(2)}`)
+            .join(" ")}
           fill="url(#taste-radar-fill)"
           stroke="var(--primary)"
           strokeWidth={2.5}
