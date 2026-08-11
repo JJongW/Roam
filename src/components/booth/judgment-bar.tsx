@@ -46,8 +46,10 @@ export function JudgmentBar({
   const say = useCompanionStore((s) => s.say);
   const interests = useCompanionStore((s) => s.interests);
 
-  // adaptive 전용: 링크로 임시 전환한 화면. interest/verdict 실제 값이 바뀌면
-  // 이 로컬 오버라이드는 무시되고 실제 상태를 따른다(전환 즉시 반영되도록).
+  // adaptive 전용: "다녀왔어"/"관심 바꾸기" 링크로 임시 전환한 화면. react()가
+  // interest/verdict를 실제로 바꿀 때마다 null로 되돌려, 다음 렌더는 이 오버라이드
+  // 없이 실제 상태(record.verdict||interest)로 다시 계산된다 — 그래서 값을 실제로
+  // 바꾸는 순간에만 "따라간다"(그 전엔 링크로 고정한 화면이 그대로 유지된다).
   const [forcedScreen, setForcedScreen] = useState<
     "interest" | "verdict" | null
   >(null);
@@ -74,6 +76,7 @@ export function JudgmentBar({
 
     if (kind === "interest") setInterest(boothId, value as InterestValue);
     else setVerdict(boothId, value as VerdictValue);
+    setForcedScreen(null);
 
     if (user) {
       say(
@@ -91,7 +94,19 @@ export function JudgmentBar({
     } else {
       promptLoginOncePerExhibition(exhibitionSlug);
     }
-    void pushNote(boothId);
+
+    // touched: 이 호출이 실제로 바꾸는 필드만 서버로 보낸다(judgment-vocabulary
+    // 최종 리뷰 Fix 1) — 나머지 필드 키는 아예 안 넣어 "안 건드림"으로 읽히게 한다.
+    const prevJudged = useCompanionStore.getState().tasteJudged;
+    const touched =
+      kind === "interest" ? { interest: true } : { verdict: true };
+    void pushNote(boothId, touched).then((taste) => {
+      if (!taste) return;
+      useCompanionStore.getState().setTaste(taste.judgedCount, taste.pct);
+      if (prevJudged < 5 && taste.judgedCount >= 5) {
+        useCompanionStore.getState().say(t("companion.tasteInsight"));
+      }
+    });
   }
 
   const interestBtns: { key: InterestValue; label: string }[] = [
@@ -110,7 +125,8 @@ export function JudgmentBar({
       {mode === "adaptive" && (record?.interest || record?.verdict) && (
         <div className="flex items-center justify-between text-xs text-muted-foreground">
           <span>
-            {record?.interest && `${t(`judge.${record.interest}`)} · `}
+            {record?.interest && t(`judge.${record.interest}`)}
+            {record?.interest && record?.verdict && " · "}
             {record?.verdict ? t("judge.visited") : ""}
           </span>
           <button

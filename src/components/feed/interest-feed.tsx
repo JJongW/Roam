@@ -41,7 +41,7 @@ export function InterestFeed({
   categoryById: Record<string, Category>;
   /** 기억 발화 — 브레인 상위 관심 기반 인사. 없으면 기본 문구. */
   memoryLine?: string;
-  /** 반응 시 "저장 안 됨" 안내를 전시당 1회로 제한하는 데 쓴다(ReactionBar). */
+  /** 반응 시 "저장 안 됨" 안내를 전시당 1회로 제한하는 데 쓴다(JudgmentBar). */
   slug: string;
 }) {
   const t = useT();

@@ -48,7 +48,7 @@ export function BoothPersonalPanel({
     const prev = useVisitStore.getState().records[booth.id]?.memo ?? "";
     if (memo.trim() === prev.trim()) return;
     setMemo(booth.id, memo);
-    void pushNote(booth.id);
+    void pushNote(booth.id, {}); // 메모만 바뀜 — interest·verdict는 안 건드린다
     toast.success(memo.trim() ? t("map.memoSaved") : t("map.memoCleared"));
   }
 

@@ -64,7 +64,7 @@ export function NotePhotos({
       if (urls.length === 0) return;
       const next = [...photos, ...urls].slice(0, NOTE_PHOTO_MAX_COUNT);
       setPhotos(boothId, next);
-      if (user) void pushNote(boothId);
+      if (user) void pushNote(boothId, {}); // 사진만 바뀜 — interest·verdict는 안 건드린다
       toast.success(
         urls.length > 1
           ? t("notes.photoAttachedN", { n: urls.length })
@@ -82,7 +82,7 @@ export function NotePhotos({
       boothId,
       photos.filter((p) => p !== url),
     );
-    if (user) void pushNote(boothId);
+    if (user) void pushNote(boothId, {}); // 사진만 바뀜 — interest·verdict는 안 건드린다
   }
 
   const thumb = compact ? "size-14" : "size-20";

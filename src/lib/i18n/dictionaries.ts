@@ -220,12 +220,6 @@ const ko = {
     pickUnfamiliar: "좀 새로운데 끌릴 것 같아서",
     pickAdventure: "안 가봤을 결이라 한번 보라고",
   },
-  reaction: {
-    interested: "끌림",
-    later: "나중에",
-    skip: "별로",
-    seen: "이미 봄",
-  },
   judge: {
     must: "꼭 갈래",
     curious: "끌려",
@@ -338,10 +332,6 @@ const ko = {
     empty: "아직 메모한 부스가 없어",
     emptyDesc:
       "부스를 누르고 떠오른 생각이나 사진을 남기면, 여기에 모아서 다시 볼 수 있어.",
-    seen: "가봄",
-    interested: "끌림",
-    later: "나중에",
-    skip: "별로",
     memoPlaceholder: "이 부스 메모 남겨봐 (예: 리필 노트 사기, 친구 선물)",
     memoAria: "부스 메모",
     photoAttached: "사진 첨부했어",
@@ -476,7 +466,7 @@ const ko = {
       "‘{booth}’, 알았어. ‘{theme}’ 안에서도 다는 아니었나 봐.",
     reactBadConfidentPlain: "‘{theme}’ 안에서도 다는 아니었나 봐.",
     // 취향 정확도 4단계. 판정 0개/1~4개는 홈 발화 로테이션(homeLines)에 섞이고,
-    // 5개를 막 넘기는 순간(1회)은 reaction-bar.tsx가 say()로 띄운다. 5개 이상은
+    // 5개를 막 넘기는 순간(1회)은 judgment-bar.tsx가 say()로 띄운다. 5개 이상은
     // 상주 배지가 tastePct로 대체한다.
     tasteUnknown: "아직 널 모르겠어. 둘러보면서 알려줘.",
     tasteWarming: "조금씩 감이 오는데, 좀 더 봐야겠어.",
@@ -744,7 +734,6 @@ const en: Dict = {
     pickUnfamiliar: "A bit new but I think you'll like it",
     pickAdventure: "Somewhere new — give it a look",
   },
-  reaction: { interested: "Like", later: "Later", skip: "Pass", seen: "Seen" },
   judge: {
     must: "Must-see",
     curious: "Interested",
@@ -858,10 +847,6 @@ const en: Dict = {
     empty: "No noted booths yet",
     emptyDesc:
       "Tap a booth and leave a thought or photo — they'll gather here to revisit.",
-    seen: "Seen",
-    interested: "Liked",
-    later: "Later",
-    skip: "Passed",
     memoPlaceholder:
       "Leave a note about this booth (e.g. buy refill, gift for friend)",
     memoAria: "Booth note",

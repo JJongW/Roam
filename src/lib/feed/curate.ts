@@ -25,16 +25,19 @@ export function decidedBoothIds(
   );
 }
 
-/** 근거 링크 후보 — verdict='bad'는 절대 포함하지 않는다. 순수, 테스트 가능. */
+/** 근거 링크 후보 — verdict가 있으면 verdict가 이긴다(interest는 예측일 뿐, 방문
+ *  후 판정이 최종). interest='must'+verdict='bad' 같은 조합에서 예전엔 interest
+ *  쪽 OR로 걸려 "별로였던 부스가 긍정 근거로 샌다"는 버그가 있었다 — 지도 색·
+ *  judgmentScore·JudgmentBar와 같은 verdict-우선 규칙을 여기도 적용한다
+ *  (judgment-vocabulary 최종 리뷰 Fix 2). 순수, 테스트 가능. */
 export function positiveNotes(
   notes: Pick<BoothNote, "boothId" | "interest" | "verdict" | "updatedAt">[],
 ): { boothId: string; kind: "must" | "curious" | "good" }[] {
   return notes
-    .filter(
-      (n) =>
-        n.interest === "must" ||
-        n.interest === "curious" ||
-        n.verdict === "good",
+    .filter((n) =>
+      n.verdict
+        ? n.verdict === "good"
+        : n.interest === "must" || n.interest === "curious",
     )
     .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
     .map((n) => ({

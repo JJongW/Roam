@@ -1245,10 +1245,13 @@ export function ExhibitionMap({
                             : isPass
                               ? "var(--judge-pass)"
                               : zone;
-                  // 진한 색(꼭 갈래·좋았어·아니었어)은 어두워 흰 글씨, 옅은 색은
-                  // 어두운 글씨 — 6색 전부 면이라 색마다 대비를 직접 확인해야 한다.
-                  const darkText =
-                    isGood || isMust || isBad || fill === "#3a3d44";
+                  // 진한 색(꼭 갈래·아니었어)은 어두워 흰 글씨, 옅은 색은 어두운
+                  // 글씨 — 6색 전부 면이라 색마다 대비를 직접 확인해야 한다. --judge-good
+                  // (--route-visited 재사용, 중간 밝기 초록)은 흰 글씨 대비가 부족해서
+                  // (~2.2:1, 필요한 4.5:1에 한참 못 미침) 뺐다 — 어두운 글씨 쪽으로 떨어진다
+                  // (judgment-vocabulary 최종 리뷰 Fix 10). 변수명은 lightText — "이 면엔
+                  // 밝은(흰) 글씨가 필요하다"는 뜻이다(과거 darkText는 뜻이 반대로 읽혔다).
+                  const lightText = isMust || isBad || fill === "#3a3d44";
                   const stroke = isSel
                     ? "var(--primary)"
                     : isGood
@@ -1266,7 +1269,7 @@ export function ExhibitionMap({
                                 : g.color && g.color !== "#d8dade"
                                   ? g.color
                                   : "var(--border)";
-                  const codeColor = darkText ? "white" : "#3a3d44";
+                  const codeColor = lightText ? "white" : "#3a3d44";
                   const name =
                     b.name.length > 9 ? `${b.name.slice(0, 9)}…` : b.name;
                   return (

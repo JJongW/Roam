@@ -337,6 +337,7 @@ export function MapView({
                 관심을 눌렀는지는 확실히 아는 값이라 그걸로 관심/판정을 가른다. */}
             <div className="mt-2.5 border-t border-border pt-2.5">
               <JudgmentBar
+                key={selected.id}
                 mode="adaptive"
                 boothId={selected.id}
                 boothName={selected.name}
@@ -368,7 +369,7 @@ function BoothPopupMemo({ boothId }: { boothId: string }) {
   function save() {
     if (value.trim() === initial.trim()) return;
     setMemo(boothId, value.trim());
-    if (user) void pushNote(boothId);
+    if (user) void pushNote(boothId, {}); // 메모만 바뀜 — interest·verdict는 안 건드린다
     toast.success(value.trim() ? t("map.memoSaved") : t("map.memoCleared"));
   }
 

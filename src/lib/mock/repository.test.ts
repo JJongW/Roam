@@ -187,6 +187,32 @@ describe("MockRepository", () => {
       expect(cleared.visitedAt).toBeUndefined();
     });
 
+    it("interest만 바꾸는 쓰기(verdict:undefined)는 기존 verdict·visitedAt을 안 지운다 — judgment-vocabulary 최종 리뷰 Fix 1 회귀", async () => {
+      // verdict 쓰기로 visitedAt이 생긴 레거시/기존 방문 기록을 시뮬레이션.
+      await repo.upsertNote(
+        "u_taste10",
+        "b_a101",
+        { verdict: "good" },
+        "confident",
+      );
+      const seeded = (await repo.listNotes("u_taste10")).find(
+        (n) => n.boothId === "b_a101",
+      )!;
+      expect(seeded.verdict).toBe("good");
+      expect(seeded.visitedAt).toBeDefined();
+
+      // interest만 바꾸는 쓰기 — verdict는 undefined로 온다(null이 아니라).
+      const after = await repo.upsertNote(
+        "u_taste10",
+        "b_a101",
+        { interest: "must" },
+        "confident",
+      );
+      expect(after.interest).toBe("must");
+      expect(after.verdict).toBe("good");
+      expect(after.visitedAt).toBe(seeded.visitedAt);
+    });
+
     it("listPendingRetro: visitedAt 있고 verdict 없는 부스만", async () => {
       await repo.upsertNote(
         "u_taste5",

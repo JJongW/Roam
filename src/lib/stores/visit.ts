@@ -50,18 +50,31 @@ interface VisitState {
  * Persist a single booth's record to the server. Caller must ensure the user
  * is signed in; the endpoint 401s otherwise (ignored here). 응답의 taste를
  * 돌려준다 — 호출부가 원하면 companion 스토어에 그대로 반영한다.
+ *
+ * `touched`는 "이 호출이 실제로 바꾸려는 필드"를 밝힌다 — interest/verdict는
+ * 서버에서 undefined=안 건드림/null=해제/값=설정 세 가지로 갈리는데(repositories의
+ * upsertNote 계약), 여기서 매번 둘 다 `?? null`로 보내면 memo만 고치는 쓰기조차
+ * "verdict를 null로 바꿔라"로 읽혀 visited_at까지 지워진다(judgment-vocabulary
+ * 최종 리뷰 Fix 1). 명시한 필드만 body에 넣고 나머지는 키 자체를 뺀다 — JSON.stringify가
+ * undefined 값을 가진 키를 드롭하므로 서버는 "이 요청은 그 필드를 안 건드린다"로 읽는다.
+ * 생략(undefined)이면 과거처럼 둘 다 보낸다 — 로컬 전용으로 쌓인 반응을 통째로
+ * 소급 반영하는 배치 동기화(auth.ts의 syncPendingReactions)용 기본값이다.
  */
-export async function pushNote(boothId: string): Promise<TasteUpdate | null> {
+export async function pushNote(
+  boothId: string,
+  touched?: { interest?: boolean; verdict?: boolean },
+): Promise<TasteUpdate | null> {
   const r = useVisitStore.getState().records[boothId];
   try {
+    const body: Record<string, unknown> = {
+      memo: r?.memo ?? "",
+      photos: r?.photos ?? [],
+    };
+    if (!touched || touched.interest) body.interest = r?.interest ?? null;
+    if (!touched || touched.verdict) body.verdict = r?.verdict ?? null;
     const res = await api.put<{ note: BoothNote; taste: TasteUpdate }>(
       `/api/me/notes/${boothId}`,
-      {
-        interest: r?.interest ?? null,
-        verdict: r?.verdict ?? null,
-        memo: r?.memo ?? "",
-        photos: r?.photos ?? [],
-      },
+      body,
     );
     return res.taste;
   } catch {
@@ -100,13 +113,19 @@ export const useVisitStore = create<VisitState>()(
       setInterest: (boothId, interest) =>
         set((s) => ({
           records: patch(s.records, boothId, {
-            interest: s.records[boothId]?.interest === interest ? undefined : (interest ?? undefined),
+            interest:
+              s.records[boothId]?.interest === interest
+                ? undefined
+                : (interest ?? undefined),
           }),
         })),
       setVerdict: (boothId, verdict) =>
         set((s) => ({
           records: patch(s.records, boothId, {
-            verdict: s.records[boothId]?.verdict === verdict ? undefined : (verdict ?? undefined),
+            verdict:
+              s.records[boothId]?.verdict === verdict
+                ? undefined
+                : (verdict ?? undefined),
           }),
         })),
       setMemo: (boothId, memo) =>
