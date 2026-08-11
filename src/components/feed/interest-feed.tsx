@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -101,24 +101,58 @@ export function InterestFeed({
     });
   }
 
+  // 배치(최대 6칸)를 다 정리했는데 서버가 더 줄 게 있을 수도 있으면 자동으로
+  // 채운다 — 이건 "반응할 때마다" 자동 새로고침하던 예전 방식과 다르다(그건
+  // 읽는 도중에 화면이 다시 그려져서 걷어냈다, repick() 주석 참고). 여기는
+  // **큐가 완전히 비었을 때만** 한 번 트리거되므로 읽던 카드가 움직이는 일이
+  // 없다 — 이미 6칸 다 판단해서 화면에 볼 게 없는 순간이기 때문이다.
+  // items 내용(id 집합)이 바뀌기 전까지는 다시 트리거하지 않는다 — 서버가
+  // 정말 아무것도 못 줘서 items가 그대로 돌아와도 무한 재시도하지 않기 위함.
+  const autoRefreshedForRef = useRef<string>("");
+  useEffect(() => {
+    if (visible.length !== 0 || items.length === 0 || repicking) return;
+    const key = items
+      .map((i) => i.booth.id)
+      .sort()
+      .join(",");
+    if (autoRefreshedForRef.current === key) return;
+    autoRefreshedForRef.current = key;
+    startRepick(() => {
+      router.refresh();
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [visible.length, items, repicking]);
+
   if (visible.length === 0) {
-    // 큐를 다 비웠을 때 섹션이 통째로 사라지면 화면에 구멍이 남는다.
+    // 서버가 이번에 준 items 자체가 비었으면(자동 재시도로도 더 안 나옴) 이
+    // 전시엔 정말 더 볼 부스가 없는 것 — "다시 골라줘"를 반복해봐야 소용없으니
+    // 지도로 안내한다. items는 있는데 방금 다 판단해 visible만 0이면 위 effect가
+    // 자동으로 다시 채우는 중 — 그 짧은 순간만 로딩으로 보여준다.
+    const exhausted = items.length === 0;
     return (
       <section className="mt-6">
         <div className="mb-2 px-1">
           <h2 className="text-base font-bold">{t("feed.heading")}</h2>
         </div>
         <div className="rounded-2xl border border-dashed border-border px-4 py-6 text-center">
-          <p className="text-sm text-muted-foreground">
-            {t("feed.allDecided")}
-          </p>
-          <button
-            type="button"
-            onClick={repick}
-            className="mt-3 min-h-11 rounded-xl border border-border px-4 text-sm font-semibold active:bg-accent/40"
-          >
-            {t("feed.repick")}
-          </button>
+          {exhausted ? (
+            <>
+              <p className="text-sm text-muted-foreground">
+                {t("feed.exhausted")}
+              </p>
+              <Link
+                href={`/exhibitions/${slug}/map`}
+                className="mt-3 inline-flex min-h-11 items-center rounded-xl border border-border px-4 text-sm font-semibold active:bg-accent/40"
+              >
+                {t("feed.exhaustedMapCta")}
+              </Link>
+            </>
+          ) : (
+            <p className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+              <RefreshCw className="size-4 animate-spin" />
+              {t("feed.repicking")}
+            </p>
+          )}
         </div>
       </section>
     );
