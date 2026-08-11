@@ -216,7 +216,10 @@ const ko = {
     similar: "비슷한 곳 {n}",
     collapse: "접기",
     freshDivider: "여기부터 새로 골랐어",
-    allDecided: "여기 있는 건 다 정했네.",
+    // 배치를 다 판단하면 자동으로 다시 채운다(interest-feed.tsx) — 그래도 서버가
+    // 더 못 주면 이 전시엔 정말 더 볼 게 없다는 뜻이라 지도로 안내한다.
+    exhausted: "여기 있는 부스는 다 살펴봤어. 지도에서 직접 돌아다녀 봐.",
+    exhaustedMapCta: "지도 보기",
     repick: "새로 골라줘",
     repicking: "고르는 중…",
     pickStable: "확실히 네 취향이라",
@@ -872,7 +875,8 @@ const en: Dict = {
     similar: "Similar {n}",
     collapse: "Collapse",
     freshDivider: "New picks from here",
-    allDecided: "You've decided on all of these.",
+    exhausted: "You've seen every booth here. Time to walk the map yourself.",
+    exhaustedMapCta: "Open map",
     repick: "Pick more",
     repicking: "Picking…",
     pickStable: "Definitely your taste",

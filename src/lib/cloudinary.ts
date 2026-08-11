@@ -18,11 +18,13 @@ export { cloudinary, hasCloudinary };
 
 export const COMMUNITY_FOLDER = "roam/community";
 export const NOTES_FOLDER = "roam/notes";
+export const BOOTH_FOLDER = "roam/booths";
 
 /** Folders the browser may request a signed upload into (allowlist). */
 const UPLOAD_FOLDERS: Record<string, string> = {
   community: COMMUNITY_FOLDER,
   notes: NOTES_FOLDER,
+  booth: BOOTH_FOLDER,
 };
 
 /** Map a client folder key to a real folder; unknown keys fall back to community. */

@@ -1,11 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Pencil, Trash2, Loader2 } from "lucide-react";
+import NextImage from "next/image";
+import { Plus, Pencil, Trash2, Loader2, ImagePlus, X, Star } from "lucide-react";
 import { toast } from "sonner";
 import { api, ApiClientError } from "@/lib/api/client";
 import { boothInputSchema } from "@/lib/schemas";
+import {
+  uploadBoothImage,
+  BOOTH_IMAGE_MAX_COUNT,
+  BOOTH_IMAGE_MAX_MB,
+} from "@/lib/admin/upload-booth-image";
+import { cn } from "@/lib/utils";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -48,6 +55,8 @@ export function BoothManager({ exhibitionId, booths, categories, halls }: Props)
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Booth | null>(null);
   const [draft, setDraft] = useState<Draft>({});
+  // 태그는 서버엔 배열이지만 편집은 쉼표 구분 텍스트가 더 빠르다 — 저장 시점에만 분해.
+  const [tagsText, setTagsText] = useState("");
   const [busy, setBusy] = useState(false);
   const catById = new Map(categories.map((c) => [c.id, c]));
 
@@ -59,27 +68,42 @@ export function BoothManager({ exhibitionId, booths, categories, halls }: Props)
       x: 500,
       y: 350,
       popularity: 50,
+      images: [],
     });
+    setTagsText("");
     setOpen(true);
   }
   function startEdit(b: Booth) {
     setEditing(b);
     setDraft({ ...b });
+    setTagsText((b.tags ?? []).join(", "));
     setOpen(true);
   }
 
   async function submit() {
     const category = categories.find((c) => c.id === draft.categoryId);
+    const tags = tagsText
+      .split(",")
+      .map((t) => t.trim())
+      .filter(Boolean);
     const payload = {
       exhibitionId,
       hallId: draft.hallId ?? halls[0]?.id ?? "",
       categoryId: draft.categoryId ?? categories[0]?.id ?? "",
+      code: draft.code || undefined,
       name: draft.name ?? "",
       company: draft.company ?? "",
       description: draft.description ?? "",
-      longDescription: draft.longDescription ?? draft.description ?? "",
-      images: [],
-      tags: category ? [category.slug] : [],
+      longDescription: draft.longDescription || draft.description || "",
+      // 저장할 때마다 무조건 빈 배열을 보내던 버그가 있었다 — 수정할 때마다 이미지가
+      // 조용히 사라졌다. 지금 draft에 든 값을 그대로 보낸다.
+      images: draft.images ?? [],
+      logoUrl: draft.logoUrl || undefined,
+      instagramUrl: draft.instagramUrl || undefined,
+      websiteUrl: draft.websiteUrl || undefined,
+      // 태그를 직접 안 건드렸으면(빈 입력) 카테고리 slug로 시드 — 완전히 빈 부스를
+      // 만들지 않기 위한 기본값이지, 직접 입력한 태그를 덮어쓰지 않는다.
+      tags: tags.length > 0 ? tags : category ? [category.slug] : [],
       x: Number(draft.x ?? 500),
       y: Number(draft.y ?? 350),
       popularity: Number(draft.popularity ?? 50),
@@ -128,6 +152,20 @@ export function BoothManager({ exhibitionId, booths, categories, halls }: Props)
         <div className="space-y-2">
           {booths.map((b) => (
             <Card key={b.id} className="flex items-center gap-3 p-3.5">
+              {b.images?.[0] ? (
+                <div className="relative size-11 shrink-0 overflow-hidden rounded-lg border border-border bg-secondary">
+                  <NextImage
+                    src={b.images[0]}
+                    alt=""
+                    fill
+                    sizes="44px"
+                    className="object-cover"
+                    unoptimized
+                  />
+                </div>
+              ) : (
+                <div className="size-11 shrink-0 rounded-lg border border-dashed border-border" />
+              )}
               <div className="min-w-0 flex-1">
                 <p className="truncate font-bold">{b.name}</p>
                 <p className="truncate text-sm text-muted-foreground">{b.company}</p>
@@ -168,9 +206,24 @@ export function BoothManager({ exhibitionId, booths, categories, halls }: Props)
             <SheetTitle>{editing ? "부스 수정" : "새 부스"}</SheetTitle>
           </SheetHeader>
           <div className="space-y-3 px-5 py-3">
-            <Field label="부스명">
-              <Input value={draft.name ?? ""} onChange={(e) => setDraft({ ...draft, name: e.target.value })} />
+            <Field label="이미지">
+              <BoothImageGallery
+                images={draft.images ?? []}
+                onChange={(images) => setDraft({ ...draft, images })}
+              />
             </Field>
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="부스명">
+                <Input value={draft.name ?? ""} onChange={(e) => setDraft({ ...draft, name: e.target.value })} />
+              </Field>
+              <Field label="부스 코드">
+                <Input
+                  placeholder="예: A06"
+                  value={draft.code ?? ""}
+                  onChange={(e) => setDraft({ ...draft, code: e.target.value })}
+                />
+              </Field>
+            </div>
             <Field label="회사">
               <Input value={draft.company ?? ""} onChange={(e) => setDraft({ ...draft, company: e.target.value })} />
             </Field>
@@ -195,6 +248,44 @@ export function BoothManager({ exhibitionId, booths, categories, halls }: Props)
             <Field label="설명">
               <Textarea value={draft.description ?? ""} onChange={(e) => setDraft({ ...draft, description: e.target.value })} />
             </Field>
+            <Field label="상세 설명">
+              <Textarea
+                placeholder="비워두면 위 설명을 그대로 써요"
+                rows={4}
+                value={draft.longDescription ?? ""}
+                onChange={(e) => setDraft({ ...draft, longDescription: e.target.value })}
+              />
+            </Field>
+            <Field label="태그 (쉼표로 구분)">
+              <Input
+                placeholder="예: goods, discovery"
+                value={tagsText}
+                onChange={(e) => setTagsText(e.target.value)}
+              />
+            </Field>
+            <div className="grid grid-cols-1 gap-3">
+              <Field label="로고 URL">
+                <Input
+                  placeholder="https://…"
+                  value={draft.logoUrl ?? ""}
+                  onChange={(e) => setDraft({ ...draft, logoUrl: e.target.value })}
+                />
+              </Field>
+              <Field label="인스타그램 URL">
+                <Input
+                  placeholder="https://instagram.com/…"
+                  value={draft.instagramUrl ?? ""}
+                  onChange={(e) => setDraft({ ...draft, instagramUrl: e.target.value })}
+                />
+              </Field>
+              <Field label="웹사이트 URL">
+                <Input
+                  placeholder="https://…"
+                  value={draft.websiteUrl ?? ""}
+                  onChange={(e) => setDraft({ ...draft, websiteUrl: e.target.value })}
+                />
+              </Field>
+            </div>
             <div className="grid grid-cols-3 gap-3">
               <Field label="X 좌표">
                 <Input type="number" value={draft.x ?? 0} onChange={(e) => setDraft({ ...draft, x: Number(e.target.value) })} />
@@ -223,6 +314,136 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
     <div className="space-y-1.5">
       <Label className="text-xs">{label}</Label>
       {children}
+    </div>
+  );
+}
+
+/**
+ * 부스 이미지 갤러리 — 업로드/삭제/대표 지정. images[0]이 곧 프로필 이미지라는 게
+ * 암묵 규칙이라(Booth 타입엔 별도 필드가 없다), 첫 장에 뱃지를 달고 "대표로" 버튼으로
+ * 순서를 바꿔 명시적으로 보여준다. note-photos.tsx와 같은 업로드 패턴, 폴더만 다르다.
+ */
+function BoothImageGallery({
+  images,
+  onChange,
+}: {
+  images: string[];
+  onChange: (images: string[]) => void;
+}) {
+  const [busy, setBusy] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const full = images.length >= BOOTH_IMAGE_MAX_COUNT;
+
+  async function onPick(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files ?? []);
+    e.target.value = "";
+    if (files.length === 0) return;
+    const room = BOOTH_IMAGE_MAX_COUNT - images.length;
+    if (room <= 0) {
+      toast.error(`이미지는 최대 ${BOOTH_IMAGE_MAX_COUNT}장까지예요`);
+      return;
+    }
+    const picked = files.slice(0, room);
+    setBusy(true);
+    try {
+      const urls: string[] = [];
+      for (const file of picked) {
+        if (file.size > BOOTH_IMAGE_MAX_MB * 1024 * 1024) {
+          toast.error(`${BOOTH_IMAGE_MAX_MB}MB보다 작은 이미지로 올려주세요`);
+          continue;
+        }
+        urls.push(await uploadBoothImage(file));
+      }
+      if (urls.length === 0) return;
+      onChange([...images, ...urls].slice(0, BOOTH_IMAGE_MAX_COUNT));
+    } catch {
+      toast.error("이미지 업로드에 실패했어요");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function remove(url: string) {
+    onChange(images.filter((u) => u !== url));
+  }
+
+  function makePrimary(url: string) {
+    onChange([url, ...images.filter((u) => u !== url)]);
+  }
+
+  return (
+    <div className="flex flex-wrap gap-2">
+      {images.map((url, i) => (
+        <div
+          key={url}
+          className="group relative size-20 overflow-hidden rounded-lg border border-border bg-secondary"
+        >
+          <NextImage
+            src={url}
+            alt=""
+            fill
+            sizes="80px"
+            className="object-cover"
+            unoptimized
+          />
+          {i === 0 && (
+            <span className="absolute left-0.5 top-0.5 flex items-center gap-0.5 rounded-full bg-primary/90 px-1.5 py-0.5 text-[10px] font-semibold text-primary-foreground">
+              <Star className="size-2.5 fill-current" /> 대표
+            </span>
+          )}
+          <div className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-1 bg-black/55 px-1 py-0.5 opacity-0 transition-opacity group-hover:opacity-100">
+            {i !== 0 && (
+              <button
+                type="button"
+                onClick={() => makePrimary(url)}
+                aria-label="대표 이미지로 지정"
+                className="text-[10px] font-semibold text-white"
+              >
+                대표로
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => remove(url)}
+              aria-label="이미지 삭제"
+              className={cn(
+                "flex size-4 items-center justify-center rounded-full bg-white/20 text-white",
+                i === 0 && "ml-auto",
+              )}
+            >
+              <X className="size-3" />
+            </button>
+          </div>
+        </div>
+      ))}
+
+      {!full && (
+        <button
+          type="button"
+          onClick={() => inputRef.current?.click()}
+          disabled={busy}
+          aria-label="이미지 추가"
+          className="flex size-20 flex-col items-center justify-center gap-0.5 rounded-lg border border-dashed border-border bg-card text-muted-foreground transition-colors active:bg-accent/40 disabled:opacity-60"
+        >
+          {busy ? (
+            <Loader2 className="size-5 animate-spin" />
+          ) : (
+            <>
+              <ImagePlus className="size-5" />
+              <span className="text-[11px]">추가</span>
+            </>
+          )}
+        </button>
+      )}
+
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        multiple
+        className="hidden"
+        onChange={onPick}
+      />
     </div>
   );
 }
