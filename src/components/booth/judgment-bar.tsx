@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useVisitStore, pushNote } from "@/lib/stores/visit";
 import type { InterestValue, VerdictValue } from "@/lib/stores/visit";
 import { useAuthStore, promptLoginOncePerExhibition } from "@/lib/stores/auth";
+import { useCompanionStore } from "@/lib/stores/companion";
+import { buildJudgmentLine } from "@/lib/companion/reaction-line";
 import { useT } from "@/lib/i18n/provider";
 
 /**
@@ -41,10 +43,14 @@ export function JudgmentBar({
   const record = useVisitStore((s) => s.records[boothId]);
   const setInterest = useVisitStore((s) => s.setInterest);
   const setVerdict = useVisitStore((s) => s.setVerdict);
+  const say = useCompanionStore((s) => s.say);
+  const interests = useCompanionStore((s) => s.interests);
 
   // adaptive 전용: 링크로 임시 전환한 화면. interest/verdict 실제 값이 바뀌면
   // 이 로컬 오버라이드는 무시되고 실제 상태를 따른다(전환 즉시 반영되도록).
-  const [forcedScreen, setForcedScreen] = useState<"interest" | "verdict" | null>(null);
+  const [forcedScreen, setForcedScreen] = useState<
+    "interest" | "verdict" | null
+  >(null);
 
   const screen: "interest" | "verdict" =
     mode === "interest"
@@ -56,10 +62,35 @@ export function JudgmentBar({
 
   function react(kind: "interest", value: InterestValue): void;
   function react(kind: "verdict", value: VerdictValue): void;
-  function react(kind: "interest" | "verdict", value: InterestValue | VerdictValue) {
+  function react(
+    kind: "interest" | "verdict",
+    value: InterestValue | VerdictValue,
+  ) {
+    // good일 때 "예측이 맞았는지"는 반응 직전(스토어 갱신 전)의 interest로 판단한다.
+    const matchedPriorInterest =
+      kind === "verdict" && value === "good"
+        ? record?.interest === "must" || record?.interest === "curious"
+        : undefined;
+
     if (kind === "interest") setInterest(boothId, value as InterestValue);
     else setVerdict(boothId, value as VerdictValue);
-    if (!user) promptLoginOncePerExhibition(exhibitionSlug);
+
+    if (user) {
+      say(
+        buildJudgmentLine(
+          kind,
+          value,
+          interestSlugs,
+          boothName,
+          categoryLabel,
+          interests,
+          t,
+          { matchedPriorInterest },
+        ),
+      );
+    } else {
+      promptLoginOncePerExhibition(exhibitionSlug);
+    }
     void pushNote(boothId);
   }
 
@@ -85,9 +116,13 @@ export function JudgmentBar({
           <button
             type="button"
             className="underline underline-offset-2"
-            onClick={() => setForcedScreen(screen === "interest" ? "verdict" : "interest")}
+            onClick={() =>
+              setForcedScreen(screen === "interest" ? "verdict" : "interest")
+            }
           >
-            {screen === "interest" ? t("judge.switchToVerdict") : t("judge.switchToInterest")}
+            {screen === "interest"
+              ? t("judge.switchToVerdict")
+              : t("judge.switchToInterest")}
           </button>
         </div>
       )}

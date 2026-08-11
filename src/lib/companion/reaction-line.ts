@@ -1,33 +1,39 @@
-// 반응 즉답 — 부스가 속한 관람 가치(interestSlugs) + 브레인 누적 확신도로 톤을 조절한다.
+// 판단 즉답 — 부스가 속한 관람 가치(interestSlugs) + 브레인 누적 확신도로 톤을 조절한다.
 // 순수·LLM 없음.
 //
-// interested/skip만 매칭을 탄다. later는 판정 가중치가 interested의 0.3배라(taste.ts
-// judgmentScore) "확실히 좋아하는구나" 톤을 쓰면 신호보다 말이 앞선다. skip은 확신
-// 매칭(confidence>=CONFIDENT_THRESHOLD)에서만 분야를 말하고, 그마저도 "안에서도 다는 아니다"로
-// 헤지한다 — 부스 하나 뺀 걸 분야 전체 부정으로 말하면 과장이다(reaction-bar.tsx의
-// 기존 교훈을 반복하지 않는다).
+// interest(must/curious)·verdict(good/bad)만 매칭을 탄다. curious는 판정 가중치가
+// must의 절반이라(taste.ts judgmentScore) "확실히 좋아하는구나" 톤을 쓰면 신호보다
+// 말이 앞선다. pass는 확신 매칭(confidence>=CONFIDENT_THRESHOLD)에서만 분야를
+// 말하고, 그마저도 "안에서도 다는 아니다"로 헤지한다 — 부스 하나 뺀 걸 분야 전체
+// 부정으로 말하면 과장이다.
 //
 // 매칭은 interestSlugs(= boothValueSlugs(booth), 가치 축 slug)로 한다 — brain.interests
-// 는 거의 항상 이 축으로 쌓인다(모든 부스가 valueTags를 최소 1개 갖도록 파생되므로
-// booth.tags로는 사실상 매칭되지 않는다, service.ts/derive.ts 참고). 하지만 발화에
-// 얹는 {theme}은 매칭된 노드의 라벨(가치 이름 — "가볍게" 등, 발화 금지 대상)이 아니라
-// 호출부가 넘기는 이 부스의 카테고리 이름(categoryLabel, 구체적 사실)이다 — 가치
-// 이름은 발화에 절대 쓰지 않는다는 원칙을 매칭 축과 발화 축을 분리해서 지킨다.
+// 는 거의 항상 이 축으로 쌓인다. 하지만 발화에 얹는 {theme}은 매칭된 노드의 라벨
+// (가치 이름 — 발화 금지 대상)이 아니라 호출부가 넘기는 이 부스의 카테고리 이름
+// (categoryLabel, 구체적 사실)이다 — 가치 이름은 발화에 절대 쓰지 않는다는 원칙을
+// 매칭 축과 발화 축을 분리해서 지킨다.
+//
+// verdict='bad'가 가장 조심할 자리다. 부스를 깎지 않고 *내 예측이 빗나갔음*을
+// 로미가 가져간다 — pass의 헤지 원칙을 그대로 잇는다.
 import { CONFIDENT_THRESHOLD } from "@/lib/constants";
 import type { InterestNode } from "@/lib/types";
 import type { TFn } from "@/lib/i18n/resolve";
 
-export type ReactionKey = "interested" | "later" | "skip" | "seen";
+export type JudgmentKind = "interest" | "verdict";
+export type JudgmentValue = "must" | "curious" | "pass" | "good" | "ok" | "bad";
 
-const BASE_KEY: Record<ReactionKey, string> = {
-  interested: "reactInterested",
-  later: "reactLater",
-  skip: "reactSkip",
-  seen: "reactSeen",
+const BASE_KEY: Record<JudgmentValue, string> = {
+  must: "reactMust",
+  curious: "reactCurious",
+  pass: "reactPass",
+  good: "reactGood",
+  ok: "reactOk",
+  bad: "reactBad",
 };
 
-export function buildReactionLine(
-  key: ReactionKey,
+export function buildJudgmentLine(
+  kind: JudgmentKind,
+  value: JudgmentValue,
   /** boothValueSlugs(booth) — 이 부스가 기여하는 가치 축 slug. brain.interests와
    *  같은 축이라 여기로만 매칭한다. */
   interestSlugs: string[],
@@ -37,29 +43,44 @@ export function buildReactionLine(
   categoryLabel: string | undefined,
   interests: InterestNode[],
   t: TFn,
+  /** verdict='good'일 때만 쓴다 — 직전에 interest가 must/curious였는지(예측이
+   *  맞았는지). 호출부(judgment-bar)가 판단 직전 record에서 넘긴다. */
+  opts?: { matchedPriorInterest?: boolean },
 ): string {
-  if (key === "later" || key === "seen") {
-    return line(BASE_KEY[key], boothName, t);
+  if (value === "ok") {
+    return line(BASE_KEY.ok, boothName, t);
   }
 
   // interests는 confidence 내림차순(distill.ts)이라 첫 매치가 곧 최고 확신 가치.
   const match = interests.find((n) => interestSlugs.includes(n.key));
 
-  if (key === "interested") {
-    if (!match || !categoryLabel)
-      return line(BASE_KEY.interested, boothName, t);
+  if (value === "must" || value === "curious") {
+    if (!match || !categoryLabel) return line(BASE_KEY[value], boothName, t);
     const tier =
       match.confidence >= CONFIDENT_THRESHOLD
-        ? "reactInterestedConfident"
-        : "reactInterestedTentative";
+        ? `${BASE_KEY[value]}Confident`
+        : `${BASE_KEY[value]}Tentative`;
     return line(tier, boothName, t, categoryLabel);
   }
 
-  // key === "skip" — 확신 매칭에서만, 헤지된 문장으로.
-  if (match && match.confidence >= CONFIDENT_THRESHOLD && categoryLabel) {
-    return line("reactSkipConfident", boothName, t, categoryLabel);
+  if (value === "pass") {
+    if (match && match.confidence >= CONFIDENT_THRESHOLD && categoryLabel) {
+      return line(`${BASE_KEY.pass}Confident`, boothName, t, categoryLabel);
+    }
+    return line(BASE_KEY.pass, boothName, t);
   }
-  return line(BASE_KEY.skip, boothName, t);
+
+  if (value === "good") {
+    const key = opts?.matchedPriorInterest ? `${BASE_KEY.good}Matched` : BASE_KEY.good;
+    return line(key, boothName, t);
+  }
+
+  // value === "bad" — 확신 매칭에서만, 헤지된 문장으로. 부스를 깎지 않고
+  // "내 예측이 빗나갔다" 쪽으로 로미가 가져간다.
+  if (match && match.confidence >= CONFIDENT_THRESHOLD && categoryLabel) {
+    return line(`${BASE_KEY.bad}Confident`, boothName, t, categoryLabel);
+  }
+  return line(BASE_KEY.bad, boothName, t);
 }
 
 function line(
