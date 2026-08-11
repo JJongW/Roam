@@ -103,10 +103,17 @@ export async function setValueMuted(
   // 뮤트가 바뀌면 interests를 다시 걸러야 하므로 재증류한다 — 목록만 갈아끼우면
   // 방금 끈 가치가 interests에 그대로 남는다.
   const signals = await repo.listUserSignals(userId);
+  // labels 기본값({})을 그대로 두면 모든 interest 노드의 label이 raw slug로
+  // 덮여쓰인다(distillInterests가 labels[slug] ?? slug로 채움) — 이 가치 하나만
+  // 바뀌어도 무관한 노드까지 라벨이 깨진다. slug는 항상 8가치 안이므로(route.ts가
+  // 검증) category label은 필요 없고 VALUE_TAGS만으로 충분하다.
+  const labels = Object.fromEntries(VALUE_TAGS.map((v) => [v.slug, v.label]));
   const next = updateBrainWithSignals(
     { ...brain, mutedSlugs: [...current] },
     signals,
     Date.now(),
+    MEMORY_TUNING,
+    labels,
   );
   await repo.saveUserBrain(next);
   return next;
