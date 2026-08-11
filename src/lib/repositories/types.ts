@@ -176,10 +176,10 @@ export interface Repository {
     userId: string,
     boothId: string,
     input: BoothNoteInput,
-    /** 이 쓰기의 확신 등급. interested·later·skipped·해제(status=null)일 때만 준다.
-     *  undefined면 저장소가 judged_class·retro를 건드리지 않는다(visited·메모 편집 등
-     *  status 자체의 판정 의미가 없는 쓰기) — 그래야 메모만 고칠 때 이미 답한 되묻기가
-     *  조용히 지워지지 않는다. */
+    /** 이 쓰기의 확신 등급. interest(must·curious·pass) 또는 verdict(good·ok·bad)를
+     *  실제로 바꾸는 쓰기일 때만 값(해제면 null)을 준다. undefined면 저장소가 기존
+     *  judged_class를 건드리지 않는다(메모·사진만 고치는 등 interest·verdict 자체가
+     *  안 바뀌는 쓰기) — 그래야 메모만 고칠 때 이미 답한 판정이 조용히 지워지지 않는다. */
     judgedClass: "confident" | "uncertain" | null | undefined,
   ): Promise<BoothNote>;
   /** 부스 하나(가벼운 조회 — 목록 컬럼 + enrichment). getBoothDetail과 달리
