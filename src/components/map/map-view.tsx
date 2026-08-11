@@ -14,7 +14,12 @@ import {
 import { toast } from "sonner";
 import { api } from "@/lib/api/client";
 import { cn } from "@/lib/utils";
-import { useVisitStore, idsByStatus, pushNote } from "@/lib/stores/visit";
+import {
+  useVisitStore,
+  idsByInterest,
+  idsByVerdict,
+  pushNote,
+} from "@/lib/stores/visit";
 import { NotePhotos } from "@/components/booth/note-photos";
 import { useAuthStore } from "@/lib/stores/auth";
 import { useUiStore } from "@/lib/stores/ui";
@@ -24,8 +29,7 @@ import { MapCoachmark } from "@/components/map/map-coachmark";
 import { FLOORPLANS } from "@/lib/floorplans";
 import { ExhibitionMap, HEAT_TIERS } from "@/components/map/exhibition-map";
 import { CategoryChip } from "@/components/booth/category-chip";
-import { ReactionBar } from "@/components/feed/reaction-bar";
-import { VisitedRetroInline } from "@/components/map/visited-retro-inline";
+import { JudgmentBar } from "@/components/booth/judgment-bar";
 import { ValueChips } from "@/components/values/value-chips";
 import { RoamAvatar } from "@/components/companion/roam-avatar";
 import { Button } from "@/components/ui/button";
@@ -81,13 +85,15 @@ export function MapView({
     () => (hydrated ? storeRecords : {}),
     [hydrated, storeRecords],
   );
-  const visitedIds = useMemo(() => idsByStatus(records, "visited"), [records]);
-  const skippedIds = useMemo(() => idsByStatus(records, "skipped"), [records]);
-  const laterIds = useMemo(() => idsByStatus(records, "later"), [records]);
-  const interestedIds = useMemo(
-    () => idsByStatus(records, "interested"),
+  const mustIds = useMemo(() => idsByInterest(records, "must"), [records]);
+  const curiousIds = useMemo(
+    () => idsByInterest(records, "curious"),
     [records],
   );
+  const passIds = useMemo(() => idsByInterest(records, "pass"), [records]);
+  const goodIds = useMemo(() => idsByVerdict(records, "good"), [records]);
+  const okIds = useMemo(() => idsByVerdict(records, "ok"), [records]);
+  const badIds = useMemo(() => idsByVerdict(records, "bad"), [records]);
 
   // First-visit map guide + one-time landscape hint (see ui store).
   const mapGuideSeen = useUiStore((s) => s.mapGuideSeen);
@@ -113,7 +119,6 @@ export function MapView({
   );
   const selected = booths.find((b) => b.id === selectedId) ?? null;
   const selectedCat = selected ? catById.get(selected.categoryId) : undefined;
-
 
   function handleBack() {
     // 지도는 전시 상세에서 들어온 부가 화면 — 홈이 아니라 그 전시로 돌아간다.
@@ -150,9 +155,7 @@ export function MapView({
 
   return (
     <div className="relative h-dvh w-full overflow-hidden overscroll-none bg-background">
-      {showCoachmark && (
-        <MapCoachmark onClose={markMapGuideSeen} />
-      )}
+      {showCoachmark && <MapCoachmark onClose={markMapGuideSeen} />}
 
       {/* 전체화면 지도 */}
       <ExhibitionMap
@@ -165,10 +168,12 @@ export function MapView({
         fillHeight
         viewportClassName="inset-0"
         controlsClassName="right-3 top-20 mt-safe"
-        visitedIds={visitedIds}
-        skippedIds={skippedIds}
-        laterIds={laterIds}
-        interestedIds={interestedIds}
+        mustIds={mustIds}
+        curiousIds={curiousIds}
+        passIds={passIds}
+        goodIds={goodIds}
+        okIds={okIds}
+        badIds={badIds}
         selectedId={selectedId}
         centerOn={centerOn}
         focusBottomInset={320}
@@ -215,40 +220,44 @@ export function MapView({
         {heatLoading ? t("map.densityShort") : t("map.density")}
       </button>
 
-      {/* 상시 범례 — 색만으로 상태 못 읽는 걸 막는다(끌림·가봄·나중에·별로·선택). 밀도 켜면
-          밀도 범례가 이 자리를 대신하므로 그때만 숨김. */}
+      {/* 상시 범례 — 색만으로 상태 못 읽는 걸 막는다(꼭 갈래·끌려·좋았어·아니었어·패스·선택).
+          밀도 켜면 밀도 범례가 이 자리를 대신하므로 그때만 숨김. */}
       {!heatOn && (
         <div className="pointer-events-none absolute left-3 top-16 z-20 flex flex-col gap-1 rounded-xl border border-border bg-card/90 px-2.5 py-2 text-[11px] font-semibold shadow-[var(--shadow-card)] backdrop-blur">
           <span className="flex items-center gap-1.5">
             <span
               className="size-3 rounded-[3px]"
-              style={{ backgroundColor: "var(--route-visited)" }}
+              style={{ backgroundColor: "var(--judge-must)" }}
             />
-            {t("map.legendInterested")}
+            {t("map.legendMust")}
           </span>
           <span className="flex items-center gap-1.5">
             <span
               className="size-3 rounded-[3px]"
-              style={{ backgroundColor: "var(--primary)" }}
+              style={{ backgroundColor: "var(--judge-curious)" }}
             />
-            {t("map.legendVisited")}
+            {t("map.legendCurious")}
           </span>
           <span className="flex items-center gap-1.5">
             <span
               className="size-3 rounded-[3px]"
-              style={{ backgroundColor: "var(--warning)" }}
+              style={{ backgroundColor: "var(--judge-good)" }}
             />
-            {t("map.legendLater")}
+            {t("map.legendGood")}
           </span>
           <span className="flex items-center gap-1.5">
             <span
-              className="size-3 rounded-[3px] border"
-              style={{
-                backgroundColor: "var(--booth-skipped)",
-                borderColor: "var(--booth-skipped-stroke)",
-              }}
+              className="size-3 rounded-[3px]"
+              style={{ backgroundColor: "var(--judge-bad)" }}
             />
-            {t("map.legendSkipped")}
+            {t("map.legendBad")}
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span
+              className="size-3 rounded-[3px]"
+              style={{ backgroundColor: "var(--judge-pass)" }}
+            />
+            {t("map.legendPass")}
           </span>
           <span className="flex items-center gap-1.5">
             <span
@@ -324,9 +333,12 @@ export function MapView({
 
             <BoothPopupMemo key={selected.id} boothId={selected.id} />
 
-            {/* 저장 대신 반응 — 끌림/나중에/별로/이미봄 → 신호로 브레인에 반영. */}
+            {/* 판단 — 관심 여부로 자동 분기(adaptive). 다녀왔는지는 시스템이 몰라도
+                관심을 눌렀는지는 확실히 아는 값이라 그걸로 관심/판정을 가른다. */}
             <div className="mt-2.5 border-t border-border pt-2.5">
-              <ReactionBar
+              <JudgmentBar
+                key={selected.id}
+                mode="adaptive"
                 boothId={selected.id}
                 boothName={selected.name}
                 interestSlugs={boothValueSlugs(selected)}
@@ -334,8 +346,6 @@ export function MapView({
                 exhibitionSlug={detail.exhibition.slug}
               />
             </div>
-
-            <VisitedRetroInline boothId={selected.id} />
           </div>
         </div>
       )}
@@ -359,7 +369,7 @@ function BoothPopupMemo({ boothId }: { boothId: string }) {
   function save() {
     if (value.trim() === initial.trim()) return;
     setMemo(boothId, value.trim());
-    if (user) void pushNote(boothId);
+    if (user) void pushNote(boothId, {}); // 메모만 바뀜 — interest·verdict는 안 건드린다
     toast.success(value.trim() ? t("map.memoSaved") : t("map.memoCleared"));
   }
 
@@ -378,7 +388,10 @@ function BoothPopupMemo({ boothId }: { boothId: string }) {
           placeholder={t("map.memoPlaceholder")}
           maxLength={100}
           aria-label={t("map.memoAria")}
-          className="h-9 pl-8 text-sm"
+          // 14px 이하 글꼴을 쓰지 않는다 — iOS는 16px 미만 입력에 포커스가 가면 페이지를
+          // 자동 확대하고, 지도는 핀치를 삼키므로 거기서 빠져나올 수 없다.
+          // 기본 Input이 이미 text-base(16px)라 크기 클래스를 얹지 않는다.
+          className="h-10 pl-8"
         />
       </div>
       <NotePhotos boothId={boothId} compact />

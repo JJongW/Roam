@@ -69,7 +69,7 @@ describe("buildGrounding", () => {
     });
     const g = buildGrounding(b, ["goods"], "ko", {
       name: "비온뒤",
-      kind: "interested",
+      kind: "curious",
     });
     expect(g.why).toContain("손으로 엮은 책");
     expect(g.why).toContain("비온뒤");

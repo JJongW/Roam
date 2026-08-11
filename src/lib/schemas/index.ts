@@ -191,11 +191,11 @@ export const loginSchema = z.object({
 export type LoginInput = z.infer<typeof loginSchema>;
 
 export const boothNoteInputSchema = z.object({
-  // 반응 네 가지 전부 계정에 남는다(0029). 끌림·나중에가 로컬 전용이던 동안엔
-  // 폰을 바꾸면 지도 색이 사라졌고, 끌림이 서버의 visited를 null로 덮어썼다.
-  status: z
-    .enum(["visited", "skipped", "interested", "later"])
-    .nullish(),
+  // interest·verdict 둘 다 계정에 남는다. 둘은 직교라 한 요청이 둘 다 보낼 수도,
+  // 하나만 보낼 수도 있다(호출부가 바뀐 필드만 채워 보낸다) — 나머지는 undefined로
+  // 두면 서버가 그 필드를 안 건드린다.
+  interest: z.enum(["must", "curious", "pass"]).nullish(),
+  verdict: z.enum(["good", "ok", "bad"]).nullish(),
   memo: z.string().max(300).optional(),
   /** Personal photos (Cloudinary URLs). Capped to keep notes lightweight. */
   photos: z.array(z.string().url()).max(4).optional(),

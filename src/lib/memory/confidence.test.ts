@@ -50,75 +50,85 @@ describe("normalize", () => {
 
 describe("dimensionOf", () => {
   it("종류별 대표 차원", () => {
-    expect(dimensionOf("booth_visited")).toBe("implicit");
+    expect(dimensionOf("feed_click")).toBe("implicit");
     expect(dimensionOf("booth_bookmarked")).toBe("explicit");
-    expect(dimensionOf("booth_skipped")).toBe("negative");
+    expect(dimensionOf("reaction_pass")).toBe("negative");
   });
 });
 
 describe("computeConfidence", () => {
   it("방문 많을수록 높지만 1 미만", () => {
-    const many = Array.from({ length: 100 }, () => sig("booth_visited"));
+    // feed_click(암묵 0.3)은 옛 booth_visited(1.0)보다 약해 같은 confidence에
+    // 도달하려면 신호 수가 더 필요하다 — 500개면 0.9를 여유 있게 넘는다.
+    const many = Array.from({ length: 500 }, () => sig("feed_click"));
     const { confidence } = computeConfidence(many, NOW, TUNING);
     expect(confidence).toBeGreaterThan(0.9);
     expect(confidence).toBeLessThan(1);
   });
 
-  it("명시(bookmark) > 암묵(visited) — 단일 신호", () => {
+  it("명시(bookmark) > 암묵(feed_click) — 단일 신호", () => {
     const book = computeConfidence(
       [sig("booth_bookmarked")],
       NOW,
       TUNING,
     ).confidence;
-    const visit = computeConfidence(
-      [sig("booth_visited")],
+    const click = computeConfidence(
+      [sig("feed_click")],
       NOW,
       TUNING,
     ).confidence;
-    expect(book).toBeGreaterThan(visit);
+    expect(book).toBeGreaterThan(click);
   });
 
   it("최근 신호가 과거보다 높은 confidence", () => {
     const recent = computeConfidence(
-      [sig("booth_visited", 0)],
+      [sig("feed_click", 0)],
       NOW,
       TUNING,
     ).confidence;
     const old = computeConfidence(
-      [sig("booth_visited", 180)],
+      [sig("feed_click", 180)],
       NOW,
       TUNING,
     ).confidence;
     expect(recent).toBeGreaterThan(old);
   });
 
-  it("skip(음의 신호)만이면 confidence 0", () => {
+  it("pass(음의 신호)만이면 confidence 0", () => {
     const { confidence } = computeConfidence(
-      [sig("booth_skipped")],
+      [sig("reaction_pass")],
       NOW,
       TUNING,
     );
     expect(confidence).toBe(0);
   });
 
-  it("skip이 visited를 상쇄해 낮춤", () => {
-    const withSkip = computeConfidence(
-      [sig("booth_visited"), sig("booth_skipped")],
+  it("pass가 feed_click을 상쇄해 낮춤", () => {
+    // reaction_pass(음 0.5)가 feed_click(암묵 0.3) 1개보다 세서 순합이 뒤집힌다
+    // (옛 booth_skipped 0.8 vs booth_visited 1.0과 반대) — feed_click 수를 늘려
+    // "상쇄하되 0 아래로는 안 감"이라는 의도를 다시 성립시킨다.
+    const withPass = computeConfidence(
+      [
+        sig("feed_click"),
+        sig("feed_click"),
+        sig("feed_click"),
+        sig("reaction_pass"),
+      ],
       NOW,
       TUNING,
     ).confidence;
     const only = computeConfidence(
-      [sig("booth_visited")],
+      [sig("feed_click"), sig("feed_click"), sig("feed_click")],
       NOW,
       TUNING,
     ).confidence;
-    expect(withSkip).toBeLessThan(only);
-    expect(withSkip).toBeGreaterThan(0);
+    expect(withPass).toBeLessThan(only);
+    expect(withPass).toBeGreaterThan(0);
   });
 
   it("차원별 카운트 집계", () => {
     const { signals } = computeConfidence(
-      [sig("booth_visited"), sig("booth_bookmarked"), sig("booth_skipped")],
+      [sig("feed_click"), sig("booth_bookmarked"), sig("reaction_pass")],
       NOW,
       TUNING,
     );
@@ -128,26 +138,26 @@ describe("computeConfidence", () => {
 
 describe("trendOf", () => {
   it("신호 1개면 flat", () => {
-    expect(trendOf([sig("booth_visited")], NOW, 90)).toBe("flat");
+    expect(trendOf([sig("feed_click")], NOW, 90)).toBe("flat");
   });
   it("동시각 신호는 flat", () => {
-    expect(
-      trendOf([sig("booth_visited", 5), sig("booth_visited", 5)], NOW, 90),
-    ).toBe("flat");
+    expect(trendOf([sig("feed_click", 5), sig("feed_click", 5)], NOW, 90)).toBe(
+      "flat",
+    );
   });
   it("같은 세션(1분 이내) 신호는 flat", () => {
-    const base = sig("booth_visited");
+    const base = sig("feed_click");
     const near: UserSignal = {
       ...base,
       createdAt: new Date(NOW - 10_000).toISOString(),
     };
-    expect(trendOf([base, near, sig("booth_visited")], NOW, 90)).toBe("flat");
+    expect(trendOf([base, near, sig("feed_click")], NOW, 90)).toBe("flat");
   });
   it("최근에 몰리면 up", () => {
     const s = [
-      sig("booth_visited", 60),
-      sig("booth_visited", 1),
-      sig("booth_visited", 0),
+      sig("feed_click", 60),
+      sig("feed_click", 1),
+      sig("feed_click", 0),
     ];
     expect(trendOf(s, NOW, 90)).toBe("up");
   });

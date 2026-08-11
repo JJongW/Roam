@@ -164,7 +164,9 @@ export default async function BoothDetailPage({ params }: Props) {
                       글은 인용으로 분리한다(존댓말이어도 남의 말이라 고치지 않는다). */}
                   {(about.romi || about.quote || about.fallback) && (
                     <section className="space-y-2">
-                      <h2 className="text-base font-bold">{t("booth.about")}</h2>
+                      <h2 className="text-base font-bold">
+                        {t("booth.about")}
+                      </h2>
                       {about.romi && (
                         <p className="text-[15px] leading-relaxed text-foreground/90">
                           {about.romi}
@@ -285,7 +287,18 @@ export default async function BoothDetailPage({ params }: Props) {
                   )}
                 </div>
               }
-              record={<BoothPersonalPanel boothId={booth.id} />}
+              record={
+                <BoothPersonalPanel
+                  booth={booth}
+                  category={category}
+                  // 이 라우트(/booths/[id])엔 전시 slug가 없다 — JudgmentBar가 쓰는
+                  // exhibitionSlug는 "전시당 고유"하기만 하면 되는 스코핑 키(로그인
+                  // 안내 1회 표시용 sessionStorage 키 접미사)라 실제 URL slug일
+                  // 필요가 없다. exhibitionId를 그대로 쓴다 — 라우트가 나중에
+                  // slug 파라미터를 갖게 되면 그때 진짜 slug로 바꾼다.
+                  exhibitionSlug={booth.exhibitionId}
+                />
+              }
               reviews={
                 <ReviewSection
                   boothId={booth.id}

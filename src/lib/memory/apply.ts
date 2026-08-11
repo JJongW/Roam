@@ -1,5 +1,6 @@
 // L4 메모리 → 추천 주입. 순수·결정론. 누적 관심(브레인)을 현재 세션 interests에
 // 합쳐 랭킹에 반영한다("쓸수록 좋아짐"). 추가만 — 빈 브레인이면 base 그대로.
+import { CONFIDENT_THRESHOLD } from "@/lib/constants";
 import type { UserBrain } from "@/lib/types";
 
 export interface MergeInterestsOptions {
@@ -18,7 +19,7 @@ export function mergeBrainInterests(
   brain: UserBrain,
   opts: MergeInterestsOptions = {},
 ): string[] {
-  const minConfidence = opts.minConfidence ?? 0.25;
+  const minConfidence = opts.minConfidence ?? CONFIDENT_THRESHOLD;
   const max = opts.max ?? 5;
 
   const fromBrain = brain.interests
@@ -47,7 +48,7 @@ export function brainInterestWeights(
   brain: UserBrain,
   opts: MergeInterestsOptions & { scale?: number } = {},
 ): Record<string, number> {
-  const minConfidence = opts.minConfidence ?? 0.25;
+  const minConfidence = opts.minConfidence ?? CONFIDENT_THRESHOLD;
   const max = opts.max ?? 5;
   const scale = opts.scale ?? 1;
 

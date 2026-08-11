@@ -5,6 +5,8 @@ import { getRepository } from "@/lib/repositories";
 import { ExhibitionCard } from "@/components/exhibition/exhibition-card";
 import { EmptyState } from "@/components/common/states";
 import { AccountButton } from "@/components/auth/account-button";
+import { LegalLinks } from "@/components/common/legal-links";
+import { LanguageSwitch } from "@/components/i18n/language-switch";
 import { RoamMotion } from "@/components/companion/roam-motion";
 import { getI18n } from "@/lib/i18n/server";
 import { getCurrentUser } from "@/lib/api/session";
@@ -17,7 +19,8 @@ import {
 } from "@/lib/feed/exhibition-match";
 
 export const metadata = {
-  title: "Roam",
+  // absolute — 레이아웃의 "%s · Roam" 템플릿에 "Roam"을 넣으면 "Roam · Roam"이 된다.
+  title: { absolute: "Roam — Exhibition Navigator" },
 };
 
 export default async function HomePage() {
@@ -43,7 +46,10 @@ export default async function HomePage() {
     const matches = await Promise.all(
       rawExhibitions.map(async (ex) => {
         const booths = await repo.listBoothsByExhibitionId(ex.id);
-        return [ex.slug, matchExhibition(brain, exhibitionValueProfile(booths))] as const;
+        return [
+          ex.slug,
+          matchExhibition(brain, exhibitionValueProfile(booths)),
+        ] as const;
       }),
     );
     matchBySlug = new Map(matches);
@@ -59,8 +65,29 @@ export default async function HomePage() {
   const topMatch = top ? matchBySlug.get(top.slug) : undefined;
   const topReason = topMatch ? matchReason(topMatch.matched) : null;
 
+  // 구조화 데이터 — 앱 이름과 목적을 기계가 읽는 표준 경로로도 명시한다. Google OAuth
+  // 인증이 "홈페이지의 앱 이름이 동의 화면과 일치하지 않는다"로 반려한 이력이 있어,
+  // 화면 텍스트(h1·소개문)에만 의존하지 않고 여기에도 같은 값을 박아둔다.
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "Roam",
+    alternateName: "Roam — Exhibition Navigator",
+    applicationCategory: "TravelApplication",
+    operatingSystem: "Web",
+    url: "https://roam.ai.kr",
+    description: t("home.tagline"),
+    inLanguage: ["ko", "en"],
+    offers: { "@type": "Offer", price: "0", priceCurrency: "KRW" },
+  };
+
   return (
     <main className="flex-1 pb-safe">
+      <script
+        type="application/ld+json"
+        // 값은 위에서 우리가 만든 리터럴이라 사용자 입력이 섞이지 않는다.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <header className="sticky top-0 z-40 flex h-14 items-center justify-between border-b border-border bg-background/80 px-[var(--spacing-global-gutter)] pt-safe backdrop-blur-xl">
         <span className="flex items-center gap-1.5 text-lg font-extrabold tracking-tight">
           <span className="flex size-7 items-center justify-center overflow-hidden rounded-full ring-1 ring-border">
@@ -79,17 +106,33 @@ export default async function HomePage() {
         <AccountButton />
       </header>
 
-      {/* Romi 히어로 — 냅다 전시가 아니라 로미가 먼저 맞이한다. */}
+      {/* Romi 히어로 — 냅다 전시가 아니라 로미가 먼저 맞이한다.
+          미로그인일 땐 인사말 대신 **앱 이름과 목적**을 세운다: 처음 온 사람(그리고
+          Google OAuth 심사관·크롤러)에게는 "어떤 전시부터 볼까?"가 이 앱이 뭔지 알려주지
+          않는다. 로그인한 사람에겐 그 소개가 매번 소음이므로 원래 인사말을 유지한다. */}
       <section className="flex flex-col items-center gap-4 px-6 pb-4 pt-12 text-center">
         <span className="flex size-32 items-center justify-center overflow-hidden rounded-[2.5rem]">
           <RoamMotion src="/headbunting.webm" />
         </span>
-        <h1 className="text-2xl font-extrabold leading-snug">
-          {t("home.heroGreeting")}
-        </h1>
-        <p className="max-w-[18rem] text-[15px] leading-relaxed text-muted-foreground">
-          {t("home.subtitle")}
-        </p>
+        {user ? (
+          <>
+            <h1 className="text-2xl font-extrabold leading-snug">
+              {t("home.heroGreeting")}
+            </h1>
+            <p className="max-w-[18rem] text-[15px] leading-relaxed text-muted-foreground">
+              {t("home.subtitle")}
+            </p>
+          </>
+        ) : (
+          <>
+            <h1 className="text-[2rem] font-extrabold leading-none tracking-tight">
+              Roam
+            </h1>
+            <p className="max-w-[20rem] text-[15px] leading-relaxed text-muted-foreground">
+              {t("home.tagline")}
+            </p>
+          </>
+        )}
       </section>
 
       {/* 미로그인 랜딩 배너 — 계정 벽이 아니라 기억 설정임을 설명 + 로그인 진입. */}
@@ -143,6 +186,14 @@ export default async function HomePage() {
           ))
         )}
       </section>
+
+      {/* 홈에서 개인정보처리방침·약관으로 가는 길 — Google OAuth 인증의 명시
+          요구사항이다. 링크가 없으면 심사관에겐 없는 문서와 같다. 언어 전환도 여기 —
+          예전엔 첫 진입에 전체화면 게이트로 물었는데 그게 홈페이지를 가렸다. */}
+      <footer className="space-y-3 border-t border-border px-[var(--spacing-global-gutter)] py-6">
+        <LegalLinks />
+        <LanguageSwitch />
+      </footer>
     </main>
   );
 }

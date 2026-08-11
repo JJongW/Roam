@@ -73,10 +73,15 @@ export function CompanionBar() {
               icon={<ProgressCircle size={24} value={tastePct} tone="brand" />}
               className="pl-0.5"
             >
-              {t("companion.tastePct", { pct: tastePct })}
+              {/* 판정 수를 같이 보여준다 — 8~15개짜리 표본에서 %가 크게 출렁이는 걸
+                  숫자만 보면 "이유 없이" 흔들리는 걸로 느낀다. 옆에 몇 건 기준인지
+                  붙여두면 적어도 "표본이 작아서"라는 힌트는 상시 보인다. */}
+              {t("companion.tastePct", { pct: tastePct, n: tasteJudged })}
             </Chip>
           )}
-          <span className="truncate text-sm font-semibold">{line}</span>
+          <span className="line-clamp-2 text-left text-sm font-semibold">
+            {line}
+          </span>
         </button>
       </div>
 

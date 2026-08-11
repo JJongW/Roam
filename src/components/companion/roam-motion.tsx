@@ -58,7 +58,10 @@ export function RoamMotion({
       // 절전에서 networkState=loading·readyState=0으로 멈춘 채 요청조차 안 나감).
       preload="auto"
       aria-hidden
-      className={cn("size-full object-cover", className)}
+      // object-contain — 로미는 자르지 않는다. 영상이 정사각형이 아니라서
+      // (headbunting 478×620) cover를 쓰면 정사각 박스에서 머리·발이 잘린다.
+      // 아바타처럼 꽉 채워야 하는 자리가 생기면 className으로 opt-in 한다.
+      className={cn("size-full object-contain", className)}
     />
   );
 }

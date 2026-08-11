@@ -8,6 +8,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { format } from "date-fns";
+import { CONFIDENT_THRESHOLD } from "@/lib/constants";
 import { getExhibitionCached } from "@/lib/repositories/cached";
 import { cn } from "@/lib/utils";
 import { AppBar } from "@/components/common/app-bar";
@@ -65,12 +66,10 @@ export default async function ExhibitionDetailPage({
   const brain = user ? await readBrain(user.id) : null;
   // 관심 피드: 로그인 사용자의 브레인 + 오늘의 리듬으로 큐레이션(빈 브레인=인기순).
   const feedItems =
-    user && brain
-      ? await curateFeed(slug, user.id, rhythm, locale, brain)
-      : [];
+    user && brain ? await curateFeed(slug, user.id, rhythm, locale, brain) : [];
   // 기억 발화: 브레인 상위 관심 가치로 인사(로케일 라벨). VALUE_SLUGS면 t로 번역.
   const topValues = (brain?.interests ?? [])
-    .filter((n) => n.confidence >= 0.25)
+    .filter((n) => n.confidence >= CONFIDENT_THRESHOLD)
     .slice(0, 2)
     .map((n) => (VALUE_SLUGS.includes(n.key) ? t(`values.${n.key}`) : n.label));
   const memoryLine = topValues.length
@@ -80,10 +79,9 @@ export default async function ExhibitionDetailPage({
   // "반응이 로미의 예측을 맞혔는가"로 잰다). 예전 tasteProgress(접촉량 기반)는
   // 삭제됐다.
   const taste = user
-    ? await (await getRepository()).getTasteAccuracy(
-        user.id,
-        detail.exhibition.id,
-      )
+    ? await (
+        await getRepository()
+      ).getTasteAccuracy(user.id, detail.exhibition.id)
     : { judgedCount: 0, pct: null };
   const categoryById = Object.fromEntries(
     detail.categories.map((c) => [c.id, c]),

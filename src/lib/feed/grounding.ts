@@ -47,7 +47,7 @@ export function buildGrounding(
   userValueSlugs: string[],
   locale: Locale = DEFAULT_LOCALE,
   /** 이 부스를 꺼낸 계기가 된 내 지난 반응 — 근거를 가치 이름이 아니라 내 행동으로 말한다. */
-  because?: { name: string; kind: "interested" | "visited" },
+  because?: { name: string; kind: "must" | "curious" | "good" },
 ): Grounding {
   const t = makeT(DICTS[locale]);
   const e = booth.enrichment;
@@ -72,11 +72,14 @@ export function buildGrounding(
 
   // 2절 = 왜 지금 너한테. 근거는 내가 실제로 누른 부스다. 없으면 붙이지 않는다 —
   // 억지로 채우면 "둘러보면 취향이 더 또렷해질 거야" 같은 빈말이 된다.
+  // must·curious는 관람 전 긍정 의사(예전 status='interested')로 묶이고,
+  // good은 현장에서 확인된 긍정(예전 status='visited')이다 — 문구는 그대로,
+  // 매핑되는 조건만 새 어휘로 바뀐다.
   const link = because
     ? t(
-        because.kind === "interested"
-          ? "grounding.becauseInterested"
-          : "grounding.becauseVisited",
+        because.kind === "good"
+          ? "grounding.becauseVisited"
+          : "grounding.becauseInterested",
         { booth: because.name },
       )
     : null;

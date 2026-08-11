@@ -1,8 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import { RoamMotion } from "@/components/companion/roam-motion";
 import { useT } from "@/lib/i18n/provider";
+import {
+  clearSessionState,
+  useSessionState,
+} from "@/lib/hooks/use-session-state";
 import {
   shouldStopAdaptive,
   tallyAdd,
@@ -21,16 +24,21 @@ export function Conversation({
   questions,
   subtitleKey,
   onComplete,
+  persistKey,
 }: {
   mode: "adaptive" | "fixed";
   questions: Question[];
   /** Romi 아래 서브카피 i18n 키(예: onboardingQ.learning). */
   subtitleKey: string;
   onComplete: (tally: Tally, answered: number) => void;
+  /** sessionStorage 키 — 뒤로가기로 언마운트·재마운트돼도 진행 중이던 문항으로
+   *  이어지게 한다(use-session-state.ts). 부모(온보딩 화면)가 자기 스코프에 맞는
+   *  고유 키를 준다(예: 전시별 온보딩이면 슬러그 포함). */
+  persistKey: string;
 }) {
   const t = useT();
-  const [index, setIndex] = useState(0);
-  const [tally, setTally] = useState<Tally>({});
+  const [index, setIndex] = useSessionState<number>(`${persistKey}:index`, 0);
+  const [tally, setTally] = useSessionState<Tally>(`${persistKey}:tally`, {});
 
   const q = questions[index];
   const total = questions.length;
@@ -45,6 +53,7 @@ export function Conversation({
         ? answered >= total
         : shouldStopAdaptive(next, answered, total);
     if (done) {
+      clearSessionState(`${persistKey}:index`, `${persistKey}:tally`);
       onComplete(next, answered);
       return;
     }

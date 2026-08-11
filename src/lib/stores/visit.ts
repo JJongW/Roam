@@ -5,15 +5,16 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import { api } from "@/lib/api/client";
 import type { BoothNote } from "@/lib/types";
 
-/** A visitor's personal status for a booth, independent of the active route.
- *  네 가지 모두 서버 노트에 동기화된다(0029) — 폰을 바꿔도 지도 색이 따라온다. */
-export type BoothStatus = "visited" | "skipped" | "interested" | "later";
+/**
+ * A visitor's personal record for a booth, independent of the active route.
+ * interest·verdict 둘 다 서버 노트에 동기화된다 — 폰을 바꿔도 지도 색이 남는다.
+ */
+export type InterestValue = "must" | "curious" | "pass";
+export type VerdictValue = "good" | "ok" | "bad";
 
 export interface BoothRecord {
-  status?: BoothStatus;
-  /** '가봄'에 대한 뒤늦은 호불호 답 — 지도 시트의 "여기 어땠어?"에 답하면 채워진다.
-   *  visited가 아닌 상태로 바뀌면 서버가 같이 지운다(setFromNotes가 그대로 반영). */
-  retro?: "liked" | "disliked";
+  interest?: InterestValue;
+  verdict?: VerdictValue;
   /** Free-form personal note shown on the booth detail + map. */
   memo?: string;
   /** Personal photos (Cloudinary URLs) attached to this booth. */
@@ -30,18 +31,16 @@ export interface TasteUpdate {
 interface VisitState {
   records: Record<string, BoothRecord>;
   /** true면 로컬에 서버로 못 올라간 반응이 있다는 뜻 — pushNote 실패(비로그인·네트워크
-   *  등) 때 켜지고, 소급 반영이 전부 성공하면 꺼진다. records가 비어있지 않다고 해서
-   *  미반영은 아니다(로그인 시 서버 노트가 merge돼 들어오므로 항상 채워져 있다) —
-   *  auth.ts의 syncPendingReactions가 "정말 반영할 게 있었는지" 판정하는 유일한 근거. */
+   *  등) 때 켜지고, 소급 반영이 전부 성공하면 꺼진다. */
   hasPendingSync: boolean;
   setPendingSync: () => void;
   clearPendingSync: () => void;
-  /** Toggle a status; selecting the active status clears it. */
-  toggleStatus: (boothId: string, status: BoothStatus) => void;
-  setStatus: (boothId: string, status: BoothStatus | null) => void;
+  /** interest를 토글 — 같은 값을 다시 누르면 해제. */
+  setInterest: (boothId: string, interest: InterestValue | null) => void;
+  /** verdict를 토글 — 같은 값을 다시 누르면 해제. */
+  setVerdict: (boothId: string, verdict: VerdictValue | null) => void;
   setMemo: (boothId: string, memo: string) => void;
   setPhotos: (boothId: string, photos: string[]) => void;
-  setRetro: (boothId: string, retro: "liked" | "disliked") => void;
   /** Replace the cache from the server (called after sign-in). */
   setFromNotes: (notes: BoothNote[]) => void;
   clear: () => void;
@@ -51,40 +50,36 @@ interface VisitState {
  * Persist a single booth's record to the server. Caller must ensure the user
  * is signed in; the endpoint 401s otherwise (ignored here). 응답의 taste를
  * 돌려준다 — 호출부가 원하면 companion 스토어에 그대로 반영한다.
+ *
+ * `touched`는 "이 호출이 실제로 바꾸려는 필드"를 밝힌다 — interest/verdict는
+ * 서버에서 undefined=안 건드림/null=해제/값=설정 세 가지로 갈리는데(repositories의
+ * upsertNote 계약), 여기서 매번 둘 다 `?? null`로 보내면 memo만 고치는 쓰기조차
+ * "verdict를 null로 바꿔라"로 읽혀 visited_at까지 지워진다(judgment-vocabulary
+ * 최종 리뷰 Fix 1). 명시한 필드만 body에 넣고 나머지는 키 자체를 뺀다 — JSON.stringify가
+ * undefined 값을 가진 키를 드롭하므로 서버는 "이 요청은 그 필드를 안 건드린다"로 읽는다.
+ * 생략(undefined)이면 과거처럼 둘 다 보낸다 — 로컬 전용으로 쌓인 반응을 통째로
+ * 소급 반영하는 배치 동기화(auth.ts의 syncPendingReactions)용 기본값이다.
  */
-export async function pushNote(boothId: string): Promise<TasteUpdate | null> {
+export async function pushNote(
+  boothId: string,
+  touched?: { interest?: boolean; verdict?: boolean },
+): Promise<TasteUpdate | null> {
   const r = useVisitStore.getState().records[boothId];
   try {
+    const body: Record<string, unknown> = {
+      memo: r?.memo ?? "",
+      photos: r?.photos ?? [],
+    };
+    if (!touched || touched.interest) body.interest = r?.interest ?? null;
+    if (!touched || touched.verdict) body.verdict = r?.verdict ?? null;
     const res = await api.put<{ note: BoothNote; taste: TasteUpdate }>(
       `/api/me/notes/${boothId}`,
-      {
-        // 네 상태 그대로 보낸다. 예전엔 visited|skipped만 보내고 나머지는 null로
-        // 깎았는데, 그게 끌림을 누를 때 서버의 '가봄'을 지우는 경로였다.
-        status: r?.status ?? null,
-        memo: r?.memo ?? "",
-        photos: r?.photos ?? [],
-      },
+      body,
     );
     return res.taste;
   } catch {
     /* offline / not signed in — local cache still holds it */
     useVisitStore.getState().setPendingSync();
-    return null;
-  }
-}
-
-/** '가봄' 부스의 되묻기 답을 서버에 저장. */
-export async function pushRetro(
-  boothId: string,
-  liked: boolean,
-): Promise<TasteUpdate | null> {
-  try {
-    const res = await api.post<{ note: BoothNote | null; taste: TasteUpdate }>(
-      `/api/me/notes/${boothId}/retro`,
-      { liked },
-    );
-    return res.taste;
-  } catch {
     return null;
   }
 }
@@ -96,7 +91,12 @@ function patch(
 ): Record<string, BoothRecord> {
   const merged: BoothRecord = { ...records[boothId], ...next };
   // Drop empty records so the store stays compact.
-  if (!merged.status && !merged.memo?.trim() && !merged.photos?.length) {
+  if (
+    !merged.interest &&
+    !merged.verdict &&
+    !merged.memo?.trim() &&
+    !merged.photos?.length
+  ) {
     const { [boothId]: _omit, ...rest } = records;
     return rest;
   }
@@ -110,39 +110,39 @@ export const useVisitStore = create<VisitState>()(
       hasPendingSync: false,
       setPendingSync: () => set({ hasPendingSync: true }),
       clearPendingSync: () => set({ hasPendingSync: false }),
-      toggleStatus: (boothId, status) =>
+      setInterest: (boothId, interest) =>
         set((s) => ({
           records: patch(s.records, boothId, {
-            status: s.records[boothId]?.status === status ? undefined : status,
+            interest:
+              s.records[boothId]?.interest === interest
+                ? undefined
+                : (interest ?? undefined),
           }),
         })),
-      setStatus: (boothId, status) =>
+      setVerdict: (boothId, verdict) =>
         set((s) => ({
-          // 상태가 바뀌면 이전 되묻기 답은 의미를 잃는다(끌림→나중에→가봄으로 옮겨
-          // 다니면서 예전 '가봄' 시절 답이 새 상태에 들러붙어 있으면 안 된다).
           records: patch(s.records, boothId, {
-            status: status ?? undefined,
-            retro: undefined,
+            verdict:
+              s.records[boothId]?.verdict === verdict
+                ? undefined
+                : (verdict ?? undefined),
           }),
         })),
       setMemo: (boothId, memo) =>
         set((s) => ({ records: patch(s.records, boothId, { memo }) })),
       setPhotos: (boothId, photos) =>
         set((s) => ({ records: patch(s.records, boothId, { photos }) })),
-      setRetro: (boothId, retro) =>
-        set((s) => ({ records: patch(s.records, boothId, { retro }) })),
       setFromNotes: (notes) =>
-        // 서버 노트를 로컬 위에 병합(교체 아님) — 로컬 전용 상태(끌림=interested,
-        // 아직 미동기 기록)를 보존한다. 서버가 아는 부스는 서버 값이 위에 덮인다.
-        // 교체하면 매 페이지 로드(AuthBootstrap refresh)마다 반응 색이 사라진다.
+        // 서버 노트를 로컬 위에 병합(교체 아님) — 로컬 전용 상태(아직 미동기 기록)를
+        // 보존한다. 서버가 아는 부스는 서버 값이 위에 덮인다.
         set((s) => {
           const records: Record<string, BoothRecord> = { ...s.records };
           for (const n of notes) {
-            if (n.status || n.memo?.trim() || n.photos?.length)
+            if (n.interest || n.verdict || n.memo?.trim() || n.photos?.length)
               records[n.boothId] = {
                 ...records[n.boothId],
-                status: n.status ?? records[n.boothId]?.status,
-                retro: n.retro ?? records[n.boothId]?.retro,
+                interest: n.interest ?? records[n.boothId]?.interest,
+                verdict: n.verdict ?? records[n.boothId]?.verdict,
                 memo: n.memo,
                 photos: n.photos,
               };
@@ -155,12 +155,21 @@ export const useVisitStore = create<VisitState>()(
   ),
 );
 
-/** Selector helpers for components that only need ids of a given status. */
-export function idsByStatus(
+/** Selector helpers — 특정 interest/verdict 값을 가진 부스 id 목록. */
+export function idsByInterest(
   records: Record<string, BoothRecord>,
-  status: BoothStatus,
+  interest: InterestValue,
 ): string[] {
   return Object.entries(records)
-    .filter(([, r]) => r.status === status)
+    .filter(([, r]) => r.interest === interest)
+    .map(([id]) => id);
+}
+
+export function idsByVerdict(
+  records: Record<string, BoothRecord>,
+  verdict: VerdictValue,
+): string[] {
+  return Object.entries(records)
+    .filter(([, r]) => r.verdict === verdict)
     .map(([id]) => id);
 }

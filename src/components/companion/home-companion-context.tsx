@@ -7,11 +7,11 @@ import type { InterestNode } from "@/lib/types";
 /**
  * 전시 홈(서버 컴포넌트)이 계산한 맥락을 상주 컴패니언 바에 실어주는 클라이언트 브리지.
  * 화면을 벗어나면 홈 맥락은 비워, 다른 화면에서 홈 발화가 새지 않게 한다. taste·
- * interests는 안 비운다 — 둘 다 지도 등 다른 화면에서도 필요하다(reaction-bar.tsx).
+ * interests는 안 비운다 — 둘 다 지도 등 다른 화면에서도 필요하다(judgment-bar.tsx).
  *
  * 취향 정확도는 서버가 계산한 값을 그대로 시딩한다 — "서버 유일 진실" 원칙이라
  * 낙관적 보정(예전의 "더 높을 때만 올린다") 없이 매번 덮어쓴다. 반응 응답도
- * 같은 방식으로 직접 덮어쓰므로(reaction-bar.tsx) 둘 다 항상 서버 값이다.
+ * 같은 방식으로 직접 덮어쓰므로(judgment-bar.tsx) 둘 다 항상 서버 값이다.
  */
 export function HomeCompanionContextBridge({
   values,

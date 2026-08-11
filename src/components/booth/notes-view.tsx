@@ -2,13 +2,15 @@
 
 import Link from "next/link";
 import {
-  Check,
   ChevronRight,
-  Clock3,
-  Star,
-  X,
+  Meh,
   MapPin,
   NotebookPen,
+  Sparkles,
+  Star,
+  ThumbsDown,
+  ThumbsUp,
+  X,
 } from "lucide-react";
 import { AppBar } from "@/components/common/app-bar";
 import { EmptyState } from "@/components/common/states";
@@ -19,11 +21,18 @@ import { useHydrated } from "@/lib/hooks/use-hydrated";
 import { useT } from "@/lib/i18n/provider";
 import type { Booth, Category } from "@/lib/types";
 
-const STATUS = {
-  visited: { i18nKey: "seen", Icon: Check },
-  interested: { i18nKey: "interested", Icon: Star },
-  later: { i18nKey: "later", Icon: Clock3 },
-  skipped: { i18nKey: "skip", Icon: X },
+// 관심(관람 전 예측)과 판정(관람 후 결과)은 별개 축이라 뱃지도 둘로 나눈다 —
+// 결과가 예측을 덮는다(지도·JudgmentBar와 같은 우선순위 규칙, 아래 status 계산부 참고).
+const INTEREST_STATUS = {
+  must: { i18nKey: "judge.must", Icon: Star },
+  curious: { i18nKey: "judge.curious", Icon: Sparkles },
+  pass: { i18nKey: "judge.pass", Icon: X },
+} as const;
+
+const VERDICT_STATUS = {
+  good: { i18nKey: "judge.good", Icon: ThumbsUp },
+  ok: { i18nKey: "judge.ok", Icon: Meh },
+  bad: { i18nKey: "judge.bad", Icon: ThumbsDown },
 } as const;
 
 /**
@@ -105,7 +114,11 @@ export function NotesView({
             {noted.map((b) => {
               const r = records[b.id];
               const cat = catById.get(b.categoryId);
-              const status = r?.status ? STATUS[r.status] : null;
+              const status = r?.verdict
+                ? VERDICT_STATUS[r.verdict]
+                : r?.interest
+                  ? INTEREST_STATUS[r.interest]
+                  : null;
               return (
                 <li
                   key={b.id}
@@ -129,8 +142,7 @@ export function NotesView({
                     </div>
                     {status && (
                       <span className="flex shrink-0 items-center gap-1 rounded-full bg-secondary px-2 py-0.5 text-xs font-semibold text-muted-foreground">
-                        <status.Icon className="size-3.5" />{" "}
-                        {t("notes." + status.i18nKey)}
+                        <status.Icon className="size-3.5" /> {t(status.i18nKey)}
                       </span>
                     )}
                   </div>

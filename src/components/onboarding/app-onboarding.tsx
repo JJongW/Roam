@@ -1,13 +1,21 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { api } from "@/lib/api/client";
 import { RoamMotion, THINKING_POOL } from "@/components/companion/roam-motion";
 import { Conversation } from "@/components/onboarding/conversation";
+import {
+  clearSessionState,
+  useSessionState,
+} from "@/lib/hooks/use-session-state";
+import { LegalLinks } from "@/components/common/legal-links";
 import { useAuthStore, PENDING_VALUES_KEY } from "@/lib/stores/auth";
 import { useCompanionStore } from "@/lib/stores/companion";
-import { isAppOnboardingDismissed } from "@/lib/onboarding/app-onboarding-gate";
+import {
+  canShowAppOnboarding,
+  isAppOnboardingDismissed,
+} from "@/lib/onboarding/app-onboarding-gate";
 import { useT } from "@/lib/i18n/provider";
 import {
   APP_QUESTIONS,
@@ -31,6 +39,7 @@ type Phase = "intro" | "quiz" | "saving";
  */
 export function AppOnboardingGate() {
   const router = useRouter();
+  const pathname = usePathname();
   const t = useT();
   const user = useAuthStore((s) => s.user);
   const ready = useAuthStore((s) => s.ready);
@@ -42,19 +51,27 @@ export function AppOnboardingGate() {
   const [anonDismissed, setAnonDismissed] = useState(
     () => typeof window !== "undefined" && !!localStorage.getItem(FLAG),
   );
-  const [phase, setPhase] = useState<Phase>("intro");
+  // 뒤로가기가 이 오버레이를 언마운트시켰다 돌아와도(canShowAppOnboarding이 false인
+  // 경로로 잠깐 나갔다 온 경우 등) phase가 "intro"로 리셋되지 않게 sessionStorage에
+  // 같이 남긴다.
+  const [phase, setPhase] = useSessionState<Phase>(
+    "roam-onboarding-app-phase",
+    "intro",
+  );
 
   const onboarded = isAppOnboardingDismissed({
     user,
     needsOnboarding,
     anonDismissed,
   });
-  if (onboarded || !ready) return null;
+  // 랜딩은 덮지 않는다 — 첫 화면은 이 서비스가 뭔지 알 수 있는 홈이어야 한다.
+  if (onboarded || !ready || !canShowAppOnboarding(pathname)) return null;
 
   // 로그인 여부와 무관하게 항상 로컬에도 dismiss를 남긴다(위 문서 주석 참고).
   function dismissLocally() {
     if (typeof window !== "undefined") localStorage.setItem(FLAG, "1");
     setAnonDismissed(true);
+    clearSessionState("roam-onboarding-app-phase");
   }
 
   async function complete(tally: Tally) {
@@ -96,6 +113,18 @@ export function AppOnboardingGate() {
     >
       {phase === "intro" && (
         <div className="flex flex-1 flex-col px-6 pb-8 pt-safe">
+          {/* 앱 이름 + 한 줄 소개 — 이 인트로는 언어 게이트 다음, 홈보다 **먼저** 뜨는
+              전체화면이라 처음 온 사람(그리고 Google OAuth 심사관)이 실제로 보는 화면이다.
+              로미 인사만 있으면 "이게 무슨 앱인지"와 "앱 이름"이 어디에도 안 나온다 —
+              심사가 그 두 가지로 반려했다. 로미 톤을 해치지 않게 상단에 작게만 둔다. */}
+          <div className="flex flex-col items-center gap-0.5 pt-1">
+            <span className="text-base font-extrabold tracking-tight">
+              Roam
+            </span>
+            <span className="text-xs text-muted-foreground">
+              {t("home.taglineShort")}
+            </span>
+          </div>
           {/* 로미 + 카피 — 상단 2/3 중앙 (ingan.ai 톤) */}
           <div className="flex flex-1 flex-col items-center justify-center gap-5 text-center">
             <span className="flex size-32 items-center justify-center overflow-hidden rounded-[2.5rem]">
@@ -124,6 +153,8 @@ export function AppOnboardingGate() {
             >
               {t("onboardingQ.introSkip")}
             </button>
+            {/* 이 인트로도 화면 전체를 덮어 홈 푸터를 가린다 — 방침 링크를 여기에도. */}
+            <LegalLinks className="pt-1" />
           </div>
         </div>
       )}
@@ -134,6 +165,7 @@ export function AppOnboardingGate() {
           questions={APP_QUESTIONS}
           subtitleKey="onboardingQ.learningApp"
           onComplete={complete}
+          persistKey="roam-onboarding-app-quiz"
         />
       )}
 

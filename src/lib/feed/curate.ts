@@ -1,6 +1,7 @@
 // 관심 피드 큐레이션 — L4 브레인(누적 관심)으로 안정·낯선·모험 믹스를 만든다(explore/exploit).
 // companion-reframe §7.4: 전부 가라가 아니라 "무엇을 남길지 고르는 재료". LLM 없음.
 import "server-only";
+import { CONFIDENT_THRESHOLD } from "@/lib/constants";
 import { diversifyCandidates, interestScore } from "@/lib/engine/scoring";
 import { rankForExhibition } from "@/lib/engine/service";
 import { brainInterestWeights, mergeBrainInterests } from "@/lib/memory/apply";
@@ -11,9 +12,40 @@ import { buildGrounding, type Grounding } from "@/lib/feed/grounding";
 import { DEFAULT_RHYTHM, RHYTHM_MIX, type Rhythm } from "@/lib/feed/rhythm";
 import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n/config";
 import { VALUE_SLUGS, boothValueSlugs } from "@/lib/values";
-import type { Booth, UserBrain } from "@/lib/types";
+import type { Booth, BoothNote, UserBrain } from "@/lib/types";
 
 export type PickKind = "stable" | "unfamiliar" | "adventure";
+
+/** 판단이 끝난 부스(피드에서 제외할 대상) — 순수, 테스트 가능. */
+export function decidedBoothIds(
+  notes: Pick<BoothNote, "boothId" | "interest" | "verdict">[],
+): Set<string> {
+  return new Set(
+    notes.filter((n) => n.interest || n.verdict).map((n) => n.boothId),
+  );
+}
+
+/** 근거 링크 후보 — verdict가 있으면 verdict가 이긴다(interest는 예측일 뿐, 방문
+ *  후 판정이 최종). interest='must'+verdict='bad' 같은 조합에서 예전엔 interest
+ *  쪽 OR로 걸려 "별로였던 부스가 긍정 근거로 샌다"는 버그가 있었다 — 지도 색·
+ *  judgmentScore·JudgmentBar와 같은 verdict-우선 규칙을 여기도 적용한다
+ *  (judgment-vocabulary 최종 리뷰 Fix 2). 순수, 테스트 가능. */
+export function positiveNotes(
+  notes: Pick<BoothNote, "boothId" | "interest" | "verdict" | "updatedAt">[],
+): { boothId: string; kind: "must" | "curious" | "good" }[] {
+  return notes
+    .filter((n) =>
+      n.verdict
+        ? n.verdict === "good"
+        : n.interest === "must" || n.interest === "curious",
+    )
+    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
+    .map((n) => ({
+      boothId: n.boothId,
+      kind: (n.verdict === "good" ? "good" : n.interest) as
+        "must" | "curious" | "good",
+    }));
+}
 
 export interface FeedItem {
   booth: Booth;
@@ -94,30 +126,33 @@ export async function curateFeed(
 
   // 사용자 상위 관심 가치(slug) — 근거 카드의 왜맞음 겹침 계산에 쓴다.
   const userValueSlugs = brain.interests
-    .filter((n) => n.confidence >= 0.25 && VALUE_SLUGS.includes(n.key))
+    .filter(
+      (n) => n.confidence >= CONFIDENT_THRESHOLD && VALUE_SLUGS.includes(n.key),
+    )
     .map((n) => n.key);
 
-  // 판단이 끝난 부스는 피드에서 뺀다 — 네 반응 전부. 피드는 6칸짜리 결정 큐라
-  // (rhythm.ts) 이미 정한 부스가 칸을 차지하면 새 후보가 올라올 자리가 없다.
-  // 특히 '끌림'은 그 가치의 가중치를 올려서 같은 부스를 **더 위로** 끌어올렸다 —
-  // 반응할수록 같은 카드가 1번 자리에 눌러앉는 구조였다. 다시 보는 곳은 지도(색)와
-  // 내 메모장(네 상태 다 표시)이다. 노트는 서버에 있어 재접속해도 유지된다.
+  // 판단이 끝난 부스는 피드에서 뺀다 — interest·verdict 둘 중 하나라도 있으면.
+  // 피드는 6칸짜리 결정 큐라(rhythm.ts) 이미 정한 부스가 칸을 차지하면 새 후보가
+  // 올라올 자리가 없다. 다시 보는 곳은 지도(색)와 내 메모장(네 상태 다 표시)이다.
+  // 노트는 서버에 있어 재접속해도 유지된다.
   const repo = await getRepository();
   const notes = await repo.listNotes(userId);
-  const decided = new Set(notes.filter((n) => n.status).map((n) => n.boothId));
+  const decided = decidedBoothIds(notes);
 
   // "왜 지금 너한테"를 가치 이름이 아니라 **내가 실제로 누른 부스**로 말하기 위한 표.
   // 최근에 긍정 반응한 부스부터 보고, 후보와 가치가 겹치는 첫 부스를 근거로 삼는다.
   // (겹치는 게 없으면 근거를 안 붙인다 — 없는 이유를 지어내지 않는다.)
+  //
+  // verdict='bad'는 절대 긍정 근거로 안 쓴다 — 예전엔 status='visited'가 무조건
+  // 긍정 취급이라, 별로였던 부스가 "너 여기 좋아했잖아"의 근거가 될 수 있었다
+  // (judgment-vocabulary §1-2의 버그 수정).
   const boothById = new Map(rank.booths.map((b) => [b.id, b]));
-  const positives = notes
-    .filter((n) => n.status === "interested" || n.status === "visited")
-    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
+  const positives = positiveNotes(notes)
     .map((n) => ({
       booth: boothById.get(n.boothId),
-      kind: n.status as "interested" | "visited",
+      kind: n.kind,
     }))
-    .filter((p): p is { booth: Booth; kind: "interested" | "visited" } =>
+    .filter((p): p is { booth: Booth; kind: "must" | "curious" | "good" } =>
       Boolean(p.booth),
     );
 
@@ -129,8 +164,8 @@ export async function curateFeed(
   const hasFact = (b: Booth) =>
     Boolean(
       b.enrichment?.roamInterpretation ||
-        b.enrichment?.summary ||
-        b.enrichment?.goodsKeywords?.length,
+      b.enrichment?.summary ||
+      b.enrichment?.goodsKeywords?.length,
     );
   const becauseOf = (booth: Booth) => {
     if (linkUsed || !hasFact(booth)) return undefined;
@@ -162,7 +197,12 @@ export async function curateFeed(
       ),
       pick,
       cue: deriveCue(booth, rank.eventsByBooth[booth.id] ?? []),
-      grounding: buildGrounding(booth, userValueSlugs, locale, becauseOf(booth)),
+      grounding: buildGrounding(
+        booth,
+        userValueSlugs,
+        locale,
+        becauseOf(booth),
+      ),
     });
     used.add(booth.id);
   };

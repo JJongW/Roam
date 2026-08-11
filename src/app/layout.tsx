@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { Providers } from "@/components/providers";
-import { getLocale, hasLocaleCookie } from "@/lib/i18n/server";
+import { getLocale } from "@/lib/i18n/server";
 import "./globals.css";
 
 const pretendard = localFont({
@@ -19,12 +19,16 @@ export const metadata: Metadata = {
     default: "Roam — Exhibition Navigator",
     template: "%s · Roam",
   },
+  // 앱 목적을 그대로 적는다 — Google OAuth 심사가 홈페이지 설명을 확인하는 자리이고,
+  // 예전 문구("no account needed")는 로그인 필수로 바뀐 뒤로 사실이 아니었다.
   description:
-    "Discover booths, skip the crowds, and get a personalized route through any exhibition — no account needed.",
+    "Roam is a guide for exhibitions and trade fairs. Discover booths worth your time, find your way around the venue, and keep track of what you saw.",
   applicationName: "Roam",
   openGraph: {
+    siteName: "Roam",
     title: "Roam — Exhibition Navigator",
-    description: "Personalized routes and live booth info for exhibitions.",
+    description:
+      "Roam is a guide for exhibitions and trade fairs. Discover booths worth your time, find your way around the venue, and keep track of what you saw.",
     type: "website",
   },
 };
@@ -44,10 +48,7 @@ export const viewport: Viewport = {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const [locale, hasLocale] = await Promise.all([
-    getLocale(),
-    hasLocaleCookie(),
-  ]);
+  const locale = await getLocale();
   return (
     <html
       lang={locale}
@@ -61,7 +62,7 @@ export default async function RootLayout({
         >
           {locale === "en" ? "Skip to content" : "본문으로 건너뛰기"}
         </a>
-        <Providers locale={locale} needsLang={!hasLocale}>
+        <Providers locale={locale}>
           {children}
         </Providers>
       </body>

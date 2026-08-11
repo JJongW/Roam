@@ -83,10 +83,12 @@ interface MapProps {
   categories: Category[];
   halls?: Hall[];
   selectedId?: string | null;
-  visitedIds?: string[];
-  skippedIds?: string[];
-  laterIds?: string[];
-  interestedIds?: string[];
+  mustIds?: string[];
+  curiousIds?: string[];
+  passIds?: string[];
+  goodIds?: string[];
+  okIds?: string[];
+  badIds?: string[];
   position?: Point | null;
   /** Hand-traced venue geometry; when set, booths render at exact rects. */
   floorplan?: Floorplan;
@@ -137,10 +139,12 @@ export function ExhibitionMap({
   categories,
   halls = [],
   selectedId,
-  visitedIds = [],
-  skippedIds = [],
-  laterIds = [],
-  interestedIds = [],
+  mustIds = [],
+  curiousIds = [],
+  passIds = [],
+  goodIds = [],
+  okIds = [],
+  badIds = [],
   position,
   floorplan,
   fillHeight = false,
@@ -296,10 +300,12 @@ export function ExhibitionMap({
 
   const catById = new Map(categories.map((c) => [c.id, c]));
   const boothById = new Map(booths.map((b) => [b.id, b]));
-  const visitedSet = new Set(visitedIds);
-  const skippedSet = new Set(skippedIds);
-  const laterSet = new Set(laterIds);
-  const interestedSet = new Set(interestedIds);
+  const mustSet = new Set(mustIds);
+  const curiousSet = new Set(curiousIds);
+  const passSet = new Set(passIds);
+  const goodSet = new Set(goodIds);
+  const okSet = new Set(okIds);
+  const badSet = new Set(badIds);
   // Paint the selected booth LAST so its name label (drawn above the rect) is
   // never covered by a booth sitting above it in document order.
   const renderBooths = selectedId
@@ -1202,11 +1208,16 @@ export function ExhibitionMap({
               return null;
             const cat = catById.get(b.categoryId);
             const isSel = b.id === selectedId;
-            const isVisited = visitedSet.has(b.id);
-            const isInterested = !isVisited && interestedSet.has(b.id);
-            const isLater = !isVisited && !isInterested && laterSet.has(b.id);
-            const isSkipped =
-              !isVisited && !isInterested && !isLater && skippedSet.has(b.id);
+            // verdict가 있으면 interest는 안 본다 — 결과가 예측을 덮는다
+            // (judgment-vocabulary §4-2: 색 = verdict ?? interest ?? 존 색).
+            const isGood = goodSet.has(b.id);
+            const isOk = !isGood && okSet.has(b.id);
+            const isBad = !isGood && !isOk && badSet.has(b.id);
+            const hasVerdict = isGood || isOk || isBad;
+            const isMust = !hasVerdict && mustSet.has(b.id);
+            const isCurious = !hasVerdict && !isMust && curiousSet.has(b.id);
+            const isPass =
+              !hasVerdict && !isMust && !isCurious && passSet.has(b.id);
             const g = geomOf(b);
             return (
               <g
@@ -1219,32 +1230,46 @@ export function ExhibitionMap({
                 {(() => {
                   const color = cat?.color ?? "var(--primary)";
                   const zone = g.color ?? `${color}26`;
-                  // Map uses STATE colors only — 끌림(초록)/가봄(대표색)/나중에(노랑)/별로(흐림).
-                  // 끌림=우리 대표 상태색 초록, 가봄=대표색(primary). Category hue는 칩/상세에만.
-                  const fill = isInterested
-                    ? "var(--route-visited)"
-                    : isVisited
-                      ? "var(--primary)"
-                      : isLater
-                        ? "var(--warning)"
-                        : isSkipped
-                          ? "var(--booth-skipped)"
-                          : zone;
-                  // primary(남보라)·초록은 어두워 흰 글씨, 노랑(나중에)은 밝아 어두운 글씨.
-                  const darkText =
-                    isVisited || isInterested || fill === "#3a3d44";
+                  // Map uses STATE colors only — 전부 면(fill), 테두리·뱃지로 상태를
+                  // 나르지 않는다. Category hue는 칩·상세에만.
+                  const fill = isGood
+                    ? "var(--judge-good)"
+                    : isOk
+                      ? "var(--judge-ok)"
+                      : isBad
+                        ? "var(--judge-bad)"
+                        : isMust
+                          ? "var(--judge-must)"
+                          : isCurious
+                            ? "var(--judge-curious)"
+                            : isPass
+                              ? "var(--judge-pass)"
+                              : zone;
+                  // 진한 색(꼭 갈래·아니었어)은 어두워 흰 글씨, 옅은 색은 어두운
+                  // 글씨 — 6색 전부 면이라 색마다 대비를 직접 확인해야 한다. --judge-good
+                  // (--route-visited 재사용, 중간 밝기 초록)은 흰 글씨 대비가 부족해서
+                  // (~2.2:1, 필요한 4.5:1에 한참 못 미침) 뺐다 — 어두운 글씨 쪽으로 떨어진다
+                  // (judgment-vocabulary 최종 리뷰 Fix 10). 변수명은 lightText — "이 면엔
+                  // 밝은(흰) 글씨가 필요하다"는 뜻이다(과거 darkText는 뜻이 반대로 읽혔다).
+                  const lightText = isMust || isBad || fill === "#3a3d44";
                   const stroke = isSel
                     ? "var(--primary)"
-                    : isInterested
-                      ? "var(--route-visited)"
-                      : isLater
-                        ? "var(--warning)"
-                        : isSkipped
-                          ? "var(--booth-skipped-stroke)"
-                          : g.color && g.color !== "#d8dade"
-                            ? g.color
-                            : "var(--border)";
-                  const codeColor = darkText ? "white" : "#3a3d44";
+                    : isGood
+                      ? "var(--judge-good)"
+                      : isOk
+                        ? "var(--judge-ok)"
+                        : isBad
+                          ? "var(--judge-bad)"
+                          : isMust
+                            ? "var(--judge-must)"
+                            : isCurious
+                              ? "var(--judge-curious)"
+                              : isPass
+                                ? "var(--judge-pass)"
+                                : g.color && g.color !== "#d8dade"
+                                  ? g.color
+                                  : "var(--border)";
+                  const codeColor = lightText ? "white" : "#3a3d44";
                   const name =
                     b.name.length > 9 ? `${b.name.slice(0, 9)}…` : b.name;
                   return (
@@ -1334,7 +1359,7 @@ export function ExhibitionMap({
                       {/* 끌림 부스는 색만으론 기본 줌에서 잘 안 보인다 — 우상단에
                           작은 점 마커를 얹어 라벨을 읽지 않아도 눈에 띄게. 색맹 대비
                           형태 단서(색 의존 회피). */}
-                      {isInterested && !isSel && (
+                      {isCurious && !isSel && (
                         <circle
                           cx={g.w / 2 - BOOTH_GAP - 3}
                           cy={-g.h / 2 + BOOTH_GAP + 3}

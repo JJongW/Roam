@@ -1,5 +1,11 @@
 import { getRepository } from "@/lib/repositories";
-import { noContent, notFound, ok, parseBody } from "@/lib/api/http";
+import {
+  noContent,
+  notFound,
+  ok,
+  parseBody,
+  requireAdmin,
+} from "@/lib/api/http";
 import { boothInputSchema } from "@/lib/schemas";
 
 type Ctx = { params: Promise<{ id: string }> };
@@ -12,7 +18,12 @@ export async function GET(_req: Request, { params }: Ctx) {
   return ok(detail);
 }
 
+// PATCH·DELETE는 관리자 콘솔(booth-manager.tsx)만 부른다 — 서버측 인가가 아예
+// 없었다(전에는 booth 테이블 RLS가 우연히 막아줬을 뿐이라 보안이 아니었다). 이제
+// 쓰기 자체는 서비스 롤로 RLS를 건너뛰므로(repository.ts) 여기 인가가 유일한 방어선.
 export async function PATCH(req: Request, { params }: Ctx) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
   const { id } = await params;
   const parsed = await parseBody(req, boothInputSchema.partial());
   if (!parsed.ok) return parsed.res;
@@ -23,6 +34,8 @@ export async function PATCH(req: Request, { params }: Ctx) {
 }
 
 export async function DELETE(_req: Request, { params }: Ctx) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
   const { id } = await params;
   const repo = await getRepository();
   const okDel = await repo.deleteBooth(id);

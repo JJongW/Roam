@@ -2,7 +2,7 @@ import { z } from "zod";
 import { fail, noContent, parseBody } from "@/lib/api/http";
 import { getCurrentUser } from "@/lib/api/session";
 import { getRepository } from "@/lib/repositories";
-import { recordSignal } from "@/lib/memory/service";
+import { clearMutedSlugs, recordSignal } from "@/lib/memory/service";
 import { VALUE_SLUGS } from "@/lib/values";
 
 // 가치 온보딩: 고른 관람 가치를 브레인에 시드(명시 신호). exhibitionSlug 없으면(앱 최초진입
@@ -32,9 +32,14 @@ export async function POST(req: Request) {
   }
   if (!exhibitionId) return fail("NOT_FOUND", "전시를 찾을 수 없어요");
 
+  // 고른 가치의 뮤트를 먼저 푼다 — 안 그러면 바로 뒤 재증류가 방금 남긴 신호를
+  // 도로 걸러내서(distill.ts의 mutedSlugs 필터) 예전에 끈 적 있는 가치는 다시
+  // 골라도 화면이 그대로다. "눌렀는데 아무 일도 안 일어난다"의 재발.
+  await clearMutedSlugs(user.id, values);
+
   // 고른 가치를 명시 관심 신호로 시드 → 브레인 재증류 → 피드가 즉시 맞춰짐.
   await recordSignal(user.id, {
-    kind: "reaction_interested",
+    kind: "reaction_must",
     exhibitionId,
     slugs: values,
   });

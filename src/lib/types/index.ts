@@ -277,17 +277,27 @@ export interface OAuthIdentity {
   avatarUrl?: string;
 }
 
-/** A signed-in visitor's personal record for a booth (반응 / 메모 / 사진). */
+/**
+ * A signed-in visitor's personal record for a booth (관심 / 판정 / 메모 / 사진).
+ *
+ * interest와 verdict는 직교한다 — "꼭 갈래로 찍어둔 곳에 다녀와서 좋았어"가 동시에
+ * 참일 수 있다. interest는 화면(관람 전)에서 한 판단, verdict는 현장(관람 중·후)에서
+ * 한 판단이다. 지도 색은 `verdict ?? interest ?? 존 색`(결과가 예측을 덮는다).
+ */
 export interface BoothNote {
   userId: string;
   boothId: string;
-  /** 부스 반응 네 가지. 0029 이전엔 visited|skipped만 서버에 남았다. */
-  status?: "visited" | "skipped" | "interested" | "later";
-  /** 이 반응 판정 시점의 확신 등급 — 취향 정확도 채점용(0031). visited 자체는
-   *  무판정이라 되묻기 전엔 null/undefined일 수 있다. */
+  /** 관람 전 판단 — 피드·지도에서 아직 안 가본 부스에 매긴다. */
+  interest?: "must" | "curious" | "pass";
+  /** 현장 판단 — 다녀온 부스의 만족도. 이게 곧 방문 기록이다(verdict 있으면
+   *  visitedAt도 항상 있다). */
+  verdict?: "good" | "ok" | "bad";
+  /** verdict를 남긴 시각(=방문 시각). verdict 해제 시 같이 지운다 — 판정이 곧
+   *  방문 기록이므로 둘을 분리해서 남기지 않는다. */
+  visitedAt?: string;
+  /** 가장 최근 반응(interest 또는 verdict) 판정 시점의 확신 등급 — 취향 정확도
+   *  채점용. verdict 기록이 더 나중이자 최종이다. */
   judgedClass?: "confident" | "uncertain";
-  /** '가봄'에 대한 뒤늦은 호불호 답('여기 어땠어?'). visited일 때만 의미 있다. */
-  retro?: "liked" | "disliked";
   memo?: string;
   /** Personal photos (Cloudinary URLs) attached to this booth note. */
   photos?: string[];
@@ -346,13 +356,15 @@ export interface AiQueryLog {
 // userId = app_user.id. 설계: docs/decisions/2026-07-07_knowledge-architecture.md §7
 
 export type SignalKind =
-  | "booth_visited"
-  | "booth_skipped"
   | "booth_bookmarked"
   | "route_saved"
   | "feed_click"
-  | "reaction_interested" // 끌림
-  | "reaction_later" // 나중에
+  | "reaction_must" // 꼭 갈래 — 관람 전, 가겠다고 정한 것
+  | "reaction_curious" // 끌려 — 관람 전, 좋은데 확정 아님
+  | "reaction_pass" // 패스 — 관람 전, 카드만 보고 내린 거절
+  | "verdict_good" // 좋았어 — 현장, 몸으로 확인한 긍정
+  | "verdict_ok" // 그냥그랬어 — 현장, 중립
+  | "verdict_bad" // 아니었어 — 현장, 가보고 아니었다
   | "search_query"; // 특정 부스 검색 = 강한 능동 관심
 
 /** 원장 1행 — 사용자 행동 신호. append-only, 재증류 소스. */
@@ -419,6 +431,17 @@ export interface UserBrain {
     boothsSeenCount: number;
   };
   interests: InterestNode[]; // top-N만 유지(증류)
+  /**
+   * 사용자가 "이건 내 취향 아니야"라고 끈 가치 slug.
+   *
+   * 브레인은 append-only 신호 원장에서 증류되므로 신호를 지울 수 없다. 음의 신호는
+   * confidence를 낮출 뿐 0이 안 되고, 전체 목록 멱등 쓰기는 하나 추가하려다 나머지를
+   * 부정하게 된다. 그래서 원장은 그대로 두고 여기에만 기록한다 — 끄는 것은 과거
+   * 행동의 부정이 아니라 현재 상태 선언이고, 풀면 그동안의 confidence가 그대로 돌아온다.
+   *
+   * 레거시 행(이 필드 이전에 저장된 브레인)엔 없을 수 있다 — 읽는 쪽이 `?? []`로 받는다.
+   */
+  mutedSlugs?: string[];
   preferences: {
     movement?: MovementPreference;
     companion?: CompanionType;

@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Heart, X } from "lucide-react";
 import { api } from "@/lib/api/client";
-import { useVisitStore, pushRetro } from "@/lib/stores/visit";
+import { useVisitStore, pushNote } from "@/lib/stores/visit";
+import { useCompanionStore } from "@/lib/stores/companion";
 import { useT } from "@/lib/i18n/provider";
+import { TASTE_DROP_ALERT_POINTS } from "@/lib/constants";
 
 interface PendingBooth {
   boothId: string;
@@ -12,11 +13,15 @@ interface PendingBooth {
 }
 
 /**
- * 관람 마치기에서, '가봄'인데 아직 "여기 어땠어?"에 답 안 한 부스를 몇 개 묶어
- * 한 번에 되묻는다. 부스 수가 많은 전시에서 하나씩 지도로 되묻는 건 비현실적이라
- * 여기서 한 번에 처리한다. 답한 부스는 목록에서 바로 빠진다. 전부 답하거나
- * 건너뛰면 onDone()을 불러 기존 회고 흐름으로 넘어간다. 대상이 없으면 아무것도
- * 렌더하지 않고 즉시 onDone()을 부른다(부모가 렌더 중 호출해도 안전하도록 effect로).
+ * 관람 마치기 되묻기 — 두 묶음(judgment-vocabulary §7).
+ *
+ * 1) 다녀왔는데(visitedAt) 아직 판정(verdict) 없는 부스 → "여기 어땠어?" +
+ *    좋았어/그냥그랬어/아니었어 3칸.
+ * 2) 꼭 갈래로 찍어뒀는데 아직 안 간 부스 → "여기 가봤어?" 예/아니오. 예를
+ *    누르면 그 자리에서 verdict 3칸이 펼쳐진다. **단정하지 않는다** — 안
+ *    답하면 채점에서 빠질 뿐 "못 갔다"로 기록하지 않는다.
+ *
+ * 둘 다 없으면 즉시 onDone(). 답한 부스는 목록에서 바로 빠진다.
  */
 export function VisitedRetroPrompt({
   exhibitionSlug,
@@ -26,69 +31,194 @@ export function VisitedRetroPrompt({
   onDone: () => void;
 }) {
   const t = useT();
-  const setRetro = useVisitStore((s) => s.setRetro);
-  const [pending, setPending] = useState<PendingBooth[] | null>(null);
+  const setVerdict = useVisitStore((s) => s.setVerdict);
+  const setTaste = useCompanionStore((s) => s.setTaste);
+  const [askVerdict, setAskVerdict] = useState<PendingBooth[] | null>(null);
+  const [askVisited, setAskVisited] = useState<PendingBooth[] | null>(null);
+  const [expandedVisited, setExpandedVisited] = useState<Set<string>>(
+    new Set(),
+  );
 
   useEffect(() => {
     let cancelled = false;
-    api
-      .get<{ pending: PendingBooth[] }>(
+    Promise.all([
+      api.get<{ pending: PendingBooth[] }>(
         `/api/me/notes/pending-retro?exhibitionSlug=${encodeURIComponent(exhibitionSlug)}`,
-      )
-      .then((r) => {
-        if (!cancelled) setPending(r.pending);
+      ),
+      api.get<{ pending: PendingBooth[] }>(
+        `/api/me/notes/must-not-visited?exhibitionSlug=${encodeURIComponent(exhibitionSlug)}`,
+      ),
+    ])
+      .then(([v, m]) => {
+        if (cancelled) return;
+        setAskVerdict(v.pending);
+        setAskVisited(m.pending);
       })
       .catch(() => {
-        if (!cancelled) setPending([]);
+        if (cancelled) return;
+        setAskVerdict([]);
+        setAskVisited([]);
       });
     return () => {
       cancelled = true;
     };
   }, [exhibitionSlug]);
 
+  const loaded = askVerdict !== null && askVisited !== null;
   useEffect(() => {
-    if (pending !== null && pending.length === 0) onDone();
-  }, [pending, onDone]);
+    if (loaded && askVerdict!.length === 0 && askVisited!.length === 0)
+      onDone();
+  }, [loaded, askVerdict, askVisited, onDone]);
 
-  function answer(boothId: string, liked: boolean) {
-    setPending((prev) => (prev ? prev.filter((b) => b.boothId !== boothId) : prev));
-    setRetro(boothId, liked ? "liked" : "disliked");
-    void pushRetro(boothId, liked);
+  function answerVerdict(boothId: string, verdict: "good" | "ok" | "bad") {
+    setAskVerdict((prev) =>
+      prev ? prev.filter((b) => b.boothId !== boothId) : prev,
+    );
+    setVerdict(boothId, verdict);
+    const prevJudged = useCompanionStore.getState().tasteJudged;
+    const prevPct = useCompanionStore.getState().tastePct;
+    void pushNote(boothId, { verdict: true }).then((taste) => {
+      if (!taste) return;
+      setTaste(taste.judgedCount, taste.pct);
+      if (prevJudged < 5 && taste.judgedCount >= 5) {
+        useCompanionStore.getState().say(t("companion.tasteInsight"));
+      } else if (
+        prevPct !== null &&
+        taste.pct !== null &&
+        prevPct - taste.pct >= TASTE_DROP_ALERT_POINTS
+      ) {
+        // 회고 되묻기에서 "아니었어"를 몇 번 연달아 누르면 % 낙폭이 가장 크게
+        // 나는 자리다 — 여기서 한 번 짚어주면 "왜 갑자기 확 줄었지"가 안 남는다.
+        useCompanionStore.getState().say(t("companion.tasteDropInsight"));
+      }
+    });
   }
 
-  if (!pending || pending.length === 0) return null;
+  function answerVisitedNo(boothId: string) {
+    // "못 갔다"로 기록하지 않는다 — 그냥 목록에서 뺀다. 무반응과 동치.
+    setAskVisited((prev) =>
+      prev ? prev.filter((b) => b.boothId !== boothId) : prev,
+    );
+  }
+
+  if (!loaded || (askVerdict!.length === 0 && askVisited!.length === 0))
+    return null;
 
   return (
     <div className="space-y-3 rounded-2xl border border-border bg-card p-4">
-      <p className="text-sm font-bold">{t("companion.retroBatchTitle")}</p>
-      <ul className="space-y-2">
-        {pending.map((b) => (
-          <li
-            key={b.boothId}
-            className="flex items-center justify-between gap-2 rounded-xl border border-border px-3 py-2"
-          >
-            <span className="truncate text-sm font-semibold">{b.boothName}</span>
-            <div className="flex shrink-0 gap-1.5">
-              <button
-                type="button"
-                aria-label={t("reaction.interested")}
-                onClick={() => answer(b.boothId, true)}
-                className="flex size-8 items-center justify-center rounded-lg border border-border active:bg-accent/40"
+      {askVerdict!.length > 0 && (
+        <div className="space-y-2">
+          <p className="text-sm font-bold">{t("companion.retroBatchTitle")}</p>
+          <ul className="space-y-2">
+            {askVerdict!.map((b) => (
+              <li
+                key={b.boothId}
+                className="flex items-center justify-between gap-2 rounded-xl border border-border px-3 py-2"
               >
-                <Heart className="size-4" aria-hidden />
-              </button>
-              <button
-                type="button"
-                aria-label={t("reaction.skip")}
-                onClick={() => answer(b.boothId, false)}
-                className="flex size-8 items-center justify-center rounded-lg border border-border active:bg-accent/40"
-              >
-                <X className="size-4" aria-hidden />
-              </button>
-            </div>
-          </li>
-        ))}
-      </ul>
+                <span className="truncate text-sm font-semibold">
+                  {b.boothName}
+                </span>
+                <div className="flex shrink-0 gap-1">
+                  <button
+                    type="button"
+                    onClick={() => answerVerdict(b.boothId, "good")}
+                    className="rounded-lg border border-border px-2 py-1 text-xs font-semibold active:bg-accent/40"
+                  >
+                    {t("judge.good")}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => answerVerdict(b.boothId, "ok")}
+                    className="rounded-lg border border-border px-2 py-1 text-xs font-semibold active:bg-accent/40"
+                  >
+                    {t("judge.ok")}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => answerVerdict(b.boothId, "bad")}
+                    className="rounded-lg border border-border px-2 py-1 text-xs font-semibold active:bg-accent/40"
+                  >
+                    {t("judge.bad")}
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {askVisited!.length > 0 && (
+        <div className="space-y-2">
+          <p className="text-sm font-bold">
+            {t("companion.retroVisitedTitle")}
+          </p>
+          <ul className="space-y-2">
+            {askVisited!.map((b) => {
+              const expanded = expandedVisited.has(b.boothId);
+              return (
+                <li
+                  key={b.boothId}
+                  className="space-y-1.5 rounded-xl border border-border px-3 py-2"
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="truncate text-sm font-semibold">
+                      {b.boothName}
+                    </span>
+                    {!expanded && (
+                      <div className="flex shrink-0 gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setExpandedVisited((prev) =>
+                              new Set(prev).add(b.boothId),
+                            )
+                          }
+                          className="rounded-lg border border-border px-2.5 py-1 text-xs font-semibold active:bg-accent/40"
+                        >
+                          {t("companion.retroVisitedYes")}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => answerVisitedNo(b.boothId)}
+                          className="rounded-lg border border-border px-2.5 py-1 text-xs font-semibold active:bg-accent/40"
+                        >
+                          {t("companion.retroVisitedNo")}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                  {expanded && (
+                    <div className="flex gap-1">
+                      <button
+                        type="button"
+                        onClick={() => answerVerdict(b.boothId, "good")}
+                        className="flex-1 rounded-lg border border-border py-1 text-xs font-semibold active:bg-accent/40"
+                      >
+                        {t("judge.good")}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => answerVerdict(b.boothId, "ok")}
+                        className="flex-1 rounded-lg border border-border py-1 text-xs font-semibold active:bg-accent/40"
+                      >
+                        {t("judge.ok")}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => answerVerdict(b.boothId, "bad")}
+                        className="flex-1 rounded-lg border border-border py-1 text-xs font-semibold active:bg-accent/40"
+                      >
+                        {t("judge.bad")}
+                      </button>
+                    </div>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
+
       <button
         type="button"
         onClick={onDone}

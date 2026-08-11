@@ -8,8 +8,8 @@ const querySchema = z.object({
   limit: z.coerce.number().int().min(1).max(10).default(5),
 });
 
-// 관람 마치기에서 쓴다 — '가봄'인데 아직 "여기 어땠어?"에 답 안 한 부스를 몇 개만
-// 묶어 한 번에 되묻는다(부스가 많은 전시에서 하나씩 되묻는 건 현실적이지 않다).
+// 관람 마치기에서 쓴다 — 다녀왔는데(visitedAt) 아직 판정(verdict)이 없는 부스를
+// 몇 개만 묶어 한 번에 되묻는다(부스가 많은 전시에서 하나씩 되묻는 건 비현실적이다).
 export async function GET(req: Request) {
   const user = await getCurrentUser();
   if (!user) return fail("UNAUTHORIZED", "로그인이 필요해요");

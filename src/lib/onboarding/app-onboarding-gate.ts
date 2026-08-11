@@ -14,5 +14,22 @@ export function isAppOnboardingDismissed(params: {
   needsOnboarding: boolean;
   anonDismissed: boolean;
 }): boolean {
-  return params.anonDismissed || (params.user ? !params.needsOnboarding : false);
+  return (
+    params.anonDismissed || (params.user ? !params.needsOnboarding : false)
+  );
+}
+
+/**
+ * 이 경로에서 온보딩 게이트를 띄워도 되는가.
+ *
+ * 랜딩(`/`)은 **덮지 않는다.** 처음 온 사람이 보는 첫 화면이 "안녕, 나는 로미야"
+ * 전체화면이면 이 서비스가 뭔지 알 방법이 없다 — Google OAuth 인증도 그걸 두고
+ * "홈페이지에 앱의 목적에 관한 설명이 없다"로 반려했다. 취향 질문은 전시에 들어가서,
+ * 즉 그 답이 실제로 쓰일 자리에서 묻는 게 맞다.
+ *
+ * 랜딩 밖(전시·지도·부스 상세)에선 그대로 뜬다 — 공유 링크로 바로 들어온 사람도
+ * 온보딩을 만난다.
+ */
+export function canShowAppOnboarding(pathname: string): boolean {
+  return pathname !== "/";
 }

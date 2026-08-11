@@ -26,12 +26,31 @@ export function LoginForm() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  function google() {
+  // 실패해도 브라우저는 그대로 있는다 — signInWithOAuth가 성공하면 리디렉트로 화면이
+  // 떠나므로, 여기 도달했다는 건 곧 실패했다는 뜻이다. 예전엔 반환값을 통째로 버려서
+  // (provider 미설정·redirect_to 거부·네트워크 단절) 버튼을 눌러도 아무 일도 일어나지
+  // 않았고, 사용자는 물론 우리도 원인을 알 수 없었다.
+  async function google() {
+    if (busy) return;
+    setBusy(true);
+    setError(null);
     const redirectTo = `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`;
-    void createClient().auth.signInWithOAuth({
-      provider: "google",
-      options: { redirectTo },
-    });
+    try {
+      const { error: oauthError } = await createClient().auth.signInWithOAuth({
+        provider: "google",
+        options: { redirectTo },
+      });
+      if (oauthError) {
+        console.error("[login] signInWithOAuth failed", oauthError);
+        setError(t("login.failed"));
+        setBusy(false);
+      }
+      // 성공이면 리디렉트가 시작된다 — busy를 켠 채로 두어 중복 클릭을 막는다.
+    } catch (e) {
+      console.error("[login] signInWithOAuth threw", e);
+      setError(t("login.failed"));
+      setBusy(false);
+    }
   }
 
   async function submit() {
@@ -71,6 +90,7 @@ export function LoginForm() {
             size="lg"
             className="w-full"
             onClick={google}
+            disabled={busy}
           >
             <GoogleIcon />
             {t("login.google")}

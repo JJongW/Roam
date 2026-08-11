@@ -147,22 +147,29 @@ export function mergePurposeWeights(purposes: VisitPurpose[]): DimWeights {
 
 /**
  * L4 메모리 — 신호 종류별 가중치. 관심 confidence 수학(순수·결정론)의 입력.
- * booth_visited=암묵 강 / bookmark·route=명시 / skip=음의 신호.
+ *
+ * 원칙: 경험한 판정이 화면상의 판단을 이긴다. verdict_good(1.5) > reaction_must(1.2),
+ * verdict_bad(1.2) > reaction_pass(0.5) — 안 가보고 내린 판단보다 가보고 내린
+ * 판단을 무겁게 친다(judgment-vocabulary §5).
  */
 export const SIGNAL_WEIGHTS: Record<
   SignalKind,
   { explicit: number; implicit: number; negative: number }
 > = {
-  booth_visited: { explicit: 0, implicit: 1.0, negative: 0 },
   booth_bookmarked: { explicit: 1.2, implicit: 0, negative: 0 },
   route_saved: { explicit: 1.5, implicit: 0, negative: 0 },
-  booth_skipped: { explicit: 0, implicit: 0, negative: 0.8 },
   // 피드 카드 클릭 = 약한 암묵 관심(둘러봄). 방문보다 가볍게.
   feed_click: { explicit: 0, implicit: 0.3, negative: 0 },
-  // 반응 버튼: 끌림=명시 강, 나중에=약한 명시. 별로/이미봄은 skip/visited 재사용.
-  reaction_interested: { explicit: 1.2, implicit: 0, negative: 0 },
-  reaction_later: { explicit: 0.5, implicit: 0, negative: 0 },
-  // 특정 부스를 직접 검색 = 능동적 강한 관심(끌림에 준함).
+  // 관람 전(피드) — 가겠다고 정한 것이 가장 강한 명시 의사, 끌림은 그 절반.
+  reaction_must: { explicit: 1.2, implicit: 0, negative: 0 },
+  reaction_curious: { explicit: 0.6, implicit: 0, negative: 0 },
+  // 카드만 보고 내린 거절 — 근거가 얕아 약하게.
+  reaction_pass: { explicit: 0, implicit: 0, negative: 0.5 },
+  // 현장(판정) — 몸으로 확인한 긍정이 전체 최고. 가보고 아니었다가 가장 확실한 부정.
+  verdict_good: { explicit: 1.5, implicit: 0, negative: 0 },
+  verdict_ok: { explicit: 0, implicit: 0.3, negative: 0 },
+  verdict_bad: { explicit: 0, implicit: 0, negative: 1.2 },
+  // 특정 부스를 직접 검색 = 능동적 강한 관심(꼭 갈래에 준함).
   search_query: { explicit: 1.3, implicit: 0, negative: 0 },
 };
 
@@ -172,6 +179,30 @@ export const REASONER_TUNING = {
   elapsedWeight: 0.5, // 경과 시간률의 피로 기여
   fatiguePenalty: 0.3, // 피로 1.0이면 남은 예산 30% 축소
 } as const;
+
+/**
+ * "확신 관심"의 단일 기준선 — 브레인 관심 노드의 confidence가 이 값 이상이면
+ * 로미가 "이건 네 취향이다"라고 취급한다.
+ *
+ * MEMORY_TUNING(증류 쪽 임계 thetaHi/thetaLo)과 다른 축이다. 이건 증류된 결과를
+ * *소비하는* 쪽의 선이라 별도 상수로 둔다. 쓰는 곳: 취향 채점(memory/taste.ts) ·
+ * 피드 큐레이션(feed/curate.ts) · 반응 즉답(companion/reaction-line.ts) · 전시 홈
+ * 기억 발화(exhibitions/[slug]/page.tsx) · 취향 레이더 점선 링(me/taste-radar.tsx) ·
+ * 브레인 관심 주입(memory/apply.ts의 minConfidence 기본값).
+ *
+ * 한 벌로 묶는 이유: 레이더가 이 선을 점선으로 **눈에 보이게** 그린다. 값이 갈리면
+ * 사용자가 보는 선과 추천이 실제로 자르는 선이 어긋나고, 그건 화면이 거짓말하는
+ * 것이다. 예전엔 다섯 군데에 0.25가 따로 적혀 있었다.
+ */
+export const CONFIDENT_THRESHOLD = 0.25;
+
+/**
+ * 취향 정확도(%) 급락 감지 폭 — 포인트(0~100 스케일). 판정 표본이 8~15개 안팎일 땐
+ * 반응 몇 개만으로 %가 크게 요동친다(원래 그런 수학이지 버그가 아니다). 이 폭보다
+ * 크게 떨어지면 로미가 한 번 짚어준다(companion.tasteDropInsight) — 안 그러면
+ * 사용자가 "왜 갑자기 확 줄었지"를 이유 없는 오류로 느낀다.
+ */
+export const TASTE_DROP_ALERT_POINTS = 15;
 
 /** L4 증류 튜닝. confidence = raw/(raw+K), 시간감쇠 반감기 halfLifeDays. */
 export const MEMORY_TUNING = {

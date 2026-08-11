@@ -112,14 +112,14 @@ describe("MockRepository", () => {
     await repo.upsertNote(
       "u_taste",
       "b_a101",
-      { status: "interested" },
+      { interest: "must" },
       "confident",
     );
     // 메모만 고친다 — 판정은 그대로여야 한다.
     await repo.upsertNote(
       "u_taste",
       "b_a101",
-      { status: "interested", memo: "다시 와보기" },
+      { interest: "must", memo: "다시 와보기" },
       undefined,
     );
     const notes = await repo.listNotes("u_taste");
@@ -132,7 +132,7 @@ describe("MockRepository", () => {
     await repo.upsertNote(
       "u_taste2",
       "b_a101",
-      { status: "interested" },
+      { interest: "must" },
       "confident",
     );
     const r = await repo.getTasteAccuracy("u_taste2", "exh_sibf_2026");
@@ -140,78 +140,192 @@ describe("MockRepository", () => {
     expect(r.pct).toBeNull();
   });
 
-  it("setBoothRetro: visited가 아니면 null(되묻기 답 거부)", async () => {
-    await repo.upsertNote(
-      "u_taste3",
-      "b_a101",
-      { status: "interested" },
-      "confident",
-    );
-    const result = await repo.setBoothRetro(
-      "u_taste3",
-      "b_a101",
-      "liked",
-      "confident",
-    );
-    expect(result).toBeNull();
-  });
+  describe("upsertNote — interest/verdict 직교", () => {
+    it("interest만 써도 verdict는 안 건드린다", async () => {
+      await repo.upsertNote(
+        "u_taste6",
+        "b_a101",
+        { interest: "must" },
+        "confident",
+      );
+      await repo.upsertNote(
+        "u_taste6",
+        "b_a101",
+        { verdict: "good" },
+        "confident",
+      );
+      const notes = await repo.listNotes("u_taste6");
+      const n = notes.find((x) => x.boothId === "b_a101")!;
+      expect(n.interest).toBe("must");
+      expect(n.verdict).toBe("good");
+    });
 
-  it("setBoothRetro: visited면 retro·judgedClass를 저장한다", async () => {
-    await repo.upsertNote(
-      "u_taste4",
-      "b_a101",
-      { status: "visited" },
-      undefined,
-    );
-    const result = await repo.setBoothRetro(
-      "u_taste4",
-      "b_a101",
-      "liked",
-      "uncertain",
-    );
-    expect(result?.retro).toBe("liked");
-    expect(result?.judgedClass).toBe("uncertain");
-  });
+    it("verdict를 쓰면 visitedAt이 채워진다", async () => {
+      const note = await repo.upsertNote(
+        "u_taste7",
+        "b_a101",
+        { verdict: "ok" },
+        "uncertain",
+      );
+      expect(note.visitedAt).toBeDefined();
+    });
 
-  it("listPendingRetro: visited이고 retro 없는 부스만, limit 적용", async () => {
-    await repo.upsertNote(
-      "u_taste5",
-      "b_a101",
-      { status: "visited" },
-      undefined,
-    );
-    await repo.upsertNote(
-      "u_taste5",
-      "b_a1902",
-      { status: "visited" },
-      undefined,
-    );
-    const pending = await repo.listPendingRetro(
-      "u_taste5",
-      "exh_sibf_2026",
-      10,
-    );
-    expect(pending.length).toBe(2);
-    expect(pending.every((p) => p.boothName.length > 0)).toBe(true);
+    it("verdict를 해제하면 visitedAt도 같이 지워진다", async () => {
+      await repo.upsertNote(
+        "u_taste8",
+        "b_a101",
+        { verdict: "good" },
+        "confident",
+      );
+      const cleared = await repo.upsertNote(
+        "u_taste8",
+        "b_a101",
+        { verdict: null },
+        null,
+      );
+      expect(cleared.verdict).toBeUndefined();
+      expect(cleared.visitedAt).toBeUndefined();
+    });
+
+    it("interest만 바꾸는 쓰기(verdict:undefined)는 기존 verdict·visitedAt을 안 지운다 — judgment-vocabulary 최종 리뷰 Fix 1 회귀", async () => {
+      // verdict 쓰기로 visitedAt이 생긴 레거시/기존 방문 기록을 시뮬레이션.
+      await repo.upsertNote(
+        "u_taste10",
+        "b_a101",
+        { verdict: "good" },
+        "confident",
+      );
+      const seeded = (await repo.listNotes("u_taste10")).find(
+        (n) => n.boothId === "b_a101",
+      )!;
+      expect(seeded.verdict).toBe("good");
+      expect(seeded.visitedAt).toBeDefined();
+
+      // interest만 바꾸는 쓰기 — verdict는 undefined로 온다(null이 아니라).
+      const after = await repo.upsertNote(
+        "u_taste10",
+        "b_a101",
+        { interest: "must" },
+        "confident",
+      );
+      expect(after.interest).toBe("must");
+      expect(after.verdict).toBe("good");
+      expect(after.visitedAt).toBe(seeded.visitedAt);
+    });
+
+    it("메모를 지워 빈 문자열이 돼도(사진 없음) interest/verdict를 안 건드리는 요청이면 노트를 지우지 않는다 — Supabase upsertNote 델리트 오판 회귀", async () => {
+      // interest만 있고 메모·사진은 아직 없는 노트.
+      await repo.upsertNote(
+        "u_taste11",
+        "b_a101",
+        { interest: "must" },
+        "confident",
+      );
+      // 메모를 한 번 채웠다가(사진 없음) — 실제 UI(booth-personal-panel.tsx 등)는
+      // pushNote(id, {}) 로 이 편집을 보낸다: interest·verdict는 body에서 아예
+      // 빠지고 memo만 실린다.
+      await repo.upsertNote(
+        "u_taste11",
+        "b_a101",
+        { memo: "hello" },
+        undefined,
+      );
+      // 이제 그 메모를 다시 빈 문자열로 지운다 — interest·verdict는 여전히 안
+      // 건드리는 요청. 버그가 있으면 raw input만 보고 "다 비었다"고 오판해
+      // 행 전체를 지워 interest='must'까지 날린다.
+      const after = await repo.upsertNote(
+        "u_taste11",
+        "b_a101",
+        { memo: "" },
+        undefined,
+      );
+      expect(after.interest).toBe("must");
+      const notes = await repo.listNotes("u_taste11");
+      expect(notes.find((n) => n.boothId === "b_a101")?.interest).toBe("must");
+    });
+
+    it("listPendingRetro: visitedAt 있고 verdict 없는 부스만", async () => {
+      await repo.upsertNote(
+        "u_taste5",
+        "b_a101",
+        { verdict: "good" },
+        "confident",
+      );
+      // b_a101은 verdict를 이미 답했다 — pending에서 빠져야 한다.
+      await repo.upsertNote(
+        "u_taste5",
+        "b_a1902",
+        { verdict: "ok" },
+        "confident",
+      );
+      // 정상 upsertNote로는 verdict 없이 visitedAt만 생길 수 없다(둘이 항상 같이
+      // 쓰인다) — 되묻기 대상은 레거시 행뿐이라는 게 이 메서드의 전제다. 그 레거시
+      // 상태를 시뮬레이션하려고 스토어에서 b_a1902의 verdict만 직접 지운다
+      // (visitedAt은 남긴다).
+      const store = (
+        globalThis as unknown as {
+          __roamStore: {
+            notes: Array<{ userId: string; boothId: string; verdict?: string }>;
+          };
+        }
+      ).__roamStore;
+      const legacy = store.notes.find(
+        (n) => n.userId === "u_taste5" && n.boothId === "b_a1902",
+      )!;
+      delete legacy.verdict;
+      const pending = await repo.listPendingRetro(
+        "u_taste5",
+        "exh_sibf_2026",
+        10,
+      );
+      expect(pending.map((p) => p.boothId)).toEqual(["b_a1902"]);
+    });
+
+    it("listMustNotVisited: interest='must'이고 visitedAt 없는 부스만", async () => {
+      await repo.upsertNote(
+        "u_taste9",
+        "b_a101",
+        { interest: "must" },
+        "confident",
+      );
+      await repo.upsertNote(
+        "u_taste9",
+        "b_a1902",
+        { interest: "must" },
+        "confident",
+      );
+      await repo.upsertNote(
+        "u_taste9",
+        "b_a1902",
+        { verdict: "good" },
+        "confident",
+      ); // b_a1902는 다녀옴
+      const result = await repo.listMustNotVisited(
+        "u_taste9",
+        "exh_sibf_2026",
+        10,
+      );
+      expect(result.map((r) => r.boothId)).toEqual(["b_a101"]);
+    });
   });
 
   it("listExhibitionSignals: 전시 단위로 전체 사용자 신호를 최신순 반환한다", async () => {
     await repo.appendUserSignal({
       userId: "u1",
       exhibitionId: "ex1",
-      kind: "reaction_interested",
+      kind: "reaction_must",
       slugs: [],
     });
     await repo.appendUserSignal({
       userId: "u2",
       exhibitionId: "ex1",
-      kind: "reaction_later",
+      kind: "reaction_curious",
       slugs: [],
     });
     await repo.appendUserSignal({
       userId: "u1",
       exhibitionId: "ex2",
-      kind: "reaction_interested",
+      kind: "reaction_must",
       slugs: [],
     });
     const rows = await repo.listExhibitionSignals("ex1");
