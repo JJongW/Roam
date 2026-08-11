@@ -20,7 +20,6 @@ const COLORS = [
   { name: "Border", varName: "--border" },
   { name: "Route Visited", varName: "--route-visited" },
   { name: "Booth Active", varName: "--booth-active" },
-  { name: "Booth Skipped", varName: "--booth-skipped" },
 ] as const;
 
 const TYPE_STEPS = [
@@ -83,7 +82,11 @@ const RADIUS_STEPS = [
 
 const SHADOW_STEPS = [
   { name: "card", varName: "--shadow-card", label: "평상시 카드 (SEED s1)" },
-  { name: "sheet", varName: "--shadow-sheet", label: "바텀시트, 위 방향 (SEED s2 세기)" },
+  {
+    name: "sheet",
+    varName: "--shadow-sheet",
+    label: "바텀시트, 위 방향 (SEED s2 세기)",
+  },
   { name: "pop", varName: "--shadow-pop", label: "팝오버·강조 (SEED s3)" },
 ] as const;
 
@@ -93,12 +96,15 @@ export default function DesignSystemPage() {
       <header>
         <h1 className="text-2xl font-extrabold">디자인 시스템</h1>
         <p className="text-sm text-muted-foreground">
-          Roam이 쓰는 모든 디자인 토큰 — 색은 자체 팔레트, 나머지(간격·radius·그림자·
-          모션·타이포)는 SEED 디자인 시스템 값
+          Roam이 쓰는 모든 디자인 토큰 — 색은 자체 팔레트,
+          나머지(간격·radius·그림자· 모션·타이포)는 SEED 디자인 시스템 값
         </p>
       </header>
 
-      <AdminSection title="색(Color)" description="Roam 자체 팔레트 — 라이트 모드 기준">
+      <AdminSection
+        title="색(Color)"
+        description="Roam 자체 팔레트 — 라이트 모드 기준"
+      >
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           {COLORS.map((c) => (
             <div key={c.varName} className="space-y-1.5">
@@ -130,7 +136,10 @@ export default function DesignSystemPage() {
               </div>
               <div className="flex flex-1 flex-wrap items-baseline gap-4">
                 {WEIGHTS.map((w) => (
-                  <span key={w.name} className={`${t.className} ${w.className}`}>
+                  <span
+                    key={w.name}
+                    className={`${t.className} ${w.className}`}
+                  >
                     가나다 Roam 123
                   </span>
                 ))}
@@ -140,19 +149,30 @@ export default function DesignSystemPage() {
         </div>
       </AdminSection>
 
-      <AdminSection title="간격(Spacing)" description="원시 스케일 x0.5~x16 + 의미 토큰">
+      <AdminSection
+        title="간격(Spacing)"
+        description="원시 스케일 x0.5~x16 + 의미 토큰"
+      >
         <div className="space-y-2">
           {SPACING_STEPS.map((s) => (
             <div key={s.varName} className="flex items-center gap-3">
-              <span className="w-12 shrink-0 text-xs font-semibold">{s.name}</span>
-              <div className="h-3 rounded-sm bg-primary" style={{ width: `var(${s.varName})` }} />
+              <span className="w-12 shrink-0 text-xs font-semibold">
+                {s.name}
+              </span>
+              <div
+                className="h-3 rounded-sm bg-primary"
+                style={{ width: `var(${s.varName})` }}
+              />
               <span className="text-xs text-muted-foreground">{s.px}px</span>
             </div>
           ))}
         </div>
         <div className="mt-5 space-y-2 border-t border-border pt-4">
           {SEMANTIC_SPACING.map((s) => (
-            <div key={s.name} className="flex items-center justify-between text-xs">
+            <div
+              key={s.name}
+              className="flex items-center justify-between text-xs"
+            >
               <span className="font-semibold">{s.name}</span>
               <span className="text-muted-foreground">
                 {s.px}px — {s.desc}
@@ -162,11 +182,16 @@ export default function DesignSystemPage() {
         </div>
       </AdminSection>
 
-      <AdminSection title="Radius" description="기존 이름(sm~2xl) 유지, 값만 SEED 스케일">
+      <AdminSection
+        title="Radius"
+        description="기존 이름(sm~2xl) 유지, 값만 SEED 스케일"
+      >
         <div className="grid grid-cols-3 gap-4 sm:grid-cols-6">
           {RADIUS_STEPS.map((r) => (
             <div key={r.name} className="space-y-1.5 text-center">
-              <div className={`mx-auto size-14 border-2 border-primary ${r.className}`} />
+              <div
+                className={`mx-auto size-14 border-2 border-primary ${r.className}`}
+              />
               <p className="text-xs font-semibold">{r.name}</p>
               <p className="text-xs text-muted-foreground">{r.px}</p>
             </div>
@@ -174,7 +199,10 @@ export default function DesignSystemPage() {
         </div>
       </AdminSection>
 
-      <AdminSection title="그림자(Shadow)" description="card=s1, sheet=s2(방향 유지), pop=s3">
+      <AdminSection
+        title="그림자(Shadow)"
+        description="card=s1, sheet=s2(방향 유지), pop=s3"
+      >
         <div className="grid grid-cols-1 gap-8 py-4 sm:grid-cols-3">
           {SHADOW_STEPS.map((s) => (
             <div key={s.varName} className="space-y-2 text-center">

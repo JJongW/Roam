@@ -51,13 +51,16 @@
   /* map / route */
   --route-line: #4f46e5;
   --route-visited: #15c47e;
+  /* 판단 어휘 지도 색 — 전부 면(fill), 테두리·뱃지로 상태를 안 나른다.
+     꼭 갈래·좋았어는 기존 브랜드 토큰(--primary·--route-visited)을 재사용한다. */
+  --judge-must: var(--primary);
+  --judge-curious: #8b88ee;
+  --judge-good: var(--route-visited);
+  --judge-ok: #7edcb4;
+  --judge-bad: #d0595d;
+  --judge-pass: #aab2bf;
   --booth-fill: #f2f4f6;
   --booth-active: #4f46e5;
-  /* '별로' 부스 — 기본 존색(#dcdee3)보다 밝은 --muted를 쓰면 구분이 안 된다.
-     제외됐다는 뜻이 읽히도록 옅은 로즈로 빼둔다(끌림 초록·가봄 남보라·나중에
-     노랑 어느 것과도 겹치지 않는 색상각). */
-  --booth-skipped: #f3dadd;
-  --booth-skipped-stroke: #e0a8ae;
 
   /* SEED 간격 스케일 — 참고용 원시 토큰. Tailwind 유틸 네임스페이스(@theme) 밖에 둬서
      기존 px-4/gap-3 등 어떤 유틸리티도 안 건드린다. 2·3단계부터 var()로 명시 사용. */
@@ -145,10 +148,14 @@
 
   --route-line: #818cf8;
   --route-visited: #2ad48f;
+  --judge-must: var(--primary);
+  --judge-curious: #a5a2f0;
+  --judge-good: var(--route-visited);
+  --judge-ok: #5cbf95;
+  --judge-bad: #e07478;
+  --judge-pass: #6b7280;
   --booth-fill: #1c2024;
   --booth-active: #818cf8;
-  --booth-skipped: #40272b;
-  --booth-skipped-stroke: #7a4a51;
 }
 
 @theme inline {
@@ -180,6 +187,12 @@
   --color-chart-5: var(--chart-5);
   --color-route-line: var(--route-line);
   --color-route-visited: var(--route-visited);
+  --color-judge-must: var(--judge-must);
+  --color-judge-curious: var(--judge-curious);
+  --color-judge-good: var(--judge-good);
+  --color-judge-ok: var(--judge-ok);
+  --color-judge-bad: var(--judge-bad);
+  --color-judge-pass: var(--judge-pass);
   --color-booth-fill: var(--booth-fill);
   --color-booth-active: var(--booth-active);
 
