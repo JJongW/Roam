@@ -8,22 +8,18 @@ import type { SignalKind } from "@/lib/types";
 
 type Ctx = { params: Promise<{ boothId: string }> };
 
-/** 상태 → 신호 종류. 상태 해제(null)는 신호를 남기지 않는다. */
-const SIGNAL_BY_STATUS: Record<string, SignalKind | undefined> = {
-  visited: "booth_visited",
-  skipped: "booth_skipped",
-  interested: "reaction_interested",
-  later: "reaction_later",
+/** interest 값 → 신호 종류. */
+const SIGNAL_BY_INTEREST: Record<string, SignalKind> = {
+  must: "reaction_must",
+  curious: "reaction_curious",
+  pass: "reaction_pass",
 };
-
-/** 이 상태 값이 확신·부정 반응이면 true — 상태가 실제로 "바뀔 때"만 판정을 새로
- *  계산한다(호출부에서 statusChanged와 함께 쓴다). 상태가 그대로인데(메모만 고치는
- *  쓰기 등) 여기 걸리면, 이미 얼려둔 judged_class를 지금 브레인 상태로 조용히
- *  재채점하게 된다 — "판정은 그 순간에 얼린다"는 원칙을 메모 편집 한 번으로 깨뜨리는
- *  것이다. visited(가봄)는 무판정(되묻기 전엔) — 그 자체로는 재계산 대상이 아니다. */
-function needsJudgment(status: string | null | undefined): boolean {
-  return status === "interested" || status === "later" || status === "skipped";
-}
+/** verdict 값 → 신호 종류. */
+const SIGNAL_BY_VERDICT: Record<string, SignalKind> = {
+  good: "verdict_good",
+  ok: "verdict_ok",
+  bad: "verdict_bad",
+};
 
 export async function PUT(req: Request, { params }: Ctx) {
   const user = await getCurrentUser();
@@ -31,42 +27,66 @@ export async function PUT(req: Request, { params }: Ctx) {
   const { boothId } = await params;
   const parsed = await parseBody(req, boothNoteInputSchema);
   if (!parsed.ok) return parsed.res;
-  const repo = await getRepository();
 
-  const status = parsed.data.status ?? null;
-  // 이 쓰기가 상태를 실제로 바꾸는지 먼저 확인한다 — 안 그러면 메모만 고치는 쓰기
-  // (status는 그대로 보내지는데 memo만 다른 PUT, 예: 부스 상세의 메모 편집)에서도
-  // 매번 judged_class가 지금 브레인으로 재계산돼 이미 확정된 판정이 조용히 바뀐다.
+  const repo = await getRepository();
   const existing = (await repo.listNotes(user.id)).find(
     (n) => n.boothId === boothId,
   );
-  const statusChanged = (existing?.status ?? null) !== status;
 
+  // 이 쓰기가 interest·verdict 중 무엇을 실제로 바꾸는지 각각 확인한다 — 메모만
+  // 고치는 쓰기(둘 다 undefined로 옴)에서 이미 확정된 판정을 조용히 재계산하면
+  // 안 된다(기존 statusChanged 가드와 같은 원칙, 이제 두 필드 각각에 적용).
+  const interestChanged =
+    parsed.data.interest !== undefined &&
+    (existing?.interest ?? null) !== (parsed.data.interest ?? null);
+  const verdictChanged =
+    parsed.data.verdict !== undefined &&
+    (existing?.verdict ?? null) !== (parsed.data.verdict ?? null);
+
+  // 판정 등급은 나중에 바뀐 필드가 최종이다 — verdict가 둘 다 바뀐 요청에서 나중
+  // 판정으로 남는다(같은 요청이면 verdict 우선, judgment-vocabulary §6).
   let judgedClass: JudgedClass | null | undefined;
-  if (statusChanged) {
-    if (needsJudgment(status)) {
-      const booth = await repo.getBooth(boothId);
-      judgedClass = booth ? await classifyForUser(booth, user.id) : null;
-    } else if (!status) {
-      judgedClass = null; // 해제 — 판정도 지운다
-    } // else: status === "visited"로 새로 바뀜 → undefined로 남겨 무판정 유지.
-  } // else: 상태 불변(메모/사진만 편집) → undefined, 기존 판정을 안 건드린다.
+  const booth = interestChanged || verdictChanged ? await repo.getBooth(boothId) : null;
+  if (verdictChanged) {
+    judgedClass = parsed.data.verdict
+      ? booth
+        ? await classifyForUser(booth, user.id)
+        : null
+      : null; // verdict 해제 → 판정도 지운다
+  } else if (interestChanged) {
+    judgedClass = parsed.data.interest
+      ? booth
+        ? await classifyForUser(booth, user.id)
+        : null
+      : null;
+  } // else: 둘 다 불변(메모/사진만 편집) → undefined, 기존 판정을 안 건드린다.
 
   const note = await repo.upsertNote(user.id, boothId, parsed.data, judgedClass);
 
-  // L4 메모리: 상태 변경이 곧 신호다. 여기가 **유일한** 신호 적재 지점 —
-  // 예전엔 ReactionBar가 /api/me/signal을 따로 쳐서 가봄·별로만 신호가 두 번
-  // 쌓였고(끌림·나중에는 한 번), 브레인 가중치가 왜곡됐다. 어느 화면에서 상태를
-  // 바꾸든(지도·피드·부스 상세 패널) 이 경로를 지나므로 빠뜨릴 곳이 없다.
-  const kind = SIGNAL_BY_STATUS[status ?? ""];
-  if (kind) await recordSignal(user.id, { kind, boothId });
+  // L4 메모리: 상태 변경이 곧 신호다. 이 경로가 유일한 신호 적재 지점.
+  if (interestChanged && parsed.data.interest) {
+    await recordSignal(user.id, {
+      kind: SIGNAL_BY_INTEREST[parsed.data.interest],
+      boothId,
+    });
+  }
+  if (verdictChanged && parsed.data.verdict) {
+    await recordSignal(user.id, {
+      kind: SIGNAL_BY_VERDICT[parsed.data.verdict],
+      boothId,
+    });
+  }
 
-  // 취향 정확도 — 이 부스의 전시로 스코프. 클라이언트는 이 값을 그대로 표시할 뿐
-  // 자기 공식으로 계산하지 않는다(서버 유일 진실).
-  const booth = await repo.getBooth(boothId);
   const taste = booth
     ? await repo.getTasteAccuracy(user.id, booth.exhibitionId)
-    : { judgedCount: 0, pct: null };
+    : note
+      ? await (async () => {
+          const b = await repo.getBooth(boothId);
+          return b
+            ? repo.getTasteAccuracy(user.id, b.exhibitionId)
+            : { judgedCount: 0, pct: null };
+        })()
+      : { judgedCount: 0, pct: null };
 
   return ok({ note, taste });
 }
