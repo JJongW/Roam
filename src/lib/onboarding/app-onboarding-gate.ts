@@ -22,14 +22,14 @@ export function isAppOnboardingDismissed(params: {
 /**
  * 이 경로에서 온보딩 게이트를 띄워도 되는가.
  *
- * 랜딩(`/`)은 **덮지 않는다.** 처음 온 사람이 보는 첫 화면이 "안녕, 나는 로미야"
- * 전체화면이면 이 서비스가 뭔지 알 방법이 없다 — Google OAuth 인증도 그걸 두고
- * "홈페이지에 앱의 목적에 관한 설명이 없다"로 반려했다. 취향 질문은 전시에 들어가서,
- * 즉 그 답이 실제로 쓰일 자리에서 묻는 게 맞다.
- *
- * 랜딩 밖(전시·지도·부스 상세)에선 그대로 뜬다 — 공유 링크로 바로 들어온 사람도
- * 온보딩을 만난다.
+ * 모든 경로에서 뜬다 — 랜딩(`/`)도 포함. 예전엔 "첫 화면이 전체화면 인트로면
+ * 이 서비스가 뭔지 알 방법이 없다"(Google OAuth가 그 사유로 반려)는 이유로
+ * 랜딩만 제외했는데, 이후 랜딩을 먼저 보여준 채로 재심사를 넣어도 Google이
+ * 같은 사유로 계속 반려했다 — "홈을 무조건 먼저 보여줘야 통과한다"는 전제 자체가
+ * 성립하지 않았다는 뜻이라 이 제약을 없앤다(2026-08-11 판단, 앱 진입 플로우 재설계).
+ * pathname 인자는 향후 다시 경로별 예외가 필요해질 가능성을 열어두기 위해 그대로
+ * 남긴다(현재는 항상 true).
  */
-export function canShowAppOnboarding(pathname: string): boolean {
-  return pathname !== "/";
+export function canShowAppOnboarding(_pathname: string): boolean {
+  return true;
 }

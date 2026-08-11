@@ -76,10 +76,13 @@ export function ValueOnboarding({
     (s) => s.clearAppOnboardingJustCompleted,
   );
   useEffect(() => {
-    if (appOnboardingJustCompleted && !hasChosenValues) {
-      start();
-      clearAppOnboardingJustCompleted();
-    }
+    if (!appOnboardingJustCompleted) return;
+    // 이 신호는 hasChosenValues와 무관하게 항상 소비한다 — 앱 온보딩이 이제 홈(/)
+    // 에서도 끝날 수 있어 ValueOnboarding이 아예 마운트 안 된 경로에서 신호가 켜진
+    // 채 남을 수 있다. 여기서 안 지우면 나중에 방문한, 이미 확신 가치가 있는 다른
+    // 전시에서 뒤늦게 잘못 시트가 열린다.
+    if (!hasChosenValues) start();
+    clearAppOnboardingJustCompleted();
     // start는 리렌더마다 새로 만들어지는 함수라 deps에 넣지 않는다(무한 루프 방지) —
     // appOnboardingJustCompleted가 true → false로 바뀌는 그 순간에만 반응하면 된다.
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -25,7 +25,17 @@ import {
 import { Button } from "@/components/ui/button";
 
 const FLAG = "roam-app-onboarded";
-type Phase = "intro" | "quiz" | "saving";
+type Phase = "intro" | "guide" | "quiz" | "saving";
+
+/** "이렇게 쓰면 돼" 3단계 — 기능 자랑이 아니라 실제 사용 순서를 그대로 보여준다
+ *  (브레인스토밍에서 "기능 카드"로 먼저 시도했다가 "신뢰가 안 간다"는 피드백으로
+ *  이 안내형 구조로 바뀌었다). titleKey/descKey는 dictionaries.ts의 onboardingQ.*
+ *  네임스페이스를 가리킨다. */
+const GUIDE_STEPS = [
+  { titleKey: "onboardingQ.guide1Title", descKey: "onboardingQ.guide1Desc" },
+  { titleKey: "onboardingQ.guide2Title", descKey: "onboardingQ.guide2Desc" },
+  { titleKey: "onboardingQ.guide3Title", descKey: "onboardingQ.guide3Desc" },
+] as const;
 
 /**
  * 앱 최초진입 온보딩 — Romi 중앙 대화형(ingan.ai 스타일). 짧은 인사 → 적응형 시나리오 Q&A
@@ -51,12 +61,19 @@ export function AppOnboardingGate() {
   const [anonDismissed, setAnonDismissed] = useState(
     () => typeof window !== "undefined" && !!localStorage.getItem(FLAG),
   );
-  // 뒤로가기가 이 오버레이를 언마운트시켰다 돌아와도(canShowAppOnboarding이 false인
-  // 경로로 잠깐 나갔다 온 경우 등) phase가 "intro"로 리셋되지 않게 sessionStorage에
+  // 뒤로가기가 이 오버레이를 언마운트시켰다 돌아와도(방문객 레이아웃 밖 — /privacy·
+  // /login 등으로 잠깐 나갔다 온 경우 등) phase가 "intro"로 리셋되지 않게 sessionStorage에
   // 같이 남긴다.
   const [phase, setPhase] = useSessionState<Phase>(
     "roam-onboarding-app-phase",
     "intro",
+  );
+  // guide phase 자체의 몇 번째 슬라이드인지도 세션스토리지에 남긴다 — phase가
+  // "guide"로 남아있어도 이 값이 리셋되면 뒤로가기 한 번에 슬라이드 진행이
+  // 처음으로 돌아간 것처럼 보인다.
+  const [guideStep, setGuideStep] = useSessionState<number>(
+    "roam-onboarding-app-guide-step",
+    0,
   );
 
   const onboarded = isAppOnboardingDismissed({
@@ -64,14 +81,25 @@ export function AppOnboardingGate() {
     needsOnboarding,
     anonDismissed,
   });
-  // 랜딩은 덮지 않는다 — 첫 화면은 이 서비스가 뭔지 알 수 있는 홈이어야 한다.
+  // 이제 랜딩(/)도 덮는다 — 이유는 canShowAppOnboarding의 문서 주석 참고(2026-08-11 판단).
   if (onboarded || !ready || !canShowAppOnboarding(pathname)) return null;
 
   // 로그인 여부와 무관하게 항상 로컬에도 dismiss를 남긴다(위 문서 주석 참고).
   function dismissLocally() {
     if (typeof window !== "undefined") localStorage.setItem(FLAG, "1");
     setAnonDismissed(true);
-    clearSessionState("roam-onboarding-app-phase");
+    clearSessionState(
+      "roam-onboarding-app-phase",
+      "roam-onboarding-app-guide-step",
+    );
+  }
+
+  // guide는 3장 다 보거나 건너뛰면 quiz로 — 둘 다 같은 목적지라 별도 분기가
+  // 필요 없다(건너뛰기가 "이 온보딩 전체를 그만둔다"는 뜻이 아니라 "안내만
+  // 생략한다"는 뜻이므로 dismissLocally를 부르지 않는다).
+  function finishGuide() {
+    setGuideStep(0);
+    setPhase("quiz");
   }
 
   async function complete(tally: Tally) {
@@ -142,7 +170,7 @@ export function AppOnboardingGate() {
             <Button
               size="lg"
               className="w-full"
-              onClick={() => setPhase("quiz")}
+              onClick={() => setPhase("guide")}
             >
               {t("onboardingQ.introCta")}
             </Button>
@@ -157,6 +185,19 @@ export function AppOnboardingGate() {
             <LegalLinks className="pt-1" />
           </div>
         </div>
+      )}
+
+      {phase === "guide" && (
+        <GuideSlide
+          step={guideStep}
+          onNext={() =>
+            guideStep >= GUIDE_STEPS.length - 1
+              ? finishGuide()
+              : setGuideStep(guideStep + 1)
+          }
+          onSkip={finishGuide}
+          t={t}
+        />
       )}
 
       {phase === "quiz" && (
@@ -179,6 +220,150 @@ export function AppOnboardingGate() {
           </p>
         </div>
       )}
+    </div>
+  );
+}
+
+/**
+ * "이렇게 쓰면 돼" 3단계 안내 슬라이드 — 각 단계는 실제 앱 화면을 최소한으로
+ * 재현한 미리보기를 보여준다(아이콘 카드가 아니다 — 브레인스토밍에서 아이콘
+ * 버전은 "신뢰가 안 간다"는 반응을 받았다). 색상은 지도·JudgmentBar와 같은
+ * --judge-* 토큰을 그대로 참조해, 나중에 실제 화면에서 볼 색과 여기서 미리
+ * 본 색이 어긋나지 않게 한다.
+ */
+function GuideSlide({
+  step,
+  onNext,
+  onSkip,
+  t,
+}: {
+  step: number;
+  onNext: () => void;
+  onSkip: () => void;
+  t: (key: string, params?: Record<string, string | number>) => string;
+}) {
+  const current =
+    GUIDE_STEPS[Math.min(Math.max(step, 0), GUIDE_STEPS.length - 1)];
+  const isLast = step === GUIDE_STEPS.length - 1;
+
+  return (
+    <div className="flex flex-1 flex-col px-6 pb-8 pt-safe">
+      <div className="flex items-center gap-1.5 pt-2">
+        {GUIDE_STEPS.map((_, i) => (
+          <span
+            key={i}
+            className={
+              "h-1 flex-1 rounded-full transition-colors " +
+              (i <= step ? "bg-primary" : "bg-secondary")
+            }
+          />
+        ))}
+      </div>
+
+      <div className="flex flex-1 flex-col items-center justify-center gap-5 text-center">
+        <span className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
+          STEP {step + 1}
+        </span>
+        <h2 className="max-w-[18rem] text-2xl font-extrabold leading-snug">
+          {t(current.titleKey)}
+        </h2>
+        <p className="max-w-[20rem] text-[15px] leading-relaxed text-muted-foreground">
+          {t(current.descKey)}
+        </p>
+
+        <GuidePreview step={step} t={t} />
+      </div>
+
+      <div className="space-y-2">
+        <button
+          type="button"
+          onClick={onNext}
+          className="w-full rounded-2xl bg-primary px-5 py-4 text-center font-bold text-primary-foreground active:scale-[0.99]"
+        >
+          {isLast ? t("onboardingQ.guideDone") : t("onboardingQ.guideNext")}
+        </button>
+        {!isLast && (
+          <button
+            type="button"
+            onClick={onSkip}
+            className="w-full py-2 text-sm font-medium text-muted-foreground active:opacity-70"
+          >
+            {t("onboardingQ.introSkip")}
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/** 단계별 미니 미리보기 — 실제 색상 토큰·카드 형태를 그대로 쓴다. */
+function GuidePreview({
+  step,
+  t,
+}: {
+  step: number;
+  t: (key: string, params?: Record<string, string | number>) => string;
+}) {
+  if (step === 0) {
+    // STEP 1: 취향 질문 카드 — Conversation의 답변 카드와 같은 모양.
+    return (
+      <div className="w-full max-w-[16rem] rounded-2xl border border-border bg-card px-4 py-3.5 text-left">
+        <div className="mb-2.5 text-[13px] font-bold">오늘은 뭐가 끌려?</div>
+        <div className="space-y-1.5">
+          <div className="rounded-xl border border-border px-3 py-2 text-xs">
+            직접 만져보고 사는 게 좋아
+          </div>
+          <div className="rounded-xl border border-primary px-3 py-2 text-xs font-semibold text-primary">
+            몰랐던 걸 발견하고 싶어
+          </div>
+        </div>
+      </div>
+    );
+  }
+  if (step === 1) {
+    // STEP 2: 피드 카드 + JudgmentBar와 같은 반응 버튼 모양(색은 --judge-must).
+    return (
+      <div className="w-full max-w-[16rem] rounded-2xl border border-border bg-card p-3.5 text-left">
+        <div className="mb-2 h-16 rounded-lg bg-secondary" />
+        <div className="mb-2 text-[13px] font-bold">단어의 시각적 번역</div>
+        <div className="flex gap-1.5">
+          <div
+            className="flex-1 rounded-lg border py-1.5 text-center text-[11px] font-semibold"
+            style={{
+              borderColor: "var(--judge-must)",
+              backgroundColor:
+                "color-mix(in srgb, var(--judge-must) 16%, transparent)",
+              color: "var(--judge-must)",
+            }}
+          >
+            {t("judge.must")}
+          </div>
+          <div className="flex-1 rounded-lg border border-border py-1.5 text-center text-[11px] text-muted-foreground">
+            {t("judge.pass")}
+          </div>
+        </div>
+      </div>
+    );
+  }
+  // STEP 3: 지도 색 미리보기 — 판단 색 4가지를 점으로.
+  return (
+    <div className="flex w-full max-w-[16rem] items-center justify-center gap-4 rounded-2xl border border-border bg-card px-4 py-6">
+      {(
+        [
+          ["var(--judge-must)", t("judge.must")],
+          ["var(--judge-good)", t("judge.good")],
+          ["var(--judge-bad)", t("judge.bad")],
+          ["var(--judge-pass)", t("judge.pass")],
+        ] as const
+      ).map(([color, label]) => (
+        <div key={label} className="flex flex-col items-center gap-1">
+          <span
+            className="size-5 rounded-full"
+            style={{ backgroundColor: color }}
+          />
+          <span className="text-[10px] text-muted-foreground">{label}</span>
+        </div>
+      ))}
     </div>
   );
 }
