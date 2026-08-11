@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { MapPin, Pencil } from "lucide-react";
 import { api } from "@/lib/api/client";
-import { ValueMindMap } from "@/components/me/value-mindmap";
+import { TasteRadar } from "@/components/me/taste-radar";
 import { useT } from "@/lib/i18n/provider";
 import { VALUE_TAGS, valueDef } from "@/lib/values";
 import { RoamMotion } from "@/components/companion/roam-motion";
@@ -57,21 +57,37 @@ export function BrainSheet({
     };
   }, [open]);
 
-  // 값 가치만(카테고리 slug 레거시 제외) + confidence 순.
-  const nodes = (brain?.interests ?? [])
-    .filter((n) => valueDef(n.key))
-    .sort((a, b) => b.confidence - a.confidence)
-    .slice(0, 8);
-  const empty = !loading && nodes.length === 0;
+  // 레이더는 8축을 항상 그리므로 slug → confidence 맵만 주면 된다. 뮤트된 가치는
+  // 서버 증류에서 이미 빠져 있으므로(distill.ts) 여기서 또 거르지 않는다.
+  const values: Record<string, number> = {};
+  for (const n of brain?.interests ?? []) {
+    if (valueDef(n.key)) values[n.key] = n.confidence;
+  }
+  const muted = new Set(brain?.mutedSlugs ?? []);
+  // "비었다"의 기준은 그릴 값이 하나도 없을 때다 — 축은 늘 8개라 노드 수로는 못 센다.
+  const empty = !loading && Object.keys(values).length === 0;
 
-  async function addValue(slug: string) {
+  /**
+   * 켜진 가치는 끄고(뮤트), 꺼진 가치는 켠다.
+   *
+   * 켤 때 값이 하나도 없으면 명시 긍정 신호도 같이 남긴다 — 뮤트만 풀어봐야
+   * 쌓인 게 없으면 여전히 0이라 화면이 안 변하고, 사용자는 또 "반응이 없다"고
+   * 느낀다.
+   *
+   * 낙관적 갱신은 하지 않는다. confidence는 서버 증류 결과가 유일한 진실이라
+   * (취향 정확도와 같은 규칙) 임의로 그려두면 새로고침 때 값이 튄다.
+   */
+  async function toggleValue(slug: string, on: boolean) {
     if (saving) return;
     setSaving(true);
     try {
-      await api.post("/api/me/values", { values: [slug] });
+      await api.put(`/api/me/values/${slug}`, { muted: on });
+      if (!on && (values[slug] ?? 0) === 0) {
+        await api.post("/api/me/values", { values: [slug] });
+      }
       load();
     } catch {
-      // 무시 — 로컬 반영 실패해도 조용히.
+      // 무시 — 실패해도 다음 load에서 서버 값으로 맞춰진다.
     } finally {
       setSaving(false);
     }
@@ -98,7 +114,7 @@ export function BrainSheet({
           </p>
         ) : (
           <>
-            <ValueMindMap nodes={nodes} label={(s) => t(`values.${s}`)} />
+            <TasteRadar values={values} label={(s) => t(`values.${s}`)} />
 
             <div className="mt-3 flex items-center justify-center gap-3 text-xs text-muted-foreground">
               <span className="flex items-center gap-1">
@@ -113,21 +129,31 @@ export function BrainSheet({
             {editing && (
               <div className="mt-4">
                 <p className="mb-2 text-center text-xs text-muted-foreground">
-                  {t("myPage.addHint")}
+                  {t("myPage.editHint")}
                 </p>
                 <div className="flex flex-wrap justify-center gap-2">
-                  {VALUE_TAGS.map((v) => (
-                    <button
-                      key={v.slug}
-                      type="button"
-                      disabled={saving}
-                      onClick={() => addValue(v.slug)}
-                      className="rounded-full border border-border bg-card px-3 py-1.5 text-xs font-semibold active:opacity-70 disabled:opacity-50"
-                      style={{ color: v.color }}
-                    >
-                      {t(`values.${v.slug}`)}
-                    </button>
-                  ))}
+                  {VALUE_TAGS.map((v) => {
+                    // 켜짐 = 값이 있고 뮤트도 아님. 이 상태에서만 뺄 수 있다.
+                    const on = !muted.has(v.slug) && (values[v.slug] ?? 0) > 0;
+                    return (
+                      <button
+                        key={v.slug}
+                        type="button"
+                        data-testid={`value-toggle-${v.slug}`}
+                        disabled={saving}
+                        aria-pressed={on}
+                        onClick={() => toggleValue(v.slug, on)}
+                        className="flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-semibold active:opacity-70 disabled:opacity-50"
+                        style={{
+                          color: on ? v.color : "var(--muted-foreground)",
+                          borderColor: on ? v.color : "var(--border)",
+                        }}
+                      >
+                        {t(`values.${v.slug}`)}
+                        <span aria-hidden>{on ? "×" : "+"}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}

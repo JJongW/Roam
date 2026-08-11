@@ -504,6 +504,7 @@ const ko = {
     edit: "관심 고치기",
     editDone: "완료",
     addHint: "더 끌리는 걸 눌러 추가해",
+    editHint: "누르면 켜고 꺼져. 끈 관심은 추천에서 빠져.",
     saving: "반영 중…",
   },
 } as const;
@@ -990,6 +991,7 @@ const en: Dict = {
     edit: "Edit interests",
     editDone: "Done",
     addHint: "Tap what draws you to add it",
+    editHint: "Tap to turn on or off. Muted interests drop out of picks.",
     saving: "Saving…",
   },
 };
