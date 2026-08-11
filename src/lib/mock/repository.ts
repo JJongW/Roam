@@ -89,10 +89,26 @@ function buildStore(): Store {
   const s = freshSeed();
   return {
     // SIBF + SIF 공존(멀티 전시). 홀·카테고리·부스는 exhibitionId로 구분돼 섞여도 안전.
-    exhibitions: [s.exhibition, structuredClone(sifExhibition), structuredClone(haExhibition)],
-    halls: [...s.halls, ...structuredClone(sifHalls), ...structuredClone(haHalls)],
-    categories: [...s.categories, ...structuredClone(sifCategories), ...structuredClone(haCategories)],
-    booths: [...s.booths, ...structuredClone(sifBooths), ...structuredClone(haBooths)],
+    exhibitions: [
+      s.exhibition,
+      structuredClone(sifExhibition),
+      structuredClone(haExhibition),
+    ],
+    halls: [
+      ...s.halls,
+      ...structuredClone(sifHalls),
+      ...structuredClone(haHalls),
+    ],
+    categories: [
+      ...s.categories,
+      ...structuredClone(sifCategories),
+      ...structuredClone(haCategories),
+    ],
+    booths: [
+      ...s.booths,
+      ...structuredClone(sifBooths),
+      ...structuredClone(haBooths),
+    ],
     events: s.events,
     welcomeKits: s.welcomeKits,
     reviews: s.reviews,
@@ -648,10 +664,7 @@ export class MockRepository implements Repository {
     return user;
   }
 
-  async listUsers(opts?: {
-    limit?: number;
-    offset?: number;
-  }): Promise<User[]> {
+  async listUsers(opts?: { limit?: number; offset?: number }): Promise<User[]> {
     const rows = [...store().users].sort((a, b) =>
       b.createdAt.localeCompare(a.createdAt),
     );
@@ -726,26 +739,39 @@ export class MockRepository implements Repository {
       n = {
         userId,
         boothId,
-        status: input.status ?? undefined,
+        interest: input.interest ?? undefined,
+        verdict: input.verdict ?? undefined,
+        // verdict를 새로 쓰는 순간이 곧 방문 시각이다. 해제(verdict===null)면 같이 지운다.
+        visitedAt:
+          input.verdict !== undefined
+            ? input.verdict
+              ? now()
+              : undefined
+            : undefined,
         memo: input.memo,
         photos: input.photos,
-        judgedClass: judgedClass === undefined ? undefined : (judgedClass ?? undefined),
+        judgedClass:
+          judgedClass === undefined ? undefined : (judgedClass ?? undefined),
         updatedAt: now(),
       };
       s.notes.push(n);
     } else {
-      if (input.status !== undefined) n.status = input.status ?? undefined;
+      if (input.interest !== undefined)
+        n.interest = input.interest ?? undefined;
+      if (input.verdict !== undefined) {
+        n.verdict = input.verdict ?? undefined;
+        n.visitedAt = input.verdict ? now() : undefined;
+      }
       if (input.memo !== undefined) n.memo = input.memo;
       if (input.photos !== undefined) n.photos = input.photos;
       // Supabase 구현과 같은 규칙: judgedClass가 undefined면 판정 필드를 안 건드린다.
       if (judgedClass !== undefined) {
         n.judgedClass = judgedClass ?? undefined;
-        n.retro = undefined;
       }
       n.updatedAt = now();
     }
     // Drop empty notes so the store stays compact.
-    if (!n.status && !n.memo?.trim() && !n.photos?.length) {
+    if (!n.interest && !n.verdict && !n.memo?.trim() && !n.photos?.length) {
       s.notes = s.notes.filter((x) => x !== n);
     }
     return n;
@@ -769,32 +795,11 @@ export class MockRepository implements Repository {
     );
     return computeTasteAccuracy(
       notes.map((n) => ({
-        status: n.status,
+        interest: n.interest,
+        verdict: n.verdict,
         judgedClass: n.judgedClass,
-        retro: n.retro,
       })),
     );
-  }
-
-  async setBoothRetro(
-    userId: string,
-    boothId: string,
-    retro: "liked" | "disliked",
-    judgedClass: "confident" | "uncertain",
-  ): Promise<BoothNote | null> {
-    const s = store();
-    const n = s.notes.find(
-      (x) =>
-        x.userId === userId &&
-        x.boothId === boothId &&
-        x.status === "visited" &&
-        !x.retro,
-    );
-    if (!n) return null;
-    n.retro = retro;
-    n.judgedClass = judgedClass;
-    n.updatedAt = now();
-    return n;
   }
 
   async listPendingRetro(
@@ -803,21 +808,50 @@ export class MockRepository implements Repository {
     limit: number,
   ): Promise<{ boothId: string; boothName: string }[]> {
     const s = store();
-    const byId = new Map(
+    const boothById = new Map(
       s.booths
         .filter((b) => b.exhibitionId === exhibitionId)
-        .map((b) => [b.id, b.name]),
+        .map((b) => [b.id, b]),
     );
     return s.notes
       .filter(
         (n) =>
           n.userId === userId &&
-          n.status === "visited" &&
-          !n.retro &&
-          byId.has(n.boothId),
+          n.visitedAt &&
+          !n.verdict &&
+          boothById.has(n.boothId),
       )
       .slice(0, limit)
-      .map((n) => ({ boothId: n.boothId, boothName: byId.get(n.boothId)! }));
+      .map((n) => ({
+        boothId: n.boothId,
+        boothName: boothById.get(n.boothId)!.name,
+      }));
+  }
+
+  async listMustNotVisited(
+    userId: string,
+    exhibitionId: string,
+    limit: number,
+  ): Promise<{ boothId: string; boothName: string }[]> {
+    const s = store();
+    const boothById = new Map(
+      s.booths
+        .filter((b) => b.exhibitionId === exhibitionId)
+        .map((b) => [b.id, b]),
+    );
+    return s.notes
+      .filter(
+        (n) =>
+          n.userId === userId &&
+          n.interest === "must" &&
+          !n.visitedAt &&
+          boothById.has(n.boothId),
+      )
+      .slice(0, limit)
+      .map((n) => ({
+        boothId: n.boothId,
+        boothName: boothById.get(n.boothId)!.name,
+      }));
   }
 
   async listExhibitionNotes(

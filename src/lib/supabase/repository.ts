@@ -2,11 +2,7 @@ import { uid } from "@/lib/utils";
 import { REPORT_HIDE_THRESHOLD } from "@/lib/constants";
 import { deriveValueTags } from "@/lib/values/derive";
 import { createServerClient } from "@/lib/supabase/server";
-import {
-  computeTasteAccuracy,
-  type JudgedClass,
-  type TasteAccuracy,
-} from "@/lib/memory/taste";
+import { computeTasteAccuracy, type TasteAccuracy } from "@/lib/memory/taste";
 import type { ListBoothQuery, Repository } from "@/lib/repositories/types";
 import type {
   AnalyticsEvent,
@@ -356,18 +352,19 @@ function mapNote(r: Row): BoothNote {
   return {
     userId: str(r.user_id),
     boothId: str(r.booth_id),
-    // 값 목록의 진실은 BoothStatus와 0029의 체크 제약이다 — 여기서 좁게 캐스팅하면
-    // 새 상태(interested·later)가 타입상 없는 값처럼 보인다(런타임엔 그대로 흐른다).
-    status:
-      r.status == null
+    interest:
+      r.interest == null
         ? undefined
-        : (String(r.status) as BoothNote["status"]),
+        : (String(r.interest) as BoothNote["interest"]),
+    verdict:
+      r.verdict == null
+        ? undefined
+        : (String(r.verdict) as BoothNote["verdict"]),
+    visitedAt: r.visited_at == null ? undefined : str(r.visited_at),
     judgedClass:
       r.judged_class == null
         ? undefined
         : (String(r.judged_class) as BoothNote["judgedClass"]),
-    retro:
-      r.retro == null ? undefined : (String(r.retro) as BoothNote["retro"]),
     memo: r.memo == null ? undefined : String(r.memo),
     photos: Array.isArray(r.photos) ? r.photos.map(String) : undefined,
     updatedAt: str(r.updated_at),
@@ -985,11 +982,7 @@ export class SupabaseRepository implements Repository {
       : existing.sessionId === owner.sessionId;
     if (!owned) return false;
     const db = await this.db();
-    const res = await db
-      .from("route_plan")
-      .delete()
-      .eq("id", id)
-      .select("id");
+    const res = await db.from("route_plan").delete().eq("id", id).select("id");
     return (maybeWrote(res, "동선 삭제")?.length ?? 0) > 0;
   }
 
@@ -1122,10 +1115,7 @@ export class SupabaseRepository implements Repository {
     return mapUser(wrote(res, "계정 생성") as Row);
   }
 
-  async listUsers(opts?: {
-    limit?: number;
-    offset?: number;
-  }): Promise<User[]> {
+  async listUsers(opts?: { limit?: number; offset?: number }): Promise<User[]> {
     const db = await this.db();
     let q = db
       .from("app_user")
@@ -1237,11 +1227,17 @@ export class SupabaseRepository implements Repository {
     judgedClass: "confident" | "uncertain" | null | undefined,
   ): Promise<BoothNote> {
     const db = await this.db();
-    const status = input.status ?? null;
+    const interest = input.interest ?? null;
+    const verdict = input.verdict ?? null;
     const memo = input.memo ?? null;
     const photos = input.photos ?? [];
     // Empty note → delete so the gallery/back-end stays clean.
-    if (!status && (memo == null || !memo.trim()) && photos.length === 0) {
+    if (
+      !interest &&
+      !verdict &&
+      (memo == null || !memo.trim()) &&
+      photos.length === 0
+    ) {
       maybeWrote(
         await db
           .from("booth_note")
@@ -1255,20 +1251,21 @@ export class SupabaseRepository implements Repository {
     const row: Row = {
       user_id: userId,
       booth_id: boothId,
-      status,
       memo,
       photos,
       updated_at: now(),
     };
-    // status가 확신·부정 반응(interested·later·skipped)이거나 해제일 때만 판정을
-    // 새로 쓴다. visited(가봄)나 메모만 고치는 쓰기는 judged_class·retro를 SET
-    // 절에서 아예 뺀다 — upsert가 명시 안 한 컬럼은 충돌 시(기존 행 업데이트) 그대로
-    // 두는 성질을 그대로 이용한다. 안 그러면 이미 답한 되묻기가 메모 수정 한 번에
-    // 조용히 지워진다.
-    if (judgedClass !== undefined) {
-      row.judged_class = judgedClass;
-      row.retro = null;
+    // interest·verdict는 각각 "이 요청이 그 필드를 건드리는지"에 따라 SET 절에
+    // 넣을지 뺄지 정한다 — undefined면 아예 안 넣어서 upsert 충돌 시 기존 값을
+    // 그대로 둔다(메모만 고치는 쓰기가 반응을 조용히 안 건드리게).
+    if (input.interest !== undefined) row.interest = interest;
+    if (input.verdict !== undefined) {
+      row.verdict = verdict;
+      // verdict를 새로 쓰는 순간이 곧 방문 시각. 해제하면 같이 지운다 — 판정이
+      // 곧 방문 기록이므로 둘을 분리해서 남기지 않는다(judgment-vocabulary §8-2).
+      row.visited_at = verdict ? now() : null;
     }
+    if (judgedClass !== undefined) row.judged_class = judgedClass;
     const res = await db
       .from("booth_note")
       .upsert(row, { onConflict: "user_id,booth_id" })
@@ -1308,45 +1305,25 @@ export class SupabaseRepository implements Repository {
     if (ids.length === 0) return { judgedCount: 0, pct: null };
     const { data } = await db
       .from("booth_note")
-      .select("status, judged_class, retro")
+      .select("interest, verdict, judged_class")
       .eq("user_id", userId)
       .in("booth_id", ids);
     return computeTasteAccuracy(
       (data ?? []).map((r) => ({
-        status:
-          (r as Row).status == null
+        interest:
+          (r as Row).interest == null
             ? undefined
-            : (String((r as Row).status) as BoothNote["status"]),
+            : (String((r as Row).interest) as BoothNote["interest"]),
+        verdict:
+          (r as Row).verdict == null
+            ? undefined
+            : (String((r as Row).verdict) as BoothNote["verdict"]),
         judgedClass:
           (r as Row).judged_class == null
-            ? null
-            : (String((r as Row).judged_class) as JudgedClass),
-        retro:
-          (r as Row).retro == null
             ? undefined
-            : (String((r as Row).retro) as BoothNote["retro"]),
+            : (String((r as Row).judged_class) as BoothNote["judgedClass"]),
       })),
     );
-  }
-
-  async setBoothRetro(
-    userId: string,
-    boothId: string,
-    retro: "liked" | "disliked",
-    judgedClass: "confident" | "uncertain",
-  ): Promise<BoothNote | null> {
-    const db = await this.db();
-    const res = await db
-      .from("booth_note")
-      .update({ retro, judged_class: judgedClass, updated_at: now() })
-      .eq("user_id", userId)
-      .eq("booth_id", boothId)
-      .eq("status", "visited")
-      .is("retro", null)
-      .select("*")
-      .maybeSingle();
-    const data = maybeWrote(res, "되묻기 저장");
-    return data ? mapNote(data as Row) : null;
   }
 
   async listPendingRetro(
@@ -1367,8 +1344,36 @@ export class SupabaseRepository implements Repository {
       .from("booth_note")
       .select("booth_id")
       .eq("user_id", userId)
-      .eq("status", "visited")
-      .is("retro", null)
+      .not("visited_at", "is", null)
+      .is("verdict", null)
+      .in("booth_id", [...nameById.keys()])
+      .limit(limit);
+    return (data ?? [])
+      .map((r) => str((r as Row).booth_id))
+      .filter((id) => nameById.has(id))
+      .map((id) => ({ boothId: id, boothName: nameById.get(id)! }));
+  }
+
+  async listMustNotVisited(
+    userId: string,
+    exhibitionId: string,
+    limit: number,
+  ): Promise<{ boothId: string; boothName: string }[]> {
+    const db = await this.db();
+    const { data: booths } = await db
+      .from("booth")
+      .select("id, name")
+      .eq("exhibition_id", exhibitionId);
+    const nameById = new Map(
+      (booths ?? []).map((b) => [str((b as Row).id), str((b as Row).name)]),
+    );
+    if (nameById.size === 0) return [];
+    const { data } = await db
+      .from("booth_note")
+      .select("booth_id")
+      .eq("user_id", userId)
+      .eq("interest", "must")
+      .is("visited_at", null)
       .in("booth_id", [...nameById.keys()])
       .limit(limit);
     return (data ?? [])
@@ -1432,10 +1437,7 @@ export class SupabaseRepository implements Repository {
     return mapBookmark(wrote(res, "북마크 저장") as Row);
   }
 
-  async removeBookmark(
-    userId: string,
-    input: BookmarkInput,
-  ): Promise<boolean> {
+  async removeBookmark(userId: string, input: BookmarkInput): Promise<boolean> {
     const db = await this.db();
     const { error, count } = await db
       .from("bookmark")

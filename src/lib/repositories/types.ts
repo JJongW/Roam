@@ -186,17 +186,23 @@ export interface Repository {
    *  리뷰·이벤트·웰컴키트는 안 읽는다. 반응 판정 시 확신도 대조에 쓴다. */
   getBooth(id: string): Promise<Booth | null>;
   /** 전시 스코프 취향 정확도. */
-  getTasteAccuracy(userId: string, exhibitionId: string): Promise<TasteAccuracy>;
-  /** '가봄' 되묻기 답 저장. status가 'visited'인 기존 노트에만 적용 — 없으면 null
-   *  (호출부가 400 처리). */
-  setBoothRetro(
+  getTasteAccuracy(
     userId: string,
-    boothId: string,
-    retro: "liked" | "disliked",
-    judgedClass: "confident" | "uncertain",
-  ): Promise<BoothNote | null>;
-  /** 'visited'이면서 아직 되묻기에 답 안 한 부스(관람 마치기용, 최대 limit개). */
+    exhibitionId: string,
+  ): Promise<TasteAccuracy>;
+  /** verdict가 있는데 아직 방문 기록(visitedAt)이 없는 부스는 존재할 수 없다 — verdict
+   *  자체가 방문 기록이다(judgment-vocabulary §3-3). 그래서 되묻기 대상은 오직
+   *  "visitedAt은 있는데 verdict가 없는" 부스뿐이다(레거시 행 + 현장에서 안 누른 것).
+   *  관람 마치기용, 최대 limit개. */
   listPendingRetro(
+    userId: string,
+    exhibitionId: string,
+    limit: number,
+  ): Promise<{ boothId: string; boothName: string }[]>;
+  /** interest='must'로 찍어뒀는데 아직 안 간(visitedAt 없는) 부스 — 관람 마치기에서
+   *  "여기 가봤어?"로 단정 없이 묻는 두 번째 되묻기 묶음(judgment-vocabulary §7-2).
+   *  최대 limit개. */
+  listMustNotVisited(
     userId: string,
     exhibitionId: string,
     limit: number,
