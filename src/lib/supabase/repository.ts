@@ -1,4 +1,5 @@
 import { uid } from "@/lib/utils";
+import { computeJourneyFunnel } from "@/lib/admin/journey-funnel";
 import { REPORT_HIDE_THRESHOLD } from "@/lib/constants";
 import { deriveValueTags } from "@/lib/values/derive";
 import { createServerClient, createServiceClient } from "@/lib/supabase/server";
@@ -38,6 +39,7 @@ import type {
   UserBrain,
   UserPreference,
   UserSignal,
+  VisitDigest,
   VisitPurpose,
   VisitorSession,
   WelcomeKit,
@@ -1839,6 +1841,25 @@ export class SupabaseRepository implements Repository {
     maybeWrote(res, "브레인 저장");
   }
 
+  async listReflectedUserIds(exhibitionId: string): Promise<string[]> {
+    const db = await this.db();
+    // user_brain은 사용자당 한 행, visits는 JSONB 배열이라 DB 단에서 정확히
+    // 못 걸러 전부 읽어 앱에서 거른다(다른 analytics 메서드들과 같은 전 스캔
+    // 관례 — admin-analytics-pm-layer §1의 집계 성능 항목은 구조적 해결로 미뤄둠).
+    // visits 하위 경로만 뽑아 나머지 브레인 페이로드(관심사·전체 요약)는 안 읽는다.
+    const { data } = await db
+      .from("user_brain")
+      .select("user_id, data->visits");
+    const ids: string[] = [];
+    for (const row of (data ?? []) as Row[]) {
+      const visits = row.visits as VisitDigest[] | null;
+      if (visits?.some((v) => v.exhibitionId === exhibitionId)) {
+        ids.push(str(row.user_id));
+      }
+    }
+    return ids;
+  }
+
   async analyticsHeatmap(
     exhibitionId: string,
   ): Promise<{ x: number; y: number; weight: number }[]> {
@@ -1861,6 +1882,7 @@ export class SupabaseRepository implements Repository {
   ): Promise<
     { boothId: string; name: string; views: number; arrivals: number }[]
   > {
+    // 정적 popularity 가산을 뺐다 — 실제 조회가 없으면 정직하게 0으로 보인다.
     const booths = await this.listBoothsByExhibitionId(exhibitionId);
     const an = await this._allAnalytics(exhibitionId);
     return booths
@@ -1871,12 +1893,7 @@ export class SupabaseRepository implements Repository {
         const arrivals = an.filter(
           (a) => a.boothId === b.id && a.type === "booth_arrive",
         ).length;
-        return {
-          boothId: b.id,
-          name: b.name,
-          views: views + Math.round(b.popularity * 1.2),
-          arrivals: arrivals + Math.round(b.popularity * 0.4),
-        };
+        return { boothId: b.id, name: b.name, views, arrivals };
       })
       .sort((a, b) => b.views - a.views)
       .slice(0, limit);
@@ -1885,17 +1902,27 @@ export class SupabaseRepository implements Repository {
   async analyticsFlow(
     exhibitionId: string,
   ): Promise<{ from: string; to: string; count: number }[]> {
+    // booth_arrive는 발화가 없다 — 유일하게 살아있는 view를 같은 세션 안에서
+    // 시간순으로 이어 근사한다.
     const all = await this._allAnalytics(exhibitionId);
     const an = all
-      .filter((a) => a.type === "booth_arrive" && a.boothId)
+      .filter((a) => a.type === "view" && a.boothId)
       .sort(
         (a, b) =>
           a.sessionId.localeCompare(b.sessionId) ||
           a.createdAt.localeCompare(b.createdAt),
       );
     const edges = new Map<string, number>();
+    const MAX_GAP_MS = 30 * 60 * 1000;
     for (let i = 1; i < an.length; i++) {
       if (an[i].sessionId !== an[i - 1].sessionId) continue;
+      if (an[i].boothId === an[i - 1].boothId) continue;
+      const gap =
+        new Date(an[i].createdAt).getTime() -
+        new Date(an[i - 1].createdAt).getTime();
+      // 세션 쿠키가 30일까지 살아있어 같은 세션이라도 며칠 뒤 재방문이 섞일 수
+      // 있다 — 실제 한 번의 관람 흐름만 잡히게 시간 간격도 좁힌다.
+      if (gap > MAX_GAP_MS) continue;
       const key = `${an[i - 1].boothId}→${an[i].boothId}`;
       edges.set(key, (edges.get(key) ?? 0) + 1);
     }
@@ -1908,37 +1935,10 @@ export class SupabaseRepository implements Repository {
   async analyticsConversion(
     exhibitionId: string,
   ): Promise<{ stage: string; count: number; rate: number }[]> {
-    const db = await this.db();
-    const an = await this._allAnalytics(exhibitionId);
-    const { data: sessionRows } = await db
-      .from("visitor_session")
-      .select("id")
-      .eq("exhibition_id", exhibitionId);
-    const sessions = (sessionRows ?? []).length || 1;
-    const { count: prefCount } = await db
-      .from("user_preference")
-      .select("session_id", { count: "exact", head: true });
-    const prefs = prefCount ?? 0;
-    const { data: routeRows } = await db
-      .from("route_plan")
-      .select("status")
-      .eq("exhibition_id", exhibitionId);
-    const routes = (routeRows ?? []) as Row[];
-    const routeStart =
-      an.filter((a) => a.type === "route_start").length || routes.length;
-    const routeDone =
-      an.filter((a) => a.type === "route_complete").length ||
-      routes.filter((r) => str(r.status) === "completed").length;
-    const stages = [
-      { stage: "세션 시작", count: sessions },
-      { stage: "온보딩 완료", count: prefs },
-      { stage: "경로 시작", count: routeStart },
-      { stage: "경로 완료", count: routeDone },
-    ];
-    const top = stages[0].count || 1;
-    return stages.map((s) => ({
-      ...s,
-      rate: Number(((s.count / top) * 100).toFixed(1)),
-    }));
+    // 죽은 소스(user_preference 전역 카운트 — 전시 필터도 없었다·route_plan)를
+    // 읽던 걸 실제 여정 퍼널로 교체한다.
+    const signals = await this.listExhibitionSignals(exhibitionId);
+    const reflected = await this.listReflectedUserIds(exhibitionId);
+    return computeJourneyFunnel(signals, new Set(reflected));
   }
 }

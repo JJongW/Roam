@@ -173,6 +173,9 @@ export interface Repository {
   getUserBrain(userId: string): Promise<UserBrain | null>;
   /** 증류된 브레인 upsert. */
   saveUserBrain(brain: UserBrain): Promise<void>;
+  /** 이 전시에서 회고(관람 마치기 → VisitDigest)를 남긴 사용자 id 목록.
+   *  여정 퍼널의 마지막 단계 소스. */
+  listReflectedUserIds(exhibitionId: string): Promise<string[]>;
 
   // users (nickname + OAuth auth)
   createUser(nickname: string): Promise<User>;
