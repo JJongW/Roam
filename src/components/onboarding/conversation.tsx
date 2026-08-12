@@ -101,20 +101,27 @@ export function Conversation({
         </div>
       )}
 
-      {/* Romi 중앙 + 질문 — 화면 상단 2/3에 여유롭게 (ingan.ai 톤) */}
-      <div
-        key={index}
-        className="animate-in fade-in slide-in-from-bottom-1 flex flex-1 flex-col items-center justify-center gap-5 text-center duration-[var(--motion-d6)]"
-      >
+      {/* Romi 중앙 + 질문 — 화면 상단 2/3에 여유롭게 (ingan.ai 톤). Romi 영상은
+          문항이 바뀌어도 계속 재생 상태를 유지한다 — 예전엔 이 블록 전체가
+          key={index}로 매 문항마다 다시 마운트돼 <video>도 같이 리마운트됐고,
+          그때마다 src가 다시 걸리는 찰나 poster(로고 정지 이미지)가 비치면서
+          페이드인 애니메이션과 겹쳐 로미 영상 위에 로고가 잠깐 겹쳐 보였다. 텍스트만
+          문항 단위로 페이드시킨다. */}
+      <div className="flex flex-1 flex-col items-center justify-center gap-5 text-center">
         <span className="flex size-32 items-center justify-center overflow-hidden rounded-[2.5rem]">
           <RoamMotion src="/walk_think.webm" />
         </span>
-        <p className="text-[13px] font-medium text-muted-foreground">
-          {t(subtitleKey)}
-        </p>
-        <h1 className="max-w-[18rem] text-2xl font-extrabold leading-snug">
-          {t(`onboardingQ.${q.id}.prompt`)}
-        </h1>
+        <div
+          key={index}
+          className="animate-in fade-in slide-in-from-bottom-1 flex flex-col items-center gap-5 duration-[var(--motion-d6)]"
+        >
+          <p className="text-[13px] font-medium text-muted-foreground">
+            {t(subtitleKey)}
+          </p>
+          <h1 className="max-w-[18rem] text-2xl font-extrabold leading-snug">
+            {t(`onboardingQ.${q.id}.prompt`)}
+          </h1>
+        </div>
       </div>
 
       {/* 답변 카드 — 하단 고정 */}
