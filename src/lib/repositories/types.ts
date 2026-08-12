@@ -12,6 +12,7 @@ import type {
   Exhibition,
   ExhibitionDetail,
   Hall,
+  IssueLog,
   Paginated,
   Review,
   RoutePlan,
@@ -136,6 +137,25 @@ export interface Repository {
     limit?: number,
   ): Promise<{ keyword: string; count: number }[]>;
 
+  // 오류/이슈 로그 (admin 모니터링)
+  /** 서버 또는 클라이언트에서 발생한 오류 이벤트를 적재. 절대 throw하지 않는다 —
+   *  로깅 실패가 원래 요청에 영향을 주면 안 된다. */
+  logIssue(input: {
+    source: "server" | "client";
+    message: string;
+    stack?: string;
+    path?: string;
+    digest?: string;
+    userId?: string;
+    sessionId?: string;
+    context?: Record<string, unknown>;
+  }): Promise<void>;
+  /** 오류 이벤트 최신순 조회(admin 전용). */
+  listIssues(opts?: {
+    source?: "server" | "client";
+    limit?: number;
+  }): Promise<IssueLog[]>;
+
   // L4 사용자 메모리 (원장 + 증류 브레인)
   /** 사용자 행동 신호를 원장에 append. 증류는 호출부(memory service)가 수행. */
   appendUserSignal(sig: Omit<UserSignal, "id" | "createdAt">): Promise<void>;
@@ -182,6 +202,8 @@ export interface Repository {
      *  안 바뀌는 쓰기) — 그래야 메모만 고칠 때 이미 답한 판정이 조용히 지워지지 않는다. */
     judgedClass: "confident" | "uncertain" | null | undefined,
   ): Promise<BoothNote>;
+  /** 특정 부스 id 목록에 해당하는 모든 사용자의 노트(admin 데이터 이슈 계산용). */
+  listNotesByBoothIds(boothIds: string[]): Promise<BoothNote[]>;
   /** 부스 하나(가벼운 조회 — 목록 컬럼 + enrichment). getBoothDetail과 달리
    *  리뷰·이벤트·웰컴키트는 안 읽는다. 반응 판정 시 확신도 대조에 쓴다. */
   getBooth(id: string): Promise<Booth | null>;

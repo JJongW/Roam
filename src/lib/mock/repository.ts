@@ -31,6 +31,7 @@ import type {
   Exhibition,
   ExhibitionDetail,
   Hall,
+  IssueLog,
   Paginated,
   Review,
   RoutePlan,
@@ -80,6 +81,7 @@ interface Store {
   aiQueries: AiQueryLog[];
   userSignals: UserSignal[];
   userBrains: Map<string, UserBrain>;
+  issueLogs: IssueLog[];
 }
 
 // Persist across HMR / route invocations in a single Node process.
@@ -124,6 +126,7 @@ function buildStore(): Store {
     aiQueries: [],
     userSignals: [],
     userBrains: new Map(),
+    issueLogs: [],
   };
 }
 
@@ -777,6 +780,11 @@ export class MockRepository implements Repository {
     return n;
   }
 
+  async listNotesByBoothIds(boothIds: string[]): Promise<BoothNote[]> {
+    const ids = new Set(boothIds);
+    return store().notes.filter((n) => ids.has(n.boothId));
+  }
+
   async getBooth(id: string): Promise<Booth | null> {
     const s = store();
     return s.booths.find((b) => b.id === id) ?? null;
@@ -917,6 +925,39 @@ export class MockRepository implements Repository {
       .map(([keyword, count]) => ({ keyword, count }))
       .sort((a, b) => b.count - a.count)
       .slice(0, limit);
+  }
+
+  async logIssue(input: {
+    source: "server" | "client";
+    message: string;
+    stack?: string;
+    path?: string;
+    digest?: string;
+    userId?: string;
+    sessionId?: string;
+    context?: Record<string, unknown>;
+  }): Promise<void> {
+    store().issueLogs.push({
+      id: uid("issue"),
+      source: input.source,
+      message: input.message,
+      stack: input.stack,
+      path: input.path,
+      digest: input.digest,
+      userId: input.userId,
+      sessionId: input.sessionId,
+      context: input.context,
+      createdAt: now(),
+    });
+  }
+
+  async listIssues(opts?: {
+    source?: "server" | "client";
+    limit?: number;
+  }): Promise<IssueLog[]> {
+    let list = [...store().issueLogs].reverse();
+    if (opts?.source) list = list.filter((i) => i.source === opts.source);
+    return list.slice(0, opts?.limit ?? 100);
   }
 
   async appendUserSignal(

@@ -354,3 +354,47 @@ describe("MockRepository", () => {
     expect(await repo.deleteUser("no-such-id")).toBe(false);
   });
 });
+
+describe("logIssue / listIssues", () => {
+  it("적재한 이슈를 최신순으로 돌려준다", async () => {
+    const repo = new MockRepository();
+    await repo.logIssue({ source: "server", message: "첫 번째 오류" });
+    await repo.logIssue({ source: "client", message: "두 번째 오류" });
+    const issues = await repo.listIssues();
+    expect(issues.map((i) => i.message)).toEqual([
+      "두 번째 오류",
+      "첫 번째 오류",
+    ]);
+  });
+
+  it("source로 필터링한다", async () => {
+    const repo = new MockRepository();
+    await repo.logIssue({ source: "server", message: "서버 오류" });
+    await repo.logIssue({ source: "client", message: "클라 오류" });
+    const serverOnly = await repo.listIssues({ source: "server" });
+    expect(serverOnly).toHaveLength(1);
+    expect(serverOnly[0].message).toBe("서버 오류");
+  });
+
+  it("limit을 적용한다", async () => {
+    const repo = new MockRepository();
+    for (let i = 0; i < 5; i++) {
+      await repo.logIssue({ source: "server", message: `오류 ${i}` });
+    }
+    const limited = await repo.listIssues({ limit: 2 });
+    expect(limited).toHaveLength(2);
+  });
+});
+
+describe("listNotesByBoothIds", () => {
+  it("주어진 부스 id에 해당하는 노트만 반환한다", async () => {
+    const repo = new MockRepository();
+    const all = await repo.listBooths("sibf-2026", { limit: 5 });
+    const [a, b] = all.data;
+    await repo.upsertNote("user-1", a.id, { interest: "must" }, "confident");
+    await repo.upsertNote("user-2", b.id, { interest: "curious" }, "confident");
+    const notes = await repo.listNotesByBoothIds([a.id]);
+    expect(notes).toHaveLength(1);
+    expect(notes[0].boothId).toBe(a.id);
+  });
+});

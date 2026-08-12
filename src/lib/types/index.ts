@@ -351,6 +351,24 @@ export interface AiQueryLog {
   createdAt: string;
 }
 
+/**
+ * 서버·클라이언트 오류 이벤트. source로만 구분 — 구조가 같은 하나의 로그 스트림이다.
+ * 데이터 이슈(부스 결측 등)는 여기 안 담는다. "사건"이 아니라 "지금 상태"라서 별도로
+ * 조회 시점에 계산한다(src/lib/admin/data-issues.ts).
+ */
+export interface IssueLog {
+  id: string;
+  source: "server" | "client";
+  message: string;
+  stack?: string;
+  path?: string;
+  digest?: string;
+  userId?: string;
+  sessionId?: string;
+  context?: Record<string, unknown>;
+  createdAt: string;
+}
+
 // --- L4 사용자 브레인 (종단 메모리) ------------------------------------------
 // 원장(UserSignal) → 결정론 증류(confidence 수학, LLM 무) → per-user 브레인(UserBrain).
 // userId = app_user.id. 설계: docs/decisions/2026-07-07_knowledge-architecture.md §7
