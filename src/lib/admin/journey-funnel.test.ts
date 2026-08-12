@@ -2,7 +2,9 @@ import { describe, expect, it } from "vitest";
 import { computeJourneyFunnel } from "./journey-funnel";
 import type { UserSignal } from "@/lib/types";
 
-function sig(overrides: Partial<UserSignal> & { userId: string; kind: UserSignal["kind"] }): UserSignal {
+function sig(
+  overrides: Partial<UserSignal> & { userId: string; kind: UserSignal["kind"] },
+): UserSignal {
   return {
     id: `s_${Math.random()}`,
     exhibitionId: "e1",
@@ -16,9 +18,17 @@ describe("computeJourneyFunnel", () => {
   it("가치 온보딩 신호(boothCode 없는 reaction_must)와 피드 반응(boothCode 있는)을 구분한다", () => {
     const signals: UserSignal[] = [
       // u1: 온보딩만 함(boothCode 없음)
-      sig({ userId: "u1", kind: "reaction_must" }),
+      sig({
+        userId: "u1",
+        kind: "reaction_must",
+        slugs: ["discovery", "social"],
+      }),
       // u2: 온보딩 + 실제 부스 반응
-      sig({ userId: "u2", kind: "reaction_must" }),
+      sig({
+        userId: "u2",
+        kind: "reaction_must",
+        slugs: ["discovery", "social"],
+      }),
       sig({ userId: "u2", kind: "reaction_curious", boothCode: "A01" }),
     ];
     const result = computeJourneyFunnel(signals, new Set());
@@ -73,5 +83,13 @@ describe("computeJourneyFunnel", () => {
   it("신호도 회고도 없으면 전부 0", () => {
     const result = computeJourneyFunnel([], new Set());
     expect(result.every((s) => s.count === 0)).toBe(true);
+  });
+
+  it("boothCode 없어도 slug가 1개뿐이면 온보딩으로 안 센다 — brain-sheet 재시드 오탐 방지", () => {
+    const signals: UserSignal[] = [
+      sig({ userId: "u1", kind: "reaction_must", slugs: ["discovery"] }),
+    ];
+    const result = computeJourneyFunnel(signals, new Set());
+    expect(result.find((s) => s.stage === "가치 온보딩 완료")!.count).toBe(0);
   });
 });

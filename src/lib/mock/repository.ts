@@ -1064,9 +1064,16 @@ export class MockRepository implements Repository {
           a.createdAt.localeCompare(b.createdAt),
       );
     const edges = new Map<string, number>();
+    const MAX_GAP_MS = 30 * 60 * 1000;
     for (let i = 1; i < an.length; i++) {
       if (an[i].sessionId !== an[i - 1].sessionId) continue;
       if (an[i].boothId === an[i - 1].boothId) continue;
+      const gap =
+        new Date(an[i].createdAt).getTime() -
+        new Date(an[i - 1].createdAt).getTime();
+      // 세션 쿠키가 30일까지 살아있어 같은 세션이라도 며칠 뒤 재방문이 섞일 수
+      // 있다 — 실제 한 번의 관람 흐름만 잡히게 시간 간격도 좁힌다.
+      if (gap > MAX_GAP_MS) continue;
       const key = `${an[i - 1].boothId}→${an[i].boothId}`;
       edges.set(key, (edges.get(key) ?? 0) + 1);
     }

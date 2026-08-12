@@ -39,6 +39,7 @@ import type {
   UserBrain,
   UserPreference,
   UserSignal,
+  VisitDigest,
   VisitPurpose,
   VisitorSession,
   WelcomeKit,
@@ -1845,11 +1846,14 @@ export class SupabaseRepository implements Repository {
     // user_brain은 사용자당 한 행, visits는 JSONB 배열이라 DB 단에서 정확히
     // 못 걸러 전부 읽어 앱에서 거른다(다른 analytics 메서드들과 같은 전 스캔
     // 관례 — admin-analytics-pm-layer §1의 집계 성능 항목은 구조적 해결로 미뤄둠).
-    const { data } = await db.from("user_brain").select("user_id, data");
+    // visits 하위 경로만 뽑아 나머지 브레인 페이로드(관심사·전체 요약)는 안 읽는다.
+    const { data } = await db
+      .from("user_brain")
+      .select("user_id, data->visits");
     const ids: string[] = [];
     for (const row of (data ?? []) as Row[]) {
-      const brain = row.data as UserBrain | null;
-      if (brain?.visits?.some((v) => v.exhibitionId === exhibitionId)) {
+      const visits = row.visits as VisitDigest[] | null;
+      if (visits?.some((v) => v.exhibitionId === exhibitionId)) {
         ids.push(str(row.user_id));
       }
     }
@@ -1909,9 +1913,16 @@ export class SupabaseRepository implements Repository {
           a.createdAt.localeCompare(b.createdAt),
       );
     const edges = new Map<string, number>();
+    const MAX_GAP_MS = 30 * 60 * 1000;
     for (let i = 1; i < an.length; i++) {
       if (an[i].sessionId !== an[i - 1].sessionId) continue;
       if (an[i].boothId === an[i - 1].boothId) continue;
+      const gap =
+        new Date(an[i].createdAt).getTime() -
+        new Date(an[i - 1].createdAt).getTime();
+      // 세션 쿠키가 30일까지 살아있어 같은 세션이라도 며칠 뒤 재방문이 섞일 수
+      // 있다 — 실제 한 번의 관람 흐름만 잡히게 시간 간격도 좁힌다.
+      if (gap > MAX_GAP_MS) continue;
       const key = `${an[i - 1].boothId}→${an[i].boothId}`;
       edges.set(key, (edges.get(key) ?? 0) + 1);
     }

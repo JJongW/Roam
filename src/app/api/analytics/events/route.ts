@@ -8,8 +8,13 @@ import { analyticsEventInputSchema } from "@/lib/schemas";
 export async function POST(req: Request) {
   const parsed = await parseBody(req, analyticsEventInputSchema);
   if (!parsed.ok) return parsed.res;
-  const session = await ensureSession();
   const repo = await getRepository();
-  await repo.recordAnalytics(session.id, session.exhibitionId, parsed.data);
+  // 세션은 재사용되면 exhibitionId가 최초 생성 시점 값으로 고정된다 — 이 이벤트가
+  // 실제로 어느 전시인지는 부스에서 직접 구해 세션 값보다 우선한다(그래야 세션이
+  // "unknown"으로 굳어 있었거나 다른 전시에서 만들어졌어도 이 이벤트는 정확하다).
+  const booth = parsed.data.boothId ? await repo.getBooth(parsed.data.boothId) : null;
+  const exhibitionId = booth?.exhibitionId;
+  const session = await ensureSession(exhibitionId);
+  await repo.recordAnalytics(session.id, exhibitionId ?? session.exhibitionId, parsed.data);
   return new NextResponse(null, { status: 202 });
 }
