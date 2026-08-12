@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MapPin, Pencil } from "lucide-react";
+import { MapPin, Pencil, RotateCcw } from "lucide-react";
 import { api } from "@/lib/api/client";
 import { TasteRadar } from "@/components/me/taste-radar";
 import { useT } from "@/lib/i18n/provider";
 import { VALUE_TAGS, valueDef } from "@/lib/values";
 import { RoamMotion } from "@/components/companion/roam-motion";
+import { useAuthStore } from "@/lib/stores/auth";
 import {
   Sheet,
   SheetContent,
@@ -31,10 +32,17 @@ export function BrainSheet({
   onClose: () => void;
 }) {
   const t = useT();
+  const restartAppOnboarding = useAuthStore((s) => s.restartAppOnboarding);
   const [brain, setBrain] = useState<UserBrain | null>(null);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
+
+  // 처음 온보딩을 다시 보여준다 — 이 시트를 닫아야 그 아래 전체화면 게이트가 뜬다.
+  function restartOnboarding() {
+    onClose();
+    restartAppOnboarding();
+  }
 
   function load() {
     api
@@ -204,6 +212,15 @@ export function BrainSheet({
             {t("common.close")}
           </Button>
         </div>
+
+        <button
+          type="button"
+          onClick={restartOnboarding}
+          className="mt-3 flex w-full items-center justify-center gap-1.5 py-2 text-xs font-medium text-muted-foreground active:opacity-70"
+        >
+          <RotateCcw className="size-3.5" aria-hidden />
+          {t("myPage.restartOnboarding")}
+        </button>
 
         <LegalLinks className="mt-4" />
       </SheetContent>

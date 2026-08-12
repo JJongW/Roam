@@ -713,6 +713,7 @@ const ko = {
     addHint: "더 끌리는 걸 눌러 추가해",
     editHint: "누르면 켜고 꺼져. 끈 관심은 추천에서 빠져.",
     saving: "반영 중…",
+    restartOnboarding: "처음 온보딩 다시 하기",
   },
 } as const;
 
@@ -1395,6 +1396,7 @@ const en: Dict = {
     addHint: "Tap what draws you to add it",
     editHint: "Tap to turn on or off. Muted interests drop out of picks.",
     saving: "Saving…",
+    restartOnboarding: "Redo the first-time onboarding",
   },
 };
 

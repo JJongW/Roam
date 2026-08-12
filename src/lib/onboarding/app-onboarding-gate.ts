@@ -1,5 +1,11 @@
 // 앱 온보딩 게이트 재노출 판정 — 순수 함수, 테스트 가능하도록 분리.
 //
+// 로컬 스토리지·세션 스토리지 키 — auth.ts(재시작 액션)와 app-onboarding.tsx(게이트
+// 자체) 둘 다 같은 키를 써야 해서 여기 한 곳에서만 정의한다.
+export const APP_ONBOARDING_DISMISS_KEY = "roam-app-onboarded";
+export const APP_ONBOARDING_PHASE_KEY = "roam-onboarding-app-phase";
+export const APP_ONBOARDING_GUIDE_STEP_KEY = "roam-onboarding-app-guide-step";
+//
 // 로컬 dismissal(anonDismissed, localStorage 기반)이 항상 우선한다 — 한 번 껐으면
 // (완료든 건너뛰기든) 이 브라우저에선 계속 안 뜬다. 로그인 상태에선 서버 신호
 // (needsOnboarding)가 추가로 다시 띄울 이유가 된다 — 로컬엔 기록이 없는 새

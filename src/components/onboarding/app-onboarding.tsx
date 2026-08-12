@@ -1,18 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { api } from "@/lib/api/client";
 import { RoamMotion, THINKING_POOL } from "@/components/companion/roam-motion";
 import { Conversation } from "@/components/onboarding/conversation";
-import {
-  clearSessionState,
-  useSessionState,
-} from "@/lib/hooks/use-session-state";
+import { useSessionState } from "@/lib/hooks/use-session-state";
 import { LegalLinks } from "@/components/common/legal-links";
 import { useAuthStore, PENDING_VALUES_KEY } from "@/lib/stores/auth";
 import { useCompanionStore } from "@/lib/stores/companion";
 import {
+  APP_ONBOARDING_GUIDE_STEP_KEY,
+  APP_ONBOARDING_PHASE_KEY,
   canShowAppOnboarding,
   isAppOnboardingDismissed,
 } from "@/lib/onboarding/app-onboarding-gate";
@@ -24,7 +23,6 @@ import {
 } from "@/lib/onboarding/questions";
 import { Button } from "@/components/ui/button";
 
-const FLAG = "roam-app-onboarded";
 type Phase = "intro" | "guide" | "quiz" | "saving";
 
 /** "이렇게 쓰면 돼" 3단계 — 기능 자랑이 아니라 실제 사용 순서를 그대로 보여준다
@@ -55,24 +53,25 @@ export function AppOnboardingGate() {
   const ready = useAuthStore((s) => s.ready);
   const needsOnboarding = useAuthStore((s) => s.needsOnboarding);
   const setNeedsOnboarding = useAuthStore((s) => s.setNeedsOnboarding);
+  // 계정 시트의 "온보딩 다시 하기"가 이 값을 직접 풀 수 있어야 해서(닉네임 버튼
+  // 눌러 이 게이트 바깥에서 트리거) 컴포넌트 로컬 state가 아니라 store에 둔다.
+  const anonDismissed = useAuthStore((s) => s.anonOnboardingDismissed);
+  const dismissAppOnboarding = useAuthStore((s) => s.dismissAppOnboarding);
   const signalAppOnboardingComplete = useCompanionStore(
     (s) => s.signalAppOnboardingComplete,
-  );
-  const [anonDismissed, setAnonDismissed] = useState(
-    () => typeof window !== "undefined" && !!localStorage.getItem(FLAG),
   );
   // 뒤로가기가 이 오버레이를 언마운트시켰다 돌아와도(방문객 레이아웃 밖 — /privacy·
   // /login 등으로 잠깐 나갔다 온 경우 등) phase가 "intro"로 리셋되지 않게 sessionStorage에
   // 같이 남긴다.
   const [phase, setPhase] = useSessionState<Phase>(
-    "roam-onboarding-app-phase",
+    APP_ONBOARDING_PHASE_KEY,
     "intro",
   );
   // guide phase 자체의 몇 번째 슬라이드인지도 세션스토리지에 남긴다 — phase가
   // "guide"로 남아있어도 이 값이 리셋되면 뒤로가기 한 번에 슬라이드 진행이
   // 처음으로 돌아간 것처럼 보인다.
   const [guideStep, setGuideStep] = useSessionState<number>(
-    "roam-onboarding-app-guide-step",
+    APP_ONBOARDING_GUIDE_STEP_KEY,
     0,
   );
 
@@ -81,17 +80,25 @@ export function AppOnboardingGate() {
     needsOnboarding,
     anonDismissed,
   });
+  // "다시 하기"로 dismiss가 풀려 게이트가 다시 뜰 때, 지난번 멈춰있던 단계(예:
+  // "saving")가 그대로 남아있으면 화면이 처음부터가 아니라 중간부터 뜬다 — 껐다가
+  // (다시 하기든 뭐든) 다시 켜질 때마다 항상 intro로 되돌린다. 페인트 전에 동기로
+  // 돌려 잠깐이라도 낡은 단계가 비치지 않게 한다.
+  const wasOnboarded = useRef(onboarded);
+  useLayoutEffect(() => {
+    if (wasOnboarded.current && !onboarded) {
+      setPhase("intro");
+      setGuideStep(0);
+    }
+    wasOnboarded.current = onboarded;
+  }, [onboarded, setPhase, setGuideStep]);
+
   // 이제 랜딩(/)도 덮는다 — 이유는 canShowAppOnboarding의 문서 주석 참고(2026-08-11 판단).
   if (onboarded || !ready || !canShowAppOnboarding(pathname)) return null;
 
   // 로그인 여부와 무관하게 항상 로컬에도 dismiss를 남긴다(위 문서 주석 참고).
   function dismissLocally() {
-    if (typeof window !== "undefined") localStorage.setItem(FLAG, "1");
-    setAnonDismissed(true);
-    clearSessionState(
-      "roam-onboarding-app-phase",
-      "roam-onboarding-app-guide-step",
-    );
+    dismissAppOnboarding();
   }
 
   // guide는 3장 다 보거나 건너뛰면 quiz로 — 둘 다 같은 목적지라 별도 분기가

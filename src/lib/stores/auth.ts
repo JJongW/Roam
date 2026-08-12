@@ -4,6 +4,12 @@ import { create } from "zustand";
 import { toast } from "sonner";
 import { api, ApiClientError } from "@/lib/api/client";
 import { useVisitStore, pushNote } from "@/lib/stores/visit";
+import { clearSessionState } from "@/lib/hooks/use-session-state";
+import {
+  APP_ONBOARDING_DISMISS_KEY,
+  APP_ONBOARDING_GUIDE_STEP_KEY,
+  APP_ONBOARDING_PHASE_KEY,
+} from "@/lib/onboarding/app-onboarding-gate";
 import type { BoothNote, User } from "@/lib/types";
 
 interface AuthState {
@@ -17,6 +23,13 @@ interface AuthState {
    *  localStorage로 따로 판정한다(계정이 없어 서버에 물을 게 없음). */
   needsOnboarding: boolean;
   setNeedsOnboarding: (v: boolean) => void;
+  /** 앱 최초진입 온보딩을 이 브라우저에서 껐는지(완료든 건너뛰기든) — localStorage
+   *  기반, AppOnboardingGate가 구독한다. */
+  anonOnboardingDismissed: boolean;
+  dismissAppOnboarding: () => void;
+  /** 닉네임 버튼(계정 시트)에서 "온보딩 다시 하기" — 로컬 dismiss를 풀고 서버
+   *  신호(needsOnboarding)도 다시 세워 AppOnboardingGate가 처음부터 다시 뜨게 한다. */
+  restartAppOnboarding: () => void;
   openLogin: () => void;
   closeLogin: () => void;
   refresh: () => Promise<void>;
@@ -121,6 +134,23 @@ export const useAuthStore = create<AuthState>((set) => ({
   loginOpen: false,
   needsOnboarding: false,
   setNeedsOnboarding: (v) => set({ needsOnboarding: v }),
+  anonOnboardingDismissed:
+    typeof window !== "undefined" &&
+    !!localStorage.getItem(APP_ONBOARDING_DISMISS_KEY),
+  dismissAppOnboarding: () => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem(APP_ONBOARDING_DISMISS_KEY, "1");
+    }
+    clearSessionState(APP_ONBOARDING_PHASE_KEY, APP_ONBOARDING_GUIDE_STEP_KEY);
+    set({ anonOnboardingDismissed: true });
+  },
+  restartAppOnboarding: () => {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem(APP_ONBOARDING_DISMISS_KEY);
+    }
+    clearSessionState(APP_ONBOARDING_PHASE_KEY, APP_ONBOARDING_GUIDE_STEP_KEY);
+    set({ anonOnboardingDismissed: false, needsOnboarding: true });
+  },
   openLogin: () => set({ loginOpen: true }),
   closeLogin: () => set({ loginOpen: false }),
 
@@ -194,5 +224,7 @@ export function promptLoginOncePerExhibition(exhibitionSlug: string) {
   const key = `roam-promptlogin-seen-${exhibitionSlug}`;
   if (sessionStorage.getItem(key)) return;
   sessionStorage.setItem(key, "1");
-  promptLogin("지금 누른 건 로미가 기억 못 해 — 로그인하면 이제부터 다 기억할게");
+  promptLogin(
+    "지금 누른 건 로미가 기억 못 해 — 로그인하면 이제부터 다 기억할게",
+  );
 }
