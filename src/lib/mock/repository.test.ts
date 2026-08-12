@@ -385,6 +385,28 @@ describe("logIssue / listIssues", () => {
     expect(limited).toHaveLength(2);
   });
 
+  it("sinceDays로 기간을 좁힌다", async () => {
+    const repo = new MockRepository();
+    await repo.logIssue({ source: "server", message: "오래된 오류" });
+    await repo.logIssue({ source: "server", message: "최근 오류" });
+
+    // logIssue가 createdAt=지금으로 찍으므로 store를 직접 조작해 시각을 되돌린다.
+    const store = (
+      globalThis as unknown as {
+        __roamStore: {
+          issueLogs: Array<{ message: string; createdAt: string }>;
+        };
+      }
+    ).__roamStore;
+    const stale = store.issueLogs.find((i) => i.message === "오래된 오류")!;
+    stale.createdAt = new Date(
+      Date.now() - 31 * 24 * 60 * 60 * 1000,
+    ).toISOString();
+
+    const recent = await repo.listIssues({ sinceDays: 30 });
+    expect(recent.map((i) => i.message)).toEqual(["최근 오류"]);
+  });
+
   it("olderThanDays보다 오래된 것만 지우고 개수를 반환한다", async () => {
     const repo = new MockRepository();
     await repo.logIssue({ source: "server", message: "old-1" });

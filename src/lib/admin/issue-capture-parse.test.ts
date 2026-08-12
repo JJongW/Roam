@@ -91,9 +91,23 @@ describe("redact", () => {
 
 describe("redactContext", () => {
   it("객체 안 문자열 값도 마스킹한다", () => {
-    expect(redactContext({ email: "a@b.com", boothId: "booth_xyz123" })).toEqual({
+    expect(
+      redactContext({ email: "a@b.com", boothId: "booth_xyz123" }),
+    ).toEqual({
       email: "[masked]",
       boothId: "booth_xyz123",
+    });
+  });
+
+  it("중첩 객체 안 문자열도 마스킹한다", () => {
+    expect(redactContext({ user: { email: "a@b.com" } })).toEqual({
+      user: { email: "[masked]" },
+    });
+  });
+
+  it("배열 값 안 문자열도 마스킹한다(안전한 값은 그대로)", () => {
+    expect(redactContext({ tags: ["a@b.com", "safe"] })).toEqual({
+      tags: ["[masked]", "safe"],
     });
   });
 

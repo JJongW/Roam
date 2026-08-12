@@ -10,6 +10,7 @@ const COMPONENT_RULES: [RegExp, string][] = [
   [/^\/(booths|api\/booths)/, "부스 상세"],
   [/^\/(exhibitions|api\/exhibitions)/, "피드/전시홈"],
   [/^\/api\/me/, "컴패니언"],
+  [/^\/api\/(ai|community|cloudinary)/, "AI/미디어"],
 ];
 
 /** 경로 규칙으로 어느 기능(구성요소)에서 난 오류인지 자동 분류한다. 새 입력 없음. */
@@ -50,7 +51,8 @@ export function groupIssues(issues: IssueLog[]): IssueGroup[] {
       continue;
     }
     existing.count += 1;
-    if (issue.createdAt < existing.firstSeenAt) existing.firstSeenAt = issue.createdAt;
+    if (issue.createdAt < existing.firstSeenAt)
+      existing.firstSeenAt = issue.createdAt;
     if (issue.createdAt > existing.lastSeenAt) {
       existing.lastSeenAt = issue.createdAt;
       existing.sample = issue;

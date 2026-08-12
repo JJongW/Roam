@@ -21,7 +21,7 @@ export default async function AdminErrorsPage() {
   const cookieId = (await cookies()).get(ADMIN_EXHIBITION_COOKIE)?.value;
   const exhibition = resolveAdminExhibition(exhibitions, cookieId, todayISO());
 
-  const issues = await repo.listIssues({ limit: 1000 });
+  const issues = await repo.listIssues({ limit: 1000, sinceDays: 30 });
   const groups = groupIssues(issues);
 
   let gaps: ReturnType<typeof findBoothEnrichmentGaps> = [];

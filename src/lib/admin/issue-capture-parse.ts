@@ -30,9 +30,10 @@ export function parseUserAgent(ua?: string): string | undefined {
 
 /** Vercel이 모든 요청에 붙이는 지오 헤더를 읽는다. IP는 어디에도 담지 않는다.
  *  로컬 개발(Vercel 아님)에선 헤더가 없어 빈 객체가 나온다. */
-export function geoFromHeaders(
-  get: (name: string) => string | null,
-): { country?: string; city?: string } {
+export function geoFromHeaders(get: (name: string) => string | null): {
+  country?: string;
+  city?: string;
+} {
   const country = get("x-vercel-ip-country") ?? undefined;
   const city = get("x-vercel-ip-city") ?? undefined;
   const result: { country?: string; city?: string } = {};
@@ -42,7 +43,8 @@ export function geoFromHeaders(
 }
 
 const EMAIL_RE = /\S+@\S+\.\S+/g;
-const JWT_RE = /\b[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\b/g;
+const JWT_RE =
+  /\b[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\b/g;
 const BEARER_RE = /Bearer\s+\S+/gi;
 const API_KEY_RE = /\b(sk-|AIza)\S{10,}\b/g;
 
@@ -57,18 +59,21 @@ export function redact(text?: string): string | undefined {
     .replace(EMAIL_RE, "[masked]");
 }
 
-/** context 객체의 문자열 값에 같은 마스킹을 적용한다. 마스킹 자체가 실패해도
- *  원본이 새지 않게 — 문제가 생기면 통째로 대체한다. */
+/** context 객체 **전체**(중첩 객체·배열 안 문자열까지)에 같은 마스킹을 적용한다.
+ *  stringify(replacer) → 재파싱이라 깊이에 상관없이 한 번에 덮인다.
+ *  ⚠️ 직렬화 결과 문자열에 redact를 통째로 거는 방식은 쓸 수 없다 — 이메일 패턴
+ *  (`\S+@\S+\.\S+`)이 탐욕적이라 JSON 구분자(`","`)까지 삼켜 구조를 부순다. 그래서
+ *  replacer로 **문자열 값 단위**로만 마스킹한다.
+ *  마스킹 자체가 실패해도(순환 참조 등) 원본이 새지 않게 — 통째로 대체한다. */
 export function redactContext(
   ctx?: Record<string, unknown>,
 ): Record<string, unknown> | undefined {
   if (!ctx) return ctx;
   try {
-    const out: Record<string, unknown> = {};
-    for (const [k, v] of Object.entries(ctx)) {
-      out[k] = typeof v === "string" ? redact(v) : v;
-    }
-    return out;
+    const masked = JSON.stringify(ctx, (_k, v) =>
+      typeof v === "string" ? redact(v) : v,
+    );
+    return masked ? (JSON.parse(masked) as Record<string, unknown>) : ctx;
   } catch {
     return { redacted: true };
   }

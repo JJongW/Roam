@@ -1747,6 +1747,7 @@ export class SupabaseRepository implements Repository {
   async listIssues(opts?: {
     source?: "server" | "client";
     limit?: number;
+    sinceDays?: number;
   }): Promise<IssueLog[]> {
     const db = createServiceClient();
     let q = db
@@ -1755,6 +1756,12 @@ export class SupabaseRepository implements Repository {
       .order("created_at", { ascending: false })
       .limit(opts?.limit ?? 100);
     if (opts?.source) q = q.eq("source", opts.source);
+    if (opts?.sinceDays) {
+      const cutoff = new Date(
+        Date.now() - opts.sinceDays * 24 * 60 * 60 * 1000,
+      ).toISOString();
+      q = q.gte("created_at", cutoff);
+    }
     const { data } = await q;
     return (data ?? []).map((r) => mapIssueLog(r as Row));
   }
@@ -1764,12 +1771,15 @@ export class SupabaseRepository implements Repository {
     const cutoff = new Date(
       Date.now() - olderThanDays * 24 * 60 * 60 * 1000,
     ).toISOString();
-    const { data } = await db
+    // 쓰기 게이트를 반드시 통과시킨다 — error를 안 보면 실패가 "0건 삭제"(성공)로
+    // 위장돼 admin이 정리됐다고 착각한다.
+    const res = await db
       .from("issue_log")
       .delete()
       .lt("created_at", cutoff)
       .select("id");
-    return data?.length ?? 0;
+    const rows = maybeWrote(res, "이슈 로그 정리");
+    return rows?.length ?? 0;
   }
 
   async appendUserSignal(

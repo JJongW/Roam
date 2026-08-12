@@ -42,6 +42,12 @@ describe("componentOf", () => {
     expect(componentOf("/api/me/values")).toBe("컴패니언");
   });
 
+  it("/api/ai, /api/community, /api/cloudinary → AI/미디어", () => {
+    expect(componentOf("/api/ai/booth-summary")).toBe("AI/미디어");
+    expect(componentOf("/api/community/xyz")).toBe("AI/미디어");
+    expect(componentOf("/api/cloudinary/sign")).toBe("AI/미디어");
+  });
+
   it("모르는 경로 → 기타", () => {
     expect(componentOf("/push/subscribe")).toBe("기타");
   });
@@ -54,9 +60,21 @@ describe("componentOf", () => {
 describe("groupIssues", () => {
   it("같은 (path, message)를 묶어 횟수를 센다", () => {
     const issues = [
-      issue({ message: "boom", path: "/api/me/reflect", createdAt: "2026-08-12T00:00:00Z" }),
-      issue({ message: "boom", path: "/api/me/reflect", createdAt: "2026-08-12T01:00:00Z" }),
-      issue({ message: "boom", path: "/api/me/reflect", createdAt: "2026-08-12T02:00:00Z" }),
+      issue({
+        message: "boom",
+        path: "/api/me/reflect",
+        createdAt: "2026-08-12T00:00:00Z",
+      }),
+      issue({
+        message: "boom",
+        path: "/api/me/reflect",
+        createdAt: "2026-08-12T01:00:00Z",
+      }),
+      issue({
+        message: "boom",
+        path: "/api/me/reflect",
+        createdAt: "2026-08-12T02:00:00Z",
+      }),
     ];
     const groups = groupIssues(issues);
     expect(groups).toHaveLength(1);
@@ -76,7 +94,9 @@ describe("groupIssues", () => {
   });
 
   it("component가 path 규칙으로 붙는다", () => {
-    const groups = groupIssues([issue({ message: "x", path: "/admin/errors" })]);
+    const groups = groupIssues([
+      issue({ message: "x", path: "/admin/errors" }),
+    ]);
     expect(groups[0].component).toBe("관리자");
   });
 

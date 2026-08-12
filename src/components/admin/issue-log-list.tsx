@@ -1,21 +1,40 @@
 "use client";
 
 import { useState } from "react";
-import { formatDistanceToNow } from "date-fns";
-import { ko } from "date-fns/locale";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { api } from "@/lib/api/client";
+import { formatPostTime } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import type { IssueGroup } from "@/lib/admin/issue-grouping";
 
+const SOURCES: { value: "all" | "server" | "client"; label: string }[] = [
+  { value: "all", label: "전체" },
+  { value: "server", label: "서버" },
+  { value: "client", label: "클라이언트" },
+];
+
+const chipClass = (active: boolean) =>
+  `rounded-lg border px-3 py-1 text-xs font-semibold ${
+    active
+      ? "border-primary bg-primary/10 text-primary"
+      : "border-border text-muted-foreground"
+  }`;
+
 export function IssueLogList({ groups }: { groups: IssueGroup[] }) {
+  const router = useRouter();
   const [expandedKey, setExpandedKey] = useState<string | null>(null);
   const [component, setComponent] = useState<string>("all");
+  const [source, setSource] = useState<"all" | "server" | "client">("all");
   const [cleaning, setCleaning] = useState(false);
 
   const components = ["all", ...new Set(groups.map((g) => g.component))];
-  const filtered =
-    component === "all" ? groups : groups.filter((g) => g.component === component);
+  // 두 필터는 독립적으로 걸리고 **둘 다** 만족해야 보인다(AND).
+  const filtered = groups.filter(
+    (g) =>
+      (source === "all" || g.sample.source === source) &&
+      (component === "all" || g.component === component),
+  );
 
   async function cleanup() {
     if (cleaning) return;
@@ -25,6 +44,8 @@ export function IssueLogList({ groups }: { groups: IssueGroup[] }) {
         "/api/admin/issues/cleanup",
       );
       toast.success(`${deleted}건 정리했어요`);
+      // 삭제 결과가 목록에 반영되도록 서버 컴포넌트를 다시 그린다.
+      router.refresh();
     } catch {
       toast.error("정리에 실패했어요");
     } finally {
@@ -35,18 +56,14 @@ export function IssueLogList({ groups }: { groups: IssueGroup[] }) {
   return (
     <div className="space-y-3">
       <div className="flex flex-wrap items-center gap-1.5">
-        {components.map((c) => (
+        {SOURCES.map((s) => (
           <button
-            key={c}
+            key={s.value}
             type="button"
-            onClick={() => setComponent(c)}
-            className={`rounded-lg border px-3 py-1 text-xs font-semibold ${
-              component === c
-                ? "border-primary bg-primary/10 text-primary"
-                : "border-border text-muted-foreground"
-            }`}
+            onClick={() => setSource(s.value)}
+            className={chipClass(source === s.value)}
           >
-            {c === "all" ? "전체" : c}
+            {s.label}
           </button>
         ))}
         <Button
@@ -58,6 +75,19 @@ export function IssueLogList({ groups }: { groups: IssueGroup[] }) {
         >
           30일 이전 로그 정리
         </Button>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-1.5">
+        {components.map((c) => (
+          <button
+            key={c}
+            type="button"
+            onClick={() => setComponent(c)}
+            className={chipClass(component === c)}
+          >
+            {c === "all" ? "전체" : c}
+          </button>
+        ))}
       </div>
 
       {filtered.length === 0 ? (
@@ -93,12 +123,7 @@ export function IssueLogList({ groups }: { groups: IssueGroup[] }) {
                     <span className="rounded bg-secondary px-1.5 py-0.5 font-semibold">
                       {g.count}회
                     </span>
-                    <span>
-                      {formatDistanceToNow(new Date(g.lastSeenAt), {
-                        addSuffix: true,
-                        locale: ko,
-                      })}
-                    </span>
+                    <span>{formatPostTime(g.lastSeenAt)}</span>
                     {g.path && <span className="truncate">{g.path}</span>}
                   </p>
                   <p className="mt-1 truncate font-medium">{g.message}</p>
@@ -107,10 +132,9 @@ export function IssueLogList({ groups }: { groups: IssueGroup[] }) {
               {expandedKey === g.key && (
                 <div className="mt-2 space-y-2 text-xs text-muted-foreground">
                   <p>
-                    최초 발생:{" "}
-                    {new Date(g.firstSeenAt).toLocaleString("ko-KR")}
+                    최초 발생: {new Date(g.firstSeenAt).toLocaleString("ko-KR")}
                   </p>
-                  {(g.sample.device || g.sample.country) && (
+                  {(g.sample.device || g.sample.country || g.sample.city) && (
                     <p>
                       {[g.sample.device, g.sample.country, g.sample.city]
                         .filter(Boolean)
@@ -128,11 +152,12 @@ export function IssueLogList({ groups }: { groups: IssueGroup[] }) {
                       </a>
                     </p>
                   )}
-                  {g.sample.context && (
-                    <pre className="overflow-x-auto rounded-lg bg-secondary p-2">
-                      {JSON.stringify(g.sample.context, null, 2)}
-                    </pre>
-                  )}
+                  {g.sample.context &&
+                    Object.keys(g.sample.context).length > 0 && (
+                      <pre className="overflow-x-auto rounded-lg bg-secondary p-2">
+                        {JSON.stringify(g.sample.context, null, 2)}
+                      </pre>
+                    )}
                   {g.sample.stack && (
                     <pre className="overflow-x-auto rounded-lg bg-secondary p-2">
                       {g.sample.stack}

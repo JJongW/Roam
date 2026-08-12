@@ -160,19 +160,40 @@ export async function setAdminCookie(email?: string) {
   });
 }
 
+/** 라우트 핸들러의 최후 방어선 — 어떤 경우에도 throw하지 않고 500 envelope을 돌려준다.
+ *  issue-capture는 **동적 import**로 부른다: 순환 참조 때문이 아니라(순환은 없다 —
+ *  `@/lib/repositories` → mock/supabase repository는 이 파일을 import하지 않는다),
+ *  http.ts를 import하는 모든 라우트의 모듈 그래프에 `@/lib/repositories`와 그 시드
+ *  데이터까지 딸려 들어오는 걸 막기 위해서다.
+ *  캡처는 자체 try/catch로 격리한다 — 로깅이 실패해도 응답은 반드시 나가야 한다. */
 export function withErrorBoundary(
   req: Request,
   handler: () => Promise<NextResponse>,
 ) {
   return handler().catch(async (e) => {
     console.error("[api] unhandled", e);
-    const { captureServerIssue } = await import("@/lib/api/issue-capture");
-    await captureServerIssue({
-      error: e,
-      path: new URL(req.url).pathname,
-      method: req.method,
-      headers: req.headers,
-    });
+    try {
+      const { captureServerIssue } = await import("@/lib/api/issue-capture");
+      // 쿠키 읽기도 따로 격리한다 — 요청 컨텍스트가 없으면 cookies()가 throw하는데,
+      // 그 때문에 로그 한 줄을 통째로 잃는 것보다 신원 없이 남기는 게 낫다.
+      let userId: string | null = null;
+      let sessionId: string | null = null;
+      try {
+        [userId, sessionId] = await Promise.all([getUserId(), getSessionId()]);
+      } catch {
+        // 신원 없이 캡처한다.
+      }
+      await captureServerIssue({
+        error: e,
+        path: new URL(req.url).pathname,
+        method: req.method,
+        headers: req.headers,
+        userId: userId ?? undefined,
+        sessionId: sessionId ?? undefined,
+      });
+    } catch (logErr) {
+      console.error("[api] issue capture 실패:", logErr);
+    }
     return fail("INTERNAL", "서버 오류가 발생했습니다");
   });
 }

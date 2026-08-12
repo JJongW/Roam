@@ -961,9 +961,14 @@ export class MockRepository implements Repository {
   async listIssues(opts?: {
     source?: "server" | "client";
     limit?: number;
+    sinceDays?: number;
   }): Promise<IssueLog[]> {
     let list = [...store().issueLogs].reverse();
     if (opts?.source) list = list.filter((i) => i.source === opts.source);
+    if (opts?.sinceDays) {
+      const cutoff = Date.now() - opts.sinceDays * 24 * 60 * 60 * 1000;
+      list = list.filter((i) => new Date(i.createdAt).getTime() >= cutoff);
+    }
     return list.slice(0, opts?.limit ?? 100);
   }
 

@@ -140,9 +140,6 @@ export interface Repository {
   // 오류/이슈 로그 (admin 모니터링)
   /** 서버 또는 클라이언트에서 발생한 오류 이벤트를 적재. 절대 throw하지 않는다 —
    *  로깅 실패가 원래 요청에 영향을 주면 안 된다. */
-  // 오류/이슈 로그 (admin 모니터링)
-  /** 서버 또는 클라이언트에서 발생한 오류 이벤트를 적재. 절대 throw하지 않는다 —
-   *  로깅 실패가 원래 요청에 영향을 주면 안 된다. */
   logIssue(input: {
     source: "server" | "client";
     message: string;
@@ -156,10 +153,11 @@ export interface Repository {
     country?: string;
     city?: string;
   }): Promise<void>;
-  /** 오류 이벤트 최신순 조회(admin 전용). */
+  /** 오류 이벤트 최신순 조회(admin 전용). sinceDays를 주면 그 기간 안의 것만. */
   listIssues(opts?: {
     source?: "server" | "client";
     limit?: number;
+    sinceDays?: number;
   }): Promise<IssueLog[]>;
   /** olderThanDays보다 오래된 로그를 지운다(admin 수동 정리). 반환값 = 삭제된 행 수. */
   deleteOldIssues(olderThanDays: number): Promise<number>;

@@ -24,7 +24,10 @@ export async function POST(req: Request) {
     digest: parsed.data.digest,
     userId: userId ?? undefined,
     sessionId: sessionId ?? undefined,
-    device: parseUserAgent(parsed.data.userAgent),
+    // 본문에 UA가 없으면 요청 헤더의 UA로 폴백한다.
+    device: parseUserAgent(
+      parsed.data.userAgent ?? req.headers.get("user-agent") ?? undefined,
+    ),
     country: geo.country,
     city: geo.city,
     context: redactContext(parsed.data.context),
