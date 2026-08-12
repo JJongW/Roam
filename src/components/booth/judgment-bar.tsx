@@ -64,6 +64,12 @@ export function JudgmentBar({
   const [forcedScreen, setForcedScreen] = useState<
     "interest" | "verdict" | null
   >(null);
+  // 방금 누른 버튼에만 한 번 팝 애니메이션을 태운다 — 안 눌린 버튼도 옅게 색이
+  // 있으면 선택 여부가 안 읽힌다는 피드백으로, 안 눌린 쪽은 색을 완전히 빼고
+  // 선택 자체는 이 애니메이션 + active 스타일로만 표시한다.
+  const [justSelected, setJustSelected] = useState<
+    InterestValue | VerdictValue | null
+  >(null);
 
   const screen: "interest" | "verdict" =
     mode === "interest"
@@ -88,6 +94,7 @@ export function JudgmentBar({
     if (kind === "interest") setInterest(boothId, value as InterestValue);
     else setVerdict(boothId, value as VerdictValue);
     setForcedScreen(null);
+    setJustSelected(value);
 
     if (user) {
       say(
@@ -185,20 +192,25 @@ export function JudgmentBar({
                   : react("verdict", btn.key as VerdictValue)
               }
               aria-pressed={active}
-              // 안 눌린 상태도 완전 무채색이면 어떤 버튼이 무슨 색인지 누르기 전엔
-              // 전혀 안 보인다 — 옅게라도 자기 색을 늘 깔고, 눌리면 진해진다.
-              style={{
-                borderColor: active
-                  ? color
-                  : `color-mix(in srgb, ${color} 35%, var(--border))`,
-                backgroundColor: active
-                  ? `color-mix(in srgb, ${color} 16%, transparent)`
-                  : `color-mix(in srgb, ${color} 7%, transparent)`,
-                color: active
-                  ? color
-                  : `color-mix(in srgb, ${color} 65%, var(--muted-foreground))`,
-              }}
-              className="flex-1 scale-100 rounded-lg border py-1.5 text-xs font-semibold transition-all duration-200 active:scale-95"
+              // 안 눌린 상태는 색을 아예 빼서 눌린 것과 확실히 갈린다(옅은 색조는
+              // 선택 여부가 안 읽힌다는 피드백으로 뺐다) — 선택은 색 + 팝 애니메이션으로만.
+              style={
+                active
+                  ? {
+                      borderColor: color,
+                      backgroundColor: `color-mix(in srgb, ${color} 16%, transparent)`,
+                      color,
+                    }
+                  : undefined
+              }
+              onAnimationEnd={() => setJustSelected(null)}
+              className={`flex-1 scale-100 rounded-lg border py-1.5 text-xs font-semibold transition-all duration-200 active:scale-95 ${
+                active
+                  ? btn.key === justSelected
+                    ? "animate-in zoom-in-95 duration-300"
+                    : ""
+                  : "border-border bg-card text-muted-foreground"
+              }`}
             >
               {btn.label}
             </button>
