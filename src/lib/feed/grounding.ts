@@ -5,7 +5,7 @@
 // 예전엔 두 번째 절을 가치 이름으로 말했다("발견 쪽 부스야", "네 관심 가치랑 겹쳐").
 // 현장에서 그 말은 정보가 아니다 — 온보딩에서 고른 단어를 되읽어줄 뿐이고, 부스가
 // 뭘 하는 곳인지는 끝내 안 알려준다. 지금은 가치 이름을 아예 쓰지 않는다.
-// 1절(사실)은 저작·공식 정보가 없어도 회사명으로 최소한을 말한다 — 부스가 뭔지
+// 1절(사실)은 저작·공식 정보가 없어도 부스명으로 최소한을 말한다 — 부스가 뭔지
 // 말 못 하는 침묵 카드를 만들지 않는다. 2절(근거)은 여전히 내가 실제로 반응한
 // 부스와 가치가 겹칠 때만 붙는다 — 없는 근거를 지어내진 않는다.
 import { boothValueSlugs } from "@/lib/values";
@@ -17,7 +17,8 @@ import type { Booth } from "@/lib/types";
 export interface Grounding {
   /** 무엇 — 한 줄 소개. */
   what: string | null;
-  /** 왜 너에게 맞을 수 있는지(판단 근거). 말할 게 없으면 빈 문자열. */
+  /** 왜 너에게 맞을 수 있는지(판단 근거). 사실 절은 부스명 폴백으로 항상 채워지고,
+   *  근거 절(내가 실제로 반응한 부스)만 없을 수 있다 — 빈 문자열이 되진 않는다. */
   why: string;
   /** 근거 조각 — 굿즈/현장 팁 등 확인 가능한 사실. */
   evidence: string[];
@@ -70,7 +71,7 @@ export function buildGrounding(
         ? summaryClause(e.summary, 70)
         : e?.goodsKeywords?.[0]
           ? t("grounding.whatGoods", { goods: e.goodsKeywords[0] })
-          : t("grounding.whatCompanyFallback", { name: booth.company }));
+          : t("grounding.whatCompanyFallback", { name: booth.name }));
 
   // 2절 = 왜 지금 너한테. 근거는 내가 실제로 누른 부스다. 없으면 붙이지 않는다 —
   // 억지로 채우면 "둘러보면 취향이 더 또렷해질 거야" 같은 빈말이 된다.
@@ -86,7 +87,8 @@ export function buildGrounding(
       )
     : null;
 
-  // 말할 사실도 근거도 없으면 한 줄을 비운다(카드가 부스 정보만 보여준다).
+  // fact는 부스명 폴백까지 있어 항상 값이 있다 — link(근거)만 없을 수 있고, 그때는
+  // 사실 절 하나만 남는다(한 줄 전체가 비는 경우는 이제 없다).
   const why = [fact, link].filter(Boolean).join(" ");
 
   // 근거 — 확인 가능한 사실(굿즈 우선, 없으면 팁 한 조각).

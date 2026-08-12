@@ -1125,7 +1125,7 @@ const en: Dict = {
       "You showed interest in “{booth}”, so I pulled this too.",
     becauseVisited: "You saw “{booth}”, so I pulled this too.",
     whatGoods: "Has {goods}",
-    whatCompanyFallback: "It's the ‘{name}’ booth",
+    whatCompanyFallback: "It's the “{name}” booth",
   },
   rhythm: {
     question: "How do you want to look today?",

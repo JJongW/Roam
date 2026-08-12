@@ -75,11 +75,10 @@ describe("buildGrounding", () => {
     expect(g.why).toContain("비온뒤");
   });
 
-  it("저작·공식 정보가 전혀 없어도 회사명으로 최소한을 말한다 — 침묵 카드를 만들지 않는다", () => {
-    const b = booth(undefined, "무명출판");
+  it("저작·공식 정보가 전혀 없어도 부스 이름으로 최소한을 말한다 — 침묵 카드를 만들지 않는다", () => {
+    const b = booth(undefined, "총류 외 3"); // 실제 시드 데이터의 company 필드 모양(카테고리 요약) — 이름이 아니다
     const g = buildGrounding(b, ["learning"]);
     expect(g.confidence).toBe("low");
-    expect(g.what).toBe("무명출판");
-    expect(g.why).toContain("무명출판");
+    expect(g.why).toContain("예시 부스"); // booth()의 기본 name — company가 아니라 name으로 말해야 한다
   });
 });

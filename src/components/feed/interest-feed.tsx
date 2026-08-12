@@ -207,7 +207,8 @@ export function InterestFeed({
                         · {t(PICK_KEY[pick])}
                       </span>
                     </div>
-                    {/* 할 말이 없으면 줄을 비운다 — 빈말로 채우지 않는다(grounding.ts). */}
+                    {/* grounding.why는 부스명 폴백으로 이제 항상 값이 있다 — 이 가드는
+                        더는 실제로 갈리지 않는 방어 코드다(grounding.ts). */}
                     {grounding.why && (
                       <p className="mt-1 flex items-start gap-1.5 text-sm font-medium leading-relaxed text-foreground/90">
                         <Lightbulb
