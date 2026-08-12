@@ -72,16 +72,25 @@ interface CompanionState {
   actionsSinceLastSpontaneous: number;
   /** 부스 선택·검색 등 자발 발화 후보가 될 수 있는 행동마다 호출. */
   recordAction: () => void;
-  /** 자발 발화 시도 — 쿨다운을 통과하면 flash를 세팅하고 상태를 갱신, 아니면
-   *  조용히 아무것도 안 한다(무음이 기본). now는 호출부가 Date.now()로 넘긴다. */
-  saySpontaneous: (trigger: string, text: string, now: number) => void;
+  /** 자발 발화 시도 — 쿨다운을 통과하면 flash를 세팅하고 상태를 갱신하며 true를
+   *  반환, 아니면 조용히 아무것도 안 하고 false를 반환한다(무음이 기본). now는
+   *  호출부가 Date.now()로 넘긴다. 반환값은 호출부가 "실제로 말했는지"에 따라
+   *  다른 UI(예: 토스트)를 추가로 띄울지 판단하는 데 쓴다. */
+  saySpontaneous: (trigger: string, text: string, now: number) => boolean;
 }
+
+/** 연속 같은 유형 재발화까지 금지하는 창 — 기본 쿨다운(45초)의 2배. 이 안에서
+ *  같은 트리거가 다시 시도되면 막지만, 창을 넘기면(다른 조건은 그대로 만족해야
+ *  하지만) 다시 같은 트리거로 말할 수 있다 — "다시는 절대 안 됨"이 아니라
+ *  "바로 다시는 안 됨"이 의도다. */
+const SAME_TRIGGER_BAN_MS = 90_000;
 
 /**
  * 자발 발화 쿨다운 판정 — 순수 함수(테스트 가능). "45초 또는 행동 3회당 1회 중
  * 늦은 쪽"은 두 조건 다 만족해야 한다는 뜻이다(더 늦게 만족되는 쪽이 실제 게이트가
- * 열리는 시점이므로). 직전과 같은 트리거면 그 자체로 금지(연속 같은 유형 금지).
- * 첫 발화(lastSpontaneousAt이 null)는 무조건 허용한다 — 비교할 기준이 없다.
+ * 열리는 시점이므로). 직전과 같은 트리거면 재발화 금지 창(90초) 안에서만 금지
+ * (연속 같은 유형 금지 — 영구 금지 아님). 첫 발화(lastSpontaneousAt이 null)는
+ * 무조건 허용한다 — 비교할 기준이 없다.
  */
 export function canSaySpontaneous(
   state: {
@@ -92,14 +101,20 @@ export function canSaySpontaneous(
   trigger: string,
   now: number,
 ): boolean {
-  if (state.lastSpontaneousTrigger === trigger) return false;
   if (state.lastSpontaneousAt === null) return true;
-  const cooledDown = now - state.lastSpontaneousAt >= 45_000;
+  const elapsed = now - state.lastSpontaneousAt;
+  if (
+    state.lastSpontaneousTrigger === trigger &&
+    elapsed < SAME_TRIGGER_BAN_MS
+  ) {
+    return false;
+  }
+  const cooledDown = elapsed >= 45_000;
   const actedEnough = state.actionsSinceLastSpontaneous >= 3;
   return cooledDown && actedEnough;
 }
 
-export const useCompanionStore = create<CompanionState>((set) => ({
+export const useCompanionStore = create<CompanionState>((set, get) => ({
   home: null,
   setHome: (home) => set({ home }),
   flash: null,
@@ -121,14 +136,14 @@ export const useCompanionStore = create<CompanionState>((set) => ({
     set((s) => ({
       actionsSinceLastSpontaneous: s.actionsSinceLastSpontaneous + 1,
     })),
-  saySpontaneous: (trigger, text, now) =>
-    set((s) => {
-      if (!canSaySpontaneous(s, trigger, now)) return {};
-      return {
-        flash: text,
-        lastSpontaneousAt: now,
-        lastSpontaneousTrigger: trigger,
-        actionsSinceLastSpontaneous: 0,
-      };
-    }),
+  saySpontaneous: (trigger, text, now) => {
+    if (!canSaySpontaneous(get(), trigger, now)) return false;
+    set({
+      flash: text,
+      lastSpontaneousAt: now,
+      lastSpontaneousTrigger: trigger,
+      actionsSinceLastSpontaneous: 0,
+    });
+    return true;
+  },
 }));

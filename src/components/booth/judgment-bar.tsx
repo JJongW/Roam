@@ -56,6 +56,7 @@ export function JudgmentBar({
   const setVerdict = useVisitStore((s) => s.setVerdict);
   const say = useCompanionStore((s) => s.say);
   const interests = useCompanionStore((s) => s.interests);
+  const recordAction = useCompanionStore((s) => s.recordAction);
 
   // adaptive 전용: "다녀왔어"/"관심 바꾸기" 링크로 임시 전환한 화면. react()가
   // interest/verdict를 실제로 바꿀 때마다 null로 되돌려, 다음 렌더는 이 오버라이드
@@ -85,6 +86,10 @@ export function JudgmentBar({
     kind: "interest" | "verdict",
     value: InterestValue | VerdictValue,
   ) {
+    // 반응 탭도 자발 발화 쿨다운의 "행동"으로 센다 — 지도 선택·검색만 세면 T1/T2/T6
+    // 트리거만 쿨다운을 앞당기고 반응 탭은 3회 문턱에 안 잡혀서, "행동 3회"가 실은
+    // "지도 선택·검색 3회"로 좁아진다(Finding 1의 영구 금지가 이 갭을 가려왔다).
+    recordAction();
     // good·bad일 때 "예측이 맞았는지/빗나갔는지"는 반응 직전(스토어 갱신 전)의
     // interest로 판단한다.
     const matchedPriorInterest =

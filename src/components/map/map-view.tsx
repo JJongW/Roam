@@ -34,14 +34,13 @@ import { ValueChips } from "@/components/values/value-chips";
 import { RoamAvatar } from "@/components/companion/roam-avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useT } from "@/lib/i18n/provider";
+import { useLocale, useT } from "@/lib/i18n/provider";
 import { boothValueSlugs } from "@/lib/values";
-import { deriveCue } from "@/lib/feed/cue";
 import {
   buildCopresenceLine,
   type CopresencePositive,
 } from "@/lib/companion/copresence";
-import type { Booth, BoothEvent, ExhibitionDetail } from "@/lib/types";
+import type { Booth, ExhibitionDetail } from "@/lib/types";
 
 /**
  * 관심 밀도 지도 — 길찾기·동선이 아니라 온사이트 공간 참조 부가 서비스. 검색·리스트·
@@ -52,17 +51,19 @@ export function MapView({
   detail,
   booths,
   initialFocusId,
-  eventsByBooth,
+  cueByBooth,
 }: {
   detail: ExhibitionDetail;
   booths: Booth[];
   /** Deep-link target (e.g. from the 메모장 "지도에서 보기"): preselect + center. */
   initialFocusId?: string;
-  /** 부스별 이벤트 — 선택 시 co-presence 발화의 cue 재료. */
-  eventsByBooth: Record<string, BoothEvent[]>;
+  /** 부스별 co-presence 발화 cue — 서버(page.tsx)가 deriveCue로 미리 계산해
+   *  문자열만 내려준다(타임존 의존 계산을 클라에서 다시 하지 않기 위해). */
+  cueByBooth: Record<string, string>;
 }) {
   const router = useRouter();
   const t = useT();
+  const locale = useLocale();
   const [selectedId, setSelectedId] = useState<string | null>(
     initialFocusId ?? null,
   );
@@ -146,7 +147,10 @@ export function MapView({
         return null;
       })
       .filter((p): p is CopresencePositive => p !== null);
-    const cue = deriveCue(selected, eventsByBooth[selected.id] ?? []);
+    // 영어 로케일엔 cue를 안 넘긴다 — cue.ts는 한국어 문자열만 만들어서(하드코딩
+    // 문구·저작 timing 원문), 그대로 끼워 넣으면 문장 중간에 번역 안 된 한국어가
+    // 섞인다(cue.ts 자체 로케일화는 이 커밋 범위 밖).
+    const cue = locale === "ko" ? cueByBooth[selected.id] : undefined;
     const line = buildCopresenceLine(
       { trigger: "select", booth: selected, positives, cue },
       t,

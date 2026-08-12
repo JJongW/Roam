@@ -3,12 +3,14 @@
 import { useCallback, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Flag } from "lucide-react";
+import { toast } from "sonner";
 import { api } from "@/lib/api/client";
 import { RecapSheet } from "@/components/route/recap-sheet";
 import { VisitedRetroPrompt } from "@/components/companion/visited-retro-prompt";
 import { useT } from "@/lib/i18n/provider";
 import { useCompanionStore } from "@/lib/stores/companion";
 import { buildCopresenceLine } from "@/lib/companion/copresence";
+import { RoamAvatar } from "@/components/companion/roam-avatar";
 import {
   Sheet,
   SheetContent,
@@ -64,26 +66,33 @@ export function FinishVisit({
     }
   }, [slug]);
 
-  async function openRetro() {
+  function openRetro() {
     recordAction();
+    setRetroOpen(true);
     // 마치기 시도 = T5 트리거. 꼭 갈래인데 아직 안 간 부스가 있으면(1개만, 첫
     // 결과) 로미가 짚어준다 — 막지는 않는다, 그냥 한 번 알려주고 그대로 진행.
-    try {
-      const res = await api.get<{
-        pending: { boothId: string; boothName: string }[];
-      }>(`/api/me/notes/must-not-visited?exhibitionSlug=${slug}&limit=1`);
-      const first = res.pending[0];
-      if (first) {
+    // 조회는 백그라운드 — 마치기 흐름을 막으면 안 된다("막지는 않는다, 그냥
+    // 알려주고 그대로 진행"이 이 기능의 설계 의도다). 시트가 방금 열려 flash는
+    // 곧바로 회고 시트에 z-index로 가려지므로, 실제로 말했을 때만(spoke===true)
+    // 시트 위로도 뜨는 sonner 토스트를 같이 띄운다(지도가 이미 쓰는 패턴).
+    void api
+      .get<{ pending: { boothId: string; boothName: string }[] }>(
+        `/api/me/notes/must-not-visited?exhibitionSlug=${slug}&limit=1`,
+      )
+      .then((res) => {
+        const first = res.pending[0];
+        if (!first) return;
         const line = buildCopresenceLine(
           { trigger: "unvisitedMust", boothName: first.boothName },
           t,
         );
-        if (line) say("unvisitedMust", line, Date.now());
-      }
-    } catch {
-      /* 조회 실패해도 마치기 흐름은 막지 않는다 */
-    }
-    setRetroOpen(true);
+        if (!line) return;
+        const spoke = say("unvisitedMust", line, Date.now());
+        if (spoke) toast(line, { icon: <RoamAvatar className="size-5" /> });
+      })
+      .catch(() => {
+        /* 조회 실패해도 마치기 흐름은 이미 진행 중이다 */
+      });
   }
 
   if (!hasJudged) return null;
