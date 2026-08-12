@@ -8,6 +8,8 @@ import { PopularChart } from "@/components/charts/popular-chart";
 import { ConversionFunnel } from "@/components/charts/conversion-funnel";
 import { FlowList } from "@/components/charts/flow-list";
 import { Heatmap } from "@/components/charts/heatmap";
+import { OnboardingValueChart } from "@/components/charts/onboarding-value-chart";
+import { onboardingValueBreakdown } from "@/lib/admin/journey-funnel";
 
 export const metadata = { title: "분석" };
 
@@ -21,14 +23,16 @@ export default async function AnalyticsPage() {
     return <p className="text-muted-foreground">전시가 없습니다.</p>;
   }
 
-  const [points, popular, edges, funnel, booths] = await Promise.all([
+  const [points, popular, edges, funnel, booths, signals] = await Promise.all([
     repo.analyticsHeatmap(exhibition.id),
     repo.analyticsPopular(exhibition.id, 8),
     repo.analyticsFlow(exhibition.id),
     repo.analyticsConversion(exhibition.id),
     repo.listBoothsByExhibitionId(exhibition.id),
+    repo.listExhibitionSignals(exhibition.id),
   ]);
   const names = Object.fromEntries(booths.map((b) => [b.id, b.name]));
+  const onboardingValues = onboardingValueBreakdown(signals);
 
   return (
     <div className="space-y-6">
@@ -66,6 +70,13 @@ export default async function AnalyticsPage() {
           <ConversionFunnel funnel={funnel} />
         </AdminSection>
       </div>
+
+      <AdminSection
+        title="온보딩에서 고른 가치"
+        description="문항별 클릭이 아니라 온보딩을 마칠 때 확정한 가치 기준 — 앱 최초진입·전시별 온보딩 합산"
+      >
+        <OnboardingValueChart data={onboardingValues} />
+      </AdminSection>
     </div>
   );
 }

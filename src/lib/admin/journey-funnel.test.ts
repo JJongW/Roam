@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { computeJourneyFunnel } from "./journey-funnel";
+import {
+  computeJourneyFunnel,
+  onboardingValueBreakdown,
+} from "./journey-funnel";
 import type { UserSignal } from "@/lib/types";
 
 function sig(
@@ -91,5 +94,45 @@ describe("computeJourneyFunnel", () => {
     ];
     const result = computeJourneyFunnel(signals, new Set());
     expect(result.find((s) => s.stage === "가치 온보딩 완료")!.count).toBe(0);
+  });
+});
+
+describe("onboardingValueBreakdown", () => {
+  it("온보딩 신호의 slug를 전부 세되 내림차순 정렬한다", () => {
+    const signals: UserSignal[] = [
+      sig({
+        userId: "u1",
+        kind: "reaction_must",
+        slugs: ["discovery", "social"],
+      }),
+      sig({
+        userId: "u2",
+        kind: "reaction_must",
+        slugs: ["discovery", "goods"],
+      }),
+    ];
+    const result = onboardingValueBreakdown(signals);
+    expect(result[0]).toEqual({ slug: "discovery", count: 2 });
+    expect(result.find((r) => r.slug === "social")).toEqual({
+      slug: "social",
+      count: 1,
+    });
+    expect(result.find((r) => r.slug === "goods")).toEqual({
+      slug: "goods",
+      count: 1,
+    });
+  });
+
+  it("부스 반응(boothCode 있음)이나 재시드(slug 1개)는 안 센다", () => {
+    const signals: UserSignal[] = [
+      sig({
+        userId: "u1",
+        kind: "reaction_must",
+        boothCode: "A01",
+        slugs: ["discovery", "social"],
+      }),
+      sig({ userId: "u1", kind: "reaction_must", slugs: ["goods"] }),
+    ];
+    expect(onboardingValueBreakdown(signals)).toEqual([]);
   });
 });

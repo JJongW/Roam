@@ -13,6 +13,36 @@ function distinctUserIds(signals: UserSignal[]): Set<string> {
   return new Set(signals.map((s) => s.userId));
 }
 
+/** 온보딩 신호 판별 — computeJourneyFunnel의 "가치 온보딩 완료" 판정과 같은 규칙
+ *  (boothId 없음 + slugs 복수). 두 곳에서 각자 구현하면 갈라질 위험이 있어 공유. */
+function isOnboardingSignal(s: UserSignal): boolean {
+  return s.kind === "reaction_must" && !s.boothCode && s.slugs.length > 1;
+}
+
+export interface OnboardingValueCount {
+  slug: string;
+  count: number;
+}
+
+/**
+ * 온보딩(앱 최초진입 + 전시별 가치 온보딩)에서 고른 가치의 집계 분포 —
+ * "누가 뭘 클릭했는지"는 문항 단위로 남지 않지만(온보딩은 답변을 합산한 최종
+ * 3개만 신호로 남긴다), 그 최종 결과가 사람들이 무엇에 끌렸는지는 보여준다.
+ * count 내림차순, 0회 slug는 뺀다. 순수, 테스트 가능.
+ */
+export function onboardingValueBreakdown(
+  signals: UserSignal[],
+): OnboardingValueCount[] {
+  const counts = new Map<string, number>();
+  for (const s of signals) {
+    if (!isOnboardingSignal(s)) continue;
+    for (const slug of s.slugs) counts.set(slug, (counts.get(slug) ?? 0) + 1);
+  }
+  return [...counts.entries()]
+    .map(([slug, count]) => ({ slug, count }))
+    .sort((a, b) => b.count - a.count);
+}
+
 /**
  * 로그인 → 가치 온보딩 → 피드 반응 → 현장 판정 → 회고 5단계 여정 퍼널.
  *
@@ -36,11 +66,7 @@ export function computeJourneyFunnel(
   reflectedUserIds: Set<string>,
 ): FunnelStage[] {
   const entered = distinctUserIds(signals);
-  const onboarded = distinctUserIds(
-    signals.filter(
-      (s) => s.kind === "reaction_must" && !s.boothCode && s.slugs.length > 1,
-    ),
-  );
+  const onboarded = distinctUserIds(signals.filter(isOnboardingSignal));
   const reacted = distinctUserIds(
     signals.filter(
       (s) =>
