@@ -34,7 +34,11 @@ export function findBoothEnrichmentGaps(booths: Booth[]): BoothGap[] {
       if (isEmptyValue(value)) missing.push(field);
     }
     if (missing.length > 0) {
-      gaps.push({ boothId: booth.id, boothName: booth.name, missingFields: missing });
+      gaps.push({
+        boothId: booth.id,
+        boothName: booth.name,
+        missingFields: missing,
+      });
     }
   }
   return gaps.sort((a, b) => b.missingFields.length - a.missingFields.length);
@@ -43,17 +47,16 @@ export function findBoothEnrichmentGaps(booths: Booth[]): BoothGap[] {
 export interface NoteInconsistency {
   userId: string;
   boothId: string;
-  reason: "verdict_without_visitedAt" | "orphaned_booth";
+  reason: "verdict_without_visitedAt";
 }
 
 /**
  * 판단 레코드 정합성 체크. verdict는 항상 visitedAt과 같이 있어야 한다는 게 쓰기
  * 경로의 불변조건인데(judgment-vocabulary), 깨졌다면 로미의 취향 추론이 조용히
- * 틀어질 수 있는 신호다. 부스가 삭제됐는데 노트만 남은 고아 레코드도 같이 찾는다.
+ * 틀어질 수 있는 신호다.
  */
 export function findNoteInconsistencies(
   notes: BoothNote[],
-  validBoothIds: Set<string>,
 ): NoteInconsistency[] {
   const issues: NoteInconsistency[] = [];
   for (const note of notes) {
@@ -62,13 +65,6 @@ export function findNoteInconsistencies(
         userId: note.userId,
         boothId: note.boothId,
         reason: "verdict_without_visitedAt",
-      });
-    }
-    if (!validBoothIds.has(note.boothId)) {
-      issues.push({
-        userId: note.userId,
-        boothId: note.boothId,
-        reason: "orphaned_booth",
       });
     }
   }

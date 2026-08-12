@@ -2,7 +2,6 @@ import type { BoothGap, NoteInconsistency } from "@/lib/admin/data-issues";
 
 const REASON_LABEL: Record<NoteInconsistency["reason"], string> = {
   verdict_without_visitedAt: "판정은 있는데 방문 시각이 없음",
-  orphaned_booth: "존재하지 않는 부스를 가리킴",
 };
 
 export function DataIssueList({
@@ -15,7 +14,9 @@ export function DataIssueList({
   return (
     <div className="space-y-5">
       <div>
-        <h3 className="mb-2 text-sm font-bold">부스 정보 결측 ({gaps.length})</h3>
+        <h3 className="mb-2 text-sm font-bold">
+          부스 정보 결측 ({gaps.length})
+        </h3>
         {gaps.length === 0 ? (
           <p className="text-sm text-muted-foreground">결측 없음.</p>
         ) : (

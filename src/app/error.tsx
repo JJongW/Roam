@@ -13,6 +13,7 @@ export default function Error({
 }) {
   useEffect(() => {
     console.error("[app:error]", error);
+    if (error.digest) return; // 서버가 이미 실제 메시지로 기록했다 — 리다크트된 것만 또 남기지 않는다
     fetch("/api/errors", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

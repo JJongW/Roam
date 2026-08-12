@@ -15,7 +15,7 @@ export async function onRequestError(
       source: "server",
       message: err.message,
       stack: err.stack,
-      path: request.path,
+      path: request.path.split("?")[0],
       digest: (err as Error & { digest?: string }).digest,
       context: { method: request.method },
     });

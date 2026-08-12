@@ -104,19 +104,9 @@ describe("findNoteInconsistencies", () => {
 
   it("verdict가 있는데 visitedAt이 없으면 플래그", () => {
     const notes = [note({ userId: "u1", boothId: "b1", verdict: "good" })];
-    const issues = findNoteInconsistencies(notes, new Set(["b1"]));
+    const issues = findNoteInconsistencies(notes);
     expect(issues).toEqual([
       { userId: "u1", boothId: "b1", reason: "verdict_without_visitedAt" },
-    ]);
-  });
-
-  it("존재하지 않는 부스를 가리키면 플래그", () => {
-    const notes = [
-      note({ userId: "u1", boothId: "deleted-booth", interest: "must" }),
-    ];
-    const issues = findNoteInconsistencies(notes, new Set(["b1"]));
-    expect(issues).toEqual([
-      { userId: "u1", boothId: "deleted-booth", reason: "orphaned_booth" },
     ]);
   });
 
@@ -129,6 +119,6 @@ describe("findNoteInconsistencies", () => {
         visitedAt: "2026-08-11T00:00:00Z",
       }),
     ];
-    expect(findNoteInconsistencies(notes, new Set(["b1"]))).toEqual([]);
+    expect(findNoteInconsistencies(notes)).toEqual([]);
   });
 });

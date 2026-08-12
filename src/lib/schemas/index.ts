@@ -234,6 +234,11 @@ export const errorReportSchema = z.object({
   stack: z.string().max(8000).optional(),
   path: z.string().max(500).optional(),
   digest: z.string().max(200).optional(),
-  context: z.record(z.string(), z.unknown()).optional(),
+  context: z
+    .record(z.string(), z.unknown())
+    .optional()
+    .refine((v) => !v || JSON.stringify(v).length <= 4000, {
+      message: "context가 너무 큽니다",
+    }),
 });
 export type ErrorReportInput = z.infer<typeof errorReportSchema>;

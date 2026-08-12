@@ -3,7 +3,10 @@ import { getRepository } from "@/lib/repositories";
 import { listExhibitionsCached } from "@/lib/repositories/cached";
 import { resolveAdminExhibition, todayISO } from "@/lib/exhibition/current";
 import { ADMIN_EXHIBITION_COOKIE } from "@/lib/constants";
-import { findBoothEnrichmentGaps, findNoteInconsistencies } from "@/lib/admin/data-issues";
+import {
+  findBoothEnrichmentGaps,
+  findNoteInconsistencies,
+} from "@/lib/admin/data-issues";
 import { AdminSection } from "@/components/admin/section";
 import { IssueLogList } from "@/components/admin/issue-log-list";
 import { DataIssueList } from "@/components/admin/data-issue-list";
@@ -26,14 +29,16 @@ export default async function AdminErrorsPage() {
     const boothIds = booths.map((b) => b.id);
     const notes = await repo.listNotesByBoothIds(boothIds);
     gaps = findBoothEnrichmentGaps(booths);
-    inconsistencies = findNoteInconsistencies(notes, new Set(boothIds));
+    inconsistencies = findNoteInconsistencies(notes);
   }
 
   return (
     <div className="space-y-5">
       <header>
         <h1 className="text-2xl font-extrabold">오류/이슈</h1>
-        {exhibition && <p className="text-sm text-muted-foreground">{exhibition.name}</p>}
+        {exhibition && (
+          <p className="text-sm text-muted-foreground">{exhibition.name}</p>
+        )}
       </header>
 
       <Tabs defaultValue="logs">
@@ -42,7 +47,10 @@ export default async function AdminErrorsPage() {
           <TabsTrigger value="data">데이터 이슈</TabsTrigger>
         </TabsList>
         <TabsContent value="logs">
-          <AdminSection title="오류 로그" description={`최근 ${issues.length}건`}>
+          <AdminSection
+            title="오류 로그"
+            description={`최근 ${issues.length}건`}
+          >
             <IssueLogList issues={issues} />
           </AdminSection>
         </TabsContent>
