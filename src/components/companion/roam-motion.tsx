@@ -31,21 +31,24 @@ export function RoamMotion({
     pool && pool.length > 0
       ? pool[hashStr(id) % pool.length]
       : (src ?? pool?.[0] ?? "");
-  // 서버 렌더엔 navigator가 없다 → 마크업은 poster(정적 로미)만 내보내고, 마운트 뒤
-  // 엔진에 맞는 파일을 엘리먼트에 직접 건다(하이드레이션 불일치도, 리렌더도 없다).
-  // vendor는 WebKit 계열만 "Apple Computer, Inc."다 — 아이폰의 크롬·파이어폭스도
-  // WebKit이라 같이 잡힌다(그게 맞다, 알파 문제는 엔진 문제니까).
+  // src를 처음부터 webm으로 declaratively 박아둔다(브라우저 대다수는 이게 맞는
+  // 포맷) — 마운트·하이드레이션을 기다리지 않고 페인트 즉시 로드가 시작돼, poster
+  // (정적 로미)가 움짤로 바뀌기까지의 공백이 사라진다. WebKit(사파리·아이폰의 모든
+  // 브라우저 — vendor가 "Apple Computer, Inc.")만 투명 webm의 알파를 버리므로,
+  // 그쪽만 마운트 뒤 mp4로 되돌려 건다(하이드레이션 불일치 없음 — 서버·클라이언트
+  // 둘 다 같은 webm URL을 렌더하고, 되돌리는 건 클라이언트 전용 보정이다).
   const ref = useRef<HTMLVideoElement>(null);
   useEffect(() => {
     const v = ref.current;
     if (!v) return;
     const webkit = navigator.vendor === "Apple Computer, Inc.";
-    v.src = webkit ? chosen.replace(/\.webm$/, ".mp4") : chosen;
+    if (webkit) v.src = chosen.replace(/\.webm$/, ".mp4");
   }, [chosen]);
   return (
     <video
       key={chosen}
       ref={ref}
+      src={chosen}
       autoPlay
       muted
       loop
