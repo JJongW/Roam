@@ -199,6 +199,10 @@ const ko = {
     // 전체화면 인트로처럼 자리가 좁은 곳에 쓰는 짧은 판본.
     taglineShort: "전시·박람회 관람 가이드",
     listHeading: "로미가 골라둔 전시",
+    statusOngoing: "진행 중인 전시",
+    statusUpcoming: "다가오는 전시",
+    statusEnded: "지난 전시",
+    showMore: "더보기 ({n})",
     recommendedReason: "네가 고른 관람 성향을 기준으로 먼저 보여줄게.",
     singleReason:
       "지금 열 수 있는 전시는 하나야. 안에서는 네 취향에 맞춰 부스를 골라줄게.",
@@ -882,6 +886,10 @@ const en: Dict = {
       "Roam is a guide for exhibitions and trade fairs. Discover booths worth your time, find your way around the venue, and keep track of what you saw.",
     taglineShort: "A guide for exhibitions and trade fairs",
     listHeading: "Fairs Romi picked for you",
+    statusOngoing: "Ongoing",
+    statusUpcoming: "Upcoming",
+    statusEnded: "Past fairs",
+    showMore: "Show {n} more",
     recommendedReason: "Showing this first based on the taste you chose.",
     singleReason:
       "There's only one fair open right now. Inside, I'll pick booths to fit you.",

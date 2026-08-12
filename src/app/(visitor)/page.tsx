@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { getRepository } from "@/lib/repositories";
-import { ExhibitionCard } from "@/components/exhibition/exhibition-card";
 import { EmptyState } from "@/components/common/states";
 import { AccountButton } from "@/components/auth/account-button";
 import { LegalLinks } from "@/components/common/legal-links";
@@ -17,6 +16,12 @@ import {
   matchReason,
   type ExhibitionMatch,
 } from "@/lib/feed/exhibition-match";
+import { todayISO } from "@/lib/exhibition/current";
+import {
+  exhibitionStatus,
+  pickSeriesRepresentative,
+} from "@/lib/exhibition/status";
+import { ExhibitionStatusSection } from "@/components/exhibition/exhibition-status-section";
 
 export const metadata = {
   // absolute — 레이아웃의 "%s · Roam" 템플릿에 "Roam"을 넣으면 "Roam · Roam"이 된다.
@@ -60,10 +65,25 @@ export default async function HomePage() {
       (a, b) => scored(b) - scored(a) || a.startDate.localeCompare(b.startDate),
     );
   }
-  // 첫 전시를 "추천"이라 부를 수 있는 건 실제로 겹친 가치가 있을 때뿐이다.
-  const top = exhibitions[0];
+  const today = todayISO();
+  const byStatus = (status: "upcoming" | "ongoing" | "ended") =>
+    exhibitions.filter((ex) => exhibitionStatus(ex, today) === status);
+
+  const ongoing = pickSeriesRepresentative(byStatus("ongoing"), "ongoing");
+  const upcoming = pickSeriesRepresentative(byStatus("upcoming"), "upcoming");
+  // 지난 전시는 매치 점수·개막일 순서가 의미 없다 — 최근에 끝난 것부터.
+  const ended = [...pickSeriesRepresentative(byStatus("ended"), "ended")].sort(
+    (a, b) => b.endDate.localeCompare(a.endDate),
+  );
+
+  // "추천"은 진행중·예정 중에서만 — 이미 끝난 전시를 취향 근거로 추천하는 건
+  // 의미가 없다. ongoing을 upcoming보다 먼저 두어 "지금 갈 수 있는 곳"을 우선한다.
+  const top = [...ongoing, ...upcoming][0];
   const topMatch = top ? matchBySlug.get(top.slug) : undefined;
   const topReason = topMatch ? matchReason(topMatch.matched) : null;
+  const topReasonText =
+    topReason ?? (exhibitions.length === 1 ? t("home.singleReason") : null);
+  const topStatus = top ? exhibitionStatus(top, today) : null;
 
   // 구조화 데이터 — 앱 이름과 목적을 기계가 읽는 표준 경로로도 명시한다. Google OAuth
   // 인증이 "홈페이지의 앱 이름이 동의 화면과 일치하지 않는다"로 반려한 이력이 있어,
@@ -155,35 +175,35 @@ export default async function HomePage() {
         </div>
       )}
 
-      <section className="space-y-3 px-[var(--spacing-global-gutter)] pb-6 pt-2">
-        {exhibitions.length > 0 && (
-          <h2 className="px-1 text-sm font-bold text-muted-foreground">
-            {t("home.listHeading")}
-          </h2>
-        )}
+      <section className="space-y-5 px-[var(--spacing-global-gutter)] pb-6 pt-2">
         {exhibitions.length === 0 ? (
           <EmptyState
             title={t("home.emptyTitle")}
             description={t("home.emptyDesc")}
           />
         ) : (
-          exhibitions.map((ex, i) => (
-            <div key={ex.id} className="space-y-1.5">
-              {/* "로미 추천"은 겹친 가치가 실제로 있을 때만 — 근거 없이 주장하지 않는다. */}
-              <ExhibitionCard
-                exhibition={ex}
-                recommended={i === 0 && topReason !== null}
-                recommendedLabel={t("home.recommended")}
-              />
-              {/* 근거 한 줄 — 결정론(LLM 없음). 겹친 가치를 그대로 말하고, 겹침이 없으면
-                  아무 말도 하지 않는다. 전시가 하나뿐일 때만 그 사실을 솔직히 알린다. */}
-              {i === 0 && (topReason || exhibitions.length === 1) && (
-                <p className="px-1 text-xs leading-relaxed text-muted-foreground">
-                  {topReason ?? t("home.singleReason")}
-                </p>
-              )}
-            </div>
-          ))
+          <>
+            <ExhibitionStatusSection
+              title={t("home.statusOngoing")}
+              exhibitions={ongoing}
+              recommendedSlug={top?.slug}
+              recommendedLabel={t("home.recommended")}
+              recommendedReason={topStatus === "ongoing" ? topReasonText : null}
+            />
+            <ExhibitionStatusSection
+              title={t("home.statusUpcoming")}
+              exhibitions={upcoming}
+              recommendedSlug={top?.slug}
+              recommendedLabel={t("home.recommended")}
+              recommendedReason={
+                topStatus === "upcoming" ? topReasonText : null
+              }
+            />
+            <ExhibitionStatusSection
+              title={t("home.statusEnded")}
+              exhibitions={ended}
+            />
+          </>
         )}
       </section>
 
