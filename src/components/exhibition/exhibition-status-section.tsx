@@ -18,12 +18,14 @@ export function ExhibitionStatusSection({
   recommendedSlug,
   recommendedLabel,
   recommendedReason,
+  showBadge,
 }: {
   title: string;
   exhibitions: Exhibition[];
   recommendedSlug?: string;
   recommendedLabel?: string;
   recommendedReason?: string | null;
+  showBadge?: boolean;
 }) {
   const t = useT();
   const [expanded, setExpanded] = useState(false);
@@ -41,7 +43,7 @@ export function ExhibitionStatusSection({
           <div key={ex.id} className="space-y-1.5">
             <ExhibitionCard
               exhibition={ex}
-              recommended={ex.slug === recommendedSlug}
+              recommended={ex.slug === recommendedSlug && !!showBadge}
               recommendedLabel={recommendedLabel}
             />
             {ex.slug === recommendedSlug && recommendedReason && (

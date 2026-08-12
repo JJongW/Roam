@@ -82,7 +82,8 @@ export default async function HomePage() {
   const topMatch = top ? matchBySlug.get(top.slug) : undefined;
   const topReason = topMatch ? matchReason(topMatch.matched) : null;
   const topReasonText =
-    topReason ?? (exhibitions.length === 1 ? t("home.singleReason") : null);
+    topReason ??
+    (ongoing.length + upcoming.length === 1 ? t("home.singleReason") : null);
   const topStatus = top ? exhibitionStatus(top, today) : null;
 
   // 구조화 데이터 — 앱 이름과 목적을 기계가 읽는 표준 경로로도 명시한다. Google OAuth
@@ -188,6 +189,7 @@ export default async function HomePage() {
               exhibitions={ongoing}
               recommendedSlug={top?.slug}
               recommendedLabel={t("home.recommended")}
+              showBadge={topReason !== null}
               recommendedReason={topStatus === "ongoing" ? topReasonText : null}
             />
             <ExhibitionStatusSection
@@ -195,6 +197,7 @@ export default async function HomePage() {
               exhibitions={upcoming}
               recommendedSlug={top?.slug}
               recommendedLabel={t("home.recommended")}
+              showBadge={topReason !== null}
               recommendedReason={
                 topStatus === "upcoming" ? topReasonText : null
               }

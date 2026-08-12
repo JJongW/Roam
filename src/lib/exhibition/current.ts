@@ -51,7 +51,11 @@ export function resolveAdminExhibition(
   return pickAdminExhibition(exhibitions, today);
 }
 
-/** 오늘 날짜를 `YYYY-MM-DD`로. 서버 로컬 시간 기준. */
+/** 로컬 날짜(YYYY-MM-DD) — 이 앱은 한국 전시 기준이라 UTC가 아니라 KST(UTC+9,
+ *  DST 없음)로 고정 계산한다. UTC 그대로 쓰면 자정 근처 9시간 동안 전시 상태가
+ *  하루 어긋난다(개막일 오전엔 아직 '예정'으로, 종료일 다음날 오전까진 아직
+ *  '진행중'으로 잘못 보인다). */
 export function todayISO(now = new Date()): string {
-  return now.toISOString().slice(0, 10);
+  const kst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+  return kst.toISOString().slice(0, 10);
 }
