@@ -398,3 +398,75 @@ describe("listNotesByBoothIds", () => {
     expect(notes[0].boothId).toBe(a.id);
   });
 });
+
+describe("analytics 재배선", () => {
+  it("listReflectedUserIds: visits에 해당 전시가 있는 사용자만", async () => {
+    const repo = new MockRepository();
+    const detail = await repo.getExhibition("sibf-2026");
+    const exhibitionId = detail!.exhibition.id;
+    const baseBrain = {
+      version: 1,
+      updatedAt: "2026-08-12T00:00:00Z",
+      literacy: { overall: 0, byTheme: {}, visitsCount: 0, boothsSeenCount: 0 },
+      interests: [],
+      mutedSlugs: [],
+      preferences: {},
+      goals: [],
+      health: {
+        lastDistilledAt: "2026-08-12T00:00:00Z",
+        decayHalfLifeDays: 30,
+      },
+    };
+    await repo.saveUserBrain({
+      ...baseBrain,
+      userId: "u1",
+      visits: [
+        {
+          exhibitionId,
+          visitId: "v1",
+          date: "2026-08-12",
+          boothsVisited: [],
+          themesEngaged: [],
+          highlights: [],
+          summary: "요약",
+        },
+      ],
+    });
+    await repo.saveUserBrain({
+      ...baseBrain,
+      userId: "u2",
+      visits: [],
+    });
+    const ids = await repo.listReflectedUserIds(exhibitionId);
+    expect(ids).toEqual(["u1"]);
+  });
+
+  it("analyticsPopular: 정적 popularity 가산 없이 실제 view만 센다", async () => {
+    const repo = new MockRepository();
+    const all = await repo.listBooths("sibf-2026", { limit: 5 });
+    const target = all.data[0];
+    await repo.recordAnalytics("s1", target.exhibitionId, {
+      type: "view",
+      boothId: target.id,
+    });
+    const popular = await repo.analyticsPopular(target.exhibitionId, 5);
+    const row = popular.find((p) => p.boothId === target.id)!;
+    expect(row.views).toBe(1);
+  });
+
+  it("analyticsFlow: booth_arrive 대신 view 시퀀스로 근사한다", async () => {
+    const repo = new MockRepository();
+    const all = await repo.listBooths("sibf-2026", { limit: 5 });
+    const [a, b] = all.data;
+    await repo.recordAnalytics("s1", a.exhibitionId, {
+      type: "view",
+      boothId: a.id,
+    });
+    await repo.recordAnalytics("s1", a.exhibitionId, {
+      type: "view",
+      boothId: b.id,
+    });
+    const edges = await repo.analyticsFlow(a.exhibitionId);
+    expect(edges).toContainEqual({ from: a.id, to: b.id, count: 1 });
+  });
+});

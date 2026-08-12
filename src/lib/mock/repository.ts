@@ -14,6 +14,7 @@ import {
   haBooths,
 } from "@/lib/mock/seed-house-archive";
 import { computeTasteAccuracy, type TasteAccuracy } from "@/lib/memory/taste";
+import { computeJourneyFunnel } from "@/lib/admin/journey-funnel";
 import type { ListBoothQuery, Repository } from "@/lib/repositories/types";
 import type {
   AiQueryLog,
@@ -997,6 +998,16 @@ export class MockRepository implements Repository {
     store().userBrains.set(brain.userId, brain);
   }
 
+  async listReflectedUserIds(exhibitionId: string): Promise<string[]> {
+    const ids: string[] = [];
+    for (const brain of store().userBrains.values()) {
+      if (brain.visits.some((v) => v.exhibitionId === exhibitionId)) {
+        ids.push(brain.userId);
+      }
+    }
+    return ids;
+  }
+
   async analyticsHeatmap(exhibitionId: string) {
     // Combine recorded analytics with synthetic density from booth popularity so
     // the heatmap is meaningful even before live traffic exists.
@@ -1017,6 +1028,9 @@ export class MockRepository implements Repository {
   }
 
   async analyticsPopular(exhibitionId: string, limit = 10) {
+    // 정적 popularity 가산을 뺐다 — 실제 조회가 없으면 정직하게 0으로 보인다.
+    // arrivals는 여전히 booth_arrive 발화가 없어 0이다(구조적 해결 전까지는
+    // 그렇게 정직하게 보이는 게 옳다 — admin-analytics-pm-layer §1).
     const booths = store().booths.filter(
       (b) => b.exhibitionId === exhibitionId,
     );
@@ -1029,25 +1043,20 @@ export class MockRepository implements Repository {
         const arrivals = an.filter(
           (a) => a.boothId === b.id && a.type === "booth_arrive",
         ).length;
-        // baseline from popularity so the chart isn't empty pre-traffic
-        return {
-          boothId: b.id,
-          name: b.name,
-          views: views + Math.round(b.popularity * 1.2),
-          arrivals: arrivals + Math.round(b.popularity * 0.4),
-        };
+        return { boothId: b.id, name: b.name, views, arrivals };
       })
       .sort((a, b) => b.views - a.views)
       .slice(0, limit);
   }
 
   async analyticsFlow(exhibitionId: string) {
+    // booth_arrive는 발화가 없다(동선 제품 제거) — 유일하게 살아있는 view를
+    // 같은 세션 안에서 시간순으로 이어 "부스 상세를 연달아 본 흐름"으로
+    // 근사한다(admin-analytics-pm-layer §1, 구조적 해결 전까지의 근사).
     const an = store()
       .analytics.filter(
         (a) =>
-          a.exhibitionId === exhibitionId &&
-          a.type === "booth_arrive" &&
-          a.boothId,
+          a.exhibitionId === exhibitionId && a.type === "view" && a.boothId,
       )
       .sort(
         (a, b) =>
@@ -1057,6 +1066,7 @@ export class MockRepository implements Repository {
     const edges = new Map<string, number>();
     for (let i = 1; i < an.length; i++) {
       if (an[i].sessionId !== an[i - 1].sessionId) continue;
+      if (an[i].boothId === an[i - 1].boothId) continue;
       const key = `${an[i - 1].boothId}→${an[i].boothId}`;
       edges.set(key, (edges.get(key) ?? 0) + 1);
     }
@@ -1067,29 +1077,11 @@ export class MockRepository implements Repository {
   }
 
   async analyticsConversion(exhibitionId: string) {
-    const an = store().analytics.filter((a) => a.exhibitionId === exhibitionId);
-    const sessions =
-      store().sessions.filter((s) => s.exhibitionId === exhibitionId).length ||
-      1;
-    const prefs = store().preferences.length;
-    const routeStart =
-      an.filter((a) => a.type === "route_start").length ||
-      store().routes.filter((r) => r.exhibitionId === exhibitionId).length;
-    const routeDone =
-      an.filter((a) => a.type === "route_complete").length ||
-      store().routes.filter(
-        (r) => r.exhibitionId === exhibitionId && r.status === "completed",
-      ).length;
-    const stages = [
-      { stage: "세션 시작", count: sessions },
-      { stage: "온보딩 완료", count: prefs },
-      { stage: "경로 시작", count: routeStart },
-      { stage: "경로 완료", count: routeDone },
-    ];
-    const top = stages[0].count || 1;
-    return stages.map((s) => ({
-      ...s,
-      rate: Number(((s.count / top) * 100).toFixed(1)),
-    }));
+    // 죽은 소스(user_preference·route_plan)를 읽던 걸 실제 여정 퍼널로 교체한다
+    // (admin-analytics-pm-layer §2-1). Stream B(user_signal_log)가 유일하게
+    // "누가 뭘 했는지" 아는 소스다.
+    const signals = await this.listExhibitionSignals(exhibitionId);
+    const reflected = await this.listReflectedUserIds(exhibitionId);
+    return computeJourneyFunnel(signals, new Set(reflected));
   }
 }
