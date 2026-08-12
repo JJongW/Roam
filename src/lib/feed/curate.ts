@@ -47,6 +47,35 @@ export function positiveNotes(
     }));
 }
 
+/**
+ * 근거 링크 선택기 — 후보 부스와 가치가 겹치는 과거 긍정 반응 중 하나를 고른다.
+ * 같은 과거 부스를 두 번 인용하지 않고(서로 다른 근거로 서로 다른 카드), 피드
+ * 하나당 최대 maxUses번까지만 링크를 만든다. 순수 클로저, 테스트 가능.
+ */
+export function createLinkPicker(
+  positives: { booth: Booth; kind: "must" | "curious" | "good" }[],
+  maxUses = 2,
+): (
+  booth: Booth,
+) => { name: string; kind: "must" | "curious" | "good" } | undefined {
+  const usedBoothIds = new Set<string>();
+  let uses = 0;
+  return (booth: Booth) => {
+    if (uses >= maxUses) return undefined;
+    const vals = new Set(boothValueSlugs(booth));
+    const hit = positives.find(
+      (p) =>
+        p.booth.id !== booth.id &&
+        !usedBoothIds.has(p.booth.id) &&
+        boothValueSlugs(p.booth).some((v) => vals.has(v)),
+    );
+    if (!hit) return undefined;
+    usedBoothIds.add(hit.booth.id);
+    uses++;
+    return { name: hit.booth.name, kind: hit.kind };
+  };
+}
+
 export interface FeedItem {
   booth: Booth;
   /** 태그 유사도가 높은 관련 부스(스레드 확장용). */
@@ -156,29 +185,12 @@ export async function curateFeed(
       Boolean(p.booth),
     );
 
-  // 근거는 피드에서 **한 번만** 말한다. 여섯 장에 다 붙이면 "아까 X에 끌림 눌러서"가
-  // 여섯 번 반복돼, 라벨만 다르고 본문은 같던 예전 문제로 되돌아간다. 그리고 부스가
-  // 무엇인지 말할 수 없는 카드엔 붙이지 않는다 — 근거만 덩그러니 남으면 이 부스가
-  // 뭔지도 모른 채 이유만 듣는 꼴이다.
-  let linkUsed = false;
-  const hasFact = (b: Booth) =>
-    Boolean(
-      b.enrichment?.roamInterpretation ||
-      b.enrichment?.summary ||
-      b.enrichment?.goodsKeywords?.length,
-    );
-  const becauseOf = (booth: Booth) => {
-    if (linkUsed || !hasFact(booth)) return undefined;
-    const vals = new Set(boothValueSlugs(booth));
-    const hit = positives.find(
-      (p) =>
-        p.booth.id !== booth.id &&
-        boothValueSlugs(p.booth).some((v) => vals.has(v)),
-    );
-    if (!hit) return undefined;
-    linkUsed = true;
-    return { name: hit.booth.name, kind: hit.kind };
-  };
+  // 근거는 피드 하나당 최대 MAX_LINK_USES번만 말하고, 매번 서로 다른 과거 반응
+  // 부스를 인용한다 — 여섯 장에 다 같은 근거를 붙이면 라벨만 다르고 본문은 같던
+  // 예전 문제로 되돌아간다. "부스가 무엇인지 말할 수 없는 카드엔 안 붙인다"는
+  // 예전 제약은 뺐다 — grounding.ts가 이제 회사명 폴백으로 항상 사실을 말하므로
+  // (fact 없는 카드가 더는 없다), 근거 링크를 그 여부에 묶을 이유가 없어졌다.
+  const becauseOf = createLinkPicker(positives);
 
   // 후보 풀에서 먼저 걷어낸다. used에만 넣으면 안정픽이 rank.ranked를 그대로
   // 훑으면서 add()가 used를 검사하지 않고 push하므로 이미 정한 부스가 그대로 남는다

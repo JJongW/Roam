@@ -75,11 +75,11 @@ describe("buildGrounding", () => {
     expect(g.why).toContain("비온뒤");
   });
 
-  it("말할 사실도 근거도 없으면 한 줄을 비운다 — 빈말을 만들지 않는다", () => {
+  it("저작·공식 정보가 전혀 없어도 회사명으로 최소한을 말한다 — 침묵 카드를 만들지 않는다", () => {
     const b = booth(undefined, "무명출판");
     const g = buildGrounding(b, ["learning"]);
     expect(g.confidence).toBe("low");
     expect(g.what).toBe("무명출판");
-    expect(g.why).toBe("");
+    expect(g.why).toContain("무명출판");
   });
 });

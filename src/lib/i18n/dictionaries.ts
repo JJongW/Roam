@@ -430,6 +430,9 @@ const ko = {
     becauseInterested: "아까 ‘{booth}’에 관심 보여서 같이 꺼냈어.",
     becauseVisited: "‘{booth}’ 가봤다길래 같이 꺼냈어.",
     whatGoods: "여기 {goods} 있어",
+    // 저작·공식 정보가 전혀 없어도 이거 하나는 항상 말할 수 있다(company는 필수
+    // 필드) — 침묵 카드를 만들지 않기 위한 마지막 폴백.
+    whatCompanyFallback: "‘{name}’ 부스야",
   },
   rhythm: {
     question: "오늘은 어떻게 볼까?",
@@ -1122,6 +1125,7 @@ const en: Dict = {
       "You showed interest in “{booth}”, so I pulled this too.",
     becauseVisited: "You saw “{booth}”, so I pulled this too.",
     whatGoods: "Has {goods}",
+    whatCompanyFallback: "It's the ‘{name}’ booth",
   },
   rhythm: {
     question: "How do you want to look today?",
