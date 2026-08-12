@@ -24,6 +24,7 @@ import type {
   ExhibitionDetail,
   ExhibitionTips,
   Hall,
+  IssueLog,
   MovementPreference,
   Paginated,
   Review,
@@ -345,6 +346,21 @@ function mapUser(r: Row): User {
     provider: optStr(r.provider),
     email: optStr(r.email),
     avatarUrl: optStr(r.avatar_url),
+  };
+}
+
+function mapIssueLog(r: Row): IssueLog {
+  return {
+    id: str(r.id),
+    source: String(r.source) as IssueLog["source"],
+    message: str(r.message),
+    stack: r.stack == null ? undefined : str(r.stack),
+    path: r.path == null ? undefined : str(r.path),
+    digest: r.digest == null ? undefined : str(r.digest),
+    userId: r.user_id == null ? undefined : str(r.user_id),
+    sessionId: r.session_id == null ? undefined : str(r.session_id),
+    context: (r.context as Record<string, unknown> | null) ?? undefined,
+    createdAt: str(r.created_at),
   };
 }
 
@@ -1225,6 +1241,16 @@ export class SupabaseRepository implements Repository {
     return (data ?? []).map(mapNote);
   }
 
+  async listNotesByBoothIds(boothIds: string[]): Promise<BoothNote[]> {
+    if (boothIds.length === 0) return [];
+    const db = await this.db();
+    const { data } = await db
+      .from("booth_note")
+      .select("*")
+      .in("booth_id", boothIds);
+    return (data ?? []).map(mapNote);
+  }
+
   async upsertNote(
     userId: string,
     boothId: string,
@@ -1671,6 +1697,55 @@ export class SupabaseRepository implements Repository {
       .map(([keyword, count]) => ({ keyword, count }))
       .sort((a, b) => b.count - a.count)
       .slice(0, limit);
+  }
+
+  // --- 오류/이슈 로그 --------------------------------------------------------
+
+  async logIssue(input: {
+    source: "server" | "client";
+    message: string;
+    stack?: string;
+    path?: string;
+    digest?: string;
+    userId?: string;
+    sessionId?: string;
+    context?: Record<string, unknown>;
+  }): Promise<void> {
+    // 로깅 자체가 실패해도 원래 요청·화면엔 절대 영향을 주면 안 된다 — service-role
+    // 키가 없는 환경(로컬 개발 등)에서도 조용히 넘어간다.
+    try {
+      const db = createServiceClient();
+      const res = await db.from("issue_log").insert({
+        id: uid("issue"),
+        source: input.source,
+        message: input.message,
+        stack: input.stack ?? null,
+        path: input.path ?? null,
+        digest: input.digest ?? null,
+        user_id: input.userId ?? null,
+        session_id: input.sessionId ?? null,
+        context: input.context ?? null,
+        created_at: now(),
+      });
+      loggedWrite(res, "이슈 로그 적재");
+    } catch (e) {
+      console.error("[repo] 이슈 로그 적재 실패:", e);
+    }
+  }
+
+  async listIssues(opts?: {
+    source?: "server" | "client";
+    limit?: number;
+  }): Promise<IssueLog[]> {
+    const db = createServiceClient();
+    let q = db
+      .from("issue_log")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(opts?.limit ?? 100);
+    if (opts?.source) q = q.eq("source", opts.source);
+    const { data } = await q;
+    return (data ?? []).map((r) => mapIssueLog(r as Row));
   }
 
   async appendUserSignal(
