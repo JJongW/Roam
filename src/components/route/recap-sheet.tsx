@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { ValueChips } from "@/components/values/value-chips";
+import { VisitOutcomeCards } from "@/components/route/visit-outcome-cards";
 import { useT } from "@/lib/i18n/provider";
 import {
   closingLine,
@@ -20,6 +21,7 @@ import {
 } from "@/lib/memory/reflect-questions";
 import { valueLabel } from "@/lib/values";
 import { themeLabel } from "@/lib/booth/themes";
+import type { OutcomeCard } from "@/lib/memory/retro-outcomes";
 import type { VisitDigest } from "@/lib/types";
 
 /**
@@ -36,6 +38,7 @@ export function RecapSheet({
 }) {
   const t = useT();
   const [visit, setVisit] = useState<VisitDigest | null>(null);
+  const [outcomeCards, setOutcomeCards] = useState<OutcomeCard[]>([]);
   const [question, setQuestion] = useState<ReflectQuestion | null>(null);
   const [answered, setAnswered] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -45,13 +48,18 @@ export function RecapSheet({
     let cancelled = false;
     // loading 기본 true — 시트는 관람당 1회 열리므로 동기 리셋 불필요(cascading render 회피).
     api
-      .get<{ data: { visit: VisitDigest | null; question: ReflectQuestion | null } }>(
-        "/api/me/recap",
-      )
+      .get<{
+        data: {
+          visit: VisitDigest | null;
+          question: ReflectQuestion | null;
+          outcomeCards: OutcomeCard[];
+        };
+      }>("/api/me/recap")
       .then((r) => {
         if (cancelled) return;
         setVisit(r.data.visit);
         setQuestion(r.data.question);
+        setOutcomeCards(r.data.outcomeCards);
       })
       .catch(() => {
         if (!cancelled) setVisit(null);
@@ -94,6 +102,12 @@ export function RecapSheet({
           </SheetTitle>
           <SheetDescription>{t("recap.desc")}</SheetDescription>
         </SheetHeader>
+
+        {!loading && outcomeCards.length > 0 && (
+          <div className="mt-4">
+            <VisitOutcomeCards cards={outcomeCards} />
+          </div>
+        )}
 
         <div className="mt-4 rounded-2xl border border-primary/25 bg-accent/40 p-4">
           {loading ? (

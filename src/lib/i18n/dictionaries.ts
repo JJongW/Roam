@@ -652,6 +652,20 @@ const ko = {
     home: "홈으로",
     finish: "오늘 관람 마치기",
     finishing: "오늘 관람 정리하는 중…",
+    outcomeHit: [
+      "‘{booth}’, 역시 네 말이 맞았네.",
+      "‘{booth}’ — 딱 네가 생각한 대로였어.",
+      "‘{booth}’, 그 느낌 정확했다.",
+      "‘{booth}’는 예상 그대로였어.",
+    ],
+    outcomeReversal: [
+      "‘{booth}’, 이건 좀 의외였지?",
+      "‘{booth}’ — 생각이랑 다르게 흘러갔네.",
+      "‘{booth}’, 예상 밖이었어.",
+      "‘{booth}’는 뜻밖이었네.",
+    ],
+    outcomeNext: "다음",
+    outcomeDone: "확인",
     fallback: "오늘도 고생 많았어. 다음에 또 함께 둘러보자.",
   },
   values: {
@@ -1302,6 +1316,20 @@ const en: Dict = {
     home: "Home",
     finish: "Finish today's visit",
     finishing: "Wrapping up today's visit…",
+    outcomeHit: [
+      "“{booth}” — you called it.",
+      "“{booth}”, exactly what you expected.",
+      "“{booth}” turned out just like you thought.",
+      "“{booth}” — your instinct was right.",
+    ],
+    outcomeReversal: [
+      "“{booth}” — that one surprised you.",
+      "“{booth}”, didn't go the way you thought.",
+      "“{booth}” was unexpected.",
+      "“{booth}” — plot twist.",
+    ],
+    outcomeNext: "Next",
+    outcomeDone: "Got it",
     fallback: "Great work today. Let's explore again next time.",
   },
   values: {
