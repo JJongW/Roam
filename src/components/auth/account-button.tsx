@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { LogOut, Sparkles, UserRound } from "lucide-react";
+import { LogOut, UserRound } from "lucide-react";
 import { toast } from "sonner";
 import { useAuthStore } from "@/lib/stores/auth";
 import { useT } from "@/lib/i18n/provider";
@@ -29,17 +29,18 @@ export function AccountButton() {
 
   return (
     <div className="flex items-center gap-1">
-      {/* 닉네임을 누르면 취향이 뜬다는 걸 텍스트만으론 아무도 몰랐다(발견성 문제) —
-          아이콘 하나로 "여기 누르면 뭔가 보인다"는 신호를 상시 붙여둔다. */}
-      <button
-        type="button"
+      {/* 비로그인 상태의 로그인 버튼과 같은 모양(outline)을 써서 "여기 누르면 뭔가
+          있다"는 신호를 준다 — 예전엔 아이콘 하나로 그 신호를 줬는데, 로미와 무관한
+          자리에 AI 연상 아이콘이 붙어 어색하다는 피드백으로 뺐다. */}
+      <Button
+        variant="outline"
+        size="sm"
+        className="max-w-28"
         onClick={() => setBrainOpen(true)}
         aria-label={t("account.viewTaste")}
-        className="flex max-w-28 items-center gap-1 text-sm font-semibold active:opacity-70"
       >
-        <Sparkles className="size-3.5 shrink-0 text-muted-foreground" />
         <span className="truncate">{user.nickname}</span>
-      </button>
+      </Button>
       <Button
         variant="ghost"
         size="icon"
