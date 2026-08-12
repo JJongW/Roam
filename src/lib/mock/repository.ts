@@ -937,6 +937,9 @@ export class MockRepository implements Repository {
     userId?: string;
     sessionId?: string;
     context?: Record<string, unknown>;
+    device?: string;
+    country?: string;
+    city?: string;
   }): Promise<void> {
     store().issueLogs.push({
       id: uid("issue"),
@@ -948,6 +951,9 @@ export class MockRepository implements Repository {
       userId: input.userId,
       sessionId: input.sessionId,
       context: input.context,
+      device: input.device,
+      country: input.country,
+      city: input.city,
       createdAt: now(),
     });
   }
@@ -959,6 +965,15 @@ export class MockRepository implements Repository {
     let list = [...store().issueLogs].reverse();
     if (opts?.source) list = list.filter((i) => i.source === opts.source);
     return list.slice(0, opts?.limit ?? 100);
+  }
+
+  async deleteOldIssues(olderThanDays: number): Promise<number> {
+    const cutoff = Date.now() - olderThanDays * 24 * 60 * 60 * 1000;
+    const before = store().issueLogs.length;
+    store().issueLogs = store().issueLogs.filter(
+      (i) => new Date(i.createdAt).getTime() >= cutoff,
+    );
+    return before - store().issueLogs.length;
   }
 
   async appendUserSignal(

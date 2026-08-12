@@ -384,6 +384,44 @@ describe("logIssue / listIssues", () => {
     const limited = await repo.listIssues({ limit: 2 });
     expect(limited).toHaveLength(2);
   });
+
+  it("olderThanDays보다 오래된 것만 지우고 개수를 반환한다", async () => {
+    const repo = new MockRepository();
+    await repo.logIssue({ source: "server", message: "old-1" });
+    await repo.logIssue({ source: "server", message: "old-2" });
+    await repo.logIssue({ source: "server", message: "recent-1" });
+
+    // logIssue가 createdAt=지금으로 찍으므로, 테스트에선 store를 직접 조작해
+    // 시각을 되돌린다 — 247번째 줄 근방 listPendingRetro 테스트와 같은 패턴.
+    const store = (
+      globalThis as unknown as {
+        __roamStore: {
+          issueLogs: Array<{ message: string; createdAt: string }>;
+        };
+      }
+    ).__roamStore;
+    const now = Date.now();
+    const old = new Date(now - 31 * 24 * 60 * 60 * 1000).toISOString();
+    const recent = new Date(now - 1 * 24 * 60 * 60 * 1000).toISOString();
+    const old1 = store.issueLogs.find((i) => i.message === "old-1")!;
+    const old2 = store.issueLogs.find((i) => i.message === "old-2")!;
+    const recent1 = store.issueLogs.find((i) => i.message === "recent-1")!;
+    old1.createdAt = old;
+    old2.createdAt = old;
+    recent1.createdAt = recent;
+
+    const deleted = await repo.deleteOldIssues(30);
+    expect(deleted).toBe(2);
+
+    const remaining = await repo.listIssues();
+    expect(remaining.map((i) => i.message)).toEqual(["recent-1"]);
+  });
+
+  it("지울 게 없으면 0을 반환한다", async () => {
+    const repo = new MockRepository();
+    const deleted = await repo.deleteOldIssues(30);
+    expect(deleted).toBe(0);
+  });
 });
 
 describe("listNotesByBoothIds", () => {

@@ -366,6 +366,11 @@ export interface IssueLog {
   userId?: string;
   sessionId?: string;
   context?: Record<string, unknown>;
+  /** parseUserAgent 결과(예: "iPhone · Safari"). 모르면 undefined. */
+  device?: string;
+  /** Vercel 지오 헤더 기반 — IP 자체는 저장하지 않는다. */
+  country?: string;
+  city?: string;
   createdAt: string;
 }
 
