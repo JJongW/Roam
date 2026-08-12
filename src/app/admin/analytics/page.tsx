@@ -37,19 +37,32 @@ export default async function AnalyticsPage() {
         <p className="text-sm text-muted-foreground">{exhibition.name}</p>
       </header>
 
-      <AdminSection title="방문 밀집도 히트맵" description="부스별 방문·체류 밀집도">
-        <Heatmap width={exhibition.mapWidth} height={exhibition.mapHeight} points={points} />
+      <AdminSection
+        title="방문 밀집도 히트맵"
+        description="부스별 방문·체류 밀집도"
+      >
+        <Heatmap
+          width={exhibition.mapWidth}
+          height={exhibition.mapHeight}
+          points={points}
+        />
       </AdminSection>
 
-      <AdminSection title="인기 부스" description="조회수 기준 상위 부스">
+      <AdminSection title="인기 부스" description="실제 조회수 기준 상위 부스">
         <PopularChart data={popular} />
       </AdminSection>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <AdminSection title="방문 흐름" description="부스 간 이동이 많은 경로">
+        <AdminSection
+          title="방문 흐름"
+          description="부스 상세를 연달아 본 흐름(근사치 — 실측 동선 아님)"
+        >
           <FlowList edges={edges} names={names} />
         </AdminSection>
-        <AdminSection title="전환율" description="세션 → 온보딩 → 경로 → 완료">
+        <AdminSection
+          title="여정 퍼널"
+          description="진입 → 온보딩 → 반응 → 판정 → 회고 (직전 단계 대비 %)"
+        >
           <ConversionFunnel funnel={funnel} />
         </AdminSection>
       </div>
