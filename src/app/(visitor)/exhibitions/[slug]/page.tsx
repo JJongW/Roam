@@ -240,7 +240,10 @@ export default async function ExhibitionDetailPage({
             </Link>
           )}
 
-          {feedItems.length > 0 && <FinishVisit slug={slug} />}
+          {/* 피드를 다 비워도(성실히 판단 다 함) 회고로 못 가면 안 된다 — "판단이
+              하나라도 있었나"로 게이트를 바꾼다. feedItems가 남았는지는 회고와
+              무관하다(로미 P0 브리프 §1). */}
+          {user && taste.judgedCount > 0 && <FinishVisit slug={slug} />}
         </div>
       </main>
     </div>
