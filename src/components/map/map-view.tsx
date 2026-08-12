@@ -20,7 +20,6 @@ import {
   idsByVerdict,
   pushNote,
 } from "@/lib/stores/visit";
-import { NotePhotos } from "@/components/booth/note-photos";
 import { useAuthStore } from "@/lib/stores/auth";
 import { useUiStore } from "@/lib/stores/ui";
 import { useCompanionStore } from "@/lib/stores/companion";
@@ -435,7 +434,6 @@ function BoothPopupMemo({ boothId }: { boothId: string }) {
           className="h-10 pl-8"
         />
       </div>
-      <NotePhotos boothId={boothId} compact />
     </div>
   );
 }
