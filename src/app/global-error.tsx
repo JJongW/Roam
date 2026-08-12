@@ -27,6 +27,7 @@ export default function GlobalError({
         stack: error.stack,
         path: window.location.pathname,
         digest: error.digest,
+        userAgent: navigator.userAgent,
       }),
     }).catch(() => {});
   }

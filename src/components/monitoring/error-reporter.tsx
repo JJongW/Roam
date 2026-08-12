@@ -16,6 +16,7 @@ export function ErrorReporter() {
           message,
           stack,
           path: window.location.pathname,
+          userAgent: navigator.userAgent,
         }),
       }).catch(() => {});
     }
@@ -25,8 +26,7 @@ export function ErrorReporter() {
     }
     function onRejection(event: PromiseRejectionEvent) {
       const reason = event.reason;
-      const message =
-        reason instanceof Error ? reason.message : String(reason);
+      const message = reason instanceof Error ? reason.message : String(reason);
       const stack = reason instanceof Error ? reason.stack : undefined;
       report(message, stack);
     }

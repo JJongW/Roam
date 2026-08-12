@@ -234,6 +234,7 @@ export const errorReportSchema = z.object({
   stack: z.string().max(8000).optional(),
   path: z.string().max(500).optional(),
   digest: z.string().max(200).optional(),
+  userAgent: z.string().max(300).optional(),
   context: z
     .record(z.string(), z.unknown())
     .optional()

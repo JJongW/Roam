@@ -23,6 +23,8 @@ export default function Error({
         path:
           typeof window !== "undefined" ? window.location.pathname : undefined,
         digest: error.digest,
+        userAgent:
+          typeof navigator !== "undefined" ? navigator.userAgent : undefined,
       }),
     }).catch(() => {
       /* 오류 보고 자체가 실패해도 사용자에게 보여줄 화면엔 영향 없음 */
