@@ -642,7 +642,11 @@ const ko = {
     q1: "지금 뭐 보면 좋아?",
     a1: "네가 고른 가치로 미리 골라뒀어. 피드 맨 위부터 봐 — 확실히 취향인 것부터 있고, 아래로 갈수록 좀 새로운 결이야.",
     q2: "사람 많은 데 피하고 싶어",
-    a2: "부스마다 붐빔 정도를 큐로 붙여놨어. '한산'·'적당히' 위주로 돌면 여유로워. 붐비는 곳은 이른/늦은 시간대에.",
+    // 동선 제품 제거로 크라우드 소스(saved route)가 사라져 부스별 붐빔 데이터가
+    // 없다(src/lib/engine/service.ts — heat.booths 항상 빈 스텁). 없는 걸 있다고
+    // 말하면 안 된다 — 정직하게 고쳐 말할 수 있는 것(개장 직후·마감 직전이 대체로
+    // 한산하다는 일반 팁)만 남긴다.
+    a2: "지금은 부스별 실시간 혼잡도까진 못 봐. 대신 개장 직후나 마감 전 시간대가 대체로 한산해.",
     q3: "왜 이걸 추천했어?",
     a3: "네 관심 가치랑 겹치는 부스라 골랐어. 카드의 색 태그가 그 연결 고리 — 그걸 보고 끌리는지 네가 판단하면 돼.",
   },
@@ -1309,7 +1313,7 @@ const en: Dict = {
     q1: "What should I see now?",
     a1: "I picked these by your values. Start from the top of the feed — sure-taste first, newer as you go down.",
     q2: "I want to avoid crowds",
-    a2: "I tagged each booth's crowd level. Stick to 'quiet' or 'moderate' for ease; hit busy ones early or late.",
+    a2: "I can't see real-time crowd levels per booth yet. As a rule of thumb, right after opening or just before closing tends to be quieter.",
     q3: "Why did you recommend this?",
     a3: "It overlaps with your values. The colored tags on the card are the link — you decide if it draws you.",
   },
