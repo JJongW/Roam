@@ -7,7 +7,7 @@ type Ctx = { params: Promise<{ postId: string }> };
 
 /** Report a community post for abuse. Deduped per reporter session. */
 export async function POST(req: Request, { params }: Ctx) {
-  return withErrorBoundary(async () => {
+  return withErrorBoundary(req, async () => {
     const { postId } = await params;
     const parsed = await parseBody(req, reportInputSchema);
     if (!parsed.ok) return parsed.res;

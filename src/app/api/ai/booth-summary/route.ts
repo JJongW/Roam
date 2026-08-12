@@ -33,7 +33,7 @@ const TTL_MS = 60 * 60 * 1000;
  * off or fails (the full intro still covers it).
  */
 export async function POST(req: Request) {
-  return withErrorBoundary(async () => {
+  return withErrorBoundary(req, async () => {
     if (!hasGemini) return fail("INTERNAL", "AI가 설정되지 않았어요");
     const parsed = await parseBody(req, bodySchema);
     if (!parsed.ok) return parsed.res;

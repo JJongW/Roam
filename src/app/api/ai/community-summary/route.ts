@@ -39,7 +39,7 @@ const MIN_NEW = 3;
  * accordingly so users don't confuse it with organizer-provided info.
  */
 export async function POST(req: Request) {
-  return withErrorBoundary(async () => {
+  return withErrorBoundary(req, async () => {
     if (!hasGemini) return fail("INTERNAL", "AI가 설정되지 않았어요");
 
     const parsed = await parseBody(req, bodySchema);

@@ -1,6 +1,12 @@
 import { z } from "zod";
 import { getRepository } from "@/lib/repositories";
-import { ok, fail, notFound, parseBody, withErrorBoundary } from "@/lib/api/http";
+import {
+  ok,
+  fail,
+  notFound,
+  parseBody,
+  withErrorBoundary,
+} from "@/lib/api/http";
 import { hasGemini, generateJSONFromImage } from "@/lib/ai/gemini";
 import { matchTermsToBooths } from "@/lib/ai/screenshot-match";
 
@@ -31,7 +37,7 @@ JSON: {"detectedTerms": string[]}`;
  * (see matchTermsToBooths), so unmatched terms surface honestly as no-match.
  */
 export async function POST(req: Request) {
-  return withErrorBoundary(async () => {
+  return withErrorBoundary(req, async () => {
     if (!hasGemini) return fail("INTERNAL", "AI 판독이 설정되지 않았어요");
 
     const parsed = await parseBody(req, bodySchema);

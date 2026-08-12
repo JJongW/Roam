@@ -160,9 +160,19 @@ export async function setAdminCookie(email?: string) {
   });
 }
 
-export function withErrorBoundary(handler: () => Promise<NextResponse>) {
-  return handler().catch((e) => {
+export function withErrorBoundary(
+  req: Request,
+  handler: () => Promise<NextResponse>,
+) {
+  return handler().catch(async (e) => {
     console.error("[api] unhandled", e);
+    const { captureServerIssue } = await import("@/lib/api/issue-capture");
+    await captureServerIssue({
+      error: e,
+      path: new URL(req.url).pathname,
+      method: req.method,
+      headers: req.headers,
+    });
     return fail("INTERNAL", "서버 오류가 발생했습니다");
   });
 }

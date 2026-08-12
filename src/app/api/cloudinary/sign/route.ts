@@ -11,7 +11,7 @@ import {
  * `folder` key (allowlisted server-side) routes notes vs community uploads.
  */
 export async function POST(req: Request) {
-  return withErrorBoundary(async () => {
+  return withErrorBoundary(req, async () => {
     if (!hasCloudinary)
       return fail("INTERNAL", "미디어 업로드가 설정되지 않았어요");
     let folderKey: string | undefined;

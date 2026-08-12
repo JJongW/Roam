@@ -1,12 +1,18 @@
 import { z } from "zod";
-import { ok, fail, parseBody, setAdminCookie, withErrorBoundary } from "@/lib/api/http";
+import {
+  ok,
+  fail,
+  parseBody,
+  setAdminCookie,
+  withErrorBoundary,
+} from "@/lib/api/http";
 import { env } from "@/lib/env";
 
 const bodySchema = z.object({ code: z.string().min(1) });
 
 /** Organizer gate: exchange the secret code for an admin cookie. */
 export async function POST(req: Request) {
-  return withErrorBoundary(async () => {
+  return withErrorBoundary(req, async () => {
     if (!env.ORGANIZER_CODE) return ok({ ok: true }); // gate disabled
     const parsed = await parseBody(req, bodySchema);
     if (!parsed.ok) return parsed.res;
