@@ -36,7 +36,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useT } from "@/lib/i18n/provider";
 import { boothValueSlugs } from "@/lib/values";
-import type { Booth, ExhibitionDetail } from "@/lib/types";
+import { deriveCue } from "@/lib/feed/cue";
+import {
+  buildCopresenceLine,
+  type CopresencePositive,
+} from "@/lib/companion/copresence";
+import type { Booth, BoothEvent, ExhibitionDetail } from "@/lib/types";
 
 /**
  * 관심 밀도 지도 — 길찾기·동선이 아니라 온사이트 공간 참조 부가 서비스. 검색·리스트·
@@ -47,11 +52,14 @@ export function MapView({
   detail,
   booths,
   initialFocusId,
+  eventsByBooth,
 }: {
   detail: ExhibitionDetail;
   booths: Booth[];
   /** Deep-link target (e.g. from the 메모장 "지도에서 보기"): preselect + center. */
   initialFocusId?: string;
+  /** 부스별 이벤트 — 선택 시 co-presence 발화의 cue 재료. */
+  eventsByBooth: Record<string, BoothEvent[]>;
 }) {
   const router = useRouter();
   const t = useT();
@@ -119,6 +127,35 @@ export function MapView({
   );
   const selected = booths.find((b) => b.id === selectedId) ?? null;
   const selectedCat = selected ? catById.get(selected.categoryId) : undefined;
+
+  // 부스 선택 = co-presence 트리거(T1+T2 통합) — 과거 긍정 반응과 가치가
+  // 겹치거나(기억) 임박 이벤트가 있으면(사실) 로미가 한 줄 말한다. 둘 다 없으면
+  // 침묵(억지 발화 금지). 자발 발화라 쿨다운 게이트를 거친다.
+  const say = useCompanionStore((s) => s.saySpontaneous);
+  const recordAction = useCompanionStore((s) => s.recordAction);
+  useEffect(() => {
+    if (!selected) return;
+    recordAction();
+    const positives: CopresencePositive[] = booths
+      .map((b) => {
+        const r = records[b.id];
+        if (r?.verdict === "good") return { booth: b, kind: "good" as const };
+        if (r?.interest === "must") return { booth: b, kind: "must" as const };
+        if (r?.interest === "curious")
+          return { booth: b, kind: "curious" as const };
+        return null;
+      })
+      .filter((p): p is CopresencePositive => p !== null);
+    const cue = deriveCue(selected, eventsByBooth[selected.id] ?? []);
+    const line = buildCopresenceLine(
+      { trigger: "select", booth: selected, positives, cue },
+      t,
+    );
+    if (line) say("select", line, Date.now());
+    // selectedId가 바뀔 때만(부스를 다시 고를 때만) — records/booths 참조가
+    // 매 렌더 바뀌어도 재실행되면 안 된다.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedId]);
 
   function handleBack() {
     // 지도는 전시 상세에서 들어온 부가 화면 — 홈이 아니라 그 전시로 돌아간다.
