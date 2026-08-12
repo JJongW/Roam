@@ -3,6 +3,7 @@
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/sonner";
 import { WebVitals } from "@/components/common/web-vitals";
+import { ErrorReporter } from "@/components/monitoring/error-reporter";
 import { AuthBootstrap, LoginSheet } from "@/components/auth/login-sheet";
 import { I18nProvider } from "@/lib/i18n/provider";
 import type { Locale } from "@/lib/i18n/config";
@@ -30,6 +31,7 @@ export function Providers({
         {children}
         <Toaster />
         <WebVitals />
+        <ErrorReporter />
         <AuthBootstrap />
         <LoginSheet />
       </I18nProvider>

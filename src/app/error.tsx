@@ -12,8 +12,20 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    // monitoring hook — forward to a service in production
     console.error("[app:error]", error);
+    fetch("/api/errors", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        message: error.message,
+        stack: error.stack,
+        path:
+          typeof window !== "undefined" ? window.location.pathname : undefined,
+        digest: error.digest,
+      }),
+    }).catch(() => {
+      /* 오류 보고 자체가 실패해도 사용자에게 보여줄 화면엔 영향 없음 */
+    });
   }, [error]);
 
   return (

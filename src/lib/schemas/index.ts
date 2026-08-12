@@ -228,3 +228,12 @@ export const reportInputSchema = z.object({
   reason: z.string().trim().max(200).optional(),
 });
 export type ReportInput = z.infer<typeof reportInputSchema>;
+
+export const errorReportSchema = z.object({
+  message: z.string().min(1).max(2000),
+  stack: z.string().max(8000).optional(),
+  path: z.string().max(500).optional(),
+  digest: z.string().max(200).optional(),
+  context: z.record(z.string(), z.unknown()).optional(),
+});
+export type ErrorReportInput = z.infer<typeof errorReportSchema>;
