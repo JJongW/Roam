@@ -61,6 +61,42 @@ interface CompanionState {
   appOnboardingJustCompleted: boolean;
   signalAppOnboardingComplete: () => void;
   clearAppOnboardingJustCompleted: () => void;
+
+  /**
+   * 자발 발화(현장 부스 선택·미방문 이탈·검색) 쿨다운 상태 — "나그지 않기". 직접
+   * 유발 발화(반응 탭 즉답)는 이 게이트를 안 거친다.
+   */
+  lastSpontaneousAt: number | null;
+  lastSpontaneousTrigger: string | null;
+  /** saySpontaneous가 성공한 뒤로 쌓인 사용자 행동 수 — recordAction()이 늘린다. */
+  actionsSinceLastSpontaneous: number;
+  /** 부스 선택·검색 등 자발 발화 후보가 될 수 있는 행동마다 호출. */
+  recordAction: () => void;
+  /** 자발 발화 시도 — 쿨다운을 통과하면 flash를 세팅하고 상태를 갱신, 아니면
+   *  조용히 아무것도 안 한다(무음이 기본). now는 호출부가 Date.now()로 넘긴다. */
+  saySpontaneous: (trigger: string, text: string, now: number) => void;
+}
+
+/**
+ * 자발 발화 쿨다운 판정 — 순수 함수(테스트 가능). "45초 또는 행동 3회당 1회 중
+ * 늦은 쪽"은 두 조건 다 만족해야 한다는 뜻이다(더 늦게 만족되는 쪽이 실제 게이트가
+ * 열리는 시점이므로). 직전과 같은 트리거면 그 자체로 금지(연속 같은 유형 금지).
+ * 첫 발화(lastSpontaneousAt이 null)는 무조건 허용한다 — 비교할 기준이 없다.
+ */
+export function canSaySpontaneous(
+  state: {
+    lastSpontaneousAt: number | null;
+    lastSpontaneousTrigger: string | null;
+    actionsSinceLastSpontaneous: number;
+  },
+  trigger: string,
+  now: number,
+): boolean {
+  if (state.lastSpontaneousTrigger === trigger) return false;
+  if (state.lastSpontaneousAt === null) return true;
+  const cooledDown = now - state.lastSpontaneousAt >= 45_000;
+  const actedEnough = state.actionsSinceLastSpontaneous >= 3;
+  return cooledDown && actedEnough;
 }
 
 export const useCompanionStore = create<CompanionState>((set) => ({
@@ -76,5 +112,23 @@ export const useCompanionStore = create<CompanionState>((set) => ({
   setInterests: (interests) => set({ interests }),
   appOnboardingJustCompleted: false,
   signalAppOnboardingComplete: () => set({ appOnboardingJustCompleted: true }),
-  clearAppOnboardingJustCompleted: () => set({ appOnboardingJustCompleted: false }),
+  clearAppOnboardingJustCompleted: () =>
+    set({ appOnboardingJustCompleted: false }),
+  lastSpontaneousAt: null,
+  lastSpontaneousTrigger: null,
+  actionsSinceLastSpontaneous: 0,
+  recordAction: () =>
+    set((s) => ({
+      actionsSinceLastSpontaneous: s.actionsSinceLastSpontaneous + 1,
+    })),
+  saySpontaneous: (trigger, text, now) =>
+    set((s) => {
+      if (!canSaySpontaneous(s, trigger, now)) return {};
+      return {
+        flash: text,
+        lastSpontaneousAt: now,
+        lastSpontaneousTrigger: trigger,
+        actionsSinceLastSpontaneous: 0,
+      };
+    }),
 }));
