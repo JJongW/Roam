@@ -7,6 +7,12 @@ import { api } from "@/lib/api/client";
 import { CategoryChip } from "@/components/booth/category-chip";
 import { useT } from "@/lib/i18n/provider";
 import { cn } from "@/lib/utils";
+import { useCompanionStore } from "@/lib/stores/companion";
+import {
+  buildCopresenceLine,
+  type CopresencePositive,
+} from "@/lib/companion/copresence";
+import { useVisitStore } from "@/lib/stores/visit";
 import type { Booth, Category, Paginated } from "@/lib/types";
 
 /**
@@ -26,6 +32,9 @@ export function BoothSearch({
   const [results, setResults] = useState<Booth[] | null>(null);
   const [loading, setLoading] = useState(false);
   const seq = useRef(0);
+  const say = useCompanionStore((s) => s.saySpontaneous);
+  const recordAction = useCompanionStore((s) => s.recordAction);
+  const records = useVisitStore((s) => s.records);
 
   useEffect(() => {
     const query = q.trim();
@@ -44,11 +53,40 @@ export function BoothSearch({
         .then((page) => {
           if (id !== seq.current) return; // 최신 입력만 반영
           setResults(page.data);
+          // 검색 첫 결과 = T6 트리거. 결과 목록 전체가 아니라 최상단 하나만
+          // 대상으로 한다 — 검색 결과 개수만큼 발화하면 그게 더 잔소리다.
+          recordAction();
+          const first = page.data[0];
+          if (first) {
+            const positives: CopresencePositive[] = page.data
+              .map((b) => {
+                const r = records[b.id];
+                if (r?.verdict === "good")
+                  return { booth: b, kind: "good" as const };
+                if (r?.interest === "must")
+                  return { booth: b, kind: "must" as const };
+                if (r?.interest === "curious")
+                  return { booth: b, kind: "curious" as const };
+                return null;
+              })
+              .filter((p): p is CopresencePositive => p !== null);
+            const line = buildCopresenceLine(
+              {
+                trigger: "searchHit",
+                booth: first,
+                positives,
+                categoryLabel: categoryById[first.categoryId]?.name,
+              },
+              t,
+            );
+            if (line) say("searchHit", line, Date.now());
+          }
         })
         .catch(() => id === seq.current && setResults([]))
         .finally(() => id === seq.current && setLoading(false));
     }, 280);
     return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q, slug]);
 
   const active = q.trim().length > 0;
