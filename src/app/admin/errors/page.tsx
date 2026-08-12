@@ -7,6 +7,7 @@ import {
   findBoothEnrichmentGaps,
   findNoteInconsistencies,
 } from "@/lib/admin/data-issues";
+import { groupIssues } from "@/lib/admin/issue-grouping";
 import { AdminSection } from "@/components/admin/section";
 import { IssueLogList } from "@/components/admin/issue-log-list";
 import { DataIssueList } from "@/components/admin/data-issue-list";
@@ -20,7 +21,8 @@ export default async function AdminErrorsPage() {
   const cookieId = (await cookies()).get(ADMIN_EXHIBITION_COOKIE)?.value;
   const exhibition = resolveAdminExhibition(exhibitions, cookieId, todayISO());
 
-  const issues = await repo.listIssues();
+  const issues = await repo.listIssues({ limit: 1000 });
+  const groups = groupIssues(issues);
 
   let gaps: ReturnType<typeof findBoothEnrichmentGaps> = [];
   let inconsistencies: ReturnType<typeof findNoteInconsistencies> = [];
@@ -49,9 +51,9 @@ export default async function AdminErrorsPage() {
         <TabsContent value="logs">
           <AdminSection
             title="오류 로그"
-            description={`최근 ${issues.length}건`}
+            description={`묶어서 ${groups.length}건 · 최근 30일`}
           >
-            <IssueLogList issues={issues} />
+            <IssueLogList groups={groups} />
           </AdminSection>
         </TabsContent>
         <TabsContent value="data">
