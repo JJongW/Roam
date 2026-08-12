@@ -449,6 +449,11 @@ const ko = {
     lineCommunity: "다른 사람은 뭘 봤나 궁금해?",
     lineBooth: "여기 어때? 끌리면 반응 남겨줘.",
     lineDefault: "궁금한 거 있으면 물어봐.",
+    copresenceMemory: "아까 '{booth}' 좋아했잖아, 여기도 그런 결이야.",
+    copresenceCue: "{cue}",
+    copresenceMemoryAndCue: "아까 '{booth}' 좋아했잖아, {cue}",
+    copresenceUnvisitedMust: "꼭 간다던 '{booth}' 아직 안 갔어.",
+    copresenceSearchHit: "'{booth}'는 어때 — 네가 {theme} 쪽 좋아하는 결이라.",
     homeValues: "{values} 기준으로 {n}곳 골라뒀어. 맘에 들어?",
     homePicked: "여기 네 취향으로 추린 {n}곳이야. 골라둔 거 어때?",
     homeAsk: "골라둔 곳부터 볼래, 지도부터 볼래?",
@@ -1142,6 +1147,14 @@ const en: Dict = {
     lineCommunity: "Curious what others saw?",
     lineBooth: "How's this one? Tap a reaction if it draws you.",
     lineDefault: "Ask me anything.",
+    copresenceMemory:
+      "You liked '{booth}' earlier — this one's a similar vibe.",
+    copresenceCue: "{cue}",
+    copresenceMemoryAndCue: "You liked '{booth}' earlier, and {cue}",
+    copresenceUnvisitedMust:
+      "You said '{booth}' was a must — haven't been yet.",
+    copresenceSearchHit:
+      "How about '{booth}' — fits the {theme} side you go for.",
     homeValues: "Picked {n} spots around {values}. Like them?",
     homePicked: "Here are {n} spots for your taste. How's the pick?",
     homeAsk: "Start with the picks, or the map?",
