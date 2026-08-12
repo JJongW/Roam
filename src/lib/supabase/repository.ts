@@ -362,6 +362,9 @@ function mapIssueLog(r: Row): IssueLog {
     userId: r.user_id == null ? undefined : str(r.user_id),
     sessionId: r.session_id == null ? undefined : str(r.session_id),
     context: (r.context as Record<string, unknown> | null) ?? undefined,
+    device: r.device == null ? undefined : str(r.device),
+    country: r.country == null ? undefined : str(r.country),
+    city: r.city == null ? undefined : str(r.city),
     createdAt: str(r.created_at),
   };
 }
@@ -1712,6 +1715,9 @@ export class SupabaseRepository implements Repository {
     userId?: string;
     sessionId?: string;
     context?: Record<string, unknown>;
+    device?: string;
+    country?: string;
+    city?: string;
   }): Promise<void> {
     // 로깅 자체가 실패해도 원래 요청·화면엔 절대 영향을 주면 안 된다 — service-role
     // 키가 없는 환경(로컬 개발 등)에서도 조용히 넘어간다.
@@ -1727,6 +1733,9 @@ export class SupabaseRepository implements Repository {
         user_id: input.userId ?? null,
         session_id: input.sessionId ?? null,
         context: input.context ?? null,
+        device: input.device ?? null,
+        country: input.country ?? null,
+        city: input.city ?? null,
         created_at: now(),
       });
       loggedWrite(res, "이슈 로그 적재");
@@ -1748,6 +1757,19 @@ export class SupabaseRepository implements Repository {
     if (opts?.source) q = q.eq("source", opts.source);
     const { data } = await q;
     return (data ?? []).map((r) => mapIssueLog(r as Row));
+  }
+
+  async deleteOldIssues(olderThanDays: number): Promise<number> {
+    const db = createServiceClient();
+    const cutoff = new Date(
+      Date.now() - olderThanDays * 24 * 60 * 60 * 1000,
+    ).toISOString();
+    const { data } = await db
+      .from("issue_log")
+      .delete()
+      .lt("created_at", cutoff)
+      .select("id");
+    return data?.length ?? 0;
   }
 
   async appendUserSignal(
