@@ -100,6 +100,7 @@ export function FinishVisit({
   return (
     <>
       <button
+        id="finish-visit-button"
         type="button"
         onClick={openRetro}
         disabled={busy}

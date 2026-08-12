@@ -140,12 +140,23 @@ export function InterestFeed({
               <p className="text-sm text-muted-foreground">
                 {t("feed.exhausted")}
               </p>
-              <Link
-                href={`/exhibitions/${slug}/map`}
-                className="mt-3 inline-flex min-h-11 items-center rounded-xl border border-border px-4 text-sm font-semibold active:bg-accent/40"
-              >
-                {t("feed.exhaustedMapCta")}
-              </Link>
+              {/* 마치기 버튼(FinishVisit)은 이 화면 아래 이미 렌더돼 있다(판단이
+                  하나라도 있으면 뜬다 — 피드 소진 상태면 항상 그렇다). 로직을
+                  중복 구현하지 않고 그 버튼으로 스크롤만 시킨다. */}
+              <div className="mt-3 flex items-center justify-center gap-2">
+                <a
+                  href="#finish-visit-button"
+                  className="inline-flex min-h-11 items-center rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground active:opacity-80"
+                >
+                  {t("feed.exhaustedFinishCta")}
+                </a>
+                <Link
+                  href={`/exhibitions/${slug}/map`}
+                  className="inline-flex min-h-11 items-center rounded-xl border border-border px-4 text-sm font-semibold active:bg-accent/40"
+                >
+                  {t("feed.exhaustedMapCta")}
+                </Link>
+              </div>
             </>
           ) : (
             <p className="flex items-center justify-center gap-2 text-sm text-muted-foreground">

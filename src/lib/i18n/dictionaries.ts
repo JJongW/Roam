@@ -231,8 +231,10 @@ const ko = {
     freshDivider: "여기부터 새로 골랐어",
     // 배치를 다 판단하면 자동으로 다시 채운다(interest-feed.tsx) — 그래도 서버가
     // 더 못 주면 이 전시엔 정말 더 볼 게 없다는 뜻이라 지도로 안내한다.
-    exhausted: "여기 있는 부스는 다 살펴봤어. 지도에서 직접 돌아다녀 봐.",
+    exhausted:
+      "여기 있는 부스는 다 살펴봤어. 오늘 이만하면 충분한 것 같은데, 정리해볼까?",
     exhaustedMapCta: "지도 보기",
+    exhaustedFinishCta: "오늘 관람 정리하기",
     repick: "새로 골라줘",
     repicking: "고르는 중…",
     pickStable: "확실히 네 취향이라",
@@ -930,8 +932,10 @@ const en: Dict = {
     similar: "Similar {n}",
     collapse: "Collapse",
     freshDivider: "New picks from here",
-    exhausted: "You've seen every booth here. Time to walk the map yourself.",
+    exhausted:
+      "You've seen every booth here. Sounds like a good place to wrap up today?",
     exhaustedMapCta: "Open map",
+    exhaustedFinishCta: "Wrap up today's visit",
     repick: "Pick more",
     repicking: "Picking…",
     pickStable: "Definitely your taste",
