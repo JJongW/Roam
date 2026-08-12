@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAuthStore, PENDING_EXHIBITION_VALUES_KEY } from "@/lib/stores/auth";
 import { useCompanionStore } from "@/lib/stores/companion";
 import { ChevronRight } from "lucide-react";
 import { api } from "@/lib/api/client";
@@ -49,7 +48,6 @@ export function ValueOnboarding({
 }) {
   const router = useRouter();
   const t = useT();
-  const user = useAuthStore((s) => s.user);
   // 전시별로 키를 나눠 sessionStorage에 남긴다 — 뒤로가기가 이 페이지를 언마운트
   // 시켰다 돌아와도(예전엔 phase가 "intro"로 리셋됐다) 있던 자리에서 이어진다.
   const storeKey = (name: string) => `roam-onboarding-value-${slug}-${name}`;
@@ -117,16 +115,9 @@ export function ValueOnboarding({
     setPhase("saving");
     const values = tally ? topValues(tally, 3) : [];
     try {
-      if (user) {
-        await api.post("/api/me/values", { exhibitionSlug: slug, values });
-      } else if (typeof window !== "undefined") {
-        // 미로그인: 로컬에 담아두고, 로그인 시 브레인에 동기화(auth.ts의
-        // syncPendingExhibitionValues) — 안 그러면 방금 답한 게 그냥 사라진다.
-        localStorage.setItem(
-          PENDING_EXHIBITION_VALUES_KEY,
-          JSON.stringify({ exhibitionSlug: slug, values }),
-        );
-      }
+      // 이 컴포넌트 자체가 로그인 사용자에게만 렌더된다(page.tsx의 {user && ...}) —
+      // 비로그인 저장 경로는 없다.
+      await api.post("/api/me/values", { exhibitionSlug: slug, values });
     } catch {
       // 실패해도 결과로 진행.
     }
