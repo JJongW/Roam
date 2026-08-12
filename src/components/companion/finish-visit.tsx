@@ -8,6 +8,7 @@ import { RecapSheet } from "@/components/route/recap-sheet";
 import { VisitedRetroPrompt } from "@/components/companion/visited-retro-prompt";
 import { useT } from "@/lib/i18n/provider";
 import { useCompanionStore } from "@/lib/stores/companion";
+import { buildCopresenceLine } from "@/lib/companion/copresence";
 import {
   Sheet,
   SheetContent,
@@ -44,6 +45,9 @@ export function FinishVisit({
   const tasteJudged = useCompanionStore((s) => s.tasteJudged);
   const hasJudged = initialJudgedCount > 0 || tasteJudged > 0;
 
+  const say = useCompanionStore((s) => s.saySpontaneous);
+  const recordAction = useCompanionStore((s) => s.recordAction);
+
   const finishReflect = useCallback(async () => {
     if (busyRef.current) return;
     busyRef.current = true;
@@ -60,13 +64,35 @@ export function FinishVisit({
     }
   }, [slug]);
 
+  async function openRetro() {
+    recordAction();
+    // 마치기 시도 = T5 트리거. 꼭 갈래인데 아직 안 간 부스가 있으면(1개만, 첫
+    // 결과) 로미가 짚어준다 — 막지는 않는다, 그냥 한 번 알려주고 그대로 진행.
+    try {
+      const res = await api.get<{
+        pending: { boothId: string; boothName: string }[];
+      }>(`/api/me/notes/must-not-visited?exhibitionSlug=${slug}&limit=1`);
+      const first = res.pending[0];
+      if (first) {
+        const line = buildCopresenceLine(
+          { trigger: "unvisitedMust", boothName: first.boothName },
+          t,
+        );
+        if (line) say("unvisitedMust", line, Date.now());
+      }
+    } catch {
+      /* 조회 실패해도 마치기 흐름은 막지 않는다 */
+    }
+    setRetroOpen(true);
+  }
+
   if (!hasJudged) return null;
 
   return (
     <>
       <button
         type="button"
-        onClick={() => setRetroOpen(true)}
+        onClick={openRetro}
         disabled={busy}
         className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl border border-border bg-card py-3.5 text-sm font-semibold text-muted-foreground active:opacity-70 disabled:opacity-50"
       >
