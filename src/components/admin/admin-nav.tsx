@@ -12,6 +12,7 @@ import {
   Palette,
   History,
   Users,
+  AlertTriangle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/common/theme-toggle";
@@ -24,6 +25,7 @@ const ITEMS = [
   { href: "/admin/analytics", label: "분석", icon: BarChart3 },
   { href: "/admin/timeline", label: "타임라인", icon: History },
   { href: "/admin/accounts", label: "계정", icon: Users },
+  { href: "/admin/errors", label: "오류/이슈", icon: AlertTriangle },
   { href: "/admin/design-system", label: "디자인 시스템", icon: Palette },
 ];
 
