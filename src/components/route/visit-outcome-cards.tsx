@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useT } from "@/lib/i18n/provider";
 import type { OutcomeCard } from "@/lib/memory/retro-outcomes";
 
@@ -15,13 +15,23 @@ export function VisitOutcomeCards({ cards }: { cards: OutcomeCard[] }) {
   const [step, setStep] = useState(0);
   const [dismissed, setDismissed] = useState(false);
 
+  const current = cards[Math.min(step, Math.max(cards.length - 1, 0))];
+  const line = useMemo(
+    () =>
+      current
+        ? t(
+            `recap.${current.kind === "hit" ? "outcomeHit" : "outcomeReversal"}`,
+            {
+              booth: current.boothName,
+            },
+          )
+        : "",
+    [current, t],
+  );
+
   if (cards.length === 0 || dismissed) return null;
 
-  const current = cards[Math.min(step, cards.length - 1)];
   const isLast = step === cards.length - 1;
-  const line = t(`recap.${current.kind === "hit" ? "outcomeHit" : "outcomeReversal"}`, {
-    booth: current.boothName,
-  });
 
   return (
     <div className="mb-3 rounded-2xl border border-border bg-card p-4">

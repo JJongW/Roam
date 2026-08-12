@@ -20,12 +20,15 @@ export async function GET() {
   let outcomeCards: ReturnType<typeof buildOutcomeCards> = [];
   if (visit) {
     const repo = await getRepository();
-    const booths = await repo.listBoothsByExhibitionId(visit.exhibitionId);
-    const boothIds = booths.map((b) => b.id);
-    const notes = await repo.listNotesByBoothIds(boothIds);
+    const [booths, notes] = await Promise.all([
+      repo.listBoothsByExhibitionId(visit.exhibitionId),
+      repo.listNotes(user.id),
+    ]);
     const boothNameById: Record<string, string> = {};
     for (const b of booths) boothNameById[b.id] = b.name;
-    outcomeCards = buildOutcomeCards(notes, boothNameById);
+    // listNotes는 이 사용자의 전 전시 노트를 다 준다 — 이번 전시 부스 것만 남긴다.
+    const notesInExhibition = notes.filter((n) => n.boothId in boothNameById);
+    outcomeCards = buildOutcomeCards(notesInExhibition, boothNameById);
   }
 
   return ok({

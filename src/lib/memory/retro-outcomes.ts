@@ -28,7 +28,9 @@ export function classifyOutcome(
  * interest·verdict 둘 다 있는 노트만 "예측-결과" 카드로 만든다(한쪽만 있으면
  * 비교 자체가 성립하지 않는다). judgedClass=confident(브레인 확신 가치와 겹치는
  * 부스)를 먼저 배치해 상위 limit개만 남긴다 — 판정한 부스가 많아도 "빠르게
- * 회고하는 느낌"을 지키려고 다 보여주지 않는다.
+ * 회고하는 느낌"을 지키려고 다 보여주지 않는다. 같은 신뢰도 안에서는
+ * updatedAt 내림차순(최근 판정 우선)으로 순서를 고정해 매 호출 결과가
+ * 결정적이게 한다.
  */
 export function buildOutcomeCards(
   notes: BoothNote[],
@@ -39,7 +41,8 @@ export function buildOutcomeCards(
   const sorted = [...eligible].sort((a, b) => {
     const aConf = a.judgedClass === "confident" ? 0 : 1;
     const bConf = b.judgedClass === "confident" ? 0 : 1;
-    return aConf - bConf;
+    if (aConf !== bConf) return aConf - bConf;
+    return b.updatedAt.localeCompare(a.updatedAt); // 같은 신뢰도면 최근 판정부터
   });
   return sorted.slice(0, limit).map((n) => ({
     boothId: n.boothId,
