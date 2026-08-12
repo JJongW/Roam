@@ -85,9 +85,10 @@ export function JudgmentBar({
     kind: "interest" | "verdict",
     value: InterestValue | VerdictValue,
   ) {
-    // good일 때 "예측이 맞았는지"는 반응 직전(스토어 갱신 전)의 interest로 판단한다.
+    // good·bad일 때 "예측이 맞았는지/빗나갔는지"는 반응 직전(스토어 갱신 전)의
+    // interest로 판단한다.
     const matchedPriorInterest =
-      kind === "verdict" && value === "good"
+      kind === "verdict" && (value === "good" || value === "bad")
         ? record?.interest === "must" || record?.interest === "curious"
         : undefined;
 

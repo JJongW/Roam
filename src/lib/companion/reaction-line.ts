@@ -43,8 +43,8 @@ export function buildJudgmentLine(
   categoryLabel: string | undefined,
   interests: InterestNode[],
   t: TFn,
-  /** verdict='good'일 때만 쓴다 — 직전에 interest가 must/curious였는지(예측이
-   *  맞았는지). 호출부(judgment-bar)가 판단 직전 record에서 넘긴다. */
+  /** verdict='good'|'bad'일 때 쓴다 — 직전에 interest가 must/curious였는지(예측이
+   *  맞았는지/빗나갔는지). 호출부(judgment-bar)가 판단 직전 record에서 넘긴다. */
   opts?: { matchedPriorInterest?: boolean },
 ): string {
   if (value === "ok") {
@@ -71,12 +71,19 @@ export function buildJudgmentLine(
   }
 
   if (value === "good") {
-    const key = opts?.matchedPriorInterest ? `${BASE_KEY.good}Matched` : BASE_KEY.good;
+    const key = opts?.matchedPriorInterest
+      ? `${BASE_KEY.good}Matched`
+      : BASE_KEY.good;
     return line(key, boothName, t);
   }
 
-  // value === "bad" — 확신 매칭에서만, 헤지된 문장으로. 부스를 깎지 않고
-  // "내 예측이 빗나갔다" 쪽으로 로미가 가져간다.
+  // value === "bad" — 직전 interest가 must/curious였으면(예측이 있었다는 뜻)
+  // 분야 매칭 여부와 무관하게 명시적 "배움" 톤이 가장 구체적인 근거다 — 브레인
+  // 확신도 매칭(아래 Confident 분기)보다 우선한다. 부스를 깎지 않고 "내 예측이
+  // 빗나갔다"로 로미가 가져가는 원칙은 그대로다.
+  if (opts?.matchedPriorInterest) {
+    return line("reactBadMissed", boothName, t);
+  }
   if (match && match.confidence >= CONFIDENT_THRESHOLD && categoryLabel) {
     return line(`${BASE_KEY.bad}Confident`, boothName, t, categoryLabel);
   }

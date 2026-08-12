@@ -625,11 +625,13 @@ const ko = {
       "‘{booth}’ 안 맞았네 — ‘{theme}’ 안에서도 역시 다 같진 않구나.",
     ],
     reactBadConfidentPlain: [
-      "‘{theme}’라고 비슷해 보여도 다 맞는 건 아니었네.",
-      "‘{theme}’라고 겉보기랑 다르게 이건 아니었나 봐.",
-      "‘{theme}’라고 다 맞진 않네.",
-      "‘{theme}’ 안에서도 역시 다 같진 않구나.",
+      "’{theme}’라고 비슷해 보여도 다 맞는 건 아니었네.",
+      "’{theme}’라고 겉보기랑 다르게 이건 아니었나 봐.",
+      "’{theme}’라고 다 맞진 않네.",
+      "’{theme}’ 안에서도 역시 다 같진 않구나.",
     ],
+    reactBadMissed: "내가 이거 좋아할 줄 알았는데 아니었네. 하나 배웠다.",
+    reactBadMissedPlain: "내가 좋아할 줄 알았는데 아니었네. 하나 배웠다.",
     // 취향 정확도 4단계. 판정 0개/1~4개는 홈 발화 로테이션(homeLines)에 섞이고,
     // 5개를 막 넘기는 순간(1회)은 judgment-bar.tsx가 say()로 띄운다. 5개 이상은
     // 상주 배지가 tastePct로 대체한다.
@@ -1315,6 +1317,9 @@ const en: Dict = {
       "{theme} has range, I guess.",
       "{theme} varies more than I thought.",
     ],
+    reactBadMissed: "Thought you'd love this one — guess I learned something.",
+    reactBadMissedPlain:
+      "Thought you'd love that one — guess I learned something.",
     tasteUnknown: "Don't know you yet. Show me around.",
     tasteWarming: "Getting a sense of it — need a bit more.",
     tasteInsight: "Starting to get it. I'll keep guessing.",
