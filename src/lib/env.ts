@@ -17,6 +17,9 @@ const schema = z.object({
   FCM_SERVER_KEY: z.string().optional(),
   GEMINI_API_KEY: z.string().min(1).optional(),
   ORGANIZER_CODE: z.string().min(1).optional(),
+  /** 쉼표로 구분한 admin 접근 허용 이메일(Google 로그인 검증 대상). 설정되면
+   *  ORGANIZER_CODE보다 우선한다 — 신원 기반 게이트가 공유 코드보다 강하다. */
+  ADMIN_EMAILS: z.string().min(1).optional(),
   CLOUDINARY_CLOUD_NAME: z.string().min(1).optional(),
   CLOUDINARY_API_KEY: z.string().min(1).optional(),
   CLOUDINARY_API_SECRET: z.string().min(1).optional(),
@@ -42,6 +45,7 @@ const parsed = schema.safeParse({
   FCM_SERVER_KEY: e(process.env.FCM_SERVER_KEY),
   GEMINI_API_KEY: e(process.env.GEMINI_API_KEY),
   ORGANIZER_CODE: e(process.env.ORGANIZER_CODE),
+  ADMIN_EMAILS: e(process.env.ADMIN_EMAILS),
   CLOUDINARY_CLOUD_NAME: e(process.env.CLOUDINARY_CLOUD_NAME),
   CLOUDINARY_API_KEY: e(process.env.CLOUDINARY_API_KEY),
   CLOUDINARY_API_SECRET: e(process.env.CLOUDINARY_API_SECRET),
@@ -84,5 +88,14 @@ export const hasCloudinary = Boolean(
 
 /** When set, /admin requires entering this code (organizer gate). Off if unset. */
 export const hasOrganizerGate = Boolean(env.ORGANIZER_CODE);
+
+/** 쉼표 구분 문자열 → 정규화된(소문자·trim) 이메일 배열. 빈 값은 걸러낸다. */
+export const adminEmailAllowlist: string[] = (env.ADMIN_EMAILS ?? "")
+  .split(",")
+  .map((e) => e.trim().toLowerCase())
+  .filter(Boolean);
+
+/** true면 이메일 화이트리스트가 admin 게이트를 맡는다(ORGANIZER_CODE보다 우선). */
+export const hasAdminEmailGate = adminEmailAllowlist.length > 0;
 
 export const dataMode: "supabase" | "mock" = hasSupabase ? "supabase" : "mock";

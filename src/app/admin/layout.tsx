@@ -6,6 +6,7 @@ import { isAdminAuthed } from "@/lib/api/http";
 import { listExhibitionsCached } from "@/lib/repositories/cached";
 import { resolveAdminExhibition, todayISO } from "@/lib/exhibition/current";
 import { ADMIN_EXHIBITION_COOKIE } from "@/lib/constants";
+import { hasAdminEmailGate, hasSupabase } from "@/lib/env";
 
 export const metadata = { title: "Admin" };
 
@@ -14,12 +15,19 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Organizer gate: when ORGANIZER_CODE is set, require the code (cookie) first.
-  if (!(await isAdminAuthed())) return <AdminUnlock />;
+  // 게이트: ADMIN_EMAILS(이메일 화이트리스트)가 있으면 Google 로그인, 없으면
+  // ORGANIZER_CODE(조직자 코드) — isAdminAuthed와 같은 우선순위.
+  if (!(await isAdminAuthed())) {
+    return <AdminUnlock useGoogle={hasAdminEmailGate && hasSupabase} />;
+  }
 
   const exhibitions = await listExhibitionsCached();
   const cookieId = (await cookies()).get(ADMIN_EXHIBITION_COOKIE)?.value;
-  const resolved = resolveAdminExhibition(exhibitions.data, cookieId, todayISO());
+  const resolved = resolveAdminExhibition(
+    exhibitions.data,
+    cookieId,
+    todayISO(),
+  );
 
   return (
     <div className="flex min-h-dvh">
@@ -30,7 +38,10 @@ export default async function AdminLayout({
           id="main"
           className="mx-auto w-full max-w-5xl flex-1 px-[var(--spacing-global-gutter)] py-6 md:px-8"
         >
-          <ExhibitionSwitcher exhibitions={exhibitions.data} selectedId={resolved?.id} />
+          <ExhibitionSwitcher
+            exhibitions={exhibitions.data}
+            selectedId={resolved?.id}
+          />
           {children}
         </main>
       </div>

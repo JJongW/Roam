@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { createServerClient } from "@/lib/supabase/server";
 import { getRepository } from "@/lib/repositories";
-import { setUserCookie } from "@/lib/api/http";
+import { setUserCookie, setAdminCookie } from "@/lib/api/http";
 import { uniqueNickname } from "@/lib/auth/oauth-nickname";
-import { hasSupabase } from "@/lib/env";
+import { hasSupabase, adminEmailAllowlist, hasAdminEmailGate } from "@/lib/env";
 
 /**
  * OAuth redirect target. The browser hits this after the provider (Google)
@@ -73,6 +73,28 @@ export async function GET(req: Request) {
     (typeof meta.avatar_url === "string" && meta.avatar_url) ||
     (typeof meta.picture === "string" && meta.picture) ||
     undefined;
+
+  // admin 진입(next=/admin*)은 별개 신원(운영자 콘솔, proxy.ts 참고) — 방문객
+  // app_user를 만들지 않고 허용목록만 확인한다. 방문객 계정과 안 섞는다.
+  if (next.startsWith("/admin")) {
+    try {
+      await supabase.auth.signOut();
+    } catch {
+      /* non-critical */
+    }
+    if (
+      !hasAdminEmailGate ||
+      !email ||
+      !adminEmailAllowlist.includes(email.toLowerCase())
+    ) {
+      console.error("[auth/callback] admin email not allowlisted", { email });
+      return NextResponse.redirect(
+        new URL("/admin?admin_error=forbidden", url.origin),
+      );
+    }
+    await setAdminCookie(email);
+    return NextResponse.redirect(new URL(next, url.origin));
+  }
 
   const repo = await getRepository();
   let appUser = await repo.getUserByProvider(provider, authUser.id);
