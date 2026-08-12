@@ -83,61 +83,58 @@ export function LoginForm() {
         </p>
       </div>
 
-      {hasSupabase && (
-        <>
-          <Button
-            variant="outline"
-            size="lg"
-            className="w-full"
-            onClick={google}
-            disabled={busy}
-          >
-            <GoogleIcon />
-            {t("login.google")}
-          </Button>
-          <div className="my-5 flex items-center gap-3">
-            <div className="h-px flex-1 bg-border" />
-            <span className="text-xs text-muted-foreground">
-              {t("login.orNickname")}
-            </span>
-            <div className="h-px flex-1 bg-border" />
-          </div>
-        </>
-      )}
-
-      <div className="space-y-3">
-        <Input
-          value={nickname}
-          onChange={(e) => {
-            setNickname(e.target.value);
-            setError(null);
-          }}
-          placeholder={t("login.placeholder")}
-          maxLength={20}
-          autoFocus
-          aria-label={t("login.placeholder")}
-          aria-invalid={Boolean(error)}
-          onKeyDown={(e) => {
-            if (e.nativeEvent.isComposing) return;
-            if (e.key === "Enter") submit();
-          }}
-        />
-        {error && (
-          <p className="text-sm font-medium text-destructive">{error}</p>
-        )}
+      {/* 실사용자를 받는 배포(hasSupabase=true)에서는 신규 가입을 Google 계정으로만
+          받는다 — 닉네임 무비번 가입은 계정 진위를 확인할 방법이 없다. 이미 닉네임
+          으로 만든 계정·세션은 쿠키가 살아있는 한 그대로 로그인 상태를 유지한다
+          (이 폼을 숨긴다고 로그인 API 자체를 지우는 게 아니다). Supabase 키가 없는
+          로컬 개발(mock 모드)만 예외 — 그쪽엔 Google 버튼이 애초에 안 뜨니(아래)
+          닉네임을 남겨야 로컬에서 로그인 자체가 가능하다. */}
+      {hasSupabase ? (
         <Button
+          variant="outline"
           size="lg"
           className="w-full"
-          disabled={busy || nickname.trim().length < 2}
-          onClick={submit}
+          onClick={google}
+          disabled={busy}
         >
-          {busy && <Loader2 className="size-5 animate-spin" />}
-          {busy ? t("login.checking") : t("login.submit")}
+          <GoogleIcon />
+          {t("login.google")}
         </Button>
-        <p className="text-center text-xs text-muted-foreground">
-          {t("login.noPassword")}
-        </p>
-      </div>
+      ) : (
+        <div className="space-y-3">
+          <Input
+            value={nickname}
+            onChange={(e) => {
+              setNickname(e.target.value);
+              setError(null);
+            }}
+            placeholder={t("login.placeholder")}
+            maxLength={20}
+            autoFocus
+            aria-label={t("login.placeholder")}
+            aria-invalid={Boolean(error)}
+            onKeyDown={(e) => {
+              if (e.nativeEvent.isComposing) return;
+              if (e.key === "Enter") submit();
+            }}
+          />
+          {error && (
+            <p className="text-sm font-medium text-destructive">{error}</p>
+          )}
+          <Button
+            size="lg"
+            className="w-full"
+            disabled={busy || nickname.trim().length < 2}
+            onClick={submit}
+          >
+            {busy && <Loader2 className="size-5 animate-spin" />}
+            {busy ? t("login.checking") : t("login.submit")}
+          </Button>
+          <p className="text-center text-xs text-muted-foreground">
+            {t("login.noPassword")}
+          </p>
+        </div>
+      )}
     </div>
   );
 }
