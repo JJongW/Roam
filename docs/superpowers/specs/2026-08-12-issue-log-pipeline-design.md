@@ -9,10 +9,11 @@
 - 서버 오류 캡처 경로는 두 곳이다: (1) `src/instrumentation.ts`의 `onRequestError`(Next.js
   표준 훅 — 진짜 uncaught 예외만 여기로 온다), (2) 클라이언트(`error-reporter.tsx`·
   `error.tsx`·`global-error.tsx`)가 `POST /api/errors`로 보고. **`src/lib/api/http.ts`의
-  `withErrorBoundary`(API route 51개가 공통으로 쓰는 헬퍼)는 오류를 여기서 잡아 처리해
-  버려서(catch 후 `fail()` 응답 반환, 재던지기 없음) `onRequestError`까지 절대 안
-  올라간다 — 콘솔에만 찍히고 admin DB(`issue_log`)엔 안 남는다.** 처리된 API 오류
-  대부분이 admin에서 안 보이는 진짜 원인.
+  `withErrorBoundary`(전체 API route 52개 중 7개가 쓰는 헬퍼)는 오류를 여기서 잡아
+  처리해 버려서(catch 후 `fail()` 응답 반환, 재던지기 없음) `onRequestError`까지 절대
+  안 올라간다 — 콘솔에만 찍히고 admin DB(`issue_log`)엔 안 남는다.** 이 7개 라우트의
+  처리된 오류가 admin에서 안 보이는 진짜 원인(나머지 45개는 명시적 catch가 없어
+  uncaught로 올라가므로 이미 캡처된다).
 - 이미 비동기다: 클라이언트는 fire-and-forget fetch, 서버 훅도 응답을 막지 않는다.
   이 부분은 재설계 불필요.
 - `IssueLog` 타입(`src/lib/types/index.ts:359`)엔 이미 `userId`·`sessionId`·`context`가
@@ -60,11 +61,10 @@ export async function captureServerIssue(input: {
 만들고, `repo.logIssue`를 호출한다. `withErrorBoundary`와 `instrumentation.ts`의
 `onRequestError` 둘 다 이 함수 하나만 부른다 — 중복 로직 없음.
 
-`withErrorBoundary` 쪽 헤더 접근: Next.js Route Handler는 `Request` 객체가 없는 시그니처라
-(`() => Promise<NextResponse>`), 헤더를 넘기려면 시그니처를 `(req: Request, handler) =>`로
-바꿔야 한다 — 호출부 51곳을 전부 고치는 대신, `withErrorBoundary`가 내부에서
-`next/headers`의 `headers()`(App Router에서 요청 컨텍스트 안이면 인자 없이 호출 가능)를
-직접 읽게 한다. 별도 인자 추가 불필요.
+`withErrorBoundary` 시그니처를 `(req: Request, handler: () => Promise<NextResponse>) =>`로
+바꾼다 — 실제 호출부는 7곳뿐이라 전부 고쳐도 부담이 작고, `req.url`에서 path를,
+`req.headers`에서 user-agent·geo 헤더를 한 곳에서 일관되게 뽑을 수 있다(`next/headers`의
+`headers()`는 경로를 안 주므로 이쪽이 더 간단하고 안전).
 
 ### 2. 기기 파싱
 
