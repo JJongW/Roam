@@ -65,6 +65,15 @@ export function ValueOnboarding({
     storeKey("rhythm"),
     DEFAULT_RHYTHM,
   );
+  // hasChosenValues는 서버 브레인(confidence) 기반이라 router.refresh() 왕복 사이
+  // 잠깐 뒤처질 수 있고, 애초에 hasChosenValues가 될 수 없는 경우(로그인 안 한 채
+  // 완료 — /api/me/values가 401, 로컬에만 pending으로 쌓인다)도 있다. 두 경우 다
+  // "방금 이 전시에서 이미 끝냈다"는 로컬 사실은 always true이므로, 이 플래그가
+  // 있으면 진입 카드를 계속 숨긴다(finish에서 안 지운다 — 세션 내내 유지).
+  const [completedThisSession, setCompletedThisSession] = useSessionState(
+    storeKey("completedThisSession"),
+    false,
+  );
 
   // 앱 온보딩을 방금 끝냈고(건너뛰기 아님) 이 전시가 아직 확신 가치가 없으면
   // 자동으로 이어서 연다 — 사용자가 카드를 따로 탭할 필요 없이 "온보딩 하나로
@@ -121,6 +130,7 @@ export function ValueOnboarding({
     } catch {
       // 실패해도 결과로 진행.
     }
+    setCompletedThisSession(true);
     setPhase("result");
   }
 
@@ -144,7 +154,7 @@ export function ValueOnboarding({
       {/* 이 전시의 메인 액션 — 관람 가치 정하기. 눈에 띄게 primary 강조(다른 카드에
           묻히지 않도록). companion 톤: 로미가 먼저 제안. 취향 파악도 100%면 온보딩을
           이미 마친 것이라 진입 카드를 숨긴다(추가 온보딩 버튼 불필요). */}
-      {!hasChosenValues && (
+      {!hasChosenValues && !completedThisSession && (
         <button
           type="button"
           onClick={start}

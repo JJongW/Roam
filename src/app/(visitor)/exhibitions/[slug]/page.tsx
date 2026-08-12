@@ -64,9 +64,16 @@ export default async function ExhibitionDetailPage({
   // 브레인은 한 번만 읽고 피드 큐레이션에 그대로 넘긴다(예전엔 여기서 한 번, curateFeed
   // 안에서 또 한 번 읽었다).
   const brain = user ? await readBrain(user.id) : null;
-  // 관심 피드: 로그인 사용자의 브레인 + 오늘의 리듬으로 큐레이션(빈 브레인=인기순).
-  const feedItems =
-    user && brain ? await curateFeed(slug, user.id, rhythm, locale, brain) : [];
+  // 관심 피드: 로그인 사용자는 브레인 + 오늘의 리듬으로 개인화, 비로그인은 인기순
+  // (curateFeed가 userId=null이면 개인화 없이 랭킹만 돌린다) — 정보 열람은 계정
+  // 벽 없이 되게 한 proxy.ts 방침과 같은 이유. 취향 기록만 로그인이 필요하다.
+  const feedItems = await curateFeed(
+    slug,
+    user?.id ?? null,
+    rhythm,
+    locale,
+    brain ?? undefined,
+  );
   // 기억 발화: 브레인 상위 관심 가치로 인사(로케일 라벨). VALUE_SLUGS면 t로 번역.
   const topValues = (brain?.interests ?? [])
     .filter((n) => n.confidence >= CONFIDENT_THRESHOLD)
@@ -164,16 +171,21 @@ export default async function ExhibitionDetailPage({
           )}
 
           <div className="space-y-2.5">
-            <ValueOnboarding
-              slug={slug}
-              exhibitionName={exhibition.name}
-              hallCount={detail.halls.length}
-              themes={detail.categories
-                .slice(0, 3)
-                .map((c) => c.name)
-                .join("·")}
-              hasChosenValues={topValues.length > 0}
-            />
+            {/* 가치 온보딩은 결과(마인드맵)·저장 둘 다 계정에 묶여있다(브레인이
+                userId 기준) — 비로그인이면 끝나도 남는 게 없어 "약속하고 안 지킨"
+                모양이 된다. 로그인해야만 뜬다. */}
+            {user && (
+              <ValueOnboarding
+                slug={slug}
+                exhibitionName={exhibition.name}
+                hallCount={detail.halls.length}
+                themes={detail.categories
+                  .slice(0, 3)
+                  .map((c) => c.name)
+                  .join("·")}
+                hasChosenValues={topValues.length > 0}
+              />
+            )}
 
             <Link
               href={`/exhibitions/${slug}/map`}
@@ -214,16 +226,10 @@ export default async function ExhibitionDetailPage({
 
           {/* 피드 상단 부스 검색 — 추천 몇 개 말고 전체 부스를 이름·작가로 찾기. */}
           {user && <BoothSearch slug={slug} categoryById={categoryById} />}
-          {user ? (
-            <InterestFeed
-              items={feedItems}
-              categoryById={categoryById}
-              memoryLine={memoryLine}
-              slug={slug}
-            />
-          ) : (
-            // 비로그인 — 로미는 개인화 피드를 만들지 않는다(curateFeed 호출 자체를
-            // 안 함, feedItems는 항상 빈 배열). 대신 로그인하면 뭐가 좋은지 안내.
+
+          {/* 비로그인 — 인기순 피드는 보여준다(정보 열람은 계정 벽 없이).
+              취향 기록·개인화만 로그인해야 되는 거라 그 사실만 짧게 안내. */}
+          {!user && (
             <Link
               href={`/login?next=${encodeURIComponent(`/exhibitions/${slug}`)}`}
               className="flex items-center gap-3 rounded-2xl border border-primary/30 bg-primary/5 p-4 active:scale-[0.99]"
@@ -239,6 +245,12 @@ export default async function ExhibitionDetailPage({
               <ChevronRight className="size-5 shrink-0 text-primary" />
             </Link>
           )}
+          <InterestFeed
+            items={feedItems}
+            categoryById={categoryById}
+            memoryLine={memoryLine}
+            slug={slug}
+          />
 
           {/* 피드를 다 비워도(성실히 판단 다 함) 회고로 못 가면 안 된다 — "판단이
               하나라도 있었나"로 게이트를 바꾼다. feedItems가 남았는지는 회고와

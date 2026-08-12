@@ -11,6 +11,7 @@ import { deriveCue } from "@/lib/feed/cue";
 import { buildGrounding, type Grounding } from "@/lib/feed/grounding";
 import { DEFAULT_RHYTHM, RHYTHM_MIX, type Rhythm } from "@/lib/feed/rhythm";
 import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n/config";
+import { emptyBrain } from "@/lib/memory/distill";
 import { VALUE_SLUGS, boothValueSlugs } from "@/lib/values";
 import type { Booth, BoothNote, UserBrain } from "@/lib/types";
 
@@ -127,16 +128,18 @@ function pickAdventure(
   return best;
 }
 
-/** 리듬별 믹스로 안정·낯선·모험을 뽑는다(기본 가볍게=3·2·1). 빈 브레인이면 인기순이 안정픽. */
+/** 리듬별 믹스로 안정·낯선·모험을 뽑는다(기본 가볍게=3·2·1). 빈 브레인이면 인기순이 안정픽.
+ *  userId=null(비로그인) — 개인화 없이 인기순만. 판단 기록이 없어 뺄 부스도 없다. */
 export async function curateFeed(
   slug: string,
-  userId: string,
+  userId: string | null,
   rhythm: Rhythm = DEFAULT_RHYTHM,
   locale: Locale = DEFAULT_LOCALE,
   /** 호출부가 이미 읽었으면 넘긴다 — 같은 요청에서 브레인을 두 번 읽지 않도록. */
   preloadedBrain?: UserBrain,
 ): Promise<FeedItem[]> {
-  const brain = preloadedBrain ?? (await readBrain(userId));
+  const brain =
+    preloadedBrain ?? (userId ? await readBrain(userId) : emptyBrain(""));
   const interests = mergeBrainInterests([], brain);
   const interestWeights = brainInterestWeights([], brain);
   const rank = await rankForExhibition(
@@ -164,8 +167,7 @@ export async function curateFeed(
   // 피드는 6칸짜리 결정 큐라(rhythm.ts) 이미 정한 부스가 칸을 차지하면 새 후보가
   // 올라올 자리가 없다. 다시 보는 곳은 지도(색)와 내 메모장(네 상태 다 표시)이다.
   // 노트는 서버에 있어 재접속해도 유지된다.
-  const repo = await getRepository();
-  const notes = await repo.listNotes(userId);
+  const notes = userId ? await (await getRepository()).listNotes(userId) : [];
   const decided = decidedBoothIds(notes);
 
   // "왜 지금 너한테"를 가치 이름이 아니라 **내가 실제로 누른 부스**로 말하기 위한 표.
