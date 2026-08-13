@@ -1149,34 +1149,36 @@ export function ExhibitionMap({
               );
             }
             if (d.type === "entrance") {
-              const aw = 22;
-              const hw = 112; // half pill width (fits "B1홀 입구")
+              const sz = d.size ?? 1;
+              const aw = 22 * sz;
+              const hw = 112 * sz; // half pill width (fits "B1홀 입구")
+              const armLen = 44 * sz;
               const arrow =
                 d.dir === "left"
                   ? `M${d.x + hw} ${d.y - aw} L${d.x + hw + aw} ${d.y} L${d.x + hw} ${d.y + aw}`
                   : d.dir === "right"
                     ? `M${d.x - hw} ${d.y - aw} L${d.x - hw - aw} ${d.y} L${d.x - hw} ${d.y + aw}`
                     : d.dir === "up"
-                      ? `M${d.x - aw} ${d.y + 44} L${d.x} ${d.y + 44 - aw} L${d.x + aw} ${d.y + 44}`
-                      : `M${d.x - aw} ${d.y + 44} L${d.x} ${d.y + 44 + aw} L${d.x + aw} ${d.y + 44}`;
+                      ? `M${d.x - aw} ${d.y + armLen} L${d.x} ${d.y + armLen - aw} L${d.x + aw} ${d.y + armLen}`
+                      : `M${d.x - aw} ${d.y + armLen} L${d.x} ${d.y + armLen + aw} L${d.x + aw} ${d.y + armLen}`;
               // Single theme colour — 입구/출구 are told apart by their label
               // ("A홀 입구" / "B1홀 출구") and arrow direction, not by colour.
               const color = "var(--primary)";
               return (
                 <g key={i} transform={upright(d.x, d.y)}>
                   <rect
-                    x={d.x - 100}
-                    y={d.y - 28}
-                    width={200}
-                    height={56}
-                    rx={28}
+                    x={d.x - hw}
+                    y={d.y - 28 * sz}
+                    width={hw * 2}
+                    height={56 * sz}
+                    rx={28 * sz}
                     fill={color}
                   />
                   <text
                     x={d.x}
-                    y={d.y + 9}
+                    y={d.y + 9 * sz}
                     textAnchor="middle"
-                    fontSize={26}
+                    fontSize={26 * sz}
                     fontWeight="800"
                     fill="white"
                   >
@@ -1186,7 +1188,7 @@ export function ExhibitionMap({
                     d={arrow}
                     fill="none"
                     stroke={color}
-                    strokeWidth={9}
+                    strokeWidth={9 * sz}
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />

@@ -41,6 +41,8 @@ export type FloorplanDecor =
       y: number;
       text: string;
       dir: "up" | "down" | "left" | "right";
+      /** 알약 크기 배율(기본 1) — 부스가 촘촘한 좁은 도면에 쓸 때 줄인다. */
+      size?: number;
     }
   | { type: "info"; x: number; y: number; text: string }
   | { type: "wc"; x: number; y: number }
@@ -342,9 +344,13 @@ function buildHouseArchive(): Floorplan {
   // X 헤르시, x 49~217) 아래, y는 G03(커먼즈) 하단(1020+56=1076)과 같은 선.
   // 출구는 E09(포티, x 1703~1879) 왼쪽, 같은 y선. 정확한 실측치가 아니라
   // 현장 설명으로 어림한 값 — 실제로 보면서 조정이 더 필요할 수 있다.
+  // size를 줄인 건 원래 알약 크기(반너비 112)가 넓은 홀 기준이라 이 도면처럼
+  // 부스가 촘촘하면 옆 부스(E09)를 덮어버렸기 때문 — 축소하고 exitX도 더
+  // 떨어뜨렸다(2026-08-13, 겹침 스크린샷 확인 후 수정).
   const entranceX = 133; // H02 중심
-  const exitX = 1660; // E09 왼쪽
+  const exitX = 1600; // E09(왼쪽 끝 1703)와 안 겹치게 더 떨어뜨림
   const groundY = 1076; // 커먼즈 하단
+  const markerSize = 0.5;
   const ticketBoothW = 90;
   const ticketBoothH = 44;
   return {
@@ -360,12 +366,26 @@ function buildHouseArchive(): Floorplan {
         y2: 95,
         size: 0.45,
       },
-      { type: "entrance", x: entranceX, y: groundY, text: "입구", dir: "up" },
-      { type: "entrance", x: exitX, y: groundY, text: "출구", dir: "down" },
+      {
+        type: "entrance",
+        x: entranceX,
+        y: groundY,
+        text: "입구",
+        dir: "up",
+        size: markerSize,
+      },
+      {
+        type: "entrance",
+        x: exitX,
+        y: groundY,
+        text: "출구",
+        dir: "down",
+        size: markerSize,
+      },
       {
         type: "header",
         x: entranceX - ticketBoothW / 2,
-        y: groundY - ticketBoothH - 12,
+        y: groundY - ticketBoothH - 24,
         w: ticketBoothW,
         h: ticketBoothH,
         text: "티켓부스",
