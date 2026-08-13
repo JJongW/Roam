@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { WebVitals } from "@/components/common/web-vitals";
 import { ErrorReporter } from "@/components/monitoring/error-reporter";
 import { AuthBootstrap, LoginSheet } from "@/components/auth/login-sheet";
+import { NavTracker } from "@/components/common/nav-tracker";
 import { I18nProvider } from "@/lib/i18n/provider";
 import type { Locale } from "@/lib/i18n/config";
 
@@ -34,6 +35,7 @@ export function Providers({
         <ErrorReporter />
         <AuthBootstrap />
         <LoginSheet />
+        <NavTracker />
       </I18nProvider>
     </ThemeProvider>
   );

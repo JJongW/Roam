@@ -25,6 +25,7 @@ import { useUiStore } from "@/lib/stores/ui";
 import { useCompanionStore } from "@/lib/stores/companion";
 import { useHydrated } from "@/lib/hooks/use-hydrated";
 import { MapCoachmark } from "@/components/map/map-coachmark";
+import { hasNavigatedInApp } from "@/components/common/nav-tracker";
 import { FLOORPLANS } from "@/lib/floorplans";
 import { ExhibitionMap, HEAT_TIERS } from "@/components/map/exhibition-map";
 import { CategoryChip } from "@/components/booth/category-chip";
@@ -162,10 +163,13 @@ export function MapView({
 
   function handleBack() {
     // 지도는 전시 상세에서 들어온 부가 화면 — 홈이 아니라 그 전시로 돌아간다.
-    // history가 있으면 back()으로 pop → Next Router Cache에서 전시 페이지를 복원해
-    // 즉시 돌아간다(push는 새 내비라 RSC/데이터를 매번 다시 불러와 느림). 공유 링크로
-    // 지도에 바로 진입해 history가 없을 때만 전시로 push.
-    if (typeof window !== "undefined" && window.history.length > 1) {
+    // 앱 안에서 실제로 페이지를 넘나든 적 있으면 back()으로 pop → Next Router
+    // Cache에서 전시 페이지를 복원해 즉시 돌아간다(push는 새 내비라 RSC/데이터를
+    // 매번 다시 불러와 느림). 공유 링크로 지도에 바로 진입해 앱 안 이동 이력이
+    // 없을 때만 전시로 push — `window.history.length`는 새 탭에 링크 하나만
+    // 열어도 브라우저 자체 초기 엔트리 때문에 1보다 크게 나올 수 있어(오판하면
+    // back()이 앱 밖 about:blank 등으로 떨어뜨린다) 대용치로 못 쓴다.
+    if (hasNavigatedInApp()) {
       router.back();
     } else {
       router.push(`/exhibitions/${detail.exhibition.slug}`);
