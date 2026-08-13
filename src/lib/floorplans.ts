@@ -44,7 +44,14 @@ export type FloorplanDecor =
     }
   | { type: "info"; x: number; y: number; text: string }
   | { type: "wc"; x: number; y: number }
-  | { type: "arrowsV"; x: number; y1: number; y2: number };
+  | {
+      type: "arrowsV";
+      x: number;
+      y1: number;
+      y2: number;
+      /** 화살촉·선 굵기 배율(기본 1) — 좁은 공간에 쓸 때 줄인다. */
+      size?: number;
+    };
 
 /** A selectable gate the visitor can set as their route start or end. */
 export interface FloorplanGate {
@@ -337,7 +344,13 @@ function buildHouseArchive(): Floorplan {
     halls: [],
     decor: [
       { type: "header", x: loungeX, y: 5, w: loungeW, h: 55, text: "라운지" },
-      { type: "arrowsV", x: loungeX + loungeW / 2, y1: 60, y2: 95 },
+      {
+        type: "arrowsV",
+        x: loungeX + loungeW / 2,
+        y1: 60,
+        y2: 95,
+        size: 0.45,
+      },
     ],
     booths,
     interior: [box],

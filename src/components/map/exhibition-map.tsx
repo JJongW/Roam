@@ -1120,11 +1120,14 @@ export function ExhibitionMap({
             }
             if (d.type === "arrowsV") {
               const cx = d.x;
+              const sz = d.size ?? 1;
+              const hw = 16 * sz; // 화살촉 반너비
+              const hh = 14 * sz; // 화살촉 높이
               return (
                 <g
                   key={i}
                   stroke="var(--muted-foreground)"
-                  strokeWidth={5}
+                  strokeWidth={5 * sz}
                   strokeLinecap="round"
                   opacity={0.7}
                   fill="none"
@@ -1134,13 +1137,13 @@ export function ExhibitionMap({
                     y1={d.y1}
                     x2={cx}
                     y2={d.y2}
-                    strokeDasharray="6 14"
+                    strokeDasharray={`${6 * sz} ${14 * sz}`}
                   />
                   <path
-                    d={`M${cx - 16} ${d.y1 + 14} L${cx} ${d.y1} L${cx + 16} ${d.y1 + 14}`}
+                    d={`M${cx - hw} ${d.y1 + hh} L${cx} ${d.y1} L${cx + hw} ${d.y1 + hh}`}
                   />
                   <path
-                    d={`M${cx - 16} ${d.y2 - 14} L${cx} ${d.y2} L${cx + 16} ${d.y2 - 14}`}
+                    d={`M${cx - hw} ${d.y2 - hh} L${cx} ${d.y2} L${cx + hw} ${d.y2 - hh}`}
                   />
                 </g>
               );
