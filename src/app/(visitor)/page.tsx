@@ -24,9 +24,8 @@ import {
 import { ExhibitionStatusSection } from "@/components/exhibition/exhibition-status-section";
 
 export const metadata = {
-  // absolute — 레이아웃의 "%s · Roam" 템플릿에 "Roam"을 넣으면 "Roam · Roam"이 된다.
-  // Google OAuth 동의 화면의 앱 이름("Roam")과 문자 그대로 일치시킨다(2026-08-13,
-  // "Roam — Exhibition Navigator"는 심사에서 이름 불일치로 트집 잡힐 수 있다는 사용자 우려).
+  // 홈 title은 동의 화면 앱 이름("Roam")과 정확히 일치해야 한다(Google OAuth 브랜딩
+  // 인증). absolute로 "%s · Roam" 템플릿을 우회해 "Roam"만 노출한다.
   title: { absolute: "Roam" },
 };
 

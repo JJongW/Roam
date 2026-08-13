@@ -15,8 +15,10 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",
   ),
-  // default — Google OAuth 동의 화면의 앱 이름("Roam")과 문자 그대로 일치시킨다
-  // (2026-08-13, 심사에서 이름 불일치로 트집 잡힐 수 있다는 우려).
+  // 홈 title은 동의 화면 앱 이름("Roam")과 글자까지 정확히 일치해야 한다 —
+  // Google OAuth 브랜딩 인증은 <title>을 "홈페이지의 앱 이름"으로 읽어 동의 화면
+  // 이름과 대조한다. "Roam — Exhibition Navigator"면 "이름 불일치"로 반려됐다.
+  // 설명(Exhibition Navigator 성격)은 아래 description/og로 전달한다.
   title: {
     default: "Roam",
     template: "%s · Roam",
