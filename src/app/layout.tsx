@@ -20,15 +20,16 @@ export const metadata: Metadata = {
     template: "%s · Roam",
   },
   // 앱 목적을 그대로 적는다 — Google OAuth 심사가 홈페이지 설명을 확인하는 자리이고,
-  // 예전 문구("no account needed")는 로그인 필수로 바뀐 뒤로 사실이 아니었다.
+  // 예전 문구("no account needed")는 로그인 필수로 바뀐 뒤로 사실이 아니었다. 크롤러
+  // 대상 설명은 한국어 사용자가 절대다수라 한국어로 남긴다(2026-08-13).
   description:
-    "Roam is a guide for exhibitions and trade fairs. Discover booths worth your time, find your way around the venue, and keep track of what you saw.",
+    "Roam은 전시·박람회 모바일 가이드입니다. 볼 만한 부스를 발견하고, 혼잡을 피하고, 관람한 것을 기록하세요.",
   applicationName: "Roam",
   openGraph: {
     siteName: "Roam",
     title: "Roam — Exhibition Navigator",
     description:
-      "Roam is a guide for exhibitions and trade fairs. Discover booths worth your time, find your way around the venue, and keep track of what you saw.",
+      "Roam은 전시·박람회 모바일 가이드입니다. 볼 만한 부스를 발견하고, 혼잡을 피하고, 관람한 것을 기록하세요.",
     type: "website",
   },
 };
@@ -62,9 +63,7 @@ export default async function RootLayout({
         >
           {locale === "en" ? "Skip to content" : "본문으로 건너뛰기"}
         </a>
-        <Providers locale={locale}>
-          {children}
-        </Providers>
+        <Providers locale={locale}>{children}</Providers>
       </body>
     </html>
   );
