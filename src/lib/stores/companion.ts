@@ -19,6 +19,13 @@ interface CompanionState {
   home: HomeCompanionContext | null;
   setHome: (ctx: HomeCompanionContext | null) => void;
   /**
+   * `/booths/[id]` 등 URL에 전시 slug가 없는 화면에서 컴패니언 바가 어느 전시인지
+   * 알 방법이 없다 — 그 화면이 아는 exhibitionId를 이 필드로 대신 흘려보낸다.
+   * pathname 정규식이 못 잡는 경우의 폴백(companion-bar.tsx).
+   */
+  activeExhibitionId: string | null;
+  setActiveExhibitionId: (id: string | null) => void;
+  /**
    * 방금 사용자 행동(반응·검색 등)에 대한 즉답 한 줄. 상주 컴패니언이 잠깐 이 말을
    * 띄우고 스스로 지운다 — "내 행동에 로미가 바로 반응한다"는 동행 느낌. 결정론 선택,
    * 로미는 말만(속도 규칙 준수, LLM 없음).
@@ -117,6 +124,8 @@ export function canSaySpontaneous(
 export const useCompanionStore = create<CompanionState>((set, get) => ({
   home: null,
   setHome: (home) => set({ home }),
+  activeExhibitionId: null,
+  setActiveExhibitionId: (activeExhibitionId) => set({ activeExhibitionId }),
   flash: null,
   say: (text) => set({ flash: text }),
   clearFlash: () => set({ flash: null }),

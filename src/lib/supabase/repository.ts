@@ -542,6 +542,16 @@ export class SupabaseRepository implements Repository {
     };
   }
 
+  async getExhibitionIdBySlug(slug: string): Promise<string | null> {
+    const db = await this.db();
+    const { data } = await db
+      .from("exhibition")
+      .select("id")
+      .eq("slug", slug)
+      .maybeSingle();
+    return (data as { id: string } | null)?.id ?? null;
+  }
+
   // 전시 쓰기 3종도 admin 콘솔 전용 — createBooth 주석과 같은 이유로 서비스 롤.
   async createExhibition(input: ExhibitionInput): Promise<Exhibition> {
     const db = createServiceClient();
@@ -1672,7 +1682,9 @@ export class SupabaseRepository implements Repository {
     const { data } = await db
       .from("analytics_event")
       .select("*")
-      .eq("exhibition_id", exhibitionId);
+      .eq("exhibition_id", exhibitionId)
+      .order("created_at", { ascending: false })
+      .limit(2000);
     return (data ?? []).map(mapAnalytics);
   }
 

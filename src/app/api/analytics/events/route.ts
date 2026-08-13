@@ -12,15 +12,24 @@ export async function POST(req: Request) {
   // 세션은 재사용되면 exhibitionId가 최초 생성 시점 값으로 고정된다 — 이 이벤트가
   // 실제로 어느 전시인지는 부스에서 직접 구해 세션 값보다 우선한다(그래야 세션이
   // "unknown"으로 굳어 있었거나 다른 전시에서 만들어졌어도 이 이벤트는 정확하다).
-  const booth = parsed.data.boothId ? await repo.getBooth(parsed.data.boothId) : null;
-  // 부스와 무관한 클릭(지도 컨트롤·피드 CTA·컴패니언 바 등)은 boothId가 없으므로
-  // 클라이언트가 직접 보낸 exhibitionSlug로 귀속한다 — 세션 폴백은 같은 이유로
-  // 신뢰할 수 없다(위 주석 참고).
-  const exhibitionBySlug = parsed.data.exhibitionSlug
-    ? await repo.getExhibition(parsed.data.exhibitionSlug)
+  const booth = parsed.data.boothId
+    ? await repo.getBooth(parsed.data.boothId)
     : null;
-  const exhibitionId = booth?.exhibitionId ?? exhibitionBySlug?.exhibition.id;
+  // 부스와 무관한 클릭(지도 컨트롤·피드 CTA·컴패니언 바 등)은 boothId가 없으므로
+  // 클라이언트가 보낸 exhibitionId(직접, 조회 없음)나 exhibitionSlug(slug→id 조회)로
+  // 귀속한다 — 세션 폴백은 같은 이유로 신뢰할 수 없다(위 주석 참고). exhibitionId가
+  // 있으면 slug 조회 자체를 건너뛴다(불필요한 DB 왕복 방지).
+  let exhibitionId = booth?.exhibitionId ?? parsed.data.exhibitionId;
+  if (!exhibitionId && parsed.data.exhibitionSlug) {
+    exhibitionId =
+      (await repo.getExhibitionIdBySlug(parsed.data.exhibitionSlug)) ??
+      undefined;
+  }
   const session = await ensureSession(exhibitionId);
-  await repo.recordAnalytics(session.id, exhibitionId ?? session.exhibitionId, parsed.data);
+  await repo.recordAnalytics(
+    session.id,
+    exhibitionId ?? session.exhibitionId,
+    parsed.data,
+  );
   return new NextResponse(null, { status: 202 });
 }

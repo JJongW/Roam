@@ -111,7 +111,7 @@ export function FinishVisit({
               exhibitionSlug: slug,
               meta: { control: "finish_visit_start" },
             }),
-          });
+          }).catch(() => {});
           openRetro();
         }}
         disabled={busy}

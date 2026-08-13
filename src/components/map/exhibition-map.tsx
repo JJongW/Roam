@@ -184,7 +184,7 @@ export function ExhibitionMap({
         exhibitionSlug,
         meta: { control },
       }),
-    });
+    }).catch(() => {});
   }
   // Effective canvas size: floorplan dims override the props when present.
   // (Declared early — the imperative transform/rotation helpers below need it.)

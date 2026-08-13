@@ -53,6 +53,33 @@ describe("POST /api/analytics/events", () => {
     expect(clicks[0].meta?.control).toBe("map_zoom_in");
   });
 
+  it("attributes a booth-less ui_click event via a direct exhibitionId (no slug lookup)", async () => {
+    const repo = await getRepository();
+    // slug→id 조회 자체가 일어나지 않아야 한다 — exhibitionId가 곧 최종 값이다.
+    const spy = vi.spyOn(repo, "getExhibitionIdBySlug");
+    const exhibitionId = (await repo.getExhibition("sibf-2026"))!.exhibition.id;
+
+    const req = new Request("http://localhost/api/analytics/events", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        type: "ui_click",
+        exhibitionId,
+        meta: { control: "companion_bar_open" },
+      }),
+    });
+
+    const res = await POST(req);
+    expect(res.status).toBe(202);
+    expect(spy).not.toHaveBeenCalled();
+
+    const events = await repo._allAnalytics!(exhibitionId);
+    const clicks = events.filter((e) => e.type === "ui_click");
+    expect(clicks.length).toBe(1);
+    expect(clicks[0].meta?.control).toBe("companion_bar_open");
+    spy.mockRestore();
+  });
+
   it("still attributes booth-scoped events via boothId (unchanged behavior)", async () => {
     const req = new Request("http://localhost/api/analytics/events", {
       method: "POST",

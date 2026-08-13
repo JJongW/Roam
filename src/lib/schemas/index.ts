@@ -172,6 +172,7 @@ export type EventInput = z.infer<typeof eventInputSchema>;
 export const analyticsEventInputSchema = z.object({
   type: z.enum(ANALYTICS_TYPES),
   boothId: z.string().optional(),
+  exhibitionId: z.string().optional(),
   exhibitionSlug: z.string().optional(),
   x: z.number().optional(),
   y: z.number().optional(),

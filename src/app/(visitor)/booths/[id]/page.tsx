@@ -14,6 +14,7 @@ import { CategoryChip } from "@/components/booth/category-chip";
 import { ReviewSection } from "@/components/booth/review-section";
 import { EventList } from "@/components/booth/event-list";
 import { AnalyticsTracker } from "@/components/common/analytics-tracker";
+import { BoothExhibitionContextBridge } from "@/components/companion/booth-exhibition-context-bridge";
 import { Icon } from "@/components/common/icon";
 import { getI18n } from "@/lib/i18n/server";
 
@@ -49,6 +50,9 @@ export default async function BoothDetailPage({ params }: Props) {
         x={booth.x}
         y={booth.y}
       />
+      {/* URL에 전시 slug가 없는 화면이라, 컴패니언 바 클릭 계측이 전시를 알 수 있게
+          이 화면이 아는 exhibitionId를 스토어로 흘려보낸다. */}
+      <BoothExhibitionContextBridge exhibitionId={booth.exhibitionId} />
       <AppBar
         title={booth.name}
         right={<BookmarkButton targetType="booth" targetId={booth.id} />}

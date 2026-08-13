@@ -43,19 +43,25 @@ export function CompanionBar() {
   // 전시 홈(상세)에선 상단 고정 배너 대신 여기서 취향·개수 맞춤 발화를 회전시킨다.
   const isExhibitionHome = /\/exhibitions\/[^/]+$/.test(pathname);
 
-  const exhibitionSlug = pathname.match(/\/exhibitions\/([^/]+)/)?.[1];
+  const exhibitionSlugFromPath = pathname.match(/\/exhibitions\/([^/]+)/)?.[1];
+  const activeExhibitionId = useCompanionStore((s) => s.activeExhibitionId);
 
   function trackClick(control: string) {
-    if (!exhibitionSlug) return;
+    const attribution = exhibitionSlugFromPath
+      ? { exhibitionSlug: exhibitionSlugFromPath }
+      : activeExhibitionId
+        ? { exhibitionId: activeExhibitionId }
+        : null;
+    if (!attribution) return;
     void fetch("/api/analytics/events", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
         type: "ui_click",
-        exhibitionSlug,
+        ...attribution,
         meta: { control },
       }),
-    });
+    }).catch(() => {});
   }
 
   const lines = useMemo(() => {

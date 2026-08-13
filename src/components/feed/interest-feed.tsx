@@ -185,7 +185,7 @@ export function InterestFeed({
         exhibitionSlug: slug,
         meta: { control },
       }),
-    });
+    }).catch(() => {});
   }
   function toggle(boothId: string) {
     fire(boothId);
