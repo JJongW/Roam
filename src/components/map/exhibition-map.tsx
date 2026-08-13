@@ -472,9 +472,13 @@ export function ExhibitionMap({
     reassertTransform();
   });
 
-  // Keep the map within the viewport so it can never be panned out of sight.
-  // When the scaled map is smaller than the viewport on an axis (fully zoomed
-  // out), centre it on that axis instead of pinning it to a corner.
+  // Keep the map from disappearing off-screen, but don't pin edges flush to
+  // the viewport border either — booths right at the map's edge used to be
+  // stuck at the very edge of the screen (hard to see fully, hard to tap).
+  // Allow overscroll up to half the viewport on each axis, so any edge can be
+  // dragged in as far as the viewport's center. When the scaled map is
+  // smaller than the viewport on an axis (fully zoomed out), still centre it
+  // on that axis instead of pinning it to a corner.
   const clampOffset = useCallback(
     (off: Point, s: number): Point => {
       const el = containerRef.current;
@@ -482,9 +486,17 @@ export function ExhibitionMap({
       const cw = el.clientWidth;
       const ch = el.clientHeight;
       const { fw, fh } = footprint();
+      const marginX = cw / 2;
+      const marginY = ch / 2;
       return {
-        x: fw * s <= cw ? (cw - fw * s) / 2 : clamp(off.x, cw - fw * s, 0),
-        y: fh * s <= ch ? (ch - fh * s) / 2 : clamp(off.y, ch - fh * s, 0),
+        x:
+          fw * s <= cw
+            ? (cw - fw * s) / 2
+            : clamp(off.x, cw - fw * s - marginX, marginX),
+        y:
+          fh * s <= ch
+            ? (ch - fh * s) / 2
+            : clamp(off.y, ch - fh * s - marginY, marginY),
       };
     },
     [footprint],

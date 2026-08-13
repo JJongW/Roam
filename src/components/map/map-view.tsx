@@ -194,7 +194,7 @@ export function MapView({
   }
 
   return (
-    <div className="relative h-dvh w-full overflow-hidden overscroll-none bg-background">
+    <div className="relative h-dvh w-full overflow-hidden overscroll-none bg-background landscape:fixed landscape:inset-0 landscape:z-30">
       {showCoachmark && <MapCoachmark onClose={markMapGuideSeen} />}
 
       {/* 전체화면 지도 */}

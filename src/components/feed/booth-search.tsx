@@ -107,7 +107,9 @@ export function BoothSearch({
           onChange={(e) => setQ(e.target.value)}
           placeholder={t("feed.searchPlaceholder")}
           aria-label={t("feed.searchPlaceholder")}
-          className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+          // 14px 이하 입력은 iOS가 포커스 시 페이지를 자동 확대한다 — 16px(text-base)
+          // 미만을 쓰지 않는다(map-view.tsx의 메모 입력과 같은 이유).
+          className="min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-muted-foreground"
         />
         {loading && (
           <Loader2 className="size-4 shrink-0 animate-spin text-muted-foreground" />
