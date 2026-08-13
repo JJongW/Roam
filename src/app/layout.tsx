@@ -15,8 +15,10 @@ export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",
   ),
+  // default — Google OAuth 동의 화면의 앱 이름("Roam")과 문자 그대로 일치시킨다
+  // (2026-08-13, 심사에서 이름 불일치로 트집 잡힐 수 있다는 우려).
   title: {
-    default: "Roam — Exhibition Navigator",
+    default: "Roam",
     template: "%s · Roam",
   },
   // 앱 목적을 그대로 적는다 — Google OAuth 심사가 홈페이지 설명을 확인하는 자리이고,
@@ -27,7 +29,7 @@ export const metadata: Metadata = {
   applicationName: "Roam",
   openGraph: {
     siteName: "Roam",
-    title: "Roam — Exhibition Navigator",
+    title: "Roam",
     description:
       "Roam은 전시·박람회 모바일 가이드입니다. 볼 만한 부스를 발견하고, 혼잡을 피하고, 관람한 것을 기록하세요.",
     type: "website",
