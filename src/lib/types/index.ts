@@ -43,6 +43,7 @@ export const ANALYTICS_TYPES = [
   "route_complete",
   "booth_arrive",
   "event_bookmark",
+  "ui_click",
 ] as const;
 export type AnalyticsType = (typeof ANALYTICS_TYPES)[number];
 
