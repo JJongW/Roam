@@ -9,7 +9,9 @@ import { ConversionFunnel } from "@/components/charts/conversion-funnel";
 import { FlowList } from "@/components/charts/flow-list";
 import { Heatmap } from "@/components/charts/heatmap";
 import { OnboardingValueChart } from "@/components/charts/onboarding-value-chart";
+import { UiClickChart } from "@/components/charts/ui-click-chart";
 import { onboardingValueBreakdown } from "@/lib/admin/journey-funnel";
+import { uiClickBreakdown } from "@/lib/admin/ui-click-breakdown";
 
 export const metadata = { title: "분석" };
 
@@ -23,16 +25,19 @@ export default async function AnalyticsPage() {
     return <p className="text-muted-foreground">전시가 없습니다.</p>;
   }
 
-  const [points, popular, edges, funnel, booths, signals] = await Promise.all([
-    repo.analyticsHeatmap(exhibition.id),
-    repo.analyticsPopular(exhibition.id, 8),
-    repo.analyticsFlow(exhibition.id),
-    repo.analyticsConversion(exhibition.id),
-    repo.listBoothsByExhibitionId(exhibition.id),
-    repo.listExhibitionSignals(exhibition.id),
-  ]);
+  const [points, popular, edges, funnel, booths, signals, analyticsEvents] =
+    await Promise.all([
+      repo.analyticsHeatmap(exhibition.id),
+      repo.analyticsPopular(exhibition.id, 8),
+      repo.analyticsFlow(exhibition.id),
+      repo.analyticsConversion(exhibition.id),
+      repo.listBoothsByExhibitionId(exhibition.id),
+      repo.listExhibitionSignals(exhibition.id),
+      repo._allAnalytics!(exhibition.id),
+    ]);
   const names = Object.fromEntries(booths.map((b) => [b.id, b.name]));
   const onboardingValues = onboardingValueBreakdown(signals);
+  const uiClicks = uiClickBreakdown(analyticsEvents);
 
   return (
     <div className="space-y-6">
@@ -76,6 +81,13 @@ export default async function AnalyticsPage() {
         description="문항별 클릭이 아니라 온보딩을 마칠 때 확정한 가치 기준 — 앱 최초진입·전시별 온보딩 합산"
       >
         <OnboardingValueChart data={onboardingValues} />
+      </AdminSection>
+
+      <AdminSection
+        title="버튼 인기도"
+        description="지도 컨트롤·피드 CTA·컴패니언 바 등 전체 클릭 집계"
+      >
+        <UiClickChart data={uiClicks} />
       </AdminSection>
     </div>
   );
