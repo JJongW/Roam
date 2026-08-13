@@ -115,6 +115,11 @@ interface MapProps {
   heat?: Record<string, number>;
   heatPairs?: { from: string; to: string; count: number }[];
   className?: string;
+  /** sessionStorage에 pan/zoom/rotation을 저장·복원할 키(보통 전시 slug). 없으면
+   *  저장 안 함. 부스 상세로 나갔다 뒤로가기로 돌아오면 이 컴포넌트가 완전히
+   *  리마운트되면서 view가 늘 처음(전체 보기)으로 리셋됐다 — 마지막으로 보던
+   *  자리 그대로 이어지게 한다. */
+  persistKey?: string;
   /** Insets the interactive/measured viewport (e.g. to clear an overlapping
    *  bottom sheet) so fit + clamp use the visible area, not the full container.
    *  Tailwind positioning classes; defaults to filling the container. */
@@ -159,6 +164,7 @@ export function ExhibitionMap({
   heat,
   heatPairs,
   className,
+  persistKey,
   viewportClassName = "inset-0",
   controlsClassName = "bottom-4 right-3",
 }: MapProps) {
@@ -168,22 +174,68 @@ export function ExhibitionMap({
   // (Declared early — the imperative transform/rotation helpers below need it.)
   const width = floorplan?.width ?? widthProp;
   const height = floorplan?.height ?? heightProp;
+  // persistKey가 있으면 pan/zoom/rotation을 세션 동안 기억한다 — 부스 상세로
+  // 나갔다 뒤로 오면 이 컴포넌트가 통째로 리마운트되는데, 그때 처음(전체 보기)이
+  // 아니라 마지막으로 보던 자리로 되돌린다. 초기값을 lazy initializer로 직접
+  // 읽어들인다(마운트 후 effect에서 setState하면 리렌더가 한 번 더 생긴다).
+  const mapViewStorageKey = persistKey ? `roam-map-view-${persistKey}` : null;
+  const savedView = useMemo(() => {
+    if (!mapViewStorageKey || typeof window === "undefined") return null;
+    try {
+      const raw = sessionStorage.getItem(mapViewStorageKey);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw) as {
+        scale: number;
+        offset: Point;
+        rotation: number;
+      };
+      if (
+        typeof parsed.scale === "number" &&
+        parsed.offset &&
+        typeof parsed.rotation === "number"
+      ) {
+        return parsed;
+      }
+      return null;
+    } catch {
+      return null;
+    }
+    // 마운트 시점 한 번만 읽는다 — persistKey가 세션 중 바뀌는 경우는 없다.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   // Live pan/zoom, driven imperatively so dragging never re-renders the (heavy)
   // booth layer — only the SVG transform changes on each move.
-  const view = useRef<{ scale: number; offset: Point }>({
-    scale: 1,
-    offset: { x: 0, y: 0 },
-  });
+  const view = useRef<{ scale: number; offset: Point }>(
+    savedView
+      ? { scale: savedView.scale, offset: savedView.offset }
+      : { scale: 1, offset: { x: 0, y: 0 } },
+  );
   // Once the visitor pans/zooms/taps, stop auto-refitting on container resize
   // (chrome show/hide, status chips appearing) — keep their chosen view.
-  const userAdjusted = useRef(false);
+  const userAdjusted = useRef(!!savedView);
   const moveStartFired = useRef(false);
   // Map view rotation in 90° steps. Stored as an ever-increasing degree count so
   // each press animates forward a quarter turn (270°→360°, not 270°→0°). The
   // whole map (booths + their labels) rotates rigidly, so nothing overflows its
   // box; footprint() uses this mod 180 to know if width/height are swapped.
-  const rotationRef = useRef(0);
-  const [rotation, setRotation] = useState(0);
+  const rotationRef = useRef(savedView?.rotation ?? 0);
+  const [rotation, setRotation] = useState(savedView?.rotation ?? 0);
+  const persistView = useCallback(() => {
+    if (!mapViewStorageKey || typeof window === "undefined") return;
+    try {
+      sessionStorage.setItem(
+        mapViewStorageKey,
+        JSON.stringify({
+          scale: view.current.scale,
+          offset: view.current.offset,
+          rotation: rotationRef.current,
+        }),
+      );
+    } catch {
+      // storage 꽉 참/비활성화 — 이번 방문에서는 그냥 기억 못 한다.
+    }
+  }, [mapViewStorageKey]);
+  const restoredView = useRef(!!savedView);
   // Counter-rotate a label around its own anchor so it stays upright (readable)
   // while the map turns — the anchor is the pivot, so the text doesn't drift,
   // only its orientation is cancelled. Returns undefined at 0° (no transform).
@@ -375,6 +427,7 @@ export function ExhibitionMap({
           y: fh * s <= ch ? (ch - fh * s) / 2 : clamp(o.y, ch - fh * s, 0),
         };
         applyView(animate);
+        persistView();
         return;
       }
       const contain = Math.min(cw / fw, ch / fh) * 0.96;
@@ -407,10 +460,20 @@ export function ExhibitionMap({
         },
       };
       applyView(animate);
+      persistView();
     },
     // focus is depended on by its x/y (object identity may churn each render).
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [width, height, fillHeight, focus?.x, focus?.y, applyView, footprint],
+    [
+      width,
+      height,
+      fillHeight,
+      focus?.x,
+      focus?.y,
+      applyView,
+      footprint,
+      persistView,
+    ],
   );
 
   // The explicit "전체 보기" control: drop the user-adjusted lock and re-fit.
@@ -430,14 +493,21 @@ export function ExhibitionMap({
   }, [fit]);
 
   // Re-fit whenever the container is (re)sized — handles late layout, rotation, etc.
+  // 복원된 view가 있으면(위 lazy initializer에서 이미 state에 반영됨) fit()을
+  // 건너뛰고 그 값을 그대로 그린다 — 되돌아왔을 때 처음 보던 자리 그대로,
+  // 전체 보기로 다시 리셋되지 않는다.
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    fit();
+    if (restoredView.current) {
+      applyView();
+    } else {
+      fit();
+    }
     const ro = new ResizeObserver(() => fit());
     ro.observe(el);
     return () => ro.disconnect();
-  }, [fit]);
+  }, [fit, applyView]);
 
   // 지도 위 제스처는 지도만 움직인다 — 페이지가 확대되면 안 된다.
   //
@@ -536,8 +606,9 @@ export function ExhibitionMap({
       };
       userAdjusted.current = true;
       applyView(animate);
+      persistView();
     },
-    [clampOffset, applyView, minScale],
+    [clampOffset, applyView, minScale, persistView],
   );
 
   function localPoint(e: { clientX: number; clientY: number }): Point {
@@ -723,6 +794,7 @@ export function ExhibitionMap({
               };
               userAdjusted.current = true;
               applyView(true);
+              persistView();
             }
           }
           onSelect(hit); // empty → caller deselects
@@ -732,6 +804,7 @@ export function ExhibitionMap({
           onMapTap({ x: Math.round(mx), y: Math.round(my) });
       }
     }
+    persistView(); // 드래그/핀치 놓은 최종 위치를 기억한다.
   }
 
   function onWheel(e: React.WheelEvent) {
