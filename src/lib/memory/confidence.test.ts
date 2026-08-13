@@ -54,6 +54,12 @@ describe("dimensionOf", () => {
     expect(dimensionOf("booth_bookmarked")).toBe("explicit");
     expect(dimensionOf("reaction_pass")).toBe("negative");
   });
+
+  it("판단 어휘 재설계 이전 폐기된 kind는 안 죽고 implicit로 폴백", () => {
+    // 2026-08-10 재설계 전 kind(booth_visited 등)가 prod에 남아 있다 —
+    // SIGNAL_WEIGHTS에 없는 값이 와도 크래시하면 안 된다.
+    expect(dimensionOf("booth_visited" as SignalKind)).toBe("implicit");
+  });
 });
 
 describe("computeConfidence", () => {
@@ -133,6 +139,20 @@ describe("computeConfidence", () => {
       TUNING,
     );
     expect(signals).toEqual({ explicit: 1, implicit: 1, negative: 1 });
+  });
+
+  it("폐기된 옛 kind가 섞여도 안 죽고 무시한다", () => {
+    const { confidence, signals } = computeConfidence(
+      [
+        sig("booth_visited" as SignalKind),
+        sig("booth_skipped" as SignalKind),
+        sig("booth_bookmarked"),
+      ],
+      NOW,
+      TUNING,
+    );
+    expect(signals).toEqual({ explicit: 1, implicit: 0, negative: 0 });
+    expect(confidence).toBeGreaterThan(0);
   });
 });
 

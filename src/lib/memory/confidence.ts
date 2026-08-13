@@ -32,6 +32,7 @@ export type SignalDimension = "explicit" | "implicit" | "negative";
 /** 신호 종류를 대표 차원으로 분류 (InterestNode.signals 카운트용). */
 export function dimensionOf(kind: SignalKind): SignalDimension {
   const w = SIGNAL_WEIGHTS[kind];
+  if (!w) return "implicit"; // 폐기된 옛 kind (판단 어휘 재설계 이전 데이터) — 무해한 기본값
   if (w.negative > 0) return "negative";
   return w.explicit >= w.implicit ? "explicit" : "implicit";
 }
@@ -52,6 +53,7 @@ export function computeConfidence(
   const counts = { explicit: 0, implicit: 0, negative: 0 };
   for (const sig of signals) {
     const w = SIGNAL_WEIGHTS[sig.kind];
+    if (!w) continue; // 폐기된 옛 kind(판단 어휘 재설계 이전 데이터) — 신호로 안 친다
     const d = decay(nowMs - Date.parse(sig.createdAt), halfLifeMs);
     raw += (w.explicit + w.implicit - w.negative) * d;
     counts[dimensionOf(sig.kind)] += 1;
@@ -77,8 +79,9 @@ export function trendOf(
   let early = 0;
   let late = 0;
   for (const s of signals) {
-    const t = Date.parse(s.createdAt);
     const w = SIGNAL_WEIGHTS[s.kind];
+    if (!w) continue; // 폐기된 옛 kind — 신호로 안 친다
+    const t = Date.parse(s.createdAt);
     const val =
       (w.explicit + w.implicit - w.negative) * decay(nowMs - t, halfLifeMs);
     if (t >= mid) late += val;

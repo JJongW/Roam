@@ -1175,9 +1175,13 @@ export class SupabaseRepository implements Repository {
    * user_signal_log·route_plan·user_brain·booth_note는 cascade 여부가
    * 마이그레이션 히스토리로 확인 안 돼(로컬에 0001~0023 없음) 여기서
    * 직접 먼저 지운다 — 안 그러면 app_user만 지워지고 나머지가 고아로 남을 수 있다.
+   * anon 키(this.db())는 이 테이블들 RLS가 UPDATE/DELETE엔 권한을 안 줘서 조용히
+   * 0행으로 끝난다(updateNickname과 같은 패턴, createServiceClient 주석 참고) — 그러면
+   * app_user는 안 지워졌는데 자식 행만 지워지거나, 반대로 자식이 고아로 남을 수 있다.
+   * requireAdmin()으로 이미 인가를 마쳤으니 서비스 롤로 전부 같은 트랜잭션 경로로 쓴다.
    */
   async deleteUser(id: string): Promise<boolean> {
-    const db = await this.db();
+    const db = createServiceClient();
     maybeWrote(
       await db.from("booth_note").delete().eq("user_id", id),
       "계정 삭제(노트 정리)",
@@ -1221,8 +1225,13 @@ export class SupabaseRepository implements Repository {
     return data ? mapUser(data as Row) : null;
   }
 
+  // anon 키(this.db())로 쓰면 app_user RLS가 UPDATE엔 권한을 안 줘서 조용히
+  // 0행으로 끝나고(PostgREST는 에러로 안 던진다), 아래 select가 null을 돌려줘
+  // 라우트가 "계정을 찾을 수 없음"으로 오인한다 — 이미 booth 쓰기에서 겪은 것과
+  // 같은 패턴(createServiceClient 주석 참고). 라우트가 getCurrentUser()로 이미
+  // 인가를 마쳤으니 서비스 롤로 쓴다.
   async updateNickname(id: string, nickname: string): Promise<User | null> {
-    const db = await this.db();
+    const db = createServiceClient();
     const res = await db
       .from("app_user")
       .update({ nickname })
