@@ -303,8 +303,29 @@ function GuideSlide({
   );
 }
 
-/** 단계별 미니 미리보기 — 실제 색상 토큰·카드 형태를 그대로 쓴다. */
+/** 단계별 미니 미리보기 — 실제 색상 토큰·카드 형태를 그대로 쓴다. 실제 화면
+ *  요소와 똑같이 생겨서 누를 수 있는 줄 알고 헷갈려하는 사람들이 있었다 —
+ *  점선 테두리 + "예시" 배지로 "이건 그냥 보여주기용"임을 표시한다. */
 function GuidePreview({
+  step,
+  t,
+}: {
+  step: number;
+  t: (key: string, params?: Record<string, string | number>) => string;
+}) {
+  return (
+    <div className="relative w-full max-w-[16rem]">
+      <span className="absolute -top-2.5 left-3 z-10 rounded-full bg-muted-foreground px-2 py-0.5 text-[10px] font-bold text-background">
+        예시
+      </span>
+      <div className="rounded-2xl border-2 border-dashed border-muted-foreground/40 p-1">
+        <GuidePreviewCard step={step} t={t} />
+      </div>
+    </div>
+  );
+}
+
+function GuidePreviewCard({
   step,
   t,
 }: {
@@ -314,7 +335,7 @@ function GuidePreview({
   if (step === 0) {
     // STEP 1: 취향 질문 카드 — Conversation의 답변 카드와 같은 모양.
     return (
-      <div className="w-full max-w-[16rem] rounded-2xl border border-border bg-card px-4 py-3.5 text-left">
+      <div className="pointer-events-none w-full rounded-xl bg-card px-4 py-3.5 text-left">
         <div className="mb-2.5 text-[13px] font-bold">오늘은 뭐가 끌려?</div>
         <div className="space-y-1.5">
           <div className="rounded-xl border border-border px-3 py-2 text-xs">
@@ -330,7 +351,7 @@ function GuidePreview({
   if (step === 1) {
     // STEP 2: 피드 카드 + JudgmentBar와 같은 반응 버튼 모양(색은 --judge-must).
     return (
-      <div className="w-full max-w-[16rem] rounded-2xl border border-border bg-card p-3.5 text-left">
+      <div className="pointer-events-none w-full rounded-xl bg-card p-3.5 text-left">
         <div className="mb-2 h-16 rounded-lg bg-secondary" />
         <div className="mb-2 text-[13px] font-bold">단어의 시각적 번역</div>
         <div className="flex gap-1.5">
@@ -354,7 +375,7 @@ function GuidePreview({
   }
   // STEP 3: 지도 색 미리보기 — 판단 색 4가지를 점으로.
   return (
-    <div className="flex w-full max-w-[16rem] items-center justify-center gap-4 rounded-2xl border border-border bg-card px-4 py-6">
+    <div className="pointer-events-none flex w-full items-center justify-center gap-4 rounded-xl bg-card px-4 py-6">
       {(
         [
           ["var(--judge-must)", t("judge.must")],
