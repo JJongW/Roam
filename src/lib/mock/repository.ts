@@ -696,6 +696,13 @@ export class MockRepository implements Repository {
     );
   }
 
+  async updateNickname(id: string, nickname: string): Promise<User | null> {
+    const user = store().users.find((u) => u.id === id);
+    if (!user) return null;
+    user.nickname = nickname;
+    return user;
+  }
+
   async getUserByProvider(
     provider: string,
     providerAccountId: string,

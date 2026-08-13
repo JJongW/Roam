@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MapPin, Pencil, RotateCcw } from "lucide-react";
-import { api } from "@/lib/api/client";
+import { MapPin, Pencil, RotateCcw, Check, X } from "lucide-react";
+import { toast } from "sonner";
+import { api, ApiClientError } from "@/lib/api/client";
 import { TasteRadar } from "@/components/me/taste-radar";
 import { useT } from "@/lib/i18n/provider";
 import { VALUE_TAGS, valueDef } from "@/lib/values";
@@ -16,6 +17,7 @@ import {
   SheetDescription,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { LegalLinks } from "@/components/common/legal-links";
 import type { UserBrain } from "@/lib/types";
 
@@ -32,16 +34,54 @@ export function BrainSheet({
   onClose: () => void;
 }) {
   const t = useT();
+  const user = useAuthStore((s) => s.user);
+  const refreshAuth = useAuthStore((s) => s.refresh);
   const restartAppOnboarding = useAuthStore((s) => s.restartAppOnboarding);
   const [brain, setBrain] = useState<UserBrain | null>(null);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [editingNickname, setEditingNickname] = useState(false);
+  const [nicknameDraft, setNicknameDraft] = useState("");
+  const [nicknameError, setNicknameError] = useState<string | null>(null);
+  const [nicknameSaving, setNicknameSaving] = useState(false);
 
   // 처음 온보딩을 다시 보여준다 — 이 시트를 닫아야 그 아래 전체화면 게이트가 뜬다.
   function restartOnboarding() {
     onClose();
     restartAppOnboarding();
+  }
+
+  function startEditNickname() {
+    setNicknameDraft(user?.nickname ?? "");
+    setNicknameError(null);
+    setEditingNickname(true);
+  }
+
+  // Google 로그인은 가입 시 실명·이메일에서 딴 닉네임을 그대로 쓴다 — 리뷰·
+  // 방문기록 같은 공개되는 자리에 실명이 남는 걸 싫어할 수 있어 언제든 바꿀 수
+  // 있게 한다.
+  async function saveNickname() {
+    if (nicknameSaving) return;
+    const next = nicknameDraft.trim();
+    if (!next || next === user?.nickname) {
+      setEditingNickname(false);
+      return;
+    }
+    setNicknameSaving(true);
+    setNicknameError(null);
+    try {
+      await api.patch("/api/me/nickname", { nickname: next });
+      await refreshAuth();
+      toast.success("닉네임을 바꿨어요");
+      setEditingNickname(false);
+    } catch (e) {
+      setNicknameError(
+        e instanceof ApiClientError ? e.error.message : "저장에 실패했어요",
+      );
+    } finally {
+      setNicknameSaving(false);
+    }
   }
 
   function load() {
@@ -129,6 +169,64 @@ export function BrainSheet({
           </SheetTitle>
           <SheetDescription>{t("myPage.desc")}</SheetDescription>
         </SheetHeader>
+
+        {user && (
+          <div className="mt-1 flex items-center justify-center gap-1.5">
+            {editingNickname ? (
+              <div className="flex w-full max-w-[16rem] flex-col items-center gap-1.5">
+                <div className="flex w-full items-center gap-1.5">
+                  <Input
+                    autoFocus
+                    value={nicknameDraft}
+                    onChange={(e) => {
+                      setNicknameDraft(e.target.value);
+                      setNicknameError(null);
+                    }}
+                    maxLength={20}
+                    aria-label="닉네임"
+                    disabled={nicknameSaving}
+                    onKeyDown={(e) => {
+                      if (e.nativeEvent.isComposing) return;
+                      if (e.key === "Enter") saveNickname();
+                      if (e.key === "Escape") setEditingNickname(false);
+                    }}
+                    className="h-9 text-center"
+                  />
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    disabled={nicknameSaving}
+                    onClick={saveNickname}
+                    aria-label="저장"
+                  >
+                    <Check className="size-4" />
+                  </Button>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    disabled={nicknameSaving}
+                    onClick={() => setEditingNickname(false)}
+                    aria-label="취소"
+                  >
+                    <X className="size-4" />
+                  </Button>
+                </div>
+                {nicknameError && (
+                  <p className="text-xs text-destructive">{nicknameError}</p>
+                )}
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={startEditNickname}
+                className="flex items-center gap-1 text-sm font-semibold text-muted-foreground active:opacity-70"
+              >
+                {user.nickname}
+                <Pencil className="size-3" aria-hidden />
+              </button>
+            )}
+          </div>
+        )}
 
         {/* 브레인만 있으면 무조건 레이더를 그린다. 값이 하나도 없어도 8축은 0으로
             멀쩡히 그려지고(taste-radar), 그래야 "고치기"로 다시 켜는 길이 남는다. */}

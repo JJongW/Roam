@@ -191,6 +191,10 @@ export interface Repository {
   deleteUser(id: string): Promise<boolean>;
   getUser(id: string): Promise<User | null>;
   getUserByNickname(nickname: string): Promise<User | null>;
+  /** 닉네임 변경(로그인 후 언제든) — 다른 계정이 이미 쓰는 닉네임이면 null.
+   *  대소문자 무시 중복 검사는 호출부(route)가 getUserByNickname으로 먼저
+   *  한다 — 여기선 그 확인이 끝났다는 전제로 단순 업데이트만 한다. */
+  updateNickname(id: string, nickname: string): Promise<User | null>;
   /** Find an OAuth-linked account by provider identity, or null. */
   getUserByProvider(
     provider: string,

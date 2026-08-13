@@ -353,6 +353,14 @@ describe("MockRepository", () => {
     expect(await repo.getUser(u.id)).toBeNull();
     expect(await repo.deleteUser("no-such-id")).toBe(false);
   });
+
+  it("updateNickname: 닉네임을 바꾸고 갱신된 계정을 반환, 없으면 null", async () => {
+    const u = await repo.createUser("before");
+    const updated = await repo.updateNickname(u.id, "after");
+    expect(updated?.nickname).toBe("after");
+    expect((await repo.getUser(u.id))?.nickname).toBe("after");
+    expect(await repo.updateNickname("no-such-id", "x")).toBeNull();
+  });
 });
 
 describe("logIssue / listIssues", () => {

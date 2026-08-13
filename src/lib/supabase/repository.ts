@@ -1211,6 +1211,18 @@ export class SupabaseRepository implements Repository {
     return data ? mapUser(data as Row) : null;
   }
 
+  async updateNickname(id: string, nickname: string): Promise<User | null> {
+    const db = await this.db();
+    const res = await db
+      .from("app_user")
+      .update({ nickname })
+      .eq("id", id)
+      .select("*")
+      .maybeSingle();
+    const data = maybeWrote(res, "닉네임 변경");
+    return data ? mapUser(data as Row) : null;
+  }
+
   async getUserByProvider(
     provider: string,
     providerAccountId: string,
