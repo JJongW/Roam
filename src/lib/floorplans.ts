@@ -313,7 +313,7 @@ function buildSif(): Floorplan {
   };
 }
 
-// HOUSE ARCHIVE: 더 플라츠홀 단일 공간. 홀/장식 없음, 부스만.
+// HOUSE ARCHIVE: 더 플라츠홀 단일 공간. 부스 + 라운지(T12·T13 사이 알코브) 장식.
 // SIF와 같은 규약 — JSON은 좌상단, FloorplanBooth는 중심.
 function buildHouseArchive(): Floorplan {
   const booths: FloorplanBooth[] = ha.booths.map((b) => ({
@@ -325,11 +325,20 @@ function buildHouseArchive(): Floorplan {
     color: b.kind === "facility" ? FACILITY_FILL : ZONE.general,
   }));
   const box = bbox(booths);
+  // T12·T13 사이 벽이 밖으로 튀어나온 알코브 — 그 공간이 라운지고, 바로 아래
+  // 입출구(양방향)가 있다(원본 도면 사진 대조, 2026-08-13). T12 오른쪽 끝(1712)
+  // ~ T13 왼쪽 끝(1892) 사이 간격에 맞춘 값 — 정확한 벽 실측치가 아니라 사진
+  // 비례로 어림한 값이라, 실제로 보면서 조정이 더 필요할 수 있다.
+  const loungeX = 1712;
+  const loungeW = 1892 - 1712;
   return {
     width: ha.width,
     height: ha.height,
     halls: [],
-    decor: [],
+    decor: [
+      { type: "header", x: loungeX, y: 5, w: loungeW, h: 55, text: "라운지" },
+      { type: "arrowsV", x: loungeX + loungeW / 2, y1: 60, y2: 95 },
+    ],
     booths,
     interior: [box],
     entrance: { x: ha.width / 2, y: ha.height - 40 },
