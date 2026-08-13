@@ -43,6 +43,27 @@ export function CompanionBar() {
   // 전시 홈(상세)에선 상단 고정 배너 대신 여기서 취향·개수 맞춤 발화를 회전시킨다.
   const isExhibitionHome = /\/exhibitions\/[^/]+$/.test(pathname);
 
+  const exhibitionSlugFromPath = pathname.match(/\/exhibitions\/([^/]+)/)?.[1];
+  const activeExhibitionId = useCompanionStore((s) => s.activeExhibitionId);
+
+  function trackClick(control: string) {
+    const attribution = exhibitionSlugFromPath
+      ? { exhibitionSlug: exhibitionSlugFromPath }
+      : activeExhibitionId
+        ? { exhibitionId: activeExhibitionId }
+        : null;
+    if (!attribution) return;
+    void fetch("/api/analytics/events", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        type: "ui_click",
+        ...attribution,
+        meta: { control },
+      }),
+    }).catch(() => {});
+  }
+
   const lines = useMemo(() => {
     if (isExhibitionHome && home)
       return homeLines(home, tasteJudged, tastePct, t);
@@ -64,7 +85,10 @@ export function CompanionBar() {
       <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 mx-auto flex max-w-md justify-center px-4 pb-[calc(env(safe-area-inset-bottom)+16px)]">
         <button
           type="button"
-          onClick={() => setOpen(true)}
+          onClick={() => {
+            trackClick("companion_bar_open");
+            setOpen(true);
+          }}
           className="pointer-events-auto flex max-w-full items-center gap-2 rounded-full border border-border bg-background/90 py-2 pl-2 pr-4 shadow-[var(--shadow-card)] backdrop-blur-xl active:scale-[0.98]"
         >
           <RoamAvatar />
@@ -93,7 +117,7 @@ export function CompanionBar() {
               {t("companion.ask")}
             </SheetTitle>
           </SheetHeader>
-          <CompanionChat t={t} />
+          <CompanionChat t={t} onAsk={trackClick} />
         </SheetContent>
       </Sheet>
     </>
@@ -101,15 +125,22 @@ export function CompanionBar() {
 }
 
 /** 탭 대화 — 정해진 질문에 로컬 템플릿으로 즉답. LLM 없음(속도 규칙). */
-function CompanionChat({ t }: { t: TFn }) {
+function CompanionChat({
+  t,
+  onAsk,
+}: {
+  t: TFn;
+  onAsk: (control: string) => void;
+}) {
   const [log, setLog] = useState<{ role: "you" | "roam"; text: string }[]>([]);
   const prompts = [
-    { q: t("companion.q1"), a: t("companion.a1") },
-    { q: t("companion.q2"), a: t("companion.a2") },
-    { q: t("companion.q3"), a: t("companion.a3") },
+    { q: t("companion.q1"), a: t("companion.a1"), control: "companion_faq_q1" },
+    { q: t("companion.q2"), a: t("companion.a2"), control: "companion_faq_q2" },
+    { q: t("companion.q3"), a: t("companion.a3"), control: "companion_faq_q3" },
   ];
 
-  function ask(q: { q: string; a: string }) {
+  function ask(q: { q: string; a: string; control: string }) {
+    onAsk(q.control);
     setLog((prev) => [
       ...prev,
       { role: "you", text: q.q },

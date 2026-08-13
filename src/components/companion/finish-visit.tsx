@@ -102,7 +102,18 @@ export function FinishVisit({
       <button
         id="finish-visit-button"
         type="button"
-        onClick={openRetro}
+        onClick={() => {
+          void fetch("/api/analytics/events", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({
+              type: "ui_click",
+              exhibitionSlug: slug,
+              meta: { control: "finish_visit_start" },
+            }),
+          }).catch(() => {});
+          openRetro();
+        }}
         disabled={busy}
         className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl border border-border bg-card py-3.5 text-sm font-semibold text-muted-foreground active:opacity-70 disabled:opacity-50"
       >

@@ -120,6 +120,9 @@ interface MapProps {
    *  리마운트되면서 view가 늘 처음(전체 보기)으로 리셋됐다 — 마지막으로 보던
    *  자리 그대로 이어지게 한다. */
   persistKey?: string;
+  /** admin 버튼 인기도 집계용 — persistKey(스토리지 키)와 별개로, 클릭 이벤트를
+   *  귀속시킬 전시를 명시한다. 없으면 계측만 조용히 스킵(지도 자체 동작은 영향 없음). */
+  exhibitionSlug?: string;
   /** Insets the interactive/measured viewport (e.g. to clear an overlapping
    *  bottom sheet) so fit + clamp use the visible area, not the full container.
    *  Tailwind positioning classes; defaults to filling the container. */
@@ -165,11 +168,24 @@ export function ExhibitionMap({
   heatPairs,
   className,
   persistKey,
+  exhibitionSlug,
   viewportClassName = "inset-0",
   controlsClassName = "bottom-4 right-3",
 }: MapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
+  function trackClick(control: string) {
+    if (!exhibitionSlug) return;
+    void fetch("/api/analytics/events", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        type: "ui_click",
+        exhibitionSlug,
+        meta: { control },
+      }),
+    }).catch(() => {});
+  }
   // Effective canvas size: floorplan dims override the props when present.
   // (Declared early — the imperative transform/rotation helpers below need it.)
   const width = floorplan?.width ?? widthProp;
@@ -1533,7 +1549,10 @@ export function ExhibitionMap({
           size="icon"
           className="bg-card shadow-[var(--shadow-card)]"
           aria-label="지도 90도 회전"
-          onClick={rotate90}
+          onClick={() => {
+            trackClick("map_rotate");
+            rotate90();
+          }}
         >
           <RotateCw className="size-5" />
         </Button>
@@ -1542,7 +1561,10 @@ export function ExhibitionMap({
           size="icon"
           className="bg-card shadow-[var(--shadow-card)]"
           aria-label="확대"
-          onClick={() => zoomBy(1.25, undefined, true)}
+          onClick={() => {
+            trackClick("map_zoom_in");
+            zoomBy(1.25, undefined, true);
+          }}
         >
           <Plus className="size-5" />
         </Button>
@@ -1551,7 +1573,10 @@ export function ExhibitionMap({
           size="icon"
           className="bg-card shadow-[var(--shadow-card)]"
           aria-label="축소"
-          onClick={() => zoomBy(0.8, undefined, true)}
+          onClick={() => {
+            trackClick("map_zoom_out");
+            zoomBy(0.8, undefined, true);
+          }}
         >
           <Minus className="size-5" />
         </Button>
@@ -1560,7 +1585,10 @@ export function ExhibitionMap({
           size="icon"
           className="bg-card shadow-[var(--shadow-card)]"
           aria-label="전체 보기"
-          onClick={resetView}
+          onClick={() => {
+            trackClick("map_reset_view");
+            resetView();
+          }}
         >
           <Maximize2 className="size-5" />
         </Button>

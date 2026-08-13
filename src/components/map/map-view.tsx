@@ -207,6 +207,7 @@ export function MapView({
         floorplan={FLOORPLANS[detail.exhibition.slug]}
         fillHeight
         persistKey={detail.exhibition.slug}
+        exhibitionSlug={detail.exhibition.slug}
         viewportClassName="inset-0"
         controlsClassName="right-3 top-20 mt-safe"
         mustIds={mustIds}

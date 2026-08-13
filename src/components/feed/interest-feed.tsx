@@ -146,12 +146,14 @@ export function InterestFeed({
               <div className="mt-3 flex items-center justify-center gap-2">
                 <a
                   href="#finish-visit-button"
+                  onClick={() => trackClick("feed_exhausted_finish")}
                   className="inline-flex min-h-11 items-center rounded-xl bg-primary px-4 text-sm font-semibold text-primary-foreground active:opacity-80"
                 >
                   {t("feed.exhaustedFinishCta")}
                 </a>
                 <Link
                   href={`/exhibitions/${slug}/map`}
+                  onClick={() => trackClick("feed_exhausted_map")}
                   className="inline-flex min-h-11 items-center rounded-xl border border-border px-4 text-sm font-semibold active:bg-accent/40"
                 >
                   {t("feed.exhaustedMapCta")}
@@ -173,6 +175,17 @@ export function InterestFeed({
     void api
       .post("/api/me/signal", { boothId, kind: "feed_click" })
       .catch(() => {});
+  }
+  function trackClick(control: string) {
+    void fetch("/api/analytics/events", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        type: "ui_click",
+        exhibitionSlug: slug,
+        meta: { control },
+      }),
+    }).catch(() => {});
   }
   function toggle(boothId: string) {
     fire(boothId);
@@ -371,7 +384,10 @@ export function InterestFeed({
         {/* 목록의 끝 — 새로 고르기는 여기서만 일어난다(위에서 자동으로 바뀌지 않는다). */}
         <button
           type="button"
-          onClick={repick}
+          onClick={() => {
+            trackClick("feed_repick");
+            repick();
+          }}
           disabled={repicking}
           className="flex min-h-11 w-full items-center justify-center gap-1.5 rounded-2xl border border-dashed border-border text-sm font-semibold text-muted-foreground active:bg-accent/40 disabled:opacity-60"
         >

@@ -177,6 +177,10 @@ export class MockRepository implements Repository {
     };
   }
 
+  async getExhibitionIdBySlug(slug: string): Promise<string | null> {
+    return store().exhibitions.find((e) => e.slug === slug)?.id ?? null;
+  }
+
   async createExhibition(input: ExhibitionInput): Promise<Exhibition> {
     const ex: Exhibition = { id: uid("exh"), createdAt: now(), ...input };
     store().exhibitions.push(ex);

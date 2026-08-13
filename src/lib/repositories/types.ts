@@ -59,6 +59,9 @@ export interface Repository {
     limit?: number;
   }): Promise<Paginated<Exhibition>>;
   getExhibition(slug: string): Promise<ExhibitionDetail | null>;
+  /** 전시 slug → id만(전체 상세 없이) — getExhibition()의 halls·categories·booths
+   *  병렬조회는 이 용도(클릭 계측 귀속)엔 낭비다. */
+  getExhibitionIdBySlug(slug: string): Promise<string | null>;
   createExhibition(input: ExhibitionInput): Promise<Exhibition>;
   updateExhibition(
     id: string,
