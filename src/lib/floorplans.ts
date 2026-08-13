@@ -338,6 +338,15 @@ function buildHouseArchive(): Floorplan {
   // 비례로 어림한 값이라, 실제로 보면서 조정이 더 필요할 수 있다.
   const loungeX = 1712;
   const loungeW = 1892 - 1712;
+  // 메인 입구·출구·티켓부스 — 현장 확인 기준(2026-08-13). 입구는 H02(관계의 집
+  // X 헤르시, x 49~217) 아래, y는 G03(커먼즈) 하단(1020+56=1076)과 같은 선.
+  // 출구는 E09(포티, x 1703~1879) 왼쪽, 같은 y선. 정확한 실측치가 아니라
+  // 현장 설명으로 어림한 값 — 실제로 보면서 조정이 더 필요할 수 있다.
+  const entranceX = 133; // H02 중심
+  const exitX = 1660; // E09 왼쪽
+  const groundY = 1076; // 커먼즈 하단
+  const ticketBoothW = 90;
+  const ticketBoothH = 44;
   return {
     width: ha.width,
     height: ha.height,
@@ -351,11 +360,21 @@ function buildHouseArchive(): Floorplan {
         y2: 95,
         size: 0.45,
       },
+      { type: "entrance", x: entranceX, y: groundY, text: "입구", dir: "up" },
+      { type: "entrance", x: exitX, y: groundY, text: "출구", dir: "down" },
+      {
+        type: "header",
+        x: entranceX - ticketBoothW / 2,
+        y: groundY - ticketBoothH - 12,
+        w: ticketBoothW,
+        h: ticketBoothH,
+        text: "티켓부스",
+      },
     ],
     booths,
     interior: [box],
-    entrance: { x: ha.width / 2, y: ha.height - 40 },
-    exit: { x: ha.width / 2, y: ha.height - 40 },
+    entrance: { x: entranceX, y: groundY },
+    exit: { x: exitX, y: groundY },
   };
 }
 
