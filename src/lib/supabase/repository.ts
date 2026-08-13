@@ -542,8 +542,9 @@ export class SupabaseRepository implements Repository {
     };
   }
 
+  // 전시 쓰기 3종도 admin 콘솔 전용 — createBooth 주석과 같은 이유로 서비스 롤.
   async createExhibition(input: ExhibitionInput): Promise<Exhibition> {
-    const db = await this.db();
+    const db = createServiceClient();
     const row = {
       id: uid("exh"),
       created_at: now(),
@@ -557,7 +558,7 @@ export class SupabaseRepository implements Repository {
     id: string,
     input: Partial<ExhibitionInput>,
   ): Promise<Exhibition | null> {
-    const db = await this.db();
+    const db = createServiceClient();
     const res = await db
       .from("exhibition")
       .update(exhibitionToRow(input))
@@ -569,7 +570,7 @@ export class SupabaseRepository implements Repository {
   }
 
   async deleteExhibition(id: string): Promise<boolean> {
-    const db = await this.db();
+    const db = createServiceClient();
     const { error, count } = await db
       .from("exhibition")
       .delete({ count: "exact" })
@@ -764,8 +765,12 @@ export class SupabaseRepository implements Repository {
     return list.sort((a, b) => a.startTime.localeCompare(b.startTime));
   }
 
+  // 이벤트 쓰기 3종도 부스 쓰기(createBooth 주석 참고)와 같은 이유로 서비스 롤을
+  // 쓴다 — admin 콘솔 전용이고, anon 키(this.db())로 쓰면 event 테이블 RLS가
+  // 막아 "네트워크 오류"로 보이는 조용한 실패가 난다(2026-08-13 admin 이벤트
+  // 저장 실패 회귀).
   async createEvent(input: EventInput): Promise<BoothEvent> {
-    const db = await this.db();
+    const db = createServiceClient();
     const row = { id: uid("ev"), ...eventToRow(input) };
     const res = await db.from("event").insert(row).select("*").single();
     return mapEvent(wrote(res, "이벤트 생성") as Row);
@@ -775,7 +780,7 @@ export class SupabaseRepository implements Repository {
     id: string,
     input: Partial<EventInput>,
   ): Promise<BoothEvent | null> {
-    const db = await this.db();
+    const db = createServiceClient();
     const res = await db
       .from("event")
       .update(eventToRow(input))
@@ -787,7 +792,7 @@ export class SupabaseRepository implements Repository {
   }
 
   async deleteEvent(id: string): Promise<boolean> {
-    const db = await this.db();
+    const db = createServiceClient();
     const { error, count } = await db
       .from("event")
       .delete({ count: "exact" })
