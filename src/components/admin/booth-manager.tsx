@@ -1,9 +1,17 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { cloneElement, isValidElement, useId, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import NextImage from "next/image";
-import { Plus, Pencil, Trash2, Loader2, ImagePlus, X, Star } from "lucide-react";
+import {
+  Plus,
+  Pencil,
+  Trash2,
+  Loader2,
+  ImagePlus,
+  X,
+  Star,
+} from "lucide-react";
 import { toast } from "sonner";
 import { api, ApiClientError } from "@/lib/api/client";
 import { boothInputSchema } from "@/lib/schemas";
@@ -25,7 +33,13 @@ import {
   SheetTitle,
   SheetFooter,
 } from "@/components/ui/sheet";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { CategoryChip } from "@/components/booth/category-chip";
 import { EmptyState } from "@/components/common/states";
 import {
@@ -50,7 +64,12 @@ interface Props {
 
 type Draft = Partial<Booth>;
 
-export function BoothManager({ exhibitionId, booths, categories, halls }: Props) {
+export function BoothManager({
+  exhibitionId,
+  booths,
+  categories,
+  halls,
+}: Props) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Booth | null>(null);
@@ -147,7 +166,10 @@ export function BoothManager({ exhibitionId, booths, categories, halls }: Props)
       </div>
 
       {booths.length === 0 ? (
-        <EmptyState title="부스가 없어요" description="첫 부스를 추가해 보세요." />
+        <EmptyState
+          title="부스가 없어요"
+          description="첫 부스를 추가해 보세요."
+        />
       ) : (
         <div className="space-y-2">
           {booths.map((b) => (
@@ -168,10 +190,21 @@ export function BoothManager({ exhibitionId, booths, categories, halls }: Props)
               )}
               <div className="min-w-0 flex-1">
                 <p className="truncate font-bold">{b.name}</p>
-                <p className="truncate text-sm text-muted-foreground">{b.company}</p>
-                <div className="mt-1">{catById.get(b.categoryId) && <CategoryChip category={catById.get(b.categoryId)!} />}</div>
+                <p className="truncate text-sm text-muted-foreground">
+                  {b.company}
+                </p>
+                <div className="mt-1">
+                  {catById.get(b.categoryId) && (
+                    <CategoryChip category={catById.get(b.categoryId)!} />
+                  )}
+                </div>
               </div>
-              <Button variant="ghost" size="icon" aria-label="수정" onClick={() => startEdit(b)}>
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label="수정"
+                onClick={() => startEdit(b)}
+              >
                 <Pencil className="size-4" />
               </Button>
               <AlertDialog>
@@ -189,7 +222,10 @@ export function BoothManager({ exhibitionId, booths, categories, halls }: Props)
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>취소</AlertDialogCancel>
-                    <AlertDialogAction variant="destructive" onClick={() => remove(b)}>
+                    <AlertDialogAction
+                      variant="destructive"
+                      onClick={() => remove(b)}
+                    >
                       삭제
                     </AlertDialogAction>
                   </AlertDialogFooter>
@@ -214,7 +250,10 @@ export function BoothManager({ exhibitionId, booths, categories, halls }: Props)
             </Field>
             <div className="grid grid-cols-2 gap-3">
               <Field label="부스명">
-                <Input value={draft.name ?? ""} onChange={(e) => setDraft({ ...draft, name: e.target.value })} />
+                <Input
+                  value={draft.name ?? ""}
+                  onChange={(e) => setDraft({ ...draft, name: e.target.value })}
+                />
               </Field>
               <Field label="부스 코드">
                 <Input
@@ -225,35 +264,65 @@ export function BoothManager({ exhibitionId, booths, categories, halls }: Props)
               </Field>
             </div>
             <Field label="회사">
-              <Input value={draft.company ?? ""} onChange={(e) => setDraft({ ...draft, company: e.target.value })} />
+              <Input
+                value={draft.company ?? ""}
+                onChange={(e) =>
+                  setDraft({ ...draft, company: e.target.value })
+                }
+              />
             </Field>
             <div className="grid grid-cols-2 gap-3">
               <Field label="카테고리">
-                <Select value={draft.categoryId} onValueChange={(v) => setDraft({ ...draft, categoryId: v })}>
-                  <SelectTrigger><SelectValue placeholder="선택" /></SelectTrigger>
+                <Select
+                  value={draft.categoryId}
+                  onValueChange={(v) => setDraft({ ...draft, categoryId: v })}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="선택" />
+                  </SelectTrigger>
                   <SelectContent>
-                    {categories.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
+                    {categories.map((c) => (
+                      <SelectItem key={c.id} value={c.id}>
+                        {c.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </Field>
               <Field label="홀">
-                <Select value={draft.hallId} onValueChange={(v) => setDraft({ ...draft, hallId: v })}>
-                  <SelectTrigger><SelectValue placeholder="선택" /></SelectTrigger>
+                <Select
+                  value={draft.hallId}
+                  onValueChange={(v) => setDraft({ ...draft, hallId: v })}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="선택" />
+                  </SelectTrigger>
                   <SelectContent>
-                    {halls.map((h) => <SelectItem key={h.id} value={h.id}>{h.name}</SelectItem>)}
+                    {halls.map((h) => (
+                      <SelectItem key={h.id} value={h.id}>
+                        {h.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </Field>
             </div>
             <Field label="설명">
-              <Textarea value={draft.description ?? ""} onChange={(e) => setDraft({ ...draft, description: e.target.value })} />
+              <Textarea
+                value={draft.description ?? ""}
+                onChange={(e) =>
+                  setDraft({ ...draft, description: e.target.value })
+                }
+              />
             </Field>
             <Field label="상세 설명">
               <Textarea
                 placeholder="비워두면 위 설명을 그대로 써요"
                 rows={4}
                 value={draft.longDescription ?? ""}
-                onChange={(e) => setDraft({ ...draft, longDescription: e.target.value })}
+                onChange={(e) =>
+                  setDraft({ ...draft, longDescription: e.target.value })
+                }
               />
             </Field>
             <Field label="태그 (쉼표로 구분)">
@@ -268,33 +337,57 @@ export function BoothManager({ exhibitionId, booths, categories, halls }: Props)
                 <Input
                   placeholder="https://…"
                   value={draft.logoUrl ?? ""}
-                  onChange={(e) => setDraft({ ...draft, logoUrl: e.target.value })}
+                  onChange={(e) =>
+                    setDraft({ ...draft, logoUrl: e.target.value })
+                  }
                 />
               </Field>
               <Field label="인스타그램 URL">
                 <Input
                   placeholder="https://instagram.com/…"
                   value={draft.instagramUrl ?? ""}
-                  onChange={(e) => setDraft({ ...draft, instagramUrl: e.target.value })}
+                  onChange={(e) =>
+                    setDraft({ ...draft, instagramUrl: e.target.value })
+                  }
                 />
               </Field>
               <Field label="웹사이트 URL">
                 <Input
                   placeholder="https://…"
                   value={draft.websiteUrl ?? ""}
-                  onChange={(e) => setDraft({ ...draft, websiteUrl: e.target.value })}
+                  onChange={(e) =>
+                    setDraft({ ...draft, websiteUrl: e.target.value })
+                  }
                 />
               </Field>
             </div>
             <div className="grid grid-cols-3 gap-3">
               <Field label="X 좌표">
-                <Input type="number" value={draft.x ?? 0} onChange={(e) => setDraft({ ...draft, x: Number(e.target.value) })} />
+                <Input
+                  type="number"
+                  value={draft.x ?? 0}
+                  onChange={(e) =>
+                    setDraft({ ...draft, x: Number(e.target.value) })
+                  }
+                />
               </Field>
               <Field label="Y 좌표">
-                <Input type="number" value={draft.y ?? 0} onChange={(e) => setDraft({ ...draft, y: Number(e.target.value) })} />
+                <Input
+                  type="number"
+                  value={draft.y ?? 0}
+                  onChange={(e) =>
+                    setDraft({ ...draft, y: Number(e.target.value) })
+                  }
+                />
               </Field>
               <Field label="인기도">
-                <Input type="number" value={draft.popularity ?? 50} onChange={(e) => setDraft({ ...draft, popularity: Number(e.target.value) })} />
+                <Input
+                  type="number"
+                  value={draft.popularity ?? 50}
+                  onChange={(e) =>
+                    setDraft({ ...draft, popularity: Number(e.target.value) })
+                  }
+                />
               </Field>
             </div>
           </div>
@@ -309,11 +402,22 @@ export function BoothManager({ exhibitionId, booths, categories, halls }: Props)
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  const id = useId();
   return (
     <div className="space-y-1.5">
-      <Label className="text-xs">{label}</Label>
-      {children}
+      <Label htmlFor={id} className="text-xs">
+        {label}
+      </Label>
+      {isValidElement(children)
+        ? cloneElement(children as React.ReactElement<{ id?: string }>, { id })
+        : children}
     </div>
   );
 }

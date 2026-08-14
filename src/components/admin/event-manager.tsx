@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { cloneElement, isValidElement, useId, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Plus, Trash2, Loader2, CalendarClock } from "lucide-react";
 import { format } from "date-fns";
@@ -12,8 +12,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from "@/components/ui/sheet";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetFooter,
+} from "@/components/ui/sheet";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { EmptyState } from "@/components/common/states";
 import {
   AlertDialog,
@@ -37,7 +49,13 @@ interface Draft {
   rewardInfo?: string;
 }
 
-export function EventManager({ events, booths }: { events: BoothEvent[]; booths: Booth[] }) {
+export function EventManager({
+  events,
+  booths,
+}: {
+  events: BoothEvent[];
+  booths: Booth[];
+}) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState<Draft>({});
@@ -89,23 +107,32 @@ export function EventManager({ events, booths }: { events: BoothEvent[]; booths:
   return (
     <>
       <div className="flex items-center justify-between">
-        <p className="text-sm text-muted-foreground">{events.length}개 이벤트</p>
+        <p className="text-sm text-muted-foreground">
+          {events.length}개 이벤트
+        </p>
         <Button size="sm" onClick={startCreate}>
           <Plus className="size-4" /> 새 이벤트
         </Button>
       </div>
 
       {events.length === 0 ? (
-        <EmptyState icon={CalendarClock} title="이벤트가 없어요" description="첫 이벤트를 등록해 보세요." />
+        <EmptyState
+          icon={CalendarClock}
+          title="이벤트가 없어요"
+          description="첫 이벤트를 등록해 보세요."
+        />
       ) : (
         <div className="space-y-2">
           {events.map((ev) => (
             <Card key={ev.id} className="flex items-center gap-3 p-3.5">
               <div className="min-w-0 flex-1">
                 <p className="truncate font-bold">{ev.title}</p>
-                <p className="truncate text-sm text-muted-foreground">{boothName(ev.boothId)}</p>
+                <p className="truncate text-sm text-muted-foreground">
+                  {boothName(ev.boothId)}
+                </p>
                 <p className="mt-0.5 text-xs text-muted-foreground">
-                  {format(new Date(ev.startTime), "M.d HH:mm")} – {format(new Date(ev.endTime), "HH:mm")}
+                  {format(new Date(ev.startTime), "M.d HH:mm")} –{" "}
+                  {format(new Date(ev.endTime), "HH:mm")}
                 </p>
               </div>
               <AlertDialog>
@@ -123,7 +150,10 @@ export function EventManager({ events, booths }: { events: BoothEvent[]; booths:
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>취소</AlertDialogCancel>
-                    <AlertDialogAction variant="destructive" onClick={() => remove(ev)}>
+                    <AlertDialogAction
+                      variant="destructive"
+                      onClick={() => remove(ev)}
+                    >
                       삭제
                     </AlertDialogAction>
                   </AlertDialogFooter>
@@ -141,29 +171,63 @@ export function EventManager({ events, booths }: { events: BoothEvent[]; booths:
           </SheetHeader>
           <div className="space-y-3 px-5 py-3">
             <Field label="부스">
-              <Select value={draft.boothId} onValueChange={(v) => setDraft({ ...draft, boothId: v })}>
-                <SelectTrigger><SelectValue placeholder="선택" /></SelectTrigger>
+              <Select
+                value={draft.boothId}
+                onValueChange={(v) => setDraft({ ...draft, boothId: v })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="선택" />
+                </SelectTrigger>
                 <SelectContent>
-                  {booths.map((b) => <SelectItem key={b.id} value={b.id}>{b.name}</SelectItem>)}
+                  {booths.map((b) => (
+                    <SelectItem key={b.id} value={b.id}>
+                      {b.name}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </Field>
             <Field label="제목">
-              <Input value={draft.title ?? ""} onChange={(e) => setDraft({ ...draft, title: e.target.value })} />
+              <Input
+                value={draft.title ?? ""}
+                onChange={(e) => setDraft({ ...draft, title: e.target.value })}
+              />
             </Field>
             <Field label="설명">
-              <Textarea value={draft.description ?? ""} onChange={(e) => setDraft({ ...draft, description: e.target.value })} />
+              <Textarea
+                value={draft.description ?? ""}
+                onChange={(e) =>
+                  setDraft({ ...draft, description: e.target.value })
+                }
+              />
             </Field>
             <div className="grid grid-cols-2 gap-3">
               <Field label="시작">
-                <Input type="datetime-local" value={draft.startTime ?? ""} onChange={(e) => setDraft({ ...draft, startTime: e.target.value })} />
+                <Input
+                  type="datetime-local"
+                  value={draft.startTime ?? ""}
+                  onChange={(e) =>
+                    setDraft({ ...draft, startTime: e.target.value })
+                  }
+                />
               </Field>
               <Field label="종료">
-                <Input type="datetime-local" value={draft.endTime ?? ""} onChange={(e) => setDraft({ ...draft, endTime: e.target.value })} />
+                <Input
+                  type="datetime-local"
+                  value={draft.endTime ?? ""}
+                  onChange={(e) =>
+                    setDraft({ ...draft, endTime: e.target.value })
+                  }
+                />
               </Field>
             </div>
             <Field label="보상 정보 (선택)">
-              <Input value={draft.rewardInfo ?? ""} onChange={(e) => setDraft({ ...draft, rewardInfo: e.target.value })} />
+              <Input
+                value={draft.rewardInfo ?? ""}
+                onChange={(e) =>
+                  setDraft({ ...draft, rewardInfo: e.target.value })
+                }
+              />
             </Field>
           </div>
           <SheetFooter>
@@ -177,11 +241,22 @@ export function EventManager({ events, booths }: { events: BoothEvent[]; booths:
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
+  const id = useId();
   return (
     <div className="space-y-1.5">
-      <Label className="text-xs">{label}</Label>
-      {children}
+      <Label htmlFor={id} className="text-xs">
+        {label}
+      </Label>
+      {isValidElement(children)
+        ? cloneElement(children as React.ReactElement<{ id?: string }>, { id })
+        : children}
     </div>
   );
 }

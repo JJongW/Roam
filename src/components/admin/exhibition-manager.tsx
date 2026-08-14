@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { cloneElement, isValidElement, useId, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Plus, Pencil, Loader2, MapPin } from "lucide-react";
 import { format } from "date-fns";
@@ -184,10 +184,15 @@ function Field({
   label: string;
   children: React.ReactNode;
 }) {
+  const id = useId();
   return (
     <div className="space-y-1.5">
-      <Label className="text-xs">{label}</Label>
-      {children}
+      <Label htmlFor={id} className="text-xs">
+        {label}
+      </Label>
+      {isValidElement(children)
+        ? cloneElement(children as React.ReactElement<{ id?: string }>, { id })
+        : children}
     </div>
   );
 }
