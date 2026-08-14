@@ -178,6 +178,7 @@ export function ExhibitionMap({
     if (!exhibitionSlug) return;
     void fetch("/api/analytics/events", {
       method: "POST",
+      keepalive: true,
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
         type: "ui_click",

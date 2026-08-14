@@ -72,6 +72,11 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
 `onboarding/onboarding-inference.ts` · `onboarding/onboarding-types.ts` ·
 repo의 `logAiQuery`/`topQueryKeywords`(+ `ai_query_log` 테이블).
 
+`/api/ai/screenshot`은 다른 부류 — API 라우트 자체는 살아있고 완성돼 있으나(vision 인식 +
+결정론 매칭 분리 설계), **부르는 프론트 화면이 코드 어디에도 없다**. 저관여 진입 재설계
+(`feat/low-involvement-entry`, 머지 안 됨) 잔재 — 그 방향이 피드 기반 온보딩으로 대체되며
+백엔드만 남음. 되살리려면 진입점(예: 피드 상단 "스크린샷으로 찾기")부터 새로 만들어야 한다.
+
 ## 온보딩 = 가치 선택 (전시 홈 안에서)
 - 별도 온보딩 페이지는 **없다**. 전시 홈이 `components/onboarding/value-onboarding.tsx`를 띄우고,
   고른 가치를 `POST /api/me/values` → `recordSignal`(explicit) → 브레인 재증류 → 피드 즉시 반영.
