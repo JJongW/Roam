@@ -108,7 +108,7 @@ export default function DesignSystemPage() {
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           {COLORS.map((c) => (
             <div key={c.varName} className="space-y-1.5">
-              <div className="h-14 rounded-md border border-border bg-[repeating-conic-gradient(#00000014_0%_25%,transparent_0%_50%)] bg-[length:12px_12px]">
+              <div className="h-14 rounded-md border border-border bg-[repeating-conic-gradient(#00000014_0%_25%,transparent_0%_50%)] bg-[length:12px_12px] p-1">
                 <div
                   className="size-full rounded-md"
                   style={{ background: `var(${c.varName})` }}
