@@ -67,6 +67,9 @@ public/SIF_booth_enrich/
 # (재생성: node scripts/gen-house-archive-enrichment.mjs).
 public/house_archive_br/
 
+# 작업용 스크래치 — 가공 전 원본 스크린샷 등. 결과물만 커밋한다.
+tmp/
+
 # 도면·명단·포스터 원본(코엑스 홀 평면도, 참여자 명단, dwg, 4~6MB PNG/JPG) — 좌표
 # 추출·enrichment 입력용 작업 자료다. public/에 두면 그대로 배포되므로 커밋하지
 # 않고, 여기서 뽑은 결과(floorplan-*.json, *-cover.webp)만 커밋한다.
