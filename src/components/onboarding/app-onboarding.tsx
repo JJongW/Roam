@@ -14,7 +14,9 @@ import {
   APP_ONBOARDING_PHASE_KEY,
   canShowAppOnboarding,
   isAppOnboardingDismissed,
+  isBoothDeepLinkPath,
 } from "@/lib/onboarding/app-onboarding-gate";
+import { X } from "lucide-react";
 import { useT } from "@/lib/i18n/provider";
 import {
   APP_QUESTIONS,
@@ -135,6 +137,48 @@ export function AppOnboardingGate() {
   function skip() {
     if (user) setNeedsOnboarding(false);
     dismissLocally();
+  }
+
+  // 부스 상세 딥링크로 막 들어온 intro phase만 비차단 배너로 완화한다(B-1,
+  // 2026-08-15) — 콘텐츠는 바로 보여주되 앱 이름·한줄소개는 화면에 남겨
+  // "서비스 설명 없이 콘텐츠로 직행" 반려 사유를 다시 만들지 않는다. CTA를
+  // 누르면 그 다음부터는(guide/quiz/saving) 기존 풀스크린 그대로 이어간다 —
+  // 이미 통과가 검증된 경로라 안 건드린다.
+  if (phase === "intro" && isBoothDeepLinkPath(pathname)) {
+    return (
+      <div
+        role="region"
+        aria-label={t("onboardingQ.introTitle")}
+        // AppBar(sticky, h-14 + pt-safe)와 겹치지 않게 그 바로 아래에 고정한다 —
+        // 안 그러면 뒤로가기·타이틀을 가려 "콘텐츠는 바로 보인다"는 취지가 깨진다.
+        className="fixed inset-x-0 top-[calc(3.5rem+env(safe-area-inset-top))] z-40 flex items-center gap-3 border-b bg-background/95 px-4 py-2.5 backdrop-blur-sm"
+      >
+        <span className="flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-xl">
+          <RoamMotion src="/walk_think.webm" />
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-[13px] font-bold leading-tight">Roam</p>
+          <p className="truncate text-xs leading-tight text-muted-foreground">
+            {t("home.taglineShort")}
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => setPhase("guide")}
+          className="shrink-0 rounded-full bg-primary px-3 py-1.5 text-xs font-bold text-primary-foreground active:opacity-80"
+        >
+          {t("onboardingQ.bannerCta")}
+        </button>
+        <button
+          type="button"
+          onClick={skip}
+          aria-label={t("onboardingQ.bannerDismiss")}
+          className="shrink-0 p-1 text-muted-foreground active:opacity-70"
+        >
+          <X className="size-4" />
+        </button>
+      </div>
+    );
   }
 
   return (

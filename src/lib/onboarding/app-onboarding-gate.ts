@@ -39,3 +39,15 @@ export function isAppOnboardingDismissed(params: {
 export function canShowAppOnboarding(_pathname: string): boolean {
   return true;
 }
+
+/**
+ * 부스 상세로의 딥링크 진입인가 — 이 경로에서만 인트로를 풀스크린 대신
+ * 상단 배너(비차단)로 완화한다. 콘텐츠는 바로 보이되, 앱 이름·한줄소개는
+ * 계속 화면에 남아있어 "서비스 설명 없이 콘텐츠로 직행"이라는 반려 사유를
+ * 다시 건드리지 않는다(canShowAppOnboarding 문서 주석 참고). 홈 등 그 외
+ * 경로는 기존 풀스크린을 그대로 유지 — 이미 검증된 통과 케이스라 안 건드린다.
+ * (2026-08-15 판단, B-1)
+ */
+export function isBoothDeepLinkPath(pathname: string): boolean {
+  return /^\/booths\//.test(pathname);
+}

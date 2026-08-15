@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   canShowAppOnboarding,
   isAppOnboardingDismissed,
+  isBoothDeepLinkPath,
 } from "@/lib/onboarding/app-onboarding-gate";
 
 describe("isAppOnboardingDismissed", () => {
@@ -74,5 +75,17 @@ describe("canShowAppOnboarding", () => {
 
   it("부스 상세에서도 뜬다", () => {
     expect(canShowAppOnboarding("/booths/b_a1406")).toBe(true);
+  });
+});
+
+describe("isBoothDeepLinkPath", () => {
+  it("부스 상세 경로는 배너 완화 대상", () => {
+    expect(isBoothDeepLinkPath("/booths/b_a1406")).toBe(true);
+  });
+
+  it("홈·전시·지도는 대상 아님 — 기존 풀스크린 그대로", () => {
+    expect(isBoothDeepLinkPath("/")).toBe(false);
+    expect(isBoothDeepLinkPath("/exhibitions/sibf-2026")).toBe(false);
+    expect(isBoothDeepLinkPath("/exhibitions/sibf-2026/map")).toBe(false);
   });
 });

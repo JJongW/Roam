@@ -99,6 +99,8 @@ const ko = {
       "부스가 워낙 많아서, 네 취향을 알면 딱 맞는 곳만 골라줄 수 있어. 몇 개만 물어볼게 — 정답은 없어, 끌리는 걸 골라줘.",
     introCta: "좋아, 시작하자",
     introSkip: "먼저 둘러볼게",
+    bannerCta: "더 알아보기",
+    bannerDismiss: "닫기",
     guide1Title: "몇 가지만 물어볼게",
     guide1Desc: "굿즈가 좋아, 새로운 걸 보는 게 좋아? 30초면 끝나.",
     guide2Title: "그럼 이런 걸 골라올게",
@@ -805,6 +807,8 @@ const en: Dict = {
       "There are so many booths — knowing your taste lets me pick just the right ones. Just a few questions, no right answers.",
     introCta: "Okay, let's start",
     introSkip: "I'll look around first",
+    bannerCta: "Learn more",
+    bannerDismiss: "Dismiss",
     guide1Title: "Just a few questions",
     guide1Desc:
       "Into hands-on goods, or discovering new things? Takes 30 seconds.",
