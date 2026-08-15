@@ -6,7 +6,7 @@ import { isAdminAuthed } from "@/lib/api/http";
 import { listExhibitionsCached } from "@/lib/repositories/cached";
 import { resolveAdminExhibition, todayISO } from "@/lib/exhibition/current";
 import { ADMIN_EXHIBITION_COOKIE } from "@/lib/constants";
-import { hasAdminEmailGate, hasSupabase } from "@/lib/env";
+import { adminEmailGateActive } from "@/lib/env";
 
 export const metadata = { title: "Admin" };
 
@@ -18,7 +18,7 @@ export default async function AdminLayout({
   // 게이트: ADMIN_EMAILS(이메일 화이트리스트)가 있으면 Google 로그인, 없으면
   // ORGANIZER_CODE(조직자 코드) — isAdminAuthed와 같은 우선순위.
   if (!(await isAdminAuthed())) {
-    return <AdminUnlock useGoogle={hasAdminEmailGate && hasSupabase} />;
+    return <AdminUnlock useGoogle={adminEmailGateActive} />;
   }
 
   const exhibitions = await listExhibitionsCached();

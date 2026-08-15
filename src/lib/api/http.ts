@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { ZodError, type ZodType } from "zod";
 import { SESSION_COOKIE, USER_COOKIE, ADMIN_COOKIE } from "@/lib/constants";
-import { env, adminEmailAllowlist, hasAdminEmailGate } from "@/lib/env";
+import { env, adminEmailAllowlist, adminEmailGateActive } from "@/lib/env";
 import type { ApiError, ApiErrorCode } from "@/lib/types";
 
 const STATUS: Record<ApiErrorCode, number> = {
@@ -120,7 +120,7 @@ export async function clearUserCookie() {
  *  (로컬 mock 개발 전용 — 실배포에서 이 상태로 두면 /admin이 통째로 열린다). */
 export async function isAdminAuthed(): Promise<boolean> {
   const store = await cookies();
-  if (hasAdminEmailGate) {
+  if (adminEmailGateActive) {
     const email = store.get(ADMIN_COOKIE)?.value?.toLowerCase();
     return !!email && adminEmailAllowlist.includes(email);
   }

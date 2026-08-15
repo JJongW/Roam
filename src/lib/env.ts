@@ -98,4 +98,11 @@ export const adminEmailAllowlist: string[] = (env.ADMIN_EMAILS ?? "")
 /** true면 이메일 화이트리스트가 admin 게이트를 맡는다(ORGANIZER_CODE보다 우선). */
 export const hasAdminEmailGate = adminEmailAllowlist.length > 0;
 
+/** 이메일 게이트가 실제로 작동 가능한가 — 화이트리스트가 있어도 Supabase(Google
+ *  OAuth) 없인 로그인 자체가 불가능하니, 그럴 땐 조직자 코드로 폴백해야 한다.
+ *  isAdminAuthed()와 AdminUnlock의 useGoogle 판정이 반드시 이 값 하나를
+ *  같이 써야 한다 — 따로 계산하면(예전처럼) 둘이 어긋나 mock 개발에서
+ *  admin이 완전히 잠기는 버그가 재발한다(2026-08-15). */
+export const adminEmailGateActive = hasAdminEmailGate && hasSupabase;
+
 export const dataMode: "supabase" | "mock" = hasSupabase ? "supabase" : "mock";
