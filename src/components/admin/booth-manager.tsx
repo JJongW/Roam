@@ -1,6 +1,13 @@
 "use client";
 
-import { cloneElement, isValidElement, useId, useRef, useState } from "react";
+import {
+  cloneElement,
+  isValidElement,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useRouter } from "next/navigation";
 import NextImage from "next/image";
 import {
@@ -21,11 +28,16 @@ import {
   BOOTH_IMAGE_MAX_MB,
 } from "@/lib/admin/upload-booth-image";
 import { cn } from "@/lib/utils";
-import { Card } from "@/components/ui/card";
+import {
+  compareBoothsByCode,
+  matchesBoothQuery,
+} from "@/lib/admin/booth-filter";
+import { findBoothEnrichmentGaps } from "@/lib/admin/data-issues";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
 import {
   Sheet,
   SheetContent,
@@ -78,6 +90,26 @@ export function BoothManager({
   const [tagsText, setTagsText] = useState("");
   const [busy, setBusy] = useState(false);
   const catById = new Map(categories.map((c) => [c.id, c]));
+
+  const [query, setQuery] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState<string>("all");
+  const [onlyGaps, setOnlyGaps] = useState(false);
+
+  const gaps = useMemo(() => findBoothEnrichmentGaps(booths), [booths]);
+  const gapByBoothId = useMemo(
+    () => new Map(gaps.map((g) => [g.boothId, g])),
+    [gaps],
+  );
+
+  const filtered = useMemo(() => {
+    return booths
+      .filter((b) => matchesBoothQuery(b, query))
+      .filter(
+        (b) => categoryFilter === "all" || b.categoryId === categoryFilter,
+      )
+      .filter((b) => !onlyGaps || gapByBoothId.has(b.id))
+      .sort(compareBoothsByCode);
+  }, [booths, query, categoryFilter, onlyGaps, gapByBoothId]);
 
   function startCreate() {
     setEditing(null);
@@ -159,80 +191,158 @@ export function BoothManager({
   return (
     <>
       <div className="flex items-center justify-between">
-        <p className="text-sm text-muted-foreground">{booths.length}개 부스</p>
+        <p className="text-sm text-muted-foreground">
+          {filtered.length === booths.length
+            ? `${booths.length}개 부스`
+            : `${filtered.length} / ${booths.length}개 부스`}
+        </p>
         <Button size="sm" onClick={startCreate}>
           <Plus className="size-4" /> 새 부스
         </Button>
       </div>
+
+      {booths.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2">
+          <Input
+            placeholder="이름·회사·코드 검색"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="w-56"
+          />
+          <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+            <SelectTrigger className="w-40">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">전체 카테고리</SelectItem>
+              {categories.map((c) => (
+                <SelectItem key={c.id} value={c.id}>
+                  {c.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <label className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Switch checked={onlyGaps} onCheckedChange={setOnlyGaps} />
+            미비만 보기
+          </label>
+        </div>
+      )}
 
       {booths.length === 0 ? (
         <EmptyState
           title="부스가 없어요"
           description="첫 부스를 추가해 보세요."
         />
+      ) : filtered.length === 0 ? (
+        <EmptyState
+          title="조건에 맞는 부스가 없어요"
+          description="검색어나 필터를 조정해 보세요."
+        />
       ) : (
-        <div className="space-y-2">
-          {booths.map((b) => (
-            <Card key={b.id} className="flex items-center gap-3 p-3.5">
-              {b.images?.[0] ? (
-                <div className="relative size-11 shrink-0 overflow-hidden rounded-lg border border-border bg-secondary">
-                  <NextImage
-                    src={b.images[0]}
-                    alt=""
-                    fill
-                    sizes="44px"
-                    className="object-cover"
-                    unoptimized
-                  />
-                </div>
-              ) : (
-                <div className="size-11 shrink-0 rounded-lg border border-dashed border-border" />
-              )}
-              <div className="min-w-0 flex-1">
-                <p className="truncate font-bold">{b.name}</p>
-                <p className="truncate text-sm text-muted-foreground">
-                  {b.company}
-                </p>
-                <div className="mt-1">
-                  {catById.get(b.categoryId) && (
-                    <CategoryChip category={catById.get(b.categoryId)!} />
-                  )}
-                </div>
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                aria-label="수정"
-                onClick={() => startEdit(b)}
-              >
-                <Pencil className="size-4" />
-              </Button>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant="ghost" size="icon" aria-label="삭제">
-                    <Trash2 className="size-4 text-destructive" />
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>부스 삭제</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      {`'${b.name}' 부스를 삭제할까요?`}
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>취소</AlertDialogCancel>
-                    <AlertDialogAction
-                      variant="destructive"
-                      onClick={() => remove(b)}
-                    >
-                      삭제
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </Card>
-          ))}
+        <div className="overflow-x-auto rounded-lg border border-border">
+          <table className="w-full text-sm">
+            <thead className="bg-secondary/50 text-left text-xs text-muted-foreground">
+              <tr>
+                <th className="w-14 p-2" aria-hidden />
+                <th className="p-2 font-semibold">이름 / 회사</th>
+                <th className="p-2 font-semibold">카테고리</th>
+                <th className="p-2 font-semibold">코드</th>
+                <th className="p-2 font-semibold">완성도</th>
+                <th className="w-20 p-2" aria-hidden />
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map((b) => {
+                const gap = gapByBoothId.get(b.id);
+                return (
+                  <tr key={b.id} className="border-t border-border">
+                    <td className="p-2">
+                      {b.images?.[0] ? (
+                        <div className="relative size-9 shrink-0 overflow-hidden rounded-md border border-border bg-secondary">
+                          <NextImage
+                            src={b.images[0]}
+                            alt=""
+                            fill
+                            sizes="36px"
+                            className="object-cover"
+                            unoptimized
+                          />
+                        </div>
+                      ) : (
+                        <div className="size-9 shrink-0 rounded-md border border-dashed border-border" />
+                      )}
+                    </td>
+                    <td className="min-w-0 p-2">
+                      <p className="truncate font-bold">{b.name}</p>
+                      <p className="truncate text-xs text-muted-foreground">
+                        {b.company}
+                      </p>
+                    </td>
+                    <td className="p-2">
+                      {catById.get(b.categoryId) && (
+                        <CategoryChip category={catById.get(b.categoryId)!} />
+                      )}
+                    </td>
+                    <td className="p-2 text-muted-foreground">
+                      {b.code ?? "—"}
+                    </td>
+                    <td className="p-2">
+                      {gap ? (
+                        <span className="rounded-full bg-destructive/10 px-2 py-0.5 text-xs font-semibold text-destructive">
+                          미비 {gap.missingFields.length}
+                        </span>
+                      ) : (
+                        <span className="rounded-full bg-success/10 px-2 py-0.5 text-xs font-semibold text-success">
+                          완료
+                        </span>
+                      )}
+                    </td>
+                    <td className="p-2">
+                      <div className="flex items-center justify-end gap-0.5">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          aria-label="수정"
+                          onClick={() => startEdit(b)}
+                        >
+                          <Pencil className="size-4" />
+                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              aria-label="삭제"
+                            >
+                              <Trash2 className="size-4 text-destructive" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>부스 삭제</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                {`'${b.name}' 부스를 삭제할까요?`}
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>취소</AlertDialogCancel>
+                              <AlertDialogAction
+                                variant="destructive"
+                                onClick={() => remove(b)}
+                              >
+                                삭제
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       )}
 
