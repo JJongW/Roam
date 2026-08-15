@@ -94,6 +94,10 @@ export function BoothManager({
   const [query, setQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
   const [onlyGaps, setOnlyGaps] = useState(false);
+  // 지도 배치(좌표·인기도)는 콘텐츠 수정보다 훨씬 드물게 건드린다 — 수정 시엔
+  // 접어서 시작해 카피만 고치러 온 사람이 안 보고 지나가게 하고, 생성 시엔
+  // 배치가 필수라 펼쳐서 시작한다.
+  const [showPlacement, setShowPlacement] = useState(false);
 
   const gaps = useMemo(() => findBoothEnrichmentGaps(booths), [booths]);
   const gapByBoothId = useMemo(
@@ -122,12 +126,14 @@ export function BoothManager({
       images: [],
     });
     setTagsText("");
+    setShowPlacement(true);
     setOpen(true);
   }
   function startEdit(b: Booth) {
     setEditing(b);
     setDraft({ ...b });
     setTagsText((b.tags ?? []).join(", "));
+    setShowPlacement(false);
     setOpen(true);
   }
 
@@ -352,6 +358,7 @@ export function BoothManager({
             <SheetTitle>{editing ? "부스 수정" : "새 부스"}</SheetTitle>
           </SheetHeader>
           <div className="space-y-3 px-5 py-3">
+            <p className="text-xs font-bold text-muted-foreground">기본 정보</p>
             <Field label="이미지">
               <BoothImageGallery
                 images={draft.images ?? []}
@@ -417,6 +424,9 @@ export function BoothManager({
                 </Select>
               </Field>
             </div>
+            <p className="pt-2 text-xs font-bold text-muted-foreground">
+              콘텐츠
+            </p>
             <Field label="설명">
               <Textarea
                 value={draft.description ?? ""}
@@ -471,34 +481,51 @@ export function BoothManager({
                 />
               </Field>
             </div>
-            <div className="grid grid-cols-3 gap-3">
-              <Field label="X 좌표">
-                <Input
-                  type="number"
-                  value={draft.x ?? 0}
-                  onChange={(e) =>
-                    setDraft({ ...draft, x: Number(e.target.value) })
-                  }
-                />
-              </Field>
-              <Field label="Y 좌표">
-                <Input
-                  type="number"
-                  value={draft.y ?? 0}
-                  onChange={(e) =>
-                    setDraft({ ...draft, y: Number(e.target.value) })
-                  }
-                />
-              </Field>
-              <Field label="인기도">
-                <Input
-                  type="number"
-                  value={draft.popularity ?? 50}
-                  onChange={(e) =>
-                    setDraft({ ...draft, popularity: Number(e.target.value) })
-                  }
-                />
-              </Field>
+            <div className="border-t border-border pt-3">
+              <button
+                type="button"
+                onClick={() => setShowPlacement((v) => !v)}
+                className="flex w-full items-center justify-between text-xs font-bold text-muted-foreground"
+              >
+                지도 배치
+                <span className="text-muted-foreground">
+                  {showPlacement ? "접기" : "펼치기"}
+                </span>
+              </button>
+              {showPlacement && (
+                <div className="mt-3 grid grid-cols-3 gap-3">
+                  <Field label="X 좌표">
+                    <Input
+                      type="number"
+                      value={draft.x ?? 0}
+                      onChange={(e) =>
+                        setDraft({ ...draft, x: Number(e.target.value) })
+                      }
+                    />
+                  </Field>
+                  <Field label="Y 좌표">
+                    <Input
+                      type="number"
+                      value={draft.y ?? 0}
+                      onChange={(e) =>
+                        setDraft({ ...draft, y: Number(e.target.value) })
+                      }
+                    />
+                  </Field>
+                  <Field label="인기도">
+                    <Input
+                      type="number"
+                      value={draft.popularity ?? 50}
+                      onChange={(e) =>
+                        setDraft({
+                          ...draft,
+                          popularity: Number(e.target.value),
+                        })
+                      }
+                    />
+                  </Field>
+                </div>
+              )}
             </div>
           </div>
           <SheetFooter>
