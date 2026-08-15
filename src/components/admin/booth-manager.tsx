@@ -211,6 +211,7 @@ export function BoothManager({
         <div className="flex flex-wrap items-center gap-2">
           <Input
             placeholder="이름·회사·코드 검색"
+            aria-label="부스 검색"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="w-56"
@@ -229,7 +230,11 @@ export function BoothManager({
             </SelectContent>
           </Select>
           <label className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Switch checked={onlyGaps} onCheckedChange={setOnlyGaps} />
+            <Switch
+              checked={onlyGaps}
+              onCheckedChange={setOnlyGaps}
+              aria-label="미비만 보기"
+            />
             미비만 보기
           </label>
         </div>
@@ -309,7 +314,7 @@ export function BoothManager({
                         <Button
                           variant="ghost"
                           size="icon"
-                          aria-label="수정"
+                          aria-label={`${b.name} 수정`}
                           onClick={() => startEdit(b)}
                         >
                           <Pencil className="size-4" />
@@ -319,7 +324,7 @@ export function BoothManager({
                             <Button
                               variant="ghost"
                               size="icon"
-                              aria-label="삭제"
+                              aria-label={`${b.name} 삭제`}
                             >
                               <Trash2 className="size-4 text-destructive" />
                             </Button>

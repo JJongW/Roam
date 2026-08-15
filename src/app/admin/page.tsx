@@ -31,11 +31,13 @@ export default async function AdminOverviewPage() {
   let issueCount = 0;
   let dataIssueCount = 0;
   if (primary) {
-    const booths = await repo.listBoothsByExhibitionId(primary.id);
+    const [booths, events, issues] = await Promise.all([
+      repo.listBoothsByExhibitionId(primary.id),
+      repo.listEvents(primary.slug),
+      repo.listIssues({ limit: 1000, sinceDays: 30 }),
+    ]);
     boothCount = booths.length;
-    eventCount = (await repo.listEvents(primary.slug)).length;
-
-    const issues = await repo.listIssues({ sinceDays: 30 });
+    eventCount = events.length;
     issueCount = groupIssues(issues).length;
 
     const boothIds = booths.map((b) => b.id);
