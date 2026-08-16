@@ -62,6 +62,11 @@
   --booth-fill: #f2f4f6;
   --booth-active: #4f46e5;
 
+  /* 히트맵 블렌드 모드 — multiply는 밝은 배경 위에서만 색이 살고, 어두운 배경에서는
+     곱연산 결과가 검정에 수렴해 거의 안 보인다(다크모드 대비 실패, 2026-08-16 감사).
+     다크모드는 밝히는 방향인 screen으로 뒤집는다. */
+  --heatmap-blend: multiply;
+
   /* SEED 간격 스케일 — 참고용 원시 토큰. Tailwind 유틸 네임스페이스(@theme) 밖에 둬서
      기존 px-4/gap-3 등 어떤 유틸리티도 안 건드린다. 2·3단계부터 var()로 명시 사용. */
   --spacing-x0-5: 0.125rem; /* 2px */
@@ -156,6 +161,8 @@
   --judge-pass: #6b7280;
   --booth-fill: #1c2024;
   --booth-active: #818cf8;
+
+  --heatmap-blend: screen;
 }
 
 @theme inline {
