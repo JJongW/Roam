@@ -9,6 +9,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { EmptyState } from "@/components/common/states";
 
 export interface PopularDatum {
   boothId: string;
@@ -28,6 +29,17 @@ const COLORS = [
 
 export function PopularChart({ data }: { data: PopularDatum[] }) {
   const top = data.slice(0, 8).map((d) => ({ ...d, label: d.name }));
+  // 조회가 전무하면 Bar(dataKey="views")가 길이 0이라 막대 자체를 안 그린다 —
+  // 축 라벨만 남아 고장난 것처럼 보인다. 옆 "방문 흐름" 섹션과 같은 톤으로
+  // 정직하게 빈 상태를 알린다(가짜 인기도로 채우지 않는다는 기존 설계와 일치).
+  if (top.every((d) => d.views === 0)) {
+    return (
+      <EmptyState
+        title="아직 조회 데이터가 없어요"
+        description="방문자가 부스를 조회하면 순위가 집계돼요."
+      />
+    );
+  }
   return (
     <div className="h-72 w-full">
       <ResponsiveContainer width="100%" height="100%">
