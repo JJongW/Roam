@@ -722,8 +722,22 @@ export class SupabaseRepository implements Repository {
     boothId: string,
     input: BoothEnrichmentAuthorInput,
   ): Promise<void> {
-    // TODO: Task 2 - Supabase 구현
-    throw new Error("Not implemented");
+    const db = await this.db();
+    const row = {
+      booth_id: boothId,
+      summary: input.summary,
+      value_tags: input.valueTags,
+      recommendation_reasons: input.recommendationReasons,
+      things_to_do: input.thingsToDo,
+      timing: input.timing,
+      memory_hooks: input.memoryHooks,
+    };
+    const res = await db
+      .from("booth_enrichment")
+      .upsert(row, { onConflict: "booth_id" })
+      .select("booth_id")
+      .single();
+    wrote(res, "부스 저작 정보 저장");
   }
 
   async deleteBooth(id: string): Promise<boolean> {
