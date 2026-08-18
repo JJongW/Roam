@@ -6,7 +6,7 @@ import {
   parseBody,
   requireAdmin,
 } from "@/lib/api/http";
-import { boothInputSchema } from "@/lib/schemas";
+import { boothPatchInputSchema } from "@/lib/schemas";
 
 type Ctx = { params: Promise<{ id: string }> };
 
@@ -25,11 +25,13 @@ export async function PATCH(req: Request, { params }: Ctx) {
   const denied = await requireAdmin();
   if (denied) return denied;
   const { id } = await params;
-  const parsed = await parseBody(req, boothInputSchema.partial());
+  const parsed = await parseBody(req, boothPatchInputSchema);
   if (!parsed.ok) return parsed.res;
+  const { enrichment, ...boothFields } = parsed.data;
   const repo = await getRepository();
-  const updated = await repo.updateBooth(id, parsed.data);
+  const updated = await repo.updateBooth(id, boothFields);
   if (!updated) return notFound();
+  if (enrichment) await repo.upsertBoothEnrichment(id, enrichment);
   return ok({ booth: updated });
 }
 
