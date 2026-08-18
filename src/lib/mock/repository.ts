@@ -48,6 +48,7 @@ import type {
 import type {
   AnalyticsEventInput,
   BookmarkInput,
+  BoothEnrichmentAuthorInput,
   BoothInput,
   BoothNoteInput,
   CommunityPostInput,
@@ -261,6 +262,25 @@ export class MockRepository implements Repository {
     if (!b) return null;
     Object.assign(b, input);
     return b;
+  }
+
+  async upsertBoothEnrichment(
+    boothId: string,
+    input: BoothEnrichmentAuthorInput,
+  ): Promise<void> {
+    const b = store().booths.find((x) => x.id === boothId);
+    if (!b) return;
+    b.enrichment = {
+      ...(b.enrichment ?? { goodsKeywords: [], themeTags: [] }),
+      summary: input.summary || undefined,
+      valueTags: input.valueTags.length ? input.valueTags : undefined,
+      recommendationReasons: Object.keys(input.recommendationReasons).length
+        ? input.recommendationReasons
+        : undefined,
+      thingsToDo: input.thingsToDo.length ? input.thingsToDo : undefined,
+      timing: input.timing.length ? input.timing : undefined,
+      memoryHooks: input.memoryHooks.length ? input.memoryHooks : undefined,
+    };
   }
 
   async deleteBooth(id: string) {

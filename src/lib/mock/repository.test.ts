@@ -108,6 +108,52 @@ describe("MockRepository", () => {
     expect(await repo.getBooth("no_such_booth")).toBeNull();
   });
 
+  it("upsertBoothEnrichment: 저작 필드를 채우고 기존 goodsKeywords는 보존한다", async () => {
+    const before = await repo.getBooth("b_a1902");
+    const goodsBefore = before!.enrichment?.goodsKeywords ?? [];
+
+    await repo.upsertBoothEnrichment("b_a1902", {
+      summary: "요약 문장",
+      valueTags: [{ slug: "discovery", strength: 0.8 }],
+      recommendationReasons: { discovery: "낯선 걸 발견하기 좋아" },
+      thingsToDo: ["신간 훑기"],
+      timing: ["오후 2시 사인회"],
+      memoryHooks: ["파란 부스"],
+    });
+
+    const after = await repo.getBooth("b_a1902");
+    expect(after!.enrichment?.summary).toBe("요약 문장");
+    expect(after!.enrichment?.valueTags).toEqual([
+      { slug: "discovery", strength: 0.8 },
+    ]);
+    expect(after!.enrichment?.recommendationReasons).toEqual({
+      discovery: "낯선 걸 발견하기 좋아",
+    });
+    expect(after!.enrichment?.thingsToDo).toEqual(["신간 훑기"]);
+    expect(after!.enrichment?.timing).toEqual(["오후 2시 사인회"]);
+    expect(after!.enrichment?.memoryHooks).toEqual(["파란 부스"]);
+    // 저작 필드가 아닌 기존 필드는 안 건드림
+    expect(after!.enrichment?.goodsKeywords ?? []).toEqual(goodsBefore);
+  });
+
+  it("upsertBoothEnrichment: 빈 배열/빈 객체는 undefined로 저장한다(폼을 비우면 결측으로 되돌아감)", async () => {
+    await repo.upsertBoothEnrichment("b_a1902", {
+      summary: "",
+      valueTags: [],
+      recommendationReasons: {},
+      thingsToDo: [],
+      timing: [],
+      memoryHooks: [],
+    });
+    const after = await repo.getBooth("b_a1902");
+    expect(after!.enrichment?.summary).toBeUndefined();
+    expect(after!.enrichment?.valueTags).toBeUndefined();
+    expect(after!.enrichment?.recommendationReasons).toBeUndefined();
+    expect(after!.enrichment?.thingsToDo).toBeUndefined();
+    expect(after!.enrichment?.timing).toBeUndefined();
+    expect(after!.enrichment?.memoryHooks).toBeUndefined();
+  });
+
   it("upsertNote: judgedClass가 undefined면 기존 판정을 안 건드린다", async () => {
     await repo.upsertNote(
       "u_taste",

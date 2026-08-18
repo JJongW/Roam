@@ -158,6 +158,24 @@ export const boothInputSchema = z.object({
 });
 export type BoothInput = z.infer<typeof boothInputSchema>;
 
+export const boothEnrichmentAuthorInputSchema = z.object({
+  summary: z.string().max(300).default(""),
+  valueTags: z
+    .array(z.object({ slug: z.string(), strength: z.number().min(0).max(1) }))
+    .default([]),
+  recommendationReasons: z.record(z.string(), z.string()).default({}),
+  thingsToDo: z.array(z.string()).default([]),
+  timing: z.array(z.string()).default([]),
+  memoryHooks: z.array(z.string()).default([]),
+});
+export type BoothEnrichmentAuthorInput = z.infer<
+  typeof boothEnrichmentAuthorInputSchema
+>;
+
+export const boothPatchInputSchema = boothInputSchema.partial().extend({
+  enrichment: boothEnrichmentAuthorInputSchema.optional(),
+});
+
 export const eventInputSchema = z.object({
   boothId: z.string().min(1),
   title: z.string().min(1).max(140),

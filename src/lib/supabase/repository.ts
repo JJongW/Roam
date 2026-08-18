@@ -47,6 +47,7 @@ import type {
 import type {
   AnalyticsEventInput,
   BookmarkInput,
+  BoothEnrichmentAuthorInput,
   BoothInput,
   BoothNoteInput,
   CommunityPostInput,
@@ -715,6 +716,14 @@ export class SupabaseRepository implements Repository {
       .maybeSingle();
     const data = maybeWrote(res, "부스 수정");
     return data ? mapBooth(data as Row) : null;
+  }
+
+  async upsertBoothEnrichment(
+    boothId: string,
+    input: BoothEnrichmentAuthorInput,
+  ): Promise<void> {
+    // TODO: Task 2 - Supabase 구현
+    throw new Error("Not implemented");
   }
 
   async deleteBooth(id: string): Promise<boolean> {
