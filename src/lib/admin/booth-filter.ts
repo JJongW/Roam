@@ -27,3 +27,12 @@ export function matchesBoothQuery(booth: Booth, query: string): boolean {
     (booth.code?.toLowerCase().includes(q) ?? false)
   );
 }
+
+/** 줄바꿈 구분 텍스트어리아 입력 → trim된 비어있지 않은 줄 배열.
+ *  thingsToDo/timing/memoryHooks 저작 필드 입력에 쓴다. */
+export function splitLines(text: string): string[] {
+  return text
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+}

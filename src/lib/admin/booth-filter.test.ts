@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { compareBoothsByCode, matchesBoothQuery } from "./booth-filter";
+import {
+  compareBoothsByCode,
+  matchesBoothQuery,
+  splitLines,
+} from "./booth-filter";
 import type { Booth } from "@/lib/types";
 
 function makeBooth(overrides: Partial<Booth>): Booth {
@@ -68,5 +72,23 @@ describe("matchesBoothQuery", () => {
   it("코드가 없는 부스에서도 에러 없이 동작한다", () => {
     const noCode = makeBooth({ id: "y", code: undefined });
     expect(matchesBoothQuery(noCode, "아무거나")).toBe(false);
+  });
+});
+
+describe("splitLines", () => {
+  it("줄바꿈으로 나누고 각 줄을 trim한다", () => {
+    expect(splitLines("신간 훑기\n  제작 과정 물어보기  \n")).toEqual([
+      "신간 훑기",
+      "제작 과정 물어보기",
+    ]);
+  });
+
+  it("빈 줄은 뺀다", () => {
+    expect(splitLines("한 줄\n\n\n다른 줄")).toEqual(["한 줄", "다른 줄"]);
+  });
+
+  it("빈 문자열은 빈 배열", () => {
+    expect(splitLines("")).toEqual([]);
+    expect(splitLines("   \n  ")).toEqual([]);
   });
 });
