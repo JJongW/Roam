@@ -3,12 +3,13 @@
 import {
   cloneElement,
   isValidElement,
+  useEffect,
   useId,
   useMemo,
   useRef,
   useState,
 } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import NextImage from "next/image";
 import {
   Plus,
@@ -129,6 +130,27 @@ export function BoothManager({
       .filter((b) => !onlyGaps || gapByBoothId.has(b.id))
       .sort(compareBoothsByCode);
   }, [booths, query, categoryFilter, onlyGaps, gapByBoothId]);
+
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const enrichmentSectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const editId = searchParams.get("edit");
+    if (!editId) return;
+    const booth = booths.find((b) => b.id === editId);
+    if (!booth) return; // 다른 전시로 필터된 상태 등 — 조용히 무시
+    startEdit(booth);
+    router.replace(pathname, { scroll: false });
+    const t = setTimeout(() => {
+      enrichmentSectionRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 350); // Sheet 오픈 애니메이션이 끝난 뒤 스크롤
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   function startCreate() {
     setEditing(null);
@@ -549,7 +571,10 @@ export function BoothManager({
                 />
               </Field>
             </div>
-            <div className="border-t border-border pt-3">
+            <div
+              className="border-t border-border pt-3"
+              ref={enrichmentSectionRef}
+            >
               <p className="text-xs font-bold text-muted-foreground">
                 근거 카드 저작
               </p>

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { BoothGap, NoteInconsistency } from "@/lib/admin/data-issues";
 
 const REASON_LABEL: Record<NoteInconsistency["reason"], string> = {
@@ -22,14 +23,16 @@ export function DataIssueList({
         ) : (
           <ul className="space-y-1.5">
             {gaps.map((g) => (
-              <li
-                key={g.boothId}
-                className="rounded-xl border border-border bg-card p-3 text-sm"
-              >
-                <p className="font-medium">{g.boothName}</p>
-                <p className="mt-0.5 text-xs text-muted-foreground">
-                  {g.missingFields.join(", ")}
-                </p>
+              <li key={g.boothId}>
+                <Link
+                  href={`/admin/booths?edit=${g.boothId}`}
+                  className="block rounded-xl border border-border bg-card p-3 text-sm transition-colors hover:bg-secondary/50"
+                >
+                  <p className="font-medium">{g.boothName}</p>
+                  <p className="mt-0.5 text-xs text-muted-foreground">
+                    {g.missingFields.join(", ")}
+                  </p>
+                </Link>
               </li>
             ))}
           </ul>
