@@ -21,7 +21,10 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { api, ApiClientError } from "@/lib/api/client";
-import { boothInputSchema } from "@/lib/schemas";
+import {
+  boothInputSchema,
+  boothEnrichmentAuthorInputSchema,
+} from "@/lib/schemas";
 import {
   uploadBoothImage,
   BOOTH_IMAGE_MAX_COUNT,
@@ -31,8 +34,10 @@ import { cn } from "@/lib/utils";
 import {
   compareBoothsByCode,
   matchesBoothQuery,
+  splitLines,
 } from "@/lib/admin/booth-filter";
 import { findBoothEnrichmentGaps } from "@/lib/admin/data-issues";
+import { VALUE_TAGS } from "@/lib/values";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -53,6 +58,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { CategoryChip } from "@/components/booth/category-chip";
+import { Chip } from "@/components/ui/chip";
+import { Icon } from "@/components/common/icon";
 import { EmptyState } from "@/components/common/states";
 import {
   AlertDialog,
@@ -88,6 +95,14 @@ export function BoothManager({
   const [draft, setDraft] = useState<Draft>({});
   // 태그는 서버엔 배열이지만 편집은 쉼표 구분 텍스트가 더 빠르다 — 저장 시점에만 분해.
   const [tagsText, setTagsText] = useState("");
+  const [enrichmentDraft, setEnrichmentDraft] = useState({
+    summary: "",
+    valueTags: [] as string[], // 체크된 slug만
+    reasons: {} as Record<string, string>,
+    thingsToDoText: "",
+    timingText: "",
+    memoryHooksText: "",
+  });
   const [busy, setBusy] = useState(false);
   const catById = new Map(categories.map((c) => [c.id, c]));
 
@@ -126,6 +141,14 @@ export function BoothManager({
       images: [],
     });
     setTagsText("");
+    setEnrichmentDraft({
+      summary: "",
+      valueTags: [],
+      reasons: {},
+      thingsToDoText: "",
+      timingText: "",
+      memoryHooksText: "",
+    });
     setShowPlacement(true);
     setOpen(true);
   }
@@ -133,6 +156,16 @@ export function BoothManager({
     setEditing(b);
     setDraft({ ...b });
     setTagsText((b.tags ?? []).join(", "));
+    const e = b.enrichment;
+    const valueTags = (e?.valueTags ?? []).map((v) => v.slug);
+    setEnrichmentDraft({
+      summary: e?.summary ?? "",
+      valueTags,
+      reasons: e?.recommendationReasons ?? {},
+      thingsToDoText: (e?.thingsToDo ?? []).join("\n"),
+      timingText: (e?.timing ?? []).join("\n"),
+      memoryHooksText: (e?.memoryHooks ?? []).join("\n"),
+    });
     setShowPlacement(false);
     setOpen(true);
   }
@@ -170,10 +203,40 @@ export function BoothManager({
       toast.error(parsed.error.issues[0]?.message ?? "입력을 확인해 주세요");
       return;
     }
+    const enrichmentPayload = {
+      summary: enrichmentDraft.summary,
+      valueTags: enrichmentDraft.valueTags.map((slug) => ({
+        slug,
+        strength: 0.8,
+      })),
+      recommendationReasons: Object.fromEntries(
+        enrichmentDraft.valueTags
+          .map((slug) => [slug, enrichmentDraft.reasons[slug]?.trim() ?? ""])
+          .filter(([, v]) => v),
+      ),
+      thingsToDo: splitLines(enrichmentDraft.thingsToDoText),
+      timing: splitLines(enrichmentDraft.timingText),
+      memoryHooks: splitLines(enrichmentDraft.memoryHooksText),
+    };
+    const enrichmentParsed =
+      boothEnrichmentAuthorInputSchema.safeParse(enrichmentPayload);
+    if (!enrichmentParsed.success) {
+      toast.error(
+        enrichmentParsed.error.issues[0]?.message ??
+          "저작 정보를 확인해 주세요",
+      );
+      return;
+    }
     setBusy(true);
     try {
-      if (editing) await api.patch(`/api/booths/${editing.id}`, parsed.data);
-      else await api.post("/api/booths", parsed.data);
+      if (editing) {
+        await api.patch(`/api/booths/${editing.id}`, {
+          ...parsed.data,
+          enrichment: enrichmentParsed.data,
+        });
+      } else {
+        await api.post("/api/booths", parsed.data);
+      }
       toast.success(editing ? "부스를 수정했어요" : "부스를 추가했어요");
       setOpen(false);
       router.refresh();
@@ -487,6 +550,160 @@ export function BoothManager({
               </Field>
             </div>
             <div className="border-t border-border pt-3">
+              <p className="text-xs font-bold text-muted-foreground">
+                근거 카드 저작
+              </p>
+              <div className="mt-3 space-y-3">
+                <MissingBadgeField
+                  label="요약"
+                  fieldKey="summary"
+                  missingFields={
+                    editing
+                      ? (gapByBoothId.get(editing.id)?.missingFields ?? [])
+                      : []
+                  }
+                >
+                  <Textarea
+                    value={enrichmentDraft.summary}
+                    onChange={(e) =>
+                      setEnrichmentDraft({
+                        ...enrichmentDraft,
+                        summary: e.target.value,
+                      })
+                    }
+                  />
+                </MissingBadgeField>
+
+                <div className="space-y-1.5">
+                  <div className="flex items-center gap-1.5">
+                    <Label className="text-xs">가치 태그</Label>
+                    {editing &&
+                      gapByBoothId
+                        .get(editing.id)
+                        ?.missingFields.includes("valueTags") && (
+                        <span className="rounded-full bg-destructive/10 px-1.5 py-0.5 text-[10px] font-semibold text-destructive">
+                          비어있음
+                        </span>
+                      )}
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {VALUE_TAGS.map((v) => {
+                      const selected = enrichmentDraft.valueTags.includes(
+                        v.slug,
+                      );
+                      return (
+                        <Chip
+                          key={v.slug}
+                          variant={selected ? "tint" : "outline"}
+                          color={v.color}
+                          icon={<Icon name={v.icon} className="size-3.5" />}
+                          onClick={() =>
+                            setEnrichmentDraft({
+                              ...enrichmentDraft,
+                              valueTags: selected
+                                ? enrichmentDraft.valueTags.filter(
+                                    (s) => s !== v.slug,
+                                  )
+                                : [...enrichmentDraft.valueTags, v.slug],
+                            })
+                          }
+                          className="cursor-pointer"
+                        >
+                          {v.label}
+                        </Chip>
+                      );
+                    })}
+                  </div>
+                  {enrichmentDraft.valueTags.map((slug) => {
+                    const def = VALUE_TAGS.find((v) => v.slug === slug);
+                    return (
+                      <Field key={slug} label={`${def?.label ?? slug} 근거`}>
+                        <Input
+                          placeholder="예: 몰랐던 브랜드를 발견하기 좋아"
+                          value={enrichmentDraft.reasons[slug] ?? ""}
+                          onChange={(e) =>
+                            setEnrichmentDraft({
+                              ...enrichmentDraft,
+                              reasons: {
+                                ...enrichmentDraft.reasons,
+                                [slug]: e.target.value,
+                              },
+                            })
+                          }
+                        />
+                      </Field>
+                    );
+                  })}
+                </div>
+
+                <MissingBadgeField
+                  label="뭘 하면 좋은지 (줄마다 하나)"
+                  fieldKey="thingsToDo"
+                  missingFields={
+                    editing
+                      ? (gapByBoothId.get(editing.id)?.missingFields ?? [])
+                      : []
+                  }
+                >
+                  <Textarea
+                    placeholder={"신간 훑기\n제작 과정 물어보기"}
+                    rows={3}
+                    value={enrichmentDraft.thingsToDoText}
+                    onChange={(e) =>
+                      setEnrichmentDraft({
+                        ...enrichmentDraft,
+                        thingsToDoText: e.target.value,
+                      })
+                    }
+                  />
+                </MissingBadgeField>
+
+                <MissingBadgeField
+                  label="타이밍 (줄마다 하나)"
+                  fieldKey="timing"
+                  missingFields={
+                    editing
+                      ? (gapByBoothId.get(editing.id)?.missingFields ?? [])
+                      : []
+                  }
+                >
+                  <Textarea
+                    placeholder={"오후 2시 사인회\n한정 굿즈 오전 소진"}
+                    rows={3}
+                    value={enrichmentDraft.timingText}
+                    onChange={(e) =>
+                      setEnrichmentDraft({
+                        ...enrichmentDraft,
+                        timingText: e.target.value,
+                      })
+                    }
+                  />
+                </MissingBadgeField>
+
+                <MissingBadgeField
+                  label="기억 단서 (줄마다 하나)"
+                  fieldKey="memoryHooks"
+                  missingFields={
+                    editing
+                      ? (gapByBoothId.get(editing.id)?.missingFields ?? [])
+                      : []
+                  }
+                >
+                  <Textarea
+                    placeholder={"파란 부스\n입구 바로 왼쪽"}
+                    rows={3}
+                    value={enrichmentDraft.memoryHooksText}
+                    onChange={(e) =>
+                      setEnrichmentDraft({
+                        ...enrichmentDraft,
+                        memoryHooksText: e.target.value,
+                      })
+                    }
+                  />
+                </MissingBadgeField>
+              </div>
+            </div>
+            <div className="border-t border-border pt-3">
               <button
                 type="button"
                 onClick={() => setShowPlacement((v) => !v)}
@@ -560,6 +777,36 @@ function Field({
       {isValidElement(children)
         ? cloneElement(children as React.ReactElement<{ id?: string }>, { id })
         : children}
+    </div>
+  );
+}
+
+/** Field를 감싸되, 라벨 옆에 "비어있음" 배지를 붙인다 — fieldKey가 missingFields에
+ *  있을 때만. gapByBoothId(이미 계산돼 있는 결측 정보)를 그대로 재사용해 새 계산
+ *  없이 딥링크로 들어온 사람에게 뭘 채워야 하는지 보여준다. */
+function MissingBadgeField({
+  label,
+  fieldKey,
+  missingFields,
+  children,
+}: {
+  label: string;
+  fieldKey: string;
+  missingFields: string[];
+  children: React.ReactNode;
+}) {
+  const missing = missingFields.includes(fieldKey);
+  return (
+    <div className="space-y-1.5">
+      <div className="flex items-center gap-1.5">
+        <Label className="text-xs">{label}</Label>
+        {missing && (
+          <span className="rounded-full bg-destructive/10 px-1.5 py-0.5 text-[10px] font-semibold text-destructive">
+            비어있음
+          </span>
+        )}
+      </div>
+      {children}
     </div>
   );
 }
