@@ -845,11 +845,13 @@ export class SupabaseRepository implements Repository {
     return data ? mapWelcomeKit(data as Row) : null;
   }
 
+  // 웰컴키트 쓰기도 부스 쓰기 3종과 같은 카테고리(관리자 콘솔 전용) — anon 키로
+  // 쓰면 RLS에 막힌다. 위 createBooth 주석 참고.
   async upsertWelcomeKit(
     boothId: string,
     input: WelcomeKitInput,
   ): Promise<WelcomeKit> {
-    const db = await this.db();
+    const db = createServiceClient();
     const row = {
       booth_id: boothId,
       enabled: input.enabled,
