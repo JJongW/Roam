@@ -722,7 +722,7 @@ export class SupabaseRepository implements Repository {
     boothId: string,
     input: BoothEnrichmentAuthorInput,
   ): Promise<void> {
-    const db = await this.db();
+    const db = createServiceClient();
     const row = {
       booth_id: boothId,
       summary: input.summary,

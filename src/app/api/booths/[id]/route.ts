@@ -29,9 +29,9 @@ export async function PATCH(req: Request, { params }: Ctx) {
   if (!parsed.ok) return parsed.res;
   const { enrichment, ...boothFields } = parsed.data;
   const repo = await getRepository();
+  if (enrichment) await repo.upsertBoothEnrichment(id, enrichment);
   const updated = await repo.updateBooth(id, boothFields);
   if (!updated) return notFound();
-  if (enrichment) await repo.upsertBoothEnrichment(id, enrichment);
   return ok({ booth: updated });
 }
 

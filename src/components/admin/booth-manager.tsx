@@ -571,163 +571,190 @@ export function BoothManager({
                 />
               </Field>
             </div>
-            <div
-              className="border-t border-border pt-3"
-              ref={enrichmentSectionRef}
-            >
-              <p className="text-xs font-bold text-muted-foreground">
-                근거 카드 저작
-              </p>
-              <div className="mt-3 space-y-3">
-                <MissingBadgeField
-                  label="요약"
-                  fieldKey="summary"
-                  missingFields={
-                    editing
-                      ? (gapByBoothId.get(editing.id)?.missingFields ?? [])
-                      : []
-                  }
-                >
-                  <Textarea
-                    value={enrichmentDraft.summary}
-                    onChange={(e) =>
-                      setEnrichmentDraft({
-                        ...enrichmentDraft,
-                        summary: e.target.value,
-                      })
-                    }
-                  />
-                </MissingBadgeField>
-
-                <div className="space-y-1.5">
-                  <div className="flex items-center gap-1.5">
-                    <Label className="text-xs">가치 태그</Label>
-                    {editing &&
+            {editing && (
+              <div
+                className="border-t border-border pt-3"
+                ref={enrichmentSectionRef}
+              >
+                <p className="text-xs font-bold text-muted-foreground">
+                  근거 카드 저작
+                </p>
+                <div className="mt-3 space-y-3">
+                  <Field
+                    label="요약"
+                    badge={
+                      editing &&
                       gapByBoothId
                         .get(editing.id)
-                        ?.missingFields.includes("valueTags") && (
+                        ?.missingFields.includes("summary") && (
                         <span className="rounded-full bg-destructive/10 px-1.5 py-0.5 text-[10px] font-semibold text-destructive">
                           비어있음
                         </span>
-                      )}
-                  </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {VALUE_TAGS.map((v) => {
-                      const selected = enrichmentDraft.valueTags.includes(
-                        v.slug,
-                      );
+                      )
+                    }
+                  >
+                    <Textarea
+                      value={enrichmentDraft.summary}
+                      onChange={(e) =>
+                        setEnrichmentDraft({
+                          ...enrichmentDraft,
+                          summary: e.target.value,
+                        })
+                      }
+                    />
+                  </Field>
+
+                  <div className="space-y-1.5">
+                    <div className="flex items-center gap-1.5">
+                      <Label className="text-xs">가치 태그</Label>
+                      {editing &&
+                        gapByBoothId
+                          .get(editing.id)
+                          ?.missingFields.includes("valueTags") && (
+                          <span className="rounded-full bg-destructive/10 px-1.5 py-0.5 text-[10px] font-semibold text-destructive">
+                            비어있음
+                          </span>
+                        )}
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {VALUE_TAGS.map((v) => {
+                        const selected = enrichmentDraft.valueTags.includes(
+                          v.slug,
+                        );
+                        const toggle = () =>
+                          setEnrichmentDraft({
+                            ...enrichmentDraft,
+                            valueTags: selected
+                              ? enrichmentDraft.valueTags.filter(
+                                  (s) => s !== v.slug,
+                                )
+                              : [...enrichmentDraft.valueTags, v.slug],
+                          });
+                        return (
+                          <Chip
+                            key={v.slug}
+                            variant={selected ? "tint" : "outline"}
+                            color={v.color}
+                            icon={<Icon name={v.icon} className="size-3.5" />}
+                            onClick={toggle}
+                            role="button"
+                            tabIndex={0}
+                            aria-pressed={selected}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault();
+                                toggle();
+                              }
+                            }}
+                            className="cursor-pointer"
+                          >
+                            {v.label}
+                          </Chip>
+                        );
+                      })}
+                    </div>
+                    {enrichmentDraft.valueTags.map((slug) => {
+                      const def = VALUE_TAGS.find((v) => v.slug === slug);
                       return (
-                        <Chip
-                          key={v.slug}
-                          variant={selected ? "tint" : "outline"}
-                          color={v.color}
-                          icon={<Icon name={v.icon} className="size-3.5" />}
-                          onClick={() =>
-                            setEnrichmentDraft({
-                              ...enrichmentDraft,
-                              valueTags: selected
-                                ? enrichmentDraft.valueTags.filter(
-                                    (s) => s !== v.slug,
-                                  )
-                                : [...enrichmentDraft.valueTags, v.slug],
-                            })
-                          }
-                          className="cursor-pointer"
-                        >
-                          {v.label}
-                        </Chip>
+                        <Field key={slug} label={`${def?.label ?? slug} 근거`}>
+                          <Input
+                            placeholder="예: 몰랐던 브랜드를 발견하기 좋아"
+                            value={enrichmentDraft.reasons[slug] ?? ""}
+                            onChange={(e) =>
+                              setEnrichmentDraft({
+                                ...enrichmentDraft,
+                                reasons: {
+                                  ...enrichmentDraft.reasons,
+                                  [slug]: e.target.value,
+                                },
+                              })
+                            }
+                          />
+                        </Field>
                       );
                     })}
                   </div>
-                  {enrichmentDraft.valueTags.map((slug) => {
-                    const def = VALUE_TAGS.find((v) => v.slug === slug);
-                    return (
-                      <Field key={slug} label={`${def?.label ?? slug} 근거`}>
-                        <Input
-                          placeholder="예: 몰랐던 브랜드를 발견하기 좋아"
-                          value={enrichmentDraft.reasons[slug] ?? ""}
-                          onChange={(e) =>
-                            setEnrichmentDraft({
-                              ...enrichmentDraft,
-                              reasons: {
-                                ...enrichmentDraft.reasons,
-                                [slug]: e.target.value,
-                              },
-                            })
-                          }
-                        />
-                      </Field>
-                    );
-                  })}
+
+                  <Field
+                    label="뭘 하면 좋은지 (줄마다 하나)"
+                    badge={
+                      editing &&
+                      gapByBoothId
+                        .get(editing.id)
+                        ?.missingFields.includes("thingsToDo") && (
+                        <span className="rounded-full bg-destructive/10 px-1.5 py-0.5 text-[10px] font-semibold text-destructive">
+                          비어있음
+                        </span>
+                      )
+                    }
+                  >
+                    <Textarea
+                      placeholder={"신간 훑기\n제작 과정 물어보기"}
+                      rows={3}
+                      value={enrichmentDraft.thingsToDoText}
+                      onChange={(e) =>
+                        setEnrichmentDraft({
+                          ...enrichmentDraft,
+                          thingsToDoText: e.target.value,
+                        })
+                      }
+                    />
+                  </Field>
+
+                  <Field
+                    label="타이밍 (줄마다 하나)"
+                    badge={
+                      editing &&
+                      gapByBoothId
+                        .get(editing.id)
+                        ?.missingFields.includes("timing") && (
+                        <span className="rounded-full bg-destructive/10 px-1.5 py-0.5 text-[10px] font-semibold text-destructive">
+                          비어있음
+                        </span>
+                      )
+                    }
+                  >
+                    <Textarea
+                      placeholder={"오후 2시 사인회\n한정 굿즈 오전 소진"}
+                      rows={3}
+                      value={enrichmentDraft.timingText}
+                      onChange={(e) =>
+                        setEnrichmentDraft({
+                          ...enrichmentDraft,
+                          timingText: e.target.value,
+                        })
+                      }
+                    />
+                  </Field>
+
+                  <Field
+                    label="기억 단서 (줄마다 하나)"
+                    badge={
+                      editing &&
+                      gapByBoothId
+                        .get(editing.id)
+                        ?.missingFields.includes("memoryHooks") && (
+                        <span className="rounded-full bg-destructive/10 px-1.5 py-0.5 text-[10px] font-semibold text-destructive">
+                          비어있음
+                        </span>
+                      )
+                    }
+                  >
+                    <Textarea
+                      placeholder={"파란 부스\n입구 바로 왼쪽"}
+                      rows={3}
+                      value={enrichmentDraft.memoryHooksText}
+                      onChange={(e) =>
+                        setEnrichmentDraft({
+                          ...enrichmentDraft,
+                          memoryHooksText: e.target.value,
+                        })
+                      }
+                    />
+                  </Field>
                 </div>
-
-                <MissingBadgeField
-                  label="뭘 하면 좋은지 (줄마다 하나)"
-                  fieldKey="thingsToDo"
-                  missingFields={
-                    editing
-                      ? (gapByBoothId.get(editing.id)?.missingFields ?? [])
-                      : []
-                  }
-                >
-                  <Textarea
-                    placeholder={"신간 훑기\n제작 과정 물어보기"}
-                    rows={3}
-                    value={enrichmentDraft.thingsToDoText}
-                    onChange={(e) =>
-                      setEnrichmentDraft({
-                        ...enrichmentDraft,
-                        thingsToDoText: e.target.value,
-                      })
-                    }
-                  />
-                </MissingBadgeField>
-
-                <MissingBadgeField
-                  label="타이밍 (줄마다 하나)"
-                  fieldKey="timing"
-                  missingFields={
-                    editing
-                      ? (gapByBoothId.get(editing.id)?.missingFields ?? [])
-                      : []
-                  }
-                >
-                  <Textarea
-                    placeholder={"오후 2시 사인회\n한정 굿즈 오전 소진"}
-                    rows={3}
-                    value={enrichmentDraft.timingText}
-                    onChange={(e) =>
-                      setEnrichmentDraft({
-                        ...enrichmentDraft,
-                        timingText: e.target.value,
-                      })
-                    }
-                  />
-                </MissingBadgeField>
-
-                <MissingBadgeField
-                  label="기억 단서 (줄마다 하나)"
-                  fieldKey="memoryHooks"
-                  missingFields={
-                    editing
-                      ? (gapByBoothId.get(editing.id)?.missingFields ?? [])
-                      : []
-                  }
-                >
-                  <Textarea
-                    placeholder={"파란 부스\n입구 바로 왼쪽"}
-                    rows={3}
-                    value={enrichmentDraft.memoryHooksText}
-                    onChange={(e) =>
-                      setEnrichmentDraft({
-                        ...enrichmentDraft,
-                        memoryHooksText: e.target.value,
-                      })
-                    }
-                  />
-                </MissingBadgeField>
               </div>
-            </div>
+            )}
             <div className="border-t border-border pt-3">
               <button
                 type="button"
@@ -788,50 +815,25 @@ export function BoothManager({
 
 function Field({
   label,
+  badge,
   children,
 }: {
   label: string;
+  badge?: React.ReactNode;
   children: React.ReactNode;
 }) {
   const id = useId();
   return (
     <div className="space-y-1.5">
-      <Label htmlFor={id} className="text-xs">
-        {label}
-      </Label>
+      <div className="flex items-center gap-1.5">
+        <Label htmlFor={id} className="text-xs">
+          {label}
+        </Label>
+        {badge}
+      </div>
       {isValidElement(children)
         ? cloneElement(children as React.ReactElement<{ id?: string }>, { id })
         : children}
-    </div>
-  );
-}
-
-/** Field를 감싸되, 라벨 옆에 "비어있음" 배지를 붙인다 — fieldKey가 missingFields에
- *  있을 때만. gapByBoothId(이미 계산돼 있는 결측 정보)를 그대로 재사용해 새 계산
- *  없이 딥링크로 들어온 사람에게 뭘 채워야 하는지 보여준다. */
-function MissingBadgeField({
-  label,
-  fieldKey,
-  missingFields,
-  children,
-}: {
-  label: string;
-  fieldKey: string;
-  missingFields: string[];
-  children: React.ReactNode;
-}) {
-  const missing = missingFields.includes(fieldKey);
-  return (
-    <div className="space-y-1.5">
-      <div className="flex items-center gap-1.5">
-        <Label className="text-xs">{label}</Label>
-        {missing && (
-          <span className="rounded-full bg-destructive/10 px-1.5 py-0.5 text-[10px] font-semibold text-destructive">
-            비어있음
-          </span>
-        )}
-      </div>
-      {children}
     </div>
   );
 }
