@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useVisitStore, pushNote } from "@/lib/stores/visit";
 import type { InterestValue, VerdictValue } from "@/lib/stores/visit";
 import { useAuthStore, promptLoginOncePerExhibition } from "@/lib/stores/auth";
@@ -51,7 +51,14 @@ export function JudgmentBar({
 }) {
   const t = useT();
   const user = useAuthStore((s) => s.user);
-  const record = useVisitStore((s) => s.records[boothId]);
+  const storedRecord = useVisitStore((s) => s.records[boothId]);
+  // visitStore는 localStorage에서 동기 rehydrate된다 — 서버(항상 빈 records)와
+  // 클라이언트 첫 렌더(이미 채워진 records)가 갈려 record 의존 텍스트/화면
+  // 분기가 hydration mismatch(React #418)를 낸다. mount 전엔 서버와 똑같이
+  // undefined로 취급해 첫 페인트를 맞추고, mount 직후 실값으로 갱신한다.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const record = mounted ? storedRecord : undefined;
   const setInterest = useVisitStore((s) => s.setInterest);
   const setVerdict = useVisitStore((s) => s.setVerdict);
   const say = useCompanionStore((s) => s.say);
