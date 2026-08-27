@@ -1,8 +1,14 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { createHmac, timingSafeEqual } from "node:crypto";
 import { ZodError, type ZodType } from "zod";
 import { SESSION_COOKIE, USER_COOKIE, ADMIN_COOKIE } from "@/lib/constants";
-import { env, adminEmailAllowlist, adminEmailGateActive } from "@/lib/env";
+import {
+  env,
+  adminEmailAllowlist,
+  adminEmailGateActive,
+  sessionSecret,
+} from "@/lib/env";
 import type { ApiError, ApiErrorCode } from "@/lib/types";
 
 const STATUS: Record<ApiErrorCode, number> = {
@@ -92,16 +98,42 @@ export async function setSessionCookie(id: string) {
   });
 }
 
+/** id.signature — signature = HMAC-SHA256(id) so the cookie value can't be
+ *  forged by pasting in someone else's user id (raw-id cookies let anyone who
+ *  learns/guesses a user id become that user; see 2026-08-27 audit). */
+function signUserId(id: string): string {
+  const signature = createHmac("sha256", sessionSecret)
+    .update(id)
+    .digest("base64url");
+  return `${id}.${signature}`;
+}
+
+function verifySignedUserId(signed: string): string | null {
+  const dot = signed.lastIndexOf(".");
+  if (dot === -1) return null; // pre-migration unsigned cookie — treat as logged out
+  const id = signed.slice(0, dot);
+  const signature = signed.slice(dot + 1);
+  const expected = createHmac("sha256", sessionSecret)
+    .update(id)
+    .digest("base64url");
+  const a = Buffer.from(signature);
+  const b = Buffer.from(expected);
+  if (a.length !== b.length || !timingSafeEqual(a, b)) return null;
+  return id;
+}
+
 /** Read the signed-in user id from the cookie (or null). */
 export async function getUserId(): Promise<string | null> {
   const store = await cookies();
-  return store.get(USER_COOKIE)?.value ?? null;
+  const raw = store.get(USER_COOKIE)?.value;
+  return raw ? verifySignedUserId(raw) : null;
 }
 
 export async function setUserCookie(id: string) {
   const store = await cookies();
-  store.set(USER_COOKIE, id, {
+  store.set(USER_COOKIE, signUserId(id), {
     httpOnly: true,
+    secure: true,
     sameSite: "lax",
     path: "/",
     maxAge: 60 * 60 * 24 * 365,

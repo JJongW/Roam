@@ -17,6 +17,10 @@ const schema = z.object({
   FCM_SERVER_KEY: z.string().optional(),
   GEMINI_API_KEY: z.string().min(1).optional(),
   ORGANIZER_CODE: z.string().min(1).optional(),
+  /** roam_user 쿠키 서명용 비밀키. 없으면 로컬 mock 개발용 고정값으로 폴백한다 —
+   *  프로덕션엔 반드시 설정해야 쿠키 위조(임의 user id를 쿠키에 넣어 계정 탈취)가
+   *  막힌다. */
+  SESSION_SECRET: z.string().min(1).optional(),
   /** 쉼표로 구분한 admin 접근 허용 이메일(Google 로그인 검증 대상). 설정되면
    *  ORGANIZER_CODE보다 우선한다 — 신원 기반 게이트가 공유 코드보다 강하다. */
   ADMIN_EMAILS: z.string().min(1).optional(),
@@ -45,6 +49,7 @@ const parsed = schema.safeParse({
   FCM_SERVER_KEY: e(process.env.FCM_SERVER_KEY),
   GEMINI_API_KEY: e(process.env.GEMINI_API_KEY),
   ORGANIZER_CODE: e(process.env.ORGANIZER_CODE),
+  SESSION_SECRET: e(process.env.SESSION_SECRET),
   ADMIN_EMAILS: e(process.env.ADMIN_EMAILS),
   CLOUDINARY_CLOUD_NAME: e(process.env.CLOUDINARY_CLOUD_NAME),
   CLOUDINARY_API_KEY: e(process.env.CLOUDINARY_API_KEY),
@@ -88,6 +93,16 @@ export const hasCloudinary = Boolean(
 
 /** When set, /admin requires entering this code (organizer gate). Off if unset. */
 export const hasOrganizerGate = Boolean(env.ORGANIZER_CODE);
+
+/** roam_user 쿠키 서명 비밀키. 미설정 시 로컬 mock 개발 전용 고정값 — 프로덕션에
+ *  이 상태로 배포하면 쿠키 서명이 공개된 값으로 되어 위조 방지 효과가 없다. */
+export const sessionSecret =
+  env.SESSION_SECRET ?? "roam-dev-only-insecure-secret";
+if (!env.SESSION_SECRET && process.env.NODE_ENV === "production") {
+  console.error(
+    "[env] SESSION_SECRET 미설정 — roam_user 쿠키가 위조 가능한 상태로 배포되었습니다.",
+  );
+}
 
 /** 쉼표 구분 문자열 → 정규화된(소문자·trim) 이메일 배열. 빈 값은 걸러낸다. */
 export const adminEmailAllowlist: string[] = (env.ADMIN_EMAILS ?? "")
