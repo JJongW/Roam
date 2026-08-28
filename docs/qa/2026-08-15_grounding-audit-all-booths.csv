@@ -1,0 +1,1275 @@
+exhibition,code,name,kind,tier_worst,tier_best,confidence,has_summary,has_roam,n_reasons,n_todo,n_valuetags,n_goods
+sibf-2026,A101,"고스트북스",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,1,0,2
+sibf-2026,A102,"별빛들",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A103,"도서출판부카",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A104,"봄봄출판사",exhibitor,T1 저작해석,T1 저작해석,high,1,1,3,3,3,0
+sibf-2026,A105,"단추 출판사",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sibf-2026,A106,"밝은세상",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,2,0,4
+sibf-2026,A107,"애플트리테일즈",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A108,"도서출판 달리 외 1",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A109,"핀드",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A110,"소동출판사",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A111,"시사북스(빈페이지)",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A112,"한국출판마케팅연구소",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A113,"일러스트레이트 월",facility,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A201,"안그라픽스",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,0
+sibf-2026,A202,"프로파간다 외 2",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sibf-2026,A203,"인북",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A204,"안녕로빈",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A205,"킨더랜드",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A206,"(주)학토재",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A207,"노란상상",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A208,"(주)도서출판보리",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A209,"페이퍼스토리 외 2",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,2,0,4
+sibf-2026,A210,"거북이북스",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,0
+sibf-2026,A301,"워크룸 프레스",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sibf-2026,A302,"산지니",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A303,"까치글방",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,0
+sibf-2026,A304,"글항아리",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,1,0,1
+sibf-2026,A305,"청아출판사 / 봄마중",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sibf-2026,A306,"도서출판 풀빛",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A307,"도서출판 푸른숲",exhibitor,T1 저작해석,T1 저작해석,high,1,1,2,3,2,5
+sibf-2026,A308,"군자출판사 외 1",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A401,"보림출판사",exhibitor,T1 저작해석,T1 저작해석,high,1,1,3,3,3,3
+sibf-2026,A402,"네이버웹툰",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,3,0,4
+sibf-2026,A403,"(주)위즈덤하우스",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,1,0,4
+sibf-2026,A501,"솔테라이브러리 외 1",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sibf-2026,A502,"(주)김영사",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,1,0,5
+sibf-2026,A503,"(주)문학수첩",exhibitor,T1 저작해석,T1 저작해석,high,1,1,3,3,3,7
+sibf-2026,A601,"프랑스 출판네트워크 (구 : 프랑스국제출판사무국) 외 1",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A602,"(주)쌤앤파커스",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sibf-2026,A701,"봄알람",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A702,"타이피스트",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A703,"사단법인 한국대학출판협회",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A704,"도서출판 북극곰",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A705,"국민서관",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sibf-2026,A706,"주식회사 성안당",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A707,"책읽는고양이",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A708,"소미미디어",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sibf-2026,A709,"키큰도토리 외 1",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A801,"해피북미디어 외 6",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A802,"주식회사 소원나무",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A803,"뜨인돌출판",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,0
+sibf-2026,A804,"밝은미래",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A805,"도서출판 동녘",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A806,"클레이하우스 주식회사",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sibf-2026,A807,"프리즘오브 외 1",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A808,"진선출판사",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A901,"윌북",exhibitor,T1 저작해석,T1 저작해석,high,1,1,3,3,3,7
+sibf-2026,A902,"더중앙플러스",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sibf-2026,A903,"동아시아·허블",exhibitor,T1 저작해석,T1 저작해석,high,1,1,3,3,3,1
+sibf-2026,A1001,"평산책방 외 1",exhibitor,T1 저작해석,T1 저작해석,high,1,1,3,3,3,3
+sibf-2026,A1002,"재단법인 아모레퍼시픽재단",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1101,"황금가지 외 1",exhibitor,T1 저작해석,T1 저작해석,high,1,1,2,3,3,10
+sibf-2026,A1102,"윌라스토리 외 2",exhibitor,T1 저작해석,T1 저작해석,high,1,1,3,3,3,4
+sibf-2026,A1103,"신한은행 외 1",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1201,"THE GRAYHAWK AGENCY 외 11",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1202,"라이터 소울 태국 외 15",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1203,"EC Publishing LLC",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1204,"Studio of Books LLC",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1205,"퀴퍼 프린츠",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1206,"Recrea Libros 외 3",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1207,"연변대학출판사 외 2",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1301,"엣눈북스",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,0
+sibf-2026,A1302,"서사원 주식회사",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,2,0,2
+sibf-2026,A1303,"프란츠",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1304,"귤프레스",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sibf-2026,A1305,"고요한소리",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1306,"쿵프레스",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sibf-2026,A1307,"한림출판사",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1308,"비플랫폼 외 1",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1309,"(주)불광미디어",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1310,"라의눈주식회사",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1311,"유어마인드",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,1,0,0
+sibf-2026,A1401,"이룸아이",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1402,"펜타클",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1403,"마음모자",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1404,"스토리보울",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1405,"지우 외 5",exhibitor,T1 저작해석,T1 저작해석,high,1,1,3,3,3,0
+sibf-2026,A1406,"템북 외 7",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sibf-2026,A1407,"아작",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1408,"(주)이퍼블릭 코리아",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1409,"도서출판 키다리",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1410,"혜화1117 외 4",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,0
+sibf-2026,A1501,"시공사",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,2,0,4
+sibf-2026,A1502,"전국동네책방네트워크",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,0
+sibf-2026,A1503,"허스트중앙유한회사",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1601,"(주)열린책들",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sibf-2026,A1602,"(주)오팬하우스",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sibf-2026,A1701,"교보생명 서재 외 1",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,2,0,15
+sibf-2026,A1702,"주식회사 케이티밀리의서재",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,2,0,6
+sibf-2026,A1703,"예스24",exhibitor,T1 저작해석,T1 저작해석,high,1,1,3,3,3,5
+sibf-2026,A1801,"University of Toronto Press 외 12",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1802,"펭귄랜덤하우스 UK",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sibf-2026,A1803,"Ullstein Buchverlage GmbH 외 12",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1804,"YUEWEN|WebNovel",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1805,"Beijiao Children Joy Education & Technology (Beijing) Co., Ltd.",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1806,"Wells Hamilton Literary Consultants",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1807,"연사 라운지1",facility,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1901,"책만남홀2",facility,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1902,"아트숍",facility,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1903,"연사 라운지2",facility,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1904,"갈라파고스",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,0
+sibf-2026,A1905,"도서출판 들녘",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sibf-2026,A1906,"원더박스",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A1907,"(주)크레용하우스",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A2001,"생명의말씀사",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A2002,"성서유니온",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A2003,"도서출판 다독다독 외 1",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,0
+sibf-2026,A2004,"안온북스",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A2005,"청미출판사",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A2006,"캠퍼스북",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A2007,"잉글리시에그",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A2008,"우리나비",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A2009,"호손재 외 16",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sibf-2026,A2010,"주식회사 난다",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A2101,"사회평론",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,0
+sibf-2026,A2102,"오이뮤",exhibitor,T1 저작해석,T1 저작해석,high,1,1,3,3,3,4
+sibf-2026,A2103,"(주)휴머니스트 출판그룹 외 1",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,3,0,5
+sibf-2026,A2201,"길벗어린이",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,0
+sibf-2026,A2202,"문학과지성사",exhibitor,T1 저작해석,T1 저작해석,high,1,1,3,3,3,3
+sibf-2026,A2203,"소전문화재단",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sibf-2026,A2301,"서울특별시교육청",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A2302,"사계절출판사 외 1",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,2,0,5
+sibf-2026,A2303,"주식회사 오뚜기 외 1",exhibitor,T1 저작해석,T1 저작해석,high,1,1,2,3,2,3
+sibf-2026,A2401,"Psygarden Publishing Company 외 7",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,A2402,"책만남홀1",facility,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B101,"어크로스",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B102,"오리집 외 1",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B103,"(주)책읽는곰",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B104,"토끼섬 외 1",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sibf-2026,B105,"송송책방",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B106,"꿈공장플러스",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,0
+sibf-2026,B107,"아카넷",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,0
+sibf-2026,B108,"디자인이음",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,0
+sibf-2026,B109,"코쿤북스 외 1",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sibf-2026,B201,"유유출판사",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B202,"바람북스",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,0
+sibf-2026,B203,"스위밍꿀 외 1",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sibf-2026,B204,"주식회사 도서출판점자",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B205,"후즈갓마이테일",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sibf-2026,B206,"흰토끼프레스(바캉스프로젝트)",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B207,"SIBF x 글<페이지 사이의 우체국>",facility,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B301,"도서출판 노란돼지",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B302,"늘보의 섬",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B303,"(주)창비교육",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B304,"서해문집",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sibf-2026,B305,"한림사",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B306,"나비클럽",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sibf-2026,B307,"국립생태원",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B308,"퍼머넌트북스",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B309,"주식회사 한겨레엔",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,1,0,2
+sibf-2026,B400,"책마을",facility,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B501,"한솔제지(주)",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B502,"윤에디션",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B503,"초록비책공방 외 1",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,0
+sibf-2026,B504,"혼혼 외 32",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sibf-2026,B505,"쪽프레스",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sibf-2026,B506,"도서출판도반",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B601,"안전가옥",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,2,0,3
+sibf-2026,B602,"문학동네",exhibitor,T1 저작해석,T1 저작해석,high,1,1,3,3,3,5
+sibf-2026,B603,"창비",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,2,0,2
+sibf-2026,B604,"아침달",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,2,0,2
+sibf-2026,B605,"다람출판사",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B606,"주식회사 휴먼밸류 / 더클래스",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B607,"북챗",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B608,"썸북스",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B609,"국가보훈부",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B701,"커피 리브레",facility,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B702,"BBK x SIBF 책 라운지 with 일룸",facility,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B703,"주제전시",facility,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B704,"책마당",facility,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B705,"프레스콜",facility,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B706,"연사 라운지3",facility,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B707,"연사 라운지",facility,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B401,"누땡스",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B402,"텍스트 프레스",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B403,"프레스탁!",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B404,"225호",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B405,"라마북스",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,1,0,4
+sibf-2026,B406,"비바 헤리티지 시리즈",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B407,"라우더북스",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,2,0,1
+sibf-2026,B408,"Fidèle éditions",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B409,"Owl & Dog Playbooks",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B410,"프레스룸",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sibf-2026,B411,"히스테리안",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,1,0,1
+sibf-2026,B412,"행복한 재수가 있는",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B413,"두낫프레스?프레스!",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,2,0,0
+sibf-2026,B414,"자인운트",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B415,"유연성클럽",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sibf-2026,B416,"메이커메이커",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B417,"0.1",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B418,"검정프레스",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,2,0,2
+sibf-2026,B419,"써니라운드",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B420,"픽션들",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B421,"남섬책방",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B422,"시네필 책방 코프키노",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B423,"요호이",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B424,"스튜디오604",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,2,0,5
+sibf-2026,B425,"돛과닻",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,2,0,2
+sibf-2026,B426,"스크립토",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B427,"타바코북스",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B428,"머쉬룸",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sibf-2026,B429,"소환사",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B430,"마그네틱 파이브",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B431,"하호하호",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sibf-2026,B432,"1도씨와 온도들",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B433,"후루룩",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,1,0,1
+sibf-2026,B434,"유일무이(누구나)",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B435,"코스모 프레스",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B436,"아뜰리에아쉬",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B437,"라우트 프레스",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,2,0,0
+sibf-2026,B438,"오큐파이 더 시티",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B439,"길고도 짧은 이야기",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B440,"무주산골영화제",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sibf-2026,B441,"미스테리어스플랜트",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B442,"소화당",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B443,"김주영",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sibf-2026,B444,"삐약삐약북스",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B445,"카인드오브썸머",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B446,"마블로켓",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B447,"블루토마토즈",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B448,"노말에이",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B449,"연필과머그",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,2,0,4
+sibf-2026,B450,"까막북",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sibf-2026,B451,"에트르",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,1,0,3
+sibf-2026,B452,"책덕",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B453,"디 오브젝트",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B454,"TEMPORARY BOOKSHOP | C시지G",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B455,"파도",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B456,"선과 결",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B457,"탱크 프레스",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B458,"바이블랭크",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B459,"te editions",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B460,"One Stroke",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B461,"마테리알",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B462,"소시민워크",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B463,"그래픽하",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B464,"인공위성+82",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B465,"수목요일(모눈지)",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B466,"하이오 웍스",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B467,"미씽아카이브",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B468,"Image 3",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B469,"Homeward",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B470,"Rusuban Studio",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B471,"타이완 독립출판협회",exhibitor,T1 저작해석,T1 저작해석,high,1,1,3,3,3,2
+sibf-2026,B472,"독립출판 엑스포",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sibf-2026,B473,"싱가포르 아트북페어",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,A01,"우주먼지",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,A03,"그냥곰 & 무생물제작소",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,A04,"프로젝트 칠",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,13
+sif-2026,A05,"아리스마켓",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,A06,"하트쉽 스튜디오",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,A07,"프로우",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,A08,"단홍",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,A09,"디어",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,A10,"푸키큐티",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sif-2026,A11,"그렁그렁단",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,A12,"더트프로젝트",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,A13,"서티",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,10
+sif-2026,A14,"테트라포트 멜론티",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,A15,"썸띵비러브드",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,A16,"사이프",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,A17,"안녕난요정",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,A18,"무뇽이",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,A19,"365 탄생화/너의 생일은?",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,A20,"지옥상점",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,A21,"코코넨네",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,A22,"다정한 유리",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,A23,"벨로이루",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,A24,"지니요니",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,B01,"핑루",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,22
+sif-2026,B03,"쪼꼬미캣",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,B04,"러브미모어",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,B05,"마시랜드",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,B06,"위니빌리지",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,B07,"따리몽땅",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,B08,"아찔",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,B09,"수키도키",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sif-2026,B11,"덩어리들",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,B12,"모이또이",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,B14,"지윰",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,B15,"황다람",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,B16,"쪼꼬지 패밀리",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,B17,"딸기의 마음",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,B18,"달콤한 일러스트",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,B19,"스튜디오 묘니",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,B20,"스튜디오 단츄",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,B21,"유진 서머콕",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,B22,"데코보코",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,B23,"쿠킹쿠키",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,B24,"백구십칠",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,B25,"마고즈",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,B26,"초롱이와 하나님",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,B27,"스튜디오 퐁듀",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,10
+sif-2026,B28,"아워루키",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,B29,"인턴집사 박두기",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,B30,"룸룸",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,B31,"김윤수",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,B32,"모리",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,B33,"우주가요",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,B34,"무스(크렘봉봉)",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,B35,"루아와코이누",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,B36,"치리클럽",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,B37,"주임주임",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,B38,"아델리드로우",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,B39,"피치에이치 프렌즈",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,B40,"졸리지 스튜디오",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,C01,"쪼람쥐",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,C02,"비아크하이브",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,C03,"뽐뽐 스튜디오",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sif-2026,C04,"영이",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,C05,"모다비",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,C06,"파피묭",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,C07,"힙찌",exhibitor,T4 굿즈,T4 굿즈,low,0,0,0,0,0,3
+sif-2026,C08,"베베",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,C09,"팔베개",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,C10,"밍밍레몬",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,C11,"스튜디오쓰잘데기",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,C12,"고양이다방",exhibitor,T4 굿즈,T4 굿즈,low,0,0,0,0,0,1
+sif-2026,C13,"설기일러스트",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sif-2026,C15,"포솜",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,22
+sif-2026,C16,"요요리",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sif-2026,C17,"허당 하마 하뽀링",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,C18,"나꽁아꽁",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,C19,"맹글도어",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,C20,"담이그림",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,C21,"도너리",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,C22,"곽부꾸",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,C23,"어스쿱오브피",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,13
+sif-2026,C24,"토핑굿즈",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,C25,"텔레파시 투 파라다이스",exhibitor,T4 굿즈,T4 굿즈,low,0,0,0,0,0,4
+sif-2026,C27,"세라베어",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,C28,"소소로운",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,C29,"후후이",exhibitor,T4 굿즈,T4 굿즈,low,0,0,0,0,0,5
+sif-2026,C30,"차차",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,C32,"오토",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,C33,"가지",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,14
+sif-2026,C35,"비에프 ",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,C36,"맹수상점",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,C38,"박냠",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,C40,"밀하우스",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,D01,"바랜",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,D02,"오킹",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,D03,"스튜디오 아르비",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,D04,"흰 종이에 달이 스치운다",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,D05,"그림 그리는 바나",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,D06,"윤재안",exhibitor,T4 굿즈,T4 굿즈,low,0,0,0,0,0,11
+sif-2026,D07,"백상아",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,D08,"리틀타이니룸",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,D09,"아홉시바니",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,D10,"담빛",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,D11,"0_00",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,16
+sif-2026,D12,"드리미드림",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,D13,"하미",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,12
+sif-2026,D14,"니드",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,D15,"노리와 함께",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sif-2026,D16,"윤동",exhibitor,T4 굿즈,T4 굿즈,low,0,0,0,0,0,2
+sif-2026,D17,"산구구",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,D18,"플로피즈",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,D19,"팔월의 편지",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,D20,"두입",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,D21,"펌즈",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,9
+sif-2026,D22,"양치 ",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,D23,"아이렌",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,10
+sif-2026,D24,"혜진",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,D25,"리틀캣스튜디오",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,D26,"들깨풀",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,D27,"노낫네버",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,D28,"소소히히",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,D29,"코튼월드",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,D31,"포노멀",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,D32,"르소",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,D33,"루피쉬스튜디오",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,12
+sif-2026,D34,"츄지어바웃",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,D35,"115룸",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,D36,"헤븐폴",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,D37,"파과",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,D38,"디어돌리",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,D39,"헤이 오오 스튜디오",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,D40,"도깨비 화방",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,9
+sif-2026,E01,"식식인더하우스",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,E04,"그노",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,E05,"가울",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,E07,"베리베리뱁",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,E08,"케이키",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,13
+sif-2026,E09,"솜두",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,E10,"오르고, 그리다",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,E12,"썸띵 플레젠트 스튜디오",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,E13,"우야",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,E14,"소랏",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,E15,"그리니에브리데이",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,E16,"글렌",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,E17,"히나쿠우",exhibitor,T4 굿즈,T4 굿즈,low,0,0,0,0,0,4
+sif-2026,E19,"디어더스레드",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,E20,"마이오운타임",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,E21,"솔그림",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,E22,"나무13 노점",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,E23,"백산",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,E24,"비주얼스토리텔러",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,E25,"스튜디오비비",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,9
+sif-2026,E27,"몽몽스베쮸",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,9
+sif-2026,E28,"쁘띠팩토리",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,E29,"호지",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,E30,"츄슈",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,E31,"폴아",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,E32,"찌드로잉",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,E33,"한토그래프",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,E34,"다끼",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,E35,"더푸리 빌리지",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,E36,"아무로키",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,E38,"셔레이드쇼",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,E40,"해피스트플러피샵",exhibitor,T4 굿즈,T4 굿즈,low,0,0,0,0,0,2
+sif-2026,F01,"애뽈",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,F02,"바부감쟈네 포테토상점",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,F03,"노마",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,F04,"크레용토끼",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,9
+sif-2026,F07,"토티",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,F08,"냥냥빔",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,F09,"박선주",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,F10,"고산타",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sif-2026,F11,"버들글씨",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,F12,"아베크듀",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,F13,"무운",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,F14,"아콘찌",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,F15,"BK529",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,F16,"블루토마토즈",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,F17,"김효정",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,F18,"꾸버",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,F19,"수프효과",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,F20,"모모이라운드",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,F21,"연스텔",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,F22,"랄랑",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,F23,"프몽",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,F24,"사이",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,F25,"보 윤",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,F27,"테리박스",exhibitor,T4 굿즈,T4 굿즈,low,0,0,0,0,0,7
+sif-2026,F28,"누리",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,12
+sif-2026,F29,"크레비토아트스튜디오",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,F30,"모조핀드로잉",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,F31,"J Han",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,F32,"미오의 숲",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,F33,"써니잼",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,F34,"빙",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,F35,"모도리스튜디오 ",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,F36,"아이스홍시",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,F37,"문경",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,12
+sif-2026,F38,"도밍-이오환상곡",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,F40,"꼬모소이",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,G01,"자꾸자꾸",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,G03,"야온",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,G04,"리카",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,G05,"밤만심",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,G06,"앙고라로라",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sif-2026,G07,"호작",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,G08,"정우물",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,G09,"블랙펜슬클럽",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,G10,"오키키",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,G11,"민이플",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,G12,"고서다",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,G13,"루하",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,G14,"노스탤지아",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,G15,"안녕기티",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,G17,"선우",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,G18,"챠비",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,G19,"양면테이프(박주현)",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,G20,"Maomaomao",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,G21,"카키즈",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,G22,"ABit Mol",exhibitor,T4 굿즈,T4 굿즈,low,0,0,0,0,0,1
+sif-2026,G23,"a kind of café",exhibitor,T4 굿즈,T4 굿즈,low,0,0,0,0,0,3
+sif-2026,G24,"민디월드",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,G25,"초록땅콩",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,G26,"고동상",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,10
+sif-2026,G28,"나오미",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,G29,"서성(미묘소녀)",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,G30,"러프핸즈",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,G31,"공든",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,G32,"창작공방 호작",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,G34,"뽀송 먼지 뭉치",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,G35,"이재승",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,G36,"해피오렌지월드",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,10
+sif-2026,G37,"이호랑",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,G38,"유시",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,9
+sif-2026,G39,"하임",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,G40,"엘라제이(전영옥)",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,G41,"박민아",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,G42,"모던보이",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,G43,"김수정",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,G44,"와글와글맨숀",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,G45,"플러피치",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,G46,"또또프렌즈",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,12
+sif-2026,G47,"귀부인b",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sif-2026,G48,"빠뻬뜨히 아뜰리에",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,G49,"맘마",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,G50,"사월십일일-유영",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,G51,"모도",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,G52,"러브폴라리스",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,G53,"탭탭탑탑",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,H01,"제니빌리지",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,9
+sif-2026,H03,"도둡",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,H04,"파푸",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,H05,"HAEMIL 달빛 정원",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,H06,"졔닝",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,H07,"띵똥",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,12
+sif-2026,H08,"크야",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,12
+sif-2026,H09,"졔졔아트",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,H10,"하우스베어",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,H11,"마이캐주얼데이",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,H12,"비야",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,H13,"조금",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,H14,"배지혜",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,H15,"이슬아",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,H16,"오터리",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,H17,"컴플렉스",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,12
+sif-2026,H18,"예지킴",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,H19,"네온파스텔",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,H20,"아두르겸댕",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,H21,"무늬없는기린",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,H22,"이무",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,H23,"서낙",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,H24,"강마철단편만화",exhibitor,T4 굿즈,T4 굿즈,low,0,0,0,0,0,3
+sif-2026,H25,"JUDE 정수진",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,H26,"스튜디오딩스",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,H27,"테구테구",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,H28,"쫑스튜디오",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,H29,"루시",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,H30,"주아우주",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,H31,"예찬",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,H32,"423희희",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,H33,"작은 역동성 (원원원)",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,H34,"미이",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,H35,"올라프렌즈",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,H36,"Planet Bear",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,H37,"츄츄패밀리",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,H38,"유연",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,H39,"살포시",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,H40,"초승하우스",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,H41,"소설",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,H42,"아트헤이븐",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,H43,"조이좀",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,H44,"정수영",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,H45,"나솔",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,H46,"잔보",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,H47,"수다",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,H48,"Beer.Blanket",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,H49,"NAYUZ 나유즈",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,H50,"차은실",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,H51,"개박하",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,H52,"배한이",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sif-2026,H53,"아리솔",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,H54,"쑥과 무명",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,I01,"슬그림",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sif-2026,I02,"안현정",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,I03,"라필드파리",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,12
+sif-2026,I04,"구월",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,I05,"엔드앤메이",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,I06,"셩이",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,I09,"버블 타운",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,I10,"아리웍스",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sif-2026,I11,"자연이 만들어준 색",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,I12,"옐.이",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,I13,"그림그릿",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,I14,"주프레션",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,I15,"김도트",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,I16,"사서",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,I18,"NAOK",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,I19,"피프티투",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,I21," 클래버토리 디자인 실험실",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,I22,"레터투러브 ",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,I23,"해달과마들렌",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,I24,"푸치랜드",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sif-2026,I25,"아보프렌즈",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,I27,"유르",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,I28,"묘재",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,I30,"조랑스튜",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,I31,"카페피피차차",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,I32,"사리사",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,I33,"듀임",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,I34,"김진주",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,I35,"유어화",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,I36,"고고좋담",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,I37,"나리",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,I38,"나예",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,I39,"미나트",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,I40,"보리차룸",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,I41,"듀플리시티",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,I42,"Raquel Cruz Art",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,I43,"땅스튜디오",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,I44,"mmtostudio",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,I45,"샬롬유",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,I46,"곰곰",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,I48,"리틀포포",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,I49,"눈누",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,I50,"제니퍼 김",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,I51,"Paula Aranega ",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,I52,"밀디블랙",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,I53,"유럽에서 100일",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,11
+sif-2026,I54,"수노리 스튜디오",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,J01,"검은모래숲",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,J02,"홍지",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,J03,"푸른림",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,J04,"송송문구",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,J05,"릴리",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,J06,"수집가 무무",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,J08,"찹스타",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,J10,"밥덩이",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,J11,"오후의 산보",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,J12,"나잇라잇",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,J13,"렐리시",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,J14,"헬로그",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,J15,"조얀들",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,J16,"김정혜",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,J17,"Where's Kim",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,J18,"cocoCo",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,J19,"나이티나잇",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,12
+sif-2026,J20,"곽지우",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,J21,"픽셀 위즈빌",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,J22,"화티스트",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,10
+sif-2026,J23,"그림그리는 에이치h",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,J24,"박민주",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,J25,"황 댄",exhibitor,T4 굿즈,T4 굿즈,low,0,0,0,0,0,5
+sif-2026,J26,"요즘강아지 덕구",exhibitor,T4 굿즈,T4 굿즈,low,0,0,0,0,0,1
+sif-2026,J27,"모그릴카",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,J28,"노닥노닥",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,J29,"Candy-mouse and His Neighbors",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,J30,"RYNISYOU",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,J31,"Tania Goryushina",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,J32,"호얀스튜디오",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,12
+sif-2026,J33,"캐쓰",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,J34,"솔리온",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,J35,"쪼물덕상점",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,J36,"딸비",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,J37,"치즈민트",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,J38,"집수니야야기",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,J39,"Little Couple",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,J40,"Le Petit Monsieur",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,J41,"todayfor_han",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,J42,"kooklesart",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,J43,"WhiteLuillustration",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,J44,"ParrotDaylife",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,J45,"poco",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,J46,"소푸",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,J47,"리노프렌즈",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,J49,"엠오씨씨씨",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,J50,"독",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,J51,"월복",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,J52,"해모방",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,J53,"융",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,J54,"아안",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,K01,"쭈쭈해",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,K02,"카랑카랑",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,K03,"장띵",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,K04,"柴尾-shibao-",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,K05,"SEOK98",exhibitor,T4 굿즈,T4 굿즈,low,0,0,0,0,0,2
+sif-2026,K06,"차일드후드 메모리즈",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,K07,"이런 변이 있나",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,K08,"라라하우스",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,K09,"람지",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,K10,"Strawberry Club·草莓烟",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,K11,"Her Bijou",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,K12,"Sean the gator",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,K13,"고은",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,K14,"파이",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,K15,"보름달곰",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,K16,"폴파이프",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,K17,"보라밴드",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,K18,"더드로잉핸드",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,K19,"코스모 익스프레스",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,K20,"메이빈",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,K22,"엘리드로잉",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,K23,"봉봉작가",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,K24,"정인",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,K25,"봉자",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,K26,"나제",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,K27,"모서리 스튜디오",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,K28,"김쐥",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,K29,"띠뚜네",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,K30,"버터와소",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,K31,"Danni_litblue",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,K32,"엘라의 집",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,K33,"그리다",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,K34,"archiestudio",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,K35,"MeMiann Studio",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,10
+sif-2026,K36,"김구구",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,K37,"슴슴공작소",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,K38,"하꼬방",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,K39,"커버린꼬마상점",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,10
+sif-2026,K40,"달달즈",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,K41,"느루깨비",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,K42,"쿠엘마켓",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,K43,"어젯밤 꿈 속에",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,K44,"주들",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,K45,"밀",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,K46,"마리유니버스",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,K47,"사소",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,K48,"포카포카",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,K49,"마하",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,K50,"클론연구소",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,12
+sif-2026,K51,"타이니펫",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,K52,"쭈꾸리",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,K53,"브르",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,K54,"누이",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,9
+sif-2026,L01,"러브송러브뽀빠이",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,L02,"이지미",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,L03,"판타포레",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,L04,"모로하나",exhibitor,T4 굿즈,T4 굿즈,low,0,0,0,0,0,1
+sif-2026,L05,"JIU illustration ",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,L06,"두부의 작업실",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,L08,"유티디엘",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,L09,"소만",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,L10,"마치봄블리 ",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,L11,"으나네작업실",exhibitor,T4 굿즈,T4 굿즈,low,0,0,0,0,0,1
+sif-2026,L12,"치유",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,L13,"디스타임수",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,L14,"SHINBART",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,L15,"끼니디자인",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,L16,"달리",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,L17,"썸머플로트",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,L18,"몽진아트",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,L19,"며리",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,L20,"서로",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,L21,"핌티아",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,L22,"로하",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,L23,"연딘",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,L24,"내 방엔 로판영애들이 살고있다",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,L25,"블랙젤리클럽",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,L26,"고라니",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,L27,"그리코진",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,L28,"다혜",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,L29,"포에티코",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,L31,"유디",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,L32,"김유정 (Suerte Yu)",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,9
+sif-2026,L33,"희다가든",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,L34,"빅빅캣",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,L35,"현피치",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,L36,"스누즈키튼즈",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,L37,"나름대로 제작소",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,L38,"A.YAMI",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,L39,"주르디",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,L40,"프롬",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,L41,"무드워시",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,L42,"꾸다",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,L43,"온잡",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,L44,"온돌",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,L45,"도순상점",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,L46,"탁자밑문방구",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,L47,"공사리",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,L48,"둥한 순간",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,L49,"해피해피무",exhibitor,T4 굿즈,T4 굿즈,low,0,0,0,0,0,2
+sif-2026,L50,"김래곤",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,L51,"소프티포그",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,L52,"빛나는 여행길",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,L53,"인삼",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,L54,"얼렁뚱땅 먼자상점",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,M01,"홍단단",exhibitor,T4 굿즈,T4 굿즈,low,0,0,0,0,0,3
+sif-2026,M02,"채밍",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,M03,"오천사",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,M04,"눈꽃씨",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,M05,"영주KANGCONO",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,M06,"슬로우파리",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,M07,"신기루",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sif-2026,M08,"Manting illustration",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sif-2026,M09,"도랑",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,M10,"아바로떼스베",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,10
+sif-2026,M11,"평화조각",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,M12,"아임인",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,M13,"무심한하루",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,M14,"로즈멜리클럽",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,M15,"파도해 작업실",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,M16,"해피냥데이",exhibitor,T4 굿즈,T4 굿즈,low,0,0,0,0,0,2
+sif-2026,M17,"어노디어 스튜디오",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,11
+sif-2026,M18,"유히",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,12
+sif-2026,M19,"201호",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,M20,"아르테코",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,M21,"최쩜쩜",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,M22,"표",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,M23,"댐로잉",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,M24,"니로",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,M25,"유라",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,M26,"결",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,M27,"로튼캔들",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,M28,"콩둥이네",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,M29,"문준수",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,M30,"구리밍데이",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,M31,"은환",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,M32,"즈웨스",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,M33,"무쿠치",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,M34,"어텀프루츠",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,11
+sif-2026,M35,"구구보이",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,M36,"펌펌",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,M37,"소누공간",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,M38,"민작가",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,M39,"재거트리",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,M40,"냠냠스튜디오",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,M42,"원앤원하프",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,M43,"갸운",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,M44,"찰리",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,M45,"광스웍스",exhibitor,T4 굿즈,T4 굿즈,low,0,0,0,0,0,4
+sif-2026,M46,"Loopbegins",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,M47,"오드리",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,M48,"웨스티즈",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,M49,"온",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,10
+sif-2026,M50,"모야",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,M51,"스튜디오 총총",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,12
+sif-2026,M52,"귀영",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,M53,"제이피오",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,M54,"이즈",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,N01,"예란",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,N02,"쿡",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,N03,"수수한마켓",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,N04,"그리움리우",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,9
+sif-2026,N05,"소다",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,N06,"네치치",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,N07,"모루",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,N08,"홍무아",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,N09,"요마혼",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sif-2026,N10,"아르냥",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,N11,"SUNIPAIDUI",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sif-2026,N12,"warot.ang",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,N13,"Song.Soong.Sooong",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sif-2026,N14,"Yongdan Studio",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sif-2026,N15,"OUNCE studio | Leslie Wang",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,N16,"Tong Lin",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,N17,"ZZZZ_zhuzhuzizao",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,N18,"토끼야일기",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,N19,"늉늉샵",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,N21,"그늘정거장",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,N22,"오이소이",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,N23,"냐기",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,N24,"핑핑이 빌리지",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,N25,"뉴스툰",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,N26,"노란 물렁이",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sif-2026,N27,"김콘치",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,N28,"폼폼룸",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,N29,"하나그라프",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,N30,"팡투풀",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,N31,"BUGCAT CAPOO",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,N32,"Doromon Plantimals",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,N33,"Kawaii Hyoka",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,N34,"복치",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,N35,"토메이",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,N36,"블랭크캣",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,N37,"람니버스",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,N38,"메이드바이융",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,N39,"소소넛 스튜디오",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,N40,"성키",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,N41,"민도비또",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,N42,"남수르",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,N43,"반곱실",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,N44,"디지행성",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,N46,"쇼킹핑크로즈",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,N47,"thankq for brunch",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,N48,"부키",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,N49,"우주정원",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,N50,"미찌샵",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,9
+sif-2026,N51,"종헌",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,N52,"NekoLand ねこらんど",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,N53,"싸비노",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,N54,"프링찌",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,13
+sif-2026,O01,"지블",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,O03,"프롬투스튜디오",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,O04,"Weeeee!",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,O05,"Ginny Lambkin",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,O06,"Nuomi",exhibitor,T4 굿즈,T4 굿즈,low,0,0,0,0,0,6
+sif-2026,O08,"Illustration Taipei",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,O09,"리벳",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,O10,"조네",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,O11,"Gujob",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,O12,"Maison Promenade",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,O13,"Lynsey Lin",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,O14,"해들해즈",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sif-2026,O15,"깜보냥이",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,12
+sif-2026,O16,"별긍상점",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,O17,"하나비",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,10
+sif-2026,O19,"네티 리",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,O20,"댕청커플",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,O21,"봄냉이골골송",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,O22,"보이밋걸 스튜디오",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,12
+sif-2026,O23,"이륙",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,O24,"미드센츄리 모멘트",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,O25,"응꾸",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,O26,"Faraphic Studio",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,O27,"밍다람그림일기",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,O28,"아토앤반디",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,9
+sif-2026,O29,"유하 [流河]",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,O30,"제키베어",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,16
+sif-2026,O31,"집에만있는 귤",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,O32,"ZEROTYPE",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,O33,"도나쵸",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,O34,"한국풍 일러스트 _곰곰e",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,O35,"오싹큐티팩토리",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,O36,"주바",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,9
+sif-2026,O37,"마법사고양상점",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,17
+sif-2026,O38,"잘사라",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,O39,"The Creamy Petals",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,O40,"Pinko Summer",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,O41,"Mochi Mochi Ducks",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,O42,"CaringWong",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,O43,"muto",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,O44,"TOMO.O21",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,O45,"므끄므끄",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,O46,"봄녀",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,O47,"러브크레센트",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,O49,"리끼",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,O50,"이지로움",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,O51,"소금툰",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,O52,"건우프렌즈",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,12
+sif-2026,O53,"민키",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,P01,"장혜수",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,P02,"Haenyeorina(해녀리나)",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,P03,"그린이",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,P04,"크리미크럼즈",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,P06,"제리",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,P07,"먹는빵",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,P08,"푸니타운",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,P09,"송냥씨",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,P10,"애프터눈치",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,10
+sif-2026,P11,"라노월드",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,P12,"소로로",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,P13,"지극히",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,P14,"마헤",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,P15,"히밍",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,P16,"미토",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,P17,"고로먹다",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,P18,"작작툰",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,P19,"썸캣츠",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,P21,"삐롱커피",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,P22,"코싸리쿠",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,P23,"도화",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,P24,"대충벌레와김겨자",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sif-2026,P25,"액옹스클럽",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,P26,"코랄트리",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,P27,"요아",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,P28,"미유미유",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,14
+sif-2026,P29,"치모",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,P30,"PAPER GOODS BY DORIE",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,P31,"Get.mars",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,12
+sif-2026,P32,"DOGDOGSANDWICH",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,P33,"Bunman Bakery",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,P34,"Pallasite Studio",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,P35,"mayuuatelier ",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,P36,"우거진",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,P37,"오리앤쥬",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,P38,"이소",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,P39,"김커피",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,P40,"키론",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,P41,"스튜디오 니모",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,P42,"숨바스튜디오",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,P43,"Home of Aliens",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,P44,"이삼돌",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,P45,"쿠레욤",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,P46,"말랑스토어",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,P47,"한입거리친구들",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sif-2026,P49,"샤샤미우",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,P50,"더 슬로 하우스",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,P51,"도원",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,P52,"푸름띵클럽",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,P53,"보링보링",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,P54,"딩굴댕굴",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,Q01,"제제",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,Q02,"포지",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,Q03,"그리스 100일 여행",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,Q04,"골든아워",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,Q05,"Shuku",exhibitor,T4 굿즈,T4 굿즈,low,0,0,0,0,0,6
+sif-2026,Q06,"Rin J.",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,Q07,"단팥",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,10
+sif-2026,Q08,"한량아끼",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,Q09,"마린스노우",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,Q10,"임아랑",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,Q11,"이나트",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,Q12,"이유닝닝",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,Q13,"무디",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,Q14,"파이어브러쉬",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,Q15,"고효리",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,12
+sif-2026,Q16,"랑씌",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,10
+sif-2026,Q17,"시네샵",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,Q18,"클로이의 정원",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,Q19,"간바레! 노노짱",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,Q20,"쪼야",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,Q22,"디어마이하",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,10
+sif-2026,Q23,"마이모이",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,Q24,"블랙레터",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,Q25,"아코, 아이콩",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,Q26,"제피오",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,Q27,"주와이디자인",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,Q28,"욘욘",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,Q29,"희레",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sif-2026,Q30,"윤섬",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,Q31,"몬스터훌라후프",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,Q32,"무화과080",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,Q33,"쮸",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,Q34,"미운돼지",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,Q35,"앙꾸",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,Q36,"재이하우스",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,Q37,"테히",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,Q38,"덤덤",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,Q39,"바게트효",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,10
+sif-2026,Q40,"아이로",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,Q41,"쿠냥 온 어스",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,Q42,"포레스트리",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,Q43,"임퍼펙트차일드",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,Q44,"정원",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,Q45,"윤진",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,Q46,"레드이어스클럽",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,Q47,"이릇",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,13
+sif-2026,Q48,"고고고",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,Q49,"모모이하우스",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,10
+sif-2026,Q50,"오리넉울",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,Q51,"디위드",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,Q52,"하기노러브",exhibitor,T4 굿즈,T4 굿즈,low,0,0,0,0,0,6
+sif-2026,Q53,"텍잇이지",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,Q54,"라모툰",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,R01,"110V(백십볼트)",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,R02,"챈",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,R03,"리제이",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,R04,"내티어",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,R05,"배찌",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,R06,"GapN studio",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,10
+sif-2026,R08,"시나나",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,R09,"담장아래",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,R10,"잡동시니",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,R11,"KENZI MURABAYASHI",exhibitor,T4 굿즈,T4 굿즈,low,0,0,0,0,0,3
+sif-2026,R12,"문니",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,R13,"랑 루아",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,R14,"오아시.지",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,R15,"Fairy Garden",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,R16,"버터오어불렛",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,R17,"이지투스튜디오",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,R18,"태림",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,R19,"슷카이",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,R20,"말랑앤뚠뚠",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,R21,"킹아이 스토리",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,R22,"라미웨이",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,R23,"이쏘",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,R24,"버쿠리",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,R25,"보다스페이스",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,4
+sif-2026,R26,"어글리큐트",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,R27,"햄두리",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,13
+sif-2026,R28,"라연팬시",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,12
+sif-2026,R31,"몸의 표정",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,R33,"마이그리미",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,R34,"리리피피",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,R35,"크로묘",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,R36,"다니스토어",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,11
+sif-2026,R37,"폴티커",exhibitor,T4 굿즈,T4 굿즈,low,0,0,0,0,0,11
+sif-2026,R38,"수",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,R39,"동식물원",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,R40,"블랙문",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,R41,"네온피크닉",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,R42,"토라팜",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,R43,"인타",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,R44,"소소비",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,10
+sif-2026,R45,"네버더레스",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sif-2026,R46,"심냥즈",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,R47,"겟코우",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,R48,"박소박",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,R49,"이치스타",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sif-2026,R50,"우당탕탕 서윗멀즈",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,R51,"디어타운",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,R53,"덩이나라",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,10
+sif-2026,R54,"멜로왓에버",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,S01,"신한프렌즈",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,S04,"마니미니모",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,21
+sif-2026,S06,"냥냥몬스터즈",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,S07,"리코더팩토리",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,S09,"아뜨 아추",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,10
+sif-2026,S10,"한국예술인복지재단",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,S11,"한국저작권위원회",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,S12,"디자인북",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,S13,"히히클럽",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,S15,"이로운 디자인 연구소",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,S18,"하콩이",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,S22,"국립생태원",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,S23,"XENZIAO",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,S25,"세컨드모닝",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,S26,"로컬러",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,S27,"리틀스텝스빅임팩트",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,S28,"라뷰월드",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,S29,"구냥이",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,S30,"와키즈",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,S31,"모아페스타",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,S32,"헬로버블즈",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,12
+sif-2026,S33,"씽크씽크아트랩",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,9
+sif-2026,S34,"어르신들의 꿈",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,S35,"디팍스",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,T01,"홀베인 코리아 ",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,T05,"고냥미",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,T07,"모지모지",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,10
+sif-2026,T11,"오늘의귀여움",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,T13,"브랜다즐",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,T14,"로컬트레일",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,T15,"리빙앤라이프",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,T16,"여기상점",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,T17,"스티픽",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,T18,"미토리",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,9
+sif-2026,T19,"원몰",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,T21,"엑스피펜",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,T24,"문샤크",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,T31,"드림스카이",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,T34,"반워크",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,T36,"다녀왔수달",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,U01,"스타빌로",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,U04,"문학굿즈샵",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,U05,"베스트펜",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,U06,"비프터",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,U07,"메이드바이",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,U09,"디아리움",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,U10,"죠지",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,U11,"핏-티프",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,U12,"코도 앤 롤리",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,U13,"오아일랜드",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,U14,"식스브로",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,U15,"비야크라프트",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,U17,"라벨터치",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,U18,"금박공예 DIY 색칠취미, 글리팅",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,U19,"까렌다쉬",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,U21,"유니 포스카",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,U25,"서흥아트",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,U27,"파버카스텔",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,7
+sif-2026,U30,"수수",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,U31,"국민대학교 일러스트레이션학과 시각디자인학과",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,U33,"서울예술대학교",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,U35,"비패션",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,V01,"에이티인더스&코팬글로벌",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,V03,"파도씨세탁소",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,V04,"스테들러코리아",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,V10,"인천콘텐츠코리아랩",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,V13,"Tasty Toastys",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,V14,"TOKOTOYZ",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,V15,"SBS아카데미 컴퓨터 아트학원",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,V16,"콜라비",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,V21,"브라더 메이커스 랩",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,V24,"스토리프트",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,V26,"냥운",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,V27,"유오코 l 후카후카스튜디오",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,V28,"Moggy Mansions",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,8
+sif-2026,V29,"디엠피 북스토아",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,V30,"몽댕",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,V31,"망원칼라",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,3
+sif-2026,V32,"사인어스(나만의 멋진 사인만들기)",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,V33,"디자인 미닝",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,12
+sif-2026,V34,"말랑한 마음",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,6
+sif-2026,V35,"고양이의 만행",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,V36,"초령 책갈피",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,V37,"동그라미 프로젝트",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,V38,"구르릉",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,V39,"편지 가게, 디어포스트",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,2
+sif-2026,V40,"구름디자인랩",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,V41,"드로잉카페 헨젤",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,V42,"소울팔레트",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,V43,"스튜디오 소소한 인형공방",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,V44,"피모앤밤호",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,V45,"도미월드",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,V46,"비비천사",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,1
+sif-2026,V47,"드로잉데이",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,5
+sif-2026,V48,"라고미네집",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,V49,"일월스튜디오",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,V50,"채널오",exhibitor,T3 공식요약,T3 공식요약,low,1,0,0,0,0,0
+sif-2026,V51,"푸르름디자인",exhibitor,T4 굿즈,T4 굿즈,low,0,0,0,0,0,16
+sif-2026,V52,"무리",exhibitor,T3 공식요약,T3 공식요약,medium,1,0,0,0,0,14
+sif-2026,V53,"애즈랜드",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+sif-2026,V54,"한림사",exhibitor,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+house-archive-2026,CTR-COLLECT,"수집의 집 센터",facility,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+house-archive-2026,CTR-GATHER,"관계의 집 센터",facility,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+house-archive-2026,CTR-MAKE,"창작의 집 센터",facility,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+house-archive-2026,CTR-EXPLORE,"탐험의 집 센터",facility,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+house-archive-2026,CTR-REST,"쉼의 집 센터",facility,T5 부스명폴백,T5 부스명폴백,low,0,0,0,0,0,0
+house-archive-2026,H01,"수집의 집 X 빅슬립",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,H02,"관계의 집 X 헤르시",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,H03,"창작의 집 X 아지카진 매직월드",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,H04,"쉼의 집 X 모티프원",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,H05,"탐험의 집 X 샤론",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,C13,"비온뒤",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,C14,"누땡스",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,C15,"터틀넥프레스",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,C12,"무니버니",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,C11,"퀘스처너스",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,C10,"사유",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,C09,"오브코흐",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,C08,"꼬모다미",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,C07,"쑤파클링레모네이드",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,C06,"오티에이치콤마",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,C03,"라이프앤콜렉트",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,C04,"플로피",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,C05,"도넛바이닐샵",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,C01,"루이스폴센",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,C02,"더퍼블리셔",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,G01,"라이프집 스토어",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,G02,"소로이샵",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,G07,"얄라",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,G06,"봄마음",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,G05,"메이크어포터리",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,G08,"메멜트",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,G09,"키들",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,G10,"솥밭",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,G11,"토마로우",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,G13,"엠더블유엠",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,G14,"맹그로브 부동산",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,G03,"커먼즈",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,G04,"오파츠걸즈",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,G12,"스밋",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,M01,"한국파이롯트",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,M02,"슌",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,M03,"누아&누키트",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,M04,"아지카진 매직월드",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,M05,"데이오프프로젝트",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,M06,"습작실 by 커버서울",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,M07,"낼나",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,M08,"팩앤폴드",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,M09,"페블온",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,M13,"까요미스튜디오",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,M12,"페페하우스",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,M11,"희다가든",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,M10,"단단라이프",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,R01,"복복복",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,R02,"밑미",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,R03,"카인드오브썸머",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,R04,"네츄럴굿띵스",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,R05,"옥산백",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,R06,"리재",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,R07,"물 수",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,R08,"부부티",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,R09,"해비터스",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,R10,"산새",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,R11,"수푸이",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,R12,"탈로리피",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,R13,"뷰릿",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,E01,"선데이플래닛47 X 레어로우",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,E08,"LG 티운",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,E07,"아소브네",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,E06,"엠크라프트",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,E11,"아세도라",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,E12,"리베이퍼",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,E13,"코코라커",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,E02,"담초",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,E03,"나무아일랜드",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,E04,"플레인가든",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,E05,"스테이로스트",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,E09,"포티",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,E10,"로우리트 콜렉티브",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,T07,"E1E_studio",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,T08,"카랑카랑",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,T09,"단어의 시각적 번역",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,T10,"소포",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,T11,"블루토마토즈",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,T12,"멍주",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,T13,"고동상",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,T14,"나꽁아꽁",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,T15,"레이지 수",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,T16,"쏘잉어스",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,T17,"필화",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,T18,"니지",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,T19,"키우마루",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,T20,"스튜디오 파도나무",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,T21,"계획을 썹포트",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,T06,"컨트롤에이",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,T05,"시시콜콜한 잡화점",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,T04,"안 안",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,T03,"나로에",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,T02,"아워아워",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,T01,"박스걸스튜디오",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,T22,"라이키드",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,T23,"삐칸",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,T24,"컬렉티브 아카이브",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,T25,"빌리빈밀림",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
+house-archive-2026,T26,"말린",exhibitor,T1 저작해석,T1 저작해석,medium,1,1,0,0,0,0
