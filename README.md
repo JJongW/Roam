@@ -8,7 +8,7 @@
 
 > **반응할수록 정확해져** — 로미가 미리 아는 건 전시고, 사용자는 아직 모른다.
 > 그래서 추천은 정답이 아니라 가설이고, 반응하면 갱신된다.
-> 브랜드·보이스 기준은 [`docs/brand/`](docs/brand/README.md).
+> 브랜드·보이스 기준은 [`docs/brand.md`](docs/brand.md).
 
 **Next.js 16 (App Router) · React 19 · TypeScript · Tailwind v4 · shadcn/ui · Supabase ·
 Google Gemini.** 디자인 톤: Apple HIG + Toss (미니멀·반응형·라이트/다크).
@@ -107,7 +107,7 @@ PostgREST는 실패해도 예외를 던지지 않는다. `supabase/repository.ts
 
 | 위치 | 내용 |
 |---|---|
-| [`docs/brand/`](docs/brand/README.md) | **브랜드북** — 정체·로미 캐릭터·보이스&톤·비주얼·네이밍 |
+| [`docs/brand.md`](docs/brand.md) | **브랜드북** — 정체·로미 캐릭터·보이스&톤·비주얼·네이밍 |
 | `docs/decisions/` | 결정 기록 (변경마다 `/why`로 이유를 남긴다) |
 | `docs/superpowers/plans` · `specs` | 기능별 설계·구현 계획 |
 | `docs/booth-enrichment.md` | 부스 근거 데이터 수동 입력 양식 |
