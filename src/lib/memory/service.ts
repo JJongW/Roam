@@ -32,12 +32,14 @@ export async function recordSignal(
 
   let slugs = input.slugs ?? [];
   let exhibitionId = input.exhibitionId;
+  let boothId = input.boothId;
   let boothCode: string | undefined;
 
   if (input.boothId) {
     const detail = await repo.getBoothDetail(input.boothId);
     if (detail) {
       boothCode = detail.booth.code;
+      boothId = detail.booth.id;
       exhibitionId = exhibitionId ?? detail.booth.exhibitionId;
       // 관심 축 = 가치 slug(valueTags). 없으면 분야 tags 폴백.
       if (!input.slugs) slugs = boothValueSlugs(detail.booth);
@@ -51,6 +53,7 @@ export async function recordSignal(
     userId,
     exhibitionId,
     kind: input.kind,
+    boothId,
     boothCode,
     slugs,
   });

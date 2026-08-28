@@ -397,7 +397,9 @@ export interface UserSignal {
   userId: string;
   exhibitionId: string;
   kind: SignalKind;
-  /** 신호를 유발한 부스(있으면). */
+  /** 신호를 유발한 부스의 불변 식별자. 참가사 이력과 정확히 연결하는 키. */
+  boothId?: string;
+  /** 신호를 유발한 부스의 사람용 코드(회고/표시용). */
   boothCode?: string;
   /** 관심 이전축 = category slug. 부스 tags에서 확장. */
   slugs: string[];
