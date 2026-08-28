@@ -6,7 +6,11 @@ import { uniqueNickname } from "@/lib/auth/oauth-nickname";
 import { readBrain } from "@/lib/memory/service";
 import { env } from "@/lib/env";
 
-const PROVIDER = "apple";
+// 웹은 현재 Apple 로그인 경로가 없다(Google OAuth만, login-form.tsx 확인함) — 그래서
+// 여기엔 오늘 시점 충돌할 기존 identity 공간이 없다. 그래도 google_ios와 컨벤션을
+// 맞춰 apple_ios로 둔다 — 웹에 Apple 로그인이 나중에 생겼을 때 똑같은 문제가 반복되지
+// 않도록. 상세 근거는 설계 스펙 §8 참고.
+const PROVIDER = "apple_ios";
 
 export async function POST(req: Request) {
   if (!env.APPLE_BUNDLE_ID) {
