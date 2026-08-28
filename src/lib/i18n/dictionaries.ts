@@ -67,7 +67,7 @@ const ko = {
       "수백 개 부스를 다 도는 게 아니라, 네 취향에 맞는 곳부터 같이 둘러봐.",
     intro3a: "볼수록",
     intro3b: "더 잘 맞춰줘",
-    intro3sub: "끌림·별로만 눌러줘. 네 반응을 기억해서 다음엔 더 정확해져.",
+    intro3sub: "‘꼭 갈래’·‘패스’만 눌러줘. 네 반응을 기억해서 다음엔 더 정확해져.",
     valueTitleA: "박람회에서",
     valueTitleB: "뭘 채우고 싶어?",
     valueSub: "끌리는 걸 골라줘. 여러 개도 좋아.",
@@ -88,7 +88,7 @@ const ko = {
       "오늘 뭘 남기고 싶어? 끌리는 걸 골라줘 — 그걸로 부스를 골라둘게. 언제든 바꿔도 돼.",
     doneResult: "좋아, {values} 쪽으로 골라올게.",
     doneHow:
-      "피드에서 내가 고른 곳부터 보면 돼. 끌리면 '끌림'을 눌러줘 — 볼수록 더 잘 맞춰줄게.",
+      "피드에서 내가 고른 곳부터 보면 돼. 끌리면 ‘끌려’를 눌러줘 — 볼수록 더 잘 맞춰줄게.",
     startCta: "좋아, 시작하자",
     doneCta: "이걸로 정했어",
     browse: "둘러보기",
@@ -433,6 +433,9 @@ const ko = {
     becauseInterested: "아까 ‘{booth}’에 관심 보여서 같이 꺼냈어.",
     becauseVisited: "‘{booth}’ 가봤다길래 같이 꺼냈어.",
     whatGoods: "여기 {goods} 있어",
+    // 부스 당사자가 쓴 소개를 인용할 때 붙이는 출처. 로미 말로 고쳐 쓰지 않고
+    // 출처를 밝히는 이유는 booth/voice.ts 참고.
+    quoteSource: "부스가 직접 쓴 소개",
     // 저작·공식 정보가 전혀 없어도 이거 하나는 항상 말할 수 있다(company는 필수
     // 필드) — 침묵 카드를 만들지 않기 위한 마지막 폴백.
     whatCompanyFallback: "‘{name}’ 부스야",
@@ -633,8 +636,20 @@ const ko = {
       "‘{theme}’라고 다 맞진 않네.",
       "‘{theme}’ 안에서도 역시 다 같진 않구나.",
     ],
-    reactBadMissed: "내가 이거 좋아할 줄 알았는데 아니었네. 하나 배웠다.",
-    reactBadMissedPlain: "내가 좋아할 줄 알았는데 아니었네. 하나 배웠다.",
+    // bad는 가장 조심할 자리 — 부스를 깎지 않고 *내 예측이 빗나갔음*을 로미가
+    // 가져간다. 변주는 최소 3개(브랜드북 02_voice-tone.md §2-3).
+    reactBadMissed: [
+      "내가 이거 좋아할 줄 알았는데 아니었네. 하나 배웠다.",
+      "이건 내 예상이 빗나갔네. 기억해둘게.",
+      "여기는 내가 잘못 짚었다. 다음엔 더 맞출게.",
+      "음, 내 예측이 틀렸구나. 참고할게.",
+    ],
+    reactBadMissedPlain: [
+      "내가 좋아할 줄 알았는데 아니었네. 하나 배웠다.",
+      "예상이 빗나갔네. 기억해둘게.",
+      "내가 잘못 짚었다. 다음엔 더 맞출게.",
+      "내 예측이 틀렸구나. 참고할게.",
+    ],
     // 취향 정확도 4단계. 판정 0개/1~4개는 홈 발화 로테이션(homeLines)에 섞이고,
     // 5개를 막 넘기는 순간(1회)은 judgment-bar.tsx가 say()로 띄운다. 5개 이상은
     // 상주 배지가 tastePct로 대체한다.
@@ -653,7 +668,7 @@ const ko = {
     retroVisitedNo: "못 갔어",
     recurated: "방금 반응 반영해서 다시 골라봤어.",
     q1: "지금 뭐 보면 좋아?",
-    a1: "네가 고른 가치로 미리 골라뒀어. 피드 맨 위부터 봐 — 확실히 취향인 것부터 있고, 아래로 갈수록 좀 새로운 결이야.",
+    a1: "미리 둘러보고 골라뒀어. 피드 맨 위부터 봐 — 확실히 취향인 것부터 있고, 아래로 갈수록 좀 새로운 결이야.",
     q2: "사람 많은 데 피하고 싶어",
     // 동선 제품 제거로 크라우드 소스(saved route)가 사라져 부스별 붐빔 데이터가
     // 없다(src/lib/engine/service.ts — heat.booths 항상 빈 스텁). 없는 걸 있다고
@@ -661,7 +676,7 @@ const ko = {
     // 한산하다는 일반 팁)만 남긴다.
     a2: "지금은 부스별 실시간 혼잡도까진 못 봐. 대신 개장 직후나 마감 전 시간대가 대체로 한산해.",
     q3: "왜 이걸 추천했어?",
-    a3: "네 관심 가치랑 겹치는 부스라 골랐어. 카드의 색 태그가 그 연결 고리 — 그걸 보고 끌리는지 네가 판단하면 돼.",
+    a3: "네가 지금까지 반응한 것들이랑 결이 겹쳐서 골랐어. 카드마다 뭘 하는 곳인지랑 왜 골랐는지 적어뒀으니, 그거 보고 끌리는지 네가 판단하면 돼.",
   },
   recap: {
     title: "오늘의 관람",
@@ -796,7 +811,7 @@ const en: Dict = {
       "What do you want to take today? Pick what draws you — I'll curate booths around it. Change anytime.",
     doneResult: "Great, I'll pick around {values}.",
     doneHow:
-      "Start from what I picked in the feed. Tap Like if it draws you — the more you look, the better I fit.",
+      "Start from what I picked in the feed. Tap Interested if it draws you — the more you look, the better I fit.",
     startCta: "Okay, let's start",
     doneCta: "That's it",
     browse: "Look around",
@@ -1139,6 +1154,7 @@ const en: Dict = {
       "You showed interest in “{booth}”, so I pulled this too.",
     becauseVisited: "You saw “{booth}”, so I pulled this too.",
     whatGoods: "Has {goods}",
+    quoteSource: "In the exhibitor's own words",
     whatCompanyFallback: "It's the “{name}” booth",
   },
   rhythm: {
@@ -1324,9 +1340,18 @@ const en: Dict = {
       "{theme} has range, I guess.",
       "{theme} varies more than I thought.",
     ],
-    reactBadMissed: "Thought you'd love this one — guess I learned something.",
-    reactBadMissedPlain:
+    reactBadMissed: [
+      "Thought you'd love this one — guess I learned something.",
+      "My guess was off on this one. Noted.",
+      "I called that one wrong. I'll do better.",
+      "Huh, missed on that one. I'll remember.",
+    ],
+    reactBadMissedPlain: [
       "Thought you'd love that one — guess I learned something.",
+      "My guess was off. Noted.",
+      "I called that one wrong. I'll do better.",
+      "Huh, missed that one. I'll remember.",
+    ],
     tasteUnknown: "Don't know you yet. Show me around.",
     tasteWarming: "Getting a sense of it — need a bit more.",
     tasteInsight: "Starting to get it. I'll keep guessing.",
@@ -1340,11 +1365,11 @@ const en: Dict = {
     retroVisitedNo: "Didn't make it",
     recurated: "Re-picked with your reactions in mind.",
     q1: "What should I see now?",
-    a1: "I picked these by your values. Start from the top of the feed — sure-taste first, newer as you go down.",
+    a1: "I looked around first and picked these. Start from the top of the feed — sure-taste first, newer as you go down.",
     q2: "I want to avoid crowds",
     a2: "I can't see real-time crowd levels per booth yet. As a rule of thumb, right after opening or just before closing tends to be quieter.",
     q3: "Why did you recommend this?",
-    a3: "It overlaps with your values. The colored tags on the card are the link — you decide if it draws you.",
+    a3: "It lines up with what you've reacted to so far. Each card says what the booth is and why I picked it — you decide if it draws you.",
   },
   recap: {
     title: "Today's visit",
