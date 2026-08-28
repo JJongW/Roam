@@ -27,31 +27,53 @@
 - npm private 레지스트리·git submodule 같은 정식 의존성 관리는 채택하지 않는다 — 1~2인 팀
   규모에서 설정 비용이 이점을 못 넘는다(`Roam-ios` CLAUDE.md와 동일 원칙).
 
-## 3. 네이밍·단위 — `Roam-design` 쪽 선행 변경
+## 3. `globals.css` 실제 구조 재확인 — 마이그레이션 대상 재조정
 
-지금 `Roam-design`이 iOS/신규 소비자를 염두에 두고 붙인 이름(`--color-primary`,
-`--judge-color-must`)이 웹이 이미 참조 중인 이름(`--primary`, `--judge-must`)과 다르다.
-Tailwind v4가 `--primary` 같은 기존 이름을 직접 참조하므로, **`Roam-design`의 웹 포맷
-함수를 레거시 이름에 맞춰 고친다**(alias 레이어를 웹에 얹는 대신) — 아직 `Roam-design`에
-외부 소비자가 없어 지금 바꾸는 비용이 제일 싸다.
+`globals.css`를 실제로 읽어보니 처음 가정과 다르다. 토큰이 **두 레이어**에 나뉘어 있다:
 
-| 카테고리 | 지금 산출 | 웹이 기대하는 이름 |
-|---|---|---|
-| `color` | `--color-primary` | `--primary` (카테고리 접두어 제거) |
-| `judgeColor` | `--judge-color-must` | `--judge-must` |
-| `radius.default` | `--radius-default` | `--radius` (접미사 없음) |
-| `radius`/`typography`의 `xl2`/`xl3` | `--radius-xl2`, `--text-xl2` | `--radius-2xl`, `--text-2xl` (Swift 식별자 회피용 리네임을 웹 출력에서 원복) |
-| `typography` 사이즈 | `--typography-xs-size: 12px;` | `--text-xs: 0.75rem;`(px→rem 변환, `--text-` 접두어) |
-| `typography` line-height | `--typography-xs-line-height: 16px;` | `--text-xs--line-height: 1rem;`(Tailwind v4 이중대시 컨벤션 유지) |
-| `spacing`/`motion`/`shadow` | 이미 `--spacing-global-gutter`/`--motion-duration-d1`/`--shadow-card` | `--spacing-global-gutter`/`--motion-d1`/`--shadow-card` — motion만 `duration-` 세그먼트 제거 |
-| `motion.easing` | `--motion-easing-enter` | `--motion-ease-enter` |
-| `valueColor` | (범위 밖, §4 참고) | — |
+1. **`:root`/`.dark`의 평범한 커스텀 프로퍼티** — `--background`·`--primary`·`--judge-*`·
+   `--spacing-*`·`--motion-*` 등. Tailwind 유틸리티 생성과 무관하게 그냥 값을 담는 변수다.
+2. **`@theme inline { ... }` 블록** — Tailwind v4가 여기 선언된 이름으로 실제 유틸리티
+   클래스(`rounded-sm`, `shadow-card`, `text-xs`)를 만든다. `--color-*`는 이 블록 안에서
+   `:root`의 원시값을 **참조만**(`--color-primary: var(--primary);`) 하지만, **`--radius-sm`
+   `~2xl`·`--shadow-*`·`--text-*`는 `:root` 레이어가 아예 없고 `@theme inline` 안에만
+   직접 값으로 존재한다.**
 
-**rem 변환은 웹 출력에만 적용한다.** iOS Swift 산출물은 그대로 px(`CGFloat`) 유지 — iOS엔
-rem 개념이 없고, 웹만 브라우저 폰트 확대(접근성) 대상이라 rem이 필요하다. `tokens/src/*.json`
-원본 값은 바꾸지 않는다 — 포맷 함수(`css.mjs`)에서만 `size / 16`으로 렌더링 시점 변환.
+즉 색·판단색·모션·스페이싱은 `:root`/`.dark`의 원시값만 바꾸면 끝 — `@theme inline`의
+`--color-primary: var(--primary);` 같은 별칭 줄은 그대로 둬도 자동으로 새 값을 받는다.
+**라운드 스케일(`--radius-sm~2xl`)·섀도우·타이포는 다르다** — `@theme inline` 안에 직접
+있어서, 이걸 안전하게 대체하려면 우리 생성 CSS가 Tailwind의 `@theme` 병합 방식을 정확히
+재현해야 한다. 지금 당장 이걸 잘못 다루면 **사이트 전체에서 `rounded-sm`/`shadow-card`/
+`text-xs` 같은 유틸리티 클래스가 조용히 깨질 수 있다** — 자동테스트로 안 걸리는 실패 모드다.
 
-`build-web.test.mjs`의 어서션도 새 이름·단위로 갱신한다.
+**그래서 이번 마이그레이션 범위를 좁힌다.** `@theme inline`에 안 걸리는 카테고리만
+1차로 옮기고, 라운드·섀도우·타이포(`@theme` 재현 필요)는 후속으로 미룬다(§9).
+
+| 카테고리 | 위치 | 이번에 옮김? | 지금 산출 | 웹이 기대하는 이름 |
+|---|---|---|---|---|
+| `color`(베이스 값) | `:root`/`.dark` | ✅ | `--color-primary` | `--primary` (카테고리 접두어 제거) |
+| `judgeColor` | `:root`/`.dark` | ✅ | `--judge-color-must` | `--judge-must` |
+| `motion.duration` | `:root` | ✅ | `--motion-duration-d1` | `--motion-d1` |
+| `motion.easing` | `:root` | ✅ | `--motion-easing-enter` | `--motion-ease-enter` |
+| `spacing`(의미 토큰) | `:root` | ✅ | 이미 `--spacing-global-gutter` | 그대로(변경 없음) |
+| `radius` | `@theme inline` | ❌ 후속 | — | — |
+| `shadow` | `@theme inline`(only) | ❌ 후속 | — | — |
+| `typography` | `@theme inline`(only) | ❌ 후속 | — | — |
+| `valueColor` | (해당 없음) | ❌ 범위 밖(§4) | — | — |
+
+`Roam-design`의 웹 포맷 함수(`tokens/formats/css.mjs`)는 이번엔 **위 5개 카테고리만**
+레거시 이름으로 고친다. 라운드·섀도우·타이포용 코드는 건드리지 않는다(이미 나온 산출물,
+지금은 웹이 안 가져다 씀).
+
+**`--judge-must: var(--primary);` 같은 라이브 참조가 하드코딩 값으로 바뀐다.** 지금
+`globals.css`는 `judge-must`가 `primary`를 실시간 참조해서, 나중에 `--primary`를 오버라이드하면
+`judge-must`도 자동으로 따라간다. `Roam-design`의 `judge-color.json`은 이미 해석된 값을
+인라인해 저장하므로(스펙 `2026-08-28-roam-design-brand-token-system-design.md`에서 결정),
+이 관계가 끊긴다 — 두 값이 우연히 같을 뿐인 독립 상수가 된다. 지금 당장 `--primary`를 로컬
+오버라이드하는 코드가 없어 즉시 문제는 아니지만, 알려진 트레이드오프로 기록한다(§9).
+
+`build-web.test.mjs`의 어서션도 새 이름으로 갱신한다(rem 변환은 이번 범위(색·판단색·모션·
+스페이싱)엔 해당 없음 — 전부 정수 hex/ms/px, rem 대상은 타이포뿐이라 후속으로 넘어감).
 
 ## 4. 범위 밖
 
@@ -74,11 +96,15 @@ rem 개념이 없고, 웹만 브라우저 폰트 확대(접근성) 대상이라 
 
 ## 6. `globals.css` 변경
 
-- 파일 최상단에 `@import "../styles/tokens.css";` 추가(정확한 상대경로는 실제 파일 위치에
-  맞춰 구현 시 확정).
-- §3에서 매핑한 카테고리(색·판단색·라운드·타이포·스페이싱·섀도우·모션)의 기존 손 선언을
-  제거한다. §4에서 범위 밖으로 남긴 토큰(`--ring` 등)은 그대로 둔다.
-- 라이트/다크 두 블록(`:root`와 `@media (prefers-color-scheme: dark)`) 모두 정리 대상.
+- 파일 최상단(`:root` 블록 진입 전)에 `@import "../styles/tokens.css";` 추가(정확한
+  상대경로는 실제 파일 위치에 맞춰 구현 시 확정).
+- §3에서 ✅ 표시한 5개 카테고리(색 베이스값·판단색·모션 duration/easing·스페이싱 의미
+  토큰)의 기존 손 선언만 `:root`/`.dark` 두 블록에서 제거한다.
+- **`@theme inline` 블록은 이번엔 손대지 않는다** — 라운드 스케일·섀도우·타이포(§3)가
+  거기 살고 있고 이번 마이그레이션 대상이 아니다. `--color-*` 별칭 줄(`--color-primary:
+  var(--primary);` 등)도 그대로 둔다 — `:root`의 원시값이 바뀌면 자동으로 새 값을 받는다.
+- §4에서 범위 밖으로 남긴 토큰(`--ring`·`--route-line`·`--booth-*` 등)도 그대로 둔다 —
+  우리가 실제로 옮기는 5개 카테고리의 선언만 지운다.
 
 ## 7. 검증
 
@@ -97,6 +123,13 @@ rem 개념이 없고, 웹만 브라우저 폰트 확대(접근성) 대상이라 
 
 ## 9. 미해결/후속 항목
 
+- **라운드·섀도우·타이포를 `@theme` 블록으로 마이그레이션** — `Roam-design`의 웹 포맷이
+  Tailwind v4의 `@theme` 병합 방식(별도 partial import가 `@theme { ... }` 블록을 내면
+  Tailwind가 합쳐서 유틸리티를 생성하는 동작)을 정확히 재현해야 안전하다. 잘못하면 사이트
+  전체 유틸리티 클래스가 조용히 깨지는 고위험 변경이라 별도 스펙으로 신중히 설계.
+- **`--judge-must`/`--judge-good`의 라이브 참조 끊김** — §3에서 기록한 대로, 마이그레이션
+  후 `judge-must`가 `--primary`를 실시간 참조하는 대신 독립 상수가 된다. 지금은 `--primary`
+  로컬 오버라이드가 없어 무해하지만, 나중에 생기면 재검토.
 - 가치 색 8종을 `Roam-design`이 TS/JS 산출물로도 내야 할지 — 웹의 `VALUE_TAGS.color`가
   진짜 소스 오브 트루스에서 오게 하려면 필요. 지금은 범위 밖.
 - `--primary-foreground` 등 누락 토큰을 `Roam-design`에 추가하는 작업(이전 스펙에서도
