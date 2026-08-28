@@ -285,6 +285,19 @@ export function InterestFeed({
                     )}
                   </div>
 
+                  {/* 부스 당사자가 쓴 소개는 로미 말이 아니라 인용으로 — 로미 자리에
+                      그대로 넣으면 남이 1인칭 존댓말로 말하게 된다(booth/voice.ts). */}
+                  {grounding.quote && (
+                    <blockquote className="border-l-2 border-border pl-2.5">
+                      <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+                        {grounding.quote}
+                      </p>
+                      <footer className="mt-0.5 text-[11px] text-muted-foreground/70">
+                        {t("grounding.quoteSource")}
+                      </footer>
+                    </blockquote>
+                  )}
+
                   {grounding.evidence.length > 0 && (
                     <div className="flex flex-wrap gap-1">
                       {grounding.evidence.map((ev, i) => (

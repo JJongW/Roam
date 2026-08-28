@@ -36,7 +36,7 @@ export function scheduleReminder(
   if (!isPushSupported() || Notification.permission !== "granted") return false;
   const fireAt = atMs - leadMs;
   const delay = fireAt - Date.now();
-  const show = () => new Notification(title, { body, icon: "/icon.svg", tag: title });
+  const show = () => new Notification(title, { body, icon: "/icon-192.png", tag: title });
   if (delay <= 0) {
     // event is imminent/now — confirm subscription with an immediate ping
     show();

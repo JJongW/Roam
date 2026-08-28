@@ -61,11 +61,15 @@ export function boothAbout(booth: Booth): BoothAbout {
   const parts: string[] = [];
   if (themeKey) {
     // 소분류가 있으면 더 구체적으로: "동물 — 고양이·반려동물 쪽이야"
-    const detail = fine.slice(0, 2).join("·");
+    // 대분류와 같은 말인 소분류는 뺀다 — "문구·다꾸 중에서도 문구·다꾸 쪽이야"처럼
+    // 같은 단어를 두 번 말하는 문장이 나온다.
+    const label = themeLabel(themeKey);
+    const detail = fine
+      .filter((f) => f !== label)
+      .slice(0, 2)
+      .join("·");
     parts.push(
-      detail
-        ? `${themeLabel(themeKey)} 중에서도 ${detail} 쪽이야`
-        : `${themeLabel(themeKey)} 쪽 부스야`,
+      detail ? `${label} 중에서도 ${detail} 쪽이야` : `${label} 쪽 부스야`,
     );
   }
   const g = goodsClause(goods.length);
