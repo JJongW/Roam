@@ -216,6 +216,11 @@ export const appleNativeLoginSchema = z.object({
 });
 export type AppleNativeLoginInput = z.infer<typeof appleNativeLoginSchema>;
 
+export const googleNativeLoginSchema = z.object({
+  idToken: z.string().min(1),
+});
+export type GoogleNativeLoginInput = z.infer<typeof googleNativeLoginSchema>;
+
 export const boothNoteInputSchema = z.object({
   // interest·verdict 둘 다 계정에 남는다. 둘은 직교라 한 요청이 둘 다 보낼 수도,
   // 하나만 보낼 수도 있다(호출부가 바뀐 필드만 채워 보낸다) — 나머지는 undefined로
