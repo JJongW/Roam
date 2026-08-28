@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "../styles/tokens.css";
 
 /* ------------------------------------------------------------------ */
 /* Roam design system — minimal, editorial, Apple HIG aligned          */
@@ -11,54 +12,23 @@
 :root {
   --radius: 0.875rem; /* 14px — generous, Toss-like */
 
-  --background: #ffffff;
-  --foreground: #14161a;
-
-  --card: #ffffff;
   --card-foreground: #14161a;
-  --popover: #ffffff;
   --popover-foreground: #14161a;
 
-  --primary: #4f46e5; /* indigo-600 */
   --primary-foreground: #ffffff;
 
-  --secondary: #f2f4f6;
   --secondary-foreground: #333d4b;
 
-  --muted: #f2f4f6;
-  --muted-foreground: #6b7684;
-
-  --accent: #eef2ff; /* indigo-50 */
   --accent-foreground: #4338ca; /* indigo-700 */
 
-  --destructive: #f04452;
   --destructive-foreground: #ffffff;
 
-  --success: #15c47e;
-  --warning: #ffb020;
-
-  --border: #e5e8eb;
-  --input: #e5e8eb;
   --ring: #4f46e5;
-
-  /* chart palette — chart-1 brand indigo; chart-4 cyan to stay distinct */
-  --chart-1: #4f46e5;
-  --chart-2: #15c47e;
-  --chart-3: #ffb020;
-  --chart-4: #06b6d4;
-  --chart-5: #f04452;
 
   /* map / route */
   --route-line: #4f46e5;
-  --route-visited: #15c47e;
   /* 판단 어휘 지도 색 — 전부 면(fill), 테두리·뱃지로 상태를 안 나른다.
      꼭 갈래·좋았어는 기존 브랜드 토큰(--primary·--route-visited)을 재사용한다. */
-  --judge-must: var(--primary);
-  --judge-curious: #8b88ee;
-  --judge-good: var(--route-visited);
-  --judge-ok: #7edcb4;
-  --judge-bad: #d0595d;
-  --judge-pass: #aab2bf;
   --booth-fill: #f2f4f6;
   --booth-active: #4f46e5;
 
@@ -89,76 +59,26 @@
   --spacing-x14: 3.5rem; /* 56px */
   --spacing-x16: 4rem; /* 64px */
 
-  --spacing-global-gutter: var(--spacing-x4); /* 16px — 화면 좌우 기본 여백 */
-  --spacing-component-default: var(--spacing-x3); /* 12px — 컴포넌트 간 기본 세로 간격 */
-  --spacing-nav-to-title: var(--spacing-x5); /* 20px — 상단바~타이틀 */
-  --spacing-screen-bottom: var(--spacing-x14); /* 56px — 화면 하단 여백 */
-  --spacing-between-text: var(--spacing-x1-5); /* 6px — 텍스트 요소 간 */
-  --spacing-between-chips: var(--spacing-x2); /* 8px — 칩 간 가로 간격 */
-
   /* SEED 모션 토큰 — duration 6단계 + easing 6종 */
-  --motion-d1: 50ms;
-  --motion-d2: 100ms;
-  --motion-d3: 150ms;
-  --motion-d4: 200ms;
-  --motion-d5: 250ms;
-  --motion-d6: 300ms;
   --motion-color-transition: var(--motion-d3);
   --motion-pressed-scale: var(--motion-d3);
-
-  --motion-ease-linear: cubic-bezier(0, 0, 1, 1); /* 등속 — 스피너 등 반복 재생용 */
-  --motion-ease-functional: cubic-bezier(0.35, 0, 0.35, 1);
-  --motion-ease-enter: cubic-bezier(0, 0, 0.15, 1);
-  --motion-ease-exit: cubic-bezier(0.35, 0, 1, 1);
-  --motion-ease-enter-expressive: cubic-bezier(0.03, 0.4, 0.1, 1);
-  --motion-ease-exit-expressive: cubic-bezier(0.35, 0, 0.95, 0.55);
 }
 
 .dark {
-  --background: #0b0d10;
-  --foreground: #f7f8f9;
-
-  --card: #16191d;
   --card-foreground: #f7f8f9;
-  --popover: #16191d;
   --popover-foreground: #f7f8f9;
 
-  --primary: #818cf8; /* indigo-400 — lighter for dark-mode contrast */
   --primary-foreground: #0b0d10;
 
-  --secondary: #1c2024;
   --secondary-foreground: #d1d6db;
 
-  --muted: #1c2024;
-  --muted-foreground: #8b95a1;
-
-  --accent: #20204a; /* deep indigo tint */
   --accent-foreground: #a5b4fc; /* indigo-300 */
 
-  --destructive: #ff6471;
   --destructive-foreground: #0b0d10;
 
-  --success: #2ad48f;
-  --warning: #ffc24b;
-
-  --border: #2a2f36;
-  --input: #2a2f36;
   --ring: #818cf8;
 
-  --chart-1: #818cf8;
-  --chart-2: #2ad48f;
-  --chart-3: #ffc24b;
-  --chart-4: #22d3ee;
-  --chart-5: #ff6471;
-
   --route-line: #818cf8;
-  --route-visited: #2ad48f;
-  --judge-must: var(--primary);
-  --judge-curious: #a5a2f0;
-  --judge-good: var(--route-visited);
-  --judge-ok: #5cbf95;
-  --judge-bad: #e07478;
-  --judge-pass: #6b7280;
   --booth-fill: #1c2024;
   --booth-active: #818cf8;
 
