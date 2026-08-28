@@ -157,9 +157,11 @@ export async function verifyGoogleIdToken(token: string): Promise<GoogleTokenCla
 참조는 `env.APPLE_BUNDLE_ID`/`env.GOOGLE_IOS_CLIENT_ID`(대문자 스네이크 — `env.ts`의 기존
 `env.GEMINI_API_KEY`/`env.ORGANIZER_CODE`와 동일 컨벤션, camelCase 아님).
 
-둘 다 없으면(로컬 mock 개발 환경) 두 엔드포인트는 `503`(웹의 기존 `hasSupabase` 가드와
-같은 패턴)을 반환 — 값이 없는데 검증을 시도하면 `undefined` audience로 모든 토큰이 막히거나
-반대로 검증이 무의미해지는 상태가 조용히 생긴다.
+둘 다 없으면(로컬 mock 개발 환경) 두 엔드포인트는 `fail("INTERNAL", "...")`(500)을
+반환한다 — `ApiErrorCode`(`src/lib/types`)에 이미 있는 코드로 충분해서 새 코드를
+추가하지 않는다(새 코드 하나 추가하는 게 이 프로젝트 전역 타입에 영향 주는 것치곤
+얻는 게 없음). 값이 없는데 검증을 시도하면 `undefined` audience로 모든 토큰이 막히거나
+반대로 검증이 무의미해지는 상태가 조용히 생긴다 — 그래서 사전 가드가 필요하다는 게 요지.
 
 ## 6. 범위 밖
 
@@ -172,5 +174,5 @@ export async function verifyGoogleIdToken(token: string): Promise<GoogleTokenCla
 
 - `npx vitest run` — 신규 라우트 테스트: `verifyAppleIdentityToken`/`verifyGoogleIdToken`을
   mock해서 (a) 기존 provider 계정 로그인 (b) 신규 계정 생성 + `needsOnboarding: true`
-  (c) 토큰 검증 실패 시 401 (d) 환경변수 없을 때 503 네 가지 케이스.
+  (c) 토큰 검증 실패 시 401 (d) 환경변수 없을 때 500(`INTERNAL`) 네 가지 케이스.
 - `npx tsc --noEmit`, `npx eslint <변경 경로>`.
