@@ -7,16 +7,23 @@ const state = vi.hoisted(() => ({
   } | null,
   shouldThrow: false,
   cookieJar: new Map<string, { value: string }>(),
+  // undefined로 세팅하면 env.APPLE_BUNDLE_ID 미설정 상태를 흉내낸다(I2 회귀 테스트용).
+  appleBundleId: "com.roam.app" as string | undefined,
 }));
 vi.mock("@/lib/auth/verify-apple-token", () => ({
-  verifyAppleIdentityToken: async () => {
+  verifyAppleIdentityToken: vi.fn(async () => {
     if (state.shouldThrow) throw new Error("bad token");
     return state.claims;
-  },
+  }),
 }));
 vi.mock("@/lib/env", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@/lib/env")>();
-  return { ...actual, env: { ...actual.env, APPLE_BUNDLE_ID: "com.roam.app" } };
+  return {
+    ...actual,
+    get env() {
+      return { ...actual.env, APPLE_BUNDLE_ID: state.appleBundleId };
+    },
+  };
 });
 // route.ts calls setUserCookie() → next/headers cookies(), which throws outside
 // a real Next.js request scope (`cookies was called outside a request scope`).
@@ -37,6 +44,7 @@ vi.mock("next/headers", () => ({
 
 import { getRepository } from "@/lib/repositories";
 import { recordSignal } from "@/lib/memory/service";
+import { verifyAppleIdentityToken } from "@/lib/auth/verify-apple-token";
 import { POST } from "./route";
 
 function req(body: unknown) {
@@ -53,6 +61,8 @@ describe("POST /api/auth/apple/native", () => {
     state.claims = { sub: "apple-sub-1", email: "a@example.com" };
     state.shouldThrow = false;
     state.cookieJar.clear();
+    state.appleBundleId = "com.roam.app";
+    vi.mocked(verifyAppleIdentityToken).mockClear();
   });
 
   it("신규 Apple 계정이면 생성하고 needsOnboarding true를 준다", async () => {
@@ -100,5 +110,12 @@ describe("POST /api/auth/apple/native", () => {
   it("바디가 스키마에 안 맞으면 400을 준다", async () => {
     const res = await POST(req({}));
     expect(res.status).toBe(400);
+  });
+
+  it("APPLE_BUNDLE_ID 미설정이면 검증을 시도하지 않고 500을 준다", async () => {
+    state.appleBundleId = undefined;
+    const res = await POST(req({ identityToken: "t", fullName: "테스터" }));
+    expect(res.status).toBe(500);
+    expect(verifyAppleIdentityToken).not.toHaveBeenCalled();
   });
 });

@@ -14,18 +14,22 @@ const state = vi.hoisted(() => ({
   } | null,
   shouldThrow: false,
   cookieJar: new Map<string, { value: string }>(),
+  // undefined로 세팅하면 env.GOOGLE_IOS_CLIENT_ID 미설정 상태를 흉내낸다(I2 회귀 테스트용).
+  googleIosClientId: "google-client-id" as string | undefined,
 }));
 vi.mock("@/lib/auth/verify-google-token", () => ({
-  verifyGoogleIdToken: async () => {
+  verifyGoogleIdToken: vi.fn(async () => {
     if (state.shouldThrow) throw new Error("bad token");
     return state.claims;
-  },
+  }),
 }));
 vi.mock("@/lib/env", async (importOriginal) => {
   const actual = await importOriginal<typeof import("@/lib/env")>();
   return {
     ...actual,
-    env: { ...actual.env, GOOGLE_IOS_CLIENT_ID: "google-client-id" },
+    get env() {
+      return { ...actual.env, GOOGLE_IOS_CLIENT_ID: state.googleIosClientId };
+    },
   };
 });
 // route.ts calls setUserCookie() → next/headers cookies(), which throws outside
@@ -47,6 +51,7 @@ vi.mock("next/headers", () => ({
 
 import { getRepository } from "@/lib/repositories";
 import { recordSignal } from "@/lib/memory/service";
+import { verifyGoogleIdToken } from "@/lib/auth/verify-google-token";
 import { POST } from "./route";
 
 function req(body: unknown) {
@@ -68,6 +73,8 @@ describe("POST /api/auth/google/native", () => {
     };
     state.shouldThrow = false;
     state.cookieJar.clear();
+    state.googleIosClientId = "google-client-id";
+    vi.mocked(verifyGoogleIdToken).mockClear();
   });
 
   it("신규 Google 계정이면 생성하고 needsOnboarding true를 준다", async () => {
@@ -115,5 +122,12 @@ describe("POST /api/auth/google/native", () => {
   it("바디가 스키마에 안 맞으면 400을 준다", async () => {
     const res = await POST(req({}));
     expect(res.status).toBe(400);
+  });
+
+  it("GOOGLE_IOS_CLIENT_ID 미설정이면 검증을 시도하지 않고 500을 준다", async () => {
+    state.googleIosClientId = undefined;
+    const res = await POST(req({ idToken: "t" }));
+    expect(res.status).toBe(500);
+    expect(verifyGoogleIdToken).not.toHaveBeenCalled();
   });
 });
