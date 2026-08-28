@@ -75,6 +75,16 @@
 `build-web.test.mjs`의 어서션도 새 이름으로 갱신한다(rem 변환은 이번 범위(색·판단색·모션·
 스페이싱)엔 해당 없음 — 전부 정수 hex/ms/px, rem 대상은 타이포뿐이라 후속으로 넘어감).
 
+**다크모드 선택자도 고쳐야 한다.** 지금 `Roam-design`의 웹 포맷은 다크값을
+`@media (prefers-color-scheme: dark) { :root { ... } }`로 낸다. 그런데 `Roam`은
+`next-themes`를 `attribute="class"`로 써서 `.dark` **클래스**로 테마를 토글한다
+(`src/components/providers.tsx`) — 사용자가 앱 안에서 OS 설정과 다르게 라이트/다크를
+직접 고를 수 있고, 그건 미디어쿼리로는 절대 못 잡는다(OS가 라이트인데 앱에서 다크로
+바꾸면, 우리가 옮기는 5개 카테고리만 라이트값에 낚여 나머지 화면과 안 맞는 눈에 띄는
+버그가 생긴다). `Roam-design`의 `css.mjs` 다크 블록 선택자를 `@media (prefers-color-scheme:
+dark) { :root { ... } }`에서 `.dark { ... }`로 바꾼다 — 지금 유일한 실제 소비자(`Roam`)의
+실제 메커니즘에 맞춘다.
+
 ## 4. 범위 밖
 
 - **가치 색 8종**(`valueColor`, `src/lib/values/index.ts`) — 웹에서 CSS 커스텀 프로퍼티가
