@@ -18,7 +18,8 @@ export const metadata: Metadata = {
   // 홈 title은 동의 화면 앱 이름("Roam")과 글자까지 정확히 일치해야 한다 —
   // Google OAuth 브랜딩 인증은 <title>을 "홈페이지의 앱 이름"으로 읽어 동의 화면
   // 이름과 대조한다. "Roam — Exhibition Navigator"면 "이름 불일치"로 반려됐다.
-  // 설명(Exhibition Navigator 성격)은 아래 description/og로 전달한다.
+  // 앱 성격은 아래 description/og로 전달한다. 부제 "— Exhibition Navigator"는
+  // 폐기됐다(동선·내비 프레이밍 부활 + 이름 이중화). docs/brand/04_naming-messaging.md §1.
   title: {
     default: "Roam",
     template: "%s · Roam",

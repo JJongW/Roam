@@ -90,11 +90,12 @@ export default async function HomePage() {
   // 구조화 데이터 — 앱 이름과 목적을 기계가 읽는 표준 경로로도 명시한다. Google OAuth
   // 인증이 "홈페이지의 앱 이름이 동의 화면과 일치하지 않는다"로 반려한 이력이 있어,
   // 화면 텍스트(h1·소개문)에만 의존하지 않고 여기에도 같은 값을 박아둔다.
+  // 이름은 "Roam" 단독 — alternateName("Roam — Exhibition Navigator")은 폐기됐다.
+  // 이름이 두 가지로 보이면 심사에서 다시 불일치로 읽힌다. docs/brand/04_naming-messaging.md §1.
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: "Roam",
-    alternateName: "Roam — Exhibition Navigator",
     applicationCategory: "TravelApplication",
     operatingSystem: "Web",
     url: "https://roam.ai.kr",
