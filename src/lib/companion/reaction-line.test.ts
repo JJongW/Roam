@@ -138,7 +138,9 @@ describe("buildJudgmentLine — bad, 직전 interest가 must/curious였으면 '�
       t,
       { matchedPriorInterest: true },
     );
-    expect(line).toContain("배웠다");
+    // reactBadMissed는 변주 4개 중 랜덤 픽이라(브랜드북 02_voice-tone.md §2-3),
+    // 특정 문구 포함이 아니라 그 계열에서 나왔는지로 검증한다.
+    expect(DICTS.ko.companion.reactBadMissed).toContain(line);
   });
 
   it("matchedPriorInterest가 아니면 기존 reactBad 경로 그대로", () => {
