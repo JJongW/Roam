@@ -32,10 +32,10 @@ describe("motion tokens", () => {
 });
 
 describe("motion tokens stay in sync with globals.css", () => {
-  const css = readFileSync(
-    join(process.cwd(), "src/app/globals.css"),
-    "utf-8",
-  );
+  const css = [
+    readFileSync(join(process.cwd(), "src/app/globals.css"), "utf-8"),
+    readFileSync(join(process.cwd(), "src/styles/tokens.css"), "utf-8"),
+  ].join("\n");
 
   function cssVar(name: string): string {
     const match = css.match(new RegExp(`--${name}:\\s*([^;]+);`));
