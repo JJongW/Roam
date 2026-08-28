@@ -1,0 +1,176 @@
+# 네이티브 로그인 백엔드 엔드포인트 설계 (Sign in with Apple / Google 네이티브)
+
+**날짜**: 2026-08-29
+**범위**: iOS 네이티브 앱(`Roam-ios`)이 브라우저 리다이렉트 없이 로그인할 수 있도록,
+Apple/Google이 발급한 ID 토큰을 서버가 직접 검증해 기존 `app_user`/`roam_user` 세션
+체계에 편입시키는 API 엔드포인트 2개를 추가한다.
+**전제**: `docs/superpowers/specs/2026-08-27-roam-ios-split-design.md` §6에서 이미 확정된
+인증 아키텍처(닉네임 로그인 없음, Sign in with Apple + Google 네이티브, 진입 시점은
+온보딩/피드 접근 시점)를 그대로 구현한다 — 이 스펙은 그 §6.2가 남겨둔 "신규 엔드포인트
+2개"의 상세 설계다.
+
+## 1. 배경
+
+웹의 기존 OAuth(`/auth/callback`)는 브라우저 리다이렉트(`code` 쿼리 파라미터 교환)를
+전제로 한다. iOS는 `AuthenticationServices`(Sign in with Apple)와 `GIDSignIn`(Google
+Sign-In SDK)로 각각 완전 네이티브 인증을 마치고 **ID 토큰(JWT)**을 손에 쥔 상태로
+서버에 도착한다 — 리다이렉트가 아니라 토큰을 담은 POST 요청. 서버는 이 토큰이 진짜
+Apple/Google이 서명한 게 맞는지 검증하고, 검증된 신원(`sub`)을 기존 `getUserByProvider`/
+`createOAuthUser`(둘 다 이미 provider 문자열에 구애받지 않게 제네릭하게 설계돼 있음,
+`src/lib/repositories/types.ts:210-215`)에 그대로 흘려보낸다.
+
+## 2. 엔드포인트
+
+### `POST /api/auth/apple/native`
+
+**요청 바디**:
+```ts
+{
+  identityToken: string;      // AuthenticationServices가 발급한 JWT
+  fullName?: string;          // Apple은 최초 인가 시에만 이름을 별도 필드로 준다(JWT엔 없음)
+}
+```
+
+**처리**:
+1. `identityToken`을 Apple의 JWKS(`https://appleid.apple.com/auth/keys`)로 서명 검증.
+   `iss` = `https://appleid.apple.com`, `aud` = 앱 번들 ID(`env.APPLE_BUNDLE_ID`, 신규 환경변수).
+2. 검증 실패(서명·만료·aud 불일치) → `401 UNAUTHORIZED`.
+3. `payload.sub`를 `providerAccountId`로, `payload.email`(있으면)을 이메일로 사용.
+4. 이하 §3(공통 처리)로.
+
+### `POST /api/auth/google/native`
+
+**요청 바디**:
+```ts
+{ idToken: string; }  // GIDSignIn이 발급한 ID 토큰
+```
+
+**처리**:
+1. `idToken`을 Google JWKS(`https://www.googleapis.com/oauth2/v3/certs`)로 서명 검증.
+   `iss` ∈ `["https://accounts.google.com", "accounts.google.com"]`, `aud` = iOS OAuth
+   클라이언트 ID(`env.GOOGLE_IOS_CLIENT_ID`, 신규 환경변수).
+2. 검증 실패 → `401 UNAUTHORIZED`.
+3. `payload.sub`를 `providerAccountId`로, `payload.email`/`payload.name`/`payload.picture`
+   그대로 사용(Google idToken엔 매번 다 들어있음 — Apple과 다름).
+4. 이하 §3(공통 처리)로.
+
+## 3. 공통 처리 (두 엔드포인트 동일)
+
+`/auth/callback`(웹)의 신원 확정 이후 로직을 그대로 재사용한다:
+
+```ts
+const repo = await getRepository();
+let appUser = await repo.getUserByProvider(provider, sub);
+if (!appUser) {
+  const nickname = await uniqueNickname(repo, { name, email });
+  appUser = await repo.createOAuthUser({ provider, providerAccountId: sub, nickname, email, avatarUrl });
+}
+await setUserCookie(appUser.id);
+const needsOnboarding = (await readBrain(appUser.id)).interests.length === 0;
+return created({ user: appUser, needsOnboarding });
+```
+
+`needsOnboarding` 응답 필드는 `POST /api/auth/login`(닉네임 로그인) 응답과 동일 형태 —
+iOS가 로그인 직후 온보딩으로 갈지 피드로 바로 갈지 이 필드 하나로 분기한다.
+
+## 4. JWT 검증 — 라이브러리·구조
+
+`jose`(Edge 런타임 호환, 능동 유지보수)를 신규 의존성으로 추가한다. **근거**: 프로젝트에
+아직 JWT 검증 라이브러리가 전혀 없고(확인함, `package.json`에 `jose`/`jsonwebtoken` 없음),
+Apple·Google 둘 다 JWKS 기반 RS256 서명 검증이 필요해 직접 구현하면 서명 검증 자체를
+재발명하는 꼴 — 이건 "우리가 못 풀 문제가 아니라 안 풀어도 되는 문제".
+
+검증 로직은 라우트 핸들러에서 분리해 **별도 모듈**로 뺀다 — 라우트 테스트가 실제 네트워크로
+Apple/Google JWKS를 안 때리고 이 모듈만 mock하도록.
+
+```
+src/lib/auth/
+  verify-apple-token.ts   verifyAppleIdentityToken(token) -> { sub, email? }
+  verify-google-token.ts  verifyGoogleIdToken(token) -> { sub, email?, name?, picture? }
+```
+
+```ts
+// src/lib/auth/verify-apple-token.ts
+import { createRemoteJWKSet, jwtVerify } from "jose";
+import { env } from "@/lib/env";
+
+const APPLE_JWKS = createRemoteJWKSet(new URL("https://appleid.apple.com/auth/keys"));
+
+export interface AppleTokenClaims {
+  sub: string;
+  email?: string;
+}
+
+export async function verifyAppleIdentityToken(token: string): Promise<AppleTokenClaims> {
+  const { payload } = await jwtVerify(token, APPLE_JWKS, {
+    issuer: "https://appleid.apple.com",
+    audience: env.APPLE_BUNDLE_ID,
+  });
+  return {
+    sub: payload.sub as string,
+    email: typeof payload.email === "string" ? payload.email : undefined,
+  };
+}
+```
+
+```ts
+// src/lib/auth/verify-google-token.ts
+import { createRemoteJWKSet, jwtVerify } from "jose";
+import { env } from "@/lib/env";
+
+const GOOGLE_JWKS = createRemoteJWKSet(new URL("https://www.googleapis.com/oauth2/v3/certs"));
+
+export interface GoogleTokenClaims {
+  sub: string;
+  email?: string;
+  name?: string;
+  picture?: string;
+}
+
+export async function verifyGoogleIdToken(token: string): Promise<GoogleTokenClaims> {
+  const { payload } = await jwtVerify(token, GOOGLE_JWKS, {
+    issuer: ["https://accounts.google.com", "accounts.google.com"],
+    audience: env.GOOGLE_IOS_CLIENT_ID,
+  });
+  return {
+    sub: payload.sub as string,
+    email: typeof payload.email === "string" ? payload.email : undefined,
+    name: typeof payload.name === "string" ? payload.name : undefined,
+    picture: typeof payload.picture === "string" ? payload.picture : undefined,
+  };
+}
+```
+
+`jwtVerify`가 던지는 에러(서명 불일치·만료·`aud`/`iss` 불일치 전부 `JWTVerificationFailed`
+계열)는 라우트에서 캐치해 `401`로 매핑한다 — 실패 사유를 클라이언트에 노출하지 않는다
+(왜 실패했는지 알려주는 건 토큰 위조 시도에 힌트를 주는 꼴).
+
+## 5. 신규 환경변수
+
+`src/lib/env.ts`의 `schema`(zod object)에 두 필드 추가, `parsed = schema.safeParse({...})`
+호출부에도 `e(process.env.X)`로 각각 추가(기존 패턴과 동일 — 빈 문자열은 미설정 취급):
+- `APPLE_BUNDLE_ID: z.string().min(1).optional()` — iOS 앱 번들 ID(Apple identityToken의
+  `aud` 검증용).
+- `GOOGLE_IOS_CLIENT_ID: z.string().min(1).optional()` — Google Cloud Console의 iOS OAuth
+  클라이언트 ID.
+
+참조는 `env.APPLE_BUNDLE_ID`/`env.GOOGLE_IOS_CLIENT_ID`(대문자 스네이크 — `env.ts`의 기존
+`env.GEMINI_API_KEY`/`env.ORGANIZER_CODE`와 동일 컨벤션, camelCase 아님).
+
+둘 다 없으면(로컬 mock 개발 환경) 두 엔드포인트는 `503`(웹의 기존 `hasSupabase` 가드와
+같은 패턴)을 반환 — 값이 없는데 검증을 시도하면 `undefined` audience로 모든 토큰이 막히거나
+반대로 검증이 무의미해지는 상태가 조용히 생긴다.
+
+## 6. 범위 밖
+
+- iOS 쪽 `AuthenticationServices`/`GIDSignIn` 연동 — 별도 스펙(다음 순서).
+- 웹의 닉네임 로그인 제거 — 이미 별도 후속 항목으로 스펙 §2에 파킹됨, 안 건드림.
+- admin 로그인 경로 — `/auth/callback`의 admin 분기는 그대로 두고 이 스펙은 방문객
+  로그인만 다룬다.
+
+## 7. 검증
+
+- `npx vitest run` — 신규 라우트 테스트: `verifyAppleIdentityToken`/`verifyGoogleIdToken`을
+  mock해서 (a) 기존 provider 계정 로그인 (b) 신규 계정 생성 + `needsOnboarding: true`
+  (c) 토큰 검증 실패 시 401 (d) 환경변수 없을 때 503 네 가지 케이스.
+- `npx tsc --noEmit`, `npx eslint <변경 경로>`.
