@@ -1,12 +1,13 @@
 "use client";
 
-import { cloneElement, isValidElement, useId, useState } from "react";
+import { cloneElement, isValidElement, useId, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Plus, Trash2, Loader2, CalendarClock } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import { api, ApiClientError } from "@/lib/api/client";
 import { eventInputSchema } from "@/lib/schemas";
+import { shakeElement } from "@/lib/dom/shake";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -60,6 +61,7 @@ export function EventManager({
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState<Draft>({});
   const [busy, setBusy] = useState(false);
+  const sheetRef = useRef<HTMLDivElement>(null);
   const boothName = (id: string) => booths.find((b) => b.id === id)?.name ?? id;
 
   function startCreate() {
@@ -79,6 +81,7 @@ export function EventManager({
     const parsed = eventInputSchema.safeParse(payload);
     if (!parsed.success) {
       toast.error(parsed.error.issues[0]?.message ?? "입력을 확인해 주세요");
+      shakeElement(sheetRef.current);
       return;
     }
     setBusy(true);
@@ -89,6 +92,7 @@ export function EventManager({
       router.refresh();
     } catch (e) {
       toast.error(e instanceof ApiClientError ? e.error.message : "저장 실패");
+      shakeElement(sheetRef.current);
     } finally {
       setBusy(false);
     }
@@ -165,7 +169,11 @@ export function EventManager({
       )}
 
       <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent side="bottom" className="max-h-[90dvh] overflow-y-auto">
+        <SheetContent
+          ref={sheetRef}
+          side="bottom"
+          className="max-h-[90dvh] overflow-y-auto"
+        >
           <SheetHeader>
             <SheetTitle>새 이벤트</SheetTitle>
           </SheetHeader>

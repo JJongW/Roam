@@ -1,12 +1,13 @@
 "use client";
 
-import { cloneElement, isValidElement, useId, useState } from "react";
+import { cloneElement, isValidElement, useId, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Plus, Pencil, Loader2, MapPin } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import { api, ApiClientError } from "@/lib/api/client";
 import { exhibitionInputSchema } from "@/lib/schemas";
+import { shakeElement } from "@/lib/dom/shake";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -33,6 +34,7 @@ export function ExhibitionManager({
   const [editing, setEditing] = useState<Exhibition | null>(null);
   const [draft, setDraft] = useState<Draft>({});
   const [busy, setBusy] = useState(false);
+  const sheetRef = useRef<HTMLDivElement>(null);
 
   function startCreate() {
     setEditing(null);
@@ -66,6 +68,7 @@ export function ExhibitionManager({
     const parsed = exhibitionInputSchema.safeParse(payload);
     if (!parsed.success) {
       toast.error(parsed.error.issues[0]?.message ?? "입력을 확인해 주세요");
+      shakeElement(sheetRef.current);
       return;
     }
     setBusy(true);
@@ -78,6 +81,7 @@ export function ExhibitionManager({
       router.refresh();
     } catch (e) {
       toast.error(e instanceof ApiClientError ? e.error.message : "저장 실패");
+      shakeElement(sheetRef.current);
     } finally {
       setBusy(false);
     }
@@ -120,7 +124,11 @@ export function ExhibitionManager({
       </div>
 
       <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent side="bottom" className="max-h-[90dvh] overflow-y-auto">
+        <SheetContent
+          ref={sheetRef}
+          side="bottom"
+          className="max-h-[90dvh] overflow-y-auto"
+        >
           <SheetHeader>
             <SheetTitle>{editing ? "전시 수정" : "새 전시"}</SheetTitle>
           </SheetHeader>
