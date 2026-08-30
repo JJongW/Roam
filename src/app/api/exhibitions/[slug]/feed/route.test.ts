@@ -50,6 +50,24 @@ describe("GET /api/exhibitions/[slug]/feed", () => {
       { params: Promise.resolve({ slug }) },
     );
     expect(res.status).toBe(200);
+    const body = await res.json();
+    // rhythm 파라미터가 잘못된 값이면 light(기본값)으로 동작 — 6개 항목
+    expect(body.data).toHaveLength(6);
+  });
+
+  it("rhythm=rest 파라미터가 주어지면 rest 리듬으로 동작한다", async () => {
+    const repo = await getRepository();
+    const { data: exhibitions } = await repo.listExhibitions({ limit: 1 });
+    const slug = exhibitions[0].slug;
+
+    const res = await GET(
+      req(`http://localhost/api/exhibitions/${slug}/feed?rhythm=rest`),
+      { params: Promise.resolve({ slug }) },
+    );
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    // rhythm=rest는 4개 항목
+    expect(body.data).toHaveLength(4);
   });
 
   it("존재하지 않는 slug면 404를 준다", async () => {
