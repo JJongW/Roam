@@ -176,3 +176,25 @@ export async function verifyGoogleIdToken(token: string): Promise<GoogleTokenCla
   mock해서 (a) 기존 provider 계정 로그인 (b) 신규 계정 생성 + `needsOnboarding: true`
   (c) 토큰 검증 실패 시 401 (d) 환경변수 없을 때 500(`INTERNAL`) 네 가지 케이스.
 - `npx tsc --noEmit`, `npx eslint <변경 경로>`.
+
+## 8. 후속 — provider 문자열과 identity 공간 분리 (병합 리뷰에서 발견)
+
+§3의 `provider` 값을 초안 그대로 `"google"`/`"apple"`로 쓰면 웹의 기존 OAuth 콜백
+(`/auth/callback`)과 provider 문자열이 겹친다. 그런데 `providerAccountId`로 넣는 값의
+정체가 서로 다르다 — 웹 콜백(`src/app/auth/callback/route.ts:100`)은 `authUser.id`,
+즉 Supabase GoTrue가 발급한 UUID를 쓰고, 이 스펙의 네이티브 라우트는 §2에서 그대로
+서술한 대로 `payload.sub`, 즉 Google/Apple이 발급한 진짜 sub(숫자 문자열)를 쓴다. 같은
+`provider="google"` 아래 `providerAccountId` 공간이 통째로 다른 두 값 체계가 공존하는
+셈이라, 유니크 인덱스(`provider`, `providerAccountId`)는 절대 충돌하지 않지만 — 바로 그래서
+같은 사람이 웹으로 한 번, iOS 앱으로 한 번 로그인하면 서로 안 이어진 `app_user` 두 개가
+조용히 생긴다. 노트/브레인/온보딩 상태가 계정별로 갈라진다는 뜻.
+
+**최종 구현에서 낸 결론**: `provider`를 `"google_ios"`/`"apple_ios"`로 바꿔서 네이티브
+로그인의 identity 공간을 웹과 의도적으로 분리했다. 이건 두 identity를 하나로 합치는
+해법이 아니다 — 웹/iOS 양쪽으로 로그인한 사용자는 오늘 기준으로도 여전히 별개 계정을
+얻는다. 다만 그 사실이 스키마에서 "실수로 안 이어진 버그"가 아니라 "의도적으로 분리해둔,
+아직 병합을 안 한 상태"로 읽히게 만든다(`provider` 컬럼이 `google_ios`라고 문자 그대로
+말해준다). 계정 병합/재사용 전략은 이 스펙의 범위가 아니고, **iOS 클라이언트가 실제로
+출시되기 전에는 반드시 명시적으로 결정해야 하는 후속 항목**으로 남긴다 — 웹 Apple 로그인이
+아직 없어(§2/로그인 폼 확인함, Google OAuth만 존재) Apple 쪽은 오늘 시점엔 이 충돌이
+없지만, 나중에 웹 Apple 로그인이 생기면 똑같은 문제가 재현되므로 컨벤션은 미리 맞춰둔다.
