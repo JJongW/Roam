@@ -26,6 +26,7 @@ import {
   boothInputSchema,
   boothEnrichmentAuthorInputSchema,
 } from "@/lib/schemas";
+import { shakeElement } from "@/lib/dom/shake";
 import {
   uploadBoothImage,
   BOOTH_IMAGE_MAX_COUNT,
@@ -105,6 +106,7 @@ export function BoothManager({
     memoryHooksText: "",
   });
   const [busy, setBusy] = useState(false);
+  const sheetRef = useRef<HTMLDivElement>(null);
   const catById = new Map(categories.map((c) => [c.id, c]));
 
   const [query, setQuery] = useState("");
@@ -223,6 +225,7 @@ export function BoothManager({
     const parsed = boothInputSchema.safeParse(payload);
     if (!parsed.success) {
       toast.error(parsed.error.issues[0]?.message ?? "입력을 확인해 주세요");
+      shakeElement(sheetRef.current);
       return;
     }
     const enrichmentPayload = {
@@ -247,6 +250,7 @@ export function BoothManager({
         enrichmentParsed.error.issues[0]?.message ??
           "저작 정보를 확인해 주세요",
       );
+      shakeElement(sheetRef.current);
       return;
     }
     setBusy(true);
@@ -264,6 +268,7 @@ export function BoothManager({
       router.refresh();
     } catch (e) {
       toast.error(e instanceof ApiClientError ? e.error.message : "저장 실패");
+      shakeElement(sheetRef.current);
     } finally {
       setBusy(false);
     }
@@ -443,7 +448,11 @@ export function BoothManager({
       )}
 
       <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent side="bottom" className="max-h-[90dvh] overflow-y-auto">
+        <SheetContent
+          ref={sheetRef}
+          side="bottom"
+          className="max-h-[90dvh] overflow-y-auto"
+        >
           <SheetHeader>
             <SheetTitle>{editing ? "부스 수정" : "새 부스"}</SheetTitle>
           </SheetHeader>
