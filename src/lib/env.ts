@@ -24,14 +24,6 @@ const schema = z.object({
   /** 쉼표로 구분한 admin 접근 허용 이메일(Google 로그인 검증 대상). 설정되면
    *  ORGANIZER_CODE보다 우선한다 — 신원 기반 게이트가 공유 코드보다 강하다. */
   ADMIN_EMAILS: z.string().min(1).optional(),
-  /** iOS 앱 번들 ID — Sign in with Apple identityToken의 aud 검증용. */
-  APPLE_BUNDLE_ID: z.string().min(1).optional(),
-  /** Supabase 프로젝트의 레거시 공유 JWT secret(대시보드 Settings > API > JWT
-   *  Settings). 우리 서버가 검증한 로그인 결과(app_user.id)를 실어 Supabase 호환
-   *  JWT를 직접 서명하는 데 쓴다 — Supabase Auth 자체는 쓰지 않고 RLS의
-   *  auth.uid()만 이 서명 검증을 통해 채워진다. 미설정이면 iOS는 기존 서버
-   *  경유(anon key 노출 없음) 방식 그대로 동작한다. */
-  SUPABASE_JWT_SECRET: z.string().min(1).optional(),
   /** Google Cloud Console의 iOS OAuth 클라이언트 ID — Google idToken의 aud 검증용. */
   GOOGLE_IOS_CLIENT_ID: z.string().min(1).optional(),
   CLOUDINARY_CLOUD_NAME: z.string().min(1).optional(),
@@ -61,8 +53,6 @@ const parsed = schema.safeParse({
   ORGANIZER_CODE: e(process.env.ORGANIZER_CODE),
   SESSION_SECRET: e(process.env.SESSION_SECRET),
   ADMIN_EMAILS: e(process.env.ADMIN_EMAILS),
-  APPLE_BUNDLE_ID: e(process.env.APPLE_BUNDLE_ID),
-  SUPABASE_JWT_SECRET: e(process.env.SUPABASE_JWT_SECRET),
   GOOGLE_IOS_CLIENT_ID: e(process.env.GOOGLE_IOS_CLIENT_ID),
   CLOUDINARY_CLOUD_NAME: e(process.env.CLOUDINARY_CLOUD_NAME),
   CLOUDINARY_API_KEY: e(process.env.CLOUDINARY_API_KEY),

@@ -210,11 +210,14 @@ export const loginSchema = z.object({
 });
 export type LoginInput = z.infer<typeof loginSchema>;
 
-export const appleNativeLoginSchema = z.object({
-  identityToken: z.string().min(1),
+// iOS가 Supabase Auth(signInWithIdToken)로 이미 로그인을 마친 뒤, 그 세션의
+// access token(Authorization 헤더)으로 app_user 프로필을 연결하는 요청 바디.
+// identityToken을 우리가 직접 검증하던 옛 방식(apple/native)은 제거됨 — Supabase가
+// 그 검증을 대신한다.
+export const appleLinkProfileSchema = z.object({
   fullName: z.string().trim().min(1).max(100).optional(),
 });
-export type AppleNativeLoginInput = z.infer<typeof appleNativeLoginSchema>;
+export type AppleLinkProfileInput = z.infer<typeof appleLinkProfileSchema>;
 
 export const googleNativeLoginSchema = z.object({
   idToken: z.string().min(1),
