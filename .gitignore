@@ -53,10 +53,12 @@ next-env.d.ts
 # local agent tooling
 .claude/
 
-# Supabase SQL (migrations/seed/reset) — applied manually via SQL Editor, not versioned.
+# Supabase local dir — seed.sql/reset.sql(생성물·대용량)·.temp(CLI 캐시)는 안 올린다.
+# migrations/만 예외로 버전관리 — 두 기기에서 번호 충돌·드리프트 잡으려면 커밋 필요.
 # 앵커(/) 필수 — 없으면 src/lib/supabase/ 같은 하위 디렉터리까지 잡아서, 거기 새로
 # 만든 파일이 조용히 커밋에서 빠진다(앱 코드가 통째로 무시될 뻔했다).
-/supabase/
+/supabase/*
+!/supabase/migrations
 
 # 투명 로미 영상 원본(ProRes, 대용량) — 배포엔 변환된 .webm만
 public/*.mov
