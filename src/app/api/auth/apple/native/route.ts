@@ -5,6 +5,7 @@ import { verifyAppleIdentityToken } from "@/lib/auth/verify-apple-token";
 import { uniqueNickname } from "@/lib/auth/oauth-nickname";
 import { readBrain } from "@/lib/memory/service";
 import { env } from "@/lib/env";
+import { mintSupabaseAccessToken } from "@/lib/auth/supabase-jwt";
 
 // 웹은 현재 Apple 로그인 경로가 없다(Google OAuth만, login-form.tsx 확인함) — 그래서
 // 여기엔 오늘 시점 충돌할 기존 identity 공간이 없다. 그래도 google_ios와 컨벤션을
@@ -45,5 +46,9 @@ export async function POST(req: Request) {
 
   await setUserCookie(appUser.id);
   const needsOnboarding = (await readBrain(appUser.id)).interests.length === 0;
-  return created({ user: appUser, needsOnboarding });
+  // 0041 RLS(owner-scoped) 대상 테이블을 iOS가 anon key + 이 토큰으로 직접 읽고/
+  // 쓸 수 있게 한다 — SUPABASE_JWT_SECRET 미설정이면 null, 클라이언트는 기존
+  // 서버 경유 방식으로 계속 동작한다.
+  const supabaseAccessToken = await mintSupabaseAccessToken(appUser.id);
+  return created({ user: appUser, needsOnboarding, supabaseAccessToken });
 }
