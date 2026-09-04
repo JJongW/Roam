@@ -1695,11 +1695,13 @@ export class SupabaseRepository implements Repository {
     sessionId: string,
     exhibitionId: string,
     input: AnalyticsEventInput,
+    userId?: string | null,
   ): Promise<void> {
     const db = await this.db();
     const res = await db.from("analytics_event").insert({
       id: uid("an"),
       session_id: sessionId,
+      user_id: userId ?? null,
       exhibition_id: exhibitionId,
       type: input.type,
       booth_id: input.boothId ?? null,

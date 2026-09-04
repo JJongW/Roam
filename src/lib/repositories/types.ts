@@ -291,10 +291,13 @@ export interface Repository {
   ): Promise<ReportResult>;
 
   // analytics
+  /** `userId`는 로그인 사용자 id. 취향 세그먼트 × 행동 교차 분석의 조인 키이므로
+   *  로그인 상태면 반드시 함께 넘긴다(누락되면 소급 복구가 불가능하다). */
   recordAnalytics(
     sessionId: string,
     exhibitionId: string,
     input: AnalyticsEventInput,
+    userId?: string | null,
   ): Promise<void>;
   analyticsHeatmap(
     exhibitionId: string,

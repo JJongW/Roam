@@ -911,10 +911,12 @@ export class MockRepository implements Repository {
     sessionId: string,
     exhibitionId: string,
     input: AnalyticsEventInput,
+    userId?: string | null,
   ): Promise<void> {
     store().analytics.push({
       id: uid("an"),
       sessionId,
+      userId: userId ?? null,
       exhibitionId,
       createdAt: now(),
       ...input,
