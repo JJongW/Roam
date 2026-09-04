@@ -741,7 +741,7 @@ export class MockRepository implements Repository {
 
   async createOAuthUser(identity: OAuthIdentity): Promise<User> {
     const user: User = {
-      id: uid("user"),
+      id: identity.id ?? uid("user"),
       nickname: identity.nickname,
       createdAt: now(),
       provider: identity.provider,

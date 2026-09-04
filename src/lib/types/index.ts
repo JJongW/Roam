@@ -276,6 +276,10 @@ export interface OAuthIdentity {
   nickname: string;
   email?: string;
   avatarUrl?: string;
+  /** 지정하면 이 값을 app_user.id로 그대로 쓴다(미지정 시 새로 생성) — Supabase
+   *  Auth로 직접 로그인하는 경로(iOS Apple)가 auth.uid()와 app_user.id를 같은
+   *  값으로 맞춰야 RLS owner-scoped 정책(0041)이 별도 매핑 없이 바로 먹는다. */
+  id?: string;
 }
 
 /**

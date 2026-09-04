@@ -1284,7 +1284,7 @@ export class SupabaseRepository implements Repository {
   async createOAuthUser(identity: OAuthIdentity): Promise<User> {
     const db = await this.db();
     const row = {
-      id: uid("user"),
+      id: identity.id ?? uid("user"),
       nickname: identity.nickname,
       created_at: now(),
       provider: identity.provider,
