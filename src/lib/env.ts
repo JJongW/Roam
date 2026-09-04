@@ -24,8 +24,6 @@ const schema = z.object({
   /** 쉼표로 구분한 admin 접근 허용 이메일(Google 로그인 검증 대상). 설정되면
    *  ORGANIZER_CODE보다 우선한다 — 신원 기반 게이트가 공유 코드보다 강하다. */
   ADMIN_EMAILS: z.string().min(1).optional(),
-  /** iOS 앱 번들 ID — Sign in with Apple identityToken의 aud 검증용. */
-  APPLE_BUNDLE_ID: z.string().min(1).optional(),
   /** Google Cloud Console의 iOS OAuth 클라이언트 ID — Google idToken의 aud 검증용. */
   GOOGLE_IOS_CLIENT_ID: z.string().min(1).optional(),
   CLOUDINARY_CLOUD_NAME: z.string().min(1).optional(),
@@ -55,7 +53,6 @@ const parsed = schema.safeParse({
   ORGANIZER_CODE: e(process.env.ORGANIZER_CODE),
   SESSION_SECRET: e(process.env.SESSION_SECRET),
   ADMIN_EMAILS: e(process.env.ADMIN_EMAILS),
-  APPLE_BUNDLE_ID: e(process.env.APPLE_BUNDLE_ID),
   GOOGLE_IOS_CLIENT_ID: e(process.env.GOOGLE_IOS_CLIENT_ID),
   CLOUDINARY_CLOUD_NAME: e(process.env.CLOUDINARY_CLOUD_NAME),
   CLOUDINARY_API_KEY: e(process.env.CLOUDINARY_API_KEY),
