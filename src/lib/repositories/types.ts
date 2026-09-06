@@ -73,6 +73,11 @@ export interface Repository {
   // booths
   listBooths(slug: string, query?: ListBoothQuery): Promise<Paginated<Booth>>;
   listBoothsByExhibitionId(exhibitionId: string): Promise<Booth[]>;
+  /** 인입 전용 — 목록 조회가 성능 때문에 빼는 컬럼(images·longDescription)까지
+   *  전부 읽는다. "빈 칸만 채운다"는 규칙은 안 보이는 컬럼을 빈 칸으로 오해하는
+   *  순간 깨지고, 충돌 판정도 없이 덮어쓴다. mock은 컬럼을 안 좁혀서 이 차이가
+   *  테스트에 안 잡힌다 — 운영 dry-run에서 잡혔다. */
+  listBoothsFull(exhibitionId: string): Promise<Booth[]>;
   getBoothDetail(id: string): Promise<BoothDetail | null>;
   createBooth(input: BoothInput): Promise<Booth>;
   updateBooth(id: string, input: Partial<BoothInput>): Promise<Booth | null>;

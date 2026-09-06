@@ -26,7 +26,7 @@ export async function POST(req: Request) {
   }
 
   const [booths, halls, categories] = await Promise.all([
-    repo.listBoothsByExhibitionId(exhibitionId),
+    repo.listBoothsFull(exhibitionId),
     repo.listHalls(exhibitionId),
     repo.listCategories(exhibitionId),
   ]);

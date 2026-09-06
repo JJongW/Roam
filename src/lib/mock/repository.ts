@@ -227,6 +227,11 @@ export class MockRepository implements Repository {
     return paginate(list, query?.cursor, query?.limit);
   }
 
+  // mock은 컬럼을 좁히지 않으므로 목록 조회와 같다.
+  async listBoothsFull(exhibitionId: string): Promise<Booth[]> {
+    return this.listBoothsByExhibitionId(exhibitionId);
+  }
+
   async listBoothsByExhibitionId(exhibitionId: string): Promise<Booth[]> {
     return store().booths.filter((b) => b.exhibitionId === exhibitionId);
   }

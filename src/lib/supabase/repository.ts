@@ -682,6 +682,29 @@ export class SupabaseRepository implements Repository {
     return booths;
   }
 
+  async listBoothsFull(exhibitionId: string): Promise<Booth[]> {
+    const db = await this.db();
+    // select("*") — BOOTH_LIST_COLS는 images·long_description을 뺀다. 인입이
+    // 그걸로 읽으면 그 두 필드를 늘 빈 칸으로 보고 조용히 덮어쓴다.
+    const { data, error } = await db
+      .from("booth")
+      .select("*")
+      .eq("exhibition_id", exhibitionId);
+    if (error) throw new Error(`인입용 부스 조회 실패: ${error.message}`);
+    const booths = (data ?? []).map(mapBooth);
+    const enrichRows = await inChunks<Row>(
+      booths.map((b) => b.id),
+      "부스 저작 정보",
+      (slice) => db.from("booth_enrichment").select("*").in("booth_id", slice),
+    );
+    const byId = new Map(enrichRows.map((e) => [String(e.booth_id), e]));
+    for (const b of booths) {
+      const e = byId.get(b.id);
+      if (e) attachEnrichment(b, e);
+    }
+    return booths;
+  }
+
   async getBoothDetail(id: string): Promise<BoothDetail | null> {
     const db = await this.db();
     const { data: boothRow } = await db
