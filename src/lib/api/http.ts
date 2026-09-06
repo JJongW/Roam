@@ -136,8 +136,17 @@ function verifySignedUserId(signed: string): string | null {
 export async function getUserId(): Promise<string | null> {
   const store = await cookies();
   const raw = store.get(USER_COOKIE)?.value;
-  if (raw) return verifySignedUserId(raw);
+  // 쿠키가 있어도 서명 검증에 실패하면(시크릿 회전, 다른 환경에서 온 쿠키 등)
+  // 그대로 null을 돌려주면 안 된다 — 그러면 멀쩡한 Bearer 토큰을 들고 온 iOS
+  // 요청이 "죽은 쿠키" 하나 때문에 통째로 비로그인 취급된다. 아래 Bearer로 넘긴다.
+  const cookieUserId = raw ? verifySignedUserId(raw) : null;
+  if (cookieUserId) return cookieUserId;
 
+  return getBearerUserId();
+}
+
+/** `Authorization: Bearer <supabase access token>`이 가리키는 사용자 id(없으면 null). */
+export async function getBearerUserId(): Promise<string | null> {
   const token = (await headers())
     .get("authorization")
     ?.replace(/^Bearer\s+/i, "");

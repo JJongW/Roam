@@ -1,6 +1,6 @@
 import { createServerClient as createSsrClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { env } from "@/lib/env";
 
 /**
@@ -55,4 +55,39 @@ export function createServiceClient() {
     env.SUPABASE_SERVICE_ROLE_KEY,
     { auth: { persistSession: false, autoRefreshToken: false } },
   );
+}
+
+/**
+ * 네이티브(iOS) 요청용 클라이언트 — `Authorization: Bearer <supabase access token>`을
+ * 그대로 Supabase에 실어 보낸다. 그래야 Postgres에서 `auth.uid()`가 그 사용자로
+ * 풀려 0041의 owner-scoped RLS(`auth.uid()::text = id`)가 **의도대로** 통과한다.
+ *
+ * 왜 필요한가: `createServerClient()`는 anon 키 + **쿠키** 기반이라 웹 브라우저
+ * 세션만 인식한다. iOS는 Supabase 세션을 Keychain에 들고 우리 API엔 Bearer 헤더로
+ * 보내므로 쿠키가 없고, 그 결과 `auth.uid()`가 null이 되어 app_user·booth_note
+ * 조회가 **에러 없이 0행**으로 돌아왔다(관리자 화면이 겪었던 것과 같은 함정 —
+ * `db()` 주석 참고). 서비스 롤로 우회하지 않고 사용자 토큰으로 접근하는 이유는,
+ * RLS가 iOS 요청에도 계속 "자기 것만" 경계를 그어주길 원하기 때문이다.
+ */
+export function createBearerClient(accessToken: string) {
+  return createClient(
+    env.NEXT_PUBLIC_SUPABASE_URL!,
+    env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      auth: { persistSession: false, autoRefreshToken: false },
+      global: { headers: { Authorization: `Bearer ${accessToken}` } },
+    },
+  );
+}
+
+/** 요청에 실린 Supabase access token(없으면 null). 요청 스코프 밖에서는 null. */
+export async function getRequestBearerToken(): Promise<string | null> {
+  try {
+    const raw = (await headers()).get("authorization");
+    const token = raw?.replace(/^Bearer\s+/i, "").trim();
+    return token ? token : null;
+  } catch {
+    // 요청 컨텍스트가 없는 곳(빌드 타임·스크립트)에서 호출될 수 있다.
+    return null;
+  }
 }
