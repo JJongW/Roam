@@ -24,6 +24,7 @@ import type { User } from "@/lib/types";
 
 export default function AdminAccountsPage() {
   const [users, setUsers] = useState<User[]>([]);
+  const [capped, setCapped] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -31,8 +32,12 @@ export default function AdminAccountsPage() {
     setLoading(true);
     setError(false);
     try {
-      const { users } = await api.get<{ users: User[] }>("/api/admin/users");
+      const { users, capped } = await api.get<{
+        users: User[];
+        capped: boolean;
+      }>("/api/admin/users");
       setUsers(users);
+      setCapped(capped);
     } catch {
       setError(true);
     } finally {
@@ -58,7 +63,11 @@ export default function AdminAccountsPage() {
     <div className="space-y-6">
       <header>
         <h1 className="text-2xl font-extrabold">계정</h1>
-        <p className="text-sm text-muted-foreground">{users.length}개 계정</p>
+        <p className="text-sm text-muted-foreground">
+          {capped
+            ? `최근 ${users.length}개 계정 (전체 아님)`
+            : `${users.length}개 계정`}
+        </p>
       </header>
 
       {loading ? (
