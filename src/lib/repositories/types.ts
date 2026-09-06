@@ -51,6 +51,13 @@ export interface ListBoothQuery {
   limit?: number;
 }
 
+/**
+ * 방문객과 운영 콘솔이 같이 쓰는 읽기에 붙는 옵션. 방문객은 이 옵션 없이
+ * 호출해 owner-scoped RLS를 그대로 받고, requireAdmin()을 통과한 라우트만
+ * asAdmin으로 전체를 본다. Supabase 구현에서만 의미가 있다(mock은 RLS 없음).
+ */
+export type AdminRead = { asAdmin?: boolean };
+
 export interface Repository {
   mode: "mock" | "supabase";
 
@@ -179,7 +186,7 @@ export interface Repository {
   /** 재증류 소스 — 사용자 신호 로그 조회(최신순). */
   listUserSignals(
     userId: string,
-    opts?: { exhibitionId?: string; limit?: number },
+    opts?: { exhibitionId?: string; limit?: number } & AdminRead,
   ): Promise<UserSignal[]>;
   /** 전시 전체 사용자 신호 조회(관리자 타임라인용) — userId로 안 좁힘. */
   listExhibitionSignals(
@@ -187,7 +194,7 @@ export interface Repository {
     opts?: { limit?: number },
   ): Promise<UserSignal[]>;
   /** 증류된 종단 브레인 조회. 없으면 null. */
-  getUserBrain(userId: string): Promise<UserBrain | null>;
+  getUserBrain(userId: string, opts?: AdminRead): Promise<UserBrain | null>;
   /** 증류된 브레인 upsert. */
   saveUserBrain(brain: UserBrain): Promise<void>;
   /** 이 전시에서 회고(관람 마치기 → VisitDigest)를 남긴 사용자 id 목록.
@@ -200,7 +207,7 @@ export interface Repository {
   listUsers(opts?: { limit?: number; offset?: number }): Promise<User[]>;
   /** 계정 삭제(관리자용). 존재 안 하면 false. */
   deleteUser(id: string): Promise<boolean>;
-  getUser(id: string): Promise<User | null>;
+  getUser(id: string, opts?: AdminRead): Promise<User | null>;
   getUserByNickname(nickname: string): Promise<User | null>;
   /** 닉네임 변경(로그인 후 언제든) — 다른 계정이 이미 쓰는 닉네임이면 null.
    *  대소문자 무시 중복 검사는 호출부(route)가 getUserByNickname으로 먼저
@@ -260,7 +267,7 @@ export interface Repository {
   ): Promise<{ boothId: string; memo: string }[]>;
 
   // bookmarks
-  listBookmarks(userId: string): Promise<Bookmark[]>;
+  listBookmarks(userId: string, opts?: AdminRead): Promise<Bookmark[]>;
   addBookmark(userId: string, input: BookmarkInput): Promise<Bookmark>;
   removeBookmark(userId: string, input: BookmarkInput): Promise<boolean>;
 
