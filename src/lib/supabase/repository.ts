@@ -3,7 +3,12 @@ import { computeJourneyFunnel } from "@/lib/admin/journey-funnel";
 import { computeFlowEdges } from "@/lib/admin/flow";
 import { REPORT_HIDE_THRESHOLD } from "@/lib/constants";
 import { deriveValueTags } from "@/lib/values/derive";
-import { createServerClient, createServiceClient } from "@/lib/supabase/server";
+import {
+  createBearerClient,
+  createServerClient,
+  createServiceClient,
+  getRequestBearerToken,
+} from "@/lib/supabase/server";
 import { computeTasteAccuracy, type TasteAccuracy } from "@/lib/memory/taste";
 import type {
   AdminRead,
@@ -511,7 +516,12 @@ export class SupabaseRepository implements Repository {
    * 인가는 라우트에서 이미 끝났으니 그 뒤 읽기는 RLS 대신 이 클라이언트로 한다.
    */
   private async db(asAdmin = false): Promise<SupabaseClient> {
-    return asAdmin ? createServiceClient() : createServerClient();
+    if (asAdmin) return createServiceClient();
+    // iOS는 Supabase 세션을 쿠키가 아니라 Bearer 헤더로 들고 온다 — 그 토큰으로
+    // 접근해야 auth.uid()가 풀려 owner-scoped RLS가 의도대로 통과한다(안 그러면
+    // 에러 없이 0행). 웹(쿠키 세션)은 기존 경로 그대로.
+    const bearer = await getRequestBearerToken();
+    return bearer ? createBearerClient(bearer) : createServerClient();
   }
 
   // --- exhibitions ---------------------------------------------------------
