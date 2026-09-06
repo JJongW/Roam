@@ -53,6 +53,7 @@ export async function POST(req: Request) {
   const system = draftSystemPrompt();
   // 배치 안에서 같은 문장이 반복되는지 보려면 지금까지 나온 문장을 들고 있어야 한다.
   const seenPhrases = new Set<string>();
+  const seenActions = new Set<string>();
   const rows: Parameters<typeof repo.createEnrichmentCandidates>[0] = [];
   const failures: { code: string; message: string }[] = [];
 
@@ -60,15 +61,26 @@ export async function POST(req: Request) {
     const missing = missingFields(booth.enrichment);
     if (missing.length === 0) continue;
     try {
-      const { text, sources } = await generateGrounded({
-        system,
-        prompt: draftUserPrompt({
-          booth,
-          existing: booth.enrichment,
-          missing,
-        }),
+      const userPrompt = draftUserPrompt({
+        booth,
+        existing: booth.enrichment,
+        missing,
       });
-      const payload = extractJSON<Partial<BoothEnrichmentAuthorInput>>(text);
+      // generateGrounded는 tools를 쓰느라 JSON 모드를 못 건다 — 산문만 돌려주는
+      // 경우가 실제로 있다(파일럿에서 5건 중 1건). 한 번은 더 조여서 물어본다.
+      let payload: Partial<BoothEnrichmentAuthorInput> | null = null;
+      let sources: { uri: string; title?: string }[] = [];
+      for (const attempt of [userPrompt, `${userPrompt}\n\n반드시 JSON 객체 하나만 출력한다. 다른 텍스트를 쓰지 않는다.`]) {
+        const res = await generateGrounded({ system, prompt: attempt });
+        sources = res.sources;
+        try {
+          payload = extractJSON<Partial<BoothEnrichmentAuthorInput>>(res.text);
+          break;
+        } catch {
+          payload = null;
+        }
+      }
+      if (!payload) throw new Error("JSON을 못 얻었다(재시도 후에도)");
       // 요청하지 않은 필드는 버린다 — 이미 사람이 쓴 값을 초안이 덮을 자리를
       // 애초에 만들지 않는다.
       const kept = Object.fromEntries(
@@ -79,9 +91,18 @@ export async function POST(req: Request) {
         sources,
         booth,
         seenPhrases,
+        seenActions,
+        // 안 시킨 필드로 깎지 않는다. 이미 사람이 채운 필드는 초안기가 비워두는
+        // 게 맞는 동작이다.
+        requested: missing,
+        hadMaterial: Boolean(booth.description || booth.enrichment?.summary),
       });
       const line = kept.roamInterpretation?.trim();
       if (line) seenPhrases.add(line);
+      for (const a of kept.thingsToDo ?? []) {
+        const t = a.replace(/\s+/g, " ").trim();
+        if (t) seenActions.add(t);
+      }
       rows.push({
         boothId: booth.id,
         exhibitionId,
@@ -99,6 +120,9 @@ export async function POST(req: Request) {
     }
   }
 
+  // 같은 부스의 이전 pending은 내린다 — 다시 돌릴 때마다 큐에 쌓이면 검수자가
+  // 무엇이 최신인지 모른다.
+  await repo.supersedePendingCandidates(rows.map((r) => r.boothId));
   await repo.createEnrichmentCandidates(rows);
   return ok({
     requested: targets.length,

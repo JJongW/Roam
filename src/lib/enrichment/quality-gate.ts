@@ -23,6 +23,16 @@ export interface GradeInput {
   booth: { name: string; company?: string };
   /** 같은 배치의 다른 초안이 이미 쓴 문장들. LLM이 템플릿을 되풀이하는 걸 잡는다. */
   seenPhrases?: Set<string>;
+  /** 같은 배치에서 이미 나온 thingsToDo 항목들. 다른 부스에도 그대로 쓰이는
+   *  행동은 그 부스 얘기가 아니다 — 상투어 사전보다 이 신호가 튼튼하다. */
+  seenActions?: Set<string>;
+  /** 초안기에게 **요청한** 필드. 이미 사람이 채워둔 필드는 초안기가 안 쓰는 게
+   *  맞는데, 그걸 "없다"고 깎으면 잘한 초안이 전부 감점된다(파일럿 9/9가 이걸로
+   *  깎였다). 안 주면 전 필드를 본다. */
+  requested?: string[];
+  /** 부스에 이미 공식 소개 같은 재료가 있었나. 있으면 검색 결과가 없어도 그 재료로
+   *  쓴 것이라 "근거 없음"의 무게가 다르다. */
+  hadMaterial?: boolean;
 }
 
 const VALUE_WORDS = [
@@ -59,14 +69,23 @@ function norm(s: string): string {
 export function gradeCandidate(input: GradeInput): QualityReport {
   const { payload: p, sources, booth } = input;
   const issues: QualityIssue[] = [];
-  const add = (i: QualityIssue) => issues.push(i);
+  const asked = (field: string) =>
+    !input.requested || input.requested.includes(field);
+  const add = (i: QualityIssue) => {
+    if (i.field && !asked(i.field)) return; // 요청 안 한 필드는 심사하지 않는다
+    issues.push(i);
+  };
 
   // ── 근거 ────────────────────────────────────────────────────────────────
   if (sources.length === 0) {
     add({
       code: "no_sources",
-      message: "출처가 없다 — 검색 근거 없이 쓴 글이다",
-      weight: 0.35,
+      message: input.hadMaterial
+        ? "검색 출처가 없다 — 주최 측 소개만 보고 쓴 글이다"
+        : "출처가 없다 — 근거 없이 쓴 글이다",
+      // 재료가 있었으면 그걸 옮긴 것이라 지어냈다고 보긴 어렵다. 없었는데도
+      // 문장이 나왔다면 그건 어디서 온 것인지 아무도 모른다.
+      weight: input.hadMaterial ? 0.12 : 0.35,
     });
   }
 
@@ -168,6 +187,18 @@ export function gradeCandidate(input: GradeInput): QualityReport {
       code: "filler",
       message: `상투어(${fillers.join("·")}) — 정보 없이 길이만 채웠다`,
       weight: 0.06 * fillers.length,
+    });
+  }
+
+  // ── 두루뭉술한 행동 ─────────────────────────────────────────────────────
+  const actions = (p.thingsToDo ?? []).map(norm).filter(Boolean);
+  const reused = actions.filter((a) => input.seenActions?.has(a));
+  if (reused.length > 0) {
+    add({
+      code: "generic_action",
+      field: "thingsToDo",
+      message: `다른 부스에도 그대로 쓰인 행동(${reused.join("·")}) — 그 부스 얘기가 아니다`,
+      weight: 0.15 * reused.length,
     });
   }
 

@@ -903,7 +903,11 @@ export class SupabaseRepository implements Repository {
   ): Promise<number> {
     if (rows.length === 0) return 0;
     const db = createServiceClient();
-    const res = await db.from("enrichment_candidate").insert(
+    // .select()를 붙여야 저장된 행이 돌아온다 — 없으면 wrote()가 성공을 "저장된
+    // 행이 없음"으로 오판한다(파일럿에서 실제로 9건이 들어갔는데 500이 났다).
+    const res = await db
+      .from("enrichment_candidate")
+      .insert(
       rows.map((r) => ({
         id: uid("cand"),
         booth_id: r.boothId,
@@ -915,9 +919,10 @@ export class SupabaseRepository implements Repository {
         issues: r.issues,
         created_at: now(),
       })),
-    );
-    wrote(res, "초안 적재");
-    return rows.length;
+      )
+      .select("id");
+    const saved = wrote(res, "초안 적재") as unknown[];
+    return saved.length;
   }
 
   async listEnrichmentCandidates(opts?: {
@@ -949,6 +954,20 @@ export class SupabaseRepository implements Repository {
       .eq("id", id)
       .maybeSingle();
     return data ? mapCandidate(data as Row) : null;
+  }
+
+  async supersedePendingCandidates(boothIds: string[]): Promise<number> {
+    if (boothIds.length === 0) return 0;
+    const db = createServiceClient();
+    const rows = await inChunks<Row>(boothIds, "이전 초안 내리기", (slice) =>
+      db
+        .from("enrichment_candidate")
+        .update({ status: "superseded" })
+        .eq("status", "pending")
+        .in("booth_id", slice)
+        .select("id"),
+    );
+    return rows.length;
   }
 
   async setCandidateStatus(

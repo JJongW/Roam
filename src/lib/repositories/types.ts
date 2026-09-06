@@ -109,6 +109,9 @@ export interface Repository {
     limit?: number;
   }): Promise<EnrichmentCandidate[]>;
   getEnrichmentCandidate(id: string): Promise<EnrichmentCandidate | null>;
+  /** 이 부스들의 기존 pending 초안을 superseded로 내린다. 다시 돌릴 때마다 큐에
+   *  같은 부스가 쌓이면 검수자가 무엇이 최신인지 모른다. */
+  supersedePendingCandidates(boothIds: string[]): Promise<number>;
   /** 검수 결과 기록. 반영 자체는 upsertBoothEnrichment가 따로 한다. */
   setCandidateStatus(
     id: string,

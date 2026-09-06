@@ -71,6 +71,10 @@ export function draftUserPrompt(t: DraftTarget): string {
     "- valueTags: [{slug, strength 0..1}] 1~3개. 가장 강한 것만.",
     "- recommendationReasons: {가치slug: 왜 그 가치에 맞는지 한 줄}. valueTags에 있는 slug만.",
     "- thingsToDo: 여기서 실제로 할 수 있는 행동 2~3개. 구체적으로.",
+    "  형태는 '~하기'로 끝나는 구로 통일한다. 문장으로 쓰지 않는다.",
+    "  **그 부스에만 해당하는 구체적인 대상을 반드시 넣는다.** 다른 부스에도 그대로",
+    "  쓸 수 있는 말이면 실패다 — '책 구경하기'(X) / '단어 아카이브 책 구경하기'(O),",
+    "  '작가 작품 감상하기'(X) / '헤르시의 도자·가구 감상하기'(O).",
     "- timing: 붐빔·사인회·품절처럼 시점이 걸린 것. 모르면 빈 배열.",
     "- memoryHooks: 나중에 이 부스를 떠올릴 단서 단어 2~4개.",
   ].filter(Boolean);

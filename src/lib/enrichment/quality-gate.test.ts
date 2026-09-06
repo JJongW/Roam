@@ -85,6 +85,26 @@ describe("gradeCandidate — 스키마·정합성", () => {
   });
 });
 
+describe("gradeCandidate — 요청한 필드만 심사한다", () => {
+  it("이미 사람이 채운 필드를 안 썼다고 깎지 않는다", () => {
+    // 파일럿에서 9/9가 이걸로 깎였다 — 하우스 아카이브는 로미 한 줄이 이미
+    // 100%라 초안기가 안 쓴 게 맞는 동작인데 게이트가 "없다"고 봤다.
+    const r = gradeCandidate({
+      ...good({ roamInterpretation: "" }),
+      requested: ["thingsToDo"],
+    });
+    expect(r.issues.map((i) => i.code)).not.toContain("no_interpretation");
+  });
+
+  it("재료가 있었으면 출처 없음의 무게가 작다", () => {
+    const withMaterial = gradeCandidate({ ...good(), sources: [], hadMaterial: true });
+    const without = gradeCandidate({ ...good(), sources: [], hadMaterial: false });
+    expect(withMaterial.confidence).toBeGreaterThan(without.confidence);
+    // 그래도 표시는 남는다 — 검수자가 알아야 한다.
+    expect(withMaterial.issues.map((i) => i.code)).toContain("no_sources");
+  });
+});
+
 describe("gradeCandidate — LLM의 대표 실패", () => {
   it("출처가 없으면 크게 깎는다", () => {
     const r = gradeCandidate({ ...good(), sources: [] });
@@ -97,6 +117,16 @@ describe("gradeCandidate — LLM의 대표 실패", () => {
       good({ roamInterpretation: "다양한 조명을 만나보세요." }),
     );
     expect(r.issues.map((i) => i.code)).toContain("filler");
+  });
+
+  it("다른 부스에도 그대로 쓰인 행동을 잡는다", () => {
+    // 프롬프트를 "짧은 구로" 조였더니 '책 구경하기'처럼 아무 부스에나 붙는
+    // 말이 나왔다. 상투어 사전으로는 못 잡고, 배치 내 재사용으로 잡힌다.
+    const r = gradeCandidate({
+      ...good({ thingsToDo: ["책 구경하기", "단어 아카이브 살펴보기"] }),
+      seenActions: new Set(["책 구경하기"]),
+    });
+    expect(r.issues.map((i) => i.code)).toContain("generic_action");
   });
 
   it("같은 배치에서 문장이 반복되면 크게 깎는다", () => {

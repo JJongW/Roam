@@ -9,7 +9,12 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/ui/chip";
 import { Textarea } from "@/components/ui/textarea";
+import { VALUE_TAGS } from "@/lib/values";
 import type { EnrichmentCandidate } from "@/lib/types";
+
+const VALUE_LABEL: Record<string, string> = Object.fromEntries(
+  VALUE_TAGS.map((v) => [v.slug, v.label]),
+);
 
 /** 신뢰도 띠 — 숫자만 보면 무엇을 먼저 볼지 모른다. */
 function confidenceChip(c: number) {
@@ -27,6 +32,57 @@ const FIELD_LABEL: Record<string, string> = {
   timing: "타이밍",
   memoryHooks: "기억 단서",
 };
+
+function isBlank(v: unknown): boolean {
+  if (v == null) return true;
+  if (typeof v === "string") return v.trim() === "";
+  if (Array.isArray(v)) return v.length === 0;
+  if (typeof v === "object") return Object.keys(v).length === 0;
+  return false;
+}
+
+/** 검수자가 읽고 판단할 수 있는 형태로. 원시 JSON은 아래 편집 칸에만 둔다. */
+function renderValue(field: string, value: unknown) {
+  if (field === "valueTags" && Array.isArray(value)) {
+    return (
+      <span className="flex flex-wrap gap-1.5">
+        {(value as { slug: string; strength: number }[]).map((v) => (
+          <Chip key={v.slug} size="sm">
+            {VALUE_LABEL[v.slug] ?? v.slug} {v.strength}
+          </Chip>
+        ))}
+      </span>
+    );
+  }
+  if (field === "recommendationReasons" && value && typeof value === "object") {
+    return (
+      <ul className="space-y-1">
+        {Object.entries(value as Record<string, string>).map(([slug, line]) => (
+          <li key={slug}>
+            <span className="text-muted-foreground">
+              {VALUE_LABEL[slug] ?? slug}
+            </span>{" "}
+            {line}
+          </li>
+        ))}
+      </ul>
+    );
+  }
+  if (Array.isArray(value)) {
+    return (
+      <ul className="list-disc space-y-0.5 pl-4">
+        {value.map((v, i) => (
+          <li key={i}>{typeof v === "string" ? v : JSON.stringify(v)}</li>
+        ))}
+      </ul>
+    );
+  }
+  return (
+    <span className="whitespace-pre-wrap">
+      {typeof value === "string" ? value : JSON.stringify(value)}
+    </span>
+  );
+}
 
 export function CandidateQueue({
   candidates,
@@ -103,16 +159,18 @@ export function CandidateQueue({
             )}
 
             <dl className="space-y-2 text-sm">
-              {Object.entries(c.payload).map(([field, value]) => (
-                <div key={field}>
-                  <dt className="text-xs font-medium text-muted-foreground">
-                    {FIELD_LABEL[field] ?? field}
-                  </dt>
-                  <dd className="whitespace-pre-wrap">
-                    {typeof value === "string" ? value : JSON.stringify(value)}
-                  </dd>
-                </div>
-              ))}
+              {Object.entries(c.payload)
+                // 빈 필드는 안 보여준다 — 초안기가 모르는 걸 비워둔 건 정상이고,
+                // "타이밍 []"이 줄줄이 뜨면 정작 볼 것이 묻힌다.
+                .filter(([, v]) => !isBlank(v))
+                .map(([field, value]) => (
+                  <div key={field}>
+                    <dt className="text-xs font-medium text-muted-foreground">
+                      {FIELD_LABEL[field] ?? field}
+                    </dt>
+                    <dd>{renderValue(field, value)}</dd>
+                  </div>
+                ))}
             </dl>
 
             {c.sources.length > 0 && (

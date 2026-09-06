@@ -333,6 +333,17 @@ export class MockRepository implements Repository {
     return store().candidates.find((c) => c.id === id) ?? null;
   }
 
+  async supersedePendingCandidates(boothIds: string[]): Promise<number> {
+    let n = 0;
+    for (const c of store().candidates) {
+      if (c.status === "pending" && boothIds.includes(c.boothId)) {
+        c.status = "superseded";
+        n += 1;
+      }
+    }
+    return n;
+  }
+
   async setCandidateStatus(
     id: string,
     status: EnrichmentCandidate["status"],
