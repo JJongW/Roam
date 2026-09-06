@@ -118,9 +118,19 @@ repo의 `logAiQuery`/`topQueryKeywords`(+ `ai_query_log` 테이블).
 - Supabase `booth_enrichment` 테이블(`0013` 기본 + `0021` 근거카드 컬럼: value_tags·roam_interpretation·recommendation_reasons·things_to_do·timing·memory_hooks 등), repo `getBoothDetail`가 전 필드 매핑. 데이터 동기화: `0023_booth_enrichment_sync.sql`이 mock JSON 전체(97행)를 멱등 UPSERT(재생성 시 이 마이그레이션 갱신). ⚠️ seed.sql의 enrichment 블록은 구 6컬럼·구 데이터라 stale — prod 진실은 마이그레이션.
 
 ## 데이터 주입 (전시 시드)
-- **새 전시 붙이기**: ① 도면 추출 → `floorplan-<slug>.json` + `floorplans.ts`의 `FLOORPLANS`에
-  등록(**아직 코드 하드코딩 — 마지막 남은 전시별 JS다**) ② `data/intake/<slug>.json`을
-  `/admin/intake`로 업로드. ②가 예전의 시드 SQL·전용 스크립트를 전부 대체한다.
+- **새 전시 붙이기**: ① 도면 추출 → `floorplan-<slug>.json`(부스 배치 + `"venue"` 한 줄)
+  + `FLOORPLANS`에 등록 한 줄 ② `data/intake/<slug>.json`을 `/admin/intake`로 업로드.
+  ②가 예전의 시드 SQL·전용 스크립트를 전부 대체한다.
+- **장소(venue)와 배치(layout)는 다른 것이다**(2026-09-06). 벽·입출구·화장실·장식은
+  **전시가 아니라 건물의 속성**이라 `src/lib/venues/<venue>.json`에 한 번 저작하고 그 홀에서
+  열리는 모든 전시가 재사용한다. 전시가 말하는 건 부스 배치뿐. 합성은 순수 함수
+  `src/lib/floorplan/compose.ts`. venue 파일은 미터 제원과 표준부스 크기를 들고 있어서,
+  새 도면을 받으면 "표준부스가 3×3m(플라츠는 3×2m)로 깨끗하게 떨어지나"로 스케일이 검증된다.
+  - 입출구를 아직 모르는 장소는 **비워둔다**(합성기가 하단 중앙을 임시로 쓴다). 지어 넣으면
+    그 홀의 다음 전시까지 그 거짓말을 물려받는다. `coex-hall-c`가 지금 그 상태.
+  - ⚠️ **SIBF만 예외** — 손 트레이싱한 개략도라 비례가 실제와 안 맞고(A홀 종횡비 2.124 :
+    실측 2.000, B1은 아예 안 맞음) 미터 환산이 성립하지 않아 venue 위에 못 얹는다.
+    `buildSibf()`가 남아 있고, 도면을 다시 뽑아야 합성으로 옮길 수 있다.
 - mock(`seed.ts`·`seed-sif.ts`·`seed-house-archive.ts`)은 아직 전시별 JSON을 import한다 —
   운영은 인입으로 도는데 mock만 옛 방식이다(미정리).
 - 소스: `src/lib/floorplan-sibf.json`(부스 좌표·코드·kind·분야) + `official-sibf-2026.json`(공동입점) → `seed.ts`. 런북 `.claude/skills/booth-data-entry`.
