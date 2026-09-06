@@ -62,6 +62,16 @@ describe("composeFloorplan", () => {
     expect(fp.booths[0].color).not.toBe(fp.booths[1].color);
   });
 
+  it("venue의 미터 좌표를 도면 단위로 환산한다", () => {
+    // 홀 원점이 도면 (200,100)이고 축척 20u/m이면, 홀 기준 3m 지점은 260이다.
+    const registered = { ...bare, entrance: { x: 3, y: 5 } };
+    const fp = composeFloorplan(
+      layout({ venue: "coex-hall-c", unitsPerMeter: 20, hallOrigin: { x: 200, y: 100 } }),
+      registered,
+    );
+    expect(fp.entrance).toEqual({ x: 200 + 60, y: 100 + 100 });
+  });
+
   it("입출구를 아직 모르는 장소는 하단 중앙을 임시 기점으로 쓴다", () => {
     // 없는 위치를 venue 파일에 지어 넣으면 그 홀의 다음 전시까지 물려받는다.
     const fp = composeFloorplan(layout({ venue: "coex-hall-c" }), bare);
@@ -94,6 +104,7 @@ describe("코엑스 장소 제원", () => {
     "coex-hall-c": { w: 144, h: 72, booth: [3, 3] },
     "coex-hall-d": { w: 81, h: 81, booth: [3, 3] },
     "coex-platz": { w: 63, h: 35.3, booth: [3, 2] },
+    "coex-magok-1f": { w: 108, h: 69, booth: [3, 3] },
   };
 
   it.each(Object.keys(EXPECTED))("%s 제원이 맞는다", async (id) => {
@@ -105,10 +116,33 @@ describe("코엑스 장소 제원", () => {
   });
 
   it("위치를 모르는 장소는 입출구를 비워둔다 — 지어내면 다음 전시가 물려받는다", async () => {
-    for (const id of ["coex-hall-a", "coex-hall-b1", "coex-hall-b2", "coex-hall-c", "coex-hall-d"]) {
+    // 공식 평면도를 아직 안 읽은 홀들. 읽으면 여기서 빼고 아래 검사로 옮긴다.
+    for (const id of ["coex-hall-a", "coex-hall-b1", "coex-hall-b2", "coex-hall-d"]) {
       const v = (await import(`@/lib/venues/${id}.json`)) as unknown as Venue;
       expect(v.entrance, `${id}`).toBeUndefined();
       expect(v.gates ?? [], `${id}`).toEqual([]);
+    }
+  });
+
+  it("마곡 전시홀 치수는 공식 면적과 맞아떨어진다", async () => {
+    // 도면에 치수선이 없어 면적÷종횡비로 역산했다 — 108×69가 7,452㎡로 정확히
+    // 떨어지는 게 그 역산의 근거다. 치수를 고치려면 이 곱도 같이 맞아야 한다.
+    const v = (await import("@/lib/venues/coex-magok-1f.json")) as unknown as Venue;
+    expect(v.meters.w * v.meters.h).toBe(7452);
+    expect(v.wc).toHaveLength(4);
+    expect(v.gates).toHaveLength(4);
+  });
+
+  it("C홀은 공식 평면도에서 읽은 주출입구를 갖는다 — 서브홀 경계 36m·108m", async () => {
+    const v = (await import("@/lib/venues/coex-hall-c.json")) as unknown as Venue;
+    // C4|C3 경계 36m, C2|C1 경계 108m, 둘 다 남측 벽(y=72m).
+    expect(v.entrance).toEqual({ x: 36, y: 72 });
+    expect(v.exit).toEqual({ x: 108, y: 72 });
+    expect(v.wc).toHaveLength(4);
+    for (const p of v.wc!) {
+      expect(p.x).toBeGreaterThan(0);
+      expect(p.x).toBeLessThan(144); // 홀 폭 안
+      expect(p.y).toBe(72);
     }
   });
 });

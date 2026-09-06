@@ -1,5 +1,10 @@
 {
  "venue": "coex-hall-c",
+ "unitsPerMeter": 20,
+ "hallOrigin": {
+  "x": 74.0,
+  "y": 83.0
+ },
  "width": 3028,
  "height": 1637,
  "booths": [

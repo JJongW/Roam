@@ -22,20 +22,39 @@ export interface Venue {
   unitsPerMeter: number;
   standardBoothMeters: { w: number; h: number };
   columnSpacingMeters?: number;
-  entrance?: { x: number; y: number };
-  exit?: { x: number; y: number };
-  gates?: FloorplanGate[];
-  decor?: FloorplanDecor[];
+  /** 아래 좌표는 전부 **홀 원점(내부 좌상단)에서 미터**다. 도면 단위로 적으면
+   *  그 도면에서만 맞고, 같은 홀의 다음 전시가 다른 축척·다른 프레이밍으로 그려지는
+   *  순간 전부 어긋난다. 미터로 두면 layout이 자기 등록 정보(hallOrigin·unitsPerMeter)로
+   *  환산한다. */
+  entrance?: Pt;
+  exit?: Pt;
+  gates?: (Omit<FloorplanGate, "x" | "y"> & Pt)[];
+  /** 화장실 위치(미터). 건물 고정물이라 전시가 바뀌어도 그대로다. */
+  wc?: Pt[];
+  decor?: MeterDecor[];
   interior?: FloorplanRect[];
   notes?: string;
 }
+
+export interface Pt {
+  x: number;
+  y: number;
+}
+
+/** venue의 장식 — 좌표·크기가 미터다. 나머지 필드는 FloorplanDecor와 같다. */
+export type MeterDecor = FloorplanDecor;
 
 /** 전시 배치 — 그 장소 위에 이번 전시가 부스를 어떻게 놓았나. 이것만 전시별이다. */
 export interface Layout {
   venue: string;
   width: number;
   height: number;
+  /** 이 도면의 축척. venue 좌표(미터)를 도면 단위로 환산할 때 쓴다. */
   unitsPerMeter?: number;
+  /** 홀 내부 좌상단이 이 도면 좌표계의 어디인가(도면 단위). venue의 미터 좌표를
+   *  얹으려면 이 등록값이 있어야 한다. 없으면 도면 원점을 홀 원점으로 본다 —
+   *  등록을 안 한 도면(원본 CAD 미확보)에서 기존 동작을 그대로 유지하기 위한 값이다. */
+  hallOrigin?: Pt;
   booths: LayoutBooth[];
 }
 
@@ -82,6 +101,13 @@ function bbox(rects: FloorplanRect[]): FloorplanRect {
  * 그건 venue가 안다. 전시가 말하는 건 부스 배치뿐이다.
  */
 export function composeFloorplan(layout: Layout, venue: Venue): Floorplan {
+  const upm = layout.unitsPerMeter ?? venue.unitsPerMeter;
+  const org = layout.hallOrigin ?? { x: 0, y: 0 };
+  /** 홀 원점 기준 미터 → 이 도면의 단위 좌표. */
+  const at = (p: Pt): Pt => ({ x: org.x + p.x * upm, y: org.y + p.y * upm });
+  /** 길이(미터) → 단위. */
+  const len = (m: number) => m * upm;
+
   const booths: FloorplanBooth[] = layout.booths.map((b) => ({
     code: b.code,
     // JSON은 좌상단, FloorplanBooth는 중심.
@@ -99,15 +125,39 @@ export function composeFloorplan(layout: Layout, venue: Venue): Floorplan {
   // venue 파일에 지어 넣으면 그 홀에서 열리는 다음 전시까지 그 거짓말을 물려받는다.
   const fallback = { x: layout.width / 2, y: layout.height - 60 };
 
+  const decor: FloorplanDecor[] = (venue.decor ?? []).map((d) => placeDecor(d, at, len));
+  for (const w of venue.wc ?? []) {
+    const p = at(w);
+    decor.push({ type: "wc", x: p.x, y: p.y });
+  }
+
   return {
     width: layout.width,
     height: layout.height,
     halls: [],
-    decor: venue.decor ?? [],
+    decor,
     booths,
     interior: venue.interior ?? [bbox(booths)],
-    entrance: venue.entrance ?? fallback,
-    exit: venue.exit ?? fallback,
-    ...(venue.gates?.length ? { gates: venue.gates } : {}),
+    entrance: venue.entrance ? at(venue.entrance) : fallback,
+    exit: venue.exit ? at(venue.exit) : fallback,
+    ...(venue.gates?.length
+      ? { gates: venue.gates.map((g) => ({ ...g, ...at(g) })) }
+      : {}),
   };
+}
+
+/** 장식의 좌표·크기를 미터에서 도면 단위로 옮긴다. 종류마다 실린 필드가 달라
+ *  일괄 변환이 안 되므로 여기서 갈라 적는다. */
+function placeDecor(
+  d: MeterDecor,
+  at: (p: Pt) => Pt,
+  len: (m: number) => number,
+): FloorplanDecor {
+  if (d.type === "arrowsV") {
+    const a = at({ x: d.x, y: d.y1 });
+    return { ...d, x: a.x, y1: a.y, y2: at({ x: d.x, y: d.y2 }).y };
+  }
+  const p = at(d);
+  if (d.type === "header") return { ...d, ...p, w: len(d.w), h: len(d.h) };
+  return { ...d, ...p };
 }

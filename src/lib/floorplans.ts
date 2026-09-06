@@ -9,6 +9,11 @@ import sif from "@/lib/floorplan-sif.json";
 import ha from "@/lib/floorplan-house-archive.json";
 import coexHallC from "@/lib/venues/coex-hall-c.json";
 import coexPlatz from "@/lib/venues/coex-platz.json";
+import coexHallA from "@/lib/venues/coex-hall-a.json";
+import coexHallB1 from "@/lib/venues/coex-hall-b1.json";
+import coexHallB2 from "@/lib/venues/coex-hall-b2.json";
+import coexHallD from "@/lib/venues/coex-hall-d.json";
+import coexMagok1F from "@/lib/venues/coex-magok-1f.json";
 import { composeFloorplan, type Layout, type Venue } from "@/lib/floorplan/compose";
 
 export interface FloorplanBooth {
@@ -310,8 +315,13 @@ function buildSibf(): Floorplan {
  * 다시 적지 않는다 — 장소가 이미 안다. 여기 한 줄과 layout JSON 하나가 전부다.
  */
 const VENUES: Record<string, Venue> = {
+  "coex-hall-a": coexHallA as Venue,
+  "coex-hall-b1": coexHallB1 as Venue,
+  "coex-hall-b2": coexHallB2 as Venue,
   "coex-hall-c": coexHallC as Venue,
+  "coex-hall-d": coexHallD as Venue,
   "coex-platz": coexPlatz as Venue,
+  "coex-magok-1f": coexMagok1F as Venue,
 };
 
 function compose(layout: unknown): Floorplan {
