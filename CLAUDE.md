@@ -1,12 +1,14 @@
 # Roam — Exhibition Navigator
 
-전시·박람회 **범용** 모바일 가이드 플랫폼. **로그인 필수**(닉네임 무비번 또는 Google
-OAuth) — 방문객 앱 전체가 인증 게이트 뒤에 있다(`src/proxy.ts`). 방문객이 부스를
+전시·박람회 **범용** 모바일 가이드 플랫폼. 계정은 닉네임 무비번 또는 Google OAuth.
+**열람은 공개, 로미는 로그인**(`src/proxy.ts`) — 홈·전시 상세·지도·부스 상세는 계정 없이
+열리고, 그보다 깊은 경로(메모장·커뮤니티·회고)와 로미의 개인화는 로그인이 필요하다. 방문객이 부스를
 발견하고, 혼잡을 피하고, 개인화된 동선을 따라가게 돕는다. + 주최자용 관리 콘솔
 (운영·분석). 특정 전시 전용이 아니다 — 현재 들어 있는 **2026 서울국제도서전(SIBF)
 데이터는 시드/데모일 뿐**, 다른 전시로 교체 가능.
-> ⚠️ 원래 무계정(anonymous) 설계였으나 로그인 필수로 전환됨. 익명 세션(`roam_session`)
-> 인프라는 여전히 공존하지만, 페이지 접근은 `roam_user` 없으면 `/login`으로 리다이렉트.
+> ⚠️ 원래 무계정(anonymous) 설계 → 로그인 필수 → **정보 열람은 다시 공개**로 정착.
+> 계정 벽을 첫 화면에 세우는 대신 "기억·연속성"으로 로그인을 설명하는 방향이다.
+> 익명 세션(`roam_session`) 인프라는 여전히 공존한다.
 
 > 구조·플로우·규약이 바뀌면 이 파일을 갱신한다. CLAUDE.md는 프로젝트 전반을 담는다.
 
@@ -39,17 +41,18 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
   (지도 뷰포트·컴패니언·UI). localStorage 영속: `roam-visit/auth` 등.
 - **요청 단위 캐시**: 같은 렌더에서 전시를 여러 번 읽지 않도록 `repositories/cached.ts`의
   `getExhibitionCached`(React `cache`)를 쓴다. 페이지·`generateMetadata`·`rankForExhibition`이 공유.
-- **DB**: `supabase/migrations/000N_*.sql`. `supabase/`는 gitignore라 **레포에 안 올라간다**(로컬/운영 각자 관리).
+- **DB**: `supabase/migrations/000N_*.sql` — **2026-09-06부터 git에 올라간다**(`/supabase/*` 무시, `migrations`만 예외). 기기마다 따로 번호를 매기다 0035~0037이 겹쳤던 사고 때문이다. `seed.sql`·`reset.sql`·`.temp`는 여전히 제외. 적용은 여전히 손(Supabase SQL Editor).
 
 ## 주요 도메인
-- **방문객 플로우**: 로그인 → 전시 홈(가치 온보딩 + 관심 피드 + 근거 카드) → 인터랙티브 지도 →
-  부스 상세(리뷰·이벤트·웰컴키트) → 노트·커뮤니티 → "오늘 관람 마치기"(회고). 로그인 필수.
+- **방문객 플로우**: 전시 홈(가치 온보딩 + 관심 피드 + 근거 카드) → 인터랙티브 지도 →
+  부스 상세(리뷰·이벤트·웰컴키트) → 노트·커뮤니티 → "오늘 관람 마치기"(회고).
+  앞 셋은 공개, 노트·커뮤니티·회고부터 로그인.
 - **부스/이벤트**: `Booth`(code 자연키, kind exhibitor|facility, tags=카테고리 slug, aliases 공동입점), `BoothEvent`.
 - **주최자 콘솔** `/admin`: 전시·부스·이벤트·대기 관리 + 분석 대시보드(히트맵·인기부스·동선흐름·퍼널).
 - **부가**: 커뮤니티 포스트(미디어), 개인 메모장(visited/skip/메모/사진), 북마크, 푸시(FCM — **현재 키 미설정이라 비활성**), 닉네임 인증.
 - **소유자 키**: 노트·브레인·신호·북마크는 `app_user.id`. ⚠️ 리뷰·커뮤니티 포스트는 아직
   `visitor_session.id` 기준이라 계정에 안 묶인다(미해결, 감사 P1-2).
-- **로그인(필수 게이트)**: `app_user`(닉네임=공개키) 단일 계정 테이블. 닉네임 무비번 + **Google OAuth**(Supabase Auth). 신원은 앱 자체 쿠키 `roam_user`로 통일 — OAuth 콜백(`/auth/callback`)은 Supabase 세션으로 identity만 읽고 `signOut`, `app_user` upsert 후 `roam_user` 발급. mock 모드(Supabase 키 없음)엔 Google 버튼 숨김(닉네임만). **게이트** `src/proxy.ts`(Next 16 proxy 컨벤션): `roam_user` 없으면 `/login?next=`로 307. 예외=`/login`·`/auth`·`/admin`(자체 코드 게이트)·`/api`·정적. 로그인 화면 `src/app/login/`. 외부 설정·설계: `docs/decisions/2026-07-07_google-oauth-login.md`.
+- **로그인(부분 게이트)**: `app_user`(닉네임=공개키) 단일 계정 테이블. 닉네임 무비번 + **Google OAuth**(Supabase Auth). 신원은 앱 자체 쿠키 `roam_user`로 통일 — OAuth 콜백(`/auth/callback`)은 Supabase 세션으로 identity만 읽고 `signOut`, `app_user` upsert 후 `roam_user` 발급. mock 모드(Supabase 키 없음)엔 Google 버튼 숨김(닉네임만). **게이트** `src/proxy.ts`(Next 16 proxy 컨벤션): `roam_user` 없으면 `/login?next=`로 307. 공개=`/`·`/privacy`·`/terms`(구글 OAuth 심사가 직접 연다 — 막으면 심사 탈락)와 정확 패턴 `/exhibitions/[slug]`·`/exhibitions/[slug]/map`·`/booths/[id]`. 하위 경로는 패턴에 안 걸려 자동으로 로그인 필수. 예외 프리픽스=`/login`·`/auth`·`/admin`(자체 코드 게이트)·`/api`·정적. 로미의 개인화는 라우트가 아니라 **컴포넌트 레벨**에서 막는다. 로그인 화면 `src/app/login/`. 외부 설정·설계: `docs/decisions/2026-07-07_google-oauth-login.md`.
 - 도메인 타입 단일 소스: `src/lib/types/index.ts`. 설계 문서: `.claude/plans/`(architecture·erd·api-spec).
 
 ## LLM 사용 + 속도 규칙
@@ -89,7 +92,20 @@ repo의 `logAiQuery`/`topQueryKeywords`(+ `ai_query_log` 테이블).
   공유 링크로 바로 진입해 history가 없을 때만 전시 홈으로 push. 종료 확인 다이얼로그는 없다.
 - 관람 종료는 지도가 아니라 전시 홈 하단 `FinishVisit`("오늘 관람 마치기") → `POST /api/me/reflect`.
 
-## 부스 enrichment (수동 주입)
+## 부스 enrichment
+- **인입 틀 `intake.v1`이 표준 경로다**(2026-09-06). 전시 무관 정규형 파일
+  `data/intake/<slug>.json` 하나를 `/admin/intake`에 올리면 부스·홀·분야·저작 6종이 들어간다.
+  전시별 JSON·전용 스크립트·손으로 쓴 UPSERT 마이그레이션은 **더 만들지 않는다**.
+  계약·규칙: `src/lib/intake/schema.ts`, 계획 계산은 순수 함수 `src/lib/intake/plan.ts`,
+  설계 `docs/superpowers/specs/2026-09-06-exhibition-intake-design.md`.
+  - 좌표는 계약에 없다 — `FLOORPLANS[slug]`가 `code`로 대준다. 두 곳에 두면 갈라진다.
+  - **빈 칸만 채운다.** 양쪽에 값이 있고 다르면 `conflicts`로 빠지고 쓰지 않는다(사람이
+    미리보기에서 "충돌도 덮어쓰기"를 켜야 덮인다). 배열은 합집합을 만들지 않는다.
+  - `categorySlug`는 명시로만 받는다 — 전역 unique이고 `booth.tags`에 그대로 들어가
+    스코어링이 읽는 값이라 한글 이름에서 파생하면 쓰레기가 된다.
+  - 인입 파일을 레포에 남기는 게 재생 경로다: "파일 → 인입 재실행". 운영 쓰기 전
+    `data/intake/_backup/`에 현재 값을 떠 둔다(되돌리기 버튼은 없다).
+- 부스 한 건 편집은 `/admin/booths`(`booth-manager.tsx` → `PATCH /api/booths/[id]`).
 - 인스타 자동 스크래핑 불가/금지 → **운영자 수동 입력**(`docs/booth-enrichment.md` 양식).
 - 소스 `src/lib/booth/enrichment-sibf-2026.json`(code 키, **97개 항목**). 타입 `BoothEnrichment`.
   채움 현황: `summary` 97 · `themeTags` 66 · `thingsToDo` 45 · `timing` 31 ·
@@ -102,6 +118,11 @@ repo의 `logAiQuery`/`topQueryKeywords`(+ `ai_query_log` 테이블).
 - Supabase `booth_enrichment` 테이블(`0013` 기본 + `0021` 근거카드 컬럼: value_tags·roam_interpretation·recommendation_reasons·things_to_do·timing·memory_hooks 등), repo `getBoothDetail`가 전 필드 매핑. 데이터 동기화: `0023_booth_enrichment_sync.sql`이 mock JSON 전체(97행)를 멱등 UPSERT(재생성 시 이 마이그레이션 갱신). ⚠️ seed.sql의 enrichment 블록은 구 6컬럼·구 데이터라 stale — prod 진실은 마이그레이션.
 
 ## 데이터 주입 (전시 시드)
+- **새 전시 붙이기**: ① 도면 추출 → `floorplan-<slug>.json` + `floorplans.ts`의 `FLOORPLANS`에
+  등록(**아직 코드 하드코딩 — 마지막 남은 전시별 JS다**) ② `data/intake/<slug>.json`을
+  `/admin/intake`로 업로드. ②가 예전의 시드 SQL·전용 스크립트를 전부 대체한다.
+- mock(`seed.ts`·`seed-sif.ts`·`seed-house-archive.ts`)은 아직 전시별 JSON을 import한다 —
+  운영은 인입으로 도는데 mock만 옛 방식이다(미정리).
 - 소스: `src/lib/floorplan-sibf.json`(부스 좌표·코드·kind·분야) + `official-sibf-2026.json`(공동입점) → `seed.ts`. 런북 `.claude/skills/booth-data-entry`.
 - 운영 DB에는 **SIBF 외에 `sif-2026`(서울일러스트레이션페어)도 들어 있다** — 전시 추가는 데이터로 가능(코드 변경 불필요).
 - ⚠️ `node scripts/gen-seed.mjs`는 **실행 불가** — `supabase/seed.sql`을 열려는데 `supabase/`가 gitignore라 레포에 없다. 재생성이 필요하면 경로부터 손봐야 한다.
@@ -112,5 +133,24 @@ npx tsc --noEmit
 npx vitest run
 npx eslint <changed paths>
 ```
-- mock 강제 미리보기: `NEXT_PUBLIC_SUPABASE_URL= NEXT_PUBLIC_SUPABASE_ANON_KEY= SUPABASE_SERVICE_ROLE_KEY= npx next dev`
 - 모든 커밋/PR은 `/why`로 이유 기록(메모리 규칙).
+
+### ⚠️ mock 통과 ≠ 검증
+`MockRepository`는 `SupabaseRepository`의 **인터페이스**를 흉내내지 **행동**을 흉내내지
+않는다. 저장소를 건드리는 변경은 mock 테스트가 전부 통과해도 운영에서 다르게 돈다.
+
+| | mock | supabase |
+|---|---|---|
+| 컬럼 좁힘 | 없음(항상 전 필드) | `BOOTH_LIST_COLS`가 `images`·`long_description` 제외 |
+| 실패 | throw | `data: null` — `?? []`가 "0건"으로 위장 |
+| `.in()` 길이 상한 | 없음 | 있음(SIF 914부스 = 7.3KB, 상한 근처) |
+| jsonb vs text[] | 구분 없음 | 구분함 |
+
+2026-09-06에 인입 틀이 부스를 `listBoothsByExhibitionId`로 읽어 `images`를 늘 빈 칸으로
+보고 덮어쓰려 했는데, **계획 테스트 12개가 전부 통과한 채로** 그 버그가 살아 있었다.
+운영 dry-run이 유일한 검출 경로였다.
+
+- **저장소 변경은 운영 dry-run까지 해야 "됐다"**: `.env`(운영 자격증명)로 `npx next dev`를
+  띄우고 읽기 전용 경로를 실제로 태운다. mock 강제는 그 반대:
+  `NEXT_PUBLIC_SUPABASE_URL= NEXT_PUBLIC_SUPABASE_ANON_KEY= SUPABASE_SERVICE_ROLE_KEY= npx next dev`
+- mock의 역할은 **테스트 픽스처**다(라우트 통합 테스트 8개 파일). 그 이상으로 취급하지 않는다.
