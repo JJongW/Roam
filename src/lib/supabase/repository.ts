@@ -4,7 +4,11 @@ import { REPORT_HIDE_THRESHOLD } from "@/lib/constants";
 import { deriveValueTags } from "@/lib/values/derive";
 import { createServerClient, createServiceClient } from "@/lib/supabase/server";
 import { computeTasteAccuracy, type TasteAccuracy } from "@/lib/memory/taste";
-import type { ListBoothQuery, Repository } from "@/lib/repositories/types";
+import type {
+  AdminRead,
+  ListBoothQuery,
+  Repository,
+} from "@/lib/repositories/types";
 import type {
   AnalyticsEvent,
   AnalyticsType,
@@ -426,6 +430,7 @@ function mapAnalytics(r: Row): AnalyticsEvent {
   return {
     id: str(r.id),
     sessionId: str(r.session_id),
+    userId: r.user_id == null ? undefined : String(r.user_id),
     exhibitionId: str(r.exhibition_id),
     type: str(r.type) as AnalyticsType,
     boothId: r.booth_id == null ? undefined : String(r.booth_id),
@@ -492,8 +497,20 @@ function eventToRow(input: Partial<EventInput>): Row {
 export class SupabaseRepository implements Repository {
   readonly mode = "supabase" as const;
 
-  private async db(): Promise<SupabaseClient> {
-    return createServerClient();
+  /**
+   * 기본은 anon 키다 — 방문객 요청은 Supabase JWT 브릿지로 세션을 달고 오므로
+   * 0041의 owner-scoped RLS가 "자기 것만"을 지켜준다. 그 방어선은 그대로 둔다.
+   *
+   * asAdmin은 그 반대편이다. 운영 콘솔은 Supabase Auth 세션이 아니라 자체 코드
+   * 게이트(requireAdmin)라 auth.uid()가 null이고, 0041 이후 app_user·booth_note·
+   * user_signal_log·user_brain을 anon으로 읽으면 정책이 아무것도 매칭하지 못해
+   * **에러 없이 0행**이 돌아온다(analytics_event는 애초에 select 정책이 없다).
+   * PostgREST가 이걸 실패로 안 던지고 `data ?? []`가 흡수하는 탓에 관리자 화면이
+   * "데이터가 전부 사라진 것처럼" 비었다 — 쓰기 쪽 wrote() 규약과 같은 함정이다.
+   * 인가는 라우트에서 이미 끝났으니 그 뒤 읽기는 RLS 대신 이 클라이언트로 한다.
+   */
+  private async db(asAdmin = false): Promise<SupabaseClient> {
+    return asAdmin ? createServiceClient() : createServerClient();
   }
 
   // --- exhibitions ---------------------------------------------------------
@@ -1182,7 +1199,7 @@ export class SupabaseRepository implements Repository {
   }
 
   async listUsers(opts?: { limit?: number; offset?: number }): Promise<User[]> {
-    const db = await this.db();
+    const db = await this.db(true);
     let q = db
       .from("app_user")
       .select("*")
@@ -1230,8 +1247,8 @@ export class SupabaseRepository implements Repository {
     return !error && (count ?? 0) > 0;
   }
 
-  async getUser(id: string): Promise<User | null> {
-    const db = await this.db();
+  async getUser(id: string, opts?: AdminRead): Promise<User | null> {
+    const db = await this.db(opts?.asAdmin);
     const { data } = await db
       .from("app_user")
       .select("*")
@@ -1309,7 +1326,7 @@ export class SupabaseRepository implements Repository {
 
   async listNotesByBoothIds(boothIds: string[]): Promise<BoothNote[]> {
     if (boothIds.length === 0) return [];
-    const db = await this.db();
+    const db = await this.db(true);
     const { data } = await db
       .from("booth_note")
       .select("*")
@@ -1529,8 +1546,8 @@ export class SupabaseRepository implements Repository {
 
   // --- bookmarks -----------------------------------------------------------
 
-  async listBookmarks(userId: string): Promise<Bookmark[]> {
-    const db = await this.db();
+  async listBookmarks(userId: string, opts?: AdminRead): Promise<Bookmark[]> {
+    const db = await this.db(opts?.asAdmin);
     const { data } = await db
       .from("bookmark")
       .select("*")
@@ -1714,7 +1731,7 @@ export class SupabaseRepository implements Repository {
   }
 
   async _allAnalytics(exhibitionId: string): Promise<AnalyticsEvent[]> {
-    const db = await this.db();
+    const db = await this.db(true);
     const { data } = await db
       .from("analytics_event")
       .select("*")
@@ -1866,9 +1883,9 @@ export class SupabaseRepository implements Repository {
 
   async listUserSignals(
     userId: string,
-    opts?: { exhibitionId?: string; limit?: number },
+    opts?: { exhibitionId?: string; limit?: number } & AdminRead,
   ): Promise<UserSignal[]> {
-    const db = await this.db();
+    const db = await this.db(opts?.asAdmin);
     let q = db
       .from("user_signal_log")
       .select("*")
@@ -1896,7 +1913,7 @@ export class SupabaseRepository implements Repository {
     exhibitionId: string,
     opts?: { limit?: number },
   ): Promise<UserSignal[]> {
-    const db = await this.db();
+    const db = await this.db(true);
     let q = db
       .from("user_signal_log")
       .select("*")
@@ -1919,8 +1936,11 @@ export class SupabaseRepository implements Repository {
     });
   }
 
-  async getUserBrain(userId: string): Promise<UserBrain | null> {
-    const db = await this.db();
+  async getUserBrain(
+    userId: string,
+    opts?: AdminRead,
+  ): Promise<UserBrain | null> {
+    const db = await this.db(opts?.asAdmin);
     const { data } = await db
       .from("user_brain")
       .select("data")
@@ -1942,7 +1962,7 @@ export class SupabaseRepository implements Repository {
   }
 
   async listReflectedUserIds(exhibitionId: string): Promise<string[]> {
-    const db = await this.db();
+    const db = await this.db(true);
     // user_brain은 사용자당 한 행, visits는 JSONB 배열이라 DB 단에서 정확히
     // 못 걸러 전부 읽어 앱에서 거른다(다른 analytics 메서드들과 같은 전 스캔
     // 관례 — admin-analytics-pm-layer §1의 집계 성능 항목은 구조적 해결로 미뤄둠).

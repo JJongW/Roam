@@ -1,7 +1,5 @@
 import { getRepository } from "@/lib/repositories";
 import { getSessionId, getUserId, setSessionCookie } from "@/lib/api/http";
-import { headers } from "next/headers";
-import { getSupabaseUserFromBearer } from "@/lib/auth/supabase-bearer-user";
 import type { User, VisitorSession } from "@/lib/types";
 
 /**
@@ -25,23 +23,16 @@ export async function ensureSession(
 /**
  * Returns the signed-in user (nickname/Google 계정) or null if not logged in.
  *
- * iOS는 더 이상 `roam_user` 쿠키를 발급받지 않는다(Apple 로그인이 Supabase Auth로
- * 완전히 옮겨감, 2026-09-06) — 쿠키가 없으면 `Authorization: Bearer <supabase
- * access token>` 헤더를 대신 확인한다. `app_user.id`는 `auth.uid()`와 같은 값이라
- * (0041 RLS 전제, `api/auth/apple/link`와 동일 불변식) 검증된 id로 바로 조회하면
- * 된다 — 이 함수를 쓰는 15개 라우트 전부 시그니처를 안 바꿔도 된다(`headers()`가
- * `cookies()`처럼 요청 스코프에서 암묵적으로 동작).
+ * 쿠키냐 Bearer냐는 여기서 안 가린다 — getUserId()가 답한다. iOS는 더 이상
+ * `roam_user` 쿠키를 발급받지 않고(Apple 로그인이 Supabase Auth로 완전히 옮겨감,
+ * 2026-09-06) `Authorization: Bearer <supabase access token>`으로 오는데, 그
+ * 폴백을 이 함수와 getUserId()가 각각 들고 있으면 한쪽만 고쳐지는 일이 실제로
+ * 났다(analytics_event.user_id가 iOS에서 전부 null로 쌓임). "지금 로그인한
+ * 사람이 누구인가"에 답하는 자리는 하나여야 한다.
  */
 export async function getCurrentUser(): Promise<User | null> {
   const repo = await getRepository();
 
-  const cookieId = await getUserId();
-  if (cookieId) return repo.getUser(cookieId);
-
-  const authHeader = (await headers()).get("authorization");
-  const token = authHeader?.replace(/^Bearer\s+/i, "");
-  if (!token) return null;
-  const authUser = await getSupabaseUserFromBearer(token);
-  if (!authUser) return null;
-  return repo.getUser(authUser.id);
+  const id = await getUserId();
+  return id ? repo.getUser(id) : null;
 }

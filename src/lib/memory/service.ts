@@ -4,6 +4,7 @@ import "server-only";
 import { narrateVisit } from "@/lib/ai/companion";
 import { MEMORY_TUNING } from "@/lib/constants";
 import { getRepository } from "@/lib/repositories";
+import type { AdminRead } from "@/lib/repositories/types";
 import { VALUE_TAGS, boothValueSlugs } from "@/lib/values";
 import type { Booth, SignalKind, UserBrain, VisitDigest } from "@/lib/types";
 import {
@@ -81,9 +82,12 @@ export async function recordSignal(
 }
 
 /** 종단 브레인 조회. 없으면 빈 브레인. */
-export async function readBrain(userId: string): Promise<UserBrain> {
+export async function readBrain(
+  userId: string,
+  opts?: AdminRead,
+): Promise<UserBrain> {
   const repo = await getRepository();
-  return (await repo.getUserBrain(userId)) ?? emptyBrain(userId);
+  return (await repo.getUserBrain(userId, opts)) ?? emptyBrain(userId);
 }
 
 export interface SetValueMutedResult {
