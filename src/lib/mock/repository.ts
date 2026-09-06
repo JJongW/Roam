@@ -1,4 +1,7 @@
 import { uid, shortId } from "@/lib/utils";
+import type { AuditContext, ChangeEntry } from "@/lib/audit/diff";
+import { diffFields } from "@/lib/audit/diff";
+import { AUDIT_SPECS } from "@/lib/audit/entities";
 import { REPORT_HIDE_THRESHOLD } from "@/lib/constants";
 import { freshSeed } from "@/lib/mock/seed";
 import {
@@ -42,6 +45,7 @@ import type {
   UserBrain,
   UserPreference,
   UserSignal,
+  ChangeRecord,
   VisitorSession,
   WelcomeKit,
 } from "@/lib/types";
@@ -82,6 +86,7 @@ interface Store {
   analytics: AnalyticsEvent[];
   aiQueries: AiQueryLog[];
   userSignals: UserSignal[];
+  changes: ChangeRecord[];
   userBrains: Map<string, UserBrain>;
   issueLogs: IssueLog[];
 }
@@ -127,6 +132,7 @@ function buildStore(): Store {
     analytics: [],
     aiQueries: [],
     userSignals: [],
+    changes: [],
     userBrains: new Map(),
     issueLogs: [],
   };
@@ -269,12 +275,60 @@ export class MockRepository implements Repository {
     return b;
   }
 
+  async recordChange(entry: ChangeEntry): Promise<void> {
+    if (Object.keys(entry.fieldDiffs).length === 0) return; // 바뀐 게 없으면 안 남긴다
+    store().changes.push({
+      id: uid("chg"),
+      entity: entry.entity,
+      entityId: entry.entityId,
+      scopeId: entry.scopeId ?? null,
+      source: entry.source,
+      actor: entry.actor ?? null,
+      fieldDiffs: entry.fieldDiffs,
+      reason: entry.reason ?? null,
+      createdAt: now(),
+    });
+  }
+
+  async listChanges(opts?: {
+    entity?: string;
+    entityId?: string;
+    scopeId?: string;
+    limit?: number;
+  }): Promise<ChangeRecord[]> {
+    // 같은 밀리초에 여러 건이 들어오면(인입은 흔하다) createdAt만으론 못 가른다.
+    // 삽입 역순을 기준으로 두고 안정 정렬해 "최신 먼저"를 보장한다.
+    let rows = [...store().changes]
+      .reverse()
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    if (opts?.entity) rows = rows.filter((r) => r.entity === opts.entity);
+    if (opts?.entityId) rows = rows.filter((r) => r.entityId === opts.entityId);
+    if (opts?.scopeId) rows = rows.filter((r) => r.scopeId === opts.scopeId);
+    return rows.slice(0, opts?.limit ?? 100);
+  }
+
   async upsertBoothEnrichment(
     boothId: string,
     input: BoothEnrichmentAuthorInput,
+    audit?: AuditContext,
   ): Promise<void> {
     const b = store().booths.find((x) => x.id === boothId);
     if (!b) return;
+    if (audit) {
+      await this.recordChange({
+        entity: "booth_enrichment",
+        entityId: boothId,
+        scopeId: b.exhibitionId,
+        source: audit.source,
+        actor: audit.actor,
+        reason: audit.reason,
+        fieldDiffs: diffFields(
+          (b.enrichment ?? null) as Record<string, unknown> | null,
+          input as unknown as Record<string, unknown>,
+          AUDIT_SPECS.booth_enrichment.fields,
+        ),
+      });
+    }
     b.enrichment = {
       ...(b.enrichment ?? { goodsKeywords: [], themeTags: [] }),
       summary: input.summary || undefined,

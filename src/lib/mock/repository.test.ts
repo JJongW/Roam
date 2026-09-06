@@ -136,6 +136,74 @@ describe("MockRepository", () => {
     expect(after!.enrichment?.goodsKeywords ?? []).toEqual(goodsBefore);
   });
 
+  it("변경 이력: 누가·어디서·무엇을 무엇으로 바꿨는지 남는다", async () => {
+    const repo = new MockRepository();
+    await repo.upsertBoothEnrichment(
+      "b_a1902",
+      {
+        summary: "첫 요약",
+        valueTags: [],
+        recommendationReasons: {},
+        thingsToDo: [],
+        timing: [],
+        memoryHooks: [],
+      },
+      { source: "intake", actor: "u_1", reason: "인입 sibf-2026" },
+    );
+    await repo.upsertBoothEnrichment(
+      "b_a1902",
+      {
+        summary: "고친 요약",
+        valueTags: [],
+        recommendationReasons: {},
+        thingsToDo: [],
+        timing: [],
+        memoryHooks: [],
+      },
+      { source: "admin", actor: "u_2" },
+    );
+    const rows = await repo.listChanges({ entityId: "b_a1902" });
+    expect(rows).toHaveLength(2);
+    // 최신이 위.
+    expect(rows[0].source).toBe("admin");
+    expect(rows[0].fieldDiffs.summary).toEqual({
+      before: "첫 요약",
+      after: "고친 요약",
+    });
+    expect(rows[1].fieldDiffs.summary.before).toBeNull(); // 신규
+    expect(rows[1].reason).toBe("인입 sibf-2026");
+    expect(rows[0].scopeId).toBeTruthy(); // 전시로 좁힐 수 있다
+  });
+
+  it("변경 이력: 바뀐 게 없으면 안 남긴다 — 멱등 인입이 원장을 더럽히지 않게", async () => {
+    const repo = new MockRepository();
+    const payload = {
+      summary: "같은 요약",
+      valueTags: [],
+      recommendationReasons: {},
+      thingsToDo: [],
+      timing: [],
+      memoryHooks: [],
+    };
+    const audit = { source: "intake" as const, actor: null };
+    await repo.upsertBoothEnrichment("b_a1902", payload, audit);
+    await repo.upsertBoothEnrichment("b_a1902", payload, audit);
+    expect(await repo.listChanges({ entityId: "b_a1902" })).toHaveLength(1);
+  });
+
+  it("변경 이력: audit 없이 부르면 안 남긴다 — 출처를 밝히지 않는 쓰기는 기록도 없다", async () => {
+    const repo = new MockRepository();
+    await repo.upsertBoothEnrichment("b_a1902", {
+      summary: "출처 없는 쓰기",
+      valueTags: [],
+      recommendationReasons: {},
+      thingsToDo: [],
+      timing: [],
+      memoryHooks: [],
+    });
+    expect(await repo.listChanges()).toHaveLength(0);
+  });
+
   it("upsertBoothEnrichment: roamInterpretation 키가 없으면 기존 값을 지우지 않는다", async () => {
     const repo = new MockRepository();
     await repo.upsertBoothEnrichment("b_a1902", {

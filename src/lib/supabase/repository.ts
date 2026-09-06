@@ -1,3 +1,6 @@
+import type { AuditContext, ChangeEntry } from "@/lib/audit/diff";
+import { diffFields } from "@/lib/audit/diff";
+import { AUDIT_SPECS } from "@/lib/audit/entities";
 import { uid } from "@/lib/utils";
 import { computeJourneyFunnel } from "@/lib/admin/journey-funnel";
 import { REPORT_HIDE_THRESHOLD } from "@/lib/constants";
@@ -17,6 +20,7 @@ import type {
   BookmarkTarget,
   BoothNote,
   Category,
+  ChangeRecord,
   CommunityPost,
   DeletePostResult,
   ReportResult,
@@ -832,11 +836,91 @@ export class SupabaseRepository implements Repository {
     return data ? mapBooth(data as Row) : null;
   }
 
+  async recordChange(entry: ChangeEntry): Promise<void> {
+    if (Object.keys(entry.fieldDiffs).length === 0) return; // 바뀐 게 없으면 안 남긴다
+    const db = createServiceClient();
+    const res = await db.from("change_log").insert({
+      id: uid("chg"),
+      entity: entry.entity,
+      entity_id: entry.entityId,
+      scope_id: entry.scopeId ?? null,
+      source: entry.source,
+      actor: entry.actor ?? null,
+      field_diffs: entry.fieldDiffs,
+      reason: entry.reason ?? null,
+      created_at: now(),
+    });
+    // 이력 실패가 도메인 쓰기를 막으면 900부스 인입이 통째로 멈춘다. 대신 반드시
+    // 로그에 남긴다 — 조용히 사라지면 원장이 있는 의미가 없다.
+    loggedWrite(res, "변경 이력 적재");
+  }
+
+  async listChanges(opts?: {
+    entity?: string;
+    entityId?: string;
+    scopeId?: string;
+    limit?: number;
+  }): Promise<ChangeRecord[]> {
+    const db = await this.db();
+    let q = db
+      .from("change_log")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(opts?.limit ?? 100);
+    if (opts?.entity) q = q.eq("entity", opts.entity);
+    if (opts?.entityId) q = q.eq("entity_id", opts.entityId);
+    if (opts?.scopeId) q = q.eq("scope_id", opts.scopeId);
+    const { data, error } = await q;
+    if (error) throw new Error(`변경 이력 조회 실패: ${error.message}`);
+    return (data ?? []).map((row) => {
+      const r = row as Row;
+      return {
+        id: str(r.id),
+        entity: str(r.entity),
+        entityId: str(r.entity_id),
+        scopeId: r.scope_id == null ? null : String(r.scope_id),
+        source: str(r.source),
+        actor: r.actor == null ? null : String(r.actor),
+        fieldDiffs: (r.field_diffs ?? {}) as ChangeRecord["fieldDiffs"],
+        reason: r.reason == null ? null : String(r.reason),
+        createdAt: str(r.created_at),
+      };
+    });
+  }
+
   async upsertBoothEnrichment(
     boothId: string,
     input: BoothEnrichmentAuthorInput,
+    audit?: AuditContext,
   ): Promise<void> {
     const db = createServiceClient();
+    if (audit) {
+      // before를 저장소가 직접 읽는다. 호출부가 넘기게 하면 낡거나 빠진 값을
+      // 그대로 이력에 적게 되고, 그건 없는 이력보다 나쁘다.
+      const { data: prev } = await db
+        .from("booth_enrichment")
+        .select("*")
+        .eq("booth_id", boothId)
+        .maybeSingle();
+      const { data: booth } = await db
+        .from("booth")
+        .select("exhibition_id")
+        .eq("id", boothId)
+        .maybeSingle();
+      await this.recordChange({
+        entity: "booth_enrichment",
+        entityId: boothId,
+        scopeId: booth ? str((booth as Row).exhibition_id) : null,
+        source: audit.source,
+        actor: audit.actor,
+        reason: audit.reason,
+        fieldDiffs: diffFields(
+          prev ? (mapEnrichment(prev as Row) as unknown as Record<string, unknown>) : null,
+          input as unknown as Record<string, unknown>,
+          AUDIT_SPECS.booth_enrichment.fields,
+        ),
+      });
+    }
     // 키가 없는 필드는 페이로드에서 뺀다 — PostgREST upsert는 실린 컬럼만
     // ON CONFLICT DO UPDATE 하므로, 빼면 기존 값이 그대로 남는다.
     const row: Record<string, unknown> = {

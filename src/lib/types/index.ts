@@ -400,6 +400,19 @@ export type SignalKind =
   | "search_query"; // 특정 부스 검색 = 강한 능동 관심
 
 /** 원장 1행 — 사용자 행동 신호. append-only, 재증류 소스. */
+/** 변경 이력 한 줄. 상세 규약은 src/lib/audit/diff.ts. */
+export interface ChangeRecord {
+  id: string;
+  entity: string;
+  entityId: string;
+  scopeId?: string | null;
+  source: string;
+  actor?: string | null;
+  fieldDiffs: Record<string, { before: unknown; after: unknown }>;
+  reason?: string | null;
+  createdAt: string;
+}
+
 export interface UserSignal {
   id: string;
   userId: string;

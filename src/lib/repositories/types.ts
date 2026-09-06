@@ -1,3 +1,4 @@
+import type { ChangeEntry, AuditContext } from "@/lib/audit/diff";
 import type {
   AnalyticsEvent,
   Booth,
@@ -6,6 +7,7 @@ import type {
   Bookmark,
   BoothNote,
   Category,
+  ChangeRecord,
   CommunityPost,
   DeletePostResult,
   ReportResult,
@@ -84,9 +86,23 @@ export interface Repository {
   /** 저작 필드(근거 카드용 summary/valueTags/recommendationReasons/thingsToDo/
    *  timing/memoryHooks) 전체 교체 UPSERT — 부분 필드만 보내지 않는다(폼이 항상
    *  6개 전부를 함께 제출). */
+  /** 변경 이력 적재. **실패해도 도메인 쓰기를 막지 않는다**(loggedWrite) —
+   *  900부스 인입이 이력 한 줄 때문에 통째로 멈추면 도구로서 못 쓴다. 대신
+   *  실패는 반드시 에러 로그로 남는다. */
+  recordChange(entry: ChangeEntry): Promise<void>;
+  /** 이력 조회. entity·entityId·scopeId로 좁힌다. */
+  listChanges(opts?: {
+    entity?: string;
+    entityId?: string;
+    scopeId?: string;
+    limit?: number;
+  }): Promise<ChangeRecord[]>;
+
   upsertBoothEnrichment(
     boothId: string,
     input: BoothEnrichmentAuthorInput,
+    /** 누가·어디서 바꿨나. 없으면 이력이 안 남는다 — 호출부가 출처를 밝히게 한다. */
+    audit?: AuditContext,
   ): Promise<void>;
   deleteBooth(id: string): Promise<boolean>;
 

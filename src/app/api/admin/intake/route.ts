@@ -1,9 +1,10 @@
 import { getRepository } from "@/lib/repositories";
-import { notFound, ok, parseBody, requireAdmin } from "@/lib/api/http";
+import { getUserId, notFound, ok, parseBody, requireAdmin } from "@/lib/api/http";
 import { FLOORPLANS } from "@/lib/floorplans";
 import { intakeRequestSchema } from "@/lib/intake/schema";
 import { planIntake } from "@/lib/intake/plan";
 import type { IntakePlan } from "@/lib/intake/plan";
+import type { AuditContext } from "@/lib/audit/diff";
 
 /**
  * 전시 인입 — 정규형 파일 하나로 부스와 저작 정보를 넣는다.
@@ -41,7 +42,12 @@ export async function POST(req: Request) {
   });
 
   if (!apply) return ok({ plan, applied: null });
-  return ok({ plan, applied: await applyPlan(repo, exhibitionId, plan) });
+  const audit = {
+    source: "intake" as const,
+    actor: await getUserId(),
+    reason: `인입 ${file.exhibitionSlug}${overwrite ? " (충돌 덮어쓰기)" : ""}`,
+  };
+  return ok({ plan, applied: await applyPlan(repo, exhibitionId, plan, audit) });
 }
 
 interface ApplyResult {
@@ -61,6 +67,7 @@ async function applyPlan(
   repo: Awaited<ReturnType<typeof getRepository>>,
   exhibitionId: string,
   plan: IntakePlan,
+  audit: AuditContext,
 ): Promise<ApplyResult> {
   const result: ApplyResult = {
     createdBooths: 0,
@@ -126,7 +133,9 @@ async function applyPlan(
         y: c.y,
         popularity: 50,
       });
-      if (c.enrichment) await repo.upsertBoothEnrichment(booth.id, c.enrichment);
+      if (c.enrichment) {
+        await repo.upsertBoothEnrichment(booth.id, c.enrichment, audit);
+      }
       result.createdBooths += 1;
     } catch (e) {
       result.failures.push({ code: c.code, message: msg(e) });
@@ -138,7 +147,9 @@ async function applyPlan(
       if (Object.keys(f.boothPatch).length > 0) {
         await repo.updateBooth(f.boothId, f.boothPatch);
       }
-      if (f.enrichment) await repo.upsertBoothEnrichment(f.boothId, f.enrichment);
+      if (f.enrichment) {
+        await repo.upsertBoothEnrichment(f.boothId, f.enrichment, audit);
+      }
       result.filledBooths += 1;
     } catch (e) {
       result.failures.push({ code: f.code, message: msg(e) });
