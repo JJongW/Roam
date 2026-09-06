@@ -4,6 +4,7 @@ const state = vi.hoisted(() => ({
   authUser: null as { id: string; email?: string } | null,
   cookieValue: undefined as string | undefined,
   authHeader: undefined as string | undefined,
+  jar: new Map<string, { value: string }>(),
 }));
 
 vi.mock("@/lib/auth/supabase-bearer-user", () => ({
@@ -16,7 +17,13 @@ vi.mock("next/headers", () => ({
     get: (name: string) =>
       name === "roam_user" && state.cookieValue
         ? { value: state.cookieValue }
-        : undefined,
+        : state.jar.get(name),
+    set: (name: string, value: string) => {
+      state.jar.set(name, { value });
+    },
+    delete: (name: string) => {
+      state.jar.delete(name);
+    },
   }),
   headers: async () => ({
     get: (name: string) =>
@@ -33,6 +40,7 @@ beforeEach(() => {
   state.authUser = null;
   state.cookieValue = undefined;
   state.authHeader = undefined;
+  state.jar.clear();
   vi.mocked(getSupabaseUserFromBearer).mockClear();
 });
 
@@ -65,5 +73,45 @@ describe("getCurrentUser", () => {
     state.authUser = null;
     state.authHeader = "Bearer invalid-token";
     expect(await getCurrentUser()).toBeNull();
+  });
+
+  // 실기기에서 실제로 난 문제: 옛 roam_user 쿠키가 남은 채 계정이 병합되면
+  // (link_app_user_by_email이 옛 행을 지운다) 쿠키가 죽은 id를 계속 가리켜,
+  // 유효한 Bearer 토큰을 들고 와도 영원히 401이 됐다.
+  it("쿠키가 가리키는 계정이 이미 없으면 Bearer 신원으로 폴백한다", async () => {
+    const repo = await getRepository();
+    const alive = await repo.createOAuthUser({
+      id: "supabase-uid-1",
+      provider: "apple_ios",
+      providerAccountId: "supabase-uid-1",
+      nickname: "테스터",
+    });
+    // 서명이 유효하지만 이미 삭제된 계정을 가리키는 쿠키 — 공개 API로 발급해
+    // 실제 서명 경로를 그대로 태운다(테스트용 내부 함수 노출 안 함).
+    const { setUserCookie } = await import("@/lib/api/http");
+    await setUserCookie("deleted-user-id");
+    state.authUser = { id: "supabase-uid-1" };
+    state.authHeader = "Bearer supabase-access-token";
+
+    const result = await getCurrentUser();
+    expect(result?.id).toBe(alive.id);
+  });
+
+  // 시크릿 회전·다른 환경 쿠키 등으로 서명 검증이 깨진 경우에도 마찬가지다 —
+  // 죽은 쿠키 하나가 멀쩡한 Bearer 요청을 통째로 비로그인으로 만들면 안 된다.
+  it("쿠키 서명이 깨져도 Bearer 헤더로 로그인 사용자를 찾는다", async () => {
+    const repo = await getRepository();
+    const alive = await repo.createOAuthUser({
+      id: "supabase-uid-2",
+      provider: "apple_ios",
+      providerAccountId: "supabase-uid-2",
+      nickname: "테스터2",
+    });
+    state.cookieValue = "tampered.cookie.value";
+    state.authUser = { id: "supabase-uid-2" };
+    state.authHeader = "Bearer supabase-access-token";
+
+    const result = await getCurrentUser();
+    expect(result?.id).toBe(alive.id);
   });
 });

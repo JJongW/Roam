@@ -1,5 +1,10 @@
 import { getRepository } from "@/lib/repositories";
-import { getSessionId, getUserId, setSessionCookie } from "@/lib/api/http";
+import {
+  getBearerUserId,
+  getSessionId,
+  getUserId,
+  setSessionCookie,
+} from "@/lib/api/http";
 import type { User, VisitorSession } from "@/lib/types";
 
 /**
@@ -34,5 +39,16 @@ export async function getCurrentUser(): Promise<User | null> {
   const repo = await getRepository();
 
   const id = await getUserId();
-  return id ? repo.getUser(id) : null;
+  if (id) {
+    const user = await repo.getUser(id);
+    if (user) return user;
+  }
+
+  // 쿠키가 가리키던 계정이 이미 없어졌을 수 있다 — 같은 이메일 계정 병합
+  // (`link_app_user_by_email`)이 옛 행을 지우기 때문에, 병합 전에 발급된 쿠키를
+  // 든 기기는 그때부터 죽은 id를 계속 보낸다. 그 상태로 멈추면 유효한 Bearer
+  // 토큰을 들고 와도 영원히 401이라, 신원을 한 번 더 물어본다.
+  const bearerId = await getBearerUserId();
+  if (!bearerId || bearerId === id) return null;
+  return repo.getUser(bearerId);
 }
