@@ -20,6 +20,12 @@ vi.mock("@/lib/api/session", () => ({
   getCurrentUser: vi.fn(),
 }));
 
+// getUserId도 cookies()를 쓴다 — 나머지(parseBody 등)는 원본 유지.
+vi.mock("@/lib/api/http", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/lib/api/http")>()),
+  getUserId: async () => "u_test",
+}));
+
 import { POST } from "./route";
 
 beforeEach(() => {
@@ -51,6 +57,7 @@ describe("POST /api/analytics/events", () => {
     const clicks = events.filter((e) => e.type === "ui_click");
     expect(clicks.length).toBe(1);
     expect(clicks[0].meta?.control).toBe("map_zoom_in");
+    expect(clicks[0].userId).toBe("u_test");
   });
 
   it("attributes a booth-less ui_click event via a direct exhibitionId (no slug lookup)", async () => {
