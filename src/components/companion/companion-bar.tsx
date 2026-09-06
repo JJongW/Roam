@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/sheet";
 import { Chip } from "@/components/ui/chip";
 import { ProgressCircle } from "@/components/ui/progress-circle";
+import { trackUiClick, type UiControl } from "@/lib/analytics/ui-controls";
 
 /**
  * 상주 컴패니언 바 — 방문객 전 화면에 뜨는 Roam 플로팅 필(로고 + 맥락 발화). 탭하면
@@ -46,23 +47,14 @@ export function CompanionBar() {
   const exhibitionSlugFromPath = pathname.match(/\/exhibitions\/([^/]+)/)?.[1];
   const activeExhibitionId = useCompanionStore((s) => s.activeExhibitionId);
 
-  function trackClick(control: string) {
-    const attribution = exhibitionSlugFromPath
-      ? { exhibitionSlug: exhibitionSlugFromPath }
-      : activeExhibitionId
-        ? { exhibitionId: activeExhibitionId }
-        : null;
-    if (!attribution) return;
-    void fetch("/api/analytics/events", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        type: "ui_click",
-        ...attribution,
-        meta: { control },
-      }),
-    }).catch(() => {});
-  }
+  const trackClick = (control: UiControl) =>
+    trackUiClick(
+      {
+        exhibitionSlug: exhibitionSlugFromPath,
+        exhibitionId: activeExhibitionId,
+      },
+      control,
+    );
 
   const lines = useMemo(() => {
     if (isExhibitionHome && home)
@@ -130,16 +122,16 @@ function CompanionChat({
   onAsk,
 }: {
   t: TFn;
-  onAsk: (control: string) => void;
+  onAsk: (control: UiControl) => void;
 }) {
   const [log, setLog] = useState<{ role: "you" | "roam"; text: string }[]>([]);
   const prompts = [
     { q: t("companion.q1"), a: t("companion.a1"), control: "companion_faq_q1" },
     { q: t("companion.q2"), a: t("companion.a2"), control: "companion_faq_q2" },
     { q: t("companion.q3"), a: t("companion.a3"), control: "companion_faq_q3" },
-  ];
+  ] satisfies { q: string; a: string; control: UiControl }[];
 
-  function ask(q: { q: string; a: string; control: string }) {
+  function ask(q: { q: string; a: string; control: UiControl }) {
     onAsk(q.control);
     setLog((prev) => [
       ...prev,

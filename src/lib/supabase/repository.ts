@@ -3,11 +3,16 @@ import { diffFields } from "@/lib/audit/diff";
 import { AUDIT_SPECS } from "@/lib/audit/entities";
 import { uid } from "@/lib/utils";
 import { computeJourneyFunnel } from "@/lib/admin/journey-funnel";
+import { computeFlowEdges } from "@/lib/admin/flow";
 import { REPORT_HIDE_THRESHOLD } from "@/lib/constants";
 import { deriveValueTags } from "@/lib/values/derive";
 import { createServerClient, createServiceClient } from "@/lib/supabase/server";
 import { computeTasteAccuracy, type TasteAccuracy } from "@/lib/memory/taste";
-import type { ListBoothQuery, Repository } from "@/lib/repositories/types";
+import type {
+  AdminRead,
+  ListBoothQuery,
+  Repository,
+} from "@/lib/repositories/types";
 import type {
   AnalyticsEvent,
   AnalyticsType,
@@ -466,6 +471,7 @@ function mapAnalytics(r: Row): AnalyticsEvent {
   return {
     id: str(r.id),
     sessionId: str(r.session_id),
+    userId: r.user_id == null ? undefined : String(r.user_id),
     exhibitionId: str(r.exhibition_id),
     type: str(r.type) as AnalyticsType,
     boothId: r.booth_id == null ? undefined : String(r.booth_id),
@@ -533,8 +539,20 @@ function eventToRow(input: Partial<EventInput>): Row {
 export class SupabaseRepository implements Repository {
   readonly mode = "supabase" as const;
 
-  private async db(): Promise<SupabaseClient> {
-    return createServerClient();
+  /**
+   * 기본은 anon 키다 — 방문객 요청은 Supabase JWT 브릿지로 세션을 달고 오므로
+   * 0041의 owner-scoped RLS가 "자기 것만"을 지켜준다. 그 방어선은 그대로 둔다.
+   *
+   * asAdmin은 그 반대편이다. 운영 콘솔은 Supabase Auth 세션이 아니라 자체 코드
+   * 게이트(requireAdmin)라 auth.uid()가 null이고, 0041 이후 app_user·booth_note·
+   * user_signal_log·user_brain을 anon으로 읽으면 정책이 아무것도 매칭하지 못해
+   * **에러 없이 0행**이 돌아온다(analytics_event는 애초에 select 정책이 없다).
+   * PostgREST가 이걸 실패로 안 던지고 `data ?? []`가 흡수하는 탓에 관리자 화면이
+   * "데이터가 전부 사라진 것처럼" 비었다 — 쓰기 쪽 wrote() 규약과 같은 함정이다.
+   * 인가는 라우트에서 이미 끝났으니 그 뒤 읽기는 RLS 대신 이 클라이언트로 한다.
+   */
+  private async db(asAdmin = false): Promise<SupabaseClient> {
+    return asAdmin ? createServiceClient() : createServerClient();
   }
 
   // --- exhibitions ---------------------------------------------------------
@@ -1386,7 +1404,7 @@ export class SupabaseRepository implements Repository {
   }
 
   async listUsers(opts?: { limit?: number; offset?: number }): Promise<User[]> {
-    const db = await this.db();
+    const db = await this.db(true);
     let q = db
       .from("app_user")
       .select("*")
@@ -1434,8 +1452,8 @@ export class SupabaseRepository implements Repository {
     return !error && (count ?? 0) > 0;
   }
 
-  async getUser(id: string): Promise<User | null> {
-    const db = await this.db();
+  async getUser(id: string, opts?: AdminRead): Promise<User | null> {
+    const db = await this.db(opts?.asAdmin);
     const { data } = await db
       .from("app_user")
       .select("*")
@@ -1513,7 +1531,10 @@ export class SupabaseRepository implements Repository {
 
   async listNotesByBoothIds(boothIds: string[]): Promise<BoothNote[]> {
     if (boothIds.length === 0) return [];
-    const db = await this.db();
+    // 양쪽 다 필요하다 — db(true)는 0041 RLS 이후 관리자 읽기가 조용히 0행이 되던
+    // 문제(#88), inChunks는 전시 하나치 부스 id가 URL 길이 상한에 걸리면 역시
+    // 조용히 0행이 되는 문제. 같은 증상의 원인이 둘이었다.
+    const db = await this.db(true);
     const rows = await inChunks<Row>(boothIds, "부스 노트", (slice) =>
       db.from("booth_note").select("*").in("booth_id", slice),
     );
@@ -1748,8 +1769,8 @@ export class SupabaseRepository implements Repository {
 
   // --- bookmarks -----------------------------------------------------------
 
-  async listBookmarks(userId: string): Promise<Bookmark[]> {
-    const db = await this.db();
+  async listBookmarks(userId: string, opts?: AdminRead): Promise<Bookmark[]> {
+    const db = await this.db(opts?.asAdmin);
     const { data } = await db
       .from("bookmark")
       .select("*")
@@ -1933,7 +1954,7 @@ export class SupabaseRepository implements Repository {
   }
 
   async _allAnalytics(exhibitionId: string): Promise<AnalyticsEvent[]> {
-    const db = await this.db();
+    const db = await this.db(true);
     const { data } = await db
       .from("analytics_event")
       .select("*")
@@ -2085,9 +2106,9 @@ export class SupabaseRepository implements Repository {
 
   async listUserSignals(
     userId: string,
-    opts?: { exhibitionId?: string; limit?: number },
+    opts?: { exhibitionId?: string; limit?: number } & AdminRead,
   ): Promise<UserSignal[]> {
-    const db = await this.db();
+    const db = await this.db(opts?.asAdmin);
     let q = db
       .from("user_signal_log")
       .select("*")
@@ -2115,7 +2136,7 @@ export class SupabaseRepository implements Repository {
     exhibitionId: string,
     opts?: { limit?: number },
   ): Promise<UserSignal[]> {
-    const db = await this.db();
+    const db = await this.db(true);
     let q = db
       .from("user_signal_log")
       .select("*")
@@ -2138,8 +2159,11 @@ export class SupabaseRepository implements Repository {
     });
   }
 
-  async getUserBrain(userId: string): Promise<UserBrain | null> {
-    const db = await this.db();
+  async getUserBrain(
+    userId: string,
+    opts?: AdminRead,
+  ): Promise<UserBrain | null> {
+    const db = await this.db(opts?.asAdmin);
     const { data } = await db
       .from("user_brain")
       .select("data")
@@ -2160,8 +2184,18 @@ export class SupabaseRepository implements Repository {
     maybeWrote(res, "브레인 저장");
   }
 
+  async listUserBrains(): Promise<UserBrain[]> {
+    // 브레인은 사용자당 한 행이고 크로스-전시(L4)라 전시로 못 좁힌다 — 전 스캔은
+    // listReflectedUserIds와 같은 관례. 운영 콘솔 전용이므로 service로 읽는다.
+    const db = await this.db(true);
+    const { data } = await db.from("user_brain").select("data");
+    return (data ?? [])
+      .map((row) => (row as Row).data)
+      .filter((raw): raw is UserBrain => raw != null) as UserBrain[];
+  }
+
   async listReflectedUserIds(exhibitionId: string): Promise<string[]> {
-    const db = await this.db();
+    const db = await this.db(true);
     // user_brain은 사용자당 한 행, visits는 JSONB 배열이라 DB 단에서 정확히
     // 못 걸러 전부 읽어 앱에서 거른다(다른 analytics 메서드들과 같은 전 스캔
     // 관례 — admin-analytics-pm-layer §1의 집계 성능 항목은 구조적 해결로 미뤄둠).
@@ -2221,34 +2255,7 @@ export class SupabaseRepository implements Repository {
   async analyticsFlow(
     exhibitionId: string,
   ): Promise<{ from: string; to: string; count: number }[]> {
-    // booth_arrive는 발화가 없다 — 유일하게 살아있는 view를 같은 세션 안에서
-    // 시간순으로 이어 근사한다.
-    const all = await this._allAnalytics(exhibitionId);
-    const an = all
-      .filter((a) => a.type === "view" && a.boothId)
-      .sort(
-        (a, b) =>
-          a.sessionId.localeCompare(b.sessionId) ||
-          a.createdAt.localeCompare(b.createdAt),
-      );
-    const edges = new Map<string, number>();
-    const MAX_GAP_MS = 30 * 60 * 1000;
-    for (let i = 1; i < an.length; i++) {
-      if (an[i].sessionId !== an[i - 1].sessionId) continue;
-      if (an[i].boothId === an[i - 1].boothId) continue;
-      const gap =
-        new Date(an[i].createdAt).getTime() -
-        new Date(an[i - 1].createdAt).getTime();
-      // 세션 쿠키가 30일까지 살아있어 같은 세션이라도 며칠 뒤 재방문이 섞일 수
-      // 있다 — 실제 한 번의 관람 흐름만 잡히게 시간 간격도 좁힌다.
-      if (gap > MAX_GAP_MS) continue;
-      const key = `${an[i - 1].boothId}→${an[i].boothId}`;
-      edges.set(key, (edges.get(key) ?? 0) + 1);
-    }
-    return [...edges.entries()].map(([k, count]) => {
-      const [from, to] = k.split("→");
-      return { from, to, count };
-    });
+    return computeFlowEdges(await this._allAnalytics(exhibitionId));
   }
 
   async analyticsConversion(

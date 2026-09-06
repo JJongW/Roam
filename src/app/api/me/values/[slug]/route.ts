@@ -2,7 +2,7 @@ import { z } from "zod";
 import { fail, ok, parseBody } from "@/lib/api/http";
 import { getCurrentUser } from "@/lib/api/session";
 import { setValueMuted } from "@/lib/memory/service";
-import { VALUE_SLUGS } from "@/lib/values";
+import { isValueSlug } from "@/lib/values";
 
 type Ctx = { params: Promise<{ slug: string }> };
 
@@ -26,7 +26,7 @@ export async function PUT(req: Request, { params }: Ctx) {
   const user = await getCurrentUser();
   if (!user) return fail("UNAUTHORIZED", "로그인이 필요해요");
   const { slug } = await params;
-  if (!VALUE_SLUGS.includes(slug)) {
+  if (!isValueSlug(slug)) {
     return fail("VALIDATION", "알 수 없는 관심이에요");
   }
   const parsed = await parseBody(req, schema);

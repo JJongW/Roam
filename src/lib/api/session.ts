@@ -20,10 +20,19 @@ export async function ensureSession(
   return session;
 }
 
-/** Returns the signed-in user (nickname account) or null if not logged in. */
+/**
+ * Returns the signed-in user (nickname/Google 계정) or null if not logged in.
+ *
+ * 쿠키냐 Bearer냐는 여기서 안 가린다 — getUserId()가 답한다. iOS는 더 이상
+ * `roam_user` 쿠키를 발급받지 않고(Apple 로그인이 Supabase Auth로 완전히 옮겨감,
+ * 2026-09-06) `Authorization: Bearer <supabase access token>`으로 오는데, 그
+ * 폴백을 이 함수와 getUserId()가 각각 들고 있으면 한쪽만 고쳐지는 일이 실제로
+ * 났다(analytics_event.user_id가 iOS에서 전부 null로 쌓임). "지금 로그인한
+ * 사람이 누구인가"에 답하는 자리는 하나여야 한다.
+ */
 export async function getCurrentUser(): Promise<User | null> {
-  const id = await getUserId();
-  if (!id) return null;
   const repo = await getRepository();
-  return repo.getUser(id);
+
+  const id = await getUserId();
+  return id ? repo.getUser(id) : null;
 }

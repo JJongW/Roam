@@ -24,6 +24,7 @@ import { useHydrated } from "@/lib/hooks/use-hydrated";
 import { cn } from "@/lib/utils";
 import type { Booth, Category } from "@/lib/types";
 import type { FeedItem, PickKind } from "@/lib/feed/curate";
+import { trackUiClick, type UiControl } from "@/lib/analytics/ui-controls";
 
 /**
  * 관심 피드 — Roam이 건네는 추천을 항목별로 **하나의 카드 단위**로 묶는다. 각 카드는
@@ -176,17 +177,8 @@ export function InterestFeed({
       .post("/api/me/signal", { boothId, kind: "feed_click" })
       .catch(() => {});
   }
-  function trackClick(control: string) {
-    void fetch("/api/analytics/events", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        type: "ui_click",
-        exhibitionSlug: slug,
-        meta: { control },
-      }),
-    }).catch(() => {});
-  }
+  const trackClick = (control: UiControl) =>
+    trackUiClick({ exhibitionSlug: slug }, control);
   function toggle(boothId: string) {
     fire(boothId);
     setExpanded((prev) => {

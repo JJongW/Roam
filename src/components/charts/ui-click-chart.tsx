@@ -10,23 +10,16 @@ import {
   YAxis,
 } from "recharts";
 import type { UiClickCount } from "@/lib/admin/ui-click-breakdown";
+import { UI_CONTROL_LABELS, type UiControl } from "@/lib/analytics/ui-controls";
 
-const COLORS = ["#4f46e5", "#6366f1", "#818cf8", "#8b5cf6", "#15c47e", "#ffb020"];
-
-const LABEL_BY_CONTROL: Record<string, string> = {
-  map_zoom_in: "지도 확대",
-  map_zoom_out: "지도 축소",
-  map_reset_view: "지도 전체 보기",
-  map_rotate: "지도 회전",
-  feed_exhausted_finish: "피드 소진 · 마치기",
-  feed_exhausted_map: "피드 소진 · 지도로",
-  feed_repick: "피드 새로 고르기",
-  companion_bar_open: "컴패니언 바 열기",
-  companion_faq_q1: "컴패니언 FAQ 1",
-  companion_faq_q2: "컴패니언 FAQ 2",
-  companion_faq_q3: "컴패니언 FAQ 3",
-  finish_visit_start: "관람 마치기 시작",
-};
+const COLORS = [
+  "#4f46e5",
+  "#6366f1",
+  "#818cf8",
+  "#8b5cf6",
+  "#15c47e",
+  "#ffb020",
+];
 
 export function UiClickChart({ data }: { data: UiClickCount[] }) {
   if (data.length === 0) {
@@ -38,7 +31,12 @@ export function UiClickChart({ data }: { data: UiClickCount[] }) {
   }
   const rows = data
     .slice(0, 12)
-    .map((d) => ({ ...d, label: LABEL_BY_CONTROL[d.control] ?? d.control }));
+    // 목록에 없는 control은 옛 데이터이거나 어휘에서 지운 것 — 원문을 그대로
+    // 드러내서 "이게 뭔지 모르겠다"가 화면에 보이게 한다(조용히 감추지 않는다).
+    .map((d) => ({
+      ...d,
+      label: UI_CONTROL_LABELS[d.control as UiControl] ?? d.control,
+    }));
   return (
     <div className="h-80 w-full">
       <ResponsiveContainer width="100%" height="100%">

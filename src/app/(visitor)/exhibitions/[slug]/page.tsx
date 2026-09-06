@@ -21,7 +21,7 @@ import { PosterViewer } from "@/components/exhibition/poster-viewer";
 import { HomeCompanionContextBridge } from "@/components/companion/home-companion-context";
 import { DEFAULT_RHYTHM, isRhythm } from "@/lib/feed/rhythm";
 import { getI18n } from "@/lib/i18n/server";
-import { VALUE_SLUGS } from "@/lib/values";
+import { isValueSlug } from "@/lib/values";
 import { getCurrentUser } from "@/lib/api/session";
 import { curateFeed } from "@/lib/feed/curate";
 import { readBrain } from "@/lib/memory/service";
@@ -78,7 +78,7 @@ export default async function ExhibitionDetailPage({
   const topValues = (brain?.interests ?? [])
     .filter((n) => n.confidence >= CONFIDENT_THRESHOLD)
     .slice(0, 2)
-    .map((n) => (VALUE_SLUGS.includes(n.key) ? t(`values.${n.key}`) : n.label));
+    .map((n) => (isValueSlug(n.key) ? t(`values.${n.key}`) : n.label));
   const memoryLine = topValues.length
     ? t("feed.memoryLine", { values: topValues.join("·") })
     : undefined;

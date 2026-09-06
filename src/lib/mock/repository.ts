@@ -18,6 +18,7 @@ import {
 } from "@/lib/mock/seed-house-archive";
 import { computeTasteAccuracy, type TasteAccuracy } from "@/lib/memory/taste";
 import { computeJourneyFunnel } from "@/lib/admin/journey-funnel";
+import { computeFlowEdges } from "@/lib/admin/flow";
 import type { ListBoothQuery, Repository } from "@/lib/repositories/types";
 import type {
   AiQueryLog,
@@ -1149,6 +1150,10 @@ export class MockRepository implements Repository {
     store().userBrains.set(brain.userId, brain);
   }
 
+  async listUserBrains(): Promise<UserBrain[]> {
+    return [...store().userBrains.values()];
+  }
+
   async listReflectedUserIds(exhibitionId: string): Promise<string[]> {
     const ids: string[] = [];
     for (const brain of store().userBrains.values()) {
@@ -1201,37 +1206,9 @@ export class MockRepository implements Repository {
   }
 
   async analyticsFlow(exhibitionId: string) {
-    // booth_arrive는 발화가 없다(동선 제품 제거) — 유일하게 살아있는 view를
-    // 같은 세션 안에서 시간순으로 이어 "부스 상세를 연달아 본 흐름"으로
-    // 근사한다(admin-analytics-pm-layer §1, 구조적 해결 전까지의 근사).
-    const an = store()
-      .analytics.filter(
-        (a) =>
-          a.exhibitionId === exhibitionId && a.type === "view" && a.boothId,
-      )
-      .sort(
-        (a, b) =>
-          a.sessionId.localeCompare(b.sessionId) ||
-          a.createdAt.localeCompare(b.createdAt),
-      );
-    const edges = new Map<string, number>();
-    const MAX_GAP_MS = 30 * 60 * 1000;
-    for (let i = 1; i < an.length; i++) {
-      if (an[i].sessionId !== an[i - 1].sessionId) continue;
-      if (an[i].boothId === an[i - 1].boothId) continue;
-      const gap =
-        new Date(an[i].createdAt).getTime() -
-        new Date(an[i - 1].createdAt).getTime();
-      // 세션 쿠키가 30일까지 살아있어 같은 세션이라도 며칠 뒤 재방문이 섞일 수
-      // 있다 — 실제 한 번의 관람 흐름만 잡히게 시간 간격도 좁힌다.
-      if (gap > MAX_GAP_MS) continue;
-      const key = `${an[i - 1].boothId}→${an[i].boothId}`;
-      edges.set(key, (edges.get(key) ?? 0) + 1);
-    }
-    return [...edges.entries()].map(([k, count]) => {
-      const [from, to] = k.split("→");
-      return { from, to, count };
-    });
+    return computeFlowEdges(
+      store().analytics.filter((a) => a.exhibitionId === exhibitionId),
+    );
   }
 
   async analyticsConversion(exhibitionId: string) {

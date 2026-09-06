@@ -61,6 +61,11 @@ export async function GET(req: Request) {
   } = await supabase.auth.getUser();
   if (!authUser) return fail("no_user");
 
+  // 이 라우트는 웹 OAuth 콜백이고 웹이 거는 provider는 Google뿐이라 기본값이
+  // 지금은 맞다. 다만 provider는 app_user_provider_unique(0018)의 키라, 웹에
+  // 다른 provider를 붙이는 날 이 한 줄을 같이 안 고치면 그 계정이 조용히
+  // google로 기록된다 — 관리자 계정 목록이 정확히 그 방식으로 Apple 계정을
+  // "구글 연동"으로 표시하고 있었다(2026-09-06). 웹 provider가 늘면 여기부터.
   const provider = authUser.app_metadata?.provider ?? "google";
   const meta = authUser.user_metadata ?? {};
   const email =

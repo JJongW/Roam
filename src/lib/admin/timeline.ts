@@ -1,6 +1,11 @@
 import { format } from "date-fns";
 
-import type { AnalyticsEvent, UserSignal } from "@/lib/types";
+import type {
+  AnalyticsEvent,
+  AnalyticsType,
+  SignalKind,
+  UserSignal,
+} from "@/lib/types";
 
 export interface TimelineEvent {
   id: string;
@@ -12,7 +17,10 @@ export interface TimelineEvent {
   boothLabel?: string;
 }
 
-const SIGNAL_LABELS: Record<string, string> = {
+// Record<string,…>이 아니라 Record<SignalKind,…>다 — 새 kind가 생기면 여기를
+// 안 채우고는 빌드가 안 된다. 예전엔 string 맵이라 ANALYTICS_LABELS에서 ui_click이
+// 조용히 빠진 채로 타임라인에 raw 값이 떴다.
+const SIGNAL_LABELS: Record<SignalKind, string> = {
   booth_bookmarked: "북마크",
   route_saved: "동선 저장",
   feed_click: "피드 클릭",
@@ -25,18 +33,23 @@ const SIGNAL_LABELS: Record<string, string> = {
   search_query: "검색",
 };
 
-const ANALYTICS_LABELS: Record<string, string> = {
+const ANALYTICS_LABELS: Record<AnalyticsType, string> = {
   view: "조회",
   dwell: "체류",
   route_start: "동선 시작",
   route_complete: "동선 완료",
   booth_arrive: "부스 도착",
   event_bookmark: "이벤트 북마크",
+  ui_click: "버튼 클릭",
 };
 
 /**
- * UserSignal·AnalyticsEvent를 하나의 타임라인으로 병합(최신순). AnalyticsEvent는
- * sessionId 기반(익명)이라 userId/userLabel이 항상 "익명 세션"으로 고정된다.
+ * UserSignal·AnalyticsEvent를 하나의 타임라인으로 병합(최신순).
+ *
+ * AnalyticsEvent는 원래 sessionId(익명)뿐이라 "익명 세션"으로 고정돼 있었다.
+ * 0042로 user_id가 생긴 뒤로는 로그인 상태에서 쌓인 이벤트에 사용자가 붙는다 —
+ * 있으면 signal과 같은 방식으로 닉네임을 붙이고, 없으면(컬럼 도입 전 행이거나
+ * 비로그인) 종전대로 익명으로 남긴다.
  */
 export function buildTimeline(
   signals: UserSignal[],
@@ -61,7 +74,10 @@ export function buildTimeline(
     createdAt: a.createdAt,
     source: "analytics",
     label: ANALYTICS_LABELS[a.type] ?? a.type,
-    userLabel: "익명 세션",
+    userId: a.userId ?? undefined,
+    userLabel: a.userId
+      ? (userNicknames.get(a.userId) ?? "알 수 없음")
+      : "익명 세션",
     boothLabel: a.boothId
       ? (boothNamesById.get(a.boothId) ?? a.boothId)
       : undefined,
