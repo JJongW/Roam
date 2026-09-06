@@ -186,6 +186,28 @@ export type BoothEnrichmentAuthorInput = z.infer<
   typeof boothEnrichmentAuthorInputSchema
 >;
 
+/**
+ * 부분 수정용 — **default가 하나도 없다.**
+ *
+ * `boothEnrichmentAuthorInputSchema.partial()`을 쓰면 안 된다. Zod의 partial()은
+ * optional로 감싸기만 하고 default()를 막지 않아서, 클라이언트가 안 보낸 필드가
+ * 빈 값으로 채워져 들어온다. 2026-09-06에 초안 승인이 그 경로로 운영 부스의
+ * summary를 지웠다. 안 보낸 필드는 키 자체가 없어야 쓰기 경로가 안 건드린다.
+ */
+export const boothEnrichmentPatchSchema = z.object({
+  summary: z.string().max(300).optional(),
+  roamInterpretation: z.string().max(300).optional(),
+  sourceUrl: z.string().max(500).optional(),
+  valueTags: z
+    .array(z.object({ slug: z.string(), strength: z.number().min(0).max(1) }))
+    .optional(),
+  recommendationReasons: z.record(z.string(), z.string()).optional(),
+  thingsToDo: z.array(z.string()).optional(),
+  timing: z.array(z.string()).optional(),
+  memoryHooks: z.array(z.string()).optional(),
+});
+export type BoothEnrichmentPatch = z.infer<typeof boothEnrichmentPatchSchema>;
+
 export const boothPatchInputSchema = boothInputSchema.partial().extend({
   enrichment: boothEnrichmentAuthorInputSchema.optional(),
 });

@@ -1,14 +1,14 @@
 import { z } from "zod";
 import { getUserId, notFound, ok, parseBody, requireAdmin } from "@/lib/api/http";
 import { getRepository } from "@/lib/repositories";
-import { boothEnrichmentAuthorInputSchema } from "@/lib/schemas";
+import { boothEnrichmentPatchSchema } from "@/lib/schemas";
 
 type Ctx = { params: Promise<{ id: string }> };
 
 const bodySchema = z.object({
   action: z.enum(["approve", "reject"]),
   /** 검수자가 고친 최종본. 없으면 초안 그대로 반영한다. */
-  edited: boothEnrichmentAuthorInputSchema.partial().optional(),
+  edited: boothEnrichmentPatchSchema.optional(),
 });
 
 /**

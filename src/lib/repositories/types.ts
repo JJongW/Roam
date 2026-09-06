@@ -33,6 +33,7 @@ import type {
   AnalyticsEventInput,
   BookmarkInput,
   BoothEnrichmentAuthorInput,
+  BoothEnrichmentPatch,
   BoothInput,
   BoothNoteInput,
   CommunityPostInput,
@@ -133,7 +134,7 @@ export interface Repository {
 
   upsertBoothEnrichment(
     boothId: string,
-    input: BoothEnrichmentAuthorInput,
+    input: BoothEnrichmentPatch,
     /** 누가·어디서 바꿨나. 없으면 이력이 안 남는다 — 호출부가 출처를 밝히게 한다. */
     audit?: AuditContext,
   ): Promise<void>;

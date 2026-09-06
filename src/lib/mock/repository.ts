@@ -55,6 +55,7 @@ import type {
   AnalyticsEventInput,
   BookmarkInput,
   BoothEnrichmentAuthorInput,
+  BoothEnrichmentPatch,
   BoothInput,
   BoothNoteInput,
   CommunityPostInput,
@@ -390,7 +391,7 @@ export class MockRepository implements Repository {
 
   async upsertBoothEnrichment(
     boothId: string,
-    input: BoothEnrichmentAuthorInput,
+    input: BoothEnrichmentPatch,
     audit?: AuditContext,
   ): Promise<void> {
     const b = store().booths.find((x) => x.id === boothId);
@@ -410,9 +411,12 @@ export class MockRepository implements Repository {
         ),
       });
     }
+    // undefined인 필드는 안 건드린다(supabase와 같은 규칙).
+    const keep = <T>(v: T | undefined, cur: T | undefined): T | undefined =>
+      v === undefined ? cur : v;
     b.enrichment = {
       ...(b.enrichment ?? { goodsKeywords: [], themeTags: [] }),
-      summary: input.summary || undefined,
+      summary: keep(input.summary, b.enrichment?.summary) || undefined,
       // undefined면 기존 값을 그대로 둔다(supabase upsert와 같은 규칙).
       roamInterpretation:
         input.roamInterpretation === undefined
@@ -422,13 +426,23 @@ export class MockRepository implements Repository {
         input.sourceUrl === undefined
           ? b.enrichment?.sourceUrl
           : input.sourceUrl || undefined,
-      valueTags: input.valueTags.length ? input.valueTags : undefined,
-      recommendationReasons: Object.keys(input.recommendationReasons).length
-        ? input.recommendationReasons
+      valueTags: keep(input.valueTags, b.enrichment?.valueTags)?.length
+        ? keep(input.valueTags, b.enrichment?.valueTags)
         : undefined,
-      thingsToDo: input.thingsToDo.length ? input.thingsToDo : undefined,
-      timing: input.timing.length ? input.timing : undefined,
-      memoryHooks: input.memoryHooks.length ? input.memoryHooks : undefined,
+      recommendationReasons: Object.keys(
+        keep(input.recommendationReasons, b.enrichment?.recommendationReasons) ?? {},
+      ).length
+        ? keep(input.recommendationReasons, b.enrichment?.recommendationReasons)
+        : undefined,
+      thingsToDo: keep(input.thingsToDo, b.enrichment?.thingsToDo)?.length
+        ? keep(input.thingsToDo, b.enrichment?.thingsToDo)
+        : undefined,
+      timing: keep(input.timing, b.enrichment?.timing)?.length
+        ? keep(input.timing, b.enrichment?.timing)
+        : undefined,
+      memoryHooks: keep(input.memoryHooks, b.enrichment?.memoryHooks)?.length
+        ? keep(input.memoryHooks, b.enrichment?.memoryHooks)
+        : undefined,
     };
   }
 

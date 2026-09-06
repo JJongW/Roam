@@ -58,6 +58,7 @@ import type {
   AnalyticsEventInput,
   BookmarkInput,
   BoothEnrichmentAuthorInput,
+  BoothEnrichmentPatch,
   BoothInput,
   BoothNoteInput,
   CommunityPostInput,
@@ -1043,7 +1044,7 @@ export class SupabaseRepository implements Repository {
 
   async upsertBoothEnrichment(
     boothId: string,
-    input: BoothEnrichmentAuthorInput,
+    input: BoothEnrichmentPatch,
     audit?: AuditContext,
   ): Promise<void> {
     const db = createServiceClient();
@@ -1074,21 +1075,27 @@ export class SupabaseRepository implements Repository {
         ),
       });
     }
-    // 키가 없는 필드는 페이로드에서 뺀다 — PostgREST upsert는 실린 컬럼만
-    // ON CONFLICT DO UPDATE 하므로, 빼면 기존 값이 그대로 남는다.
-    const row: Record<string, unknown> = {
-      booth_id: boothId,
-      summary: input.summary,
-      value_tags: input.valueTags,
-      recommendation_reasons: input.recommendationReasons,
-      things_to_do: input.thingsToDo,
-      timing: input.timing,
-      memory_hooks: input.memoryHooks,
+    // **undefined인 필드는 페이로드에서 통째로 뺀다.** PostgREST upsert는 실린
+    // 컬럼만 ON CONFLICT DO UPDATE 하므로, 빼면 기존 값이 그대로 남는다.
+    //
+    // 예전엔 roamInterpretation·sourceUrl만 이렇게 다뤘는데, 그 사이 초안 승인
+    // 경로가 `schema.partial()`로 페이로드를 만들면서 사고가 났다 — Zod의
+    // partial()은 default()를 막지 않아서, 안 보낸 summary가 ""로 채워져 들어와
+    // 운영 부스의 요약을 지웠다(2026-09-06, change_log로 복구). 호출부마다
+    // 조심하는 대신 쓰기 경로가 막는다.
+    const row: Record<string, unknown> = { booth_id: boothId };
+    const put = (col: string, v: unknown, emptyToNull = false) => {
+      if (v === undefined) return;
+      row[col] = emptyToNull ? v || null : v;
     };
-    if (input.roamInterpretation !== undefined) {
-      row.roam_interpretation = input.roamInterpretation || null;
-    }
-    if (input.sourceUrl !== undefined) row.source_url = input.sourceUrl || null;
+    put("summary", input.summary);
+    put("value_tags", input.valueTags);
+    put("recommendation_reasons", input.recommendationReasons);
+    put("things_to_do", input.thingsToDo);
+    put("timing", input.timing);
+    put("memory_hooks", input.memoryHooks);
+    put("roam_interpretation", input.roamInterpretation, true);
+    put("source_url", input.sourceUrl, true);
     const res = await db
       .from("booth_enrichment")
       .upsert(row, { onConflict: "booth_id" })

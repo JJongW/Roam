@@ -136,6 +136,26 @@ describe("MockRepository", () => {
     expect(after!.enrichment?.goodsKeywords ?? []).toEqual(goodsBefore);
   });
 
+  it("upsertBoothEnrichment: 안 보낸 필드는 지우지 않는다 — 부분 수정", async () => {
+    // 2026-09-06 사고: 초안 승인이 schema.partial()로 페이로드를 만들었는데
+    // Zod의 partial()은 default()를 막지 않아 안 보낸 summary가 ""로 채워졌고,
+    // 그게 운영 부스의 요약을 지웠다. 쓰기 경로가 막아야 하는 일이다.
+    const repo = new MockRepository();
+    await repo.upsertBoothEnrichment("b_a1902", {
+      summary: "사람이 쓴 요약",
+      roamInterpretation: "사람이 쓴 한 줄",
+      thingsToDo: ["기존 할 일"],
+    });
+    // 초안 승인이 thingsToDo만 보낸 상황.
+    await repo.upsertBoothEnrichment("b_a1902", {
+      thingsToDo: ["새 할 일"],
+    });
+    const d = await repo.getBoothDetail("b_a1902");
+    expect(d!.booth.enrichment?.thingsToDo).toEqual(["새 할 일"]);
+    expect(d!.booth.enrichment?.summary).toBe("사람이 쓴 요약");
+    expect(d!.booth.enrichment?.roamInterpretation).toBe("사람이 쓴 한 줄");
+  });
+
   it("변경 이력: 누가·어디서·무엇을 무엇으로 바꿨는지 남는다", async () => {
     const repo = new MockRepository();
     await repo.upsertBoothEnrichment(
