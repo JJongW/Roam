@@ -62,6 +62,12 @@ export const AUDIT_SPECS: Record<AuditEntity, EntitySpec> = {
     fields: ["name", "venue", "description", "startDate", "endDate", "tips"],
     emptyFor: emptyByShape,
   },
+  // 초안 검수 결과. 반려는 필드가 안 바뀌므로 상태 전이를 diff로 남긴다 —
+  // 그래야 "바뀐 게 없으면 안 남긴다" 규칙에 걸리지 않고 이력에 보인다.
+  enrichment_candidate: {
+    fields: ["status"],
+    emptyFor: emptyByShape,
+  },
   event: {
     fields: ["title", "description", "startTime", "endTime", "rewardInfo"],
     emptyFor: emptyByShape,

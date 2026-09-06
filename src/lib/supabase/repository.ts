@@ -289,6 +289,7 @@ function mapCandidate(r: Row): EnrichmentCandidate {
     status: str(r.status) as EnrichmentCandidate["status"],
     reviewedAt: r.reviewed_at == null ? null : String(r.reviewed_at),
     reviewedBy: r.reviewed_by == null ? null : String(r.reviewed_by),
+    reviewNote: r.review_note == null ? null : String(r.review_note),
     createdAt: str(r.created_at),
   };
 }
@@ -929,6 +930,7 @@ export class SupabaseRepository implements Repository {
   async listEnrichmentCandidates(opts?: {
     exhibitionId?: string;
     boothId?: string;
+    boothIds?: string[];
     status?: EnrichmentCandidate["status"];
     limit?: number;
   }): Promise<EnrichmentCandidate[]> {
@@ -941,6 +943,7 @@ export class SupabaseRepository implements Repository {
       .limit(opts?.limit ?? 100);
     if (opts?.exhibitionId) q = q.eq("exhibition_id", opts.exhibitionId);
     if (opts?.boothId) q = q.eq("booth_id", opts.boothId);
+    if (opts?.boothIds?.length) q = q.in("booth_id", opts.boothIds);
     if (opts?.status) q = q.eq("status", opts.status);
     const { data, error } = await q;
     if (error) throw new Error(`초안 조회 실패: ${error.message}`);
@@ -975,6 +978,7 @@ export class SupabaseRepository implements Repository {
     id: string,
     status: EnrichmentCandidate["status"],
     reviewedBy?: string | null,
+    note?: string | null,
   ): Promise<void> {
     const db = createServiceClient();
     const res = await db
@@ -983,6 +987,7 @@ export class SupabaseRepository implements Repository {
         status,
         reviewed_at: now(),
         reviewed_by: reviewedBy ?? null,
+        ...(note !== undefined ? { review_note: note } : {}),
       })
       .eq("id", id)
       .select("id")

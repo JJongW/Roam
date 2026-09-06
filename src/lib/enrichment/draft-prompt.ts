@@ -30,9 +30,11 @@ export interface DraftTarget {
   };
   /** 채워야 할 필드만 요청한다. 이미 있는 걸 다시 쓰게 하면 사람 글을 덮는다. */
   missing: string[];
+  /** 이 부스에서 전에 반려된 사유들. 같은 실수를 반복하지 않게 그대로 넣는다. */
+  priorRejections?: string[];
 }
 
-export function draftSystemPrompt(): string {
+export function draftSystemPrompt(exhibitionLessons?: string[]): string {
   return [
     "너는 전시 가이드 앱 Roam의 부스 정보 편집자다.",
     "부스 하나에 대해 관람객이 '갈지 말지' 판단할 재료를 만든다.",
@@ -42,6 +44,14 @@ export function draftSystemPrompt(): string {
     "",
     "관람 가치 slug은 아래 여덟 개뿐이다. 이 밖의 값을 쓰지 않는다:",
     VALUE_TAGS.map((v) => `${v.slug}(${v.label}: ${v.hint})`).join(", "),
+    "",
+    ...(exhibitionLessons?.length
+      ? [
+          "",
+          "이 전시에서 지금까지 반복해서 반려된 이유들이다. 같은 실수를 하지 않는다:",
+          ...exhibitionLessons.map((l) => `- ${l}`),
+        ]
+      : []),
     "",
     "출력은 JSON 객체 하나만. 설명·마크다운 코드펜스 없이.",
   ].join("\n");
@@ -62,6 +72,14 @@ export function draftUserPrompt(t: DraftTarget): string {
     t.existing?.sourceUrl ? `참고 링크: ${t.existing.sourceUrl}` : "",
     "",
     "웹에서 이 브랜드를 찾아 확인한 사실만 쓴다. 못 찾으면 해당 필드를 비운다.",
+    "",
+    ...(t.priorRejections?.length
+      ? [
+          "",
+          "⚠️ 이 부스의 이전 초안은 아래 이유로 반려됐다. 그대로 반복하지 않는다:",
+          ...t.priorRejections.map((r) => `- ${r}`),
+        ]
+      : []),
     "",
     `채울 필드: ${t.missing.join(", ")}`,
     "",

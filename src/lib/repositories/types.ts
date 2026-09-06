@@ -106,6 +106,8 @@ export interface Repository {
   listEnrichmentCandidates(opts?: {
     exhibitionId?: string;
     boothId?: string;
+    /** 여러 부스를 한 번에 — 초안기가 배치 대상의 지난 반려 사유를 모을 때 쓴다. */
+    boothIds?: string[];
     status?: EnrichmentCandidate["status"];
     limit?: number;
   }): Promise<EnrichmentCandidate[]>;
@@ -118,6 +120,8 @@ export interface Repository {
     id: string,
     status: EnrichmentCandidate["status"],
     reviewedBy?: string | null,
+    /** 왜 반려했나. 이게 없으면 반려는 한 비트만 남고 학습이 안 된다. */
+    note?: string | null,
   ): Promise<void>;
 
   /** 변경 이력 적재. **실패해도 도메인 쓰기를 막지 않는다**(loggedWrite) —

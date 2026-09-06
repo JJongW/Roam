@@ -12,6 +12,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { VALUE_TAGS } from "@/lib/values";
 import type { EnrichmentCandidate } from "@/lib/types";
 
+/** 라우트의 REJECT_REASONS와 짝이다 — 코드가 바뀌면 여기도 바꾼다. */
+const REJECT_REASONS: Record<string, string> = {
+  wrong_fact: "사실이 틀렸다",
+  no_evidence: "근거 없이 지어냈다",
+  voice: "말투가 아니다",
+  vague: "두루뭉술하다",
+  duplicate: "다른 부스와 같다",
+};
+
 const VALUE_LABEL: Record<string, string> = Object.fromEntries(
   VALUE_TAGS.map((v) => [v.slug, v.label]),
 );
@@ -93,10 +102,18 @@ export function CandidateQueue({
 }) {
   const router = useRouter();
   const [busy, setBusy] = useState<string | null>(null);
+  // 반려 사유. 사유 없는 반려는 "별로였다"는 한 비트만 남기고 다음 초안이
+  // 똑같은 걸 또 만들어 온다.
+  const [reason, setReason] = useState<Record<string, string>>({});
+  const [note, setNote] = useState<Record<string, string>>({});
   // 검수자가 고친 값. 고치지 않으면 초안 그대로 나간다.
   const [edits, setEdits] = useState<Record<string, string>>({});
 
   async function act(c: EnrichmentCandidate, action: "approve" | "reject") {
+    if (action === "reject" && !reason[c.id] && !note[c.id]?.trim()) {
+      toast.error("반려 사유를 골라주세요 — 사유가 없으면 다음 초안이 같은 걸 또 만듭니다");
+      return;
+    }
     setBusy(c.id);
     try {
       const edited = edits[c.id];
@@ -104,6 +121,9 @@ export function CandidateQueue({
         action,
         ...(action === "approve" && edited
           ? { edited: JSON.parse(edited) }
+          : {}),
+        ...(action === "reject"
+          ? { reasonCode: reason[c.id] || undefined, note: note[c.id] }
           : {}),
       });
       toast.success(action === "approve" ? "반영했습니다" : "반려했습니다");
@@ -203,6 +223,39 @@ export function CandidateQueue({
                 }
               />
             </details>
+
+            <div className="space-y-2 rounded-lg bg-secondary p-3">
+              <p className="text-xs font-medium">반려한다면, 왜?</p>
+              <div className="flex flex-wrap gap-1.5">
+                {Object.entries(REJECT_REASONS).map(([code, label]) => (
+                  <button
+                    key={code}
+                    type="button"
+                    onClick={() =>
+                      setReason((p) => ({
+                        ...p,
+                        [c.id]: p[c.id] === code ? "" : code,
+                      }))
+                    }
+                    className={
+                      reason[c.id] === code
+                        ? "rounded-full bg-primary px-2.5 py-1 text-xs font-semibold text-primary-foreground"
+                        : "rounded-full border border-border px-2.5 py-1 text-xs"
+                    }
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+              <Textarea
+                rows={2}
+                placeholder="구체적으로 무엇이 틀렸는지 (다음 초안 프롬프트에 그대로 들어갑니다)"
+                className="text-sm"
+                onChange={(e) =>
+                  setNote((p) => ({ ...p, [c.id]: e.target.value }))
+                }
+              />
+            </div>
 
             <div className="flex gap-2">
               <Button

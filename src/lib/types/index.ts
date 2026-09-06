@@ -439,6 +439,8 @@ export interface EnrichmentCandidate {
   status: "pending" | "approved" | "rejected" | "superseded";
   reviewedAt?: string | null;
   reviewedBy?: string | null;
+  /** 반려 사유(또는 승인 메모). 다음 초안이 읽어 같은 실수를 반복하지 않게 한다. */
+  reviewNote?: string | null;
   createdAt: string;
 }
 

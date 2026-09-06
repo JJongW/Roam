@@ -316,6 +316,7 @@ export class MockRepository implements Repository {
   async listEnrichmentCandidates(opts?: {
     exhibitionId?: string;
     boothId?: string;
+    boothIds?: string[];
     status?: EnrichmentCandidate["status"];
     limit?: number;
   }): Promise<EnrichmentCandidate[]> {
@@ -324,6 +325,9 @@ export class MockRepository implements Repository {
       rows = rows.filter((r) => r.exhibitionId === opts.exhibitionId);
     }
     if (opts?.boothId) rows = rows.filter((r) => r.boothId === opts.boothId);
+    if (opts?.boothIds?.length) {
+      rows = rows.filter((r) => opts.boothIds!.includes(r.boothId));
+    }
     if (opts?.status) rows = rows.filter((r) => r.status === opts.status);
     // 신뢰도 높은 것부터 — 검수자가 쉬운 것부터 치우고 어려운 것에 시간을 쓴다.
     rows.sort((a, b) => b.confidence - a.confidence);
@@ -349,12 +353,14 @@ export class MockRepository implements Repository {
     id: string,
     status: EnrichmentCandidate["status"],
     reviewedBy?: string | null,
+    note?: string | null,
   ): Promise<void> {
     const c = store().candidates.find((x) => x.id === id);
     if (!c) return;
     c.status = status;
     c.reviewedAt = now();
     c.reviewedBy = reviewedBy ?? null;
+    if (note !== undefined) c.reviewNote = note;
   }
 
   async recordChange(entry: ChangeEntry): Promise<void> {

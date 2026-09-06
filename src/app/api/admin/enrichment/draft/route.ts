@@ -8,6 +8,10 @@ import {
   missingFields,
 } from "@/lib/enrichment/draft-prompt";
 import { gradeCandidate } from "@/lib/enrichment/quality-gate";
+import {
+  exhibitionLessons,
+  rejectionsByBooth,
+} from "@/lib/enrichment/lessons";
 import type { BoothEnrichmentAuthorInput } from "@/lib/schemas";
 
 /** 한 번에 도는 부스 수의 하드 상한. LLM 호출이라 실수 한 번이 요금이 된다. */
@@ -50,7 +54,17 @@ export async function POST(req: Request) {
         .filter((b) => missingFields(b.enrichment).length > 0);
   const targets = wanted.slice(0, limit);
 
-  const system = draftSystemPrompt();
+  // 루프 A가 실제로 도는 자리. 지난 반려 사유를 읽어 이번 초안에 넣는다 —
+  // 부스별 지적은 그 부스 프롬프트에, 여러 부스에서 반복된 지적은 전시 전체
+  // 지침으로. 이게 없으면 반려는 "별로였다"는 한 비트만 남고 같은 초안이 또 온다.
+  const rejected = await repo.listEnrichmentCandidates({
+    exhibitionId,
+    status: "rejected",
+    limit: 200,
+  });
+  const priorByBooth = rejectionsByBooth(rejected);
+  const lessons = exhibitionLessons(rejected);
+  const system = draftSystemPrompt(lessons);
   // 배치 안에서 같은 문장이 반복되는지 보려면 지금까지 나온 문장을 들고 있어야 한다.
   const seenPhrases = new Set<string>();
   const seenActions = new Set<string>();
@@ -65,6 +79,7 @@ export async function POST(req: Request) {
         booth,
         existing: booth.enrichment,
         missing,
+        priorRejections: priorByBooth.get(booth.id),
       });
       // generateGrounded는 tools를 쓰느라 JSON 모드를 못 건다 — 산문만 돌려주는
       // 경우가 실제로 있다(파일럿에서 5건 중 1건). 한 번은 더 조여서 물어본다.
@@ -128,6 +143,13 @@ export async function POST(req: Request) {
     requested: targets.length,
     drafted: rows.length,
     failures,
+    // 이번 초안이 무엇을 배운 상태로 돌았는지. 루프 A가 도는 게 보여야 한다.
+    learnedFrom: {
+      exhibitionLessons: lessons,
+      boothsWithPriorRejections: [...priorByBooth.keys()].filter((id) =>
+        targets.some((t) => t.id === id),
+      ).length,
+    },
     // 검수 부담을 미리 보여준다.
     byConfidence: {
       high: rows.filter((r) => r.confidence >= 0.8).length,
