@@ -145,7 +145,7 @@ async function applyPlan(
   for (const f of plan.fills) {
     try {
       if (Object.keys(f.boothPatch).length > 0) {
-        await repo.updateBooth(f.boothId, f.boothPatch);
+        await repo.updateBooth(f.boothId, f.boothPatch, audit);
       }
       if (f.enrichment) {
         await repo.upsertBoothEnrichment(f.boothId, f.enrichment, audit);

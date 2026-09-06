@@ -89,7 +89,11 @@ export interface Repository {
   listBoothsFull(exhibitionId: string): Promise<Booth[]>;
   getBoothDetail(id: string): Promise<BoothDetail | null>;
   createBooth(input: BoothInput): Promise<Booth>;
-  updateBooth(id: string, input: Partial<BoothInput>): Promise<Booth | null>;
+  updateBooth(
+    id: string,
+    input: Partial<BoothInput>,
+    audit?: AuditContext,
+  ): Promise<Booth | null>;
   /** 저작 필드(근거 카드용 summary/valueTags/recommendationReasons/thingsToDo/
    *  timing/memoryHooks) 전체 교체 UPSERT — 부분 필드만 보내지 않는다(폼이 항상
    *  6개 전부를 함께 제출). */

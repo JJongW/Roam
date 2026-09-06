@@ -175,6 +175,26 @@ describe("MockRepository", () => {
     expect(rows[0].scopeId).toBeTruthy(); // 전시로 좁힐 수 있다
   });
 
+  it("변경 이력: 부스 본체도 같은 원장에 쌓인다 — images 덮어쓰기가 보여야 한다", async () => {
+    const repo = new MockRepository();
+    // mock은 저장소 객체를 참조로 준다 — 갱신 전에 값을 복사해 둬야 한다.
+    const beforeImages = [...(await repo.getBooth("b_a1902"))!.images];
+    await repo.updateBooth(
+      "b_a1902",
+      { images: ["/new-1.webp"], description: "고친 설명" },
+      { source: "intake", actor: null, reason: "인입 sibf-2026" },
+    );
+    const rows = await repo.listChanges({ entity: "booth" });
+    expect(rows).toHaveLength(1);
+    expect(rows[0].entityId).toBe("b_a1902");
+    expect(rows[0].fieldDiffs.images).toEqual({
+      before: beforeImages.length ? beforeImages : null,
+      after: ["/new-1.webp"],
+    });
+    // 저작 정보와 부스 본체가 entity로 갈린다.
+    expect(await repo.listChanges({ entity: "booth_enrichment" })).toHaveLength(0);
+  });
+
   it("변경 이력: 바뀐 게 없으면 안 남긴다 — 멱등 인입이 원장을 더럽히지 않게", async () => {
     const repo = new MockRepository();
     const payload = {

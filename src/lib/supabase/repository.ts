@@ -842,8 +842,34 @@ export class SupabaseRepository implements Repository {
   async updateBooth(
     id: string,
     input: Partial<BoothInput>,
+    audit?: AuditContext,
   ): Promise<Booth | null> {
     const db = createServiceClient();
+    if (audit) {
+      // before를 저장소가 직접 읽는다. select("*") — 목록 조회는 images·
+      // long_description을 빼기 때문에 그걸로 읽으면 그 필드가 늘 "빈 칸에서
+      // 채워짐"으로 기록된다(2026-09-06 인입에서 실제로 겪은 함정).
+      const { data: prev } = await db
+        .from("booth")
+        .select("*")
+        .eq("id", id)
+        .maybeSingle();
+      if (prev) {
+        await this.recordChange({
+          entity: "booth",
+          entityId: id,
+          scopeId: str((prev as Row).exhibition_id),
+          source: audit.source,
+          actor: audit.actor,
+          reason: audit.reason,
+          fieldDiffs: diffFields(
+            mapBooth(prev as Row) as unknown as Record<string, unknown>,
+            input as Record<string, unknown>,
+            AUDIT_SPECS.booth.fields,
+          ),
+        });
+      }
+    }
     const res = await db
       .from("booth")
       .update(boothToRow(input))

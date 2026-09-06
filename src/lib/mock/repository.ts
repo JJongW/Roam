@@ -269,9 +269,28 @@ export class MockRepository implements Repository {
     return booth;
   }
 
-  async updateBooth(id: string, input: Partial<BoothInput>) {
+  async updateBooth(
+    id: string,
+    input: Partial<BoothInput>,
+    audit?: AuditContext,
+  ) {
     const b = store().booths.find((x) => x.id === id);
     if (!b) return null;
+    if (audit) {
+      await this.recordChange({
+        entity: "booth",
+        entityId: id,
+        scopeId: b.exhibitionId,
+        source: audit.source,
+        actor: audit.actor,
+        reason: audit.reason,
+        fieldDiffs: diffFields(
+          b as unknown as Record<string, unknown>,
+          input as Record<string, unknown>,
+          AUDIT_SPECS.booth.fields,
+        ),
+      });
+    }
     Object.assign(b, input);
     return b;
   }

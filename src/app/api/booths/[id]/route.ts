@@ -36,7 +36,10 @@ export async function PATCH(req: Request, { params }: Ctx) {
       actor: await getUserId(),
     });
   }
-  const updated = await repo.updateBooth(id, boothFields);
+  const updated = await repo.updateBooth(id, boothFields, {
+    source: "admin",
+    actor: await getUserId(),
+  });
   if (!updated) return notFound();
   return ok({ booth: updated });
 }
