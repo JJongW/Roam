@@ -92,6 +92,11 @@ export interface Category {
   icon: string; // lucide icon name
 }
 
+/** 부스 종류. facility는 지도에만 있고 추천·피드·스크린샷 매칭에서 빠진다 —
+ *  종류가 늘면 그 제외 규칙(engine/scoring·feed)을 같이 봐야 한다. */
+export const BOOTH_KINDS = ["exhibitor", "facility"] as const;
+export type BoothKind = (typeof BOOTH_KINDS)[number];
+
 export interface Booth {
   id: string;
   exhibitionId: string;
@@ -102,7 +107,7 @@ export interface Booth {
   /** "exhibitor" (default) or "facility" — lounge/stage/aux areas that are on
    *  the map but aren't participating publishers, so they stay out of
    *  recommendation, swipe, and screenshot matching. */
-  kind?: "exhibitor" | "facility";
+  kind?: BoothKind;
   name: string;
   company: string;
   /** Co-located exhibitors sharing this booth code (e.g. a country pavilion or
@@ -131,6 +136,10 @@ export interface Booth {
   enrichment?: BoothEnrichment;
   createdAt: string;
 }
+
+/** enrichment 데이터 신뢰도. grounding.ts가 같은 목록을 따로 들고 있었다. */
+export const ENRICHMENT_CONFIDENCES = ["low", "medium", "high"] as const;
+export type EnrichmentConfidence = (typeof ENRICHMENT_CONFIDENCES)[number];
 
 /**
  * 운영자/사용자가 인스타·현장에서 보고 손으로 옮겨 적은 부스 추가정보.
@@ -163,7 +172,7 @@ export interface BoothEnrichment {
   /** 동행자가 던질 대화 소재. */
   conversationPrompts?: string[];
   /** 데이터 신뢰도. */
-  confidence?: "low" | "medium" | "high";
+  confidence?: EnrichmentConfidence;
 }
 
 /** 관람 가치 태그 — 부스가 어떤 관람 가치와 연결되는지 + 강도. */
@@ -289,20 +298,37 @@ export interface OAuthIdentity {
  * 참일 수 있다. interest는 화면(관람 전)에서 한 판단, verdict는 현장(관람 중·후)에서
  * 한 판단이다. 지도 색은 `verdict ?? interest ?? 존 색`(결과가 예측을 덮는다).
  */
+/**
+ * 판정 어휘 — 관람 전(interest)·현장(verdict)·확신 등급(judgedClass).
+ *
+ * 예전엔 BoothNote에 인라인 유니온으로만 있어서 이름이 없었고, 같은 목록이
+ * schemas의 z.enum과 DB check 제약에 따로 한 벌씩 더 있었다. 값을 하나 늘리면
+ * 세 곳을 각자 찾아 고쳐야 했고, 점수를 매기는 switch(memory/taste.ts)는
+ * 빠뜨려도 아무 말 없이 그 반응을 채점에서 흘려버렸다.
+ */
+export const BOOTH_INTERESTS = ["must", "curious", "pass"] as const;
+export type BoothInterest = (typeof BOOTH_INTERESTS)[number];
+
+export const BOOTH_VERDICTS = ["good", "ok", "bad"] as const;
+export type BoothVerdict = (typeof BOOTH_VERDICTS)[number];
+
+export const JUDGED_CLASSES = ["confident", "uncertain"] as const;
+export type JudgedClass = (typeof JUDGED_CLASSES)[number];
+
 export interface BoothNote {
   userId: string;
   boothId: string;
   /** 관람 전 판단 — 피드·지도에서 아직 안 가본 부스에 매긴다. */
-  interest?: "must" | "curious" | "pass";
+  interest?: BoothInterest;
   /** 현장 판단 — 다녀온 부스의 만족도. 이게 곧 방문 기록이다(verdict 있으면
    *  visitedAt도 항상 있다). */
-  verdict?: "good" | "ok" | "bad";
+  verdict?: BoothVerdict;
   /** verdict를 남긴 시각(=방문 시각). verdict 해제 시 같이 지운다 — 판정이 곧
    *  방문 기록이므로 둘을 분리해서 남기지 않는다. */
   visitedAt?: string;
   /** 가장 최근 반응(interest 또는 verdict) 판정 시점의 확신 등급 — 취향 정확도
    *  채점용. verdict 기록이 더 나중이자 최종이다. */
-  judgedClass?: "confident" | "uncertain";
+  judgedClass?: JudgedClass;
   memo?: string;
   /** Personal photos (Cloudinary URLs) attached to this booth note. */
   photos?: string[];
@@ -499,6 +525,10 @@ export interface Organizer {
 }
 
 /** A real-time community post visitors share during the exhibition. */
+/** 커뮤니티 첨부 매체. CommunityPost·DeletePostResult가 각자 선언하고 있었다. */
+export const MEDIA_TYPES = ["image", "video"] as const;
+export type MediaType = (typeof MEDIA_TYPES)[number];
+
 export interface CommunityPost {
   id: string;
   exhibitionId: string;
@@ -508,7 +538,7 @@ export interface CommunityPost {
   boothId?: string; // optional booth the post is about
   /** Attached photo / short clip (display-only, Cloudinary). */
   mediaUrl?: string;
-  mediaType?: "image" | "video";
+  mediaType?: MediaType;
   mediaPublicId?: string;
   createdAt: string;
 }
@@ -537,7 +567,7 @@ export interface ReportResult {
 export interface DeletePostResult {
   deleted: boolean;
   mediaPublicId?: string;
-  mediaType?: "image" | "video";
+  mediaType?: MediaType;
 }
 
 // --- Derived / composite DTOs ---------------------------------------------

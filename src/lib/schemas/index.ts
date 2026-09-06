@@ -3,6 +3,8 @@ import {
   AGE_GROUPS,
   ANALYTICS_TYPES,
   BOOKMARK_TARGETS,
+  BOOTH_INTERESTS,
+  BOOTH_VERDICTS,
   COMPANION_TYPES,
   MOVEMENT_PREFERENCES,
   ROUTE_STATUSES,
@@ -228,8 +230,8 @@ export const boothNoteInputSchema = z.object({
   // interest·verdict 둘 다 계정에 남는다. 둘은 직교라 한 요청이 둘 다 보낼 수도,
   // 하나만 보낼 수도 있다(호출부가 바뀐 필드만 채워 보낸다) — 나머지는 undefined로
   // 두면 서버가 그 필드를 안 건드린다.
-  interest: z.enum(["must", "curious", "pass"]).nullish(),
-  verdict: z.enum(["good", "ok", "bad"]).nullish(),
+  interest: z.enum(BOOTH_INTERESTS).nullish(),
+  verdict: z.enum(BOOTH_VERDICTS).nullish(),
   memo: z.string().max(300).optional(),
   /** Personal photos (Cloudinary URLs). Capped to keep notes lightweight. */
   photos: z.array(z.string().url()).max(4).optional(),
