@@ -6,9 +6,16 @@
 // 부스는 맞으면 가산되고 틀려도 무해하다(낯선 부스를 찔러보는 탐색에 벌점을 주지 않는다).
 import { CONFIDENT_THRESHOLD } from "@/lib/constants";
 import { interestScore } from "@/lib/engine/scoring";
-import type { Booth, BoothNote, UserBrain } from "@/lib/types";
+import type {
+  Booth,
+  BoothNote,
+  JudgedClass,
+  UserBrain,
+} from "@/lib/types";
 
-export type JudgedClass = "confident" | "uncertain";
+// 어휘 자체는 types에 있다 — 여기서 다시 선언하면 DB check 제약·zod enum과 함께
+// 네 번째 사본이 된다. 기존 import 경로를 살리려고 re-export만 한다.
+export type { JudgedClass };
 
 /** 부스가 사용자의 확신 가치와 겹치는지 — 판정 시점에 얼려서 저장한다. */
 export function classifyBooth(booth: Booth, brain: UserBrain): JudgedClass {
@@ -41,6 +48,12 @@ export function judgmentScore(
         return 0;
       case "bad":
         return judgedClass === "confident" ? -1 : 0;
+      default: {
+        // 새 verdict가 생기면 여기서 컴파일이 막힌다. 예전엔 그냥 아래 interest
+        // 스위치로 흘러가 그 반응이 조용히 채점에서 빠졌다.
+        const _exhaustive: never = verdict;
+        return _exhaustive;
+      }
     }
   }
 

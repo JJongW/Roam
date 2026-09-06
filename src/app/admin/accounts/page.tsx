@@ -22,8 +22,25 @@ import {
 } from "@/components/ui/alert-dialog";
 import type { User } from "@/lib/types";
 
+/**
+ * app_user.provider 슬러그 → 표시 라벨. 예전엔 "provider가 있으면 구글"로
+ * 하드코딩돼 있어서 Apple 계정(apple_ios)이 "구글 연동"으로 떴다 — 라벨이
+ * 하드코딩이면 틀려도 틀려 보이지 않는다. 모르는 슬러그는 원문을 그대로
+ * 드러내서, 다음 provider가 붙을 때 조용히 남의 이름을 달지 않게 한다.
+ */
+const PROVIDER_LABELS: Record<string, string> = {
+  google: "구글 연동", // 웹 OAuth 콜백(/auth/callback)
+  google_ios: "구글 연동 (iOS)", // 네이티브(/api/auth/google/native) — identity 공간 분리
+  apple_ios: "애플 연동", // 네이티브(/api/auth/apple/link)
+};
+
+function providerLabel(provider: string): string {
+  return PROVIDER_LABELS[provider] ?? `${provider} 연동`;
+}
+
 export default function AdminAccountsPage() {
   const [users, setUsers] = useState<User[]>([]);
+  const [capped, setCapped] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -31,8 +48,12 @@ export default function AdminAccountsPage() {
     setLoading(true);
     setError(false);
     try {
-      const { users } = await api.get<{ users: User[] }>("/api/admin/users");
+      const { users, capped } = await api.get<{
+        users: User[];
+        capped: boolean;
+      }>("/api/admin/users");
       setUsers(users);
+      setCapped(capped);
     } catch {
       setError(true);
     } finally {
@@ -58,7 +79,11 @@ export default function AdminAccountsPage() {
     <div className="space-y-6">
       <header>
         <h1 className="text-2xl font-extrabold">계정</h1>
-        <p className="text-sm text-muted-foreground">{users.length}개 계정</p>
+        <p className="text-sm text-muted-foreground">
+          {capped
+            ? `최근 ${users.length}개 계정 (전체 아님)`
+            : `${users.length}개 계정`}
+        </p>
       </header>
 
       {loading ? (
@@ -79,7 +104,7 @@ export default function AdminAccountsPage() {
                   {u.nickname}
                 </Link>
                 <p className="text-xs text-muted-foreground">
-                  {u.provider ? `구글 연동` : "닉네임"} ·{" "}
+                  {u.provider ? providerLabel(u.provider) : "닉네임"} ·{" "}
                   {format(new Date(u.createdAt), "yyyy.M.d")} 가입
                 </p>
               </div>

@@ -17,6 +17,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { trackUiClick } from "@/lib/analytics/ui-controls";
 
 /**
  * 관람 마치기 — 답 안 한 '가봄' 되묻기가 있으면 먼저 묻고(VisitedRetroPrompt),
@@ -103,15 +104,7 @@ export function FinishVisit({
         id="finish-visit-button"
         type="button"
         onClick={() => {
-          void fetch("/api/analytics/events", {
-            method: "POST",
-            headers: { "content-type": "application/json" },
-            body: JSON.stringify({
-              type: "ui_click",
-              exhibitionSlug: slug,
-              meta: { control: "finish_visit_start" },
-            }),
-          }).catch(() => {});
+          trackUiClick({ exhibitionSlug: slug }, "finish_visit_start");
           openRetro();
         }}
         disabled={busy}

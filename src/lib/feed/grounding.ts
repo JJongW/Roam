@@ -22,7 +22,7 @@ import { boothValueSlugs } from "@/lib/values";
 import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n/config";
 import { DICTS } from "@/lib/i18n/dictionaries";
 import { makeT } from "@/lib/i18n/resolve";
-import type { Booth } from "@/lib/types";
+import type { Booth, EnrichmentConfidence } from "@/lib/types";
 
 export interface Grounding {
   /** 무엇 — 한 줄 소개. */
@@ -38,7 +38,7 @@ export interface Grounding {
   /** 여기서 뭘 하면 좋은지(행동 제안). 저작 thingsToDo 있으면 노출. */
   todo: string[];
   /** 데이터 신뢰도 — enrichment 완성도로 파생. */
-  confidence: "low" | "medium" | "high";
+  confidence: EnrichmentConfidence;
 }
 
 function firstClause(text: string, max = 46): string {

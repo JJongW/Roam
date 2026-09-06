@@ -3,7 +3,7 @@ import { fail, noContent, parseBody } from "@/lib/api/http";
 import { getCurrentUser } from "@/lib/api/session";
 import { getRepository } from "@/lib/repositories";
 import { clearMutedSlugs, recordSignal } from "@/lib/memory/service";
-import { VALUE_SLUGS } from "@/lib/values";
+import { isValueSlug } from "@/lib/values";
 
 // 가치 온보딩: 고른 관람 가치를 브레인에 시드(명시 신호). exhibitionSlug 없으면(앱 최초진입
 // 온보딩) 첫 전시를 신호 컨텍스트로 쓴다 — 브레인 관심은 가치 slug라 크로스-전시로 산다.
@@ -18,7 +18,7 @@ export async function POST(req: Request) {
   const parsed = await parseBody(req, schema);
   if (!parsed.ok) return parsed.res;
 
-  const values = parsed.data.values.filter((v) => VALUE_SLUGS.includes(v));
+  const values = parsed.data.values.filter((v) => isValueSlug(v));
   if (values.length === 0) return fail("VALIDATION", "가치를 하나 이상 골라줘");
 
   const repo = await getRepository();

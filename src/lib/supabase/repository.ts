@@ -1,5 +1,6 @@
 import { uid } from "@/lib/utils";
 import { computeJourneyFunnel } from "@/lib/admin/journey-funnel";
+import { computeFlowEdges } from "@/lib/admin/flow";
 import { REPORT_HIDE_THRESHOLD } from "@/lib/constants";
 import { deriveValueTags } from "@/lib/values/derive";
 import { createServerClient, createServiceClient } from "@/lib/supabase/server";
@@ -2032,34 +2033,7 @@ export class SupabaseRepository implements Repository {
   async analyticsFlow(
     exhibitionId: string,
   ): Promise<{ from: string; to: string; count: number }[]> {
-    // booth_arrive는 발화가 없다 — 유일하게 살아있는 view를 같은 세션 안에서
-    // 시간순으로 이어 근사한다.
-    const all = await this._allAnalytics(exhibitionId);
-    const an = all
-      .filter((a) => a.type === "view" && a.boothId)
-      .sort(
-        (a, b) =>
-          a.sessionId.localeCompare(b.sessionId) ||
-          a.createdAt.localeCompare(b.createdAt),
-      );
-    const edges = new Map<string, number>();
-    const MAX_GAP_MS = 30 * 60 * 1000;
-    for (let i = 1; i < an.length; i++) {
-      if (an[i].sessionId !== an[i - 1].sessionId) continue;
-      if (an[i].boothId === an[i - 1].boothId) continue;
-      const gap =
-        new Date(an[i].createdAt).getTime() -
-        new Date(an[i - 1].createdAt).getTime();
-      // 세션 쿠키가 30일까지 살아있어 같은 세션이라도 며칠 뒤 재방문이 섞일 수
-      // 있다 — 실제 한 번의 관람 흐름만 잡히게 시간 간격도 좁힌다.
-      if (gap > MAX_GAP_MS) continue;
-      const key = `${an[i - 1].boothId}→${an[i].boothId}`;
-      edges.set(key, (edges.get(key) ?? 0) + 1);
-    }
-    return [...edges.entries()].map(([k, count]) => {
-      const [from, to] = k.split("→");
-      return { from, to, count };
-    });
+    return computeFlowEdges(await this._allAnalytics(exhibitionId));
   }
 
   async analyticsConversion(
