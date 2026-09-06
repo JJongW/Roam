@@ -333,6 +333,10 @@ export interface Bookmark {
 export interface AnalyticsEvent {
   id: string;
   sessionId: string;
+  /** 로그인 사용자 id(app_user.id). 방문객 앱은 로그인 게이트 뒤라 실질적으로 항상
+   *  채워지지만, 게이트 밖(/admin·/api 직접 호출)에서 온 이벤트는 null이다.
+   *  취향(UserSignal, user 기준)과 행동(analytics_event)을 잇는 유일한 키. */
+  userId?: string | null;
   exhibitionId: string;
   type: AnalyticsType;
   boothId?: string;

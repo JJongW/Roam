@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getRepository } from "@/lib/repositories";
 import { parseBody } from "@/lib/api/http";
 import { ensureSession } from "@/lib/api/session";
+import { getUserId } from "@/lib/api/http";
 import { analyticsEventInputSchema } from "@/lib/schemas";
 
 // Fire-and-forget visitor analytics ingestion.
@@ -26,10 +27,15 @@ export async function POST(req: Request) {
       undefined;
   }
   const session = await ensureSession(exhibitionId);
+  // 방문객 앱 전체가 로그인 게이트 뒤(src/proxy.ts)라 실질적으로 항상 값이 있다.
+  // 익명 세션 인프라가 공존하므로 없으면 null로 두되, 있는데 안 적으면 취향×행동
+  // 교차 분석이 영구히 불가능해진다(소급 복구 불가) — 반드시 함께 적재한다.
+  const userId = await getUserId();
   await repo.recordAnalytics(
     session.id,
     exhibitionId ?? session.exhibitionId,
     parsed.data,
+    userId,
   );
   return new NextResponse(null, { status: 202 });
 }
