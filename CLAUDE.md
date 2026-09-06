@@ -145,13 +145,31 @@ npx eslint <changed paths>
 ```
 - 모든 커밋/PR은 `/why`로 이유 기록(메모리 규칙).
 
+### ⚠️ "없음"과 "비어 있음"을 구별하지 않는 경로들
+2026-09-06에 같은 뿌리의 사고가 두 번 났다 — 하나는 운영 데이터를 실제로 지웠다.
+
+| 경로 | 거짓말 | 막는 법 |
+|---|---|---|
+| 좁힌 컬럼 조회 | 안 가져온 컬럼이 **빈 값**으로 채워져 옴 | 목록 조회는 `BoothListItem`(images·longDescription 없음)을 반환한다. 전 필드는 `listBoothsFull`·`getBoothDetail` |
+| Zod `.partial()` | **`default()`를 안 막는다** — 안 보낸 키가 빈 값으로 생김 | 부분 수정엔 `boothEnrichmentPatchSchema`(default 없음). `authorInputSchema.partial()` 금지 |
+| PostgREST 실패 | 예외가 아니라 `data: null` → `?? []`가 "0건"으로 위장 | 읽기는 `inChunks`(에러 시 throw), 쓰기는 `wrote()`/`loggedWrite()` |
+| `head:true` 카운트 | **없는 테이블에도 에러를 안 낸다** | 존재 확인은 `select().limit(1)` |
+
+**규칙**: 저장소가 준 값을 "비었다"로 해석하기 전에, 그 읽기가 그 필드를 정말
+가져오는지 구현에서 확인한다. 이름과 타입은 믿을 근거가 아니다 —
+`listBoothsByExhibitionId`는 이름이 "부스를 준다"고 말했고 타입은 `Booth`라고
+말했지만 둘 다 사실이 아니었다.
+
+**쓰기 경로가 막는다**: `undefined`인 필드는 페이로드에서 빼는 걸 저장소가 한다.
+호출부마다 조심하는 구조는 새 호출부가 생길 때마다 같은 사고가 난다.
+
 ### ⚠️ mock 통과 ≠ 검증
 `MockRepository`는 `SupabaseRepository`의 **인터페이스**를 흉내내지 **행동**을 흉내내지
 않는다. 저장소를 건드리는 변경은 mock 테스트가 전부 통과해도 운영에서 다르게 돈다.
 
 | | mock | supabase |
 |---|---|---|
-| 컬럼 좁힘 | 없음(항상 전 필드) | `BOOTH_LIST_COLS`가 `images`·`long_description` 제외 |
+| 컬럼 좁힘 | **supabase처럼 뺀다**(2026-09-06 이후) | `BOOTH_LIST_COLS`가 `images`·`long_description` 제외 |
 | 실패 | throw | `data: null` — `?? []`가 "0건"으로 위장 |
 | `.in()` 길이 상한 | 없음 | 있음(SIF 914부스 = 7.3KB, 상한 근처) |
 | jsonb vs text[] | 구분 없음 | 구분함 |
