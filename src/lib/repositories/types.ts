@@ -197,6 +197,9 @@ export interface Repository {
   getUserBrain(userId: string, opts?: AdminRead): Promise<UserBrain | null>;
   /** 증류된 브레인 upsert. */
   saveUserBrain(brain: UserBrain): Promise<void>;
+  /** 증류된 브레인 전체 — 취향 × 행동 교차(운영 콘솔)용. 브레인은 크로스-전시라
+   *  전시로 좁히지 않는다. */
+  listUserBrains(): Promise<UserBrain[]>;
   /** 이 전시에서 회고(관람 마치기 → VisitDigest)를 남긴 사용자 id 목록.
    *  여정 퍼널의 마지막 단계 소스. */
   listReflectedUserIds(exhibitionId: string): Promise<string[]>;

@@ -1051,6 +1051,10 @@ export class MockRepository implements Repository {
     store().userBrains.set(brain.userId, brain);
   }
 
+  async listUserBrains(): Promise<UserBrain[]> {
+    return [...store().userBrains.values()];
+  }
+
   async listReflectedUserIds(exhibitionId: string): Promise<string[]> {
     const ids: string[] = [];
     for (const brain of store().userBrains.values()) {

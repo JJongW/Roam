@@ -1961,6 +1961,16 @@ export class SupabaseRepository implements Repository {
     maybeWrote(res, "브레인 저장");
   }
 
+  async listUserBrains(): Promise<UserBrain[]> {
+    // 브레인은 사용자당 한 행이고 크로스-전시(L4)라 전시로 못 좁힌다 — 전 스캔은
+    // listReflectedUserIds와 같은 관례. 운영 콘솔 전용이므로 service로 읽는다.
+    const db = await this.db(true);
+    const { data } = await db.from("user_brain").select("data");
+    return (data ?? [])
+      .map((row) => (row as Row).data)
+      .filter((raw): raw is UserBrain => raw != null) as UserBrain[];
+  }
+
   async listReflectedUserIds(exhibitionId: string): Promise<string[]> {
     const db = await this.db(true);
     // user_brain은 사용자당 한 행, visits는 JSONB 배열이라 DB 단에서 정확히
