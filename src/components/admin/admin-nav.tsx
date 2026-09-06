@@ -15,6 +15,7 @@ import {
   AlertTriangle,
   Upload,
   GitCompare,
+  Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/common/theme-toggle";
@@ -24,6 +25,7 @@ const ITEMS = [
   { href: "/admin/exhibitions", label: "전시", icon: Building2 },
   { href: "/admin/booths", label: "부스", icon: Store },
   { href: "/admin/intake", label: "인입", icon: Upload },
+  { href: "/admin/enrichment", label: "초안 검수", icon: Sparkles },
   { href: "/admin/changes", label: "변경 이력", icon: GitCompare },
   { href: "/admin/events", label: "이벤트", icon: CalendarClock },
   { href: "/admin/analytics", label: "분석", icon: BarChart3 },
