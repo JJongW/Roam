@@ -29,8 +29,9 @@ import type { User } from "@/lib/types";
  * 드러내서, 다음 provider가 붙을 때 조용히 남의 이름을 달지 않게 한다.
  */
 const PROVIDER_LABELS: Record<string, string> = {
-  google: "구글 연동",
-  apple_ios: "애플 연동",
+  google: "구글 연동", // 웹 OAuth 콜백(/auth/callback)
+  google_ios: "구글 연동 (iOS)", // 네이티브(/api/auth/google/native) — identity 공간 분리
+  apple_ios: "애플 연동", // 네이티브(/api/auth/apple/link)
 };
 
 function providerLabel(provider: string): string {
