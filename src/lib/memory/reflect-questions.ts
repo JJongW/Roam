@@ -36,7 +36,8 @@ const ORDER: PreferenceKey[] = [
   "waitTolerance",
 ];
 
-const QUESTIONS: Record<string, Omit<ReflectQuestion, "key">> = {
+// PreferenceKey로 못 박는다 — 키를 추가하고 질문을 안 쓰면 빌드가 막힌다.
+const QUESTIONS: Record<PreferenceKey, Omit<ReflectQuestion, "key">> = {
   depthVsBreadth: {
     prompt: "오늘 같은 관람, 다음에도 이런 식이 좋아?",
     options: [
@@ -105,7 +106,7 @@ export function applyReflectAnswer(
   value: string | number,
 ): UserBrain {
   if (!ORDER.includes(key as PreferenceKey)) return brain;
-  const allowed = QUESTIONS[key].options.map((o) => o.value);
+  const allowed = QUESTIONS[key as PreferenceKey].options.map((o) => o.value);
   if (!allowed.includes(value)) return brain;
   return {
     ...brain,

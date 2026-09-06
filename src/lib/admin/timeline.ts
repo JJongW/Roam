@@ -1,6 +1,11 @@
 import { format } from "date-fns";
 
-import type { AnalyticsEvent, UserSignal } from "@/lib/types";
+import type {
+  AnalyticsEvent,
+  AnalyticsType,
+  SignalKind,
+  UserSignal,
+} from "@/lib/types";
 
 export interface TimelineEvent {
   id: string;
@@ -12,7 +17,10 @@ export interface TimelineEvent {
   boothLabel?: string;
 }
 
-const SIGNAL_LABELS: Record<string, string> = {
+// Record<string,…>이 아니라 Record<SignalKind,…>다 — 새 kind가 생기면 여기를
+// 안 채우고는 빌드가 안 된다. 예전엔 string 맵이라 ANALYTICS_LABELS에서 ui_click이
+// 조용히 빠진 채로 타임라인에 raw 값이 떴다.
+const SIGNAL_LABELS: Record<SignalKind, string> = {
   booth_bookmarked: "북마크",
   route_saved: "동선 저장",
   feed_click: "피드 클릭",
@@ -25,13 +33,14 @@ const SIGNAL_LABELS: Record<string, string> = {
   search_query: "검색",
 };
 
-const ANALYTICS_LABELS: Record<string, string> = {
+const ANALYTICS_LABELS: Record<AnalyticsType, string> = {
   view: "조회",
   dwell: "체류",
   route_start: "동선 시작",
   route_complete: "동선 완료",
   booth_arrive: "부스 도착",
   event_bookmark: "이벤트 북마크",
+  ui_click: "버튼 클릭",
 };
 
 /**

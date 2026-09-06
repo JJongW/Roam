@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import type { Booth, Category, Hall, Point } from "@/lib/types";
 import type { Floorplan } from "@/lib/floorplans";
 import { aisleRoute } from "@/lib/aisle-route";
+import { trackUiClick, type UiControl } from "@/lib/analytics/ui-controls";
 
 // Fallback booth box when no floorplan geometry is supplied.
 const BOOTH_W = 72;
@@ -174,19 +175,8 @@ export function ExhibitionMap({
 }: MapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
-  function trackClick(control: string) {
-    if (!exhibitionSlug) return;
-    void fetch("/api/analytics/events", {
-      method: "POST",
-      keepalive: true,
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        type: "ui_click",
-        exhibitionSlug,
-        meta: { control },
-      }),
-    }).catch(() => {});
-  }
+  const trackClick = (control: UiControl) =>
+    trackUiClick({ exhibitionSlug }, control);
   // Effective canvas size: floorplan dims override the props when present.
   // (Declared early — the imperative transform/rotation helpers below need it.)
   const width = floorplan?.width ?? widthProp;

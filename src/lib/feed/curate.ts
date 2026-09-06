@@ -12,7 +12,7 @@ import { buildGrounding, type Grounding } from "@/lib/feed/grounding";
 import { DEFAULT_RHYTHM, RHYTHM_MIX, type Rhythm } from "@/lib/feed/rhythm";
 import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n/config";
 import { emptyBrain } from "@/lib/memory/distill";
-import { VALUE_SLUGS, boothValueSlugs } from "@/lib/values";
+import { VALUE_SLUGS, boothValueSlugs, isValueSlug } from "@/lib/values";
 import type { Booth, BoothNote, UserBrain } from "@/lib/types";
 
 export type PickKind = "stable" | "unfamiliar" | "adventure";
@@ -109,7 +109,10 @@ function pickAdventure(
   const engaged = new Set(
     brain.interests.filter((n) => n.confidence >= 0.3).map((n) => n.key),
   );
-  const cold = new Set(VALUE_SLUGS.filter((v) => !engaged.has(v)));
+  // Set<string>이다 — 대조 대상인 booth.valueTags[].slug는 DB·enrichment에서 오는
+  // 값이라 캐논 밖일 수 있다(그건 그냥 안 겹치는 것으로 끝나야지 타입 에러가
+  // 아니다).
+  const cold = new Set<string>(VALUE_SLUGS.filter((v) => !engaged.has(v)));
   let best: Booth | null = null;
   let bestS = 0;
   for (const b of pool) {
@@ -159,7 +162,7 @@ export async function curateFeed(
   // 사용자 상위 관심 가치(slug) — 근거 카드의 왜맞음 겹침 계산에 쓴다.
   const userValueSlugs = brain.interests
     .filter(
-      (n) => n.confidence >= CONFIDENT_THRESHOLD && VALUE_SLUGS.includes(n.key),
+      (n) => n.confidence >= CONFIDENT_THRESHOLD && isValueSlug(n.key),
     )
     .map((n) => n.key);
 

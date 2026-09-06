@@ -3,8 +3,34 @@
 // Category와 호환되는 형태(slug/label/color/icon)라 category-chip 재사용 가능.
 import type { Booth } from "@/lib/types";
 
+/**
+ * 캐논 가치 slug — 단일 소스. 런타임 검증(/api/me/values)만 있고 타입이 없어서
+ * 코드에서 오타를 쳐도 컴파일이 통과하고 조용히 아무 데도 안 걸리는 slug가 됐다.
+ * 여기에 없는 값을 쓰면 이제 빌드가 막는다.
+ */
+export const VALUE_SLUGS = [
+  "discovery",
+  "experience",
+  "goods",
+  "social",
+  "learning",
+  "trend",
+  "inspiration",
+  "rest",
+] as const;
+
+export type ValueSlug = (typeof VALUE_SLUGS)[number];
+
+/**
+ * 런타임 문자열이 캐논 가치인지. `VALUE_SLUGS.includes(x)`는 readonly 튜플이라
+ * string을 못 받고 좁혀주지도 않는다 — 호출부마다 캐스팅하는 대신 여기 하나로 둔다.
+ */
+export function isValueSlug(slug: string): slug is ValueSlug {
+  return (VALUE_SLUGS as readonly string[]).includes(slug);
+}
+
 export interface ValueTagDef {
-  slug: string;
+  slug: ValueSlug;
   label: string;
   /** hex — CategoryChip 색 규약과 호환. */
   color: string;
@@ -73,9 +99,11 @@ export const VALUE_TAGS: ValueTagDef[] = [
   },
 ];
 
-export const VALUE_SLUGS = VALUE_TAGS.map((v) => v.slug);
-
-const BY_SLUG = new Map(VALUE_TAGS.map((v) => [v.slug, v]));
+// 조회 키는 string이다 — DB·클라에서 오는 값은 캐논 밖일 수 있고, 그걸
+// 걸러내는 게 valueDef의 일이다.
+const BY_SLUG = new Map<string, ValueTagDef>(
+  VALUE_TAGS.map((v) => [v.slug, v]),
+);
 
 export function valueDef(slug: string): ValueTagDef | undefined {
   return BY_SLUG.get(slug);
