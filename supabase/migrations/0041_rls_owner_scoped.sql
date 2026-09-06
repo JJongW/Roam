@@ -21,16 +21,13 @@
 -- ---------------------------------------------------------------------------
 
 -- --- app_user ----------------------------------------------------------------
--- 웹/닉네임/Google 계정 생성·조회는 전부 서버(service-role, RLS 미적용)를 거친다.
--- iOS Apple 계정만 예외 — Supabase Auth로 직접 로그인한 뒤 서버를 거치지 않고
--- 자기 자신의 app_user 행을 직접 만든다(auth.uid() = id로 소유권이 자명하므로
--- insert with check 하나로 충분). 2026-09-05, "iOS 직접 연결" 결정.
+-- 계정 생성/조회는 전부 서버(service-role, RLS 미적용)를 거친다 — 지금 이 anon/
+-- authenticated 정책이 없어도 앱 로그인·닉네임 조회 기능은 그대로 동작한다
+-- (repository.ts가 항상 SUPABASE_SERVICE_ROLE_KEY로 접근함, grep으로 확인).
 drop policy if exists "public read app_user" on app_user;
 drop policy if exists "anon insert app_user" on app_user;
 create policy "own row select app_user" on app_user
   for select using (auth.uid()::text = id);
-create policy "own row insert app_user" on app_user
-  for insert with check (auth.uid()::text = id);
 
 -- --- booth_note ----------------------------------------------------------------
 drop policy if exists "anon select booth_note" on booth_note;
