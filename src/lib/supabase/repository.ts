@@ -57,7 +57,6 @@ import type {
 import type {
   AnalyticsEventInput,
   BookmarkInput,
-  BoothEnrichmentAuthorInput,
   BoothEnrichmentPatch,
   BoothInput,
   BoothNoteInput,

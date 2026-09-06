@@ -32,7 +32,6 @@ import type { TasteAccuracy } from "@/lib/memory/taste";
 import type {
   AnalyticsEventInput,
   BookmarkInput,
-  BoothEnrichmentAuthorInput,
   BoothEnrichmentPatch,
   BoothInput,
   BoothNoteInput,
