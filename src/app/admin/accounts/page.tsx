@@ -22,6 +22,21 @@ import {
 } from "@/components/ui/alert-dialog";
 import type { User } from "@/lib/types";
 
+/**
+ * app_user.provider 슬러그 → 표시 라벨. 예전엔 "provider가 있으면 구글"로
+ * 하드코딩돼 있어서 Apple 계정(apple_ios)이 "구글 연동"으로 떴다 — 라벨이
+ * 하드코딩이면 틀려도 틀려 보이지 않는다. 모르는 슬러그는 원문을 그대로
+ * 드러내서, 다음 provider가 붙을 때 조용히 남의 이름을 달지 않게 한다.
+ */
+const PROVIDER_LABELS: Record<string, string> = {
+  google: "구글 연동",
+  apple_ios: "애플 연동",
+};
+
+function providerLabel(provider: string): string {
+  return PROVIDER_LABELS[provider] ?? `${provider} 연동`;
+}
+
 export default function AdminAccountsPage() {
   const [users, setUsers] = useState<User[]>([]);
   const [capped, setCapped] = useState(false);
@@ -88,7 +103,7 @@ export default function AdminAccountsPage() {
                   {u.nickname}
                 </Link>
                 <p className="text-xs text-muted-foreground">
-                  {u.provider ? `구글 연동` : "닉네임"} ·{" "}
+                  {u.provider ? providerLabel(u.provider) : "닉네임"} ·{" "}
                   {format(new Date(u.createdAt), "yyyy.M.d")} 가입
                 </p>
               </div>
