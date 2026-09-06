@@ -1,6 +1,7 @@
 import type {
   Floorplan,
   FloorplanBooth,
+  FloorplanHall,
   FloorplanDecor,
   FloorplanGate,
   FloorplanRect,
@@ -125,6 +126,21 @@ export function composeFloorplan(layout: Layout, venue: Venue): Floorplan {
   // venue 파일에 지어 넣으면 그 홀에서 열리는 다음 전시까지 그 거짓말을 물려받는다.
   const fallback = { x: layout.width / 2, y: layout.height - 60 };
 
+  // 홀 윤곽 = 벽. 지도가 floorplan.halls를 테두리 있는 사각형으로 그린다.
+  // **등록된 도면에만 그린다** — hallOrigin이 없으면 홀이 이 도면 어디에 앉는지
+  // 모르는 상태라, 원점에서 홀 크기만큼 그리면 엉뚱한 데 벽이 생긴다.
+  const halls: FloorplanHall[] = layout.hallOrigin
+    ? [
+        {
+          name: venue.name,
+          x: org.x,
+          y: org.y,
+          w: len(venue.meters.w),
+          h: len(venue.meters.h),
+        },
+      ]
+    : [];
+
   const decor: FloorplanDecor[] = (venue.decor ?? []).map((d) => placeDecor(d, at, len));
   for (const w of venue.wc ?? []) {
     const p = at(w);
@@ -134,10 +150,21 @@ export function composeFloorplan(layout: Layout, venue: Venue): Floorplan {
   return {
     width: layout.width,
     height: layout.height,
-    halls: [],
+    halls,
     decor,
     booths,
-    interior: venue.interior ?? [bbox(booths)],
+    // 걷는 영역도 홀이 진실이다(등록된 경우). 부스 bbox는 등록 전 폴백.
+    interior: venue.interior ??
+      (halls.length
+        ? [
+            {
+              x: halls[0].x + halls[0].w / 2,
+              y: halls[0].y + halls[0].h / 2,
+              w: halls[0].w,
+              h: halls[0].h,
+            },
+          ]
+        : [bbox(booths)]),
     entrance: venue.entrance ? at(venue.entrance) : fallback,
     exit: venue.exit ? at(venue.exit) : fallback,
     ...(venue.gates?.length

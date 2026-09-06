@@ -331,6 +331,13 @@ function compose(layout: unknown): Floorplan {
   return composeFloorplan(l, venue);
 }
 
+/** 전시 slug → 그 전시가 쓰는 장소. 도면과 함께 내보내야 클라이언트가 픽셀이 아닌
+ *  미터로 계산할 수 있다(SIBF는 venue 위에 못 얹은 개략도라 없다). */
+export const VENUE_OF: Record<string, Venue> = {
+  "sif-2026": VENUES[(sif as { venue: string }).venue],
+  "house-archive-2026": VENUES[(ha as { venue: string }).venue],
+};
+
 export const FLOORPLANS: Record<string, Floorplan> = {
   "sibf-2026": buildSibf(), // 예외 — 개략도
   "sif-2026": compose(sif),
