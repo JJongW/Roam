@@ -26,6 +26,7 @@ import type {
   BoothNote,
   Category,
   ChangeRecord,
+  EnrichmentCandidate,
   CommunityPost,
   DeletePostResult,
   ReportResult,
@@ -273,6 +274,23 @@ function mapCategory(r: Row): Category {
 // lean. mapBooth defaults the omitted fields to "" / [].
 const BOOTH_LIST_COLS =
   "id,exhibition_id,hall_id,category_id,code,kind,name,company,aliases,description,logo_url,instagram_url,website_url,tags,x,y,popularity,created_at";
+
+function mapCandidate(r: Row): EnrichmentCandidate {
+  return {
+    id: str(r.id),
+    boothId: str(r.booth_id),
+    exhibitionId: str(r.exhibition_id),
+    source: str(r.source),
+    payload: (r.payload ?? {}) as Record<string, unknown>,
+    sources: (r.sources ?? []) as EnrichmentCandidate["sources"],
+    confidence: num(r.confidence),
+    issues: (r.issues ?? []) as EnrichmentCandidate["issues"],
+    status: str(r.status) as EnrichmentCandidate["status"],
+    reviewedAt: r.reviewed_at == null ? null : String(r.reviewed_at),
+    reviewedBy: r.reviewed_by == null ? null : String(r.reviewed_by),
+    createdAt: str(r.created_at),
+  };
+}
 
 function mapBooth(r: Row): Booth {
   const tags = strArr(r.tags);
@@ -878,6 +896,78 @@ export class SupabaseRepository implements Repository {
       .maybeSingle();
     const data = maybeWrote(res, "부스 수정");
     return data ? mapBooth(data as Row) : null;
+  }
+
+  async createEnrichmentCandidates(
+    rows: Omit<EnrichmentCandidate, "id" | "createdAt" | "status">[],
+  ): Promise<number> {
+    if (rows.length === 0) return 0;
+    const db = createServiceClient();
+    const res = await db.from("enrichment_candidate").insert(
+      rows.map((r) => ({
+        id: uid("cand"),
+        booth_id: r.boothId,
+        exhibition_id: r.exhibitionId,
+        source: r.source,
+        payload: r.payload,
+        sources: r.sources,
+        confidence: r.confidence,
+        issues: r.issues,
+        created_at: now(),
+      })),
+    );
+    wrote(res, "초안 적재");
+    return rows.length;
+  }
+
+  async listEnrichmentCandidates(opts?: {
+    exhibitionId?: string;
+    boothId?: string;
+    status?: EnrichmentCandidate["status"];
+    limit?: number;
+  }): Promise<EnrichmentCandidate[]> {
+    const db = await this.db(true);
+    let q = db
+      .from("enrichment_candidate")
+      .select("*")
+      // 신뢰도 높은 것부터 — 검수자가 쉬운 것부터 치우고 어려운 것에 시간을 쓴다.
+      .order("confidence", { ascending: false })
+      .limit(opts?.limit ?? 100);
+    if (opts?.exhibitionId) q = q.eq("exhibition_id", opts.exhibitionId);
+    if (opts?.boothId) q = q.eq("booth_id", opts.boothId);
+    if (opts?.status) q = q.eq("status", opts.status);
+    const { data, error } = await q;
+    if (error) throw new Error(`초안 조회 실패: ${error.message}`);
+    return (data ?? []).map((r) => mapCandidate(r as Row));
+  }
+
+  async getEnrichmentCandidate(id: string): Promise<EnrichmentCandidate | null> {
+    const db = await this.db(true);
+    const { data } = await db
+      .from("enrichment_candidate")
+      .select("*")
+      .eq("id", id)
+      .maybeSingle();
+    return data ? mapCandidate(data as Row) : null;
+  }
+
+  async setCandidateStatus(
+    id: string,
+    status: EnrichmentCandidate["status"],
+    reviewedBy?: string | null,
+  ): Promise<void> {
+    const db = createServiceClient();
+    const res = await db
+      .from("enrichment_candidate")
+      .update({
+        status,
+        reviewed_at: now(),
+        reviewed_by: reviewedBy ?? null,
+      })
+      .eq("id", id)
+      .select("id")
+      .maybeSingle();
+    maybeWrote(res, "초안 검수 결과 저장");
   }
 
   async recordChange(entry: ChangeEntry): Promise<void> {

@@ -47,6 +47,7 @@ import type {
   UserPreference,
   UserSignal,
   ChangeRecord,
+  EnrichmentCandidate,
   VisitorSession,
   WelcomeKit,
 } from "@/lib/types";
@@ -88,6 +89,7 @@ interface Store {
   aiQueries: AiQueryLog[];
   userSignals: UserSignal[];
   changes: ChangeRecord[];
+  candidates: EnrichmentCandidate[];
   userBrains: Map<string, UserBrain>;
   issueLogs: IssueLog[];
 }
@@ -134,6 +136,7 @@ function buildStore(): Store {
     aiQueries: [],
     userSignals: [],
     changes: [],
+    candidates: [],
     userBrains: new Map(),
     issueLogs: [],
   };
@@ -293,6 +296,53 @@ export class MockRepository implements Repository {
     }
     Object.assign(b, input);
     return b;
+  }
+
+  async createEnrichmentCandidates(
+    rows: Omit<EnrichmentCandidate, "id" | "createdAt" | "status">[],
+  ): Promise<number> {
+    for (const r of rows) {
+      store().candidates.push({
+        ...r,
+        id: uid("cand"),
+        status: "pending",
+        createdAt: now(),
+      });
+    }
+    return rows.length;
+  }
+
+  async listEnrichmentCandidates(opts?: {
+    exhibitionId?: string;
+    boothId?: string;
+    status?: EnrichmentCandidate["status"];
+    limit?: number;
+  }): Promise<EnrichmentCandidate[]> {
+    let rows = [...store().candidates];
+    if (opts?.exhibitionId) {
+      rows = rows.filter((r) => r.exhibitionId === opts.exhibitionId);
+    }
+    if (opts?.boothId) rows = rows.filter((r) => r.boothId === opts.boothId);
+    if (opts?.status) rows = rows.filter((r) => r.status === opts.status);
+    // 신뢰도 높은 것부터 — 검수자가 쉬운 것부터 치우고 어려운 것에 시간을 쓴다.
+    rows.sort((a, b) => b.confidence - a.confidence);
+    return rows.slice(0, opts?.limit ?? 100);
+  }
+
+  async getEnrichmentCandidate(id: string): Promise<EnrichmentCandidate | null> {
+    return store().candidates.find((c) => c.id === id) ?? null;
+  }
+
+  async setCandidateStatus(
+    id: string,
+    status: EnrichmentCandidate["status"],
+    reviewedBy?: string | null,
+  ): Promise<void> {
+    const c = store().candidates.find((x) => x.id === id);
+    if (!c) return;
+    c.status = status;
+    c.reviewedAt = now();
+    c.reviewedBy = reviewedBy ?? null;
   }
 
   async recordChange(entry: ChangeEntry): Promise<void> {

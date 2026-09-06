@@ -1,4 +1,5 @@
 import { VALUE_TAGS, isValueSlug } from "@/lib/values";
+import { isSomeoneElsesVoice } from "@/lib/booth/voice";
 import type { BoothEnrichmentAuthorInput } from "@/lib/schemas";
 
 export interface QualityIssue {
@@ -135,6 +136,16 @@ export function gradeCandidate(input: GradeInput): QualityReport {
         code: "value_word_in_voice",
         field: "roamInterpretation",
         message: `로미 발화에 가치 이름("${hit}")이 들어갔다 — 분류를 되읽어주는 건 정보가 아니다`,
+        weight: 0.3,
+      });
+    }
+    // 로미는 반말이고 1인칭이다. 존댓말·자기소개 어투가 섞이면 화자가 뒤집힌다 —
+    // 그 판정은 booth/voice.ts가 이미 갖고 있으므로 규칙을 두 벌 쓰지 않고 빌려 쓴다.
+    if (isSomeoneElsesVoice(line)) {
+      add({
+        code: "not_roam_voice",
+        field: "roamInterpretation",
+        message: "로미의 말투가 아니다(존댓말·자기소개 어투) — 화자가 뒤집힌다",
         weight: 0.3,
       });
     }

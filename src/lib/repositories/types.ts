@@ -8,6 +8,7 @@ import type {
   BoothNote,
   Category,
   ChangeRecord,
+  EnrichmentCandidate,
   CommunityPost,
   DeletePostResult,
   ReportResult,
@@ -97,6 +98,24 @@ export interface Repository {
   /** 저작 필드(근거 카드용 summary/valueTags/recommendationReasons/thingsToDo/
    *  timing/memoryHooks) 전체 교체 UPSERT — 부분 필드만 보내지 않는다(폼이 항상
    *  6개 전부를 함께 제출). */
+  /** 검수 대기 초안 적재. 여러 건을 한 번에 — 초안기는 배치로 돈다. */
+  createEnrichmentCandidates(
+    rows: Omit<EnrichmentCandidate, "id" | "createdAt" | "status">[],
+  ): Promise<number>;
+  listEnrichmentCandidates(opts?: {
+    exhibitionId?: string;
+    boothId?: string;
+    status?: EnrichmentCandidate["status"];
+    limit?: number;
+  }): Promise<EnrichmentCandidate[]>;
+  getEnrichmentCandidate(id: string): Promise<EnrichmentCandidate | null>;
+  /** 검수 결과 기록. 반영 자체는 upsertBoothEnrichment가 따로 한다. */
+  setCandidateStatus(
+    id: string,
+    status: EnrichmentCandidate["status"],
+    reviewedBy?: string | null,
+  ): Promise<void>;
+
   /** 변경 이력 적재. **실패해도 도메인 쓰기를 막지 않는다**(loggedWrite) —
    *  900부스 인입이 이력 한 줄 때문에 통째로 멈추면 도구로서 못 쓴다. 대신
    *  실패는 반드시 에러 로그로 남는다. */

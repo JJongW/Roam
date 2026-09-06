@@ -426,6 +426,22 @@ export type SignalKind =
   | "search_query"; // 특정 부스 검색 = 강한 능동 관심
 
 /** 원장 1행 — 사용자 행동 신호. append-only, 재증류 소스. */
+/** 검수 대기 초안 한 건. 자동 초안·참가사 폼·주최 측 제출이 같은 모양으로 들어온다. */
+export interface EnrichmentCandidate {
+  id: string;
+  boothId: string;
+  exhibitionId: string;
+  source: string;
+  payload: Record<string, unknown>;
+  sources: { uri: string; title?: string }[];
+  confidence: number;
+  issues: { code: string; field?: string; message: string; weight: number }[];
+  status: "pending" | "approved" | "rejected" | "superseded";
+  reviewedAt?: string | null;
+  reviewedBy?: string | null;
+  createdAt: string;
+}
+
 /** 변경 이력 한 줄. 상세 규약은 src/lib/audit/diff.ts. */
 export interface ChangeRecord {
   id: string;

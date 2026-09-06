@@ -41,6 +41,13 @@ describe("gradeCandidate — CLAUDE.md 규약의 기계적 표현", () => {
     expect(r.issues.map((i) => i.code)).toContain("name_only");
   });
 
+  it("존댓말이면 로미의 말이 아니다 — voice.ts 판정을 빌려 쓴다", () => {
+    const r = gradeCandidate(
+      good({ roamInterpretation: "안녕하세요, 조명을 만드는 브랜드입니다." }),
+    );
+    expect(r.issues.map((i) => i.code)).toContain("not_roam_voice");
+  });
+
   it("로미 한 줄이 없으면 감점한다", () => {
     const r = gradeCandidate(good({ roamInterpretation: "" }));
     expect(r.issues.map((i) => i.code)).toContain("no_interpretation");
