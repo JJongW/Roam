@@ -273,6 +273,15 @@ export class MockRepository implements Repository {
     b.enrichment = {
       ...(b.enrichment ?? { goodsKeywords: [], themeTags: [] }),
       summary: input.summary || undefined,
+      // undefined면 기존 값을 그대로 둔다(supabase upsert와 같은 규칙).
+      roamInterpretation:
+        input.roamInterpretation === undefined
+          ? b.enrichment?.roamInterpretation
+          : input.roamInterpretation || undefined,
+      sourceUrl:
+        input.sourceUrl === undefined
+          ? b.enrichment?.sourceUrl
+          : input.sourceUrl || undefined,
       valueTags: input.valueTags.length ? input.valueTags : undefined,
       recommendationReasons: Object.keys(input.recommendationReasons).length
         ? input.recommendationReasons
@@ -293,6 +302,36 @@ export class MockRepository implements Repository {
 
   async listCategories(): Promise<Category[]> {
     return store().categories;
+  }
+
+  async createHall(exhibitionId: string, name: string): Promise<Hall> {
+    const halls = store().halls;
+    const hall: Hall = {
+      id: uid("hall"),
+      exhibitionId,
+      name,
+      floor: 1,
+      sort: halls.filter((h) => h.exhibitionId === exhibitionId).length,
+    };
+    halls.push(hall);
+    return hall;
+  }
+
+  async createCategory(input: {
+    slug: string;
+    name: string;
+    color?: string;
+    icon?: string;
+  }): Promise<Category> {
+    const category: Category = {
+      id: uid("cat"),
+      slug: input.slug,
+      name: input.name,
+      color: input.color ?? "#6b7280",
+      icon: input.icon ?? "tag",
+    };
+    store().categories.push(category);
+    return category;
   }
 
   async listHalls(exhibitionId: string): Promise<Hall[]> {

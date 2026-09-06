@@ -88,6 +88,16 @@ export interface Repository {
   // categories / halls
   listCategories(exhibitionId: string): Promise<Category[]>;
   listHalls(exhibitionId: string): Promise<Hall[]>;
+  /** 전시 인입이 파일에 적힌 이름으로 홀을 만든다. */
+  createHall(exhibitionId: string, name: string): Promise<Hall>;
+  /** 전시 인입이 카테고리를 만든다. slug은 전역 unique이고 booth.tags에 그대로
+   *  들어가 추천 스코어링이 읽는 값이라 파일이 명시한 것만 쓴다. */
+  createCategory(input: {
+    slug: string;
+    name: string;
+    color?: string;
+    icon?: string;
+  }): Promise<Category>;
 
   // events
   listEvents(

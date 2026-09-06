@@ -136,6 +136,31 @@ describe("MockRepository", () => {
     expect(after!.enrichment?.goodsKeywords ?? []).toEqual(goodsBefore);
   });
 
+  it("upsertBoothEnrichment: roamInterpretation 키가 없으면 기존 값을 지우지 않는다", async () => {
+    const repo = new MockRepository();
+    await repo.upsertBoothEnrichment("b_a1902", {
+      roamInterpretation: "사람이 쓴 한 줄",
+      summary: "요약",
+      valueTags: [],
+      recommendationReasons: {},
+      thingsToDo: [],
+      timing: [],
+      memoryHooks: [],
+    });
+    // 이 필드를 안 보내는 화면(booth-manager)이 저장해도 한 줄은 남아야 한다.
+    await repo.upsertBoothEnrichment("b_a1902", {
+      summary: "다른 요약",
+      valueTags: [],
+      recommendationReasons: {},
+      thingsToDo: [],
+      timing: [],
+      memoryHooks: [],
+    });
+    const detail = await repo.getBoothDetail("b_a1902");
+    expect(detail!.booth.enrichment?.roamInterpretation).toBe("사람이 쓴 한 줄");
+    expect(detail!.booth.enrichment?.summary).toBe("다른 요약");
+  });
+
   it("upsertBoothEnrichment: 빈 배열/빈 객체는 undefined로 저장한다(폼을 비우면 결측으로 되돌아감)", async () => {
     await repo.upsertBoothEnrichment("b_a1902", {
       summary: "",

@@ -78,6 +78,42 @@ type WriteResult<T> = {
 };
 
 /** 대상 행이 없을 수 있는 쓰기(update/delete). 에러만 던지고 미매치는 null. */
+/** PostgREST의 `.in()`은 값을 전부 URL에 담는다. 전시 하나치 부스 id(서울일러스트
+ *  레이션페어는 914개)를 한 번에 넣으면 요청 URL이 10KB에 가까워져 길이 상한에
+ *  걸리는데, **실패해도 예외가 아니라 data:null로 돌아오므로 `?? []`가 그걸 "0건"
+ *  으로 위장한다.** 쓰기의 wrote() 게이트가 막는 것과 같은 종류의 침묵이다.
+ *
+ *  나눠서 부르고 합친다. 그리고 어느 조각이든 에러면 던진다 — 조용히 비는 것보다
+ *  시끄럽게 실패하는 편이 낫다. enrichment가 조용히 비면 로미의 근거 카드가
+ *  통째로 사라지고, 인입은 그걸 "빈 칸"으로 오해해 사람이 쓴 값을 덮어쓴다. */
+const IN_CHUNK = 200;
+async function inChunks<T>(
+  ids: string[],
+  what: string,
+  run: (slice: string[]) => PromiseLike<{ data: T[] | null; error: unknown }>,
+): Promise<T[]> {
+  if (ids.length === 0) return [];
+  const slices: string[][] = [];
+  for (let i = 0; i < ids.length; i += IN_CHUNK) {
+    slices.push(ids.slice(i, i + IN_CHUNK));
+  }
+  // 병렬 — 순차로 돌리면 부스 900개짜리 전시에서 왕복이 5번 쌓여 방문객 지도가
+  // 그만큼 느려진다(측정: 342ms → 812ms). 조각끼리 의존이 없으니 같이 던진다.
+  const results = await Promise.all(slices.map((slice) => run(slice)));
+  const out: T[] = [];
+  for (const [i, { data, error }] of results.entries()) {
+    if (error) {
+      throw new Error(
+        `${what} 조회 실패(조각 ${i + 1}/${slices.length}, ${ids.length}건 중): ${String(
+          (error as { message?: string })?.message ?? error,
+        )}`,
+      );
+    }
+    out.push(...(data ?? []));
+  }
+  return out;
+}
+
 function maybeWrote<T>(res: WriteResult<T>, what: string): T | null {
   if (res.error) {
     throw new Error(
@@ -461,6 +497,7 @@ function boothToRow(input: Partial<BoothInput>): Row {
   if (input.hallId !== undefined) row.hall_id = input.hallId;
   if (input.categoryId !== undefined) row.category_id = input.categoryId;
   if (input.code !== undefined) row.code = input.code;
+  if (input.kind !== undefined) row.kind = input.kind;
   if (input.name !== undefined) row.name = input.name;
   if (input.company !== undefined) row.company = input.company;
   if (input.description !== undefined) row.description = input.description;
@@ -629,15 +666,14 @@ export class SupabaseRepository implements Repository {
       .eq("exhibition_id", exhibitionId);
     const booths = (data ?? []).map(mapBooth);
     // 근거 카드·추천에 쓰이는 enrichment를 한 번에 join해 붙인다(피드 경로).
-    const { data: enrichRows } = await db
-      .from("booth_enrichment")
-      .select("*")
-      .in(
-        "booth_id",
-        booths.map((b) => b.id),
-      );
+    const enrichRows = await inChunks<Row>(
+      booths.map((b) => b.id),
+      "부스 저작 정보",
+      (slice) =>
+        db.from("booth_enrichment").select("*").in("booth_id", slice),
+    );
     const byId = new Map(
-      (enrichRows ?? []).map((e) => [String((e as Row).booth_id), e as Row]),
+      enrichRows.map((e) => [String(e.booth_id), e]),
     );
     for (const b of booths) {
       const e = byId.get(b.id);
@@ -696,6 +732,61 @@ export class SupabaseRepository implements Repository {
   // anon 키로 쓰면 booth 테이블 RLS가 방문객 세션엔 쓰기를 안 줘서 조용히 0행으로
   // 끝나고(PostgREST는 그걸 에러로 안 던진다), 위 update가 null을 돌려줘 라우트가
   // "부스를 못 찾음"으로 오인해 404를 냈다(createServiceClient 주석 참고).
+  async createHall(exhibitionId: string, name: string): Promise<Hall> {
+    const db = createServiceClient();
+    const { count } = await db
+      .from("hall")
+      .select("id", { count: "exact", head: true })
+      .eq("exhibition_id", exhibitionId);
+    const res = await db
+      .from("hall")
+      .insert({
+        id: uid("hall"),
+        exhibition_id: exhibitionId,
+        name,
+        floor: 1,
+        sort: count ?? 0,
+      })
+      .select("*")
+      .single();
+    const r = wrote(res, "홀 생성") as Row;
+    return {
+      id: str(r.id),
+      exhibitionId: str(r.exhibition_id),
+      name: str(r.name),
+      floor: num(r.floor),
+      sort: num(r.sort),
+    };
+  }
+
+  async createCategory(input: {
+    slug: string;
+    name: string;
+    color?: string;
+    icon?: string;
+  }): Promise<Category> {
+    const db = createServiceClient();
+    const res = await db
+      .from("category")
+      .insert({
+        id: uid("cat"),
+        slug: input.slug,
+        name: input.name,
+        color: input.color ?? "#6b7280",
+        icon: input.icon ?? "tag",
+      })
+      .select("*")
+      .single();
+    const r = wrote(res, "카테고리 생성") as Row;
+    return {
+      id: str(r.id),
+      slug: str(r.slug),
+      name: str(r.name),
+      color: str(r.color),
+      icon: str(r.icon),
+    };
+  }
+
   async createBooth(input: BoothInput): Promise<Booth> {
     const db = createServiceClient();
     const row = { id: uid("booth"), created_at: now(), ...boothToRow(input) };
@@ -723,7 +814,9 @@ export class SupabaseRepository implements Repository {
     input: BoothEnrichmentAuthorInput,
   ): Promise<void> {
     const db = createServiceClient();
-    const row = {
+    // 키가 없는 필드는 페이로드에서 뺀다 — PostgREST upsert는 실린 컬럼만
+    // ON CONFLICT DO UPDATE 하므로, 빼면 기존 값이 그대로 남는다.
+    const row: Record<string, unknown> = {
       booth_id: boothId,
       summary: input.summary,
       value_tags: input.valueTags,
@@ -732,6 +825,10 @@ export class SupabaseRepository implements Repository {
       timing: input.timing,
       memory_hooks: input.memoryHooks,
     };
+    if (input.roamInterpretation !== undefined) {
+      row.roam_interpretation = input.roamInterpretation || null;
+    }
+    if (input.sourceUrl !== undefined) row.source_url = input.sourceUrl || null;
     const res = await db
       .from("booth_enrichment")
       .upsert(row, { onConflict: "booth_id" })
@@ -1310,11 +1407,10 @@ export class SupabaseRepository implements Repository {
   async listNotesByBoothIds(boothIds: string[]): Promise<BoothNote[]> {
     if (boothIds.length === 0) return [];
     const db = await this.db();
-    const { data } = await db
-      .from("booth_note")
-      .select("*")
-      .in("booth_id", boothIds);
-    return (data ?? []).map(mapNote);
+    const rows = await inChunks<Row>(boothIds, "부스 노트", (slice) =>
+      db.from("booth_note").select("*").in("booth_id", slice),
+    );
+    return rows.map(mapNote);
   }
 
   async upsertNote(
@@ -1425,13 +1521,15 @@ export class SupabaseRepository implements Repository {
       .eq("exhibition_id", exhibitionId);
     const ids = (booths ?? []).map((b) => str((b as Row).id));
     if (ids.length === 0) return { judgedCount: 0, pct: null };
-    const { data } = await db
-      .from("booth_note")
-      .select("interest, verdict, judged_class")
-      .eq("user_id", userId)
-      .in("booth_id", ids);
+    const data = await inChunks<Row>(ids, "판정 노트", (slice) =>
+      db
+        .from("booth_note")
+        .select("interest, verdict, judged_class")
+        .eq("user_id", userId)
+        .in("booth_id", slice),
+    );
     return computeTasteAccuracy(
-      (data ?? []).map((r) => ({
+      data.map((r) => ({
         interest:
           (r as Row).interest == null
             ? undefined
@@ -1462,18 +1560,24 @@ export class SupabaseRepository implements Repository {
       (booths ?? []).map((b) => [str((b as Row).id), str((b as Row).name)]),
     );
     if (nameById.size === 0) return [];
-    const { data } = await db
-      .from("booth_note")
-      .select("booth_id")
-      .eq("user_id", userId)
-      .not("visited_at", "is", null)
-      .is("verdict", null)
-      .in("booth_id", [...nameById.keys()])
-      .limit(limit);
-    return (data ?? [])
-      .map((r) => str((r as Row).booth_id))
+    const data = await inChunks<Row>(
+      [...nameById.keys()],
+      "회고 대기 노트",
+      (slice) =>
+        db
+          .from("booth_note")
+          .select("booth_id")
+          .eq("user_id", userId)
+          .not("visited_at", "is", null)
+          .is("verdict", null)
+          .in("booth_id", slice)
+          .limit(limit),
+    );
+    return data
+      .map((r) => str(r.booth_id))
       .filter((id) => nameById.has(id))
-      .map((id) => ({ boothId: id, boothName: nameById.get(id)! }));
+      .map((id) => ({ boothId: id, boothName: nameById.get(id)! }))
+      .slice(0, limit);
   }
 
   async listMustNotVisited(
@@ -1490,18 +1594,24 @@ export class SupabaseRepository implements Repository {
       (booths ?? []).map((b) => [str((b as Row).id), str((b as Row).name)]),
     );
     if (nameById.size === 0) return [];
-    const { data } = await db
-      .from("booth_note")
-      .select("booth_id")
-      .eq("user_id", userId)
-      .eq("interest", "must")
-      .is("visited_at", null)
-      .in("booth_id", [...nameById.keys()])
-      .limit(limit);
-    return (data ?? [])
-      .map((r) => str((r as Row).booth_id))
+    const data = await inChunks<Row>(
+      [...nameById.keys()],
+      "꼭 갈 곳 노트",
+      (slice) =>
+        db
+          .from("booth_note")
+          .select("booth_id")
+          .eq("user_id", userId)
+          .eq("interest", "must")
+          .is("visited_at", null)
+          .in("booth_id", slice)
+          .limit(limit),
+    );
+    return data
+      .map((r) => str(r.booth_id))
       .filter((id) => nameById.has(id))
-      .map((id) => ({ boothId: id, boothName: nameById.get(id)! }));
+      .map((id) => ({ boothId: id, boothName: nameById.get(id)! }))
+      .slice(0, limit);
   }
 
   async listExhibitionNotes(
@@ -1514,15 +1624,17 @@ export class SupabaseRepository implements Repository {
       .eq("exhibition_id", exhibitionId);
     const ids = (booths ?? []).map((b) => str((b as Row).id));
     if (ids.length === 0) return [];
-    const { data } = await db
-      .from("booth_note")
-      .select("booth_id, memo")
-      .in("booth_id", ids)
-      .not("memo", "is", null);
-    return (data ?? [])
+    const data = await inChunks<Row>(ids, "전시 메모", (slice) =>
+      db
+        .from("booth_note")
+        .select("booth_id, memo")
+        .in("booth_id", slice)
+        .not("memo", "is", null),
+    );
+    return data
       .map((r) => ({
-        boothId: str((r as Row).booth_id),
-        memo: str((r as Row).memo),
+        boothId: str(r.booth_id),
+        memo: str(r.memo),
       }))
       .filter((n) => n.memo.trim());
   }

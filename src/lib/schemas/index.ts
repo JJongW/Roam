@@ -143,6 +143,10 @@ export const boothInputSchema = z.object({
   hallId: z.string().min(1),
   categoryId: z.string().min(1),
   code: z.string().max(20).optional(),
+  /** facility(라운지·센터·스테이지)는 지도에 있지만 참가사가 아니라 추천·스와이프·
+   *  스크린샷 매칭에서 빠진다. 인입이 이걸 못 넣으면 시설 부스가 전부 참가사로
+   *  들어가 피드를 오염시킨다. */
+  kind: z.enum(["exhibitor", "facility"]).optional(),
   name: z.string().min(1).max(120),
   company: z.string().min(1).max(120),
   description: z.string().max(300).default(""),
@@ -160,6 +164,14 @@ export type BoothInput = z.infer<typeof boothInputSchema>;
 
 export const boothEnrichmentAuthorInputSchema = z.object({
   summary: z.string().max(300).default(""),
+  /** 로미식 한 줄 해석. CLAUDE.md가 "가장 중요 4"로 꼽는 해석 필드이고, 근거
+   *  카드의 사실 절이 summary보다 먼저 읽는 값인데 저작 경로가 없었다. */
+  roamInterpretation: z.string().max(300).optional(),
+  /** 출처(인스타·공식 웹). 신뢰 표시와 재확인의 근거.
+   *  두 필드는 optional이다 — 키가 없으면 upsert 페이로드에서 빠지고 컬럼은
+   *  그대로 남는다. default("")로 두면 이 필드를 안 보내는 기존 화면
+   *  (booth-manager)이 저장할 때마다 남의 로미 한 줄을 null로 지운다. */
+  sourceUrl: z.string().max(500).optional(),
   valueTags: z
     .array(z.object({ slug: z.string(), strength: z.number().min(0).max(1) }))
     .default([]),
