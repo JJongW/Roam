@@ -45,6 +45,37 @@ describe("buildTimeline", () => {
     expect(result[1].boothLabel).toBe("부스A");
   });
 
+  it("analytics에 user_id가 있으면 닉네임으로 귀속한다(0042)", () => {
+    const result = buildTimeline(
+      [],
+      [
+        {
+          id: "a1",
+          sessionId: "sess1",
+          userId: "u1",
+          exhibitionId: "ex1",
+          type: "view" as const,
+          createdAt: "2026-08-08T11:00:00.000Z",
+        },
+        // user_id 도입 전에 쌓인 행 — 종전대로 익명.
+        {
+          id: "a2",
+          sessionId: "sess2",
+          exhibitionId: "ex1",
+          type: "view" as const,
+          createdAt: "2026-08-08T10:00:00.000Z",
+        },
+      ],
+      new Map([["u1", "닉네임1"]]),
+      new Map(),
+      new Map(),
+    );
+    expect(result[0].userId).toBe("u1");
+    expect(result[0].userLabel).toBe("닉네임1");
+    expect(result[1].userId).toBeUndefined();
+    expect(result[1].userLabel).toBe("익명 세션");
+  });
+
   it("알 수 없는 kind/type은 원래 값을 그대로 라벨로 쓴다", () => {
     const result = buildTimeline(
       [

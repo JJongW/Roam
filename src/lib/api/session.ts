@@ -1,7 +1,5 @@
 import { getRepository } from "@/lib/repositories";
 import { getSessionId, getUserId, setSessionCookie } from "@/lib/api/http";
-import { headers } from "next/headers";
-import { getSupabaseUserFromBearer } from "@/lib/auth/supabase-bearer-user";
 import type { User, VisitorSession } from "@/lib/types";
 
 /**
@@ -35,13 +33,6 @@ export async function ensureSession(
 export async function getCurrentUser(): Promise<User | null> {
   const repo = await getRepository();
 
-  const cookieId = await getUserId();
-  if (cookieId) return repo.getUser(cookieId);
-
-  const authHeader = (await headers()).get("authorization");
-  const token = authHeader?.replace(/^Bearer\s+/i, "");
-  if (!token) return null;
-  const authUser = await getSupabaseUserFromBearer(token);
-  if (!authUser) return null;
-  return repo.getUser(authUser.id);
+  const id = await getUserId();
+  return id ? repo.getUser(id) : null;
 }

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
+import { getSupabaseUserFromBearer } from "@/lib/auth/supabase-bearer-user";
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { ZodError, type ZodType } from "zod";
 import { SESSION_COOKIE, USER_COOKIE, ADMIN_COOKIE } from "@/lib/constants";
@@ -122,11 +123,26 @@ function verifySignedUserId(signed: string): string | null {
   return id;
 }
 
-/** Read the signed-in user id from the cookie (or null). */
+/**
+ * 지금 요청의 로그인 사용자 id (없으면 null).
+ *
+ * 쿠키가 1순위지만 iOS는 `roam_user` 쿠키를 아예 발급받지 않는다(Apple 로그인이
+ * Supabase Auth로 옮겨감, 2026-09-06) — 그쪽은 `Authorization: Bearer <supabase
+ * access token>`으로 온다. 쿠키만 보던 탓에 iOS에서 들어온 요청은 로그인
+ * 상태여도 익명으로 기록됐다(analytics_event.user_id·issue_log.user_id가 null).
+ * `app_user.id`는 `auth.uid()`와 같은 값이므로(0041 RLS 전제) 토큰에서 검증한
+ * id를 그대로 쓴다.
+ */
 export async function getUserId(): Promise<string | null> {
   const store = await cookies();
   const raw = store.get(USER_COOKIE)?.value;
-  return raw ? verifySignedUserId(raw) : null;
+  if (raw) return verifySignedUserId(raw);
+
+  const token = (await headers())
+    .get("authorization")
+    ?.replace(/^Bearer\s+/i, "");
+  if (!token) return null;
+  return (await getSupabaseUserFromBearer(token))?.id ?? null;
 }
 
 export async function setUserCookie(id: string) {
