@@ -12,6 +12,8 @@ import { OnboardingValueChart } from "@/components/charts/onboarding-value-chart
 import { UiClickChart } from "@/components/charts/ui-click-chart";
 import { onboardingValueBreakdown } from "@/lib/admin/journey-funnel";
 import { uiClickBreakdown } from "@/lib/admin/ui-click-breakdown";
+import { crossTasteBehavior } from "@/lib/admin/taste-behavior";
+import { TasteBehaviorCross } from "@/components/admin/taste-behavior-cross";
 
 export const metadata = { title: "분석" };
 
@@ -25,19 +27,29 @@ export default async function AnalyticsPage() {
     return <p className="text-muted-foreground">전시가 없습니다.</p>;
   }
 
-  const [points, popular, edges, funnel, booths, signals, analyticsEvents] =
-    await Promise.all([
-      repo.analyticsHeatmap(exhibition.id),
-      repo.analyticsPopular(exhibition.id, 8),
-      repo.analyticsFlow(exhibition.id),
-      repo.analyticsConversion(exhibition.id),
-      repo.listBoothsByExhibitionId(exhibition.id),
-      repo.listExhibitionSignals(exhibition.id),
-      repo._allAnalytics!(exhibition.id),
-    ]);
+  const [
+    points,
+    popular,
+    edges,
+    funnel,
+    booths,
+    signals,
+    analyticsEvents,
+    brains,
+  ] = await Promise.all([
+    repo.analyticsHeatmap(exhibition.id),
+    repo.analyticsPopular(exhibition.id, 8),
+    repo.analyticsFlow(exhibition.id),
+    repo.analyticsConversion(exhibition.id),
+    repo.listBoothsByExhibitionId(exhibition.id),
+    repo.listExhibitionSignals(exhibition.id),
+    repo._allAnalytics!(exhibition.id),
+    repo.listUserBrains(),
+  ]);
   const names = Object.fromEntries(booths.map((b) => [b.id, b.name]));
   const onboardingValues = onboardingValueBreakdown(signals);
   const uiClicks = uiClickBreakdown(analyticsEvents);
+  const tasteBehavior = crossTasteBehavior(brains, analyticsEvents, booths);
 
   return (
     <div className="space-y-6">
@@ -55,6 +67,13 @@ export default async function AnalyticsPage() {
           height={exhibition.mapHeight}
           points={points}
         />
+      </AdminSection>
+
+      <AdminSection
+        title="취향 × 행동"
+        description="가치별로, 그 취향 사용자가 실제로 많이 본 부스 — '태그 없음'은 그 가치 태그가 없는데도 끌린 곳이다"
+      >
+        <TasteBehaviorCross result={tasteBehavior} boothNames={names} />
       </AdminSection>
 
       <AdminSection title="인기 부스" description="실제 조회수 기준 상위 부스">
