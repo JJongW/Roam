@@ -84,15 +84,31 @@ describe("composeFloorplan", () => {
   });
 });
 
-describe("장소 제원", () => {
-  it("코엑스 실측 제원과 표준부스가 맞는다", async () => {
-    // 새 도면을 받았을 때 스케일 검증의 기준값이다 — 표준부스가 깨끗하게
-    // 떨어지지 않으면 그 도면은 개략도다(SIBF가 그 경우).
-    const c = (await import("@/lib/venues/coex-hall-c.json")) as unknown as Venue;
-    const p = (await import("@/lib/venues/coex-platz.json")) as unknown as Venue;
-    expect(c.meters).toEqual({ w: 144, h: 72 });
-    expect(c.standardBoothMeters).toEqual({ w: 3, h: 3 });
-    expect(p.meters).toEqual({ w: 63, h: 35.3 });
-    expect(p.standardBoothMeters).toEqual({ w: 3, h: 2 });
+describe("코엑스 장소 제원", () => {
+  // business.coex.co.kr 실측 제원(2026-07-29). 새 도면을 받았을 때 축척을 잡는
+  // 기준값이라 오타 하나가 도면 전체를 틀어지게 만든다 — 리터럴로 고정한다.
+  const EXPECTED: Record<string, { w: number; h: number; booth: [number, number] }> = {
+    "coex-hall-a": { w: 144, h: 72, booth: [3, 3] },
+    "coex-hall-b1": { w: 45, h: 81, booth: [3, 3] },
+    "coex-hall-b2": { w: 45, h: 81, booth: [3, 3] },
+    "coex-hall-c": { w: 144, h: 72, booth: [3, 3] },
+    "coex-hall-d": { w: 81, h: 81, booth: [3, 3] },
+    "coex-platz": { w: 63, h: 35.3, booth: [3, 2] },
+  };
+
+  it.each(Object.keys(EXPECTED))("%s 제원이 맞는다", async (id) => {
+    const v = (await import(`@/lib/venues/${id}.json`)) as unknown as Venue;
+    const e = EXPECTED[id];
+    expect(v.meters).toEqual({ w: e.w, h: e.h });
+    expect(v.standardBoothMeters).toEqual({ w: e.booth[0], h: e.booth[1] });
+    expect(v.unitsPerMeter).toBeGreaterThan(0);
+  });
+
+  it("위치를 모르는 장소는 입출구를 비워둔다 — 지어내면 다음 전시가 물려받는다", async () => {
+    for (const id of ["coex-hall-a", "coex-hall-b1", "coex-hall-b2", "coex-hall-c", "coex-hall-d"]) {
+      const v = (await import(`@/lib/venues/${id}.json`)) as unknown as Venue;
+      expect(v.entrance, `${id}`).toBeUndefined();
+      expect(v.gates ?? [], `${id}`).toEqual([]);
+    }
   });
 });
