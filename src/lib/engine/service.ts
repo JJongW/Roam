@@ -4,12 +4,14 @@ import { exhibitorBooths } from "@/lib/booth/normalize";
 import { attachDwellMinutes } from "@/lib/booth/dwell";
 import { rankBooths, type ScoreContext } from "@/lib/engine/scoring";
 import type { UserPreferenceInput } from "@/lib/schemas";
-import type { Booth, BoothEvent, ScoredBooth } from "@/lib/types";
+import type { BoothEvent, ScoredBooth,
+  BoothListItem,
+} from "@/lib/types";
 
 export interface RankResult {
   exhibitionId: string;
   ranked: ScoredBooth[];
-  booths: Booth[];
+  booths: BoothListItem[];
   eventsByBooth: Record<string, BoothEvent[]>;
 }
 

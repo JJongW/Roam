@@ -1,4 +1,4 @@
-import type { Booth } from "@/lib/types";
+import type { BoothListItem } from "@/lib/types";
 import {
   normalizeBoothKey,
   boothMatchKeys,
@@ -37,7 +37,7 @@ export interface MatchResult {
  */
 export function matchTermsToBooths(
   terms: string[],
-  booths: Booth[],
+  booths: BoothListItem[],
 ): MatchResult {
   // Facility areas (lounge/stage) aren't exhibitors — never a screenshot match.
   const index = booths

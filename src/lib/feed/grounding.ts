@@ -22,7 +22,10 @@ import { boothValueSlugs } from "@/lib/values";
 import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n/config";
 import { DICTS } from "@/lib/i18n/dictionaries";
 import { makeT } from "@/lib/i18n/resolve";
-import type { Booth, EnrichmentConfidence } from "@/lib/types";
+import type {
+    BoothListItem,
+  EnrichmentConfidence,
+} from "@/lib/types";
 
 export interface Grounding {
   /** 무엇 — 한 줄 소개. */
@@ -59,7 +62,7 @@ function summaryClause(text: string, max = 44): string {
  * 부스 + 사용자 상위 관심 가치(slug)로 근거 카드를 만든다.
  */
 export function buildGrounding(
-  booth: Booth,
+  booth: BoothListItem,
   userValueSlugs: string[],
   locale: Locale = DEFAULT_LOCALE,
   /** 이 부스를 꺼낸 계기가 된 내 지난 반응 — 근거를 가치 이름이 아니라 내 행동으로 말한다. */

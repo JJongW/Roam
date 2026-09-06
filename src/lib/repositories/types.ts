@@ -2,6 +2,7 @@ import type { ChangeEntry, AuditContext } from "@/lib/audit/diff";
 import type {
   AnalyticsEvent,
   Booth,
+  BoothListItem,
   BoothDetail,
   BoothEvent,
   Bookmark,
@@ -81,8 +82,13 @@ export interface Repository {
   deleteExhibition(id: string): Promise<boolean>;
 
   // booths
-  listBooths(slug: string, query?: ListBoothQuery): Promise<Paginated<Booth>>;
-  listBoothsByExhibitionId(exhibitionId: string): Promise<Booth[]>;
+  /** ⚠️ images·longDescription이 없다(BOOTH_LIST_COLS). 전 필드는 listBoothsFull. */
+  listBooths(
+    slug: string,
+    query?: ListBoothQuery,
+  ): Promise<Paginated<BoothListItem>>;
+  /** ⚠️ 위와 같다 — 목록 조회는 두 컬럼을 안 가져온다. */
+  listBoothsByExhibitionId(exhibitionId: string): Promise<BoothListItem[]>;
   /** 인입 전용 — 목록 조회가 성능 때문에 빼는 컬럼(images·longDescription)까지
    *  전부 읽는다. "빈 칸만 채운다"는 규칙은 안 보이는 컬럼을 빈 칸으로 오해하는
    *  순간 깨지고, 충돌 판정도 없이 덮어쓴다. mock은 컬럼을 안 좁혀서 이 차이가

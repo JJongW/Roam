@@ -15,7 +15,10 @@ export default async function AdminBoothsPage() {
   if (!exhibition) return <p className="text-muted-foreground">전시가 없습니다.</p>;
 
   const detail = await repo.getExhibition(exhibition.slug);
-  const booths = await repo.listBoothsByExhibitionId(exhibition.id);
+  // ⚠️ 목록 조회(listBoothsByExhibitionId)를 쓰면 안 된다 — BOOTH_LIST_COLS가
+  // images를 안 가져와서 부스 목록의 썸네일이 늘 비어 있었다(2026-09-06 발견).
+  // booth-manager가 b.images[0]을 그리므로 전 필드가 필요하다.
+  const booths = await repo.listBoothsFull(exhibition.id);
 
   return (
     <div className="space-y-5">

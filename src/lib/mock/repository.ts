@@ -24,6 +24,7 @@ import type {
   AiQueryLog,
   AnalyticsEvent,
   Booth,
+  BoothListItem,
   BoothDetail,
   BoothEvent,
   Bookmark,
@@ -151,6 +152,12 @@ function now(): string {
   return new Date().toISOString();
 }
 
+/** 목록 조회가 안 가져오는 두 컬럼을 실제로 뺀다 — supabase의 BOOTH_LIST_COLS 재현. */
+function stripListCols(b: Booth): BoothListItem {
+  const { images: _images, longDescription: _long, ...rest } = b;
+  return rest;
+}
+
 function paginate<T extends { id: string }>(
   items: T[],
   cursor?: string,
@@ -216,7 +223,7 @@ export class MockRepository implements Repository {
   async listBooths(
     slug: string,
     query?: ListBoothQuery,
-  ): Promise<Paginated<Booth>> {
+  ): Promise<Paginated<BoothListItem>> {
     const ex = store().exhibitions.find((e) => e.slug === slug);
     if (!ex) return { data: [], nextCursor: null };
     let list = store().booths.filter((b) => b.exhibitionId === ex.id);
@@ -234,16 +241,26 @@ export class MockRepository implements Repository {
     list = list.sort(
       (a, b) => b.popularity - a.popularity || a.id.localeCompare(b.id),
     );
-    return paginate(list, query?.cursor, query?.limit);
+    return paginate(list.map(stripListCols), query?.cursor, query?.limit);
   }
 
-  // mock은 컬럼을 좁히지 않으므로 목록 조회와 같다.
+  /** 전 필드. supabase의 select("*")에 해당한다. */
   async listBoothsFull(exhibitionId: string): Promise<Booth[]> {
-    return this.listBoothsByExhibitionId(exhibitionId);
+    return store().booths.filter((b) => b.exhibitionId === exhibitionId);
   }
 
-  async listBoothsByExhibitionId(exhibitionId: string): Promise<Booth[]> {
-    return store().booths.filter((b) => b.exhibitionId === exhibitionId);
+  /**
+   * ⚠️ **supabase처럼 images·longDescription을 뺀다.** mock이 전 필드를 주면
+   * "목록 조회엔 그 두 필드가 없다"는 사실이 테스트에서 재현되지 않고, 그러면
+   * 2026-09-06처럼 계획 테스트 12개가 전부 통과한 채로 버그가 산다.
+   * mock의 역할은 편의가 아니라 실제 동작의 재현이다.
+   */
+  async listBoothsByExhibitionId(
+    exhibitionId: string,
+  ): Promise<BoothListItem[]> {
+    return store()
+      .booths.filter((b) => b.exhibitionId === exhibitionId)
+      .map(stripListCols);
   }
 
   async getBoothDetail(id: string): Promise<BoothDetail | null> {

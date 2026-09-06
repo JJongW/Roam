@@ -13,7 +13,11 @@ import { DEFAULT_RHYTHM, RHYTHM_MIX, type Rhythm } from "@/lib/feed/rhythm";
 import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n/config";
 import { emptyBrain } from "@/lib/memory/distill";
 import { VALUE_SLUGS, boothValueSlugs, isValueSlug } from "@/lib/values";
-import type { Booth, BoothNote, UserBrain } from "@/lib/types";
+import type {
+    BoothListItem,
+  BoothNote,
+  UserBrain,
+} from "@/lib/types";
 
 export type PickKind = "stable" | "unfamiliar" | "adventure";
 
@@ -54,14 +58,14 @@ export function positiveNotes(
  * 하나당 최대 maxUses번까지만 링크를 만든다. 순수 클로저, 테스트 가능.
  */
 export function createLinkPicker(
-  positives: { booth: Booth; kind: "must" | "curious" | "good" }[],
+  positives: { booth: BoothListItem; kind: "must" | "curious" | "good" }[],
   maxUses = 2,
 ): (
-  booth: Booth,
+  booth: BoothListItem,
 ) => { name: string; kind: "must" | "curious" | "good" } | undefined {
   const usedBoothIds = new Set<string>();
   let uses = 0;
-  return (booth: Booth) => {
+  return (booth: BoothListItem) => {
     if (uses >= maxUses) return undefined;
     const vals = new Set(boothValueSlugs(booth));
     const hit = positives.find(
@@ -78,9 +82,9 @@ export function createLinkPicker(
 }
 
 export interface FeedItem {
-  booth: Booth;
+  booth: BoothListItem;
   /** 태그 유사도가 높은 관련 부스(스레드 확장용). */
-  related: Booth[];
+  related: BoothListItem[];
   /** 큐레이션 갈래: 안정(취향 확실)·낯선(인접)·모험(미접촉 가치 발굴). */
   pick: PickKind;
   /** 실시간 판단 큐(이벤트/타이밍 사실+이유). 없으면 undefined. */
@@ -90,7 +94,11 @@ export interface FeedItem {
 }
 
 /** 대상 부스의 가치 슬러그와 교집합 유사도 상위 n개(자기 제외, 점수>0). */
-function relatedBooths(pool: Booth[], target: Booth, n = 3): Booth[] {
+function relatedBooths(
+  pool: BoothListItem[],
+  target: BoothListItem,
+  n = 3,
+): BoothListItem[] {
   return pool
     .filter((b) => b.id !== target.id)
     .map((b) => ({ b, s: interestScore(b, boothValueSlugs(target)) }))
@@ -102,10 +110,10 @@ function relatedBooths(pool: Booth[], target: Booth, n = 3): Booth[] {
 
 /** 사용자가 아직 접촉하지 않은 가치에서 가장 강한 부스 하나(발굴/serendipity). */
 function pickAdventure(
-  pool: Booth[],
+  pool: BoothListItem[],
   brain: UserBrain,
   used: Set<string>,
-): Booth | null {
+): BoothListItem | null {
   const engaged = new Set(
     brain.interests.filter((n) => n.confidence >= 0.3).map((n) => n.key),
   );
@@ -113,7 +121,7 @@ function pickAdventure(
   // 값이라 캐논 밖일 수 있다(그건 그냥 안 겹치는 것으로 끝나야지 타입 에러가
   // 아니다).
   const cold = new Set<string>(VALUE_SLUGS.filter((v) => !engaged.has(v)));
-  let best: Booth | null = null;
+  let best: BoothListItem | null = null;
   let bestS = 0;
   for (const b of pool) {
     if (used.has(b.id)) continue;
@@ -186,7 +194,7 @@ export async function curateFeed(
       booth: boothById.get(n.boothId),
       kind: n.kind,
     }))
-    .filter((p): p is { booth: Booth; kind: "must" | "curious" | "good" } =>
+    .filter((p): p is { booth: BoothListItem; kind: "must" | "curious" | "good" } =>
       Boolean(p.booth),
     );
 
@@ -205,7 +213,7 @@ export async function curateFeed(
 
   const items: FeedItem[] = [];
   const used = new Set(decided);
-  const add = (booth: Booth, pick: PickKind) => {
+  const add = (booth: BoothListItem, pick: PickKind) => {
     items.push({
       booth,
       related: relatedBooths(

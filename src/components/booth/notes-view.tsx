@@ -19,7 +19,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useVisitStore } from "@/lib/stores/visit";
 import { useHydrated } from "@/lib/hooks/use-hydrated";
 import { useT } from "@/lib/i18n/provider";
-import type { Booth, Category } from "@/lib/types";
+import type { Category, BoothListItem } from "@/lib/types";
 
 // 관심(관람 전 예측)과 판정(관람 후 결과)은 별개 축이라 뱃지도 둘로 나눈다 —
 // 결과가 예측을 덮는다(지도·JudgmentBar와 같은 우선순위 규칙, 아래 status 계산부 참고).
@@ -48,7 +48,7 @@ export function NotesView({
   onLocate,
 }: {
   slug: string;
-  booths: Booth[];
+  booths: BoothListItem[];
   categories: Category[];
   /** When provided, render as an in-place overlay (no route change) — back
    *  closes the overlay instead of navigating. Keeps the map mounted underneath

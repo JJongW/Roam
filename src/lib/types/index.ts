@@ -426,6 +426,19 @@ export type SignalKind =
   | "search_query"; // 특정 부스 검색 = 강한 능동 관심
 
 /** 원장 1행 — 사용자 행동 신호. append-only, 재증류 소스. */
+/**
+ * 목록 조회가 돌려주는 부스. **`images`·`longDescription`이 없다** —
+ * `BOOTH_LIST_COLS`가 성능 때문에 그 두 컬럼을 안 가져오기 때문이다.
+ *
+ * 왜 별도 타입인가: 전엔 목록 조회도 `Booth`를 반환했고, 그래서 안 가져온 필드가
+ * 빈 값으로 채워진 채 "완전한 Booth"라고 타입이 말했다. 2026-09-06에 인입이
+ * 그걸 믿고 `images`를 늘 빈 칸으로 보고 97개 부스를 덮어쓸 계획을 세웠다
+ * (값이 우연히 같아서 무해했을 뿐이다). 타입이 진실을 말하면 컴파일러가 막는다.
+ *
+ * 전 필드가 필요하면 `listBoothsFull`·`getBoothDetail`을 쓴다.
+ */
+export type BoothListItem = Omit<Booth, "images" | "longDescription">;
+
 /** 검수 대기 초안 한 건. 자동 초안·참가사 폼·주최 측 제출이 같은 모양으로 들어온다. */
 export interface EnrichmentCandidate {
   id: string;
@@ -610,7 +623,7 @@ export interface ScoreBreakdown {
 }
 
 export interface ScoredBooth {
-  booth: Booth;
+  booth: BoothListItem;
   score: number;
   breakdown: ScoreBreakdown;
 }

@@ -17,6 +17,7 @@ import type {
   AnalyticsEvent,
   AnalyticsType,
   Booth,
+  BoothListItem,
   BoothDetail,
   BoothEnrichment,
   BoothValueTag,
@@ -218,7 +219,7 @@ function mapEnrichment(e: Row): BoothEnrichment {
 }
 
 /** enrichment을 부스에 붙이고 가치 태그를 재파생(수동 valueTags 우선). */
-function attachEnrichment(booth: Booth, e: Row): void {
+function attachEnrichment(booth: BoothListItem, e: Row): void {
   booth.enrichment = mapEnrichment(e);
   booth.valueTags = deriveValueTags({
     categorySlugs: booth.tags,
@@ -291,6 +292,13 @@ function mapCandidate(r: Row): EnrichmentCandidate {
     reviewNote: r.review_note == null ? null : String(r.review_note),
     createdAt: str(r.created_at),
   };
+}
+
+/** 목록 조회 결과 매핑 — 안 가져온 두 컬럼을 **빈 값으로 지어내지 않고 뺀다.**
+ *  전엔 mapBooth가 strArr(undefined)→[] 로 채워서 "값이 비었다"처럼 보였다. */
+function mapBoothListItem(r: Row): BoothListItem {
+  const { images: _images, longDescription: _long, ...rest } = mapBooth(r);
+  return rest;
 }
 
 function mapBooth(r: Row): Booth {
@@ -672,7 +680,7 @@ export class SupabaseRepository implements Repository {
   async listBooths(
     slug: string,
     query?: ListBoothQuery,
-  ): Promise<Paginated<Booth>> {
+  ): Promise<Paginated<BoothListItem>> {
     const db = await this.db();
     const { data: ex } = await db
       .from("exhibition")
@@ -699,13 +707,15 @@ export class SupabaseRepository implements Repository {
     return paginate(list, query?.cursor, query?.limit);
   }
 
-  async listBoothsByExhibitionId(exhibitionId: string): Promise<Booth[]> {
+  async listBoothsByExhibitionId(
+    exhibitionId: string,
+  ): Promise<BoothListItem[]> {
     const db = await this.db();
     const { data } = await db
       .from("booth")
       .select(BOOTH_LIST_COLS)
       .eq("exhibition_id", exhibitionId);
-    const booths = (data ?? []).map(mapBooth);
+    const booths = (data ?? []).map(mapBoothListItem);
     // 근거 카드·추천에 쓰이는 enrichment를 한 번에 join해 붙인다(피드 경로).
     const enrichRows = await inChunks<Row>(
       booths.map((b) => b.id),

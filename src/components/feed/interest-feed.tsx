@@ -22,7 +22,7 @@ import { useT } from "@/lib/i18n/provider";
 import { useVisitStore } from "@/lib/stores/visit";
 import { useHydrated } from "@/lib/hooks/use-hydrated";
 import { cn } from "@/lib/utils";
-import type { Booth, Category } from "@/lib/types";
+import type { Category, BoothListItem } from "@/lib/types";
 import type { FeedItem, PickKind } from "@/lib/feed/curate";
 import { trackUiClick, type UiControl } from "@/lib/analytics/ui-controls";
 
@@ -413,11 +413,13 @@ function BoothThumb({
   category,
   small = false,
 }: {
-  booth: Booth;
+  booth: BoothListItem;
   category?: Category;
   small?: boolean;
 }) {
-  const thumb = booth.images?.[0] ?? booth.logoUrl;
+  // 피드는 목록 조회로 부스를 받는다 — images는 안 담겨 오므로(BOOTH_LIST_COLS)
+  // 전엔 booth.images?.[0]이 늘 undefined였고 실질적으로 logoUrl만 쓰였다.
+  const thumb = booth.logoUrl;
   return (
     <span
       className={cn(

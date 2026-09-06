@@ -2,7 +2,7 @@ import { z } from "zod";
 import { getRepository } from "@/lib/repositories";
 import { notFound, ok } from "@/lib/api/http";
 import { hasGemini, generateJSON } from "@/lib/ai/gemini";
-import type { Booth, Category } from "@/lib/types";
+import type { Category, BoothListItem } from "@/lib/types";
 import keywordCache from "@/lib/keyword-cache.json";
 
 // Precomputed keywords per exhibition (committed) — served instantly so the
@@ -20,7 +20,7 @@ const TTL_MS = 6 * 60 * 60 * 1000;
 /** Distinct booth names/aliases per category — the deterministic fallback (and
  *  the seed the LLM refines). Real publisher/brand names make decent keywords. */
 function fallbackKeywords(
-  booths: Booth[],
+  booths: BoothListItem[],
   categories: Category[],
 ): Record<string, string[]> {
   const out: Record<string, string[]> = {};
@@ -65,7 +65,7 @@ const STOP = new Set([
  */
 function noteKeywordsByCategory(
   notes: { boothId: string; memo: string }[],
-  booths: Booth[],
+  booths: BoothListItem[],
   categories: Category[],
 ): Record<string, string[]> {
   const slugByBooth = new Map<string, string>();

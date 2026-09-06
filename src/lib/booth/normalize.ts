@@ -1,4 +1,4 @@
-import type { Booth } from "@/lib/types";
+import type { BoothListItem } from "@/lib/types";
 
 /**
  * Canonical booth-name normalization, shared by screenshot matching, official-
@@ -20,24 +20,24 @@ export function normalizeBoothKey(s: string): string {
 
 /** Normalized lookup keys for a booth (name, company, code, co-located
  *  exhibitor aliases), ≥2 chars. */
-export function boothMatchKeys(booth: Booth): string[] {
+export function boothMatchKeys(booth: BoothListItem): string[] {
   return [booth.name, booth.company, booth.code ?? "", ...(booth.aliases ?? [])]
     .map(normalizeBoothKey)
     .filter((k) => k.length >= 2);
 }
 
 /** A booth slot with no real exhibitor assigned (name falls back to its code). */
-export function isUnassignedBooth(booth: Booth): boolean {
+export function isUnassignedBooth(booth: BoothListItem): boolean {
   return !booth.name || booth.name === booth.code || !booth.company;
 }
 
 /** Lounge/stage/aux area on the map that isn't a participating exhibitor.
  *  Excluded from recommendation, swipe, and screenshot matching. */
-export function isFacility(booth: Booth): boolean {
+export function isFacility(booth: BoothListItem): boolean {
   return booth.kind === "facility";
 }
 
 /** Exhibitor booths only — the set that recommendation/discovery should act on. */
-export function exhibitorBooths(booths: Booth[]): Booth[] {
+export function exhibitorBooths<T extends BoothListItem>(booths: T[]): T[] {
   return booths.filter((b) => !isFacility(b));
 }

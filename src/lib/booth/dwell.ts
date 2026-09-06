@@ -3,7 +3,7 @@
 // 매칭해 런타임에 dwellMinutes를 채운다. mock·supabase 두 모드 모두 동작.
 import { FLOORPLANS } from "@/lib/floorplans";
 import { DWELL_TIERS } from "@/lib/constants";
-import type { Booth } from "@/lib/types";
+import type { BoothListItem } from "@/lib/types";
 
 /** 면적(w×h) → 체류 분. 5단계: 제일 작은 스탠드 2분 … 가장 큰 부스 10분. */
 export function dwellForArea(w: number, h: number): number {
@@ -13,7 +13,7 @@ export function dwellForArea(w: number, h: number): number {
 }
 
 /** 주어진 전시의 floorplan 기하로 booths 배열에 dwellMinutes를 채운다(제자리 변경). */
-export function attachDwellMinutes(slug: string, booths: Booth[]): void {
+export function attachDwellMinutes(slug: string, booths: BoothListItem[]): void {
   const fp = FLOORPLANS[slug];
   if (!fp) return;
   const byCode = new Map(

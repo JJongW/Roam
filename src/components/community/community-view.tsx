@@ -37,7 +37,7 @@ import { EmptyState } from "@/components/common/states";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import type { Booth, CommunityPost } from "@/lib/types";
+import type { CommunityPost, BoothListItem } from "@/lib/types";
 
 const NAME_KEY = "roam-author-name";
 
@@ -49,7 +49,7 @@ export function CommunityView({
   mediaEnabled = false,
 }: {
   slug: string;
-  booths: Booth[];
+  booths: BoothListItem[];
   initialPosts: CommunityPost[];
   aiEnabled?: boolean;
   mediaEnabled?: boolean;
@@ -512,7 +512,7 @@ function BoothTagPicker({
   value,
   onChange,
 }: {
-  booths: Booth[];
+  booths: BoothListItem[];
   value: string;
   onChange: (id: string) => void;
 }) {
