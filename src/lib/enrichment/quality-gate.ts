@@ -35,9 +35,27 @@ export interface GradeInput {
   hadMaterial?: boolean;
 }
 
-const VALUE_WORDS = [
-  ...VALUE_TAGS.map((v) => v.label),
-  ...VALUE_TAGS.map((v) => v.slug),
+/**
+ * 금지된 건 **가치 이름 자체가 아니라 분류를 되읽어주는 말투**다.
+ *
+ * 처음엔 라벨을 단어로 매칭했는데(발견·체험·굿즈…), 그 여덟이 전부 일상어라
+ * 오탐이 쏟아졌다 — SIF 50건에서 8건이 "굿즈를 만날 수 있어" 같은 문장으로
+ * 걸렸다. 거기서 "굿즈"는 그냥 물건을 가리키는 말이지 분류가 아니다.
+ *
+ * CLAUDE.md가 실제로 금지한 건 이것이다: *"'발견 쪽 부스야'·'네 관심 가치랑
+ * 겹쳐'로 분류를 되읽어주는 건 현장에서 정보가 아니었다."* 그래서 **패턴**을 본다.
+ */
+const LABELS = VALUE_TAGS.map((v) => v.label).join("|");
+const SLUGS = VALUE_TAGS.map((v) => v.slug).join("|");
+const READBACK_PATTERNS: { re: RegExp; what: string }[] = [
+  // "발견 쪽 부스야", "굿즈 쪽이야"
+  { re: new RegExp(`(${LABELS})\\s*(쪽|계열|류)`), what: "분류를 되읽음" },
+  // "네 관심 가치", "취향이랑 겹쳐", "네 가치와 맞아"
+  { re: /(관심\s*가치|가치(랑|와|과)\s*(겹|맞)|취향(이|하고|이랑|랑)\s*겹)/, what: "가치 축을 직접 언급" },
+  // "이 부스의 가치는 발견이야"
+  { re: new RegExp(`가치[는은]?\\s*(${LABELS})`), what: "가치 이름을 값으로 말함" },
+  // slug이 그대로 노출되는 건 언제나 잘못이다 — 사람 말이 아니다.
+  { re: new RegExp(`\\b(${SLUGS})\\b`), what: "slug이 그대로 노출됨" },
 ];
 
 /** 정보가 없는 채로 길이만 채우는 상투어. LLM 초안의 대표 실패다. */
@@ -149,12 +167,12 @@ export function gradeCandidate(input: GradeInput): QualityReport {
       weight: 0.25,
     });
   } else {
-    const hit = VALUE_WORDS.find((w) => line.includes(w));
-    if (hit) {
+    const readback = READBACK_PATTERNS.find((p) => p.re.test(line));
+    if (readback) {
       add({
         code: "value_word_in_voice",
         field: "roamInterpretation",
-        message: `로미 발화에 가치 이름("${hit}")이 들어갔다 — 분류를 되읽어주는 건 정보가 아니다`,
+        message: `분류를 되읽어주는 말투다(${readback.what}) — 현장에서 그건 정보가 아니다`,
         weight: 0.3,
       });
     }

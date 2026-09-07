@@ -1004,6 +1004,21 @@ export class SupabaseRepository implements Repository {
     return data ? mapCandidate(data as Row) : null;
   }
 
+  async regradeCandidate(
+    id: string,
+    confidence: number,
+    issues: EnrichmentCandidate["issues"],
+  ): Promise<void> {
+    const db = createServiceClient();
+    const res = await db
+      .from("enrichment_candidate")
+      .update({ confidence, issues })
+      .eq("id", id)
+      .select("id")
+      .maybeSingle();
+    maybeWrote(res, "초안 재채점");
+  }
+
   async supersedePendingCandidates(boothIds: string[]): Promise<number> {
     if (boothIds.length === 0) return 0;
     const db = createServiceClient();

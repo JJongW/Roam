@@ -358,6 +358,17 @@ export class MockRepository implements Repository {
     return store().candidates.find((c) => c.id === id) ?? null;
   }
 
+  async regradeCandidate(
+    id: string,
+    confidence: number,
+    issues: EnrichmentCandidate["issues"],
+  ): Promise<void> {
+    const c = store().candidates.find((x) => x.id === id);
+    if (!c) return;
+    c.confidence = confidence;
+    c.issues = issues;
+  }
+
   async supersedePendingCandidates(boothIds: string[]): Promise<number> {
     let n = 0;
     for (const c of store().candidates) {
