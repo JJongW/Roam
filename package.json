@@ -9,7 +9,9 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "worker": "vite-node -c worker/vite.config.ts worker/index.ts",
+    "worker:once": "WORKER_ONCE=1 vite-node -c worker/vite.config.ts worker/index.ts"
   },
   "dependencies": {
     "@google/genai": "^2.8.0",

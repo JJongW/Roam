@@ -11,6 +11,7 @@ import type {
   Category,
   ChangeRecord,
   EnrichmentCandidate,
+  Job,
   CommunityPost,
   DeletePostResult,
   ReportResult,
@@ -129,6 +130,32 @@ export interface Repository {
     /** 왜 반려했나. 이게 없으면 반려는 한 비트만 남고 학습이 안 된다. */
     note?: string | null,
   ): Promise<void>;
+
+  /** 잡을 큐에 넣는다. 같은 일을 두 번 넣지 않으려면 호출부가 dedupeKey를
+   *  payload에 담고 먼저 조회한다 — 큐 자체는 중복을 막지 않는다. */
+  enqueueJob(input: {
+    type: string;
+    payload?: Record<string, unknown>;
+    runAfter?: string;
+    maxAttempts?: number;
+  }): Promise<Job>;
+  /** 원자적으로 잡 하나를 집는다(SQL `for update skip locked`). 없으면 null.
+   *  ⚠️ 애플리케이션 코드로 select→update 하면 워커 둘이 같은 잡을 집는다. */
+  claimJob(worker: string, types?: string[]): Promise<Job | null>;
+  /** 진행 표시 갱신. 오래 도는 잡이 살아 있는지 보려면 이게 움직여야 한다. */
+  updateJobProgress(id: string, progress: Record<string, unknown>): Promise<void>;
+  /** 성공/실패 마감. 실패는 재시도 여지가 있으면 다시 큐로 돌린다. */
+  finishJob(
+    id: string,
+    outcome:
+      | { ok: true; result?: Record<string, unknown> }
+      | { ok: false; error: string; retryAfterMs?: number },
+  ): Promise<void>;
+  listJobs(opts?: {
+    status?: Job["status"];
+    type?: string;
+    limit?: number;
+  }): Promise<Job[]>;
 
   /** 변경 이력 적재. **실패해도 도메인 쓰기를 막지 않는다**(loggedWrite) —
    *  900부스 인입이 이력 한 줄 때문에 통째로 멈추면 도구로서 못 쓴다. 대신

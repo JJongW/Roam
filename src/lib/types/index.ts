@@ -439,6 +439,24 @@ export type SignalKind =
  */
 export type BoothListItem = Omit<Booth, "images" | "longDescription">;
 
+/** 워커가 집어 가는 잡 한 건. type·payload는 워커마다 다르다. */
+export interface Job {
+  id: string;
+  type: string;
+  payload: Record<string, unknown>;
+  status: "queued" | "running" | "done" | "failed";
+  runAfter: string;
+  attempts: number;
+  maxAttempts: number;
+  lastError?: string | null;
+  claimedBy?: string | null;
+  claimedAt?: string | null;
+  progress: Record<string, unknown>;
+  result?: Record<string, unknown> | null;
+  createdAt: string;
+  finishedAt?: string | null;
+}
+
 /** 검수 대기 초안 한 건. 자동 초안·참가사 폼·주최 측 제출이 같은 모양으로 들어온다. */
 export interface EnrichmentCandidate {
   id: string;

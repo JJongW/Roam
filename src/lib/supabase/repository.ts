@@ -34,6 +34,7 @@ import type {
   Category,
   ChangeRecord,
   EnrichmentCandidate,
+  Job,
   CommunityPost,
   DeletePostResult,
   ReportResult,
@@ -281,6 +282,25 @@ function mapCategory(r: Row): Category {
 // lean. mapBooth defaults the omitted fields to "" / [].
 const BOOTH_LIST_COLS =
   "id,exhibition_id,hall_id,category_id,code,kind,name,company,aliases,description,logo_url,instagram_url,website_url,tags,x,y,popularity,created_at";
+
+function mapJob(r: Row): Job {
+  return {
+    id: str(r.id),
+    type: str(r.type),
+    payload: (r.payload ?? {}) as Record<string, unknown>,
+    status: str(r.status) as Job["status"],
+    runAfter: str(r.run_after),
+    attempts: num(r.attempts),
+    maxAttempts: num(r.max_attempts),
+    lastError: r.last_error == null ? null : String(r.last_error),
+    claimedBy: r.claimed_by == null ? null : String(r.claimed_by),
+    claimedAt: r.claimed_at == null ? null : String(r.claimed_at),
+    progress: (r.progress ?? {}) as Record<string, unknown>,
+    result: (r.result ?? null) as Record<string, unknown> | null,
+    createdAt: str(r.created_at),
+    finishedAt: r.finished_at == null ? null : String(r.finished_at),
+  };
+}
 
 function mapCandidate(r: Row): EnrichmentCandidate {
   return {
@@ -1013,6 +1033,118 @@ export class SupabaseRepository implements Repository {
       .select("id")
       .maybeSingle();
     maybeWrote(res, "초안 검수 결과 저장");
+  }
+
+  async enqueueJob(input: {
+    type: string;
+    payload?: Record<string, unknown>;
+    runAfter?: string;
+    maxAttempts?: number;
+  }): Promise<Job> {
+    const db = createServiceClient();
+    const res = await db
+      .from("job")
+      .insert({
+        id: uid("job"),
+        type: input.type,
+        payload: input.payload ?? {},
+        run_after: input.runAfter ?? now(),
+        max_attempts: input.maxAttempts ?? 3,
+        created_at: now(),
+      })
+      .select("*")
+      .single();
+    return mapJob(wrote(res, "잡 등록") as Row);
+  }
+
+  /**
+   * ⚠️ 반드시 RPC를 쓴다. select→update 두 번으로 집으면 워커 둘이 같은 잡을
+   * 집는다 — `for update skip locked`는 SQL 함수 안에서만 가능하다(0052).
+   */
+  async claimJob(worker: string, types?: string[]): Promise<Job | null> {
+    const db = createServiceClient();
+    const { data, error } = await db.rpc("claim_job", {
+      p_worker: worker,
+      p_types: types?.length ? types : null,
+    });
+    if (error) throw new Error(`잡 집기 실패: ${error.message}`);
+    const rows = (data ?? []) as Row[];
+    return rows.length ? mapJob(rows[0]) : null;
+  }
+
+  async updateJobProgress(
+    id: string,
+    progress: Record<string, unknown>,
+  ): Promise<void> {
+    const db = createServiceClient();
+    // 진행 표시는 자주 갱신된다. 실패해도 잡 자체를 멈출 이유는 없다.
+    const res = await db.from("job").update({ progress }).eq("id", id);
+    loggedWrite(res, "잡 진행 갱신");
+  }
+
+  async finishJob(
+    id: string,
+    outcome:
+      | { ok: true; result?: Record<string, unknown> }
+      | { ok: false; error: string; retryAfterMs?: number },
+  ): Promise<void> {
+    const db = createServiceClient();
+    if (outcome.ok) {
+      const res = await db
+        .from("job")
+        .update({
+          status: "done",
+          result: outcome.result ?? null,
+          finished_at: now(),
+        })
+        .eq("id", id)
+        .select("id")
+        .maybeSingle();
+      maybeWrote(res, "잡 완료");
+      return;
+    }
+    // 재시도 여지가 남았는지는 현재 attempts로 판단한다 — claim이 이미 +1 했다.
+    const { data: cur } = await db
+      .from("job")
+      .select("attempts, max_attempts")
+      .eq("id", id)
+      .maybeSingle();
+    const attempts = cur ? num((cur as Row).attempts) : 99;
+    const maxAttempts = cur ? num((cur as Row).max_attempts) : 0;
+    const retry = attempts < maxAttempts;
+    const res = await db
+      .from("job")
+      .update({
+        status: retry ? "queued" : "failed",
+        last_error: outcome.error,
+        claimed_by: null,
+        run_after: retry
+          ? new Date(Date.now() + (outcome.retryAfterMs ?? 0)).toISOString()
+          : undefined,
+        finished_at: retry ? null : now(),
+      })
+      .eq("id", id)
+      .select("id")
+      .maybeSingle();
+    maybeWrote(res, "잡 실패 기록");
+  }
+
+  async listJobs(opts?: {
+    status?: Job["status"];
+    type?: string;
+    limit?: number;
+  }): Promise<Job[]> {
+    const db = await this.db(true);
+    let q = db
+      .from("job")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(opts?.limit ?? 50);
+    if (opts?.status) q = q.eq("status", opts.status);
+    if (opts?.type) q = q.eq("type", opts.type);
+    const { data, error } = await q;
+    if (error) throw new Error(`잡 조회 실패: ${error.message}`);
+    return (data ?? []).map((r) => mapJob(r as Row));
   }
 
   async recordChange(entry: ChangeEntry): Promise<void> {

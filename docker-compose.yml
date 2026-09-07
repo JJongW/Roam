@@ -1,0 +1,37 @@
+# Roam 워커 런타임 — 맥미니(설계 문서 §4).
+#
+# K8s를 쓰지 않는 이유는 문서에 있다. 여기서 필요한 건 넷뿐이고 전부 Compose로 된다:
+#   죽지 않고 계속 돌기  → restart: unless-stopped
+#   기능별 격리          → 컨테이너 1개 = 워커 1개 (WORKER_TYPES로 나눈다)
+#   어디서든 관리        → admin이 이미 Vercel에 있다
+#   스케일               → 아직 필요 없다
+#
+# 원칙: **하루 멈춰도 사용자에게 아무 일 없는 것**만 여기 올린다. 폰으로 보는 것은
+# Vercel + Supabase에 있어야 어디서든 뜬다.
+#
+# 실행:  docker compose up -d --build
+# 로그:  docker compose logs -f drafter
+# 정지:  docker compose stop        (집어둔 잡을 마치고 멈춘다)
+
+services:
+  # 자동 초안. Gemini 호출이라 느리고(실측 10부스 ≈ 49초) 요금이 든다.
+  # 그래서 **하나만** 띄운다 — 늘리면 같은 전시를 동시에 긁어 요금만 배가 된다.
+  # (claim_job이 원자적이라 중복 처리는 안 되지만, 병렬이 이득인 일이 아니다.)
+  drafter:
+    build:
+      context: .
+      dockerfile: worker/Dockerfile
+    restart: unless-stopped
+    environment:
+      WORKER_TYPES: enrichment_draft
+      WORKER_IDLE_MS: "10000"
+      NEXT_PUBLIC_SUPABASE_URL: ${NEXT_PUBLIC_SUPABASE_URL}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+    # 초안 하나가 몇 분씩 걸릴 수 있다. 넉넉히 주고 죽으면 큐가 회수한다
+    # (requeue_stale_jobs).
+    stop_grace_period: 120s
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }

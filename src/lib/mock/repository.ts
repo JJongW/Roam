@@ -50,6 +50,7 @@ import type {
   UserSignal,
   ChangeRecord,
   EnrichmentCandidate,
+  Job,
   VisitorSession,
   WelcomeKit,
 } from "@/lib/types";
@@ -92,6 +93,7 @@ interface Store {
   userSignals: UserSignal[];
   changes: ChangeRecord[];
   candidates: EnrichmentCandidate[];
+  jobs: Job[];
   userBrains: Map<string, UserBrain>;
   issueLogs: IssueLog[];
 }
@@ -139,6 +141,7 @@ function buildStore(): Store {
     userSignals: [],
     changes: [],
     candidates: [],
+    jobs: [],
     userBrains: new Map(),
     issueLogs: [],
   };
@@ -378,6 +381,92 @@ export class MockRepository implements Repository {
     c.reviewedAt = now();
     c.reviewedBy = reviewedBy ?? null;
     if (note !== undefined) c.reviewNote = note;
+  }
+
+  async enqueueJob(input: {
+    type: string;
+    payload?: Record<string, unknown>;
+    runAfter?: string;
+    maxAttempts?: number;
+  }): Promise<Job> {
+    const job: Job = {
+      id: uid("job"),
+      type: input.type,
+      payload: input.payload ?? {},
+      status: "queued",
+      runAfter: input.runAfter ?? now(),
+      attempts: 0,
+      maxAttempts: input.maxAttempts ?? 3,
+      progress: {},
+      createdAt: now(),
+    };
+    store().jobs.push(job);
+    return job;
+  }
+
+  /** mock은 단일 프로세스라 경합이 없다 — supabase의 skip locked와 같은 결과를
+   *  내면 된다(집으면 즉시 running으로 바꿔 다음 호출이 못 집게). */
+  async claimJob(worker: string, types?: string[]): Promise<Job | null> {
+    const ready = store()
+      .jobs.filter(
+        (j) =>
+          j.status === "queued" &&
+          j.runAfter <= now() &&
+          (!types?.length || types.includes(j.type)),
+      )
+      .sort((a, b) => a.runAfter.localeCompare(b.runAfter));
+    const job = ready[0];
+    if (!job) return null;
+    job.status = "running";
+    job.claimedBy = worker;
+    job.claimedAt = now();
+    job.attempts += 1;
+    return job;
+  }
+
+  async updateJobProgress(
+    id: string,
+    progress: Record<string, unknown>,
+  ): Promise<void> {
+    const j = store().jobs.find((x) => x.id === id);
+    if (j) j.progress = progress;
+  }
+
+  async finishJob(
+    id: string,
+    outcome:
+      | { ok: true; result?: Record<string, unknown> }
+      | { ok: false; error: string; retryAfterMs?: number },
+  ): Promise<void> {
+    const j = store().jobs.find((x) => x.id === id);
+    if (!j) return;
+    if (outcome.ok) {
+      j.status = "done";
+      j.result = outcome.result ?? null;
+      j.finishedAt = now();
+      return;
+    }
+    j.lastError = outcome.error;
+    // 재시도 여지가 있으면 큐로 돌린다 — 백오프는 호출부가 정한다.
+    if (j.attempts < j.maxAttempts) {
+      j.status = "queued";
+      j.runAfter = new Date(Date.now() + (outcome.retryAfterMs ?? 0)).toISOString();
+      j.claimedBy = null;
+    } else {
+      j.status = "failed";
+      j.finishedAt = now();
+    }
+  }
+
+  async listJobs(opts?: {
+    status?: Job["status"];
+    type?: string;
+    limit?: number;
+  }): Promise<Job[]> {
+    let rows = [...store().jobs].reverse();
+    if (opts?.status) rows = rows.filter((j) => j.status === opts.status);
+    if (opts?.type) rows = rows.filter((j) => j.type === opts.type);
+    return rows.slice(0, opts?.limit ?? 50);
   }
 
   async recordChange(entry: ChangeEntry): Promise<void> {
