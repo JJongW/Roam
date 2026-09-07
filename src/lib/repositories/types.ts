@@ -151,6 +151,8 @@ export interface Repository {
       | { ok: true; result?: Record<string, unknown> }
       | { ok: false; error: string; retryAfterMs?: number },
   ): Promise<void>;
+  /** 죽은 워커가 들고 있던 잡을 큐로 되돌린다. 반환은 회수한 건수. */
+  requeueStaleJobs(olderThan?: string): Promise<number>;
   listJobs(opts?: {
     status?: Job["status"];
     type?: string;

@@ -104,6 +104,19 @@ async function tick(): Promise<boolean> {
 
 async function main() {
   log("워커 시작", { types: TYPES.length ? TYPES : "all", idleMs: IDLE_MS });
+  // 기동할 때 자기가 남긴 유령 잡을 먼저 회수한다. 맥미니는 집 컴퓨터라
+  // 정전·재부팅으로 running인 채 끊기는 게 정상 상황이고(설계 §4), 그 잡을
+  // 되돌리는 게 실제로 값을 하는 시점이 **바로 여기**다 — 맥미니가 꺼져 있는
+  // 동안엔 회수해봐야 처리할 워커가 없다.
+  try {
+    const repo = await getRepository();
+    const n = await repo.requeueStaleJobs();
+    if (n > 0) log("유령 잡 회수", { count: n });
+  } catch (e) {
+    log("회수 실패(계속 진행)", {
+      error: e instanceof Error ? e.message : String(e),
+    });
+  }
   while (!stopping) {
     let worked = false;
     try {
