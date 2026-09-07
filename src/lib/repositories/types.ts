@@ -119,6 +119,12 @@ export interface Repository {
     limit?: number;
   }): Promise<EnrichmentCandidate[]>;
   getEnrichmentCandidate(id: string): Promise<EnrichmentCandidate | null>;
+  /** 게이트 규칙이 바뀐 뒤 점수를 다시 매긴다. LLM은 안 부른다. */
+  regradeCandidate(
+    id: string,
+    confidence: number,
+    issues: EnrichmentCandidate["issues"],
+  ): Promise<void>;
   /** 이 부스들의 기존 pending 초안을 superseded로 내린다. 다시 돌릴 때마다 큐에
    *  같은 부스가 쌓이면 검수자가 무엇이 최신인지 모른다. */
   supersedePendingCandidates(boothIds: string[]): Promise<number>;

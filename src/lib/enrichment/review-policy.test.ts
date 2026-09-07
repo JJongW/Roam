@@ -17,10 +17,16 @@ describe("reviewPolicy — 재조사는 고쳐질 것에만", () => {
     );
   });
 
-  it("근거를 못 찾은 건 재조사가 아니다 — 다시 물어봐도 웹에 없는 건 없다", () => {
-    // 운영 실측: 승인된 것 중 no_sources가 8건이었다. 이걸 재조사로 돌리면
-    // 사람이 승인했을 초안을 버리고 요금만 두 배가 된다.
+  it("근거를 못 찾은 건 재조사가 아니라 사람에게 간다", () => {
+    // 운영 실측: 승인된 것 중 no_sources가 8건이었다. 재조사로 돌리면 사람이
+    // 승인했을 초안을 버리고 요금만 두 배가 된다 — 그렇다고 자동 통과도 아니다.
     const r = reviewPolicy(0.4, [issue("no_sources")], live);
+    expect(r.decision).toBe("review");
+    expect(r.wouldAutoPass).toBe(false);
+  });
+
+  it("확인 불가 지적(근거 외)은 이유를 설명하고 사람에게 보낸다", () => {
+    const r = reviewPolicy(0.4, [issue("no_interpretation")], live);
     expect(r.decision).toBe("review");
     expect(r.reason).toContain("글이 나쁘다는 뜻은 아니다");
   });
@@ -31,8 +37,21 @@ describe("reviewPolicy — 재조사는 고쳐질 것에만", () => {
 });
 
 describe("reviewPolicy — 자동 통과", () => {
-  it("결함 없고 임계 이상이면 통과", () => {
-    expect(reviewPolicy(0.88, [], live).decision).toBe("auto_pass");
+  it("결함 없고 임계(0.95) 이상이면 통과", () => {
+    expect(reviewPolicy(0.96, [], live).decision).toBe("auto_pass");
+  });
+
+  it("0.80~0.94는 사람이 본다 — 실측 승인률 92%라 8%가 새어나간다", () => {
+    expect(reviewPolicy(0.88, [], live).decision).toBe("review");
+  });
+
+  it("출처가 없으면 점수가 만점이어도 자동 통과 안 된다", () => {
+    // 검수자가 0.85짜리를 반려하며 남긴 말: "거짓정보만큼 위험한 게 없음".
+    // 게이트는 형식을 보지 사실 여부를 못 본다.
+    const r = reviewPolicy(1.0, [issue("no_sources")], live);
+    expect(r.decision).toBe("review");
+    expect(r.wouldAutoPass).toBe(false);
+    expect(r.reason).toContain("근거가 확인되지 않았다");
   });
 
   it("점수가 높아도 결함이 있으면 통과시키지 않는다", () => {
@@ -42,13 +61,13 @@ describe("reviewPolicy — 자동 통과", () => {
   });
 
   it("임계 미만이면 사람이 본다", () => {
-    expect(reviewPolicy(0.79, [], live).decision).toBe("review");
+    expect(reviewPolicy(0.94, [], live).decision).toBe("review");
   });
 });
 
 describe("reviewPolicy — 그림자 모드", () => {
   it("자동 통과 대상이어도 실제로는 사람에게 보낸다", () => {
-    const r = reviewPolicy(0.95, []);
+    const r = reviewPolicy(0.98, []);
     expect(r.decision).toBe("review");
     // 다만 "통과했을 것"이라는 표시는 남는다 — 이게 보정의 근거가 된다.
     expect(r.wouldAutoPass).toBe(true);

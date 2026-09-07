@@ -7,10 +7,16 @@ import type { QualityIssue } from "./quality-gate";
  * 없다 — 운영 실측(검수 30건)이 그걸 보여줬다.
  *
  * ```
- * ≥0.80      22/23 승인 (96%)   ← 상단에선 점수가 잘 맞는다
- * 0.60~0.79   3/3  승인
- * <0.60       3/4  승인 (75%)   ← 하단에선 신호가 약하다
+ * 0.95~1.00  41/41 승인 (100%)  ← 여기만 완벽하다
+ * 0.80~0.94  24/26 승인 (92%)
+ * 0.60~0.79   3/5  승인 (60%)
+ * <0.60       3/5  승인 (60%)   ← 하단에선 신호가 약하다
  * ```
+ *
+ * 검수 77건(SIF 66 + 하우스 아카이브 11)을 근거로 임계를 **0.95**로 잡았다.
+ * 0.80으로 두면 66건이 자동 반영되고 그중 1건이 사람이 반려했을 글이다(2%).
+ * 0.95면 41건이 전부 안전하다 — 자동으로 빠지는 양이 줄어드는 대신 **새어나가는
+ * 글이 없다.** 지어낸 사실은 나중에 되돌려도 이미 사용자가 읽은 뒤다.
  *
  * **낮은 점수가 "품질 나쁨"이 아니라 "확인 불가"인 경우가 많았다.** 승인된 것들이
  * 받은 지적이 `no_sources` 8건, `filler` 9건이다 — 작은 한국 브랜드는 웹에 근거가
@@ -45,6 +51,18 @@ const SCHEMA = new Set([
  */
 const UNVERIFIABLE = new Set(["no_sources", "no_interpretation", "no_value_tags"]);
 
+/**
+ * 출처가 없으면 **점수가 아무리 높아도 자동 통과시키지 않는다.**
+ *
+ * 게이트는 글의 형식을 보지 사실 여부를 못 본다 — 웹에 없는 걸 검증할 방법이
+ * 없기 때문이다. 실제로 검수자가 `B06 위니빌리지`(0.85)를 반려하며 이렇게 적었다:
+ * *"다시 잘 찾아볼 것, 거짓정보만큼 위험한 게 없음."*
+ *
+ * 지어낸 사실은 나중에 되돌려도 이미 사용자가 읽은 뒤다. 확인된 근거가 있는 글만
+ * 사람 없이 내보낸다.
+ */
+const NEVER_AUTO = new Set(["no_sources"]);
+
 export interface PolicyConfig {
   /** 이 이상이면 자동 통과 후보. 운영 실측 근거는 위 표. */
   autoPassAt: number;
@@ -52,7 +70,7 @@ export interface PolicyConfig {
   shadow: boolean;
 }
 
-export const DEFAULT_POLICY: PolicyConfig = { autoPassAt: 0.8, shadow: true };
+export const DEFAULT_POLICY: PolicyConfig = { autoPassAt: 0.95, shadow: true };
 
 export interface PolicyResult {
   decision: ReviewDecision;
@@ -74,6 +92,15 @@ export function reviewPolicy(
     return {
       decision: "redraft",
       reason: `다시 물어보면 고쳐질 문제다(${defects.join("·")})`,
+      wouldAutoPass: false,
+    };
+  }
+
+  const blocked = [...codes].filter((c) => NEVER_AUTO.has(c));
+  if (blocked.length > 0) {
+    return {
+      decision: "review",
+      reason: `근거가 확인되지 않았다 — 점수와 무관하게 사람이 본다(${blocked.join("·")})`,
       wouldAutoPass: false,
     };
   }

@@ -29,11 +29,32 @@ describe("gradeCandidate — 통과", () => {
 });
 
 describe("gradeCandidate — CLAUDE.md 규약의 기계적 표현", () => {
-  it("로미 발화에 가치 이름을 쓰면 감점한다", () => {
-    // "발견 쪽 부스야" 같은 분류 되읽기는 현장에서 정보가 아니었다.
-    const r = gradeCandidate(good({ roamInterpretation: "발견 쪽 부스야." }));
-    expect(r.issues.map((i) => i.code)).toContain("value_word_in_voice");
-    expect(r.confidence).toBeLessThan(1);
+  it("분류를 되읽어주면 감점한다", () => {
+    for (const line of [
+      "발견 쪽 부스야.",
+      "네 관심 가치랑 겹쳐.",
+      "이 부스의 가치는 굿즈야.",
+      "goods 성향이 강한 곳이야.",
+    ]) {
+      const r = gradeCandidate(good({ roamInterpretation: line }));
+      expect(r.issues.map((i) => i.code), line).toContain("value_word_in_voice");
+    }
+  });
+
+  it("가치 라벨이 일상어로 쓰인 건 잡지 않는다", () => {
+    // SIF 50건에서 8건이 이걸로 오탐이었다 — "굿즈"는 그냥 물건을 가리키는 말이지
+    // 분류가 아니다. 그대로 뒀으면 47건 중 8건이 불필요하게 재조사로 갔다.
+    for (const line of [
+      "감자숭이 캐릭터 굿즈를 만날 수 있는 부스야.",
+      "고양이 핸드메이드 굿즈를 만날 수 있어.",
+      "직접 만져보는 체험을 할 수 있어.",
+      "작가한테 제작 과정을 학습할 수 있어.",
+    ]) {
+      const r = gradeCandidate(good({ roamInterpretation: line }));
+      expect(r.issues.map((i) => i.code), line).not.toContain(
+        "value_word_in_voice",
+      );
+    }
   });
 
   it("부스명만 되풀이하면 감점한다", () => {
