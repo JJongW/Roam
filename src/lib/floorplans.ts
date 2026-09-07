@@ -7,6 +7,7 @@
 import sibf from "@/lib/floorplan-sibf.json";
 import sif from "@/lib/floorplan-sif.json";
 import ha from "@/lib/floorplan-house-archive.json";
+import mlm from "@/lib/floorplan-magok-livingmarket.json";
 import coexHallC from "@/lib/venues/coex-hall-c.json";
 import coexPlatz from "@/lib/venues/coex-platz.json";
 import coexHallA from "@/lib/venues/coex-hall-a.json";
@@ -336,10 +337,12 @@ function compose(layout: unknown): Floorplan {
 export const VENUE_OF: Record<string, Venue> = {
   "sif-2026": VENUES[(sif as { venue: string }).venue],
   "house-archive-2026": VENUES[(ha as { venue: string }).venue],
+  "magok-livingmarket-2026": VENUES[(mlm as { venue: string }).venue],
 };
 
 export const FLOORPLANS: Record<string, Floorplan> = {
   "sibf-2026": buildSibf(), // 예외 — 개략도
   "sif-2026": compose(sif),
   "house-archive-2026": compose(ha),
+  "magok-livingmarket-2026": compose(mlm),
 };

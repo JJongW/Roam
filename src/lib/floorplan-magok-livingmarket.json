@@ -1,0 +1,1432 @@
+{
+ "venue": "coex-magok-1f",
+ "unitsPerMeter": 20,
+ "hallOrigin": {
+  "x": 80,
+  "y": 80
+ },
+ "width": 2320,
+ "height": 1540,
+ "booths": [
+  {
+   "code": "H-15",
+   "x": 291.6,
+   "y": 179.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "H-14",
+   "x": 351.6,
+   "y": 179.6,
+   "w": 90.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "H-13",
+   "x": 441.6,
+   "y": 179.6,
+   "w": 90.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "H-12",
+   "x": 531.6,
+   "y": 179.6,
+   "w": 90.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "H-11",
+   "x": 621.6,
+   "y": 179.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "H-10",
+   "x": 681.6,
+   "y": 179.6,
+   "w": 90.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "H-09",
+   "x": 771.6,
+   "y": 179.6,
+   "w": 90.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "H-08",
+   "x": 861.6,
+   "y": 179.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "H-06",
+   "x": 921.6,
+   "y": 179.6,
+   "w": 90.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "H-03",
+   "x": 1011.6,
+   "y": 179.6,
+   "w": 90.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "H-01",
+   "x": 1101.6,
+   "y": 179.6,
+   "w": 90.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "T-01",
+   "x": 1227.0,
+   "y": 179.6,
+   "w": 180.0,
+   "h": 240.0,
+   "zone": "special",
+   "color": "#8c82c8",
+   "kind": "facility"
+  },
+  {
+   "code": "R-01",
+   "x": 1448.4,
+   "y": 179.6,
+   "w": 90.0,
+   "h": 60.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "R-03",
+   "x": 1538.4,
+   "y": 179.6,
+   "w": 90.0,
+   "h": 60.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "R-04",
+   "x": 1628.4,
+   "y": 179.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "R-05",
+   "x": 1688.4,
+   "y": 179.6,
+   "w": 90.0,
+   "h": 60.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "R-07",
+   "x": 1778.4,
+   "y": 179.6,
+   "w": 90.0,
+   "h": 60.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "R-08",
+   "x": 1868.4,
+   "y": 179.6,
+   "w": 90.0,
+   "h": 60.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "R-09",
+   "x": 1958.4,
+   "y": 179.6,
+   "w": 90.0,
+   "h": 60.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "I-06",
+   "x": 222.6,
+   "y": 269.6,
+   "w": 60.0,
+   "h": 90.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "I-05",
+   "x": 222.6,
+   "y": 359.6,
+   "w": 60.0,
+   "h": 120.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "I-03",
+   "x": 222.6,
+   "y": 479.6,
+   "w": 60.0,
+   "h": 150.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "O-06",
+   "x": 2049.2,
+   "y": 269.6,
+   "w": 60.0,
+   "h": 120.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "O-05",
+   "x": 2049.2,
+   "y": 389.6,
+   "w": 60.0,
+   "h": 120.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "O-01",
+   "x": 2049.2,
+   "y": 509.6,
+   "w": 60.0,
+   "h": 120.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "G-28",
+   "x": 365.2,
+   "y": 299.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "G-27",
+   "x": 425.2,
+   "y": 299.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "G-26",
+   "x": 365.2,
+   "y": 359.6,
+   "w": 120.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "G-22",
+   "x": 537.8,
+   "y": 299.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "G-21",
+   "x": 597.8,
+   "y": 299.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "G-20",
+   "x": 537.8,
+   "y": 359.6,
+   "w": 120.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "G-16",
+   "x": 710.4,
+   "y": 299.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "G-15",
+   "x": 770.4,
+   "y": 299.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "G-14",
+   "x": 710.4,
+   "y": 359.6,
+   "w": 120.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "G-10",
+   "x": 883.0,
+   "y": 299.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "G-09",
+   "x": 943.0,
+   "y": 299.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "G-08",
+   "x": 883.0,
+   "y": 359.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "G-07",
+   "x": 943.0,
+   "y": 359.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "G-04",
+   "x": 1055.6,
+   "y": 299.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "G-03",
+   "x": 1115.6,
+   "y": 299.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "G-01",
+   "x": 1055.6,
+   "y": 359.6,
+   "w": 120.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "Q-01",
+   "x": 1458.4,
+   "y": 299.6,
+   "w": 60.0,
+   "h": 120.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "Q-04",
+   "x": 1518.4,
+   "y": 299.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "Q-02",
+   "x": 1518.4,
+   "y": 359.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "Q-09",
+   "x": 1631.0,
+   "y": 299.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "Q-07",
+   "x": 1631.0,
+   "y": 359.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "Q-10",
+   "x": 1691.0,
+   "y": 299.6,
+   "w": 60.0,
+   "h": 120.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "Q-16",
+   "x": 1787.2,
+   "y": 299.6,
+   "w": 90.0,
+   "h": 120.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "Q-17",
+   "x": 1877.2,
+   "y": 299.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "Q-18",
+   "x": 1937.2,
+   "y": 299.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "Q-14",
+   "x": 1877.2,
+   "y": 359.6,
+   "w": 120.0,
+   "h": 60.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "F-28",
+   "x": 365.2,
+   "y": 509.6,
+   "w": 60.0,
+   "h": 120.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "F-26",
+   "x": 425.2,
+   "y": 509.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "F-25",
+   "x": 425.2,
+   "y": 569.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "F-22",
+   "x": 536.6,
+   "y": 509.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "F-21",
+   "x": 596.6,
+   "y": 509.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "F-20",
+   "x": 656.6,
+   "y": 509.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "F-17",
+   "x": 536.6,
+   "y": 569.6,
+   "w": 180.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "F-14",
+   "x": 765.4,
+   "y": 509.6,
+   "w": 120.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "F-12",
+   "x": 765.4,
+   "y": 569.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "F-11",
+   "x": 825.4,
+   "y": 569.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "F-10",
+   "x": 885.4,
+   "y": 509.6,
+   "w": 120.0,
+   "h": 120.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "F-04",
+   "x": 1055.6,
+   "y": 509.6,
+   "w": 120.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "F-01",
+   "x": 1055.6,
+   "y": 569.6,
+   "w": 120.0,
+   "h": 60.0,
+   "zone": "home-deco",
+   "color": "#5bb8e8",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "S-01",
+   "x": 1257.0,
+   "y": 509.6,
+   "w": 120.0,
+   "h": 720.0,
+   "zone": "special",
+   "color": "#8c82c8",
+   "kind": "facility"
+  },
+  {
+   "code": "P-03",
+   "x": 1458.4,
+   "y": 509.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "P-04",
+   "x": 1518.4,
+   "y": 509.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "P-01",
+   "x": 1458.4,
+   "y": 569.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "P-02",
+   "x": 1518.4,
+   "y": 569.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "P-09",
+   "x": 1631.0,
+   "y": 509.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "P-10",
+   "x": 1691.0,
+   "y": 509.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "P-07",
+   "x": 1631.0,
+   "y": 569.6,
+   "w": 120.0,
+   "h": 60.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "P-16",
+   "x": 1802.2,
+   "y": 509.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "P-17",
+   "x": 1862.2,
+   "y": 509.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "P-18",
+   "x": 1922.2,
+   "y": 509.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "P-13",
+   "x": 1802.2,
+   "y": 569.6,
+   "w": 90.0,
+   "h": 60.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "P-15",
+   "x": 1892.2,
+   "y": 569.6,
+   "w": 90.0,
+   "h": 60.0,
+   "zone": "food-taste",
+   "color": "#63bf7d",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "U-01",
+   "x": 821.8,
+   "y": 659.6,
+   "w": 300.0,
+   "h": 30.0,
+   "zone": "special",
+   "color": "#8c82c8",
+   "kind": "facility"
+  },
+  {
+   "code": "U-02",
+   "x": 1512.2,
+   "y": 659.6,
+   "w": 300.0,
+   "h": 30.0,
+   "zone": "special",
+   "color": "#8c82c8",
+   "kind": "facility"
+  },
+  {
+   "code": "E-09",
+   "x": 222.6,
+   "y": 749.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "E-07",
+   "x": 222.6,
+   "y": 809.6,
+   "w": 60.0,
+   "h": 120.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "E-05",
+   "x": 222.6,
+   "y": 929.6,
+   "w": 60.0,
+   "h": 120.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "E-03",
+   "x": 222.6,
+   "y": 1049.6,
+   "w": 60.0,
+   "h": 120.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "E-01",
+   "x": 222.6,
+   "y": 1169.6,
+   "w": 60.0,
+   "h": 120.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D-30",
+   "x": 365.2,
+   "y": 749.6,
+   "w": 120.0,
+   "h": 180.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D-20",
+   "x": 536.6,
+   "y": 749.6,
+   "w": 180.0,
+   "h": 180.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D-14",
+   "x": 765.4,
+   "y": 749.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D-13",
+   "x": 825.4,
+   "y": 749.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D-12",
+   "x": 765.4,
+   "y": 809.6,
+   "w": 120.0,
+   "h": 60.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D-10",
+   "x": 885.4,
+   "y": 749.6,
+   "w": 120.0,
+   "h": 120.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D-03",
+   "x": 1055.6,
+   "y": 749.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D-02",
+   "x": 1055.6,
+   "y": 809.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D-01",
+   "x": 1115.6,
+   "y": 749.6,
+   "w": 60.0,
+   "h": 120.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "N-01",
+   "x": 1458.4,
+   "y": 749.6,
+   "w": 120.0,
+   "h": 120.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "N-09",
+   "x": 1631.0,
+   "y": 749.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "N-10",
+   "x": 1691.0,
+   "y": 749.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "N-07",
+   "x": 1631.0,
+   "y": 809.6,
+   "w": 120.0,
+   "h": 60.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "N-16",
+   "x": 1802.2,
+   "y": 749.6,
+   "w": 180.0,
+   "h": 60.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "N-13",
+   "x": 1802.2,
+   "y": 809.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "N-14",
+   "x": 1862.2,
+   "y": 809.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "N-15",
+   "x": 1922.2,
+   "y": 809.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "M-08",
+   "x": 2034.2,
+   "y": 719.6,
+   "w": 90.0,
+   "h": 150.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "M-05",
+   "x": 2034.2,
+   "y": 869.6,
+   "w": 90.0,
+   "h": 90.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "M-04",
+   "x": 2034.2,
+   "y": 959.6,
+   "w": 90.0,
+   "h": 60.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "M-03",
+   "x": 2034.2,
+   "y": 1019.6,
+   "w": 90.0,
+   "h": 90.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "M-01",
+   "x": 2034.2,
+   "y": 1109.6,
+   "w": 90.0,
+   "h": 90.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C-14",
+   "x": 765.4,
+   "y": 929.6,
+   "w": 120.0,
+   "h": 120.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C-10",
+   "x": 885.4,
+   "y": 929.6,
+   "w": 120.0,
+   "h": 120.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C-03",
+   "x": 1055.6,
+   "y": 929.6,
+   "w": 120.0,
+   "h": 60.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C-01",
+   "x": 1055.6,
+   "y": 989.6,
+   "w": 120.0,
+   "h": 60.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L-01",
+   "x": 1458.4,
+   "y": 929.6,
+   "w": 120.0,
+   "h": 120.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L-09",
+   "x": 1631.0,
+   "y": 929.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L-10",
+   "x": 1691.0,
+   "y": 929.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L-07",
+   "x": 1631.0,
+   "y": 989.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L-08",
+   "x": 1691.0,
+   "y": 989.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L-16",
+   "x": 1802.2,
+   "y": 929.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L-17",
+   "x": 1862.2,
+   "y": 929.6,
+   "w": 120.0,
+   "h": 60.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L-13",
+   "x": 1802.2,
+   "y": 989.6,
+   "w": 90.0,
+   "h": 60.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L-15",
+   "x": 1892.2,
+   "y": 989.6,
+   "w": 90.0,
+   "h": 60.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B-30",
+   "x": 365.2,
+   "y": 989.6,
+   "w": 120.0,
+   "h": 240.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B-20",
+   "x": 536.6,
+   "y": 989.6,
+   "w": 180.0,
+   "h": 240.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B-14",
+   "x": 765.4,
+   "y": 1109.6,
+   "w": 240.0,
+   "h": 120.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B-03",
+   "x": 1055.6,
+   "y": 1109.6,
+   "w": 60.0,
+   "h": 120.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B-01",
+   "x": 1115.6,
+   "y": 1109.6,
+   "w": 60.0,
+   "h": 120.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "K-01",
+   "x": 1454.6,
+   "y": 1109.6,
+   "w": 300.0,
+   "h": 120.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "K-13",
+   "x": 1787.2,
+   "y": 1109.6,
+   "w": 90.0,
+   "h": 120.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "K-17",
+   "x": 1877.2,
+   "y": 1109.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "K-18",
+   "x": 1937.2,
+   "y": 1109.6,
+   "w": 60.0,
+   "h": 60.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "K-14",
+   "x": 1877.2,
+   "y": 1169.6,
+   "w": 120.0,
+   "h": 60.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A-15",
+   "x": 292.2,
+   "y": 1289.6,
+   "w": 120.0,
+   "h": 90.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A-13",
+   "x": 412.2,
+   "y": 1289.6,
+   "w": 150.0,
+   "h": 90.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A-10",
+   "x": 562.2,
+   "y": 1289.6,
+   "w": 150.0,
+   "h": 90.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A-08",
+   "x": 712.2,
+   "y": 1289.6,
+   "w": 90.0,
+   "h": 90.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A-06",
+   "x": 802.2,
+   "y": 1289.6,
+   "w": 90.0,
+   "h": 90.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A-05",
+   "x": 892.2,
+   "y": 1289.6,
+   "w": 90.0,
+   "h": 90.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A-03",
+   "x": 982.2,
+   "y": 1289.6,
+   "w": 90.0,
+   "h": 90.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A-01",
+   "x": 1072.2,
+   "y": 1289.6,
+   "w": 90.0,
+   "h": 90.0,
+   "zone": "space-style",
+   "color": "#e0559c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "J-01",
+   "x": 1448.4,
+   "y": 1289.6,
+   "w": 150.0,
+   "h": 60.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "J-04",
+   "x": 1598.4,
+   "y": 1289.6,
+   "w": 120.0,
+   "h": 60.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "J-06",
+   "x": 1718.4,
+   "y": 1289.6,
+   "w": 90.0,
+   "h": 60.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "J-07",
+   "x": 1808.4,
+   "y": 1289.6,
+   "w": 120.0,
+   "h": 60.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "J-09",
+   "x": 1928.4,
+   "y": 1289.6,
+   "w": 120.0,
+   "h": 60.0,
+   "zone": "hobby-kitchen",
+   "color": "#f0a93c",
+   "kind": "exhibitor"
+  }
+ ]
+}
