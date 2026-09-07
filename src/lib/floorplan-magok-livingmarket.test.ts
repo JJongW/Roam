@@ -10,9 +10,23 @@ describe("마곡리빙마켓 도면", () => {
     expect(fp.halls[0].w).toBe(108 * 20);
     expect(fp.halls[0].h).toBe(69 * 20);
   });
-  it("venue의 출입구를 물려받는다", () => {
+  it("문 위치는 venue가, 입구/출구 지정은 전시가 한다", () => {
     expect(VENUE_OF["magok-livingmarket-2026"].id).toBe("coex-magok-1f");
-    expect(fp.gates?.length).toBe(4);
+    // 이 전시는 서측으로 들어가 동측으로 나간다(주최 도면). 장소에는 문이 넷이지만
+    // 이번에 여는 건 둘이다.
+    expect(fp.gates?.map((g) => [g.label, g.kind])).toEqual([
+      ["서측 입구", "in"],
+      ["동측 출구", "out"],
+    ]);
+    expect(fp.entrance).toEqual(fp.gates?.[0] && { x: fp.gates[0].x, y: fp.gates[0].y });
+    expect(fp.exit).toEqual(fp.gates?.[1] && { x: fp.gates[1].x, y: fp.gates[1].y });
+  });
+
+  it("부스에 존 색을 싣지 않는다 — 지도 색은 관심·판정용이다", () => {
+    const tinted = fp.booths.filter(
+      (b) => b.color && b.color !== "#dcdee3" && b.color !== "#aeb4bf",
+    );
+    expect(tinted).toEqual([]);
   });
   it("모든 부스가 홀 안에 있다", () => {
     const h = fp.halls[0];

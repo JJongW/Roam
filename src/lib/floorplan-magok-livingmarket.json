@@ -5,6 +5,18 @@
   "x": 80,
   "y": 80
  },
+ "gates": [
+  {
+   "id": "magok-w-in",
+   "kind": "in",
+   "label": "서측 입구"
+  },
+  {
+   "id": "magok-e-out",
+   "kind": "out",
+   "label": "동측 출구"
+  }
+ ],
  "width": 2320,
  "height": 1540,
  "booths": [
@@ -15,7 +27,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "미파",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -27,7 +38,6 @@
    "w": 90.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "마리드파리",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -39,7 +49,6 @@
    "w": 90.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "유어컬러즈",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -51,7 +60,6 @@
    "w": 90.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "모루",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -63,7 +71,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "더세라핌",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -75,7 +82,6 @@
    "w": 90.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "쉐리925",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -87,7 +93,6 @@
    "w": 90.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "로레인",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -99,7 +104,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "락낙",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -111,7 +115,6 @@
    "w": 90.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "헤르네링",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -123,7 +126,6 @@
    "w": 90.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "림블",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -135,7 +137,6 @@
    "w": 90.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "베딩카페",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -147,7 +148,6 @@
    "w": 180.0,
    "h": 240.0,
    "zone": "special",
-   "color": "#8c82c8",
    "name": "카페테리아 X 히어커피 로스터스",
    "cat": "special",
    "kind": "facility"
@@ -159,7 +159,6 @@
    "w": 90.0,
    "h": 60.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "더 더치 치즈앤모어",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -171,7 +170,6 @@
    "w": 90.0,
    "h": 60.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "올라브 코리아",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -183,7 +181,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "아라리유정란",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -195,7 +192,6 @@
    "w": 90.0,
    "h": 60.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "내일 뭐 먹지 마켓",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -207,7 +203,6 @@
    "w": 90.0,
    "h": 60.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "메멜트",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -219,7 +214,6 @@
    "w": 90.0,
    "h": 60.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "꼬마루 수제육포",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -231,7 +225,6 @@
    "w": 90.0,
    "h": 60.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "헬레닉 와인",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -243,7 +236,6 @@
    "w": 60.0,
    "h": 90.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "일루트립",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -255,7 +247,6 @@
    "w": 60.0,
    "h": 120.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "브리즈우드가든",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -267,7 +258,6 @@
    "w": 60.0,
    "h": 150.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "클라우망1981",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -279,7 +269,6 @@
    "w": 60.0,
    "h": 120.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "브라운라이스팩토리",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -291,7 +280,6 @@
    "w": 60.0,
    "h": 120.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "비엘씨커피",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -303,7 +291,6 @@
    "w": 60.0,
    "h": 120.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "근화동396창업공간",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -315,7 +302,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "린보워크샵",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -327,7 +313,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "도미노우드",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -339,7 +324,6 @@
    "w": 120.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "매직솔트헬스케어",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -351,7 +335,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "구김",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -363,7 +346,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "유리한",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -375,7 +357,6 @@
    "w": 120.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "오레코코",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -387,7 +368,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "소잉팩토리 X 퐁당자수",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -399,7 +379,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "플랫",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -411,7 +390,6 @@
    "w": 120.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "라 메종드유럽 미니마켓",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -423,7 +401,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "부천대앵커 섬유패션과",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -435,7 +412,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "스튜디오071",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -447,7 +423,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "아러바웃",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -459,7 +434,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "스프링잼/깃샘",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -471,7 +445,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "썬양의자연주의",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -483,7 +456,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "디엠피 북스",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -495,7 +467,6 @@
    "w": 120.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "파나띠꼬",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -507,7 +478,6 @@
    "w": 60.0,
    "h": 120.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "주식회사 어벤져스와인",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -519,7 +489,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "참윰뜰",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -531,7 +500,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "끄레델리",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -543,7 +511,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "스타곰탕",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -555,7 +522,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "평산댁 닭발",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -567,7 +533,6 @@
    "w": 60.0,
    "h": 120.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "아람드리",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -579,7 +544,6 @@
    "w": 90.0,
    "h": 120.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "홍시궁",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -591,7 +555,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "호밀빵의 파수꾼",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -603,7 +566,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "웃차",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -615,7 +577,6 @@
    "w": 120.0,
    "h": 60.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "부부티",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -627,7 +588,6 @@
    "w": 60.0,
    "h": 120.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "후니팟",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -639,7 +599,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "하트 풋",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -651,7 +610,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "꽁뜨레씨엘",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -663,7 +621,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "나로에",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -675,7 +632,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "제로연구소",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -687,7 +643,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "엘리크",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -699,7 +654,6 @@
    "w": 180.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "캠프로그 스튜디오",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -711,7 +665,6 @@
    "w": 120.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "리즈",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -723,7 +676,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "단디미코",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -735,7 +687,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "알비 빈티지포스터",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -747,7 +698,6 @@
    "w": 120.0,
    "h": 120.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "유어타올",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -759,7 +709,6 @@
    "w": 120.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "굿인터내셔널",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -771,7 +720,6 @@
    "w": 120.0,
    "h": 60.0,
    "zone": "home-deco",
-   "color": "#5bb8e8",
    "name": "테이블타임즈",
    "cat": "home-deco",
    "kind": "exhibitor"
@@ -783,7 +731,6 @@
    "w": 120.0,
    "h": 720.0,
    "zone": "special",
-   "color": "#8c82c8",
    "name": "가든라운지",
    "cat": "special",
    "kind": "facility"
@@ -795,7 +742,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "(주)헬스베버리지",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -807,7 +753,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "한나식빵",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -819,7 +764,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "토마로우",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -831,7 +775,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "크리미웨이",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -843,7 +786,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "프리미엄 남아공 수제 육포",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -855,7 +797,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "(바다수산)어물전꼴뚜기",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -867,7 +808,6 @@
    "w": 120.0,
    "h": 60.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "페렐로 올리브",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -879,7 +819,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "케이캡슐",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -891,7 +830,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "에센티아팩토리",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -903,7 +841,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "네코먼데이 로스터리",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -915,7 +852,6 @@
    "w": 90.0,
    "h": 60.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "칼파벳",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -927,7 +863,6 @@
    "w": 90.0,
    "h": 60.0,
    "zone": "food-taste",
-   "color": "#63bf7d",
    "name": "국제구조위원회",
    "cat": "food-taste",
    "kind": "exhibitor"
@@ -939,7 +874,6 @@
    "w": 300.0,
    "h": 30.0,
    "zone": "special",
-   "color": "#8c82c8",
    "name": "추석선물 큐레이션: 취향을 나누는 계절",
    "cat": "special",
    "kind": "facility"
@@ -951,7 +885,6 @@
    "w": 300.0,
    "h": 30.0,
    "zone": "special",
-   "color": "#8c82c8",
    "name": "추석선물 큐레이션: 취향을 나누는 계절",
    "cat": "special",
    "kind": "facility"
@@ -963,7 +896,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "월간 건축문화(아키랩)",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -975,7 +907,6 @@
    "w": 60.0,
    "h": 120.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "포세이온",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -987,7 +918,6 @@
    "w": 60.0,
    "h": 120.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "코웨이",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -999,7 +929,6 @@
    "w": 60.0,
    "h": 120.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "발롱드파리",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -1011,7 +940,6 @@
    "w": 60.0,
    "h": 120.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "에이비엠티",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -1023,7 +951,6 @@
    "w": 120.0,
    "h": 180.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "레어로우",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -1035,7 +962,6 @@
    "w": 180.0,
    "h": 180.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "무제움",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -1047,7 +973,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "듀프리",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -1059,7 +984,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "아모스아인스가구",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -1071,7 +995,6 @@
    "w": 120.0,
    "h": 60.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "허리펴자 하라체어",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -1083,7 +1006,6 @@
    "w": 120.0,
    "h": 120.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "바이에른오토 아우디",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -1095,7 +1017,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "그리너 오브젝트",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -1107,7 +1028,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "산아쿠아플랜츠",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -1119,7 +1039,6 @@
    "w": 60.0,
    "h": 120.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "페이퍼콘크리트",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -1131,7 +1050,6 @@
    "w": 120.0,
    "h": 120.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "안계미술관",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1143,7 +1061,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "아리아",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1155,7 +1072,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "그레시종",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1167,7 +1083,6 @@
    "w": 120.0,
    "h": 60.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "온도 아리아",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1179,7 +1094,6 @@
    "w": 180.0,
    "h": 60.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "아농",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1191,7 +1105,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "예목공방",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1203,7 +1116,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "이구도예",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1215,7 +1127,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "오도마",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1227,7 +1138,6 @@
    "w": 90.0,
    "h": 150.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "문재필 옻칠갤러리",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1239,7 +1149,6 @@
    "w": 90.0,
    "h": 90.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "이어서보",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1251,7 +1160,6 @@
    "w": 90.0,
    "h": 60.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "옻칠채",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1263,7 +1171,6 @@
    "w": 90.0,
    "h": 90.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "에코씽",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1275,7 +1182,6 @@
    "w": 90.0,
    "h": 90.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "월간도예",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1287,7 +1193,6 @@
    "w": 120.0,
    "h": 120.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "싸이벡",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -1299,7 +1204,6 @@
    "w": 120.0,
    "h": 120.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "쏘랩",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -1311,7 +1215,6 @@
    "w": 120.0,
    "h": 60.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "정원놀이 (최정원 작가)",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -1323,7 +1226,6 @@
    "w": 120.0,
    "h": 60.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "스튜디오 퍼더",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -1335,7 +1237,6 @@
    "w": 120.0,
    "h": 120.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "로우파이",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1347,7 +1248,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "해튼 헤리티지",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1359,7 +1259,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "토토방",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1371,7 +1270,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "엘제이엘 갤러리",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1383,7 +1281,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "네베호",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1395,7 +1292,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "토은",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1407,7 +1303,6 @@
    "w": 120.0,
    "h": 60.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "일동공예",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1419,7 +1314,6 @@
    "w": 90.0,
    "h": 60.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "대한적십자사",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1431,7 +1325,6 @@
    "w": 90.0,
    "h": 60.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "디자인북",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1443,7 +1336,6 @@
    "w": 120.0,
    "h": 240.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "아파트먼트하우스",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -1455,7 +1347,6 @@
    "w": 180.0,
    "h": 240.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "지아띠",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -1467,7 +1358,6 @@
    "w": 240.0,
    "h": 120.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "리젠스",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -1479,7 +1369,6 @@
    "w": 60.0,
    "h": 120.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "커스텀",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -1491,7 +1380,6 @@
    "w": 60.0,
    "h": 120.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "로우리트 콜렉티브",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -1503,7 +1391,6 @@
    "w": 300.0,
    "h": 120.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "1집구석",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1515,7 +1402,6 @@
    "w": 90.0,
    "h": 120.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "미노항 코리아",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1527,7 +1413,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "내셔널지오그래픽",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1539,7 +1424,6 @@
    "w": 60.0,
    "h": 60.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "에스코리아",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1551,7 +1435,6 @@
    "w": 120.0,
    "h": 60.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "휴움",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1563,7 +1446,6 @@
    "w": 120.0,
    "h": 90.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "라잇트리",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -1575,7 +1457,6 @@
    "w": 150.0,
    "h": 90.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "알마슬립",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -1587,7 +1468,6 @@
    "w": 150.0,
    "h": 90.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "트레티트레",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -1599,7 +1479,6 @@
    "w": 90.0,
    "h": 90.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "스튜디오 무드",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -1611,7 +1490,6 @@
    "w": 90.0,
    "h": 90.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "아람채리빙",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -1623,7 +1501,6 @@
    "w": 90.0,
    "h": 90.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "더닷",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -1635,7 +1512,6 @@
    "w": 90.0,
    "h": 90.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "스튜디오 일상이상",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -1647,7 +1523,6 @@
    "w": 90.0,
    "h": 90.0,
    "zone": "space-style",
-   "color": "#e0559c",
    "name": "마곡리빙마켓 이벤트부스",
    "cat": "space-style",
    "kind": "exhibitor"
@@ -1659,7 +1534,6 @@
    "w": 150.0,
    "h": 60.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "디자인하우스",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1671,7 +1545,6 @@
    "w": 120.0,
    "h": 60.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "가현아트갤러리",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1683,7 +1556,6 @@
    "w": 90.0,
    "h": 60.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "노웬",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1695,7 +1567,6 @@
    "w": 120.0,
    "h": 60.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "실드림",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
@@ -1707,7 +1578,6 @@
    "w": 120.0,
    "h": 60.0,
    "zone": "hobby-kitchen",
-   "color": "#f0a93c",
    "name": "코리아엣지",
    "cat": "hobby-kitchen",
    "kind": "exhibitor"
