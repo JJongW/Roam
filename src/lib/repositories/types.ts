@@ -1,4 +1,5 @@
 import type { ChangeEntry, AuditContext } from "@/lib/audit/diff";
+import type { CurveInput } from "@/lib/memory/learning-curve";
 import type {
   AnalyticsEvent,
   Booth,
@@ -309,6 +310,10 @@ export interface Repository {
    *  리뷰·이벤트·웰컴키트는 안 읽는다. 반응 판정 시 확신도 대조에 쓴다. */
   getBooth(id: string): Promise<Booth | null>;
   /** 전시 스코프 취향 정확도. */
+  /** N회차 정확도 곡선의 재료 — 전 사용자·전 전시의 판정 노트.
+   *  루프 B의 유일한 증거라 전시로 좁히지 않는다. */
+  listJudgmentsForCurve(): Promise<CurveInput[]>;
+
   getTasteAccuracy(
     userId: string,
     exhibitionId: string,

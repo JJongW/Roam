@@ -1,6 +1,7 @@
 import type { AuditContext, ChangeEntry } from "@/lib/audit/diff";
 import { diffFields } from "@/lib/audit/diff";
 import { AUDIT_SPECS } from "@/lib/audit/entities";
+import type { CurveInput } from "@/lib/memory/learning-curve";
 import { uid } from "@/lib/utils";
 import { computeJourneyFunnel } from "@/lib/admin/journey-funnel";
 import { computeFlowEdges } from "@/lib/admin/flow";
@@ -1802,6 +1803,34 @@ export class SupabaseRepository implements Repository {
       .maybeSingle();
     if (enrichRow) attachEnrichment(booth, enrichRow as Row);
     return booth;
+  }
+
+  async listJudgmentsForCurve(): Promise<CurveInput[]> {
+    const db = await this.db(true);
+    const { data: booths, error: be } = await db
+      .from("booth")
+      .select("id, exhibition_id");
+    if (be) throw new Error(`부스 조회 실패: ${be.message}`);
+    const exOf = new Map(
+      (booths ?? []).map((b) => [str((b as Row).id), str((b as Row).exhibition_id)]),
+    );
+    const { data, error } = await db
+      .from("booth_note")
+      .select("user_id, booth_id, interest, verdict, judged_class, updated_at");
+    if (error) throw new Error(`판정 노트 조회 실패: ${error.message}`);
+    return (data ?? [])
+      .map((row) => {
+        const r = row as Row;
+        return {
+          userId: str(r.user_id),
+          exhibitionId: exOf.get(str(r.booth_id)) ?? "",
+          at: str(r.updated_at),
+          interest: (r.interest ?? null) as CurveInput["interest"],
+          verdict: (r.verdict ?? null) as CurveInput["verdict"],
+          judgedClass: (r.judged_class ?? null) as CurveInput["judgedClass"],
+        };
+      })
+      .filter((r) => r.exhibitionId && r.userId);
   }
 
   async getTasteAccuracy(

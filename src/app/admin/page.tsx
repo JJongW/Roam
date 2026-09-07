@@ -18,6 +18,8 @@ import { Chip } from "@/components/ui/chip";
 import { AdminSection } from "@/components/admin/section";
 import { OnboardingValueChart } from "@/components/charts/onboarding-value-chart";
 import { buildGlobalOverview } from "@/lib/admin/global-overview";
+import { learningCurve } from "@/lib/memory/learning-curve";
+import { LearningCurveCard } from "@/components/admin/learning-curve-card";
 import { groupIssues } from "@/lib/admin/issue-grouping";
 import { findBoothEnrichmentGaps } from "@/lib/admin/data-issues";
 
@@ -30,11 +32,13 @@ const STATUS_LABEL = {
 /** L1 전역 대시보드 — 전시를 고르지 않아도 뜬다. 전시별(L2)은 /admin/analytics. */
 export default async function AdminOverviewPage() {
   const repo = await getRepository();
-  const [{ data: exhibitions }, users, issues] = await Promise.all([
+  const [{ data: exhibitions }, users, issues, judgments] = await Promise.all([
     listExhibitionsCached(),
     repo.listUsers(),
     repo.listIssues({ limit: 1000, sinceDays: 30 }),
+    repo.listJudgmentsForCurve(),
   ]);
+  const curve = learningCurve(judgments);
 
   // ponytail: 전시 수만큼 부스·신호를 각각 읽는다(N≈3). N이 커지거나 신호가
   // PostgREST 기본 상한에 닿으면 metrics-rollup 집계 테이블로 옮긴다
@@ -121,6 +125,9 @@ export default async function AdminOverviewPage() {
           );
         })}
       </div>
+
+      {/* 루프 B의 유일한 증거 — 설계 문서가 L1 최상단에 두라고 한 블록이다. */}
+      <LearningCurveCard curve={curve} />
 
       <AdminSection
         title="취향 지형"

@@ -2,6 +2,7 @@ import { uid, shortId } from "@/lib/utils";
 import type { AuditContext, ChangeEntry } from "@/lib/audit/diff";
 import { diffFields } from "@/lib/audit/diff";
 import { AUDIT_SPECS } from "@/lib/audit/entities";
+import type { CurveInput } from "@/lib/memory/learning-curve";
 import { REPORT_HIDE_THRESHOLD } from "@/lib/constants";
 import { freshSeed } from "@/lib/mock/seed";
 import {
@@ -1035,6 +1036,20 @@ export class MockRepository implements Repository {
   async getBooth(id: string): Promise<Booth | null> {
     const s = store();
     return s.booths.find((b) => b.id === id) ?? null;
+  }
+
+  async listJudgmentsForCurve(): Promise<CurveInput[]> {
+    const exOf = new Map(store().booths.map((b) => [b.id, b.exhibitionId]));
+    return store()
+      .notes.filter((n) => exOf.has(n.boothId))
+      .map((n) => ({
+        userId: n.userId,
+        exhibitionId: exOf.get(n.boothId)!,
+        at: n.updatedAt,
+        interest: n.interest,
+        verdict: n.verdict,
+        judgedClass: n.judgedClass,
+      }));
   }
 
   async getTasteAccuracy(
