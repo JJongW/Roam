@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/ui/chip";
 import { Textarea } from "@/components/ui/textarea";
 import { VALUE_TAGS } from "@/lib/values";
+import { reviewPolicy } from "@/lib/enrichment/review-policy";
 import type { EnrichmentCandidate } from "@/lib/types";
 
 /** 라우트의 REJECT_REASONS와 짝이다 — 코드가 바뀌면 여기도 바꾼다. */
@@ -96,9 +97,14 @@ function renderValue(field: string, value: unknown) {
 export function CandidateQueue({
   candidates,
   boothNames,
+  slug,
+  autoPassCount,
 }: {
   candidates: EnrichmentCandidate[];
   boothNames: Record<string, string>;
+  slug: string;
+  /** 정책상 자동 통과 대상인 건수. 900부스에서 실제로 일을 줄이는 건 이 묶음이다. */
+  autoPassCount: number;
 }) {
   const router = useRouter();
   const [busy, setBusy] = useState<string | null>(null);
@@ -141,6 +147,23 @@ export function CandidateQueue({
     }
   }
 
+  async function bulkApprove() {
+    setBusy("bulk");
+    try {
+      const res = await api.post<{ applied: number; note?: string }>(
+        "/api/admin/enrichment/candidates/bulk",
+        { exhibitionSlug: slug, expected: autoPassCount },
+      );
+      if (res.note) toast.error(res.note);
+      else toast.success(`${res.applied}건 반영했습니다`);
+      router.refresh();
+    } catch (e) {
+      toast.error(e instanceof ApiClientError ? e.message : "일괄 반영 실패");
+    } finally {
+      setBusy(null);
+    }
+  }
+
   if (candidates.length === 0) {
     return (
       <Card className="p-8 text-center text-sm text-muted-foreground">
@@ -150,6 +173,27 @@ export function CandidateQueue({
   }
 
   return (
+    <>
+      {autoPassCount > 0 && (
+        <Card className="mb-4 flex flex-wrap items-center gap-3 p-4">
+          <div className="min-w-0 flex-1">
+            <p className="font-bold">자동 통과 대상 {autoPassCount}건</p>
+            <p className="text-xs text-muted-foreground">
+              신뢰도가 임계 이상이고 게이트가 결함을 못 찾은 것들입니다. 부스가 많은
+              전시에서 전수 검수는 불가능하니, 위 승인률 표를 보고 한 번에 반영합니다.
+            </p>
+          </div>
+          <Button onClick={() => void bulkApprove()} disabled={busy === "bulk"}>
+            {busy === "bulk" ? (
+              <Loader2 className="size-4 animate-spin" />
+            ) : (
+              <Check className="size-4" />
+            )}
+            {autoPassCount}건 한 번에 반영
+          </Button>
+        </Card>
+      )}
+
     <ul className="space-y-4">
       {candidates.map((c) => {
         const chip = confidenceChip(c.confidence);
@@ -165,6 +209,17 @@ export function CandidateQueue({
               <span className="ml-auto text-xs text-muted-foreground">
                 {c.source}
               </span>
+              {(() => {
+                const p = reviewPolicy(c.confidence, c.issues);
+                return (
+                  <span
+                    className="w-full text-xs text-muted-foreground"
+                    title={p.reason}
+                  >
+                    {p.wouldAutoPass ? "✓ 자동 통과 대상" : p.reason}
+                  </span>
+                );
+              })()}
             </div>
 
             {c.issues.length > 0 && (
@@ -282,5 +337,6 @@ export function CandidateQueue({
         );
       })}
     </ul>
+    </>
   );
 }
