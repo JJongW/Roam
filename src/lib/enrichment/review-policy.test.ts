@@ -66,8 +66,12 @@ describe("reviewPolicy — 자동 통과", () => {
 });
 
 describe("reviewPolicy — 그림자 모드", () => {
+  // 기본값은 2026-09-07부터 shadow:false다(실측 41/41 승인). 되돌릴 때를 위해
+  // 기능은 남겨두고, 여기서는 명시적으로 켜서 검사한다.
+  const shadow = { ...DEFAULT_POLICY, shadow: true };
+
   it("자동 통과 대상이어도 실제로는 사람에게 보낸다", () => {
-    const r = reviewPolicy(0.98, []);
+    const r = reviewPolicy(0.98, [], shadow);
     expect(r.decision).toBe("review");
     // 다만 "통과했을 것"이라는 표시는 남는다 — 이게 보정의 근거가 된다.
     expect(r.wouldAutoPass).toBe(true);
@@ -75,6 +79,13 @@ describe("reviewPolicy — 그림자 모드", () => {
   });
 
   it("그림자여도 재조사 판정은 그대로다", () => {
-    expect(reviewPolicy(0.3, [issue("name_only")]).decision).toBe("redraft");
+    expect(reviewPolicy(0.3, [issue("name_only")], shadow).decision).toBe(
+      "redraft",
+    );
+  });
+
+  it("기본값은 이제 자동 통과가 켜져 있다", () => {
+    expect(DEFAULT_POLICY.shadow).toBe(false);
+    expect(reviewPolicy(0.98, []).decision).toBe("auto_pass");
   });
 });

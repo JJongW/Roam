@@ -70,7 +70,15 @@ export interface PolicyConfig {
   shadow: boolean;
 }
 
-export const DEFAULT_POLICY: PolicyConfig = { autoPassAt: 0.95, shadow: true };
+/**
+ * **그림자 모드를 껐다(2026-09-07).** 검수 77건으로 되짚어보니 0.95 이상 + 근거
+ * 있음 조건에서 자동 반영 41건 중 사람이 반려했을 글이 **0건**이었다. 그림자로
+ * 한 번 더 확인하는 단계는 그 숫자로 끝났다.
+ *
+ * 되돌리려면 `shadow: true`만 바꾸면 된다 — 이미 반영된 것은 change_log에
+ * "자동 통과"로 남아 있어 찾아서 되돌릴 수 있다.
+ */
+export const DEFAULT_POLICY: PolicyConfig = { autoPassAt: 0.95, shadow: false };
 
 export interface PolicyResult {
   decision: ReviewDecision;
