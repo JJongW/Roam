@@ -7,7 +7,9 @@
 //
 // 이 모듈은 "근거 없는 추천"을 막는 게 목적이다. 겹치는 가치가 없으면 추천이라고
 // 부르지 않는다(matched=[] → 호출부가 뱃지·근거문장을 숨긴다).
-import type { Booth, UserBrain } from "@/lib/types";
+import type { UserBrain,
+  BoothListItem,
+} from "@/lib/types";
 import { valueLabel } from "@/lib/values";
 
 /** 한 전시가 어떤 가치를 얼마나 담고 있는지. slug → 0..1 비중. */
@@ -24,7 +26,7 @@ const MAX_REASON_VALUES = 2;
  * 전시의 부스들에서 가치 프로필을 만든다. 부스 valueTags의 가중 합을 정규화한 것.
  * 부스가 없거나 valueTags가 비면 빈 프로필({})이고, 그 전시는 매칭 대상이 아니다.
  */
-export function exhibitionValueProfile(booths: Booth[]): ExhibitionValueProfile {
+export function exhibitionValueProfile(booths: BoothListItem[]): ExhibitionValueProfile {
   const acc = new Map<string, number>();
   let total = 0;
   for (const b of booths) {

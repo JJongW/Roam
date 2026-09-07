@@ -8,18 +8,18 @@
 // 가치 이름은 쓰지 않는다 — 카테고리 라벨(분야)만 발화에 얹는다. reaction-line.ts의
 // "매칭 축(가치 slug) vs 발화 축(카테고리 라벨) 분리" 규약을 그대로 따른다.
 import { boothValueSlugs } from "@/lib/values";
-import type { Booth } from "@/lib/types";
+import type { BoothListItem } from "@/lib/types";
 import type { TFn } from "@/lib/i18n/resolve";
 
 export interface CopresencePositive {
-  booth: Booth;
+  booth: BoothListItem;
   kind: "must" | "curious" | "good";
 }
 
 export type CopresenceInput =
   | {
       trigger: "select";
-      booth: Booth;
+      booth: BoothListItem;
       /** 과거 긍정 반응(자기 자신 제외 필요 없음 — 이 함수가 필터한다). */
       positives: CopresencePositive[];
       /** 실제 사실(임박 이벤트/타이밍) — deriveCue 결과. */
@@ -28,7 +28,7 @@ export type CopresenceInput =
   | { trigger: "unvisitedMust"; boothName: string }
   | {
       trigger: "searchHit";
-      booth: Booth;
+      booth: BoothListItem;
       positives: CopresencePositive[];
       /** 검색 결과 부스의 분야 라벨 — 가치 이름 아님. */
       categoryLabel?: string;
@@ -36,7 +36,7 @@ export type CopresenceInput =
 
 /** positives 중 booth와 가치가 겹치는 첫 항목(자기 자신 제외). 없으면 undefined. */
 function findMemoryMatch(
-  booth: Booth,
+  booth: BoothListItem,
   positives: CopresencePositive[],
 ): CopresencePositive | undefined {
   const vals = new Set(boothValueSlugs(booth));

@@ -1,0 +1,12 @@
+{
+  "id": "coex-hall-a",
+  "name": "코엑스 A홀",
+  "floor": 1,
+  "meters": { "w": 144, "h": 72 },
+  "unitsPerMeter": 20,
+  "standardBoothMeters": { "w": 3, "h": 3 },
+  "columnSpacingMeters": 18,
+  "gates": [],
+  "decor": [],
+  "notes": "A홀 표준부스 520개. 천장 7.5·9.0m. 실측 제원 출처 business.coex.co.kr(2026-07-29). 바닥하중 1.5 t/㎡. unitsPerMeter 20은 **실측이 아니라 규약**이다 — 이 홀 도면의 표준 축척으로 정하고, 새 도면은 여기 맞춰 정규화해야 아래 좌표들이 재사용된다. 입출구·화장실 위치 미확인 — 확인 전까지 비워둔다. 없는 위치를 적으면 이 홀에서 열리는 다음 전시까지 그 거짓말을 물려받는다."
+}

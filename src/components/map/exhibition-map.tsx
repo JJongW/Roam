@@ -11,7 +11,7 @@ import {
 import { Minus, Plus, Maximize2, RotateCw } from "lucide-react";
 import { cn, clamp } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import type { Booth, Category, Hall, Point } from "@/lib/types";
+import type { Category, Hall, Point, BoothListItem } from "@/lib/types";
 import type { Floorplan } from "@/lib/floorplans";
 import { aisleRoute } from "@/lib/aisle-route";
 import { trackUiClick, type UiControl } from "@/lib/analytics/ui-controls";
@@ -80,7 +80,7 @@ function unit(a: { x: number; y: number }, b: { x: number; y: number }) {
 interface MapProps {
   width: number;
   height: number;
-  booths: Booth[];
+  booths: BoothListItem[];
   categories: Category[];
   halls?: Hall[];
   selectedId?: string | null;
@@ -351,7 +351,7 @@ export function ExhibitionMap({
   const rectByCode = new Map(
     (floorplan?.booths ?? []).map((fb) => [fb.code, fb]),
   );
-  const geomOf = (b: Booth): Rect => {
+  const geomOf = (b: BoothListItem): Rect => {
     const fb = b.code ? rectByCode.get(b.code) : undefined;
     if (fb) return { x: fb.x, y: fb.y, w: fb.w, h: fb.h, color: fb.color };
     return { x: b.x, y: b.y, w: BOOTH_W, h: BOOTH_H };
@@ -763,7 +763,7 @@ export function ExhibitionMap({
         if (onSelect) {
           // Point-in-rect hit test against each booth's actual box.
           let hit = "";
-          let hitBooth: Booth | undefined;
+          let hitBooth: BoothListItem | undefined;
           for (const b of booths) {
             if (floorplan && !(b.code && rectByCode.has(b.code))) continue;
             const g = geomOf(b);

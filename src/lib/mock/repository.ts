@@ -1,4 +1,7 @@
 import { uid, shortId } from "@/lib/utils";
+import type { AuditContext, ChangeEntry } from "@/lib/audit/diff";
+import { diffFields } from "@/lib/audit/diff";
+import { AUDIT_SPECS } from "@/lib/audit/entities";
 import { REPORT_HIDE_THRESHOLD } from "@/lib/constants";
 import { freshSeed } from "@/lib/mock/seed";
 import {
@@ -21,6 +24,7 @@ import type {
   AiQueryLog,
   AnalyticsEvent,
   Booth,
+  BoothListItem,
   BoothDetail,
   BoothEvent,
   Bookmark,
@@ -43,13 +47,15 @@ import type {
   UserBrain,
   UserPreference,
   UserSignal,
+  ChangeRecord,
+  EnrichmentCandidate,
   VisitorSession,
   WelcomeKit,
 } from "@/lib/types";
 import type {
   AnalyticsEventInput,
   BookmarkInput,
-  BoothEnrichmentAuthorInput,
+  BoothEnrichmentPatch,
   BoothInput,
   BoothNoteInput,
   CommunityPostInput,
@@ -83,6 +89,8 @@ interface Store {
   analytics: AnalyticsEvent[];
   aiQueries: AiQueryLog[];
   userSignals: UserSignal[];
+  changes: ChangeRecord[];
+  candidates: EnrichmentCandidate[];
   userBrains: Map<string, UserBrain>;
   issueLogs: IssueLog[];
 }
@@ -128,6 +136,8 @@ function buildStore(): Store {
     analytics: [],
     aiQueries: [],
     userSignals: [],
+    changes: [],
+    candidates: [],
     userBrains: new Map(),
     issueLogs: [],
   };
@@ -140,6 +150,12 @@ function store(): Store {
 
 function now(): string {
   return new Date().toISOString();
+}
+
+/** 목록 조회가 안 가져오는 두 컬럼을 실제로 뺀다 — supabase의 BOOTH_LIST_COLS 재현. */
+function stripListCols(b: Booth): BoothListItem {
+  const { images: _images, longDescription: _long, ...rest } = b;
+  return rest;
 }
 
 function paginate<T extends { id: string }>(
@@ -207,7 +223,7 @@ export class MockRepository implements Repository {
   async listBooths(
     slug: string,
     query?: ListBoothQuery,
-  ): Promise<Paginated<Booth>> {
+  ): Promise<Paginated<BoothListItem>> {
     const ex = store().exhibitions.find((e) => e.slug === slug);
     if (!ex) return { data: [], nextCursor: null };
     let list = store().booths.filter((b) => b.exhibitionId === ex.id);
@@ -225,11 +241,26 @@ export class MockRepository implements Repository {
     list = list.sort(
       (a, b) => b.popularity - a.popularity || a.id.localeCompare(b.id),
     );
-    return paginate(list, query?.cursor, query?.limit);
+    return paginate(list.map(stripListCols), query?.cursor, query?.limit);
   }
 
-  async listBoothsByExhibitionId(exhibitionId: string): Promise<Booth[]> {
+  /** 전 필드. supabase의 select("*")에 해당한다. */
+  async listBoothsFull(exhibitionId: string): Promise<Booth[]> {
     return store().booths.filter((b) => b.exhibitionId === exhibitionId);
+  }
+
+  /**
+   * ⚠️ **supabase처럼 images·longDescription을 뺀다.** mock이 전 필드를 주면
+   * "목록 조회엔 그 두 필드가 없다"는 사실이 테스트에서 재현되지 않고, 그러면
+   * 2026-09-06처럼 계획 테스트 12개가 전부 통과한 채로 버그가 산다.
+   * mock의 역할은 편의가 아니라 실제 동작의 재현이다.
+   */
+  async listBoothsByExhibitionId(
+    exhibitionId: string,
+  ): Promise<BoothListItem[]> {
+    return store()
+      .booths.filter((b) => b.exhibitionId === exhibitionId)
+      .map(stripListCols);
   }
 
   async getBoothDetail(id: string): Promise<BoothDetail | null> {
@@ -258,29 +289,182 @@ export class MockRepository implements Repository {
     return booth;
   }
 
-  async updateBooth(id: string, input: Partial<BoothInput>) {
+  async updateBooth(
+    id: string,
+    input: Partial<BoothInput>,
+    audit?: AuditContext,
+  ) {
     const b = store().booths.find((x) => x.id === id);
     if (!b) return null;
+    if (audit) {
+      await this.recordChange({
+        entity: "booth",
+        entityId: id,
+        scopeId: b.exhibitionId,
+        source: audit.source,
+        actor: audit.actor,
+        reason: audit.reason,
+        fieldDiffs: diffFields(
+          b as unknown as Record<string, unknown>,
+          input as Record<string, unknown>,
+          AUDIT_SPECS.booth.fields,
+        ),
+      });
+    }
     Object.assign(b, input);
     return b;
   }
 
+  async createEnrichmentCandidates(
+    rows: Omit<EnrichmentCandidate, "id" | "createdAt" | "status">[],
+  ): Promise<number> {
+    for (const r of rows) {
+      store().candidates.push({
+        ...r,
+        id: uid("cand"),
+        status: "pending",
+        createdAt: now(),
+      });
+    }
+    return rows.length;
+  }
+
+  async listEnrichmentCandidates(opts?: {
+    exhibitionId?: string;
+    boothId?: string;
+    boothIds?: string[];
+    status?: EnrichmentCandidate["status"];
+    limit?: number;
+  }): Promise<EnrichmentCandidate[]> {
+    let rows = [...store().candidates];
+    if (opts?.exhibitionId) {
+      rows = rows.filter((r) => r.exhibitionId === opts.exhibitionId);
+    }
+    if (opts?.boothId) rows = rows.filter((r) => r.boothId === opts.boothId);
+    if (opts?.boothIds?.length) {
+      rows = rows.filter((r) => opts.boothIds!.includes(r.boothId));
+    }
+    if (opts?.status) rows = rows.filter((r) => r.status === opts.status);
+    // 신뢰도 높은 것부터 — 검수자가 쉬운 것부터 치우고 어려운 것에 시간을 쓴다.
+    rows.sort((a, b) => b.confidence - a.confidence);
+    return rows.slice(0, opts?.limit ?? 100);
+  }
+
+  async getEnrichmentCandidate(id: string): Promise<EnrichmentCandidate | null> {
+    return store().candidates.find((c) => c.id === id) ?? null;
+  }
+
+  async supersedePendingCandidates(boothIds: string[]): Promise<number> {
+    let n = 0;
+    for (const c of store().candidates) {
+      if (c.status === "pending" && boothIds.includes(c.boothId)) {
+        c.status = "superseded";
+        n += 1;
+      }
+    }
+    return n;
+  }
+
+  async setCandidateStatus(
+    id: string,
+    status: EnrichmentCandidate["status"],
+    reviewedBy?: string | null,
+    note?: string | null,
+  ): Promise<void> {
+    const c = store().candidates.find((x) => x.id === id);
+    if (!c) return;
+    c.status = status;
+    c.reviewedAt = now();
+    c.reviewedBy = reviewedBy ?? null;
+    if (note !== undefined) c.reviewNote = note;
+  }
+
+  async recordChange(entry: ChangeEntry): Promise<void> {
+    if (Object.keys(entry.fieldDiffs).length === 0) return; // 바뀐 게 없으면 안 남긴다
+    store().changes.push({
+      id: uid("chg"),
+      entity: entry.entity,
+      entityId: entry.entityId,
+      scopeId: entry.scopeId ?? null,
+      source: entry.source,
+      actor: entry.actor ?? null,
+      fieldDiffs: entry.fieldDiffs,
+      reason: entry.reason ?? null,
+      createdAt: now(),
+    });
+  }
+
+  async listChanges(opts?: {
+    entity?: string;
+    entityId?: string;
+    scopeId?: string;
+    limit?: number;
+  }): Promise<ChangeRecord[]> {
+    // 같은 밀리초에 여러 건이 들어오면(인입은 흔하다) createdAt만으론 못 가른다.
+    // 삽입 역순을 기준으로 두고 안정 정렬해 "최신 먼저"를 보장한다.
+    let rows = [...store().changes]
+      .reverse()
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    if (opts?.entity) rows = rows.filter((r) => r.entity === opts.entity);
+    if (opts?.entityId) rows = rows.filter((r) => r.entityId === opts.entityId);
+    if (opts?.scopeId) rows = rows.filter((r) => r.scopeId === opts.scopeId);
+    return rows.slice(0, opts?.limit ?? 100);
+  }
+
   async upsertBoothEnrichment(
     boothId: string,
-    input: BoothEnrichmentAuthorInput,
+    input: BoothEnrichmentPatch,
+    audit?: AuditContext,
   ): Promise<void> {
     const b = store().booths.find((x) => x.id === boothId);
     if (!b) return;
+    if (audit) {
+      await this.recordChange({
+        entity: "booth_enrichment",
+        entityId: boothId,
+        scopeId: b.exhibitionId,
+        source: audit.source,
+        actor: audit.actor,
+        reason: audit.reason,
+        fieldDiffs: diffFields(
+          (b.enrichment ?? null) as Record<string, unknown> | null,
+          input as unknown as Record<string, unknown>,
+          AUDIT_SPECS.booth_enrichment.fields,
+        ),
+      });
+    }
+    // undefined인 필드는 안 건드린다(supabase와 같은 규칙).
+    const keep = <T>(v: T | undefined, cur: T | undefined): T | undefined =>
+      v === undefined ? cur : v;
     b.enrichment = {
       ...(b.enrichment ?? { goodsKeywords: [], themeTags: [] }),
-      summary: input.summary || undefined,
-      valueTags: input.valueTags.length ? input.valueTags : undefined,
-      recommendationReasons: Object.keys(input.recommendationReasons).length
-        ? input.recommendationReasons
+      summary: keep(input.summary, b.enrichment?.summary) || undefined,
+      // undefined면 기존 값을 그대로 둔다(supabase upsert와 같은 규칙).
+      roamInterpretation:
+        input.roamInterpretation === undefined
+          ? b.enrichment?.roamInterpretation
+          : input.roamInterpretation || undefined,
+      sourceUrl:
+        input.sourceUrl === undefined
+          ? b.enrichment?.sourceUrl
+          : input.sourceUrl || undefined,
+      valueTags: keep(input.valueTags, b.enrichment?.valueTags)?.length
+        ? keep(input.valueTags, b.enrichment?.valueTags)
         : undefined,
-      thingsToDo: input.thingsToDo.length ? input.thingsToDo : undefined,
-      timing: input.timing.length ? input.timing : undefined,
-      memoryHooks: input.memoryHooks.length ? input.memoryHooks : undefined,
+      recommendationReasons: Object.keys(
+        keep(input.recommendationReasons, b.enrichment?.recommendationReasons) ?? {},
+      ).length
+        ? keep(input.recommendationReasons, b.enrichment?.recommendationReasons)
+        : undefined,
+      thingsToDo: keep(input.thingsToDo, b.enrichment?.thingsToDo)?.length
+        ? keep(input.thingsToDo, b.enrichment?.thingsToDo)
+        : undefined,
+      timing: keep(input.timing, b.enrichment?.timing)?.length
+        ? keep(input.timing, b.enrichment?.timing)
+        : undefined,
+      memoryHooks: keep(input.memoryHooks, b.enrichment?.memoryHooks)?.length
+        ? keep(input.memoryHooks, b.enrichment?.memoryHooks)
+        : undefined,
     };
   }
 
@@ -294,6 +478,36 @@ export class MockRepository implements Repository {
 
   async listCategories(): Promise<Category[]> {
     return store().categories;
+  }
+
+  async createHall(exhibitionId: string, name: string): Promise<Hall> {
+    const halls = store().halls;
+    const hall: Hall = {
+      id: uid("hall"),
+      exhibitionId,
+      name,
+      floor: 1,
+      sort: halls.filter((h) => h.exhibitionId === exhibitionId).length,
+    };
+    halls.push(hall);
+    return hall;
+  }
+
+  async createCategory(input: {
+    slug: string;
+    name: string;
+    color?: string;
+    icon?: string;
+  }): Promise<Category> {
+    const category: Category = {
+      id: uid("cat"),
+      slug: input.slug,
+      name: input.name,
+      color: input.color ?? "#6b7280",
+      icon: input.icon ?? "tag",
+    };
+    store().categories.push(category);
+    return category;
   }
 
   async listHalls(exhibitionId: string): Promise<Hall[]> {

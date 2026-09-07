@@ -88,3 +88,6 @@ public/Coex_도면/
 # superpowers brainstorm scratch
 .superpowers/
 .agents/
+
+# 장소 원본 도면(코엑스 공식 PDF·사용자 제공) — 언제든 다시 받을 수 있고 용량만 든다
+/data/venue-source/

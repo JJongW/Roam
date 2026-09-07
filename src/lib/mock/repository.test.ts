@@ -136,6 +136,139 @@ describe("MockRepository", () => {
     expect(after!.enrichment?.goodsKeywords ?? []).toEqual(goodsBefore);
   });
 
+  it("upsertBoothEnrichment: 안 보낸 필드는 지우지 않는다 — 부분 수정", async () => {
+    // 2026-09-06 사고: 초안 승인이 schema.partial()로 페이로드를 만들었는데
+    // Zod의 partial()은 default()를 막지 않아 안 보낸 summary가 ""로 채워졌고,
+    // 그게 운영 부스의 요약을 지웠다. 쓰기 경로가 막아야 하는 일이다.
+    const repo = new MockRepository();
+    await repo.upsertBoothEnrichment("b_a1902", {
+      summary: "사람이 쓴 요약",
+      roamInterpretation: "사람이 쓴 한 줄",
+      thingsToDo: ["기존 할 일"],
+    });
+    // 초안 승인이 thingsToDo만 보낸 상황.
+    await repo.upsertBoothEnrichment("b_a1902", {
+      thingsToDo: ["새 할 일"],
+    });
+    const d = await repo.getBoothDetail("b_a1902");
+    expect(d!.booth.enrichment?.thingsToDo).toEqual(["새 할 일"]);
+    expect(d!.booth.enrichment?.summary).toBe("사람이 쓴 요약");
+    expect(d!.booth.enrichment?.roamInterpretation).toBe("사람이 쓴 한 줄");
+  });
+
+  it("변경 이력: 누가·어디서·무엇을 무엇으로 바꿨는지 남는다", async () => {
+    const repo = new MockRepository();
+    await repo.upsertBoothEnrichment(
+      "b_a1902",
+      {
+        summary: "첫 요약",
+        valueTags: [],
+        recommendationReasons: {},
+        thingsToDo: [],
+        timing: [],
+        memoryHooks: [],
+      },
+      { source: "intake", actor: "u_1", reason: "인입 sibf-2026" },
+    );
+    await repo.upsertBoothEnrichment(
+      "b_a1902",
+      {
+        summary: "고친 요약",
+        valueTags: [],
+        recommendationReasons: {},
+        thingsToDo: [],
+        timing: [],
+        memoryHooks: [],
+      },
+      { source: "admin", actor: "u_2" },
+    );
+    const rows = await repo.listChanges({ entityId: "b_a1902" });
+    expect(rows).toHaveLength(2);
+    // 최신이 위.
+    expect(rows[0].source).toBe("admin");
+    expect(rows[0].fieldDiffs.summary).toEqual({
+      before: "첫 요약",
+      after: "고친 요약",
+    });
+    expect(rows[1].fieldDiffs.summary.before).toBeNull(); // 신규
+    expect(rows[1].reason).toBe("인입 sibf-2026");
+    expect(rows[0].scopeId).toBeTruthy(); // 전시로 좁힐 수 있다
+  });
+
+  it("변경 이력: 부스 본체도 같은 원장에 쌓인다 — images 덮어쓰기가 보여야 한다", async () => {
+    const repo = new MockRepository();
+    // mock은 저장소 객체를 참조로 준다 — 갱신 전에 값을 복사해 둬야 한다.
+    const beforeImages = [...(await repo.getBooth("b_a1902"))!.images];
+    await repo.updateBooth(
+      "b_a1902",
+      { images: ["/new-1.webp"], description: "고친 설명" },
+      { source: "intake", actor: null, reason: "인입 sibf-2026" },
+    );
+    const rows = await repo.listChanges({ entity: "booth" });
+    expect(rows).toHaveLength(1);
+    expect(rows[0].entityId).toBe("b_a1902");
+    expect(rows[0].fieldDiffs.images).toEqual({
+      before: beforeImages.length ? beforeImages : null,
+      after: ["/new-1.webp"],
+    });
+    // 저작 정보와 부스 본체가 entity로 갈린다.
+    expect(await repo.listChanges({ entity: "booth_enrichment" })).toHaveLength(0);
+  });
+
+  it("변경 이력: 바뀐 게 없으면 안 남긴다 — 멱등 인입이 원장을 더럽히지 않게", async () => {
+    const repo = new MockRepository();
+    const payload = {
+      summary: "같은 요약",
+      valueTags: [],
+      recommendationReasons: {},
+      thingsToDo: [],
+      timing: [],
+      memoryHooks: [],
+    };
+    const audit = { source: "intake" as const, actor: null };
+    await repo.upsertBoothEnrichment("b_a1902", payload, audit);
+    await repo.upsertBoothEnrichment("b_a1902", payload, audit);
+    expect(await repo.listChanges({ entityId: "b_a1902" })).toHaveLength(1);
+  });
+
+  it("변경 이력: audit 없이 부르면 안 남긴다 — 출처를 밝히지 않는 쓰기는 기록도 없다", async () => {
+    const repo = new MockRepository();
+    await repo.upsertBoothEnrichment("b_a1902", {
+      summary: "출처 없는 쓰기",
+      valueTags: [],
+      recommendationReasons: {},
+      thingsToDo: [],
+      timing: [],
+      memoryHooks: [],
+    });
+    expect(await repo.listChanges()).toHaveLength(0);
+  });
+
+  it("upsertBoothEnrichment: roamInterpretation 키가 없으면 기존 값을 지우지 않는다", async () => {
+    const repo = new MockRepository();
+    await repo.upsertBoothEnrichment("b_a1902", {
+      roamInterpretation: "사람이 쓴 한 줄",
+      summary: "요약",
+      valueTags: [],
+      recommendationReasons: {},
+      thingsToDo: [],
+      timing: [],
+      memoryHooks: [],
+    });
+    // 이 필드를 안 보내는 화면(booth-manager)이 저장해도 한 줄은 남아야 한다.
+    await repo.upsertBoothEnrichment("b_a1902", {
+      summary: "다른 요약",
+      valueTags: [],
+      recommendationReasons: {},
+      thingsToDo: [],
+      timing: [],
+      memoryHooks: [],
+    });
+    const detail = await repo.getBoothDetail("b_a1902");
+    expect(detail!.booth.enrichment?.roamInterpretation).toBe("사람이 쓴 한 줄");
+    expect(detail!.booth.enrichment?.summary).toBe("다른 요약");
+  });
+
   it("upsertBoothEnrichment: 빈 배열/빈 객체는 undefined로 저장한다(폼을 비우면 결측으로 되돌아감)", async () => {
     await repo.upsertBoothEnrichment("b_a1902", {
       summary: "",

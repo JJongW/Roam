@@ -1,8 +1,8 @@
 import { COMPANION_WEIGHTS, mergePurposeWeights } from "@/lib/constants";
 import { boothValueSlugs } from "@/lib/values";
 import type {
-  Booth,
-  BoothEvent,
+  BoothListItem,
+    BoothEvent,
   Point,
   ScoredBooth,
   UserPreference,
@@ -23,7 +23,7 @@ export function distance(a: Point, b: Point): number {
  * inputs surface different booths.
  */
 export function interestScore(
-  booth: Booth,
+  booth: BoothListItem,
   interests: string[],
   /** slug별 가중치(없으면 1). L4 브레인 관심에 confidence 가중을 실어 누적 관심이
    *  세션 의도보다 무겁게 반영되도록 한다. 미지정이면 기존과 동일(전부 1). */
@@ -91,7 +91,7 @@ export interface ScoreContext {
   interestWeights?: Record<string, number>;
 }
 
-export function scoreBooth(booth: Booth, ctx: ScoreContext): ScoredBooth {
+export function scoreBooth(booth: BoothListItem, ctx: ScoreContext): ScoredBooth {
   // Purpose sets the base weighting; companion tilts it (who's visiting).
   const pw = mergePurposeWeights(ctx.preference.visitPurposes);
   const cw = COMPANION_WEIGHTS[ctx.preference.companionType];
@@ -129,7 +129,7 @@ export function scoreBooth(booth: Booth, ctx: ScoreContext): ScoredBooth {
 
 /** Rank booths by score, descending. Tie-break by a stable id hash (not
  *  alphabetical) so equal-scored booths don't cluster on one prefix/hall. */
-export function rankBooths(booths: Booth[], ctx: ScoreContext): ScoredBooth[] {
+export function rankBooths(booths: BoothListItem[], ctx: ScoreContext): ScoredBooth[] {
   return booths
     .map((b) => scoreBooth(b, ctx))
     .sort(

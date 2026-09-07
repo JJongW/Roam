@@ -1,4 +1,4 @@
-import type { Booth, BoothNote } from "@/lib/types";
+import type { BoothListItem, BoothNote } from "@/lib/types";
 
 // CLAUDE.md "최소 필수 6종" — 이 6개가 다 채워질수록 근거 카드 품질이 올라간다.
 const REQUIRED_ENRICHMENT_FIELDS = [
@@ -25,7 +25,7 @@ function isEmptyValue(value: unknown): boolean {
 }
 
 /** 부스별로 "최소 필수 6종" 중 비어 있는 필드를 찾는다. 결측 많은 순으로 정렬. */
-export function findBoothEnrichmentGaps(booths: Booth[]): BoothGap[] {
+export function findBoothEnrichmentGaps(booths: BoothListItem[]): BoothGap[] {
   const gaps: BoothGap[] = [];
   for (const booth of booths) {
     const missing: string[] = [];

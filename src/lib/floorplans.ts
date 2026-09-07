@@ -7,6 +7,14 @@
 import sibf from "@/lib/floorplan-sibf.json";
 import sif from "@/lib/floorplan-sif.json";
 import ha from "@/lib/floorplan-house-archive.json";
+import coexHallC from "@/lib/venues/coex-hall-c.json";
+import coexPlatz from "@/lib/venues/coex-platz.json";
+import coexHallA from "@/lib/venues/coex-hall-a.json";
+import coexHallB1 from "@/lib/venues/coex-hall-b1.json";
+import coexHallB2 from "@/lib/venues/coex-hall-b2.json";
+import coexHallD from "@/lib/venues/coex-hall-d.json";
+import coexMagok1F from "@/lib/venues/coex-magok-1f.json";
+import { composeFloorplan, type Layout, type Venue } from "@/lib/floorplan/compose";
 
 export interface FloorplanBooth {
   code: string;
@@ -296,110 +304,42 @@ function buildSibf(): Floorplan {
   };
 }
 
-// SIF: 격자 부스만 있는 단순 도면(홀/장식 없음). 색은 전부 중립 존색 —
-// 지도는 Roam 상태색만 얹으므로 ocreo 색은 쓰지 않는다. 내부 walkable = 부스 bbox.
-// JSON 좌표는 좌상단 기준, FloorplanBooth는 중심 기준 → 여기서 변환한다.
-// (exhibition-map이 translate(x,y) 안에 rect를 -w/2,-h/2로 그린다.)
-function buildSif(): Floorplan {
-  const booths: FloorplanBooth[] = sif.booths.map((b) => ({
-    code: b.code,
-    x: b.x + b.w / 2,
-    y: b.y + b.h / 2,
-    w: b.w,
-    h: b.h,
-    color: ZONE.general,
-  }));
-  const box = bbox(booths);
-  return {
-    width: sif.width,
-    height: sif.height,
-    halls: [],
-    decor: [],
-    booths,
-    interior: [box],
-    entrance: { x: sif.width / 2, y: sif.height - 60 },
-    exit: { x: sif.width / 2, y: sif.height - 60 },
-  };
+/**
+ * 전시 slug → 도면.
+ *
+ * SIBF만 전용 build 함수를 쓴다 — 손 트레이싱한 **개략도**라 비례가 실제와 안
+ * 맞고(A홀 종횡비 2.124 : 실측 2.000, B1은 아예 안 맞음) 미터로 환산이 성립하지
+ * 않아서 venue 위에 얹을 수 없다. 도면을 다시 뽑으면 나머지처럼 합성으로 옮긴다.
+ *
+ * 나머지는 전부 `venue + layout` 합성이다. 새 전시를 붙일 때 벽·입구·화장실을
+ * 다시 적지 않는다 — 장소가 이미 안다. 여기 한 줄과 layout JSON 하나가 전부다.
+ */
+const VENUES: Record<string, Venue> = {
+  "coex-hall-a": coexHallA as Venue,
+  "coex-hall-b1": coexHallB1 as Venue,
+  "coex-hall-b2": coexHallB2 as Venue,
+  "coex-hall-c": coexHallC as Venue,
+  "coex-hall-d": coexHallD as Venue,
+  "coex-platz": coexPlatz as Venue,
+  "coex-magok-1f": coexMagok1F as Venue,
+};
+
+function compose(layout: unknown): Floorplan {
+  const l = layout as Layout;
+  const venue = VENUES[l.venue];
+  if (!venue) throw new Error(`알 수 없는 장소: ${l.venue}`);
+  return composeFloorplan(l, venue);
 }
 
-// HOUSE ARCHIVE: 더 플라츠홀 단일 공간. 부스 + 라운지(T12·T13 사이 알코브) 장식.
-// SIF와 같은 규약 — JSON은 좌상단, FloorplanBooth는 중심.
-function buildHouseArchive(): Floorplan {
-  const booths: FloorplanBooth[] = ha.booths.map((b) => ({
-    code: b.code,
-    x: b.x + b.w / 2,
-    y: b.y + b.h / 2,
-    w: b.w,
-    h: b.h,
-    color: b.kind === "facility" ? FACILITY_FILL : ZONE.general,
-  }));
-  const box = bbox(booths);
-  // T12·T13 사이 벽이 밖으로 튀어나온 알코브 — 그 공간이 라운지고, 바로 아래
-  // 입출구(양방향)가 있다(원본 도면 사진 대조, 2026-08-13). T12 오른쪽 끝(1712)
-  // ~ T13 왼쪽 끝(1892) 사이 간격에 맞춘 값 — 정확한 벽 실측치가 아니라 사진
-  // 비례로 어림한 값이라, 실제로 보면서 조정이 더 필요할 수 있다.
-  const loungeX = 1712;
-  const loungeW = 1892 - 1712;
-  // 메인 입구·출구·티켓부스 — 현장 확인 기준(2026-08-13). 입구는 H02(관계의 집
-  // X 헤르시, x 49~217) 아래, y는 G03(커먼즈) 하단(1020+56=1076)과 같은 선.
-  // 출구는 E09(포티, x 1703~1879) 왼쪽, 같은 y선. 정확한 실측치가 아니라
-  // 현장 설명으로 어림한 값 — 실제로 보면서 조정이 더 필요할 수 있다.
-  // size를 줄인 건 원래 알약 크기(반너비 112)가 넓은 홀 기준이라 이 도면처럼
-  // 부스가 촘촘하면 옆 부스(E09)를 덮어버렸기 때문 — 축소하고 exitX도 더
-  // 떨어뜨렸다(2026-08-13, 겹침 스크린샷 확인 후 수정).
-  const entranceX = 133; // H02 중심
-  const exitX = 1600; // E09(왼쪽 끝 1703)와 안 겹치게 더 떨어뜨림
-  const groundY = 1076; // 커먼즈 하단
-  const markerSize = 0.5;
-  const ticketBoothW = 90;
-  const ticketBoothH = 44;
-  return {
-    width: ha.width,
-    height: ha.height,
-    halls: [],
-    decor: [
-      { type: "header", x: loungeX, y: 5, w: loungeW, h: 55, text: "라운지" },
-      {
-        type: "arrowsV",
-        x: loungeX + loungeW / 2,
-        y1: 60,
-        y2: 95,
-        size: 0.45,
-      },
-      {
-        type: "entrance",
-        x: entranceX,
-        y: groundY,
-        text: "입구",
-        dir: "up",
-        size: markerSize,
-      },
-      {
-        type: "entrance",
-        x: exitX,
-        y: groundY,
-        text: "출구",
-        dir: "down",
-        size: markerSize,
-      },
-      {
-        type: "header",
-        x: entranceX - ticketBoothW / 2,
-        y: groundY - ticketBoothH - 24,
-        w: ticketBoothW,
-        h: ticketBoothH,
-        text: "티켓부스",
-      },
-    ],
-    booths,
-    interior: [box],
-    entrance: { x: entranceX, y: groundY },
-    exit: { x: exitX, y: groundY },
-  };
-}
+/** 전시 slug → 그 전시가 쓰는 장소. 도면과 함께 내보내야 클라이언트가 픽셀이 아닌
+ *  미터로 계산할 수 있다(SIBF는 venue 위에 못 얹은 개략도라 없다). */
+export const VENUE_OF: Record<string, Venue> = {
+  "sif-2026": VENUES[(sif as { venue: string }).venue],
+  "house-archive-2026": VENUES[(ha as { venue: string }).venue],
+};
 
 export const FLOORPLANS: Record<string, Floorplan> = {
-  "sibf-2026": buildSibf(),
-  "sif-2026": buildSif(),
-  "house-archive-2026": buildHouseArchive(),
+  "sibf-2026": buildSibf(), // 예외 — 개략도
+  "sif-2026": compose(sif),
+  "house-archive-2026": compose(ha),
 };

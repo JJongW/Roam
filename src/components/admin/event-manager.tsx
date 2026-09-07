@@ -39,7 +39,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import type { Booth, BoothEvent } from "@/lib/types";
+import type { BoothEvent, BoothListItem } from "@/lib/types";
 
 interface Draft {
   boothId?: string;
@@ -55,7 +55,7 @@ export function EventManager({
   booths,
 }: {
   events: BoothEvent[];
-  booths: Booth[];
+  booths: BoothListItem[];
 }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);

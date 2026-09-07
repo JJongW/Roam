@@ -1,10 +1,10 @@
 // 실시간 판단 큐 — 부스 이벤트/타이밍에서 "사실 + 이유 + 판단 기준"을 만든다.
 // 명령("가지 마") 아니라 사실만; 결정은 사용자(companion-reframe §실시간 판단 큐). 순수·LLM 없음.
-import type { Booth, BoothEvent } from "@/lib/types";
+import type { BoothEvent, BoothListItem } from "@/lib/types";
 
 /** 부스의 주목 이벤트/타이밍에서 판단 큐 한 줄. 없으면 undefined. */
 export function deriveCue(
-  booth: Booth,
+  booth: BoothListItem,
   events: BoothEvent[],
 ): string | undefined {
   const notable = events

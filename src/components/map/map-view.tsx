@@ -40,7 +40,7 @@ import {
   buildCopresenceLine,
   type CopresencePositive,
 } from "@/lib/companion/copresence";
-import type { Booth, ExhibitionDetail } from "@/lib/types";
+import type { ExhibitionDetail, BoothListItem } from "@/lib/types";
 
 /**
  * 관심 밀도 지도 — 길찾기·동선이 아니라 온사이트 공간 참조 부가 서비스. 검색·리스트·
@@ -54,7 +54,7 @@ export function MapView({
   cueByBooth,
 }: {
   detail: ExhibitionDetail;
-  booths: Booth[];
+  booths: BoothListItem[];
   /** Deep-link target (e.g. from the 메모장 "지도에서 보기"): preselect + center. */
   initialFocusId?: string;
   /** 부스별 co-presence 발화 cue — 서버(page.tsx)가 deriveCue로 미리 계산해

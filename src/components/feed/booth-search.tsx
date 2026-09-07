@@ -13,7 +13,7 @@ import {
   type CopresencePositive,
 } from "@/lib/companion/copresence";
 import { useVisitStore } from "@/lib/stores/visit";
-import type { Booth, Category, Paginated } from "@/lib/types";
+import type { Category, Paginated, BoothListItem } from "@/lib/types";
 
 /**
  * 피드 상단 부스 검색 — 전체 전시 부스를 이름·상호로 찾는다(피드는 추천 몇 개뿐이라
@@ -29,7 +29,7 @@ export function BoothSearch({
 }) {
   const t = useT();
   const [q, setQ] = useState("");
-  const [results, setResults] = useState<Booth[] | null>(null);
+  const [results, setResults] = useState<BoothListItem[] | null>(null);
   const [loading, setLoading] = useState(false);
   const seq = useRef(0);
   const say = useCompanionStore((s) => s.saySpontaneous);
@@ -47,7 +47,7 @@ export function BoothSearch({
     const id = ++seq.current;
     const timer = setTimeout(() => {
       api
-        .get<Paginated<Booth>>(
+        .get<Paginated<BoothListItem>>(
           `/api/exhibitions/${slug}/booths?q=${encodeURIComponent(query)}&limit=30`,
         )
         .then((page) => {
@@ -135,7 +135,10 @@ export function BoothSearch({
           ) : (
             results.map((b, i) => {
               const cat = categoryById[b.categoryId];
-              const thumb = b.images?.[0] ?? b.logoUrl;
+              // 목록 조회는 images를 안 가져온다(BOOTH_LIST_COLS) — 전엔 b.images?.[0]을
+              // 먼저 봤지만 늘 undefined라 실질적으로 logoUrl만 쓰였다. 타입이
+              // 그 사실을 말하게 되면서 코드도 사실대로 적는다.
+              const thumb = b.logoUrl;
               return (
                 <Link
                   key={b.id}

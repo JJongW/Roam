@@ -1,11 +1,15 @@
+import type { ChangeEntry, AuditContext } from "@/lib/audit/diff";
 import type {
   AnalyticsEvent,
   Booth,
+  BoothListItem,
   BoothDetail,
   BoothEvent,
   Bookmark,
   BoothNote,
   Category,
+  ChangeRecord,
+  EnrichmentCandidate,
   CommunityPost,
   DeletePostResult,
   ReportResult,
@@ -29,7 +33,7 @@ import type { TasteAccuracy } from "@/lib/memory/taste";
 import type {
   AnalyticsEventInput,
   BookmarkInput,
-  BoothEnrichmentAuthorInput,
+  BoothEnrichmentPatch,
   BoothInput,
   BoothNoteInput,
   CommunityPostInput,
@@ -78,23 +82,86 @@ export interface Repository {
   deleteExhibition(id: string): Promise<boolean>;
 
   // booths
-  listBooths(slug: string, query?: ListBoothQuery): Promise<Paginated<Booth>>;
-  listBoothsByExhibitionId(exhibitionId: string): Promise<Booth[]>;
+  /** ⚠️ images·longDescription이 없다(BOOTH_LIST_COLS). 전 필드는 listBoothsFull. */
+  listBooths(
+    slug: string,
+    query?: ListBoothQuery,
+  ): Promise<Paginated<BoothListItem>>;
+  /** ⚠️ 위와 같다 — 목록 조회는 두 컬럼을 안 가져온다. */
+  listBoothsByExhibitionId(exhibitionId: string): Promise<BoothListItem[]>;
+  /** 인입 전용 — 목록 조회가 성능 때문에 빼는 컬럼(images·longDescription)까지
+   *  전부 읽는다. "빈 칸만 채운다"는 규칙은 안 보이는 컬럼을 빈 칸으로 오해하는
+   *  순간 깨지고, 충돌 판정도 없이 덮어쓴다. mock은 컬럼을 안 좁혀서 이 차이가
+   *  테스트에 안 잡힌다 — 운영 dry-run에서 잡혔다. */
+  listBoothsFull(exhibitionId: string): Promise<Booth[]>;
   getBoothDetail(id: string): Promise<BoothDetail | null>;
   createBooth(input: BoothInput): Promise<Booth>;
-  updateBooth(id: string, input: Partial<BoothInput>): Promise<Booth | null>;
+  updateBooth(
+    id: string,
+    input: Partial<BoothInput>,
+    audit?: AuditContext,
+  ): Promise<Booth | null>;
   /** 저작 필드(근거 카드용 summary/valueTags/recommendationReasons/thingsToDo/
    *  timing/memoryHooks) 전체 교체 UPSERT — 부분 필드만 보내지 않는다(폼이 항상
    *  6개 전부를 함께 제출). */
+  /** 검수 대기 초안 적재. 여러 건을 한 번에 — 초안기는 배치로 돈다. */
+  createEnrichmentCandidates(
+    rows: Omit<EnrichmentCandidate, "id" | "createdAt" | "status">[],
+  ): Promise<number>;
+  listEnrichmentCandidates(opts?: {
+    exhibitionId?: string;
+    boothId?: string;
+    /** 여러 부스를 한 번에 — 초안기가 배치 대상의 지난 반려 사유를 모을 때 쓴다. */
+    boothIds?: string[];
+    status?: EnrichmentCandidate["status"];
+    limit?: number;
+  }): Promise<EnrichmentCandidate[]>;
+  getEnrichmentCandidate(id: string): Promise<EnrichmentCandidate | null>;
+  /** 이 부스들의 기존 pending 초안을 superseded로 내린다. 다시 돌릴 때마다 큐에
+   *  같은 부스가 쌓이면 검수자가 무엇이 최신인지 모른다. */
+  supersedePendingCandidates(boothIds: string[]): Promise<number>;
+  /** 검수 결과 기록. 반영 자체는 upsertBoothEnrichment가 따로 한다. */
+  setCandidateStatus(
+    id: string,
+    status: EnrichmentCandidate["status"],
+    reviewedBy?: string | null,
+    /** 왜 반려했나. 이게 없으면 반려는 한 비트만 남고 학습이 안 된다. */
+    note?: string | null,
+  ): Promise<void>;
+
+  /** 변경 이력 적재. **실패해도 도메인 쓰기를 막지 않는다**(loggedWrite) —
+   *  900부스 인입이 이력 한 줄 때문에 통째로 멈추면 도구로서 못 쓴다. 대신
+   *  실패는 반드시 에러 로그로 남는다. */
+  recordChange(entry: ChangeEntry): Promise<void>;
+  /** 이력 조회. entity·entityId·scopeId로 좁힌다. */
+  listChanges(opts?: {
+    entity?: string;
+    entityId?: string;
+    scopeId?: string;
+    limit?: number;
+  }): Promise<ChangeRecord[]>;
+
   upsertBoothEnrichment(
     boothId: string,
-    input: BoothEnrichmentAuthorInput,
+    input: BoothEnrichmentPatch,
+    /** 누가·어디서 바꿨나. 없으면 이력이 안 남는다 — 호출부가 출처를 밝히게 한다. */
+    audit?: AuditContext,
   ): Promise<void>;
   deleteBooth(id: string): Promise<boolean>;
 
   // categories / halls
   listCategories(exhibitionId: string): Promise<Category[]>;
   listHalls(exhibitionId: string): Promise<Hall[]>;
+  /** 전시 인입이 파일에 적힌 이름으로 홀을 만든다. */
+  createHall(exhibitionId: string, name: string): Promise<Hall>;
+  /** 전시 인입이 카테고리를 만든다. slug은 전역 unique이고 booth.tags에 그대로
+   *  들어가 추천 스코어링이 읽는 값이라 파일이 명시한 것만 쓴다. */
+  createCategory(input: {
+    slug: string;
+    name: string;
+    color?: string;
+    icon?: string;
+  }): Promise<Category>;
 
   // events
   listEvents(

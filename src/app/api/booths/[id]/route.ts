@@ -1,5 +1,6 @@
 import { getRepository } from "@/lib/repositories";
 import {
+  getUserId,
   noContent,
   notFound,
   ok,
@@ -29,8 +30,16 @@ export async function PATCH(req: Request, { params }: Ctx) {
   if (!parsed.ok) return parsed.res;
   const { enrichment, ...boothFields } = parsed.data;
   const repo = await getRepository();
-  if (enrichment) await repo.upsertBoothEnrichment(id, enrichment);
-  const updated = await repo.updateBooth(id, boothFields);
+  if (enrichment) {
+    await repo.upsertBoothEnrichment(id, enrichment, {
+      source: "admin",
+      actor: await getUserId(),
+    });
+  }
+  const updated = await repo.updateBooth(id, boothFields, {
+    source: "admin",
+    actor: await getUserId(),
+  });
   if (!updated) return notFound();
   return ok({ booth: updated });
 }

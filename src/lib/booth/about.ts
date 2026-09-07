@@ -9,7 +9,7 @@
 // 그 글은 **작가 본인이 쓴 것**이라 반말로 고치면 남의 말을 바꾸는 것이고, 그대로 쓰면
 // 로미 목소리가 깨진다. 출처를 밝혀 인용하면 둘 다 지켜진다.
 import { primaryThemeFromTags, themeLabel } from "@/lib/booth/themes";
-import type { Booth } from "@/lib/types";
+import type { BoothListItem } from "@/lib/types";
 
 export interface BoothAbout {
   /** 로미가 이 부스를 한 줄로 소개하는 말(반말). 재료가 없으면 undefined. */
@@ -53,7 +53,11 @@ function goodsClause(count: number): string | null {
  * 부스에서 로미 발화와 작가 인용을 뽑는다. 순수·LLM 없음.
  * 지어내지 않는다 — 테마도 굿즈도 소개도 없으면 romi는 비고 fallback만 남는다.
  */
-export function boothAbout(booth: Booth): BoothAbout {
+/** 목록 조회 결과(longDescription 없음)로도 동작한다. 원문 폴백은 전 필드 조회로
+ *  읽은 부스에서만 나온다 — 피드는 목록 조회를 쓰므로 거기선 안 나온다. */
+export function boothAbout(
+  booth: BoothListItem & { longDescription?: string },
+): BoothAbout {
   const themeKey = primaryThemeFromTags(booth.tags);
   const fine = booth.enrichment?.themeTags ?? [];
   const goods = booth.enrichment?.goodsKeywords ?? [];

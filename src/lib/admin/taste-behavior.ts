@@ -1,5 +1,9 @@
 import { boothValueSlugs, valueDef } from "@/lib/values";
-import type { AnalyticsEvent, Booth, UserBrain } from "@/lib/types";
+import type {
+  AnalyticsEvent,
+    BoothListItem,
+  UserBrain,
+} from "@/lib/types";
 
 /**
  * 취향 × 행동 교차 — "어느 취향의 사람이 실제로 어디를 눌렀나".
@@ -55,7 +59,7 @@ export interface TasteBehaviorResult {
 export function crossTasteBehavior(
   brains: UserBrain[],
   analytics: AnalyticsEvent[],
-  booths: Booth[],
+  booths: BoothListItem[],
   opts?: { minConfidence?: number; topBooths?: number },
 ): TasteBehaviorResult {
   const minConfidence = opts?.minConfidence ?? TASTE_MIN_CONFIDENCE;
