@@ -605,7 +605,11 @@ export class SupabaseRepository implements Repository {
    * 인가는 라우트에서 이미 끝났으니 그 뒤 읽기는 RLS 대신 이 클라이언트로 한다.
    */
   private async db(asAdmin = false): Promise<SupabaseClient> {
-    if (asAdmin) return createServiceClient();
+    // 워커는 요청 컨텍스트가 없다. createServerClient가 Next의 cookies()를 부르는데
+    // 맨 Node에선 "cookies was called outside a request scope"로 죽는다(첫 잡에서
+    // 실제로 겪음). 워커는 신뢰된 백엔드 프로세스라 서비스 롤이 맞는 자세이고,
+    // 이건 우회가 아니라 그 사실을 코드에 적는 것이다.
+    if (asAdmin || process.env.ROAM_WORKER === "1") return createServiceClient();
     // iOS는 Supabase 세션을 쿠키가 아니라 Bearer 헤더로 들고 온다 — 그 토큰으로
     // 접근해야 auth.uid()가 풀려 owner-scoped RLS가 의도대로 통과한다(안 그러면
     // 에러 없이 0행). 웹(쿠키 세션)은 기존 경로 그대로.

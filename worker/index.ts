@@ -13,6 +13,9 @@ import { config as loadEnv } from "dotenv";
 // Next가 아니라 맨 Node라 .env를 직접 읽어야 한다. repositories가 env를 읽기 전에
 // 해야 하므로 import 순서가 의미를 갖는다.
 loadEnv();
+// 저장소가 요청 컨텍스트(쿠키) 대신 서비스 롤을 쓰게 한다 — 워커엔 요청이 없다.
+// repositories를 import하기 전에 세워야 한다.
+process.env.ROAM_WORKER = "1";
 import { getRepository } from "@/lib/repositories";
 import { runDraftBatch } from "@/lib/enrichment/run-draft";
 import type { Job } from "@/lib/types";
