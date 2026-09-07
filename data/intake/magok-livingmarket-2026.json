@@ -1,0 +1,2003 @@
+{
+ "version": 1,
+ "exhibitionSlug": "magok-livingmarket-2026",
+ "booths": [
+  {
+   "code": "A-01",
+   "name": "마곡리빙마켓 이벤트부스",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ]
+  },
+  {
+   "code": "A-03",
+   "name": "스튜디오 일상이상",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ],
+   "websiteUrl": "https://ilsangisang.com",
+   "instagramUrl": "https://www.instagram.com/ilsangisang"
+  },
+  {
+   "code": "A-05",
+   "name": "더닷",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ],
+   "description": "기능을 갖춘 예술, 예술이 된 일상, THE DOT.",
+   "longDescription": "국내 최초로 뉴욕 MoMA에서 제품 디자인을 선보인 THE DOT은 다양한 소재의 인테리어 오브제와 리빙 제품을 전개하는 디자인 브랜드입니다. 제품 디자인을 넘어 건축과 브랜딩 등 다양한 영역에서 새로운 디자인 경험을 제안합니다. 기능을 갖춘 예술, 예술이 된 일상. THE DOT",
+   "websiteUrl": "https://thedotdesign.kr",
+   "aliases": [
+    "THE DOT"
+   ],
+   "instagramUrl": "https://www.instagram.com/the_dot_space"
+  },
+  {
+   "code": "A-06",
+   "name": "아람채리빙",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ],
+   "description": "〈기억의 빛, 다시 살아나는 시간〉",
+   "longDescription": "아람채는 버려진 자개장 속에 잠든 한국적 아름다움과 삶의 기억을 현대적 디자인으로 되살리는 업사이클링 브랜드입니다. 전통 공예의 영롱한 자개빛을 미니멀한 형태에 담아 과거의 감성과 미래의 지속가능성을 잇는 새로운 한국적 디자인을 제안합니다. 오래된 자개장의 기억과 정서를 현대적으로 재해석해 오늘의 공간에서 다시 빛나게 합니다.",
+   "websiteUrl": "https://www.miiseum.com",
+   "aliases": [
+    "ARAMCHAE"
+   ]
+  },
+  {
+   "code": "A-08",
+   "name": "스튜디오 무드",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ],
+   "description": "감성을 담은 철제 오브제를 제작하는 스튜디오무드 입니다",
+   "longDescription": "스튜디오무드는 철제를 기반으로 공간의 분위기를 완성하는 리빙 브랜드입니다.\r\n가림막, 커버, 오브제 제품을 통해 기능을 넘어 공간에 자연스럽게 스며드는 디자인을 제안하며, 일상을 더 머무르고 싶은 공간으로 만듭니다.",
+   "websiteUrl": "https://smartstore.naver.com/itpkorea",
+   "aliases": [
+    "STUDIO MOOD"
+   ]
+  },
+  {
+   "code": "A-10",
+   "name": "트레티트레",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ]
+  },
+  {
+   "code": "A-13",
+   "name": "알마슬립",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ],
+   "websiteUrl": "https://almasleep.co.kr",
+   "instagramUrl": "https://www.instagram.com/almasleep_official"
+  },
+  {
+   "code": "A-15",
+   "name": "라잇트리",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ],
+   "description": "“Colorful trip” LIGHTREE",
+   "longDescription": "라잇트리(LIGHTREE)는 ‘DESIGNED BY LOVE’를 바탕으로 컬러를 통해 일상에 즐거움과 새로운 경험을 더하는 디자인 라이프스타일 브랜드입니다. 감각적인 컬러와 실용성을 담은 소파, 아웃도어·여행용품 등을 선보이며, 이번 전시에서는 라잇트리만의 컬러풀하고 위트 있는 라이프스타일을 직접 경험할 수 있습니다.",
+   "websiteUrl": "https://lightree.kr/",
+   "aliases": [
+    "LIGHTREE"
+   ]
+  },
+  {
+   "code": "B-01",
+   "name": "로우리트 콜렉티브",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ],
+   "description": "버려진 플라스틱, 오래 곁에 둘 지속 가능한 가구로",
+   "longDescription": "로우리트 콜렉티브는 폐플라스틱을 되살려 지속 가능한 가구와 조명을 만드는 서울 기반 디자인 스튜디오입니다. 재활용 플라스틱 고유의 불규칙한 색과 질감은 감출 결점이 아닌 각 제품만의 서사입니다. 이번 전시에서는 테이블, 스툴, 조명 컬렉션과 함께 소재의 순환 과정을 선보이며 덜 쓰고 오래 쓰는 삶에 어울리는 아름다운 선택지를 제안합니다.",
+   "websiteUrl": "https://lowlit.co",
+   "aliases": [
+    "Lowlit Collective"
+   ],
+   "instagramUrl": "https://www.instagram.com/lowlit.co"
+  },
+  {
+   "code": "B-03",
+   "name": "커스텀",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ],
+   "description": "TV를 오브제로 바꾸는 모듈러 디자인 TV 브랜드.",
+   "longDescription": "커스템 스타일프레임은 LG 올레드 TV 전용 모듈러 디자인 프레임입니다. 벽에 머물던 TV를 공간의 오브제로 새롭게 바꿉니다.",
+   "websiteUrl": "https://www.kustem.xyz",
+   "aliases": [
+    "kustem"
+   ],
+   "instagramUrl": "https://www.instagram.com/kustem_official"
+  },
+  {
+   "code": "B-14",
+   "name": "리젠스",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ],
+   "description": "새로운 주방 라이프스타일의 기준을 제안하다.",
+   "longDescription": "㈜리젠스는 고객의 라이프스타일을 반영한 프리미엄 주방 솔루션을 개발하는 가치 중심의 혁신기업입니다. 이번 마곡리빙마켓에서는 신제품 ALTERA를 선보입니다. 은은하게 반사되는 에끌라 텍스처와 부드럽고 고급스러운 벨로라 코팅을 적용해 감각적인 디자인과 뛰어난 완성도를 구현하며, 새로운 프리미엄 주방 경험을 제안합니다.",
+   "websiteUrl": "https://lizens.co.kr/",
+   "aliases": [
+    "LIZENS CO.,LTD"
+   ]
+  },
+  {
+   "code": "B-20",
+   "name": "지아띠",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ],
+   "websiteUrl": "https://ziatti.co.kr",
+   "instagramUrl": "https://www.instagram.com/ziatti_official"
+  },
+  {
+   "code": "B-30",
+   "name": "아파트먼트하우스",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ],
+   "description": "합리적인 소파의 새로운 기준, 아파트먼트하우스",
+   "longDescription": "아파트먼트하우스는 공동주택이라는 한정된 공간과 그 안에서 살아가는 사람들의 다양한 생활 방식을 이해하며, 각자의 삶과 공간에 가장 잘 어울리는 가구를 만듭니다. 본질에 집중한 디자인과 오래 사용할 수 있는 소재를 바탕으로 일상에 자연스럽게 스며드는 가구를 제안합니다.",
+   "websiteUrl": "https://apartmenthouse.kr",
+   "aliases": [
+    "APARTMENTHOUSE"
+   ],
+   "instagramUrl": "https://www.instagram.com/aph_official"
+  },
+  {
+   "code": "C-01",
+   "name": "스튜디오 퍼더",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ],
+   "description": "철제의 견고함과 온도감을 담아낸 가구 브랜드 퍼더",
+   "longDescription": "기능이 형태를 만든다는 원칙 아래, 절제된 철제의 날렵함 속에서도 따뜻한 안락함을 품은 가구를 만듭니다. 금속이 주는 견고함 위에 퍼더만의 특별함을 담아, 일상에 부드럽게 녹아드는 디자인을 선보입니다. 우리 집처럼 편안한 온기를 품은 퍼더의 가구를 경험해 보세요.",
+   "websiteUrl": "https://www.studiofodder.com",
+   "aliases": [
+    "STUDIO Fodder"
+   ],
+   "instagramUrl": "https://www.instagram.com/studio_fodder"
+  },
+  {
+   "code": "C-03",
+   "name": "정원놀이 (최정원 작가)",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ],
+   "description": "'자연을 곁에 두는 방식'을 제안합니다.",
+   "longDescription": "정원놀이는 누구나 놀이처럼 쉽고 즐겁게 자연을 경험하길 바라는 마음에서 시작된 작가 브랜드 입니다. 식물, 생화, 닥섬유(한지), 옻칠 등 자연의 생명력이 담긴 재료를 탐구하며, 자연의 본질을 일상의 공간으로 들여오는 시각적 기록 작업을 지속하고 있습니다.",
+   "websiteUrl": "https://gardennory.com",
+   "aliases": [
+    "Choi Jeong Won"
+   ],
+   "instagramUrl": "https://www.instagram.com/garden.nory"
+  },
+  {
+   "code": "C-10",
+   "name": "쏘랩",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ],
+   "websiteUrl": "https://solab.kr",
+   "instagramUrl": "https://www.instagram.com/solab_official"
+  },
+  {
+   "code": "C-14",
+   "name": "싸이벡",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ],
+   "description": "특허받은 필트레이션, 공기정화 청소기 싸이벡 라이트",
+   "longDescription": "47년 기업의 역사를 가진 (주)로얄퀸클럽인터내셔널에서 국내 판매하고, (주)코네트인더스트리에서 제조/수출하는, 작지만 강한 특허받은 필트레이션의 공기정화기능을 갖춘 청소기 <싸이벡 라이트> 반려동물의 털과 먼지, 냄새 및 알러지로 고생하는 분들이 원하는 '진짜 청소'가 가능할 뿐 아니라 미세먼지를 다시 내뿜지 않아 공기정화기능까지 가능한 명품 청소기",
+   "websiteUrl": "https://www.cyvac.com",
+   "aliases": [
+    "CYVAC LIGHT"
+   ],
+   "instagramUrl": "https://www.instagram.com/monarch_system"
+  },
+  {
+   "code": "D-01",
+   "name": "페이퍼콘크리트",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ],
+   "description": "버려진 종이 조각이 일상 속 아트 피스가 되다.",
+   "longDescription": "우리 일상과 업무 공간에서 매일 막대하게 버려지는 파쇄지. '페이퍼콘크리트'는 쓸모를 다해 잘게 부서진 폐종이를 수거하고 압착하여, 전에 없던 새로운 친환경 인테리어 타일과 조형 오브제를 제안하는 소재 중심의 업사이클링 브랜드입니다.",
+   "websiteUrl": "https://www.tileclingmesh.com",
+   "aliases": [
+    "PAPER CONCRETE"
+   ],
+   "instagramUrl": "https://www.instagram.com/paper_concrete"
+  },
+  {
+   "code": "D-02",
+   "name": "산아쿠아플랜츠",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ],
+   "description": "내 공간 속 작은 자연",
+   "longDescription": "산아쿠아플랜츠는 팔루다리움, 비바리움, 테라리움을 통해 일상 속 작은 자연을 제안하는 자연 생태 브랜드입니다. 숲과 물, 생명이 어우러진 살아있는 생태계를 담아 공간에 특별한 힐링을 선사합니다. 이번 전시에서는 다양한 팔루다리움 작품과 자연 인테리어를 만나보시고, 맞춤형 생태 공간 상담도 함께 받아보세요.",
+   "websiteUrl": "https://m.place.naver.com/place/1085405629/home",
+   "aliases": [
+    "SAN Aqua Plants"
+   ]
+  },
+  {
+   "code": "D-03",
+   "name": "그리너 오브젝트",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ],
+   "description": "커피박으로 만든, 오래 두고 싶은 리빙 오브제",
+   "longDescription": "그리너오브젝트는 버려지는 커피박·맥주박으로 리빙 오브제를 만듭니다. 잘 말려 생분해 소재와 섞으면 단단한 보드가 되어 플라스틱과 아크릴을 대신합니다. 파리바게트·5성급 호텔 납품으로 검증한 소재를, 마곡리빙마켓에서는 집 안으로 들입니다. 네컷사진 액자와 가족 현판을 선보이고 맞춤 제작 상담도 진행합니다. 버려지던 소재에서 오래 두고 싶은 오브제로.",
+   "websiteUrl": "https://www.greenerobject.com",
+   "aliases": [
+    "GREENER OBJECT"
+   ],
+   "instagramUrl": "https://www.instagram.com/greenerobject"
+  },
+  {
+   "code": "D-10",
+   "name": "바이에른오토 아우디",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ],
+   "description": "내일을 위한 새로운 선택. 아우디 공식딜러 바이에른오토",
+   "longDescription": "바이에른오토는 아우디 공식 딜러사로, 이번 전시에서 대표 프로모션 모델인 The New Audi A6를 선보입니다. HUD, 인터랙션 라이트, Bang & Olufsen 사운드 시스템, 스마트 주차 어시스트, MMI 터치 인터페이스 등 첨단 기술을 직접 체험할 수 있으며, 전문 세일즈 컨설턴트를 통해 차량 정보와 구매 혜택도 안내받을 수 있습니다.",
+   "websiteUrl": "https://www.bayernauto.kr/",
+   "aliases": [
+    "Bayern Auto Audi"
+   ],
+   "instagramUrl": "https://www.instagram.com/bayernauto_official"
+  },
+  {
+   "code": "D-12",
+   "name": "허리펴자 하라체어",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ]
+  },
+  {
+   "code": "D-13",
+   "name": "아모스아인스가구",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ],
+   "description": "책상을 설계한 사람들이 만든 디자인 멀티탭",
+   "longDescription": "A.Power Series는 공간과 조화를 이루도록 설계된 디자인 멀티탭입니다. 이번 전시에서는 2구, 5구, 스탠드형, 이동형 등 다양한 제품 라인업과 실제 업무 환경을 함께 구성하여 기능성과 디자인을 직접 체험할 수 있는 공간을 선보입니다. 전원 공급 장치를 넘어, 워크스페이스를 완성하는 새로운 공간 경험을 제안합니다.",
+   "websiteUrl": "https://www.amosains.com/",
+   "aliases": [
+    "AMOSAINS furniture"
+   ],
+   "instagramUrl": "https://www.instagram.com/amosains_official"
+  },
+  {
+   "code": "D-14",
+   "name": "듀프리",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ],
+   "description": "소중한 일상을 오래 지키는 프리미엄 보관 솔루션",
+   "longDescription": "듀프리는 습도와 환경 변화로부터 소중한 물건을 보호하는 라이프스타일 보관 솔루션 브랜드입니다. 다양한 생활용품과 취미용품을 더욱 쾌적하고 안전하게 보관하는 새로운 기준을 제안합니다.",
+   "websiteUrl": "https://smartstore.naver.com/dewfree?NaPm=ct%3Dmq8sntzf%7Cci%3Dcheckout%7Ctr%3Dds%7Ctrx%3Dnull%7Chk%3Dbb10df9bc88ce28d0b6eb0148d4121ba529ed7d3",
+   "aliases": [
+    "DEWFREE"
+   ]
+  },
+  {
+   "code": "D-20",
+   "name": "무제움",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ],
+   "description": "하나의 오브제에서 시작되는 새로운 공간의 서사",
+   "longDescription": "MUZEUM은 20세기 모더니즘 디자인의 유산을 수집하고 탐구하며, 이를 동시대의 감각으로 재해석합니다. 다양한 아티스트와의 협업을 통해 가구의 기능적 경계를 넘어 독립적인 아트 오브제로 확장하며, 공간에 새로운 감각과 서사를 제안합니다.",
+   "websiteUrl": "https://muzeum.co.kr/",
+   "aliases": [
+    "MUZEUM"
+   ],
+   "instagramUrl": "https://www.instagram.com/mzm_archive"
+  },
+  {
+   "code": "D-30",
+   "name": "레어로우",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ],
+   "description": "퍼니처·ACC·리퍼브를 한자리에 준비했습니다.",
+   "longDescription": "레어로우가 마곡 리빙마켓에 특별한 혜택과 함께 찾아갑니다.\r\n바로 고를 수 있는 퍼니처와 ACC, 그리고 다시 쓰임을 기다리는 리퍼브 제품까지 한자리에서 만나보세요.",
+   "websiteUrl": "https://www.rareraw.com",
+   "aliases": [
+    "rareraw"
+   ],
+   "instagramUrl": "https://www.instagram.com/rareraw_official"
+  },
+  {
+   "code": "E-01",
+   "name": "에이비엠티",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ],
+   "description": "다양한 비례와 컬러로 완성하는 무한한 가능성 ABMT",
+   "longDescription": "ABMT 모듈은 1963년 프리츠 할러의 볼 조인트 구조를 기반으로 제작되어, 공간에 맞춰 자유롭게 재구성하고 스토리지를 손쉽게 확장할 수 있습니다. 소재는 SE0 등급의 자작 합판을 사용해 친환경적이면서도 따뜻하고 튼튼한 내구성을 자랑합니다.",
+   "websiteUrl": "https://abmt.me",
+   "aliases": [
+    "ABMT"
+   ],
+   "instagramUrl": "https://www.instagram.com/abmt_looking"
+  },
+  {
+   "code": "E-03",
+   "name": "발롱드파리",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ],
+   "description": "프랑스 100년의 현악기 기술을 담은 디자인 스피커",
+   "longDescription": "발롱드파리는 프랑스에서 약 100년 전, 현악기를 제작하던 가렐 가문에서 시작된 음향기기 브랜드입니다. 악기를 만들던 장인의 감각을 바탕으로, 공간에 자연스럽게 스며드는 소리를 추구합니다. 파리 본사의 가렐 가문 4대 형제인 라파엘 가렐과 줄리앙 가렐이 디자인과 사운드 기획을 하였고, 숙련된 아티스트들이 하나하나 수작업으로 완성하고 있습니다.",
+   "websiteUrl": "https://www.ballondeparis.co.kr",
+   "aliases": [
+    "BallonDeParis"
+   ],
+   "instagramUrl": "https://www.instagram.com/ballondeparis_fr"
+  },
+  {
+   "code": "E-05",
+   "name": "코웨이",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ],
+   "websiteUrl": "https://coway.com",
+   "instagramUrl": "https://www.instagram.com/coway.kr"
+  },
+  {
+   "code": "E-07",
+   "name": "포세이온",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ],
+   "websiteUrl": "https://poseion.co.kr",
+   "instagramUrl": "https://www.instagram.com/poseion__official"
+  },
+  {
+   "code": "E-09",
+   "name": "월간 건축문화(아키랩)",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Space & Style",
+   "categorySlug": "space-style",
+   "kind": "exhibitor",
+   "tags": [
+    "space-style"
+   ],
+   "description": "디자인서적/ 예술,패션/ 건축,인테리어",
+   "longDescription": "월간 건축문화는 건축, 인테리어 중심으로 전공자와 일반 독자를 모두 아우르는 도서 구성으로 열람과 구매를 유도한다. 책의 맥락과 활용 가치를 전달하며, 참여형 이벤트와  연계해 체류 시간과 구매 전환을 높인다. 이를 통해 단순 판매를 넘어 전문성과 감각을 갖춘 건축, 인테리어, 디자인, 미술 관련 전문 출판사 이미지를 구축할 계획이다.",
+   "websiteUrl": "https://archilab.kr",
+   "aliases": [
+    "A&C(Archi-LAB)"
+   ]
+  },
+  {
+   "code": "F-01",
+   "name": "테이블타임즈",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ],
+   "websiteUrl": "https://tabletimes.kr",
+   "instagramUrl": "https://www.instagram.com/tabletimes.kr"
+  },
+  {
+   "code": "F-04",
+   "name": "굿인터내셔널",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ]
+  },
+  {
+   "code": "F-10",
+   "name": "유어타올",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ],
+   "description": "세탁이 필요 없는 타올",
+   "longDescription": "“일상의 불편을 ‘제로’로 만드는 기능성 프리미엄 타올”",
+   "websiteUrl": "https://urtowel.com",
+   "aliases": [
+    "ur towel"
+   ],
+   "instagramUrl": "https://www.instagram.com/ur_towel"
+  },
+  {
+   "code": "F-11",
+   "name": "알비 빈티지포스터",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ]
+  },
+  {
+   "code": "F-12",
+   "name": "단디미코",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ],
+   "description": "아이디어 문구 굿즈 전문",
+   "longDescription": "고객의 책상위에 당신의 브랜드와 함께하는 아이디어 문구 판촉물 전문 기업, 단디미코",
+   "websiteUrl": "https://www.dandimiko.com",
+   "aliases": [
+    "DANDI MIKO"
+   ]
+  },
+  {
+   "code": "F-14",
+   "name": "리즈",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ],
+   "websiteUrl": "https://shopleeds.kr",
+   "instagramUrl": "https://www.instagram.com/leeds.kr"
+  },
+  {
+   "code": "F-17",
+   "name": "캠프로그 스튜디오",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ],
+   "websiteUrl": "https://camplogstudio.com",
+   "instagramUrl": "https://www.instagram.com/cplst_official"
+  },
+  {
+   "code": "F-20",
+   "name": "엘리크",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ],
+   "description": "파인 주얼리의 정교함을 일상에 담는 ELLEEK",
+   "longDescription": "ELLEEK은 빛이 머무는 순간과 사람의 고유한 분위기를 섬세한 주얼리로 담아냅니다.\r\n과하지 않은 반짝임, 오래 바라볼수록 깊어지는 아름다움.\r\n일상에 조용히 스며들어 나만의 우아함이 되는 주얼리를 만듭니다.",
+   "websiteUrl": "https://www.elleek.co.kr",
+   "aliases": [
+    "ELLEEK"
+   ]
+  },
+  {
+   "code": "F-21",
+   "name": "제로연구소",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ],
+   "websiteUrl": "https://zerolab.kr"
+  },
+  {
+   "code": "F-22",
+   "name": "나로에",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ],
+   "description": "기준 있는 삶을 위한 라이프스타일 브랜드 NAROÉ",
+   "longDescription": "남과 비교하는 대신 나만의 감각과 미감으로 기준을 세우는 삶. NAROÉ(나로에)는 그 기준을 찾기 위해 '나로 돌아간다'는 뜻을 이름에 담았습니다. 로고는 청룡영화상 수상자인 서성경 미술감독이 함께해 미감을 살렸으며, 첫 제품 '젠틀 디시 케어'는 설거지라는 반복적인 순간에도 향과 감촉의 기준을 두어 일상의 평범한 순간을 '나를 돌보는 시간'으로 바꿉니다",
+   "websiteUrl": "https://www.naroe.co.kr",
+   "aliases": [
+    "NAROÉ"
+   ],
+   "instagramUrl": "https://www.instagram.com/naroe.official"
+  },
+  {
+   "code": "F-25",
+   "name": "꽁뜨레씨엘",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ],
+   "description": "손끝에서 시작되는 따뜻한 이야기",
+   "longDescription": "꽁떼르씨엘(Conte de Leciel)은 국내외 작가와 공방의 핸드메이드 제품과 개성 있는 리빙 오브제를 소개하는 크래프트 부티크입니다. 제작자의 손길과 이야기가 담긴 물건을 통해 일상에 작은 즐거움과 오래 간직할 가치를 제안하며, 온라인 스토어와 오프라인 팝업 및 편집숍에서 고객과 만나고 있습니다.",
+   "websiteUrl": "https://www.contedeleciel.com",
+   "aliases": [
+    "CONTE DE LECIEL"
+   ],
+   "instagramUrl": "https://www.instagram.com/conte.de.leciel"
+  },
+  {
+   "code": "F-26",
+   "name": "하트 풋",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ],
+   "websiteUrl": "https://heart-foot.com",
+   "instagramUrl": "https://www.instagram.com/irobotdrfoot"
+  },
+  {
+   "code": "F-28",
+   "name": "후니팟",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ],
+   "description": "호주 아로마테라피스트의 아로마테라피 홈케어 브랜드",
+   "longDescription": "세정, 스크럽, 아로마테라피를 하나로.\r\n보드럽 바디워시는 에센셜 오일 10ml 한 병과 식물성 오일 약 70%를 담은 바디 워시 바입니다. 부드러운 양모 커버가 피부 결을 순하게 정돈하고, 100% 에센셜 오일의 향이 매일의 샤워를 피부와 마음을 위한 편안한 아로마테라피로 바꿔줍니다.",
+   "websiteUrl": "https://www.hunypot.co.kr",
+   "aliases": [
+    "HUNYPOT"
+   ],
+   "instagramUrl": "https://www.instagram.com/hunypot_official"
+  },
+  {
+   "code": "G-01",
+   "name": "파나띠꼬",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ],
+   "description": "공간을 완성하는 마지막 인테리어, 향기",
+   "longDescription": "파나띠꼬는 공간과 브랜드가 전하고자 하는 분위기를 향기로 표현하는 향기마케팅 브랜드입니다. 공간의 크기와 용도에 맞는 전자디퓨저와 다양한 향기 샘플을 선보이며, 향에 따라 공간의 인상이 어떻게 달라지는지 직접 경험할 수 있습니다. 시그니처 향 개발부터 디퓨저·룸스프레이·사쉐 등 향기 굿즈 제작까지 공간과 일상을 잇는 향기 솔루션을 직접 경험해 보세요.",
+   "websiteUrl": "https://fanatico.kr",
+   "aliases": [
+    "FANATICO"
+   ]
+  },
+  {
+   "code": "G-03",
+   "name": "디엠피 북스",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ],
+   "websiteUrl": "https://dmpbooks.co.kr",
+   "instagramUrl": "https://www.instagram.com/dmpbooks"
+  },
+  {
+   "code": "G-04",
+   "name": "썬양의자연주의",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ]
+  },
+  {
+   "code": "G-07",
+   "name": "스프링잼/깃샘",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ]
+  },
+  {
+   "code": "G-08",
+   "name": "아러바웃",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ],
+   "websiteUrl": "https://naturescent.kr",
+   "instagramUrl": "https://www.instagram.com/r__about"
+  },
+  {
+   "code": "G-09",
+   "name": "스튜디오071",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ],
+   "description": "Such a new goods, Studio071.",
+   "longDescription": "어디에나 있는 제품은 만들지 않습니다. 스튜디오071은 기능, 디자인, 소재 중 그 어떤 하나라도 타제품과 완벽히 구별되는 독특한 굿즈 제품만을 기획하고 제조합니다.",
+   "websiteUrl": "https://071.studio/",
+   "aliases": [
+    "Studio071"
+   ],
+   "instagramUrl": "https://www.instagram.com/studio071.official"
+  },
+  {
+   "code": "G-10",
+   "name": "부천대앵커 섬유패션과",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ],
+   "description": "섬유와 디자인, AI가 융합된 지속가능한 라이프스타일",
+   "longDescription": "부천대학교 앵커사업단은 섬유·패션 기업과 공동으로 기획·개발한 기업협력 시제품과 학생 작품을 전시합니다. 전통문화의 감성과 현대적인 라이프스타일을 접목한 의류, 패션소품, 홈텍스타일 및 생활용품을 선보이며, 산학협력을 통해 개발된 우수 성과를 소비자와 바이어에게 소개하고 시장 반응을 확인하여 제품의 상품화 및 판로 확대를 추진하고자 합니다.",
+   "websiteUrl": "https://www.bc.ac.kr/bcu/main.do",
+   "aliases": [
+    "Bucheon University"
+   ],
+   "instagramUrl": "https://www.instagram.com/bucheon_univ"
+  },
+  {
+   "code": "G-14",
+   "name": "라 메종드유럽 미니마켓",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ]
+  },
+  {
+   "code": "G-15",
+   "name": "플랫",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ],
+   "description": "플뢋은 섬유공예 기법을 응용한 소품을 만듭니다.",
+   "longDescription": "플뢋의 소창컬렉션과 함께 드로잉 작업으로 만들어진 아트 프린트와 타피스트리 오브제를 선보일 계획입니다.\r\n추가적으로, 일본 작가의 프린트 작품도 같이 전시/판매 예정입니다.",
+   "instagramUrl": "https://www.instagram.com/floaat_seoul",
+   "aliases": [
+    "floaat"
+   ]
+  },
+  {
+   "code": "G-16",
+   "name": "소잉팩토리 X 퐁당자수",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ]
+  },
+  {
+   "code": "G-20",
+   "name": "오레코코",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ],
+   "websiteUrl": "https://orekoko.kr"
+  },
+  {
+   "code": "G-21",
+   "name": "유리한",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ]
+  },
+  {
+   "code": "G-22",
+   "name": "구김",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ],
+   "websiteUrl": "https://kookim.kr",
+   "instagramUrl": "https://www.instagram.com/koo_kim_"
+  },
+  {
+   "code": "G-26",
+   "name": "매직솔트헬스케어",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ]
+  },
+  {
+   "code": "G-27",
+   "name": "도미노우드",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ],
+   "websiteUrl": "https://dominowood.co.kr",
+   "instagramUrl": "https://www.instagram.com/dominowood_design"
+  },
+  {
+   "code": "G-28",
+   "name": "린보워크샵",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ]
+  },
+  {
+   "code": "H-01",
+   "name": "베딩카페",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ],
+   "websiteUrl": "https://beddingcafe.com"
+  },
+  {
+   "code": "H-03",
+   "name": "림블",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ]
+  },
+  {
+   "code": "H-06",
+   "name": "헤르네링",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ],
+   "websiteUrl": "https://hernering.com",
+   "instagramUrl": "https://www.instagram.com/hernering_seok"
+  },
+  {
+   "code": "H-08",
+   "name": "락낙",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ]
+  },
+  {
+   "code": "H-09",
+   "name": "로레인",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ]
+  },
+  {
+   "code": "H-10",
+   "name": "쉐리925",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ]
+  },
+  {
+   "code": "H-11",
+   "name": "더세라핌",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ]
+  },
+  {
+   "code": "H-12",
+   "name": "모루",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ],
+   "websiteUrl": "https://sinjimoru.co.kr",
+   "instagramUrl": "https://www.instagram.com/sinjimoru_official"
+  },
+  {
+   "code": "H-13",
+   "name": "유어컬러즈",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ]
+  },
+  {
+   "code": "H-14",
+   "name": "마리드파리",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ]
+  },
+  {
+   "code": "H-15",
+   "name": "미파",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ]
+  },
+  {
+   "code": "I-03",
+   "name": "클라우망1981",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ],
+   "description": "공간의 무드를 완성하는 프리미엄 인테리어 오브제 타월",
+   "longDescription": "-",
+   "websiteUrl": "https://clauman.com/",
+   "aliases": [
+    "CLAUMAN1981"
+   ],
+   "instagramUrl": "https://www.instagram.com/clauman.official"
+  },
+  {
+   "code": "I-05",
+   "name": "브리즈우드가든",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ],
+   "description": "잠이 행복해지는 마법같은 구스이불",
+   "longDescription": "브리즈우드가든 폴란드 마더구스 이불은 항공 직수입한 최상급 마더구스를 초고밀도 알러지케어 원단에 담아 털빠짐 없이 물세탁이 가능한 커버 없는 구름같은 이불입니다. 만져보면 부드럽고 덮으면 행복해 가족이 떠오릅니다.",
+   "websiteUrl": "https://www.breezywoodgarden.co.kr",
+   "aliases": [
+    "Breezywood Garden"
+   ]
+  },
+  {
+   "code": "I-06",
+   "name": "일루트립",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Home & Deco",
+   "categorySlug": "home-deco",
+   "kind": "exhibitor",
+   "tags": [
+    "home-deco"
+   ]
+  },
+  {
+   "code": "J-01",
+   "name": "디자인하우스",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ],
+   "websiteUrl": "https://livingdesignfair.co.kr"
+  },
+  {
+   "code": "J-04",
+   "name": "가현아트갤러리",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ],
+   "description": "일상을 미술관으로 만드는 프리미엄 판화, 가현아트",
+   "longDescription": "가현아트는 국내 유일한 수작업 스튜디오로, \r\n가현판화공방과 가현아트갤러리로 구성되어 있습니다.\r\n예술가와 관람객이 소통하고 창의적인 경험을 나눌 수 있는 특별한 공간입니다.",
+   "websiteUrl": "https://www.gahyunart.com",
+   "aliases": [
+    "Gahyun Art"
+   ],
+   "instagramUrl": "https://www.instagram.com/gahyunart"
+  },
+  {
+   "code": "J-06",
+   "name": "노웬",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ],
+   "description": "살아있는 조각이 선사하는 아날로그 세계로 초대합니다",
+   "longDescription": "NOWHEN은 고정된 형태 대신 시간의 흐름을 담아내는 키네틱 조각품를 선보입니다. 인위적인 제어보다 단순한 기계적 원리로 매 순간 예측 불가능한 움직임을 창조하며, 완성된 결과보다 변화하는 과정의 아름다움에 집중합니다. 아날로그적 감각이 빚어낸 찰나의 균형을 통해 어느 시간에도 속하지 않는 독창적인 조형 세계를 구축합니다.",
+   "websiteUrl": "https://www.nowhenstudio.com",
+   "aliases": [
+    "NOWHEN"
+   ]
+  },
+  {
+   "code": "J-07",
+   "name": "실드림",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ],
+   "websiteUrl": "https://sildream.com"
+  },
+  {
+   "code": "J-09",
+   "name": "코리아엣지",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ],
+   "description": "전통의 감성을 일상에서 직접 사용해보세요",
+   "longDescription": "코리아엣지는 전통의 미를 현대적으로 풀어내어 일상에서 사용하는 제품으로 제안하는 라이프스타일 브랜드입니다. 이번 전시에서는 주력 제품과 신제품을 선보이며, 방문객이 직접 보고 브랜드의 감성과 사용성을 경험할 수 있도록 구성하였습니다. 이를 통해 브랜드의 가치와 제품의 매력을 자연스럽게 전달하고자 합니다.",
+   "websiteUrl": "https://smartstore.naver.com/koreaedge",
+   "aliases": [
+    "KoreaEdge"
+   ]
+  },
+  {
+   "code": "K-01",
+   "name": "1집구석",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ],
+   "description": "Stress Less Market",
+   "longDescription": "혼자 감당해야 하는 삶의 스트레스를 없앨 수는 없지만, 줄일 수는 있습니다. <1집구석> 기획관은 1인 가구의 일상 속 스트레스를 줄여 줄 생활 아이템과 유용한 정보를 큐레이션한 'Stress Less Market'을 선보입니다.",
+   "websiteUrl": "https://1hows.com/",
+   "aliases": [
+    "1hows"
+   ],
+   "instagramUrl": "https://www.instagram.com/1hows"
+  },
+  {
+   "code": "K-13",
+   "name": "미노항 코리아",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ],
+   "websiteUrl": "https://minohan.kr",
+   "instagramUrl": "https://www.instagram.com/minohan_korea"
+  },
+  {
+   "code": "K-14",
+   "name": "휴움",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ],
+   "description": "일상의 균형을 제안하는 홈 도자 테이블웨어",
+   "longDescription": "휴움은 ‘새로운 색이 움트다’라는 의미로, 오래도록 지키고 싶은 자연의 고유한 색을 담은 홈 테이블웨어를 만듭니다. 차 한 잔의 여유와 균형 잡힌 식사, 간단한 브런치를 즐기는 일상의 작은 순간을 통해 삶의 균형을 찾아가고, 그 시간이 더욱 아름답고 깊어지기를 희망합니다.\r\nBalance for a Better Life | HUEUM",
+   "websiteUrl": "https://www.hueum.com",
+   "aliases": [
+    "HUEUM"
+   ],
+   "instagramUrl": "https://www.instagram.com/hueum_official"
+  },
+  {
+   "code": "K-17",
+   "name": "내셔널지오그래픽",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ],
+   "websiteUrl": "https://natgeokorea.com",
+   "instagramUrl": "https://www.instagram.com/natgeokorea"
+  },
+  {
+   "code": "K-18",
+   "name": "에스코리아",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ],
+   "websiteUrl": "https://orskorea.com",
+   "instagramUrl": "https://www.instagram.com/orskorea.official"
+  },
+  {
+   "code": "L-01",
+   "name": "로우파이",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ]
+  },
+  {
+   "code": "L-07",
+   "name": "엘제이엘 갤러리",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ],
+   "description": "삶의 무대를 예술로 바꾸는 Artful Living",
+   "longDescription": "공예 전문 갤러리 엘제이엘(LJL)은 ‘공간과 장식’을 주제로 우리 곁의 사물이 예술이 되는 순간을 조명한다. 이번 전시는 공간을 감각적으로 바꾸는 벽장식 오브제부터 동시대적 미감을 담은 현대장신구까지, 7인의 작가가 빚어낸 독창적인 형상과 색채를 통해, 우리의 공간과 내면을 아름답게 완성하는 예술적 울림을 전하고자 한다.",
+   "aliases": [
+    "LJL gallery"
+   ]
+  },
+  {
+   "code": "L-08",
+   "name": "네베호",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ],
+   "description": "일상에 새로운 감각을 더하는 라이프스타일 소품",
+   "longDescription": "NEUF HEURES는 프랑스어로 ’9시‘입니다. 우리에게 9시는 서로의 취향을 공유하고 상상하며 새로운 것을 이야기하는 시간입니다. 일상에서 익숙하게 사용하던 사물을 감각적인 디자인으로 재해석하고, 새로운 가치를 담습니다. 기능과 본질에 집중하여 생활을 보다 풍요롭게 해주고 시간이 흘러도 변함없는 제품을 제안합니다.",
+   "websiteUrl": "https://www.neuf-heures.kr",
+   "aliases": [
+    "NEUF HEURES"
+   ],
+   "instagramUrl": "https://www.instagram.com/neufheures.official"
+  },
+  {
+   "code": "L-09",
+   "name": "해튼 헤리티지",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ],
+   "websiteUrl": "https://hattonlife.com"
+  },
+  {
+   "code": "L-10",
+   "name": "토토방",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ]
+  },
+  {
+   "code": "L-13",
+   "name": "대한적십자사",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ],
+   "websiteUrl": "https://redcross.or.kr",
+   "instagramUrl": "https://www.instagram.com/koreanredcross"
+  },
+  {
+   "code": "L-15",
+   "name": "디자인북",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ]
+  },
+  {
+   "code": "L-16",
+   "name": "토은",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ],
+   "description": "작가의 정성으로 만든 그릇",
+   "longDescription": "백자토 위에 자연스러운 철점이 섞인 \"고백자\"를 현대 시대에 맞게 물레성형으로 만든 핸드메이드 그릇입니다.",
+   "websiteUrl": "https://smartstore.naver.com/toeun",
+   "aliases": [
+    "toeun"
+   ]
+  },
+  {
+   "code": "L-17",
+   "name": "일동공예",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ]
+  },
+  {
+   "code": "M-01",
+   "name": "월간도예",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ],
+   "websiteUrl": "https://cerazine.co.kr",
+   "instagramUrl": "https://www.instagram.com/monthly_ceramic.art"
+  },
+  {
+   "code": "M-03",
+   "name": "에코씽",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ]
+  },
+  {
+   "code": "M-04",
+   "name": "옻칠채",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ]
+  },
+  {
+   "code": "M-05",
+   "name": "이어서보",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ]
+  },
+  {
+   "code": "M-08",
+   "name": "문재필 옻칠갤러리",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ]
+  },
+  {
+   "code": "N-01",
+   "name": "안계미술관",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ],
+   "websiteUrl": "https://angyeartmuseum.com",
+   "instagramUrl": "https://www.instagram.com/artmuseumag"
+  },
+  {
+   "code": "N-07",
+   "name": "온도 아리아",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ]
+  },
+  {
+   "code": "N-09",
+   "name": "아리아",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ]
+  },
+  {
+   "code": "N-10",
+   "name": "그레시종",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ],
+   "description": "그레시종은 장인 정신이 깃든 테이블웨어를 소개합니다.",
+   "longDescription": "그레시종은 식탁에서의 시간을 예술적으로 바꿔 줄 장인 정신이 담긴 테이블웨어를 제안합니다. 모든 그레시종 제품은 헤리티지가 깊고, 시공간을 초월하는 디자인과 띄어난 품질을 추구합니다.장인의 진심의 깃든 테이블웨어들로 일상에 윤택한 에너지가 더해지길 기대합니다.",
+   "websiteUrl": "https://www.grecision.com",
+   "aliases": [
+    "GRECISION"
+   ],
+   "instagramUrl": "https://www.instagram.com/grecision.official"
+  },
+  {
+   "code": "N-13",
+   "name": "예목공방",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ]
+  },
+  {
+   "code": "N-14",
+   "name": "이구도예",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ]
+  },
+  {
+   "code": "N-15",
+   "name": "오도마",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ],
+   "description": "오도마, 공간을 더 빛나게 해드리는 아름다운 배경",
+   "longDescription": "\"살아가면서 가장 아름다운 일은 누군가의 배경이 되어주는 일이다\"\r\n안도현 시인의 말처럼, 오도마는 식탁 위 음식을 돋보이게하는 '따뜻한 배경'을 만듭니다.\r\n이번 전시에서 오도마는 화려함 대신 '배경의 미학'으로  일상을 빛내줄 정서적 안식을 전해드립니다.",
+   "websiteUrl": "https://blog.naver.com/hi2385",
+   "aliases": [
+    "ohdoma"
+   ]
+  },
+  {
+   "code": "N-16",
+   "name": "아농",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Hobby & Play / Kitchen & Tableware",
+   "categorySlug": "hobby-kitchen",
+   "kind": "exhibitor",
+   "tags": [
+    "hobby-kitchen"
+   ]
+  },
+  {
+   "code": "O-01",
+   "name": "근화동396창업공간",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ],
+   "description": "아이디어가 현실이 되는 로컬 창업 브랜드관",
+   "longDescription": "근화동396청년창업지원센터는 춘천의 유망 창업기업이 함께 성장하는 창업지원 플랫폼입니다. 이번 브랜드관에서는 로컬 콘텐츠, 라이프스타일, 푸드, 반려동물, 헬스케어, 스마트기술 등 다양한 분야의 창업기업이 참여하여 혁신적인 제품과 서비스를 선보입니다.",
+   "websiteUrl": "http://hello-p6.com/kr",
+   "aliases": [
+    "Chuncheon Local Tech"
+   ],
+   "instagramUrl": "https://www.instagram.com/cc396center"
+  },
+  {
+   "code": "O-05",
+   "name": "비엘씨커피",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ],
+   "description": "좋은 커피를 통해 일상의 가치를 더하는 커피 로스터스",
+   "longDescription": "비엘씨커피는 스페셜티 커피가 가진 고유한 향미와 가치를 깊이 이해하고, 엄선된 스페셜티 원두를 정교하게 로스팅하여 한 잔의 커피 안에 산지의 개성과 풍미를 온전히 담아내는 커피 브랜드입니다. 좋은 커피를 넘어, 스페셜티 커피를 통해 일상 속에서 새로운 맛과 경험, 그리고 더 나은 삶의 가치를 전하고자 합니다.",
+   "websiteUrl": "https://www.blccoffee.com",
+   "aliases": [
+    "BLC COFFEE"
+   ]
+  },
+  {
+   "code": "O-06",
+   "name": "브라운라이스팩토리",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ]
+  },
+  {
+   "code": "P-01",
+   "name": "토마로우",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ],
+   "websiteUrl": "https://tomarrow.com",
+   "instagramUrl": "https://www.instagram.com/farm_nevertheless"
+  },
+  {
+   "code": "P-02",
+   "name": "크리미웨이",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ]
+  },
+  {
+   "code": "P-03",
+   "name": "(주)헬스베버리지",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ],
+   "websiteUrl": "https://healthbeverage.co.kr",
+   "instagramUrl": "https://www.instagram.com/healthbeverage_official"
+  },
+  {
+   "code": "P-04",
+   "name": "한나식빵",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ]
+  },
+  {
+   "code": "P-07",
+   "name": "페렐로 올리브",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ],
+   "description": "압도적인 올리브",
+   "longDescription": "1964년 가스파르 페렐로 솔레르(Gaspar Perelló Soler)가 바르셀로나 라 보케리아 시장에서 시작한 Perelló는 60년 전통의 스페인 프리미엄 올리브 브랜드입니다. 안달루시아 지역의 고품질 올리브를 선보이며 성장을 거듭한 Perelló는 현재 스페인을 넘어 세계적인 올리브 브랜드로 자리잡았습니다.",
+   "websiteUrl": "https://gourmetree.co.kr",
+   "aliases": [
+    "Perello"
+   ]
+  },
+  {
+   "code": "P-09",
+   "name": "프리미엄 남아공 수제 육포",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ]
+  },
+  {
+   "code": "P-10",
+   "name": "(바다수산)어물전꼴뚜기",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ],
+   "description": "국가대표 마른안주 \"어물전꼴뚜기\"를 소개합니다.",
+   "longDescription": "2010년부터 현제까지 500차례가 넘는 국내에 널리 알려진 식품전시 및 백화점등에서 전국의 폭 넓은 고객들에게 제품의 우수성을 널리 알려 뛰어난 성장을 거듭하고 있습니다. 2023년 1월에 ‘어물전 꼴뚜기’라는 브랜드를 런칭하고, 한국식품안전관리인증원으로부터 2024년 8월에는 식품제조 haccp을 인증받아 현제까지 홍보,판매를 진행하고 있습니다.",
+   "aliases": [
+    "badasusan"
+   ]
+  },
+  {
+   "code": "P-13",
+   "name": "칼파벳",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ],
+   "description": "일상 속 즐거움을 선물하는 칼파벳",
+   "longDescription": "한글과자로 시작한 브랜드 Kalphabets는 이번 전시를 통해 한국의 글자와 문화, 일상에서 발견한 한국의 재미를 담은 제품을 소개합니다.",
+   "websiteUrl": "https://hangeulkwaja.com/",
+   "aliases": [
+    "Kalphabets"
+   ],
+   "instagramUrl": "https://www.instagram.com/hangeulkwaja"
+  },
+  {
+   "code": "P-15",
+   "name": "국제구조위원회",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ]
+  },
+  {
+   "code": "P-16",
+   "name": "케이캡슐",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ]
+  },
+  {
+   "code": "P-17",
+   "name": "에센티아팩토리",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ],
+   "description": "“커피를 어렵지 않게, 취향은 더 선명하게.”",
+   "longDescription": "에센티아 팩토리는 “커피를 공유하다”​라는 가치 아래, 누구나 어렵지 않게 다양한 커피를 경험하고 자신의 취향을 발견할 수 있도록 돕는 커피 전문 브랜드입니다.\r\n이번 전시에서는 원두, 드립백, 캡슐커피 등 다양한 제품을 통해 산지와 가공방식에 따라 달라지는 커피의 매력과 맛의 차이를 보다 쉽고 재미있게 경험할 수 있도록 소개합니다.",
+   "websiteUrl": "https://essentiafactory.com",
+   "aliases": [
+    "ESSENTIA FACTORY"
+   ],
+   "instagramUrl": "https://www.instagram.com/essentiafactory"
+  },
+  {
+   "code": "P-18",
+   "name": "네코먼데이 로스터리",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ]
+  },
+  {
+   "code": "Q-01",
+   "name": "주식회사 어벤져스와인",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ],
+   "description": "와인과 논알콜을 아우른 새로운 음료 문화를 제안",
+   "longDescription": "어벤져스와인은 전 세계의 숨은 와인과 봉봉 시리즈, 프리미엄 무·논알코올 와인을 소개하며 새로운 음료 문화를 제안합니다. 11개국 31개 와이너리, 약 160여 종의 와인을 통해 다양한 경험을 제공합니다.",
+   "websiteUrl": "https://avengerswine.com/",
+   "aliases": [
+    "AVENGERS WINE"
+   ],
+   "instagramUrl": "https://www.instagram.com/avengerswine_official"
+  },
+  {
+   "code": "Q-02",
+   "name": "끄레델리",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ],
+   "description": "일상에 달콤한 감동을 전하는 프리미엄 디저트 브랜드",
+   "longDescription": "끄레델리는 엄선된 최상급 원료와 트렌디한 레시피로 고품격 디저트를 선보이는 전문 브랜드입니다. 이번 전시에서는 끄레델리만의 차별화된 베스트셀러 제품 라인업부터 신제품까지 한자리에서 만나보실 수 있습니다.",
+   "websiteUrl": "https://www.decoriaconf.co.kr",
+   "aliases": [
+    "Ggredeli"
+   ]
+  },
+  {
+   "code": "Q-04",
+   "name": "참윰뜰",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ]
+  },
+  {
+   "code": "Q-07",
+   "name": "평산댁 닭발",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ],
+   "description": "내 인생 첫 닭발! <평산댁 참숯불 닭발>",
+   "longDescription": "평산댁 참숯불 닭발\r\n먹기 좋은 컴팩트한 사이즈로 조리 없이 간편하게 즐기는 3가지 닭발(닭발큐브,닭발편육,무뼈닭발)을 소개합니다.",
+   "websiteUrl": "https://smartstore.naver.com/momsmomfnb",
+   "aliases": [
+    "PSD DAKBAL"
+   ]
+  },
+  {
+   "code": "Q-09",
+   "name": "스타곰탕",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ],
+   "websiteUrl": "https://thestarfood.com",
+   "instagramUrl": "https://www.instagram.com/stargomtang2020"
+  },
+  {
+   "code": "Q-10",
+   "name": "아람드리",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ],
+   "websiteUrl": "https://aramfarm.co.kr",
+   "instagramUrl": "https://www.instagram.com/aramfarm00"
+  },
+  {
+   "code": "Q-14",
+   "name": "부부티",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ],
+   "description": "차(茶)가 처음이라면, 부부티",
+   "longDescription": "부부티는 차(茶)가 처음인 분을 위한 우롱차 브랜드입니다. 맛과 향은 기본이고, 부부티가 차를 고를 때 마지막으로 묻는 것은 매일 마셔도 몸이 편안한가입니다. 가향하지 않은 차나무 잎 100%만 쓰고, 긴장이 풀리고 머리가 맑아지는지, 매일 곁에 둘 수 있는지를 봅니다. 이번 전시에서는 보자기에 싼 추석 선물세트와 무이산 우롱차 시음을 준비했습니다.",
+   "websiteUrl": "https://bubuti.kr",
+   "aliases": [
+    "BUBUTI"
+   ],
+   "instagramUrl": "https://www.instagram.com/bubuti_official"
+  },
+  {
+   "code": "Q-16",
+   "name": "홍시궁",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ],
+   "websiteUrl": "https://hongsigoong.co.kr"
+  },
+  {
+   "code": "Q-17",
+   "name": "호밀빵의 파수꾼",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ]
+  },
+  {
+   "code": "Q-18",
+   "name": "웃차",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ]
+  },
+  {
+   "code": "R-01",
+   "name": "더 더치 치즈앤모어",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ],
+   "websiteUrl": "https://thedutch.kr",
+   "instagramUrl": "https://www.instagram.com/thedutch.korea"
+  },
+  {
+   "code": "R-03",
+   "name": "올라브 코리아",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ],
+   "description": "건강을 위한 시작, 올라브코리아 SINCE 2012",
+   "longDescription": "올라브 코리아(Since 2012)​는 장폐색과 아토피 피부염을 극복하고자 했던 개인적인 건강 여정에서 시작되었습니다. 15년 동안 프리미엄 올리브오일과 효능 평가를 완료한 유기농 수제 카스틸 비누를 선보이며, 유행보다 본질을 생각하는 브랜드로 건강하고 자연을 닮은 라이프스타일을 제안하고 있습니다.",
+   "websiteUrl": "https://www.olavekorea.com",
+   "aliases": [
+    "OLAVEKOREA Since2012"
+   ],
+   "instagramUrl": "https://www.instagram.com/olavekorea"
+  },
+  {
+   "code": "R-04",
+   "name": "아라리유정란",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ]
+  },
+  {
+   "code": "R-05",
+   "name": "내일 뭐 먹지 마켓",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ]
+  },
+  {
+   "code": "R-07",
+   "name": "메멜트",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ],
+   "description": "한번 맛보면 절대 잊을 수 없는 크림치즈!",
+   "longDescription": "'크림치즈는 왜 베이글에만 발라 먹을까?'라는 생각에서\r\n시작된 메멜트 크림치즈는\r\n2016년도부터 크림치즈만을 판매한 크림치즈 전문점입니다.\r\n\r\n수작업으로 원재료의 맛을 살려 조리해\r\n인위적이지 않고 신선한 맛을 자랑합니다.\r\n\r\n그동안 빵을 먹기 위해 크림치즈를 구입하셨나요?\r\n이제 크림치즈를 먹기 위해 냉장고 문을 열게 되실 거예요.",
+   "websiteUrl": "https://smartstore.naver.com/memelt",
+   "aliases": [
+    "MEMELT"
+   ]
+  },
+  {
+   "code": "R-08",
+   "name": "꼬마루 수제육포",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ]
+  },
+  {
+   "code": "R-09",
+   "name": "헬레닉 와인",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Food & Taste",
+   "categorySlug": "food-taste",
+   "kind": "exhibitor",
+   "tags": [
+    "food-taste"
+   ],
+   "description": "그리스 와인 전문 수입사 헬레닉와인",
+   "longDescription": "2014년부터 그리스 와인을 한국 시장에 수입하고 소개해오고 있으며, 특히 그리스 토착 품종을 이용한 와인의 유니크한 매력을 선보이고자 합니다.",
+   "websiteUrl": "https://www.hellenicwine.co.kr",
+   "aliases": [
+    "HELLENIC WINE"
+   ],
+   "instagramUrl": "https://www.instagram.com/hellenicwine"
+  },
+  {
+   "code": "S-01",
+   "name": "가든라운지",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Special",
+   "categorySlug": "mlm-special",
+   "kind": "facility",
+   "tags": [
+    "mlm-special"
+   ]
+  },
+  {
+   "code": "T-01",
+   "name": "카페테리아 X 히어커피 로스터스",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Special",
+   "categorySlug": "mlm-special",
+   "kind": "facility",
+   "tags": [
+    "mlm-special"
+   ]
+  },
+  {
+   "code": "U-01",
+   "name": "추석선물 큐레이션: 취향을 나누는 계절",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Special",
+   "categorySlug": "mlm-special",
+   "kind": "facility",
+   "tags": [
+    "mlm-special"
+   ]
+  },
+  {
+   "code": "U-02",
+   "name": "추석선물 큐레이션: 취향을 나누는 계절",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "Special",
+   "categorySlug": "mlm-special",
+   "kind": "facility",
+   "tags": [
+    "mlm-special"
+   ]
+  }
+ ]
+}
