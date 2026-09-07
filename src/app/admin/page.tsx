@@ -19,6 +19,8 @@ import { AdminSection } from "@/components/admin/section";
 import { OnboardingValueChart } from "@/components/charts/onboarding-value-chart";
 import { buildGlobalOverview } from "@/lib/admin/global-overview";
 import { learningCurve } from "@/lib/memory/learning-curve";
+import { tasteDrift } from "@/lib/admin/taste-drift";
+import { TasteDriftCard } from "@/components/admin/taste-drift-card";
 import { LearningCurveCard } from "@/components/admin/learning-curve-card";
 import { groupIssues } from "@/lib/admin/issue-grouping";
 import { findBoothEnrichmentGaps } from "@/lib/admin/data-issues";
@@ -61,6 +63,8 @@ export default async function AdminOverviewPage() {
       signals: b.signals,
     })),
   );
+  // 부스를 같이 넘겨야 전시가 제공하는 가치 분포로 성격 보정을 할 수 있다.
+  const drift = tasteDrift(bundles);
 
   // 노트 정합성(findNoteInconsistencies)은 여기서 세지 않는다 — 전 전시 부스
   // 1200여 개를 listNotesByBoothIds에 넣으면 PostgREST가 그 id를 전부 URL에
@@ -135,6 +139,9 @@ export default async function AdminOverviewPage() {
       >
         <OnboardingValueChart data={overview.values} />
       </AdminSection>
+
+      {/* 분포 옆에 이동을 같이 둔다 — 지금 무엇이 많은지와 어디로 가는지는 다른 질문이다. */}
+      <TasteDriftCard drift={drift} />
 
       <AdminSection
         title="전시 포트폴리오"
