@@ -1133,6 +1133,15 @@ export class SupabaseRepository implements Repository {
     maybeWrote(res, "잡 실패 기록");
   }
 
+  async requeueStaleJobs(olderThan = "30 minutes"): Promise<number> {
+    const db = createServiceClient();
+    const { data, error } = await db.rpc("requeue_stale_jobs", {
+      p_older_than: olderThan,
+    });
+    if (error) throw new Error(`잡 회수 실패: ${error.message}`);
+    return Number(data ?? 0);
+  }
+
   async listJobs(opts?: {
     status?: Job["status"];
     type?: string;

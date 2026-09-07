@@ -458,6 +458,11 @@ export class MockRepository implements Repository {
     }
   }
 
+  async requeueStaleJobs(): Promise<number> {
+    // mock은 단일 프로세스라 유령 잡이 생기지 않는다. 계약만 맞춘다.
+    return 0;
+  }
+
   async listJobs(opts?: {
     status?: Job["status"];
     type?: string;
