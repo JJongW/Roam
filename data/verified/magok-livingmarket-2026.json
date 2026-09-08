@@ -297,14 +297,38 @@
    "confirmed": false
   },
   "E-07": {
-   "summary": "포세이온 — 샤워기 필터. 네이버 라이브 쇼핑 진행.",
+   "summary": "포세이온 — 프리미엄 기능성 필터 샤워헤드(BT100). 두피·피부 임상으로 효능을 검증했고 딥블루·스노우화이트 등 색상을 낸다. 킨텍스 박람회 등에서 체험 부스를 운영해왔다.",
    "confirmed": false,
-   "image": "/booths/magok-livingmarket-2026/E-07.webp"
+   "image": "/booths/magok-livingmarket-2026/E-07_1.webp",
+   "images": [
+    "/booths/magok-livingmarket-2026/E-07_1.webp",
+    "/booths/magok-livingmarket-2026/E-07_2.webp",
+    "/booths/magok-livingmarket-2026/E-07_3.webp",
+    "/booths/magok-livingmarket-2026/E-07_4.webp",
+    "/booths/magok-livingmarket-2026/E-07_5.webp",
+    "/booths/magok-livingmarket-2026/E-07_6.webp",
+    "/booths/magok-livingmarket-2026/E-07_7.webp",
+    "/booths/magok-livingmarket-2026/E-07_8.webp",
+    "/booths/magok-livingmarket-2026/E-07_9.webp",
+    "/booths/magok-livingmarket-2026/E-07_10.webp"
+   ]
   },
   "F-10": {
    "summary": "유어타올 — 타올 브랜드. 네이버 쇼핑라이브 진행.",
    "confirmed": false,
-   "image": "/booths/magok-livingmarket-2026/F-10.webp"
+   "image": "/booths/magok-livingmarket-2026/F-10_1.webp",
+   "images": [
+    "/booths/magok-livingmarket-2026/F-10_1.webp",
+    "/booths/magok-livingmarket-2026/F-10_2.webp",
+    "/booths/magok-livingmarket-2026/F-10_3.webp",
+    "/booths/magok-livingmarket-2026/F-10_4.webp",
+    "/booths/magok-livingmarket-2026/F-10_5.webp",
+    "/booths/magok-livingmarket-2026/F-10_6.webp",
+    "/booths/magok-livingmarket-2026/F-10_7.webp",
+    "/booths/magok-livingmarket-2026/F-10_8.webp",
+    "/booths/magok-livingmarket-2026/F-10_9.webp",
+    "/booths/magok-livingmarket-2026/F-10_10.webp"
+   ]
   },
   "G-28": {
    "summary": "린보워크샵 — 부산 망미동 가죽공방 겸 쇼룸(F1963 테라로사 후문). 가죽공예품과 소품.",
@@ -562,7 +586,19 @@
   },
   "E-05": {
    "summary": "",
-   "image": "/booths/magok-livingmarket-2026/E-05.webp"
+   "image": "/booths/magok-livingmarket-2026/E-05_1.webp",
+   "images": [
+    "/booths/magok-livingmarket-2026/E-05_1.webp",
+    "/booths/magok-livingmarket-2026/E-05_2.webp",
+    "/booths/magok-livingmarket-2026/E-05_3.webp",
+    "/booths/magok-livingmarket-2026/E-05_4.webp",
+    "/booths/magok-livingmarket-2026/E-05_5.webp",
+    "/booths/magok-livingmarket-2026/E-05_6.webp",
+    "/booths/magok-livingmarket-2026/E-05_7.webp",
+    "/booths/magok-livingmarket-2026/E-05_8.webp",
+    "/booths/magok-livingmarket-2026/E-05_9.webp",
+    "/booths/magok-livingmarket-2026/E-05_10.webp"
+   ]
   },
   "E-03": {
    "summary": "",
@@ -589,8 +625,20 @@
    "image": "/booths/magok-livingmarket-2026/F-12.webp"
   },
   "F-01": {
-   "summary": "",
-   "image": "/booths/magok-livingmarket-2026/F-01.webp"
+   "summary": "테이블타임즈 — 친환경 집기로 행사·전시 공간을 기획하고 시공하는 팀. 2026 인벤타리오, 캐릭터라이선싱페어, 부산 살림 마켓, ITB Asia 부산관 등 박람회 부스와 라운지를 만들어왔다.",
+   "image": "/booths/magok-livingmarket-2026/F-01_1.webp",
+   "images": [
+    "/booths/magok-livingmarket-2026/F-01_1.webp",
+    "/booths/magok-livingmarket-2026/F-01_2.webp",
+    "/booths/magok-livingmarket-2026/F-01_3.webp",
+    "/booths/magok-livingmarket-2026/F-01_4.webp",
+    "/booths/magok-livingmarket-2026/F-01_5.webp",
+    "/booths/magok-livingmarket-2026/F-01_6.webp",
+    "/booths/magok-livingmarket-2026/F-01_7.webp",
+    "/booths/magok-livingmarket-2026/F-01_8.webp",
+    "/booths/magok-livingmarket-2026/F-01_9.webp",
+    "/booths/magok-livingmarket-2026/F-01_10.webp"
+   ]
   },
   "F-22": {
    "summary": "",
