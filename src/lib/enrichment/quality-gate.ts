@@ -58,6 +58,29 @@ const READBACK_PATTERNS: { re: RegExp; what: string }[] = [
   { re: new RegExp(`\\b(${SLUGS})\\b`), what: "slug이 그대로 노출됨" },
 ];
 
+/**
+ * 초안이 **모른다고 말하면서 쓴 글**. 마곡 50부스(이름 말고 근거가 없는 것들)를
+ * 돌렸더니 자동통과 16건 중 6건이 이 부류였고 전부 신뢰도 1.00이었다. 압권은
+ * "정확한 정보는 확인되지 않는다"를 summary에 적고 만점을 받은 초안이다.
+ * 형식만 보는 게이트는 추측을 사실과 구별하지 못한다.
+ */
+const SPECULATION = [
+  /예상[돼된]/,
+  /것으로 (보인다|보여|추정)/,
+  /(판매|선보일|전시할) 것으로/,
+  /확인되지 않/,
+  /알 수 없/,
+  /듯하다/,
+  /(?<!선)보인다\./,
+  /추정된다/,
+];
+
+/** 근거로 세면 안 되는 출처. 잡화 마켓플레이스·영상·백과·다른 박람회 디렉터리는
+ *  그 브랜드가 무엇인지 말해주지 않는다. 이것들만 잡히고도 "근거 3건"으로
+ *  만점이 나왔다(일동공예→etsy·ebay·hobbylobby). */
+const WEAK_SOURCE =
+  /(^|\.)(etsy|ebay|amazon|aliexpress|hobbylobby|aosom|musinsa|coupang|11st|gmarket|auction|pinterest|youtube|facebook|instagram|tiktok|wikipedia|namu\.wiki|blog\.naver|tistory|brunch)\.|fair|expo|festa/i;
+
 /** 정보가 없는 채로 길이만 채우는 상투어. LLM 초안의 대표 실패다. */
 const FILLER = [
   "다양한",
@@ -104,6 +127,51 @@ export function gradeCandidate(input: GradeInput): QualityReport {
       // 재료가 있었으면 그걸 옮긴 것이라 지어냈다고 보긴 어렵다. 없었는데도
       // 문장이 나왔다면 그건 어디서 온 것인지 아무도 모른다.
       weight: input.hadMaterial ? 0.12 : 0.35,
+    });
+  }
+
+  // 근거가 있어도 **무엇의 근거인지**가 중요하다. 잡화몰·영상·박람회 디렉터리만
+  // 잡혔다면 그 브랜드를 말해주는 출처가 하나도 없다는 뜻이다.
+  if (sources.length > 0 && sources.every((s) => WEAK_SOURCE.test(s.title ?? s.uri))) {
+    add({
+      code: "weak_sources",
+      message: `출처가 전부 잡화몰·영상·박람회 디렉터리다(${sources
+        .map((s) => s.title ?? "")
+        .filter(Boolean)
+        .slice(0, 3)
+        .join(", ")}) — 이 브랜드를 말해주는 근거가 없다`,
+      weight: 0.3,
+    });
+  }
+
+  // ── 추측 ────────────────────────────────────────────────────────────────
+  // 초안이 스스로 모른다고 말하면 그건 초안이 아니라 공백이다. 사람이 봐야 한다.
+  const guessProse = [p.summary, p.roamInterpretation].filter(Boolean).join(" ");
+  const guesses = SPECULATION.filter((re) => re.test(guessProse));
+  if (guesses.length) {
+    add({
+      code: "speculation",
+      field: "summary",
+      message: "추측으로 쓴 문장이다(예상돼·것으로 보인다·확인되지 않는다) — 사실이 아니다",
+      weight: 0.35,
+    });
+  }
+
+  // 부스 이름은 없고 **분류 이름만** 주어로 선 문장은 그 부스 얘기가 아니다.
+  // "Home & Deco는 가구·조명을 판매하는 브랜드다" 같은 것 — 분류를 되읽었을 뿐이다.
+  const summary = p.summary ?? "";
+  const cat = booth.company?.trim();
+  const nameShown = summary.includes(booth.name.trim());
+  if (
+    summary &&
+    !nameShown &&
+    ((cat && cat.length >= 2 && summary.includes(cat)) || /(분야|섹션)의\s*(부스|브랜드)/.test(summary))
+  ) {
+    add({
+      code: "category_readback",
+      field: "summary",
+      message: "부스 이름 대신 분류 이름을 주어로 썼다 — 분류를 되읽은 것이지 이 부스 설명이 아니다",
+      weight: 0.3,
     });
   }
 

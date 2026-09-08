@@ -175,3 +175,100 @@ describe("gradeCandidate — LLM의 대표 실패", () => {
     expect(r.issues.length).toBeGreaterThan(3);
   });
 });
+
+describe("근거 없는 부스에서 드러난 실패 — 마곡 50부스", () => {
+  const base = {
+    sources: [{ uri: "https://brand.co.kr", title: "brand.co.kr" }],
+    booth: { name: "일동공예", company: "Hobby & Play / Kitchen & Tableware" },
+  };
+
+  it("추측으로 쓴 문장은 자동 통과할 수 없다", () => {
+    const r = gradeCandidate({
+      ...base,
+      payload: {
+        summary: "일동공예는 아이들을 위한 소꿉놀이 주방용품을 판매할 것으로 보인다.",
+        roamInterpretation: "미니어처 주방용품을 만날 수 있어.",
+        valueTags: [{ slug: "goods", strength: 0.7 }],
+        recommendationReasons: { goods: "소품을 고르는 재미가 있어." },
+      },
+    });
+    expect(r.issues.map((i) => i.code)).toContain("speculation");
+    expect(r.confidence).toBeLessThan(0.95);
+  });
+
+  it("모른다고 적은 초안이 만점을 받지 않는다", () => {
+    // 실제로 이 문장이 신뢰도 1.00으로 자동 반영됐다.
+    const r = gradeCandidate({
+      ...base,
+      payload: {
+        summary: "'아농'이라는 이름의 브랜드가 여럿 있지만, 해당 부스의 정확한 정보는 확인되지 않는다.",
+        valueTags: [{ slug: "discovery", strength: 0.6 }],
+      },
+    });
+    expect(r.issues.map((i) => i.code)).toContain("speculation");
+  });
+
+  it("출처가 전부 잡화몰·영상이면 근거로 세지 않는다", () => {
+    const r = gradeCandidate({
+      ...base,
+      sources: [
+        { uri: "https://etsy.com/x", title: "etsy.com" },
+        { uri: "https://ebay.com/y", title: "ebay.com" },
+        { uri: "https://hobbylobby.com/z", title: "hobbylobby.com" },
+      ],
+      payload: {
+        summary: "일동공예는 미니어처 식기류를 만든다.",
+        valueTags: [{ slug: "goods", strength: 0.7 }],
+      },
+    });
+    expect(r.issues.map((i) => i.code)).toContain("weak_sources");
+  });
+
+  it("브랜드 자기 사이트가 섞여 있으면 근거로 인정한다", () => {
+    const r = gradeCandidate({
+      ...base,
+      sources: [
+        { uri: "https://etsy.com/x", title: "etsy.com" },
+        { uri: "https://ildong-craft.co.kr", title: "ildong-craft.co.kr" },
+      ],
+      payload: {
+        summary: "일동공예는 미니어처 식기류를 만든다.",
+        valueTags: [{ slug: "goods", strength: 0.7 }],
+      },
+    });
+    expect(r.issues.map((i) => i.code)).not.toContain("weak_sources");
+  });
+
+  it("부스 이름 없이 분류 이름을 주어로 쓰면 걸린다", () => {
+    const r = gradeCandidate({
+      ...base,
+      payload: {
+        summary: "Hobby & Play / Kitchen & Tableware는 주방용품과 놀이 소품을 판매하는 브랜드다.",
+        valueTags: [{ slug: "goods", strength: 0.7 }],
+      },
+    });
+    expect(r.issues.map((i) => i.code)).toContain("category_readback");
+  });
+
+  it("부스 이름이 나오면 분류를 언급해도 되읽기가 아니다", () => {
+    const r = gradeCandidate({
+      ...base,
+      payload: {
+        summary: "일동공예는 Hobby & Play 구역에서 손으로 깎은 목기를 선보인다.",
+        valueTags: [{ slug: "goods", strength: 0.7 }],
+      },
+    });
+    expect(r.issues.map((i) => i.code)).not.toContain("category_readback");
+  });
+
+  it("\"선보인다\"는 추측이 아니다", () => {
+    const r = gradeCandidate({
+      ...base,
+      payload: {
+        summary: "일동공예는 손으로 깎은 목기를 선보인다.",
+        valueTags: [{ slug: "goods", strength: 0.7 }],
+      },
+    });
+    expect(r.issues.map((i) => i.code)).not.toContain("speculation");
+  });
+});
