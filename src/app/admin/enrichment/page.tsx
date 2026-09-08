@@ -34,9 +34,11 @@ export default async function AdminEnrichmentPage() {
     (c) => reviewPolicy(c.confidence, c.issues).wouldAutoPass,
   ).length;
 
-  const booths = exhibition
-    ? await repo.listBoothsByExhibitionId(exhibition.id)
-    : [];
+  // 진행률은 **전 필드를 가져오는 조회**로 센다 — listBoothsByExhibitionId는
+  // 컬럼을 좁혀서 enrichment가 늘 비어 보인다("없음"과 "비어 있음"의 그 함정).
+  const booths = exhibition ? await repo.listBoothsFull(exhibition.id) : [];
+  const exhibitors = booths.filter((b) => b.kind !== "facility");
+  const filled = exhibitors.filter((b) => b.enrichment?.summary?.trim()).length;
   const boothNames = Object.fromEntries(
     booths.map((b) => [b.id, `${b.code ?? ""} ${b.name}`.trim()]),
   );
@@ -50,6 +52,33 @@ export default async function AdminEnrichmentPage() {
           남아 다음 초안을 더 좋게 만듭니다.
         </p>
       </header>
+      {exhibition && (
+        <div className="rounded-2xl border border-border bg-card p-4">
+          <div className="flex items-baseline justify-between gap-3">
+            <p className="text-sm font-semibold">{exhibition.name} 채움 현황</p>
+            <p className="text-sm text-muted-foreground">
+              <span className="text-lg font-extrabold text-foreground">{filled}</span>
+              {" / "}
+              {exhibitors.length}곳
+              <span className="ml-2">
+                ({exhibitors.length ? Math.round((filled / exhibitors.length) * 100) : 0}%)
+              </span>
+            </p>
+          </div>
+          <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-secondary">
+            <div
+              className="h-full rounded-full bg-primary transition-all"
+              style={{
+                width: `${exhibitors.length ? (filled / exhibitors.length) * 100 : 0}%`,
+              }}
+            />
+          </div>
+          <p className="mt-2 text-xs text-muted-foreground">
+            시설 {booths.length - exhibitors.length}곳은 참가사가 아니라 셈에서 뺐습니다 ·
+            남은 {exhibitors.length - filled}곳 · 검수 대기 {candidates.length}건
+          </p>
+        </div>
+      )}
       <CalibrationCard cal={cal} />
 
       <CandidateQueue
