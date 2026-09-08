@@ -1,51 +1,37 @@
 [
  {
-  "code": "F-14",
-  "name": "리즈",
-  "site": "https://shopleeds.kr",
-  "instagramUrl": "https://www.instagram.com/leeds.kr",
-  "why": "도메인·브랜드명과 안 겹침 — 협력사/제작사 계정일 수 있다"
+  "code": "C-14",
+  "name": "싸이벡",
+  "why": "monarch_system은 게시물 2·팔로워 0의 개인 비공개 계정. 싸이벡과 무관"
  },
  {
   "code": "F-17",
   "name": "캠프로그 스튜디오",
-  "site": "https://camplogstudio.com",
-  "instagramUrl": "https://www.instagram.com/cplst_official",
-  "why": "도메인·브랜드명과 안 겹침 — 협력사/제작사 계정일 수 있다"
+  "why": "cplst_official 페이지 없음(삭제되었거나 존재하지 않음)"
  },
  {
-  "code": "G-08",
-  "name": "아러바웃",
-  "site": "https://naturescent.kr",
-  "instagramUrl": "https://www.instagram.com/r__about",
-  "why": "도메인·브랜드명과 안 겹침 — 협력사/제작사 계정일 수 있다"
+  "code": "H-06",
+  "name": "헤르네링",
+  "why": "hernering_seok 페이지 없음"
  },
  {
-  "code": "M-01",
-  "name": "월간도예",
-  "site": "https://cerazine.co.kr",
-  "instagramUrl": "https://www.instagram.com/monthly_ceramic.art",
-  "why": "도메인·브랜드명과 안 겹침 — 협력사/제작사 계정일 수 있다"
+  "code": "H-12",
+  "name": "모루",
+  "why": "sinjimoru.co.kr은 신지모루(폰 액세서리) — 부스 '모루'와 다른 브랜드. 이름 부분일치로 잘못 붙음"
  },
  {
-  "code": "N-01",
-  "name": "안계미술관",
-  "site": "https://angyeartmuseum.com",
-  "instagramUrl": "https://www.instagram.com/artmuseumag",
-  "why": "도메인·브랜드명과 안 겹침 — 협력사/제작사 계정일 수 있다"
+  "code": "K-18",
+  "name": "에스코리아",
+  "why": "orskorea.com은 ORSKOREA(연삭기계) — 부스 '에스코리아'와 다른 회사"
  },
  {
-  "code": "P-01",
-  "name": "토마로우",
-  "site": "https://tomarrow.com",
-  "instagramUrl": "https://www.instagram.com/farm_nevertheless",
-  "why": "도메인·브랜드명과 안 겹침 — 협력사/제작사 계정일 수 있다"
+  "code": "Q-10",
+  "name": "아람드리",
+  "why": "aramfarm.co.kr은 아람농장 — 부스 '아람드리'와 다른 브랜드"
  },
  {
-  "code": "Q-09",
-  "name": "스타곰탕",
-  "site": "https://thestarfood.com",
-  "instagramUrl": "https://www.instagram.com/stargomtang2020",
-  "why": "도메인·브랜드명과 안 겹침 — 협력사/제작사 계정일 수 있다"
+  "code": "P-13",
+  "name": "칼파벳",
+  "why": "hangeulkwaja는 폐쇄 계정, @kalphabets로 이전했다고 본인이 공지"
  }
 ]
