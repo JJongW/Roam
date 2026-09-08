@@ -472,6 +472,9 @@ export interface EnrichmentCandidate {
   reviewedBy?: string | null;
   /** 반려 사유(또는 승인 메모). 다음 초안이 읽어 같은 실수를 반복하지 않게 한다. */
   reviewNote?: string | null;
+  /** 이 부스의 몇 번째 초안인가(1차·2차·3차…). 저장하지 않고 생성 순서에서
+   *  도출한다 — 목록 API가 채워 준다. */
+  round?: number;
   createdAt: string;
 }
 

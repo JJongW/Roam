@@ -17,6 +17,12 @@ import {
   haCategories,
   haBooths,
 } from "@/lib/mock/seed-house-archive";
+import {
+  mlmExhibition,
+  mlmHalls,
+  mlmCategories,
+  mlmBooths,
+} from "@/lib/mock/seed-magok";
 import { computeTasteAccuracy, type TasteAccuracy } from "@/lib/memory/taste";
 import { computeJourneyFunnel } from "@/lib/admin/journey-funnel";
 import { computeFlowEdges } from "@/lib/admin/flow";
@@ -104,26 +110,30 @@ const g = globalThis as unknown as { __roamStore?: Store };
 function buildStore(): Store {
   const s = freshSeed();
   return {
-    // SIBF + SIF 공존(멀티 전시). 홀·카테고리·부스는 exhibitionId로 구분돼 섞여도 안전.
+    // SIBF + SIF + 하우스아카이브 + 마곡리빙마켓 공존(멀티 전시). 홀·카테고리·부스는 exhibitionId로 구분돼 섞여도 안전.
     exhibitions: [
       s.exhibition,
       structuredClone(sifExhibition),
       structuredClone(haExhibition),
+      structuredClone(mlmExhibition),
     ],
     halls: [
       ...s.halls,
       ...structuredClone(sifHalls),
       ...structuredClone(haHalls),
+      ...structuredClone(mlmHalls),
     ],
     categories: [
       ...s.categories,
       ...structuredClone(sifCategories),
       ...structuredClone(haCategories),
+      ...structuredClone(mlmCategories),
     ],
     booths: [
       ...s.booths,
       ...structuredClone(sifBooths),
       ...structuredClone(haBooths),
+      ...structuredClone(mlmBooths),
     ],
     events: s.events,
     welcomeKits: s.welcomeKits,

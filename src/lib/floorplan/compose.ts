@@ -56,6 +56,10 @@ export interface Layout {
    *  얹으려면 이 등록값이 있어야 한다. 없으면 도면 원점을 홀 원점으로 본다 —
    *  등록을 안 한 도면(원본 CAD 미확보)에서 기존 동작을 그대로 유지하기 위한 값이다. */
   hallOrigin?: Pt;
+  /** 이 전시가 실제로 여는 문. 장소는 문이 **어디** 있는지만 알고, 그 문이 이번에
+   *  입구인지 출구인지는 전시가 정한다 — 같은 홀에서 다음 전시는 반대로 쓸 수 있다.
+   *  venue.gates의 id로 고르고 kind(·label)를 덮어쓴다. 비우면 장소의 문을 전부 쓴다. */
+  gates?: Array<{ id: string; kind: "in" | "out"; label?: string }>;
   booths: LayoutBooth[];
 }
 
@@ -141,7 +145,37 @@ export function composeFloorplan(layout: Layout, venue: Venue): Floorplan {
       ]
     : [];
 
-  const decor: FloorplanDecor[] = (venue.decor ?? []).map((d) => placeDecor(d, at, len));
+  // 문: 장소가 위치를 대고, 전시가 어느 문을 입구/출구로 쓸지 고른다.
+  const venueGates = venue.gates ?? [];
+  const chosen = layout.gates?.length
+    ? layout.gates.flatMap((g) => {
+        const v = venueGates.find((x) => x.id === g.id);
+        return v ? [{ ...v, kind: g.kind, label: g.label ?? v.label }] : [];
+      })
+    : venueGates;
+  const gates = chosen.map((g) => ({ ...g, ...at(g) }));
+  // 전시가 문을 골랐으면 기본 시작·끝점도 그 문을 따른다.
+  const pick = (kind: "in" | "out") => {
+    const g = layout.gates?.length ? gates.find((x) => x.kind === kind) : undefined;
+    return g && { x: g.x, y: g.y };   // 시작·끝점은 좌표만 — id·label을 흘리지 않는다
+  };
+  const entrance = pick("in");
+  const exit = pick("out");
+
+  // 전시가 문을 고르면 장소의 중립 라벨("출입구")도 그 전시의 말("입구"·"출구")로
+  // 바꾼다. 안 고르면 장소가 적어둔 대로 둔다.
+  const decor: FloorplanDecor[] = (venue.decor ?? [])
+    .filter((d) => !(layout.gates?.length && d.type === "entrance"))
+    .map((d) => placeDecor(d, at, len));
+  if (layout.gates?.length)
+    for (const g of gates)
+      decor.push({
+        type: "entrance",
+        x: g.x,
+        y: g.y,
+        text: g.label,
+        dir: g.kind === "in" ? "up" : "down",   // 입구는 홀 안쪽, 출구는 바깥쪽
+      });
   for (const w of venue.wc ?? []) {
     const p = at(w);
     decor.push({ type: "wc", x: p.x, y: p.y });
@@ -165,11 +199,9 @@ export function composeFloorplan(layout: Layout, venue: Venue): Floorplan {
             },
           ]
         : [bbox(booths)]),
-    entrance: venue.entrance ? at(venue.entrance) : fallback,
-    exit: venue.exit ? at(venue.exit) : fallback,
-    ...(venue.gates?.length
-      ? { gates: venue.gates.map((g) => ({ ...g, ...at(g) })) }
-      : {}),
+    entrance: entrance ?? (venue.entrance ? at(venue.entrance) : fallback),
+    exit: exit ?? (venue.exit ? at(venue.exit) : fallback),
+    ...(gates.length ? { gates } : {}),
   };
 }
 

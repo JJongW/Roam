@@ -20,7 +20,14 @@ export interface QualityReport {
 export interface GradeInput {
   payload: Partial<BoothEnrichmentAuthorInput>;
   sources: { uri: string; title?: string }[];
-  booth: { name: string; company?: string };
+  booth: {
+    name: string;
+    company?: string;
+    /** 이 부스의 것이라고 **이미 확인된** 링크. 초안의 근거가 여기에 닿아야
+     *  "그 브랜드 얘기"라고 말할 수 있다. */
+    websiteUrl?: string;
+    instagramUrl?: string;
+  };
   /** 같은 배치의 다른 초안이 이미 쓴 문장들. LLM이 템플릿을 되풀이하는 걸 잡는다. */
   seenPhrases?: Set<string>;
   /** 같은 배치에서 이미 나온 thingsToDo 항목들. 다른 부스에도 그대로 쓰이는
@@ -57,6 +64,29 @@ const READBACK_PATTERNS: { re: RegExp; what: string }[] = [
   // slug이 그대로 노출되는 건 언제나 잘못이다 — 사람 말이 아니다.
   { re: new RegExp(`\\b(${SLUGS})\\b`), what: "slug이 그대로 노출됨" },
 ];
+
+/**
+ * 초안이 **모른다고 말하면서 쓴 글**. 마곡 50부스(이름 말고 근거가 없는 것들)를
+ * 돌렸더니 자동통과 16건 중 6건이 이 부류였고 전부 신뢰도 1.00이었다. 압권은
+ * "정확한 정보는 확인되지 않는다"를 summary에 적고 만점을 받은 초안이다.
+ * 형식만 보는 게이트는 추측을 사실과 구별하지 못한다.
+ */
+const SPECULATION = [
+  /예상[돼된]/,
+  /것으로 (보인다|보여|추정)/,
+  /(판매|선보일|전시할) 것으로/,
+  /확인되지 않/,
+  /알 수 없/,
+  /듯하다/,
+  /(?<!선)보인다\./,
+  /추정된다/,
+];
+
+/** 근거로 세면 안 되는 출처. 잡화 마켓플레이스·영상·백과·다른 박람회 디렉터리는
+ *  그 브랜드가 무엇인지 말해주지 않는다. 이것들만 잡히고도 "근거 3건"으로
+ *  만점이 나왔다(일동공예→etsy·ebay·hobbylobby). */
+const WEAK_SOURCE =
+  /(^|\.)(etsy|ebay|amazon|aliexpress|temu|wish|homedepot|walmart|target|wayfair|hobbylobby|aosom|musinsa|coupang|11st|gmarket|auction|qoo10|interpark|tmon|pinterest|youtube|facebook|instagram|tiktok|wikipedia|namu\.wiki|blog\.naver|naver\.me|kakao|tistory|brunch|heypop|slist|nsenior|dhns|blogpay)\.|fair|expo|festa/i;
 
 /** 정보가 없는 채로 길이만 채우는 상투어. LLM 초안의 대표 실패다. */
 const FILLER = [
@@ -104,6 +134,94 @@ export function gradeCandidate(input: GradeInput): QualityReport {
       // 재료가 있었으면 그걸 옮긴 것이라 지어냈다고 보긴 어렵다. 없었는데도
       // 문장이 나왔다면 그건 어디서 온 것인지 아무도 모른다.
       weight: input.hadMaterial ? 0.12 : 0.35,
+    });
+  }
+
+  // 근거가 있어도 **무엇의 근거인지**가 중요하다. 잡화몰·영상·박람회 디렉터리만
+  // 잡혔다면 그 브랜드를 말해주는 출처가 하나도 없다는 뜻이다.
+  if (sources.length > 0 && sources.every((s) => WEAK_SOURCE.test(s.title ?? s.uri))) {
+    add({
+      code: "weak_sources",
+      message: `출처가 전부 잡화몰·영상·박람회 디렉터리다(${sources
+        .map((s) => s.title ?? "")
+        .filter(Boolean)
+        .slice(0, 3)
+        .join(", ")}) — 이 브랜드를 말해주는 근거가 없다`,
+      weight: 0.3,
+    });
+  }
+
+  // ── 신원 ────────────────────────────────────────────────────────────────
+  // 점수는 **형식**을 본다. 브랜드가 통째로 바뀌어도 형식은 완벽할 수 있다 —
+  // 미국 에어프라이어 "Aria"를 한국 부스 '아리아'로 쓴 초안이 1.00을 받았다.
+  // 그래서 임계를 올리는 걸로는 못 막는다. 이 부스의 것이라고 이미 확인된
+  // 도메인에 근거가 닿았는지를 따로 본다.
+  const known = [booth.websiteUrl, booth.instagramUrl]
+    .filter((u): u is string => Boolean(u))
+    .map((u) => {
+      try {
+        return new URL(u).hostname.replace(/^www\./, "").toLowerCase();
+      } catch {
+        return "";
+      }
+    })
+    .filter(Boolean);
+  const anchored =
+    known.length > 0 &&
+    sources.some((s) =>
+      known.some((h) => `${s.title ?? ""} ${s.uri}`.toLowerCase().includes(h)),
+    );
+  if (!anchored) {
+    add({
+      code: "unanchored",
+      message: known.length
+        ? `근거가 이 부스의 확인된 주소(${known.join(", ")})에 닿지 않는다 — 다른 브랜드 얘기일 수 있다`
+        : "이 부스의 확인된 주소가 없어 신원을 맞대볼 수 없다",
+      // 점수를 크게 깎지는 않는다. 사람이 볼 때는 여전히 쓸모 있는 초안이다.
+      // 다만 **자동 통과는 막는다**(review-policy의 NEVER_AUTO).
+      weight: 0.1,
+    });
+  }
+
+  // 근거가 하나뿐이면 맞대볼 데가 없다. 실제로 운영에 자동 반영된 것 중
+  // 미국 브랜드를 한국 부스로 착각한 초안(아리아→homedepot의 에어프라이어),
+  // 내용이 없는 초안(디자인북→언론 리스팅 1건)이 전부 단일 출처였다.
+  if (sources.length === 1) {
+    add({
+      code: "single_source",
+      message: `출처가 ${sources[0].title ?? "1건"} 하나뿐이다 — 맞대볼 근거가 없다`,
+      weight: 0.15,
+    });
+  }
+
+  // ── 추측 ────────────────────────────────────────────────────────────────
+  // 초안이 스스로 모른다고 말하면 그건 초안이 아니라 공백이다. 사람이 봐야 한다.
+  const guessProse = [p.summary, p.roamInterpretation].filter(Boolean).join(" ");
+  const guesses = SPECULATION.filter((re) => re.test(guessProse));
+  if (guesses.length) {
+    add({
+      code: "speculation",
+      field: "summary",
+      message: "추측으로 쓴 문장이다(예상돼·것으로 보인다·확인되지 않는다) — 사실이 아니다",
+      weight: 0.35,
+    });
+  }
+
+  // 부스 이름은 없고 **분류 이름만** 주어로 선 문장은 그 부스 얘기가 아니다.
+  // "Home & Deco는 가구·조명을 판매하는 브랜드다" 같은 것 — 분류를 되읽었을 뿐이다.
+  const summary = p.summary ?? "";
+  const cat = booth.company?.trim();
+  const nameShown = summary.includes(booth.name.trim());
+  if (
+    summary &&
+    !nameShown &&
+    ((cat && cat.length >= 2 && summary.includes(cat)) || /(분야|섹션)의\s*(부스|브랜드)/.test(summary))
+  ) {
+    add({
+      code: "category_readback",
+      field: "summary",
+      message: "부스 이름 대신 분류 이름을 주어로 썼다 — 분류를 되읽은 것이지 이 부스 설명이 아니다",
+      weight: 0.3,
     });
   }
 
