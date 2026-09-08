@@ -20,7 +20,14 @@ export interface QualityReport {
 export interface GradeInput {
   payload: Partial<BoothEnrichmentAuthorInput>;
   sources: { uri: string; title?: string }[];
-  booth: { name: string; company?: string };
+  booth: {
+    name: string;
+    company?: string;
+    /** 이 부스의 것이라고 **이미 확인된** 링크. 초안의 근거가 여기에 닿아야
+     *  "그 브랜드 얘기"라고 말할 수 있다. */
+    websiteUrl?: string;
+    instagramUrl?: string;
+  };
   /** 같은 배치의 다른 초안이 이미 쓴 문장들. LLM이 템플릿을 되풀이하는 걸 잡는다. */
   seenPhrases?: Set<string>;
   /** 같은 배치에서 이미 나온 thingsToDo 항목들. 다른 부스에도 그대로 쓰이는
@@ -141,6 +148,38 @@ export function gradeCandidate(input: GradeInput): QualityReport {
         .slice(0, 3)
         .join(", ")}) — 이 브랜드를 말해주는 근거가 없다`,
       weight: 0.3,
+    });
+  }
+
+  // ── 신원 ────────────────────────────────────────────────────────────────
+  // 점수는 **형식**을 본다. 브랜드가 통째로 바뀌어도 형식은 완벽할 수 있다 —
+  // 미국 에어프라이어 "Aria"를 한국 부스 '아리아'로 쓴 초안이 1.00을 받았다.
+  // 그래서 임계를 올리는 걸로는 못 막는다. 이 부스의 것이라고 이미 확인된
+  // 도메인에 근거가 닿았는지를 따로 본다.
+  const known = [booth.websiteUrl, booth.instagramUrl]
+    .filter((u): u is string => Boolean(u))
+    .map((u) => {
+      try {
+        return new URL(u).hostname.replace(/^www\./, "").toLowerCase();
+      } catch {
+        return "";
+      }
+    })
+    .filter(Boolean);
+  const anchored =
+    known.length > 0 &&
+    sources.some((s) =>
+      known.some((h) => `${s.title ?? ""} ${s.uri}`.toLowerCase().includes(h)),
+    );
+  if (!anchored) {
+    add({
+      code: "unanchored",
+      message: known.length
+        ? `근거가 이 부스의 확인된 주소(${known.join(", ")})에 닿지 않는다 — 다른 브랜드 얘기일 수 있다`
+        : "이 부스의 확인된 주소가 없어 신원을 맞대볼 수 없다",
+      // 점수를 크게 깎지는 않는다. 사람이 볼 때는 여전히 쓸모 있는 초안이다.
+      // 다만 **자동 통과는 막는다**(review-policy의 NEVER_AUTO).
+      weight: 0.1,
     });
   }
 

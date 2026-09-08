@@ -61,7 +61,13 @@ const UNVERIFIABLE = new Set(["no_sources", "no_interpretation", "no_value_tags"
  * 지어낸 사실은 나중에 되돌려도 이미 사용자가 읽은 뒤다. 확인된 근거가 있는 글만
  * 사람 없이 내보낸다.
  */
-const NEVER_AUTO = new Set(["no_sources"]);
+/**
+ * `unanchored`가 여기 있는 이유(2026-09-08): 점수는 형식을 본다. 브랜드가 통째로
+ * 바뀌어도 형식은 완벽할 수 있다 — homedepot·ebay의 미국 에어프라이어 "Aria"를
+ * 한국 부스 '아리아'로 쓴 초안이 1.00을 받고 운영에 반영됐다. 임계를 0.95에서
+ * 더 올려도 이건 못 막는다. **확인된 주소에 근거가 닿은 것만** 사람 없이 내보낸다.
+ */
+const NEVER_AUTO = new Set(["no_sources", "unanchored"]);
 
 export interface PolicyConfig {
   /** 이 이상이면 자동 통과 후보. 운영 실측 근거는 위 표. */

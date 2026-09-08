@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { gradeCandidate } from "./quality-gate";
+import { reviewPolicy } from "./review-policy";
 import type { GradeInput } from "./quality-gate";
 
-const booth = { name: "루이스폴센" };
+// 확인된 주소가 있고 근거가 거기 닿아야 "그 브랜드 얘기"다(unanchored 규칙).
+const booth = { name: "루이스폴센", websiteUrl: "https://louispoulsen.com" };
 // 근거 2건이 기본값이다 — 하나뿐이면 맞대볼 데가 없어 single_source로 걸린다.
 const sources = [
   { uri: "https://louispoulsen.com", title: "louispoulsen.com" },
@@ -182,9 +184,51 @@ describe("gradeCandidate — LLM의 대표 실패", () => {
 
 describe("근거 없는 부스에서 드러난 실패 — 마곡 50부스", () => {
   const base = {
-    sources: [{ uri: "https://brand.co.kr", title: "brand.co.kr" }],
-    booth: { name: "일동공예", company: "Hobby & Play / Kitchen & Tableware" },
+    sources: [
+      { uri: "https://ildong-craft.co.kr", title: "ildong-craft.co.kr" },
+      { uri: "https://brand.co.kr", title: "brand.co.kr" },
+    ],
+    booth: {
+      name: "일동공예",
+      company: "Hobby & Play / Kitchen & Tableware",
+      websiteUrl: "https://ildong-craft.co.kr",
+    },
   };
+
+  it("확인된 주소에 근거가 안 닿으면 점수와 무관하게 자동 통과를 막는다", () => {
+    const r = gradeCandidate({
+      ...base,
+      sources: [
+        { uri: "https://homedepot.com/x", title: "homedepot.com" },
+        { uri: "https://ebay.com/y", title: "ebay.com" },
+      ],
+      payload: {
+        summary: "일동공예는 16쿼트 에어프라이어 오븐을 판매하는 브랜드다.",
+        roamInterpretation: "에어프라이어로 요리를 해볼 수 있어.",
+        valueTags: [{ slug: "goods", strength: 0.8 }],
+        recommendationReasons: { goods: "제품을 직접 볼 수 있어." },
+        thingsToDo: ["작동 시연 보기"],
+      },
+    });
+    expect(r.issues.map((i) => i.code)).toContain("unanchored");
+    expect(reviewPolicy(r.confidence, r.issues).decision).not.toBe("auto_pass");
+  });
+
+  it("확인된 주소가 아예 없으면 신원을 맞댈 수 없어 자동 통과하지 않는다", () => {
+    const r = gradeCandidate({
+      ...base,
+      booth: { name: "일동공예", company: "Hobby & Play / Kitchen & Tableware" },
+      payload: {
+        summary: "일동공예는 손으로 깎은 목기를 선보인다.",
+        roamInterpretation: "결이 살아 있는 목기를 볼 수 있어.",
+        valueTags: [{ slug: "goods", strength: 0.7 }],
+        recommendationReasons: { goods: "결을 직접 보고 고를 수 있어." },
+        thingsToDo: ["결을 만져보기"],
+      },
+    });
+    expect(r.issues.map((i) => i.code)).toContain("unanchored");
+    expect(reviewPolicy(r.confidence, r.issues).decision).toBe("review");
+  });
 
   it("추측으로 쓴 문장은 자동 통과할 수 없다", () => {
     const r = gradeCandidate({
