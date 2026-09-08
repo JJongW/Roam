@@ -1,0 +1,272 @@
+{
+ "note": "사람이 브라우저로 직접 확인한 사실. 검색 근거가 아니라 브랜드 본인 게시물이거나 브랜드 계정/자사 사이트에서 읽은 것이다. scripts/apply-verified-facts.mjs가 이걸 인입 파일의 enrichment.summary로 옮겨 바로 반영한다.",
+ "exhibitionSlug": "magok-livingmarket-2026",
+ "booths": {
+  "A-05": {
+   "summary": "THE DOT 오브제를 현장에서 직접 볼 수 있다. 초청권 이벤트 09.03~09.07 진행.",
+   "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+   "confirmed": true,
+   "name": "더닷"
+  },
+  "A-15": {
+   "summary": "LIGHTREE. 여행 브랜드 — ELITE 캐리어, 트래블 파우치·월렛, DREAMI SOFA. 추석 특가로 B급 캐리어 10~20% OFF, 소파 20% OFF.",
+   "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+   "confirmed": true,
+   "name": "라잇트리"
+  },
+  "B-14": {
+   "summary": "주최 브랜드 큐레이션 '시선쟁탈전' 라인업에 포함. 별도 게시물에 '리젠스가 참여합니다! 제1전시장 B-14'.",
+   "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+   "confirmed": true,
+   "name": "리젠스"
+  },
+  "B-20": {
+   "summary": "ZIATTI — '나무의 온도 그대로, 원목가구의 본질'. 주최 큐레이션 라인업.",
+   "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+   "confirmed": true,
+   "name": "지아띠"
+  },
+  "B-30": {
+   "summary": "SPACE & STYLE 구역 BOOTH B30, 입구 기준 좌측. 현장 혜택 있음.",
+   "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+   "confirmed": true,
+   "name": "아파트먼트하우스"
+  },
+  "C-01": {
+   "summary": "studio FODDER — '철제의 견고함과 온도감을 담아낸 가구'. 주최 큐레이션 라인업.",
+   "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+   "confirmed": true,
+   "name": "스튜디오 퍼더"
+  },
+  "D-20": {
+   "summary": "MUZEUM — '하나의 오브제에서 시작되는 새로운 공간의 서사'. 주최 큐레이션 라인업.",
+   "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+   "confirmed": true,
+   "name": "무제움"
+  },
+  "D-30": {
+   "summary": "주최 브랜드 큐레이션 라인업에 포함. 커스템과 협업한 '스타일프레임 레어로우 에디션'을 두 부스에서 동시 공개.",
+   "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+   "confirmed": true,
+   "name": "레어로우"
+  },
+  "J-01": {
+   "summary": "이 행사의 주최사다 — 디자인하우스와 월간 〈행복이 가득한 집〉이 마곡리빙마켓을 연다. 참가 브랜드가 아니라 주최 부스.",
+   "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+   "confirmed": true,
+   "name": "디자인하우스"
+  },
+  "K-01": {
+   "summary": "'Stress Less Market' 기획. '덜 귀찮게, 덜 불편하게, 더 기분 좋게' 슬로건. 1집러 셀러존 운영.",
+   "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+   "confirmed": true,
+   "name": "1집구석"
+  },
+  "K-13": {
+   "summary": "미노항 부스 운영. 인스타 DM으로 무료 모바일 초대장 선착순 배포(마감).",
+   "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+   "confirmed": true,
+   "name": "미노항 코리아"
+  },
+  "K-14": {
+   "summary": "신제품 테이블웨어를 9/10 온라인 프리론칭과 동시 공개. 추석선물 큐레이션 섹션(U-01/U-02)에 인기 찻잔세트 전시. 전품목 10% SALE.",
+   "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+   "confirmed": true,
+   "name": "휴움"
+  },
+  "L-16": {
+   "summary": "부스번호 L-16이라고 본인이 명시. 토분은 온라인 판매라 현장엔 그릇을 가져온다. 신제품 20%·B품/단종 50% 할인.",
+   "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+   "confirmed": true,
+   "name": "토은"
+  },
+  "M-01": {
+   "summary": "Relié studio와 함께 참여. 도자·공예 작품과 오브제를 선보인다.",
+   "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+   "confirmed": true,
+   "name": "월간도예"
+  },
+  "N-01": {
+   "summary": "부스 N-01, 가든라운지(S-01) 옆 센터부스라고 본인이 명시. 함께하는 작가 13명. 테이블웨어·도자·섬유·벽 오브제.",
+   "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+   "confirmed": true,
+   "name": "안계미술관"
+  },
+  "N-16": {
+   "summary": "'아프리카농장, 아농'. 마켓에서만 전품목 20% 할인.",
+   "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+   "confirmed": true,
+   "name": "아농"
+  },
+  "O-01": {
+   "summary": "반려견 브랜드 '슬반'이 O-01 근화동396 창업공간 공동 부스에서 함께한다. 개모차·이동가방 사용 시 반려견 동반 가능.",
+   "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+   "confirmed": true,
+   "name": "근화동396창업공간"
+  },
+  "Q-07": {
+   "summary": "매년 참가해온 닭발 브랜드. '리빙에서 또 중요한 게 먹는 것'.",
+   "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+   "confirmed": true,
+   "name": "평산댁 닭발"
+  },
+  "B-03": {
+   "summary": "kustem_official. LG 올레드 TV에 커스템 디자인을 더하는 1:1 맞춤 프레임 '스타일프레임'. 마곡리빙마켓에서 스타일프레임 레어로우 에디션을 첫 공개하고 8가지 컬러를 선보인다. 레어로우(D-30)와 커스템 두 부스에서 동시에 볼 수 있다.",
+   "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+   "confirmed": true,
+   "name": "커스텀"
+  },
+  "A-08": {
+   "summary": "스튜디오무드가 처음으로 박람회에 참가한다 — 오프라인에서 제품과 공간을 처음 선보인다. 초대권 이벤트(5팀, 초대권 2매+시크릿 기프트)를 진행했다. 감성 철제 오브제를 만드는 스튜디오.",
+   "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+   "confirmed": true,
+   "name": "스튜디오 무드"
+  },
+  "C-14": {
+   "summary": "'싸이벡 라이트' 공기정화 청소기. 로얄퀸클럽이 부스번호 C-14로 명시하며 입장권 이벤트를 열었다. 특허받은 필트레이션.",
+   "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+   "confirmed": true,
+   "name": "싸이벡"
+  },
+  "C-10": {
+   "summary": "쏘랩 — 슬립소파 브랜드. '쏘랩 슬립소파 V3', 전국 설치·지정일 배송.",
+   "confirmed": false
+  },
+  "D-12": {
+   "summary": "허리펴자 하라체어 — 자세교정 의자 브랜드 하라체어.",
+   "confirmed": false
+  },
+  "D-14": {
+   "summary": "듀프리 — 제습함. '유쾌한생각'과 공동 판매, 런칭 기념 할인 이력.",
+   "confirmed": false
+  },
+  "E-07": {
+   "summary": "포세이온 — 샤워기 필터. 네이버 라이브 쇼핑 진행.",
+   "confirmed": false
+  },
+  "F-10": {
+   "summary": "유어타올 — 타올 브랜드. 네이버 쇼핑라이브 진행.",
+   "confirmed": false
+  },
+  "G-28": {
+   "summary": "린보워크샵 — 부산 망미동 가죽공방 겸 쇼룸(F1963 테라로사 후문). 가죽공예품과 소품.",
+   "confirmed": false
+  },
+  "H-06": {
+   "summary": "헤르네링 — 랩그로운 다이아 주얼리. 테니스팔찌 등.",
+   "confirmed": false
+  },
+  "H-08": {
+   "summary": "락낙 — lacnak_studio. 김해 클레이아크미술관 마켓 참여 이력.",
+   "confirmed": false
+  },
+  "H-10": {
+   "summary": "쉐리925 — 실버925 주얼리. chéri925, 가로수길.",
+   "confirmed": false
+  },
+  "I-06": {
+   "summary": "일루트립 — 제주 월정 쇼룸을 둔 작가/공방. 육지 행사에 다니느라 쇼룸을 자주 닫는다.",
+   "confirmed": false
+  },
+  "J-07": {
+   "summary": "실드림 — 디자인 실리콘 주방용품. 대한민국 실리콘 주방용품 선두 기업이라고 자칭.",
+   "confirmed": false
+  },
+  "H-15": {
+   "summary": "미파 — 인스타 검색으로 브랜드가 특정되지 않음. mimasdecor 초안은 '미마스'라 다른 브랜드일 가능성이 높다.",
+   "confirmed": false
+  },
+  "N-13": {
+   "summary": "예목공방 — 목공예 공방. 다기장(茶器欌) 등 목가구·목공예. 캘리그라피·전각과 함께 활동.",
+   "confirmed": false
+  },
+  "N-15": {
+   "summary": "오도마 — 최고급 원목을 가공한 주방 기구. 신세계 본점 B1 푸드마켓 팝업 이력.",
+   "confirmed": false
+  },
+  "Q-04": {
+   "summary": "참윰뜰 — 식품 브랜드(원재료 가격 인상 공지 등 자체 판매 운영). 인스타 표기는 '참융뜰'일 수 있다.",
+   "confirmed": false
+  },
+  "Q-17": {
+   "summary": "호밀빵의 파수꾼 — The Catcher Of Rye Bread. 북유럽식 호밀빵. 연남동 카페 '그랜드마마'에서 판매.",
+   "confirmed": false
+  },
+  "O-06": {
+   "summary": "브라운라이스팩토리 — 라이스크래커 '미샌드'(초코·치즈). 바삭한 쌀과자.",
+   "confirmed": false
+  },
+  "P-02": {
+   "summary": "크리미웨이 — 쉐이크 브랜드. 딸기·초코에 이어 신맛 출시.",
+   "confirmed": false
+  },
+  "P-18": {
+   "summary": "네코먼데이 로스터리 — 커피. '밀크' 등 자체 음료 라인 할인 운영.",
+   "confirmed": false
+  },
+  "R-08": {
+   "summary": "꼬마루 수제육포 — 치즈·고추·마늘 원물을 직접 넣은 부드럽고 짜지 않은 프리미엄 수제육포. @kkomaroo74.",
+   "confirmed": false
+  },
+  "M-05": {
+   "summary": "이어서보 — 티웨어(찻잔·다구). 찻자리용 제품.",
+   "confirmed": false
+  },
+  "L-07": {
+   "summary": "엘제이엘 갤러리 — 작가 개인전을 여는 갤러리(예: 엄재원 개인전 'FRUITS UM'). 주최 소개의 'Artful Living'과 일치.",
+   "confirmed": false
+  },
+  "L-09": {
+   "summary": "해튼 헤리티지 — hattonlife.com. 와인 디스플레이 공간에 어울리는 제품. 코엑스 K핸드메이드페어 참가 이력.",
+   "confirmed": false
+  },
+  "L-15": {
+   "summary": "디자인북 — 검색 결과가 아트북/포스터 출판 쪽으로 나온다.",
+   "confirmed": false
+  },
+  "K-18": {
+   "summary": "에스코리아 — 국내 제작 하이엔드 인이어(이어폰) 제조사.",
+   "confirmed": false
+  },
+  "G-16": {
+   "summary": "소잉팩토리 X 퐁당자수 — 재봉 공방. 수원 RED점에서 호보백 만들기 등 소잉워크샵 운영.",
+   "confirmed": false
+  },
+  "G-08": {
+   "summary": "아러바웃 — 브랜드 아이덴티티를 향으로 풀어내는 향기 컨설팅 브랜드(@r__about). 같은 계열로 후니팟(F-28)·스노즈센트·이유즈가 함께 소개된다.",
+   "confirmed": false
+  },
+  "F-11": {
+   "summary": "알비 빈티지포스터 — '알비마켓'을 여는 빈티지 포스터·엽서 셀렉트숍. 루비박스출판사가 운영하는 성수동 매장.",
+   "confirmed": false
+  },
+  "G-14": {
+   "summary": "라 메종드유럽 미니마켓 — 유럽 현지 소싱 편집숍. 현대백화점 킨텍스 팝업 이력, 대표들이 직접 유럽 출장으로 소싱한다.",
+   "confirmed": false
+  },
+  "G-26": {
+   "summary": "매직솔트헬스케어 — 히말라야 소금 좌훈기. 한의원 등에서 쓰인다.",
+   "confirmed": false
+  },
+  "P-01": {
+   "summary": "토마로우 — 그래도팜이 직접 기른 유기농 에어룸 토마토로 만든 가공식품(스윗칠리 토마토잼, 토마토 매콤마요). 추석선물 세트 운영.",
+   "confirmed": false
+  },
+  "Q-10": {
+   "summary": "아람드리 — 과채 쥬스(40포 세트 등 파우치 음료). 공동구매로 팔린다.",
+   "confirmed": false
+  },
+  "Q-16": {
+   "summary": "홍시궁 — 매장 브랜드(가맹점 인수·승계 모집 공지 있음). 식품 매장.",
+   "confirmed": false
+  },
+  "R-04": {
+   "summary": "아라리유정란 — 리빙페어 현장에서 먹어보고 구매했다는 후기가 있다. 유정란.",
+   "confirmed": false
+  },
+  "R-05": {
+   "summary": "내일 뭐 먹지 마켓 — **플리마켓을 여는 주체**다('내일뭐먹지? MARKET' 플리마켓, 행운권추첨·버스킹).",
+   "confirmed": false
+  }
+ }
+}
