@@ -34,6 +34,10 @@ for (const [code, v] of Object.entries(verified.booths ?? {})) {
   b.enrichment ??= {};
   b.enrichment.summary = v.summary.slice(0, 300);
   if (v.sourceUrl) b.enrichment.sourceUrl = v.sourceUrl;
+  // 내려받은 대표 이미지도 부스로 옮긴다 — 부스 상세와 피드가 이걸 쓴다.
+  // 인스타 게시물에서 딴 여러 장이 있으면 그걸 쓴다(<CODE>_1..N.webp).
+  if (v.images?.length) b.images = v.images;
+  else if (v.image && !(b.images ?? []).includes(v.image)) b.images = [v.image];
   merged++;
 }
 if (missing.length) console.log("도면·인입에 없는 코드:", missing.join(", "));

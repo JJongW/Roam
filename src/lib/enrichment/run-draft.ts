@@ -82,36 +82,63 @@ export async function runDraftBatch(
       });
       // generateGrounded는 tools를 쓰느라 JSON 모드를 못 건다 — 산문만 돌려주는
       // 경우가 실제로 있다(파일럿에서 5건 중 1건). 한 번은 더 조여서 물어본다.
-      let payload: BoothEnrichmentPatch | null = null;
-      let sources: { uri: string; title?: string }[] = [];
-      for (const attempt of [
-        userPrompt,
-        `${userPrompt}\n\n반드시 JSON 객체 하나만 출력한다. 다른 텍스트를 쓰지 않는다.`,
-      ]) {
-        const res = await generateGrounded({ system, prompt: attempt });
-        sources = res.sources;
-        try {
-          payload = extractJSON<BoothEnrichmentPatch>(res.text);
-          break;
-        } catch {
-          payload = null;
-        }
-      }
-      if (!payload) throw new Error("JSON을 못 얻었다(재시도 후에도)");
+      //
+      // 그리고 **0.60 아래는 사람에게 올리지 않는다.** 근거를 못 찾은 글을
+      // 검수자가 봐도 할 수 있는 게 없다 — 다시 찾는 건 기계가 할 일이다.
+      // 시도마다 질문을 바꿔 다른 각도로 검색하게 하고, 가장 좋은 것만 남긴다.
+      const ANGLES = [
+        "",
+        "\n\n브랜드의 **공식 웹사이트와 자사 소개**를 먼저 찾아 읽어라. 쇼핑몰 상품 페이지나 다른 박람회 참가사 목록은 근거로 쓰지 마라.",
+        `\n\n"${booth.name}"과 이름이 비슷한 다른 브랜드와 헷갈리지 마라. 이 전시(${input.exhibitionSlug})에 참가하는 그 브랜드인지 확인되는 근거만 써라. 확인이 안 되면 그 필드를 비워라.`,
+      ];
+      let best: {
+        payload: BoothEnrichmentPatch;
+        sources: { uri: string; title?: string }[];
+        report: ReturnType<typeof gradeCandidate>;
+      } | null = null;
 
-      // 요청하지 않은 필드는 버린다 — 사람이 쓴 값을 초안이 덮을 자리를 안 만든다.
-      const kept = Object.fromEntries(
-        Object.entries(payload).filter(([k]) => missing.includes(k)),
-      ) as BoothEnrichmentPatch;
-      const report = gradeCandidate({
-        payload: kept,
-        sources,
-        booth,
-        seenPhrases,
-        seenActions,
-        requested: missing,
-        hadMaterial: Boolean(booth.description || booth.enrichment?.summary),
-      });
+      for (const angle of ANGLES) {
+        let payload: BoothEnrichmentPatch | null = null;
+        let sources: { uri: string; title?: string }[] = [];
+        for (const attempt of [
+          userPrompt + angle,
+          `${userPrompt}${angle}\n\n반드시 JSON 객체 하나만 출력한다. 다른 텍스트를 쓰지 않는다.`,
+        ]) {
+          const res = await generateGrounded({ system, prompt: attempt });
+          sources = res.sources;
+          try {
+            payload = extractJSON<BoothEnrichmentPatch>(res.text);
+            break;
+          } catch {
+            payload = null;
+          }
+        }
+        if (!payload) continue;
+
+        // 요청하지 않은 필드는 버린다 — 사람이 쓴 값을 초안이 덮을 자리를 안 만든다.
+        const kept = Object.fromEntries(
+          Object.entries(payload).filter(([k]) => missing.includes(k)),
+        ) as BoothEnrichmentPatch;
+        const report = gradeCandidate({
+          payload: kept,
+          sources,
+          booth,
+          seenPhrases,
+          seenActions,
+          requested: missing,
+          hadMaterial: Boolean(booth.description || booth.enrichment?.summary),
+        });
+        if (!best || report.confidence > best.report.confidence) {
+          best = { payload: kept, sources, report };
+        }
+        // 사람에게 보낼 만한 점수가 나왔으면 더 안 찾는다 — 요금이 든다.
+        if (reviewPolicy(report.confidence, report.issues).decision !== "redraft") break;
+      }
+      if (!best) throw new Error("JSON을 못 얻었다(재시도 후에도)");
+
+      const kept = best.payload;
+      const sources = best.sources;
+      const report = best.report;
       const line = kept.roamInterpretation?.trim();
       if (line) seenPhrases.add(line);
       for (const a of kept.thingsToDo ?? []) {

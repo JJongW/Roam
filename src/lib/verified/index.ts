@@ -9,6 +9,21 @@ export interface VerifiedFact {
   /** 브랜드 본인이 이 전시 참여를 밝힌 경우. 참여 여부는 100%다. */
   confirmed?: boolean;
   name?: string;
+  /** 브랜드가 자기 사이트에 걸어둔 대표 이미지를 내려받아 둔 경로.
+   *  인스타 CDN은 서명 토큰이 붙어 몇 시간이면 만료돼 쓸 수 없다. */
+  image?: string;
+  /** 인스타 게시물에서 딴 여러 장. <CODE>_1.webp … 순서대로. */
+  images?: string[];
+  /** 읽은 근거 그대로. 검수자가 요약만 보고 판단하지 않도록 원문을 같이 보여준다. */
+  instagram?: {
+    handle: string;
+    url: string;
+    /** 계정 소개줄(이름·팔로워·소개·주소). */
+    header?: string;
+    website?: string;
+    /** 게시물 본문. 요약이 어디서 나왔는지 확인하는 근거다. */
+    posts?: string[];
+  };
 }
 
 export function loadVerified(slug: string): Record<string, VerifiedFact> {

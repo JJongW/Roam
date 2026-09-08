@@ -26,9 +26,17 @@ describe("reviewPolicy — 재조사는 고쳐질 것에만", () => {
   });
 
   it("확인 불가 지적(근거 외)은 이유를 설명하고 사람에게 보낸다", () => {
-    const r = reviewPolicy(0.4, [issue("no_interpretation")], live);
+    // 0.60 이상일 때의 얘기다 — 그 아래는 사람에게 가기 전에 다시 찾는다.
+    const r = reviewPolicy(0.7, [issue("no_interpretation")], live);
     expect(r.decision).toBe("review");
     expect(r.reason).toContain("글이 나쁘다는 뜻은 아니다");
+  });
+
+  it("0.60 아래는 사람에게 올리지 않고 다시 찾는다", () => {
+    // 근거를 못 찾은 글을 검수자가 봐도 할 수 있는 게 없다.
+    const r = reviewPolicy(0.4, [issue("no_interpretation")], live);
+    expect(r.decision).toBe("redraft");
+    expect(r.reason).toContain("다시 찾는다");
   });
 
   it("상투어만 있으면 사람이 본다 — 재조사 아님", () => {

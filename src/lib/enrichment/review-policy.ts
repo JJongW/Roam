@@ -72,6 +72,10 @@ const NEVER_AUTO = new Set(["no_sources", "unanchored"]);
 export interface PolicyConfig {
   /** 이 이상이면 자동 통과 후보. 운영 실측 근거는 위 표. */
   autoPassAt: number;
+  /** 이 아래면 **사람에게 안 보낸다** — 초안기가 다시 찾는다.
+   *  낮은 점수를 사람 큐에 쌓으면 검수자가 "근거가 없다"는 사실만 반복해서
+   *  확인하게 된다. 다시 찾는 건 기계가 할 일이다. */
+  redraftBelow: number;
   /** 그림자 모드 — 자동 통과를 **표시만** 하고 실제로는 반영하지 않는다. */
   shadow: boolean;
 }
@@ -84,7 +88,11 @@ export interface PolicyConfig {
  * 되돌리려면 `shadow: true`만 바꾸면 된다 — 이미 반영된 것은 change_log에
  * "자동 통과"로 남아 있어 찾아서 되돌릴 수 있다.
  */
-export const DEFAULT_POLICY: PolicyConfig = { autoPassAt: 0.95, shadow: false };
+export const DEFAULT_POLICY: PolicyConfig = {
+  autoPassAt: 0.95,
+  redraftBelow: 0.6,
+  shadow: false,
+};
 
 export interface PolicyResult {
   decision: ReviewDecision;
@@ -127,6 +135,16 @@ export function reviewPolicy(
         ? `자동 통과 대상(신뢰도 ${confidence.toFixed(2)}) — 그림자 모드라 사람이 본다`
         : `신뢰도 ${confidence.toFixed(2)} — 자동 통과`,
       wouldAutoPass: true,
+    };
+  }
+
+  // 0.60 아래는 사람에게 올리지 않는다. 근거를 못 찾은 글을 검수자가 봐도
+  // 할 수 있는 게 없다 — 다시 찾아오는 게 맞다.
+  if (confidence < config.redraftBelow) {
+    return {
+      decision: "redraft",
+      reason: `신뢰도 ${confidence.toFixed(2)} — 사람에게 올리기 전에 다시 찾는다`,
+      wouldAutoPass: false,
     };
   }
 

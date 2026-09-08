@@ -30,7 +30,16 @@ export default async function AdminEnrichmentPage() {
       })
     : [];
   const cal = calibration(reviewed);
-  const autoPassCount = candidates.filter(
+  // 0.60 아래는 사람 큐에 올리지 않는다 — 근거를 못 찾은 글은 검수자가 봐도
+  // 할 게 없다. 기계가 세 각도로 다시 찾고도 못 찾았다는 뜻이라, 사람이
+  // **직접 조사할 목록**으로 따로 보여준다.
+  const forHuman = candidates.filter(
+    (c) => reviewPolicy(c.confidence, c.issues).decision !== "redraft",
+  );
+  const notFound = candidates.filter(
+    (c) => reviewPolicy(c.confidence, c.issues).decision === "redraft",
+  );
+  const autoPassCount = forHuman.filter(
     (c) => reviewPolicy(c.confidence, c.issues).wouldAutoPass,
   ).length;
 
@@ -75,14 +84,33 @@ export default async function AdminEnrichmentPage() {
           </div>
           <p className="mt-2 text-xs text-muted-foreground">
             시설 {booths.length - exhibitors.length}곳은 참가사가 아니라 셈에서 뺐습니다 ·
-            남은 {exhibitors.length - filled}곳 · 검수 대기 {candidates.length}건
+            남은 {exhibitors.length - filled}곳 · 검수 대기 {forHuman.length}건
+            {notFound.length > 0 && ` · 못 찾음 ${notFound.length}건`}
           </p>
         </div>
       )}
       <CalibrationCard cal={cal} />
 
+      {notFound.length > 0 && (
+        <div className="rounded-2xl border border-warning/40 bg-warning/5 p-4">
+          <p className="text-sm font-semibold">
+            기계가 못 찾은 곳 {notFound.length}곳
+          </p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            세 각도로 다시 검색해도 신뢰도가 0.60을 넘지 못했습니다. 웹에 근거가
+            없다는 뜻이라 검수 큐에 올리지 않았습니다 — 인스타·브랜드 사이트를
+            직접 찾아 <code>data/verified/</code>에 적으면 대조 검수로 들어옵니다.
+          </p>
+          <p className="mt-2 text-sm">
+            {notFound
+              .map((c) => boothNames[c.boothId] ?? c.boothId)
+              .join(" · ")}
+          </p>
+        </div>
+      )}
+
       <CandidateQueue
-        candidates={candidates}
+        candidates={forHuman}
         boothNames={boothNames}
         slug={exhibition?.slug ?? ""}
         autoPassCount={autoPassCount}

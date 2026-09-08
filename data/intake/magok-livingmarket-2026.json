@@ -44,9 +44,12 @@
    ],
    "instagramUrl": "https://www.instagram.com/the_dot_space",
    "enrichment": {
-    "summary": "THE DOT 오브제를 현장에서 직접 볼 수 있다. 초청권 이벤트 09.03~09.07 진행.",
-    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
-   }
+    "summary": "더닷(THE DOT) — 'Art with function, Life becoming art'. 국내 최초로 뉴욕 MoMA에서 제품 디자인을 선보였고, 유리·금속·목재로 인테리어 오브제와 리빙 제품을 만든다. 마곡리빙마켓에서 오브제를 직접 볼 수 있다.",
+    "sourceUrl": "https://www.instagram.com/the_dot_space/"
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/A-05.webp"
+   ]
   },
   {
    "code": "A-06",
@@ -63,6 +66,12 @@
    "websiteUrl": "https://www.miiseum.com",
    "aliases": [
     "ARAMCHAE"
+   ],
+   "enrichment": {
+    "summary": "아람채한옥스튜디오 — 궁·어좌·가야금·장기·성균관 컨셉의 한옥 스튜디오 원조. 한복 디자이너가 운영한다. aramchae.com"
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/A-06.webp"
    ]
   },
   {
@@ -130,7 +139,10 @@
    "enrichment": {
     "summary": "LIGHTREE. 여행 브랜드 — ELITE 캐리어, 트래블 파우치·월렛, DREAMI SOFA. 추석 특가로 B급 캐리어 10~20% OFF, 소파 20% OFF.",
     "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/A-15.webp"
+   ]
   },
   {
    "code": "B-01",
@@ -170,7 +182,10 @@
    "enrichment": {
     "summary": "kustem_official. LG 올레드 TV에 커스템 디자인을 더하는 1:1 맞춤 프레임 '스타일프레임'. 마곡리빙마켓에서 스타일프레임 레어로우 에디션을 첫 공개하고 8가지 컬러를 선보인다. 레어로우(D-30)와 커스템 두 부스에서 동시에 볼 수 있다.",
     "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/B-03.webp"
+   ]
   },
   {
    "code": "B-14",
@@ -208,7 +223,10 @@
    "enrichment": {
     "summary": "ZIATTI — '나무의 온도 그대로, 원목가구의 본질'. 주최 큐레이션 라인업.",
     "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/B-20.webp"
+   ]
   },
   {
    "code": "B-30",
@@ -230,7 +248,10 @@
    "enrichment": {
     "summary": "SPACE & STYLE 구역 BOOTH B30, 입구 기준 좌측. 현장 혜택 있음.",
     "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/B-30.webp"
+   ]
   },
   {
    "code": "C-01",
@@ -252,7 +273,10 @@
    "enrichment": {
     "summary": "studio FODDER — '철제의 견고함과 온도감을 담아낸 가구'. 주최 큐레이션 라인업.",
     "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/C-01.webp"
+   ]
   },
   {
    "code": "C-03",
@@ -286,7 +310,10 @@
    "instagramUrl": "https://www.instagram.com/solab_official",
    "enrichment": {
     "summary": "쏘랩 — 슬립소파 브랜드. '쏘랩 슬립소파 V3', 전국 설치·지정일 배송."
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/C-10.webp"
+   ]
   },
   {
    "code": "C-14",
@@ -307,7 +334,10 @@
    "enrichment": {
     "summary": "'싸이벡 라이트' 공기정화 청소기. 로얄퀸클럽이 부스번호 C-14로 명시하며 입장권 이벤트를 열었다. 특허받은 필트레이션.",
     "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/C-14.webp"
+   ]
   },
   {
    "code": "D-01",
@@ -450,9 +480,12 @@
    ],
    "instagramUrl": "https://www.instagram.com/mzm_archive",
    "enrichment": {
-    "summary": "MUZEUM — '하나의 오브제에서 시작되는 새로운 공간의 서사'. 주최 큐레이션 라인업.",
+    "summary": "무제움(MUZEUM) — 브랜드 아이덴티티를 담은 가구 디자인·제작. 맞춤 제작부터 공간 스타일링까지 하고 오피스·병원·라운지 프로젝트를 한다. 대표작 Spin Stack은 오크와 스테인리스 스틸로 만든 회전 수납 가구다.",
     "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/D-20.webp"
+   ]
   },
   {
    "code": "D-30",
@@ -474,7 +507,10 @@
    "enrichment": {
     "summary": "주최 브랜드 큐레이션 라인업에 포함. 커스템과 협업한 '스타일프레임 레어로우 에디션'을 두 부스에서 동시 공개.",
     "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/D-30.webp"
+   ]
   },
   {
    "code": "E-01",
@@ -539,7 +575,10 @@
    "instagramUrl": "https://www.instagram.com/poseion__official",
    "enrichment": {
     "summary": "포세이온 — 샤워기 필터. 네이버 라이브 쇼핑 진행."
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/E-07.webp"
+   ]
   },
   {
    "code": "E-09",
@@ -601,7 +640,10 @@
    "instagramUrl": "https://www.instagram.com/ur_towel",
    "enrichment": {
     "summary": "유어타올 — 타올 브랜드. 네이버 쇼핑라이브 진행."
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/F-10.webp"
+   ]
   },
   {
    "code": "F-11",
@@ -821,7 +863,10 @@
    "instagramUrl": "https://www.instagram.com/r__about",
    "enrichment": {
     "summary": "아러바웃 — 브랜드 아이덴티티를 향으로 풀어내는 향기 컨설팅 브랜드(@r__about). 같은 계열로 후니팟(F-28)·스노즈센트·이유즈가 함께 소개된다."
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/G-08.webp"
+   ]
   },
   {
    "code": "G-09",
@@ -1180,7 +1225,10 @@
    "enrichment": {
     "summary": "이 행사의 주최사다 — 디자인하우스와 월간 〈행복이 가득한 집〉이 마곡리빙마켓을 연다. 참가 브랜드가 아니라 주최 부스.",
     "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/J-01.webp"
+   ]
   },
   {
    "code": "J-04",
@@ -1215,7 +1263,10 @@
    "websiteUrl": "https://www.nowhenstudio.com",
    "aliases": [
     "NOWHEN"
-   ]
+   ],
+   "enrichment": {
+    "summary": "노웬(NOWHEN, @nowhen___) — 'Now or when'. '모자라지도 과하지도 않되 특별했으면'을 내건 브랜드."
+   }
   },
   {
    "code": "J-07",
@@ -1230,7 +1281,10 @@
    "websiteUrl": "https://sildream.com",
    "enrichment": {
     "summary": "실드림 — 디자인 실리콘 주방용품. 대한민국 실리콘 주방용품 선두 기업이라고 자칭."
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/J-07.webp"
+   ]
   },
   {
    "code": "J-09",
@@ -1269,7 +1323,10 @@
    "enrichment": {
     "summary": "'Stress Less Market' 기획. '덜 귀찮게, 덜 불편하게, 더 기분 좋게' 슬로건. 1집러 셀러존 운영.",
     "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/K-01.webp"
+   ]
   },
   {
    "code": "K-13",
@@ -1286,7 +1343,10 @@
    "enrichment": {
     "summary": "미노항 부스 운영. 인스타 DM으로 무료 모바일 초대장 선착순 배포(마감).",
     "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/K-13.webp"
+   ]
   },
   {
    "code": "K-14",
@@ -1308,7 +1368,10 @@
    "enrichment": {
     "summary": "신제품 테이블웨어를 9/10 온라인 프리론칭과 동시 공개. 추석선물 큐레이션 섹션(U-01/U-02)에 인기 찻잔세트 전시. 전품목 10% SALE.",
     "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/K-14.webp"
+   ]
   },
   {
    "code": "K-17",
@@ -1398,7 +1461,10 @@
    "websiteUrl": "https://hattonlife.com",
    "enrichment": {
     "summary": "해튼 헤리티지 — hattonlife.com. 와인 디스플레이 공간에 어울리는 제품. 코엑스 K핸드메이드페어 참가 이력."
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/L-09.webp"
+   ]
   },
   {
    "code": "L-10",
@@ -1485,7 +1551,10 @@
    "enrichment": {
     "summary": "Relié studio와 함께 참여. 도자·공예 작품과 오브제를 선보인다.",
     "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/M-01.webp"
+   ]
   },
   {
    "code": "M-03",
@@ -1549,7 +1618,10 @@
    "enrichment": {
     "summary": "부스 N-01, 가든라운지(S-01) 옆 센터부스라고 본인이 명시. 함께하는 작가 13명. 테이블웨어·도자·섬유·벽 오브제.",
     "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/N-01.webp"
+   ]
   },
   {
    "code": "N-07",
@@ -1671,7 +1743,10 @@
    "enrichment": {
     "summary": "반려견 브랜드 '슬반'이 O-01 근화동396 창업공간 공동 부스에서 함께한다. 개모차·이동가방 사용 시 반려견 동반 가능.",
     "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/O-01.webp"
+   ]
   },
   {
    "code": "O-05",
@@ -1718,7 +1793,10 @@
    "instagramUrl": "https://www.instagram.com/farm_nevertheless",
    "enrichment": {
     "summary": "토마로우 — 그래도팜이 직접 기른 유기농 에어룸 토마토로 만든 가공식품(스윗칠리 토마토잼, 토마토 매콤마요). 추석선물 세트 운영."
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/P-01.webp"
+   ]
   },
   {
    "code": "P-02",
@@ -2002,7 +2080,10 @@
    "websiteUrl": "https://hongsigoong.co.kr",
    "enrichment": {
     "summary": "홍시궁 — 매장 브랜드(가맹점 인수·승계 모집 공지 있음). 식품 매장."
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/Q-16.webp"
+   ]
   },
   {
    "code": "Q-17",
@@ -2103,7 +2184,10 @@
    "websiteUrl": "https://smartstore.naver.com/memelt",
    "aliases": [
     "MEMELT"
-   ]
+   ],
+   "enrichment": {
+    "summary": "메멜트 — 크림치즈. 코엑스 홈테이블데코페어 참가 이력이 있다."
+   }
   },
   {
    "code": "R-08",
