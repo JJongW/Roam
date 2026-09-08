@@ -94,6 +94,15 @@ function renderValue(field: string, value: unknown) {
   );
 }
 
+/** 검수 상태를 한 눈에 — 대기·반영·반려·대체됨. */
+// Chip은 hex를 받는다(confidenceChip과 같은 팔레트).
+const STATUS: Record<EnrichmentCandidate["status"], { label: string; color: string }> = {
+  pending: { label: "검수 대기", color: "#64748b" },
+  approved: { label: "반영됨", color: "#0f9d63" },
+  rejected: { label: "반려", color: "#d92d20" },
+  superseded: { label: "대체됨", color: "#b57200" },
+};
+
 export function CandidateQueue({
   candidates,
   boothNames,
@@ -203,6 +212,12 @@ export function CandidateQueue({
               <span className="font-bold">
                 {boothNames[c.boothId] ?? c.boothId}
               </span>
+              {/* 몇 번째 초안인가. 2차 이상이면 지난 반려를 읽고 다시 쓴 것이라
+                  검수자가 "같은 실수를 또 했는지"를 먼저 본다. */}
+              <Chip color={(c.round ?? 1) > 1 ? "#b57200" : "#64748b"}>
+                {c.round ?? 1}차
+              </Chip>
+              <Chip color={STATUS[c.status].color}>{STATUS[c.status].label}</Chip>
               <Chip color={chip.color}>
                 신뢰도 {chip.label} · {Math.round(c.confidence * 100)}
               </Chip>
