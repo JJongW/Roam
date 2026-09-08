@@ -22,10 +22,13 @@ const step = cell + 1.7;
 const dir = `public/booths/${slug}`;
 mkdirSync(dir, { recursive: true });
 
+// 격자는 5열이다. count가 5를 넘으면 아랫줄로 넘어간다.
+const COLS = 5;
 let n = 0;
 for (let i = 0; i < Number(count); i++) {
-  const left = Math.round((Number(x) + step * i) * k);
-  const top = Math.round(Number(y) * k);
+  const col = i % COLS, row = Math.floor(i / COLS);
+  const left = Math.round((Number(x) + step * col) * k);
+  const top = Math.round((Number(y) + step * row) * k);
   const w = Math.min(Math.round(cell * k), meta.width - left);
   const h = Math.min(Math.round(cell * k), meta.height - top);
   if (left < 0 || top < 0 || w < 100 || h < 100) break;

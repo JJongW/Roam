@@ -132,7 +132,19 @@
    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
    "confirmed": true,
    "name": "1집구석",
-   "image": "/booths/magok-livingmarket-2026/K-01.webp"
+   "image": "/booths/magok-livingmarket-2026/K-01_1.webp",
+   "images": [
+    "/booths/magok-livingmarket-2026/K-01_1.webp",
+    "/booths/magok-livingmarket-2026/K-01_2.webp",
+    "/booths/magok-livingmarket-2026/K-01_3.webp",
+    "/booths/magok-livingmarket-2026/K-01_4.webp",
+    "/booths/magok-livingmarket-2026/K-01_5.webp",
+    "/booths/magok-livingmarket-2026/K-01_6.webp",
+    "/booths/magok-livingmarket-2026/K-01_7.webp",
+    "/booths/magok-livingmarket-2026/K-01_8.webp",
+    "/booths/magok-livingmarket-2026/K-01_9.webp",
+    "/booths/magok-livingmarket-2026/K-01_10.webp"
+   ]
   },
   "K-13": {
    "summary": "미노항 부스 운영. 인스타 DM으로 무료 모바일 초대장 선착순 배포(마감).",
@@ -173,14 +185,38 @@
    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
    "confirmed": true,
    "name": "월간도예",
-   "image": "/booths/magok-livingmarket-2026/M-01.webp"
+   "image": "/booths/magok-livingmarket-2026/M-01_1.webp",
+   "images": [
+    "/booths/magok-livingmarket-2026/M-01_1.webp",
+    "/booths/magok-livingmarket-2026/M-01_2.webp",
+    "/booths/magok-livingmarket-2026/M-01_3.webp",
+    "/booths/magok-livingmarket-2026/M-01_4.webp",
+    "/booths/magok-livingmarket-2026/M-01_5.webp",
+    "/booths/magok-livingmarket-2026/M-01_6.webp",
+    "/booths/magok-livingmarket-2026/M-01_7.webp",
+    "/booths/magok-livingmarket-2026/M-01_8.webp",
+    "/booths/magok-livingmarket-2026/M-01_9.webp",
+    "/booths/magok-livingmarket-2026/M-01_10.webp"
+   ]
   },
   "N-01": {
-   "summary": "부스 N-01, 가든라운지(S-01) 옆 센터부스라고 본인이 명시. 함께하는 작가 13명. 테이블웨어·도자·섬유·벽 오브제.",
+   "summary": "안계미술관 — 부스 N-01, 가든라운지 옆 센터부스. 함께하는 작가 13명이 테이블웨어·도자·섬유·벽 오브제를 선보인다. 본관에선 'Origin Loop'전(2026.09.02~09.18)을 연다.",
    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
    "confirmed": true,
    "name": "안계미술관",
-   "image": "/booths/magok-livingmarket-2026/N-01.webp"
+   "image": "/booths/magok-livingmarket-2026/N-01_1.webp",
+   "images": [
+    "/booths/magok-livingmarket-2026/N-01_1.webp",
+    "/booths/magok-livingmarket-2026/N-01_2.webp",
+    "/booths/magok-livingmarket-2026/N-01_3.webp",
+    "/booths/magok-livingmarket-2026/N-01_4.webp",
+    "/booths/magok-livingmarket-2026/N-01_5.webp",
+    "/booths/magok-livingmarket-2026/N-01_6.webp",
+    "/booths/magok-livingmarket-2026/N-01_7.webp",
+    "/booths/magok-livingmarket-2026/N-01_8.webp",
+    "/booths/magok-livingmarket-2026/N-01_9.webp",
+    "/booths/magok-livingmarket-2026/N-01_10.webp"
+   ]
   },
   "N-16": {
    "summary": "'아프리카농장, 아농'. 마켓에서만 전품목 20% 할인.",
@@ -189,11 +225,23 @@
    "name": "아농"
   },
   "O-01": {
-   "summary": "반려견 브랜드 '슬반'이 O-01 근화동396 창업공간 공동 부스에서 함께한다. 개모차·이동가방 사용 시 반려견 동반 가능.",
+   "summary": "근화동396 청년창업지원센터 — 춘천 로컬테크 창업 커뮤니티. 마곡리빙마켓에 '브랜드관 마곡리빙마켓편'으로 입주기업 7팀을 선정해 공동 브랜드관을 운영한다(9/10~13, 4일간). 반려견 브랜드 '슬반'도 이 부스에 함께 들어온다.",
    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
    "confirmed": true,
    "name": "근화동396창업공간",
-   "image": "/booths/magok-livingmarket-2026/O-01.webp"
+   "image": "/booths/magok-livingmarket-2026/O-01_1.webp",
+   "images": [
+    "/booths/magok-livingmarket-2026/O-01_1.webp",
+    "/booths/magok-livingmarket-2026/O-01_2.webp",
+    "/booths/magok-livingmarket-2026/O-01_3.webp",
+    "/booths/magok-livingmarket-2026/O-01_4.webp",
+    "/booths/magok-livingmarket-2026/O-01_5.webp",
+    "/booths/magok-livingmarket-2026/O-01_6.webp",
+    "/booths/magok-livingmarket-2026/O-01_7.webp",
+    "/booths/magok-livingmarket-2026/O-01_8.webp",
+    "/booths/magok-livingmarket-2026/O-01_9.webp",
+    "/booths/magok-livingmarket-2026/O-01_10.webp"
+   ]
   },
   "Q-07": {
    "summary": "매년 참가해온 닭발 브랜드. '리빙에서 또 중요한 게 먹는 것'.",
@@ -231,7 +279,14 @@
   "C-10": {
    "summary": "쏘랩 — 슬립소파 브랜드. '쏘랩 슬립소파 V3', 전국 설치·지정일 배송.",
    "confirmed": false,
-   "image": "/booths/magok-livingmarket-2026/C-10.webp"
+   "image": "/booths/magok-livingmarket-2026/C-10_1.webp",
+   "images": [
+    "/booths/magok-livingmarket-2026/C-10_1.webp",
+    "/booths/magok-livingmarket-2026/C-10_2.webp",
+    "/booths/magok-livingmarket-2026/C-10_3.webp",
+    "/booths/magok-livingmarket-2026/C-10_4.webp",
+    "/booths/magok-livingmarket-2026/C-10_5.webp"
+   ]
   },
   "D-12": {
    "summary": "허리펴자 하라체어 — 자세교정 의자 브랜드 하라체어.",
@@ -357,7 +412,19 @@
   "P-01": {
    "summary": "토마로우 — 그래도팜이 직접 기른 유기농 에어룸 토마토로 만든 가공식품(스윗칠리 토마토잼, 토마토 매콤마요). 추석선물 세트 운영.",
    "confirmed": false,
-   "image": "/booths/magok-livingmarket-2026/P-01.webp"
+   "image": "/booths/magok-livingmarket-2026/P-01_1.webp",
+   "images": [
+    "/booths/magok-livingmarket-2026/P-01_1.webp",
+    "/booths/magok-livingmarket-2026/P-01_2.webp",
+    "/booths/magok-livingmarket-2026/P-01_3.webp",
+    "/booths/magok-livingmarket-2026/P-01_4.webp",
+    "/booths/magok-livingmarket-2026/P-01_5.webp",
+    "/booths/magok-livingmarket-2026/P-01_6.webp",
+    "/booths/magok-livingmarket-2026/P-01_7.webp",
+    "/booths/magok-livingmarket-2026/P-01_8.webp",
+    "/booths/magok-livingmarket-2026/P-01_9.webp",
+    "/booths/magok-livingmarket-2026/P-01_10.webp"
+   ]
   },
   "Q-10": {
    "summary": "아람드리 — 과채 쥬스(40포 세트 등 파우치 음료). 공동구매로 팔린다.",
@@ -406,19 +473,52 @@
   },
   "A-13": {
    "summary": "",
-   "image": "/booths/magok-livingmarket-2026/A-13.webp"
+   "image": "/booths/magok-livingmarket-2026/A-13_1.webp",
+   "images": [
+    "/booths/magok-livingmarket-2026/A-13_1.webp",
+    "/booths/magok-livingmarket-2026/A-13_2.webp",
+    "/booths/magok-livingmarket-2026/A-13_3.webp",
+    "/booths/magok-livingmarket-2026/A-13_4.webp",
+    "/booths/magok-livingmarket-2026/A-13_5.webp"
+   ]
   },
   "B-01": {
    "summary": "",
-   "image": "/booths/magok-livingmarket-2026/B-01.webp"
+   "image": "/booths/magok-livingmarket-2026/B-01_1.webp",
+   "images": [
+    "/booths/magok-livingmarket-2026/B-01_1.webp",
+    "/booths/magok-livingmarket-2026/B-01_2.webp",
+    "/booths/magok-livingmarket-2026/B-01_3.webp",
+    "/booths/magok-livingmarket-2026/B-01_4.webp",
+    "/booths/magok-livingmarket-2026/B-01_5.webp"
+   ]
   },
   "C-03": {
    "summary": "",
-   "image": "/booths/magok-livingmarket-2026/C-03.webp"
+   "image": "/booths/magok-livingmarket-2026/C-03_1.webp",
+   "images": [
+    "/booths/magok-livingmarket-2026/C-03_1.webp",
+    "/booths/magok-livingmarket-2026/C-03_2.webp",
+    "/booths/magok-livingmarket-2026/C-03_3.webp",
+    "/booths/magok-livingmarket-2026/C-03_4.webp",
+    "/booths/magok-livingmarket-2026/C-03_5.webp"
+   ]
   },
   "D-01": {
    "summary": "",
-   "image": "/booths/magok-livingmarket-2026/D-01.webp"
+   "image": "/booths/magok-livingmarket-2026/D-01_1.webp",
+   "images": [
+    "/booths/magok-livingmarket-2026/D-01_1.webp",
+    "/booths/magok-livingmarket-2026/D-01_2.webp",
+    "/booths/magok-livingmarket-2026/D-01_3.webp",
+    "/booths/magok-livingmarket-2026/D-01_4.webp",
+    "/booths/magok-livingmarket-2026/D-01_5.webp",
+    "/booths/magok-livingmarket-2026/D-01_6.webp",
+    "/booths/magok-livingmarket-2026/D-01_7.webp",
+    "/booths/magok-livingmarket-2026/D-01_8.webp",
+    "/booths/magok-livingmarket-2026/D-01_9.webp",
+    "/booths/magok-livingmarket-2026/D-01_10.webp"
+   ]
   },
   "D-10": {
    "summary": "",
@@ -426,7 +526,19 @@
   },
   "D-13": {
    "summary": "",
-   "image": "/booths/magok-livingmarket-2026/D-13.webp"
+   "image": "/booths/magok-livingmarket-2026/D-13_1.webp",
+   "images": [
+    "/booths/magok-livingmarket-2026/D-13_1.webp",
+    "/booths/magok-livingmarket-2026/D-13_2.webp",
+    "/booths/magok-livingmarket-2026/D-13_3.webp",
+    "/booths/magok-livingmarket-2026/D-13_4.webp",
+    "/booths/magok-livingmarket-2026/D-13_5.webp",
+    "/booths/magok-livingmarket-2026/D-13_6.webp",
+    "/booths/magok-livingmarket-2026/D-13_7.webp",
+    "/booths/magok-livingmarket-2026/D-13_8.webp",
+    "/booths/magok-livingmarket-2026/D-13_9.webp",
+    "/booths/magok-livingmarket-2026/D-13_10.webp"
+   ]
   },
   "D-02": {
    "summary": "",
@@ -434,7 +546,19 @@
   },
   "D-03": {
    "summary": "",
-   "image": "/booths/magok-livingmarket-2026/D-03.webp"
+   "image": "/booths/magok-livingmarket-2026/D-03_1.webp",
+   "images": [
+    "/booths/magok-livingmarket-2026/D-03_1.webp",
+    "/booths/magok-livingmarket-2026/D-03_2.webp",
+    "/booths/magok-livingmarket-2026/D-03_3.webp",
+    "/booths/magok-livingmarket-2026/D-03_4.webp",
+    "/booths/magok-livingmarket-2026/D-03_5.webp",
+    "/booths/magok-livingmarket-2026/D-03_6.webp",
+    "/booths/magok-livingmarket-2026/D-03_7.webp",
+    "/booths/magok-livingmarket-2026/D-03_8.webp",
+    "/booths/magok-livingmarket-2026/D-03_9.webp",
+    "/booths/magok-livingmarket-2026/D-03_10.webp"
+   ]
   },
   "E-05": {
    "summary": "",
@@ -442,7 +566,19 @@
   },
   "E-03": {
    "summary": "",
-   "image": "/booths/magok-livingmarket-2026/E-03.webp"
+   "image": "/booths/magok-livingmarket-2026/E-03_1.webp",
+   "images": [
+    "/booths/magok-livingmarket-2026/E-03_1.webp",
+    "/booths/magok-livingmarket-2026/E-03_2.webp",
+    "/booths/magok-livingmarket-2026/E-03_3.webp",
+    "/booths/magok-livingmarket-2026/E-03_4.webp",
+    "/booths/magok-livingmarket-2026/E-03_5.webp",
+    "/booths/magok-livingmarket-2026/E-03_6.webp",
+    "/booths/magok-livingmarket-2026/E-03_7.webp",
+    "/booths/magok-livingmarket-2026/E-03_8.webp",
+    "/booths/magok-livingmarket-2026/E-03_9.webp",
+    "/booths/magok-livingmarket-2026/E-03_10.webp"
+   ]
   },
   "E-01": {
    "summary": "",
@@ -485,16 +621,43 @@
    "image": "/booths/magok-livingmarket-2026/F-26.webp"
   },
   "F-28": {
-   "summary": "",
-   "image": "/booths/magok-livingmarket-2026/F-28.webp"
+   "summary": "후니팟(HUNYPOT) — 호주 아로마테라피스트의 아로마테라피 홈케어 브랜드. 디퓨저·바디럽·이너피스 등 향 제품을 만들고 박람회 부스를 자주 연다.",
+   "image": "/booths/magok-livingmarket-2026/F-28_1.webp",
+   "confirmed": false,
+   "images": [
+    "/booths/magok-livingmarket-2026/F-28_1.webp",
+    "/booths/magok-livingmarket-2026/F-28_2.webp",
+    "/booths/magok-livingmarket-2026/F-28_3.webp",
+    "/booths/magok-livingmarket-2026/F-28_4.webp",
+    "/booths/magok-livingmarket-2026/F-28_5.webp",
+    "/booths/magok-livingmarket-2026/F-28_6.webp",
+    "/booths/magok-livingmarket-2026/F-28_7.webp",
+    "/booths/magok-livingmarket-2026/F-28_8.webp",
+    "/booths/magok-livingmarket-2026/F-28_9.webp",
+    "/booths/magok-livingmarket-2026/F-28_10.webp"
+   ]
   },
   "G-03": {
    "summary": "",
    "image": "/booths/magok-livingmarket-2026/G-03.webp"
   },
   "G-22": {
-   "summary": "",
-   "image": "/booths/magok-livingmarket-2026/G-22.webp"
+   "summary": "구김(KOOKIM) — 도예가 김민수와 염색공예가 구희진의 부부작가 브랜드. 마곡리빙마켓 초대권과 부스배치도를 직접 올렸다.",
+   "image": "/booths/magok-livingmarket-2026/G-22_1.webp",
+   "confirmed": true,
+   "sourceUrl": "https://www.instagram.com/koo_kim_/",
+   "images": [
+    "/booths/magok-livingmarket-2026/G-22_1.webp",
+    "/booths/magok-livingmarket-2026/G-22_2.webp",
+    "/booths/magok-livingmarket-2026/G-22_3.webp",
+    "/booths/magok-livingmarket-2026/G-22_4.webp",
+    "/booths/magok-livingmarket-2026/G-22_5.webp",
+    "/booths/magok-livingmarket-2026/G-22_6.webp",
+    "/booths/magok-livingmarket-2026/G-22_7.webp",
+    "/booths/magok-livingmarket-2026/G-22_8.webp",
+    "/booths/magok-livingmarket-2026/G-22_9.webp",
+    "/booths/magok-livingmarket-2026/G-22_10.webp"
+   ]
   },
   "G-20": {
    "summary": "",
@@ -513,8 +676,22 @@
    "image": "/booths/magok-livingmarket-2026/G-27.webp"
   },
   "I-03": {
-   "summary": "",
-   "image": "/booths/magok-livingmarket-2026/I-03.webp"
+   "summary": "클라우망1981(CLAUMAN 1981) — 프리미엄 인테리어 오브제 타월. 마곡리빙마켓(9.10~9.13) 참여를 본인 계정에서 알리고 초대권 이벤트를 열었다. 2026 디자인 어워드 수상, 데이브 타월 50% 할인 등 자체 행사를 운영한다.",
+   "image": "/booths/magok-livingmarket-2026/I-03_1.webp",
+   "confirmed": true,
+   "sourceUrl": "https://www.instagram.com/clauman.official/",
+   "images": [
+    "/booths/magok-livingmarket-2026/I-03_1.webp",
+    "/booths/magok-livingmarket-2026/I-03_2.webp",
+    "/booths/magok-livingmarket-2026/I-03_3.webp",
+    "/booths/magok-livingmarket-2026/I-03_4.webp",
+    "/booths/magok-livingmarket-2026/I-03_5.webp",
+    "/booths/magok-livingmarket-2026/I-03_6.webp",
+    "/booths/magok-livingmarket-2026/I-03_7.webp",
+    "/booths/magok-livingmarket-2026/I-03_8.webp",
+    "/booths/magok-livingmarket-2026/I-03_9.webp",
+    "/booths/magok-livingmarket-2026/I-03_10.webp"
+   ]
   },
   "H-01": {
    "summary": "",
