@@ -3,7 +3,11 @@ import { gradeCandidate } from "./quality-gate";
 import type { GradeInput } from "./quality-gate";
 
 const booth = { name: "루이스폴센" };
-const sources = [{ uri: "https://example.com/a" }];
+// 근거 2건이 기본값이다 — 하나뿐이면 맞대볼 데가 없어 single_source로 걸린다.
+const sources = [
+  { uri: "https://louispoulsen.com", title: "louispoulsen.com" },
+  { uri: "https://example.com/a", title: "example.com" },
+];
 
 function good(over: Partial<GradeInput["payload"]> = {}): GradeInput {
   return {
@@ -248,6 +252,24 @@ describe("근거 없는 부스에서 드러난 실패 — 마곡 50부스", () =
       },
     });
     expect(r.issues.map((i) => i.code)).toContain("category_readback");
+  });
+
+  it("출처가 하나뿐이면 자동 통과선 아래로 내린다", () => {
+    // 운영에 자동 반영된 것 중 미국 브랜드를 한국 부스로 착각한 초안
+    // (아리아 → homedepot의 에어프라이어)이 단일 출처였다.
+    const r = gradeCandidate({
+      ...base,
+      sources: [{ uri: "https://kakao.com/x", title: "kakao.com" }],
+      payload: {
+        summary: "일동공예는 손으로 깎은 목기를 만든다.",
+        roamInterpretation: "손으로 깎은 목기를 볼 수 있어.",
+        valueTags: [{ slug: "goods", strength: 0.7 }],
+        recommendationReasons: { goods: "결이 살아 있는 그릇을 고를 수 있어." },
+        thingsToDo: ["결을 직접 만져보기"],
+      },
+    });
+    expect(r.issues.map((i) => i.code)).toContain("single_source");
+    expect(r.confidence).toBeLessThan(0.95);
   });
 
   it("부스 이름이 나오면 분류를 언급해도 되읽기가 아니다", () => {

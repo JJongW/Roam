@@ -79,7 +79,7 @@ const SPECULATION = [
  *  그 브랜드가 무엇인지 말해주지 않는다. 이것들만 잡히고도 "근거 3건"으로
  *  만점이 나왔다(일동공예→etsy·ebay·hobbylobby). */
 const WEAK_SOURCE =
-  /(^|\.)(etsy|ebay|amazon|aliexpress|hobbylobby|aosom|musinsa|coupang|11st|gmarket|auction|pinterest|youtube|facebook|instagram|tiktok|wikipedia|namu\.wiki|blog\.naver|tistory|brunch)\.|fair|expo|festa/i;
+  /(^|\.)(etsy|ebay|amazon|aliexpress|temu|wish|homedepot|walmart|target|wayfair|hobbylobby|aosom|musinsa|coupang|11st|gmarket|auction|qoo10|interpark|tmon|pinterest|youtube|facebook|instagram|tiktok|wikipedia|namu\.wiki|blog\.naver|naver\.me|kakao|tistory|brunch|heypop|slist|nsenior|dhns|blogpay)\.|fair|expo|festa/i;
 
 /** 정보가 없는 채로 길이만 채우는 상투어. LLM 초안의 대표 실패다. */
 const FILLER = [
@@ -141,6 +141,17 @@ export function gradeCandidate(input: GradeInput): QualityReport {
         .slice(0, 3)
         .join(", ")}) — 이 브랜드를 말해주는 근거가 없다`,
       weight: 0.3,
+    });
+  }
+
+  // 근거가 하나뿐이면 맞대볼 데가 없다. 실제로 운영에 자동 반영된 것 중
+  // 미국 브랜드를 한국 부스로 착각한 초안(아리아→homedepot의 에어프라이어),
+  // 내용이 없는 초안(디자인북→언론 리스팅 1건)이 전부 단일 출처였다.
+  if (sources.length === 1) {
+    add({
+      code: "single_source",
+      message: `출처가 ${sources[0].title ?? "1건"} 하나뿐이다 — 맞대볼 근거가 없다`,
+      weight: 0.15,
     });
   }
 
