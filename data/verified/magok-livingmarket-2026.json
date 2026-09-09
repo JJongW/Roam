@@ -1093,7 +1093,7 @@
    ]
   },
   "E-07": {
-   "summary": "포세이온 — 프리미엄 기능성 필터 샤워헤드(BT100). 두피·피부 임상으로 효능을 검증했고 딥블루·스노우화이트 등 색상을 낸다. 킨텍스 박람회 등에서 체험 부스를 운영해왔다.",
+   "summary": "포세이온(Poseion) — 이온수·정수 샤워기 브랜드. 디자인·특허·상표 출원을 마쳤고 임상시험으로 효능을 입증했다고 밝힌다. 인천가구박람회 등 박람회 참가 이력.",
    "confirmed": false,
    "image": "/booths/magok-livingmarket-2026/E-07_1.webp",
    "images": [
@@ -1107,7 +1107,32 @@
     "/booths/magok-livingmarket-2026/E-07_8.webp",
     "/booths/magok-livingmarket-2026/E-07_9.webp",
     "/booths/magok-livingmarket-2026/E-07_10.webp"
-   ]
+   ],
+   "roamInterpretation": "샤워기 필터를 만드는 곳이야. 물이 어떻게 달라지는지는 시연을 봐야 알아.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.8
+    },
+    {
+     "slug": "rest",
+     "strength": 0.5
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "샤워기를 실물로 보고 고를 수 있어.",
+    "rest": "매일 쓰는 물이라 바꾸면 티가 나는 종류야."
+   },
+   "thingsToDo": [
+    "정수 시연 보기",
+    "필터 교체 주기 물어보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "포세이온",
+    "이온수 샤워기"
+   ],
+   "sourceUrl": "https://www.instagram.com/p/COZ5bx8lK09/"
   },
   "F-10": {
    "summary": "유어타올(ur towel) — 세탁이 필요 없는 타올 “일상의 불편을 ‘제로’로 만드는 기능성 프리미엄 타올”",
@@ -1161,8 +1186,45 @@
    }
   },
   "G-28": {
-   "summary": "린보워크샵 — 부산 망미동 가죽공방 겸 쇼룸(F1963 테라로사 후문). 가죽공예품과 소품.",
-   "confirmed": false
+   "summary": "린보워크샵(LINBO) — '마음에 닿은 것들을 가죽으로 빚어냅니다'. 가죽 공방으로 부산 망미장 팀으로 참여한다.",
+   "confirmed": true,
+   "roamInterpretation": "가죽을 손으로 짓는 공방이야. 바느질 자국을 보면 기계와 다른 게 바로 보여.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.8
+    },
+    {
+     "slug": "discovery",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "가죽 소품을 낱개로 고를 수 있어.",
+    "discovery": "손바느질 흔적을 가까이서 볼 수 있어."
+   },
+   "thingsToDo": [
+    "바느질 마감 살펴보기",
+    "가죽 종류 물어보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "린보워크샵",
+    "LINBO",
+    "가죽 공방"
+   ],
+   "sourceUrl": "https://www.instagram.com/p/Dc-zUaIoxb1/",
+   "name": "린보워크샵",
+   "instagram": {
+    "handle": "linbo_qin",
+    "url": "https://www.instagram.com/linbo_qin/",
+    "header": "망미장 셀러 라인업(부산 공예 작가 13인) — 부스번호·계정·자기소개를 셀러 본인들이 함께 게시",
+    "posts": [
+     "https://www.instagram.com/p/Dc-zUaIoxb1/",
+     "https://www.instagram.com/p/DdA4se5JEQi/",
+     "https://www.instagram.com/p/DdBDmMYSuo7/"
+    ]
+   }
   },
   "H-06": {
    "summary": "헤르네링(Herinnering) — '구름을 닮은 패브릭'. 침구·패브릭 브랜드로 랩그로운 다이아 주얼리 라인도 함께 낸다.",
@@ -1194,7 +1256,7 @@
    "sourceUrl": "https://www.instagram.com/p/DcATDUBHGAT/"
   },
   "H-08": {
-   "summary": "락낙(LaCNak) — 비건레더와 친환경 코튼을 쓰는 핸드메이드 가방 브랜드. '시간에 따라 깊어지는 품질과 감성'을 내걸고 매듭토드·노티드빅호보·카드지갑 등을 만든다. 신세계백화점 대구점 입점 이력이 있고 네이버 스마트스토어로 판다.",
+   "summary": "락낙(LaCNak) — '자연스런 순간까지 감각이 되는 핸드메이드 비건레더'. 비건레더와 친환경 코튼으로 매듭토드·노티드빅호보·카드지갑을 만든다. 신세계백화점 대구점 입점 이력이 있고 부산 망미장 팀으로 참여한다.",
    "roamInterpretation": "비건레더로 가방을 한 땀씩 짓는 곳이야. 매듭으로 형태를 잡아서 실물로 들어봐야 감이 와.",
    "valueTags": [
     {
@@ -1212,8 +1274,7 @@
    },
    "thingsToDo": [
     "매듭토드 어깨에 걸어보기",
-    "비건레더 질감 만져보기",
-    "카드지갑 수납 열어보기"
+    "비건레더 질감 만져보기"
    ],
    "timing": [],
    "memoryHooks": [
@@ -1221,25 +1282,100 @@
     "매듭토드",
     "비건레더"
    ],
-   "sourceUrl": "https://www.instagram.com/lacnak_studio/",
+   "sourceUrl": "https://www.instagram.com/p/Dc-zUaIoxb1/",
    "name": "락낙",
    "instagram": {
     "handle": "lacnak_studio",
     "url": "https://www.instagram.com/lacnak_studio/",
-    "header": "락낙_작업실 · 브랜드 — 비건레더와 친환경 코튼 소재 기반, 세심한 핸드메이드 공정",
-    "website": "https://m.smartstore.naver.com/lacnak",
+    "header": "망미장 셀러 라인업(부산 공예 작가 13인) — 부스번호·계정·자기소개를 셀러 본인들이 함께 게시",
     "posts": [
-     "https://www.instagram.com/p/DVnpa6zkkJW/"
+     "https://www.instagram.com/p/Dc-zUaIoxb1/",
+     "https://www.instagram.com/p/DdA4se5JEQi/",
+     "https://www.instagram.com/p/DdBDmMYSuo7/"
+    ]
+   },
+   "confirmed": true
+  },
+  "H-10": {
+   "summary": "쉐리925(Cheri925) — '나의 일상과 함께 즐거운 실버쥬얼리'. 부산 망미장 팀으로 참여한다.",
+   "confirmed": true,
+   "roamInterpretation": "매일 차는 은 주얼리를 만드는 곳이야. 착용해보고 고르는 게 빨라.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.8
+    },
+    {
+     "slug": "trend",
+     "strength": 0.5
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "주얼리를 직접 착용해보고 고를 수 있어.",
+    "trend": "일상용 실버라 부담 없이 집어보게 돼."
+   },
+   "thingsToDo": [
+    "착용해보고 비교하기",
+    "은 함량 물어보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "쉐리925",
+    "실버쥬얼리"
+   ],
+   "sourceUrl": "https://www.instagram.com/p/Dc-zUaIoxb1/",
+   "name": "쉐리925",
+   "instagram": {
+    "handle": "cheri925silver",
+    "url": "https://www.instagram.com/cheri925silver/",
+    "header": "망미장 셀러 라인업(부산 공예 작가 13인) — 부스번호·계정·자기소개를 셀러 본인들이 함께 게시",
+    "posts": [
+     "https://www.instagram.com/p/Dc-zUaIoxb1/",
+     "https://www.instagram.com/p/DdA4se5JEQi/",
+     "https://www.instagram.com/p/DdBDmMYSuo7/"
     ]
    }
   },
-  "H-10": {
-   "summary": "쉐리925 — 실버925 주얼리. chéri925, 가로수길.",
-   "confirmed": false
-  },
   "I-06": {
-   "summary": "일루트립 — 제주 월정 쇼룸을 둔 작가/공방. 육지 행사에 다니느라 쇼룸을 자주 닫는다.",
-   "confirmed": false
+   "summary": "일루트립(elutrip) — 내추럴 재료로 만든 패브릭 생활소품. 제주 월정리 쇼룸을 운영하며 부산 망미장 팀으로 참여한다.",
+   "confirmed": true,
+   "roamInterpretation": "천연 재료로 패브릭 소품을 만드는 곳이야. 제주 쇼룸이 본거지라 서울에서 보기 드물어.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.8
+    },
+    {
+     "slug": "discovery",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "패브릭 소품을 낱개로 고를 수 있어.",
+    "discovery": "제주에서 올라온 브랜드라 서울에선 만나기 어려워."
+   },
+   "thingsToDo": [
+    "패브릭 짜임 만져보기",
+    "재료 출처 물어보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "일루트립",
+    "제주 월정리",
+    "내추럴 패브릭"
+   ],
+   "sourceUrl": "https://www.instagram.com/p/Dc-zUaIoxb1/",
+   "name": "일루트립",
+   "instagram": {
+    "handle": "elutrip",
+    "url": "https://www.instagram.com/elutrip/",
+    "header": "망미장 셀러 라인업(부산 공예 작가 13인) — 부스번호·계정·자기소개를 셀러 본인들이 함께 게시",
+    "posts": [
+     "https://www.instagram.com/p/Dc-zUaIoxb1/",
+     "https://www.instagram.com/p/DdA4se5JEQi/",
+     "https://www.instagram.com/p/DdBDmMYSuo7/"
+    ]
+   }
   },
   "J-07": {
    "summary": "실드림 — 디자인 실리콘 주방용품. 대한민국 실리콘 주방용품 선두 기업이라고 자칭.",
@@ -1247,12 +1383,75 @@
    "image": "/booths/magok-livingmarket-2026/J-07.webp"
   },
   "H-15": {
-   "summary": "미파 — 인스타 검색으로 브랜드가 특정되지 않음. mimasdecor 초안은 '미마스'라 다른 브랜드일 가능성이 높다.",
-   "confirmed": false
+   "summary": "미파(MIPA) — '옷을 짓고 사람을 잇다. 계절이 기다려지는 옷'. 부산 망미장 팀으로 참여한다.",
+   "confirmed": true,
+   "roamInterpretation": "계절 옷을 짓는 곳이야. 입어보고 고르는 자리라 시간을 좀 두고 가면 좋아.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.8
+    },
+    {
+     "slug": "inspiration",
+     "strength": 0.5
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "옷을 입어보고 고를 수 있어.",
+    "inspiration": "계절을 기다리게 하는 옷을 짓는다는 말이 어떤 뜻인지 봐."
+   },
+   "thingsToDo": [
+    "입어보고 소재 확인하기",
+    "계절별 라인 물어보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "미파",
+    "MIPA",
+    "계절 옷"
+   ],
+   "sourceUrl": "https://www.instagram.com/p/Dc-zUaIoxb1/",
+   "name": "미파",
+   "instagram": {
+    "handle": "lee_mipa",
+    "url": "https://www.instagram.com/lee_mipa/",
+    "header": "망미장 셀러 라인업(부산 공예 작가 13인) — 부스번호·계정·자기소개를 셀러 본인들이 함께 게시",
+    "posts": [
+     "https://www.instagram.com/p/Dc-zUaIoxb1/",
+     "https://www.instagram.com/p/DdA4se5JEQi/",
+     "https://www.instagram.com/p/DdBDmMYSuo7/"
+    ]
+   }
   },
   "N-13": {
-   "summary": "예목공방 — 목공예 공방. 다기장(茶器欌) 등 목가구·목공예. 캘리그라피·전각과 함께 활동.",
-   "confirmed": false
+   "summary": "예목공방 — 포천 고모리의 옻칠·나전·목공예 공방. 자개를 붙이고 옻을 칠해 다기장 같은 목가구와 소품을 만든다.",
+   "confirmed": false,
+   "roamInterpretation": "자개를 한 조각씩 붙여 옻을 칠하는 공방이야. 손이 얼마나 들어갔는지는 가까이서 봐야 보여.",
+   "valueTags": [
+    {
+     "slug": "inspiration",
+     "strength": 0.9
+    },
+    {
+     "slug": "learning",
+     "strength": 0.5
+    }
+   ],
+   "recommendationReasons": {
+    "inspiration": "자개 조각이 붙어가는 방식을 가까이서 볼 수 있어.",
+    "learning": "나전과 옻칠이 어떻게 다른지 들을 수 있어."
+   },
+   "thingsToDo": [
+    "자개 무늬 가까이 보기",
+    "제작 기간 물어보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "예목공방",
+    "나전",
+    "포천 고모리"
+   ],
+   "sourceUrl": "https://www.instagram.com/explore/search/keyword/?q=%EC%98%88%EB%AA%A9%EA%B3%B5%EB%B0%A9"
   },
   "N-15": {
    "summary": "오도마(ohdoma) — 오도마, 공간을 더 빛나게 해드리는 아름다운 배경 \"살아가면서 가장 아름다운 일은 누군가의 배경이 되어주는 일이다\" 안도현 시인의 말처럼, 오도마는 식탁 위 음식을 돋보이게하는 '따뜻한 배경'을 만듭니다. 이번 전시에서 오도마는 화려함 대신 '배경의 미학'으로 일상을 빛내줄 정서적 안식을 전해드립니다.",
@@ -1333,12 +1532,64 @@
    }
   },
   "Q-17": {
-   "summary": "호밀빵의 파수꾼 — The Catcher Of Rye Bread. 북유럽식 호밀빵. 연남동 카페 '그랜드마마'에서 판매.",
-   "confirmed": false
+   "summary": "호밀빵의 파수꾼(The Catcher of Rye Bread) — 천연효모로 만드는 정통 유럽식·북유럽 호밀빵. 'Eat Rye Be Healthy'를 내걸고 부산커피쇼 등에 참가해왔다.",
+   "confirmed": false,
+   "roamInterpretation": "천연효모 호밀빵만 굽는 곳이야. 종류가 매일 달라서 그날 나온 걸 보면 돼.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.8
+    },
+    {
+     "slug": "experience",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "호밀빵을 종류별로 골라 담을 수 있어.",
+    "experience": "천연효모 빵의 신맛이 어떤지 맛봐야 알아."
+   },
+   "thingsToDo": [
+    "그날 나온 종류 확인하기",
+    "맛보고 고르기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "호밀빵의 파수꾼",
+    "천연효모",
+    "북유럽 호밀빵"
+   ],
+   "sourceUrl": "https://www.instagram.com/p/DLYQrvszK-b/"
   },
   "O-06": {
-   "summary": "브라운라이스팩토리 — 라이스크래커 '미샌드'(초코·치즈). 바삭한 쌀과자.",
-   "confirmed": false
+   "summary": "브라운라이스팩토리 — 국내산 현미로 쌀과자를 만드는 브랜드. 해남샌드칩에서 시작해 초코미샌드·치즈미샌드 등 라이스크래커를 낸다.",
+   "confirmed": false,
+   "roamInterpretation": "현미로 쌀과자를 만드는 곳이야. 바삭한 정도는 씹어봐야 알아.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.8
+    },
+    {
+     "slug": "experience",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "쌀과자를 맛별로 골라 담을 수 있어.",
+    "experience": "맛보고 고르는 자리야."
+   },
+   "thingsToDo": [
+    "초코·치즈 맛 비교하기",
+    "현미 원산지 물어보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "브라운라이스팩토리",
+    "미샌드",
+    "해남샌드칩"
+   ],
+   "sourceUrl": "https://www.instagram.com/p/DNPlM_QpNlu/"
   },
   "P-02": {
    "summary": "크리미웨이(CREAMYWAY) — 국내산 농산물 원료로 만든 단백질 쉐이크 크리미웨이 크리미웨이는 국내산 원료를 바탕으로 맛과 영양을 모두 담은 단백질 쉐이크 브랜드입니다. 바쁜 일상 속에서도 간편하게 단백질을 섭취할 수 있도록 맛있고 부담 없이 즐기는 한 잔을 제안합니다. 오픈 이벤트로 특별한 행사 가격과 합리적인 혜택을 만나볼 수 있습니다. 제품을 맛보고 구매하며 크리미웨이의 건강하고 맛있는 일상을 경험해보세요.",
@@ -1379,8 +1630,33 @@
    }
   },
   "P-18": {
-   "summary": "네코먼데이 로스터리 — 커피. '밀크' 등 자체 음료 라인 할인 운영.",
-   "confirmed": false
+   "summary": "네코먼데이 로스터리 — 커피 로스터리. 부산 카페쇼에 참가해왔고 밀크 베이스 음료도 함께 낸다.",
+   "confirmed": false,
+   "roamInterpretation": "직접 볶은 원두를 내는 로스터리야. 마셔보고 고르는 게 빨라.",
+   "valueTags": [
+    {
+     "slug": "experience",
+     "strength": 0.8
+    },
+    {
+     "slug": "goods",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "experience": "내린 커피를 마셔보고 고를 수 있어.",
+    "goods": "원두를 봉지째 사 갈 수 있어."
+   },
+   "thingsToDo": [
+    "원두 시음 비교하기",
+    "로스팅 정도 물어보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "네코먼데이",
+    "로스터리"
+   ],
+   "sourceUrl": "https://www.instagram.com/explore/search/keyword/?q=%EB%84%A4%EC%BD%94%EB%A8%BC%EB%8D%B0%EC%9D%B4"
   },
   "R-08": {
    "summary": "꼬마루 수제육포(KKOMAROO) — 한돈으로 만든 저염식 수제육포 꼬마루는 다년간의 육가공 노하우를 바탕으로 각 고기의 특성을 분석 및 연구하여 품질과 맛에서 으뜸가는 수제 육포를 만듭니다. 특히 양질의 고기만을 선별하고 청결하고 기술력 있는 가공을 거치며, 최선을 다해 소비자에게 다가갈 수 있도록 노력하고 있습니다.",
@@ -1422,8 +1698,34 @@
    }
   },
   "M-05": {
-   "summary": "이어서보 — 티웨어(찻잔·다구). 찻자리용 제품.",
-   "confirmed": false
+   "summary": "이어서보 — 한국 전통직물로 조각보를 만드는 브랜드. 대표 제품은 8가지 색의 '풍경조각보'로, 금속 풍경에 매치하거나 책갈피로 쓴다. 티웨어도 함께 낸다.",
+   "confirmed": false,
+   "roamInterpretation": "전통 조각보를 오늘 쓰는 물건으로 옮기는 곳이야. 색이 여덟 가지라 고르는 데 시간이 걸려.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.8
+    },
+    {
+     "slug": "inspiration",
+     "strength": 0.7
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "풍경조각보를 색깔별로 골라 담을 수 있어.",
+    "inspiration": "조각보가 오늘의 물건이 되는 방식을 봐."
+   },
+   "thingsToDo": [
+    "조각보 색상 8가지 비교하기",
+    "풍경과 매치해보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "이어서보",
+    "풍경조각보",
+    "전통직물"
+   ],
+   "sourceUrl": "https://www.instagram.com/p/DTuW8JwgfvY/"
   },
   "L-07": {
    "summary": "엘제이엘 갤러리(LJL gallery) — 삶의 무대를 예술로 바꾸는 Artful Living 공예 전문 갤러리 엘제이엘(LJL)은 ‘공간과 장식’을 주제로 우리 곁의 사물이 예술이 되는 순간을 조명한다. 이번 전시는 공간을 감각적으로 바꾸는 벽장식 오브제부터 동시대적 미감을 담은 현대장신구까지, 7인의 작가가 빚어낸 독창적인 형상과 색채를 통해, 우리의 공간과 내면을 아름답게 완성하는 예술적 울림을 전하고자 한다.",
@@ -1515,7 +1817,7 @@
    "confirmed": false
   },
   "G-08": {
-   "summary": "아러바웃(Rabout) — 보이지 않는 향을 설계하고 계절마다 새 향을 내는 프래그런스 브랜드. 카퍼퓸, Peach·Neroli·Plumeria 등 향수와 방향 제품을 만든다.",
+   "summary": "아러바웃(r__about) — 맞춤형 향기 개발 기업 '네이처센트'가 런칭한 향기 브랜드. 하트 모양 병에 담은 카퍼퓸 등 공간·차량용 향 제품을 만든다.",
    "confirmed": false,
    "image": "/booths/magok-livingmarket-2026/G-08_1.webp",
    "images": [
@@ -1525,7 +1827,33 @@
     "/booths/magok-livingmarket-2026/G-08_4.webp",
     "/booths/magok-livingmarket-2026/G-08_5.webp",
     "/booths/magok-livingmarket-2026/G-08_6.webp"
-   ]
+   ],
+   "roamInterpretation": "향을 디자인하는 회사가 낸 브랜드야. 차에 거는 작은 것부터 있어서 부담 없이 골라져.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.8
+    },
+    {
+     "slug": "experience",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "카퍼퓸 같은 작은 것부터 고를 수 있어.",
+    "experience": "향을 직접 맡아보고 정하는 자리야."
+   },
+   "thingsToDo": [
+    "카퍼퓸 향 맡아보기",
+    "공간용과 차량용 비교하기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "아러바웃",
+    "카퍼퓸",
+    "네이처센트"
+   ],
+   "sourceUrl": "https://www.instagram.com/p/C6slgbTKTF1/"
   },
   "F-11": {
    "summary": "알비 빈티지포스터 — '알비마켓'을 여는 빈티지 포스터·엽서 셀렉트숍. 루비박스출판사가 운영하는 성수동 매장.",
@@ -1540,7 +1868,7 @@
    "confirmed": false
   },
   "P-01": {
-   "summary": "토마로우 — 그래도팜이 직접 기른 유기농 에어룸 토마토로 만든 가공식품(스윗칠리 토마토잼, 토마토 매콤마요). 추석선물 세트 운영.",
+   "summary": "토마로우(TOMARROW) — 강원도 영월의 유기농 토마토 농장 '그래도팜'이 만든 브랜드. 유기농 에어룸 토마토 73%의 스윗칠리 토마토잼, 토마토 매콤마요 등을 만든다.",
    "confirmed": false,
    "image": "/booths/magok-livingmarket-2026/P-01_1.webp",
    "images": [
@@ -1554,20 +1882,98 @@
     "/booths/magok-livingmarket-2026/P-01_8.webp",
     "/booths/magok-livingmarket-2026/P-01_9.webp",
     "/booths/magok-livingmarket-2026/P-01_10.webp"
-   ]
+   ],
+   "roamInterpretation": "농장이 직접 만든 토마토 가공품을 내는 곳이야. 잼인데 달지 않아서 맛봐야 감이 와.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.8
+    },
+    {
+     "slug": "discovery",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "토마토잼·소스를 맛보고 사 갈 수 있어.",
+    "discovery": "에어룸 토마토를 이렇게 쓰는 걸 처음 볼 거야."
+   },
+   "thingsToDo": [
+    "토마토잼 맛보기",
+    "에어룸 토마토 물어보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "토마로우",
+    "그래도팜",
+    "에어룸 토마토"
+   ],
+   "sourceUrl": "https://www.instagram.com/p/Dc2zdB3Bw6A/"
   },
   "Q-10": {
    "summary": "아람드리 — 과채 쥬스(40포 세트 등 파우치 음료). 공동구매로 팔린다.",
    "confirmed": false
   },
   "Q-16": {
-   "summary": "홍시궁 — 매장 브랜드(가맹점 인수·승계 모집 공지 있음). 식품 매장.",
+   "summary": "홍시궁 — 전주 객리단길에서 시작한 홍시 디저트 브랜드. 홍시빙수·음료·타르트·찹쌀떡을 만든다.",
    "confirmed": false,
-   "image": "/booths/magok-livingmarket-2026/Q-16.webp"
+   "image": "/booths/magok-livingmarket-2026/Q-16.webp",
+   "roamInterpretation": "홍시 하나로 디저트를 다 만드는 곳이야. 전주 아니면 만나기 어려워.",
+   "valueTags": [
+    {
+     "slug": "experience",
+     "strength": 0.8
+    },
+    {
+     "slug": "goods",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "experience": "홍시 디저트를 맛보고 고르는 자리야.",
+    "discovery": "전주에서 올라온 브랜드라 서울에선 드물어."
+   },
+   "thingsToDo": [
+    "홍시 디저트 종류별로 보기",
+    "맛보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "홍시궁",
+    "홍시빙수",
+    "전주 객리단길"
+   ],
+   "sourceUrl": "https://www.instagram.com/p/DYEaycdkcZj/"
   },
   "R-04": {
-   "summary": "아라리유정란 — 리빙페어 현장에서 먹어보고 구매했다는 후기가 있다. 유정란.",
-   "confirmed": false
+   "summary": "아라리유정란 — 365일 풀을 먹여 키운 그래스페드 닭이 낳은 오메가3 유정란. 방목과 목초 급여를 함께 하며 회원제 정기배송으로 판다.",
+   "confirmed": false,
+   "roamInterpretation": "방목해 풀만 먹인 닭의 알을 파는 곳이야. 노른자 색부터 다르다는 게 이 부스의 주장이야.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.8
+    },
+    {
+     "slug": "learning",
+     "strength": 0.5
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "현장에서 계란을 사고 정기배송을 신청할 수 있어.",
+    "learning": "방목과 그래스페드가 무엇이 다른지 들을 수 있어."
+   },
+   "thingsToDo": [
+    "노른자 색 직접 확인하기",
+    "정기배송 조건 묻기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "아라리유정란",
+    "그래스페드",
+    "방목"
+   ],
+   "sourceUrl": "https://www.instagram.com/p/DYpGuNBgSdy/"
   },
   "R-05": {
    "summary": "내일 뭐 먹지 마켓 — **플리마켓을 여는 주체**다('내일뭐먹지? MARKET' 플리마켓, 행운권추첨·버스킹).",
@@ -2103,7 +2509,7 @@
    ]
   },
   "E-05": {
-   "summary": "",
+   "summary": "코웨이 — 정수기·공기청정기·비데를 렌털로 공급하는 환경가전 기업.",
    "image": "/booths/magok-livingmarket-2026/E-05_1.webp",
    "images": [
     "/booths/magok-livingmarket-2026/E-05_1.webp",
@@ -2116,7 +2522,33 @@
     "/booths/magok-livingmarket-2026/E-05_8.webp",
     "/booths/magok-livingmarket-2026/E-05_9.webp",
     "/booths/magok-livingmarket-2026/E-05_10.webp"
-   ]
+   ],
+   "roamInterpretation": "정수기와 공기청정기를 렌털로 쓰는 곳이야. 현장 상담이 목적인 부스야.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.7
+    },
+    {
+     "slug": "rest",
+     "strength": 0.5
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "렌털 조건을 현장에서 비교할 수 있어.",
+    "rest": "집 안 공기와 물을 한 번에 정리하는 자리야."
+   },
+   "thingsToDo": [
+    "렌털 조건 비교하기",
+    "설치 일정 물어보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "코웨이",
+    "렌털",
+    "환경가전"
+   ],
+   "confirmed": false
   },
   "E-03": {
    "summary": "발롱드파리(BallonDeParis) — 프랑스 100년의 현악기 기술을 담은 디자인 스피커 발롱드파리는 프랑스에서 약 100년 전, 현악기를 제작하던 가렐 가문에서 시작된 음향기기 브랜드입니다. 악기를 만들던 장인의 감각을 바탕으로, 공간에 자연스럽게 스며드는 소리를 추구합니다. 파리 본사의 가렐 가문 4대 형제인 라파엘 가렐과 줄리앙 가렐이 디자인과 사운드 기획을 하였고, 숙련된 아티스트들이 하나하나 수작업으로 완성하고 있습니다.",
@@ -2248,7 +2680,7 @@
    ]
   },
   "F-01": {
-   "summary": "테이블타임즈 — 친환경 집기로 행사·전시 공간을 기획하고 시공하는 팀. 2026 인벤타리오, 캐릭터라이선싱페어, 부산 살림 마켓, ITB Asia 부산관 등 박람회 부스와 라운지를 만들어왔다.",
+   "summary": "테이블타임즈 — '사람들이 모이고, 대화하고, 기억을 나누는 자리'인 테이블에서 출발한 브랜드. 이름부터 테이블에서 시작했다고 밝힌다.",
    "image": "/booths/magok-livingmarket-2026/F-01_1.webp",
    "images": [
     "/booths/magok-livingmarket-2026/F-01_1.webp",
@@ -2261,7 +2693,33 @@
     "/booths/magok-livingmarket-2026/F-01_8.webp",
     "/booths/magok-livingmarket-2026/F-01_9.webp",
     "/booths/magok-livingmarket-2026/F-01_10.webp"
-   ]
+   ],
+   "roamInterpretation": "테이블에 둘 물건을 만드는 곳이야. 이름부터 그 자리를 겨냥해서 지었어.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.7
+    },
+    {
+     "slug": "rest",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "테이블 위 물건을 낱개로 고를 수 있어.",
+    "rest": "사람이 모이는 자리를 어떻게 꾸릴지 그려보게 돼."
+   },
+   "thingsToDo": [
+    "테이블 세팅 연출 보기",
+    "브랜드 시작 이야기 묻기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "테이블타임즈",
+    "테이블"
+   ],
+   "sourceUrl": "https://www.instagram.com/p/DbCqUEaEoHm/",
+   "confirmed": false
   },
   "F-22": {
    "summary": "나로에(NAROÉ) — 기준 있는 삶을 위한 라이프스타일 브랜드 NAROÉ 남과 비교하는 대신 나만의 감각과 미감으로 기준을 세우는 삶. NAROÉ(나로에)는 그 기준을 찾기 위해 '나로 돌아간다'는 뜻을 이름에 담았습니다. 로고는 청룡영화상 수상자인 서성경 미술감독이 함께해 미감을 살렸으며, 첫 제품 '젠틀 디시 케어'는 설거지라는 반복적인 순간에도 향과 감촉의 기준을 두어 일상의 평범한 순간을 '나를 돌보는 시간'으로 바꿉니다",
@@ -2358,12 +2816,66 @@
    ]
   },
   "F-21": {
-   "summary": "",
-   "image": "/booths/magok-livingmarket-2026/F-21.webp"
+   "summary": "제로연구소 — 달항아리 백자토로 만든 오브제형 방향제를 만든다. 향이 나면서 인테리어 소품이 되는 형태로, 메가쇼 2026 시즌1에 참가했다.",
+   "image": "/booths/magok-livingmarket-2026/F-21.webp",
+   "roamInterpretation": "백자토로 빚은 방향제를 만드는 곳이야. 향과 오브제를 한 몸으로 만든 게 특징이야.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.8
+    },
+    {
+     "slug": "inspiration",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "방향제를 향별로 골라 담을 수 있어.",
+    "inspiration": "방향제를 숨기지 않고 놓는 방식이 눈에 들어와."
+   },
+   "thingsToDo": [
+    "백자토 질감 만져보기",
+    "향 종류 맡아 비교하기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "제로연구소",
+    "달항아리 백자토",
+    "오브제형 방향제"
+   ],
+   "sourceUrl": "https://www.instagram.com/p/DX8Ec9ljzw_/",
+   "confirmed": false
   },
   "F-17": {
-   "summary": "",
-   "image": "/booths/magok-livingmarket-2026/F-17.webp"
+   "summary": "캠프로그 스튜디오 — '언제 어느 곳이나 손쉽게 입기 편한 옷'을 제안하는 브랜드. 캠핑 의류와 원목 용품을 함께 내며 캠핑&피크닉페어 참가, 더현대 대구 팝업 이력이 있다.",
+   "image": "/booths/magok-livingmarket-2026/F-17.webp",
+   "roamInterpretation": "캠핑 옷과 원목 용품을 같이 내는 곳이야. 밖에서 입을 옷을 실내 기준으로 만든 게 특징이야.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.8
+    },
+    {
+     "slug": "discovery",
+     "strength": 0.5
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "의류와 원목 용품을 함께 고를 수 있어.",
+    "discovery": "리빙 마켓에서 캠핑 브랜드를 만나는 조합이 흔치 않아."
+   },
+   "thingsToDo": [
+    "옷 입어보고 활동성 확인하기",
+    "원목 캠핑 용품 보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "캠프로그 스튜디오",
+    "캠핑 의류",
+    "원목 용품"
+   ],
+   "sourceUrl": "https://www.instagram.com/p/DG979xhvd4L/",
+   "confirmed": false
   },
   "F-25": {
    "summary": "꽁떼르씨엘(CONTE DE LECIEL) — 손끝에서 시작되는 따뜻한 이야기 꽁떼르씨엘(Conte de Leciel)은 국내외 작가와 공방의 핸드메이드 제품과 개성 있는 리빙 오브제를 소개하는 크래프트 부티크입니다. 제작자의 손길과 이야기가 담긴 물건을 통해 일상에 작은 즐거움과 오래 간직할 가치를 제안하며, 온라인 스토어와 오프라인 팝업 및 편집숍에서 고객과 만나고 있습니다.",
@@ -2514,7 +3026,7 @@
    ]
   },
   "G-03": {
-   "summary": "디엠피 북스(dmpbooks) — 강남대로2길의 해외 디자인 서적 전문 서점. 데이비드 호크니 화집, 그래픽·패턴 자료집, 콜라주 엽서책 등을 다룬다. 서울국제도서전 참가 이력.",
+   "summary": "디엠피 북스(dmpbooks) — 디자인 책 전문 서점. 카페·디자인 관련 서적을 직수입해 최신 자료를 소개한다. 제주카페스타 등 행사 참가 이력.",
    "image": "/booths/magok-livingmarket-2026/G-03_1.webp",
    "images": [
     "/booths/magok-livingmarket-2026/G-03_1.webp",
@@ -2527,13 +3039,40 @@
     "/booths/magok-livingmarket-2026/G-03_8.webp",
     "/booths/magok-livingmarket-2026/G-03_9.webp",
     "/booths/magok-livingmarket-2026/G-03_10.webp"
-   ]
+   ],
+   "roamInterpretation": "디자인 책만 직수입해 파는 서점이야. 국내에 잘 안 들어오는 책을 훑을 수 있어.",
+   "valueTags": [
+    {
+     "slug": "learning",
+     "strength": 0.9
+    },
+    {
+     "slug": "discovery",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "learning": "디자인·카페 서적을 직접 넘겨보며 고를 수 있어.",
+    "discovery": "국내에서 보기 어려운 수입 서적이 섞여 있어."
+   },
+   "thingsToDo": [
+    "수입 서적 넘겨보기",
+    "관심 분야 추천 받기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "디엠피북스",
+    "디자인 서점",
+    "직수입"
+   ],
+   "sourceUrl": "https://www.instagram.com/p/CsSTGMRpOMv/",
+   "confirmed": false
   },
   "G-22": {
-   "summary": "구김(KOOKIM) — 도예가 김민수와 염색공예가 구희진의 부부작가 브랜드. 도자기와 염색 소품을 함께 낸다. 마곡리빙마켓 초대권과 부스배치도를 직접 올렸다.",
+   "summary": "구김(KOOKIM) — 손으로 빚는 핸드메이드 도자기와 자연염색 제품. 도예가 김민수·염색공예가 구희진 부부작가 브랜드로 부산 망미장 팀으로 참여한다.",
    "image": "/booths/magok-livingmarket-2026/G-22_1.webp",
    "confirmed": true,
-   "sourceUrl": "https://www.instagram.com/koo_kim_/",
+   "sourceUrl": "https://www.instagram.com/p/Dc-zUaIoxb1/",
    "images": [
     "/booths/magok-livingmarket-2026/G-22_1.webp",
     "/booths/magok-livingmarket-2026/G-22_2.webp",
@@ -2546,7 +3085,7 @@
     "/booths/magok-livingmarket-2026/G-22_9.webp",
     "/booths/magok-livingmarket-2026/G-22_10.webp"
    ],
-   "roamInterpretation": "도예와 염색을 하는 부부가 같이 내는 부스야. 그릇과 천이 한자리에 있어서 조합을 보게 돼.",
+   "roamInterpretation": "도예와 자연염색을 하는 부부가 같이 내는 부스야. 그릇과 천이 한자리에 있어서 조합을 보게 돼.",
    "valueTags": [
     {
      "slug": "goods",
@@ -2569,8 +3108,19 @@
    "memoryHooks": [
     "부부작가",
     "도예",
-    "염색공예"
-   ]
+    "자연염색"
+   ],
+   "name": "구김",
+   "instagram": {
+    "handle": "koo_kim_",
+    "url": "https://www.instagram.com/koo_kim_/",
+    "header": "망미장 셀러 라인업(부산 공예 작가 13인) — 부스번호·계정·자기소개를 셀러 본인들이 함께 게시",
+    "posts": [
+     "https://www.instagram.com/p/Dc-zUaIoxb1/",
+     "https://www.instagram.com/p/DdA4se5JEQi/",
+     "https://www.instagram.com/p/DdBDmMYSuo7/"
+    ]
+   }
   },
   "G-20": {
    "summary": "",
@@ -2681,7 +3231,7 @@
    ]
   },
   "G-27": {
-   "summary": "도미노우드(DOMINO WOOD) — 원목 인테리어 소품. 도마, 버섯 모양 스툴, 폰 스탠드, 연필꽂이, 북 스탠드 등을 만든다.",
+   "summary": "도미노우드(DOMINO) — 미니멀한 감성을 나무에 담는 라이프스타일 브랜드. 부산 망미장 팀으로 참여한다.",
    "image": "/booths/magok-livingmarket-2026/G-27_1.webp",
    "images": [
     "/booths/magok-livingmarket-2026/G-27_1.webp",
@@ -2694,7 +3244,45 @@
     "/booths/magok-livingmarket-2026/G-27_8.webp",
     "/booths/magok-livingmarket-2026/G-27_9.webp",
     "/booths/magok-livingmarket-2026/G-27_10.webp"
-   ]
+   ],
+   "roamInterpretation": "나무로 군더더기 없는 소품을 만드는 곳이야. 결과 마감이 전부라 만져봐야 알아.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.8
+    },
+    {
+     "slug": "inspiration",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "목재 소품을 낱개로 고를 수 있어.",
+    "inspiration": "덜어낸 형태가 어떻게 보이는지 눈에 들어와."
+   },
+   "thingsToDo": [
+    "나무 결 만져보기",
+    "마감 이음새 확인하기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "도미노우드",
+    "DOMINO",
+    "미니멀 우드"
+   ],
+   "sourceUrl": "https://www.instagram.com/p/Dc-zUaIoxb1/",
+   "confirmed": true,
+   "name": "도미노우드",
+   "instagram": {
+    "handle": "dominowood_design",
+    "url": "https://www.instagram.com/dominowood_design/",
+    "header": "망미장 셀러 라인업(부산 공예 작가 13인) — 부스번호·계정·자기소개를 셀러 본인들이 함께 게시",
+    "posts": [
+     "https://www.instagram.com/p/Dc-zUaIoxb1/",
+     "https://www.instagram.com/p/DdA4se5JEQi/",
+     "https://www.instagram.com/p/DdBDmMYSuo7/"
+    ]
+   }
   },
   "I-03": {
    "summary": "클라우망1981(CLAUMAN1981) — 공간의 무드를 완성하는 프리미엄 인테리어 오브제 타월 -",
@@ -3269,8 +3857,35 @@
    }
   },
   "Q-09": {
-   "summary": "",
-   "image": "/booths/magok-livingmarket-2026/Q-09.webp"
+   "summary": "스타곰탕 — 나주곰탕·사골곰탕 밀키트 브랜드. 매달 첫째 주 수요일 '곰탕데이' 라이브를 연다.",
+   "image": "/booths/magok-livingmarket-2026/Q-09.webp",
+   "roamInterpretation": "끓여둔 곰탕을 얼려 파는 곳이야. 국물 맛은 맛봐야 알아서 시식이 핵심이야.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.8
+    },
+    {
+     "slug": "experience",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "냉동 곰탕을 바로 사 갈 수 있어.",
+    "experience": "국물을 맛보고 고르는 자리야."
+   },
+   "thingsToDo": [
+    "나주곰탕·사골곰탕 맛 비교하기",
+    "보관 방법 확인하기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "스타곰탕",
+    "나주곰탕",
+    "곰탕데이"
+   ],
+   "sourceUrl": "https://www.instagram.com/p/DcvK9AHEeK4/",
+   "confirmed": false
   },
   "Q-02": {
    "summary": "끄레델리(Ggredeli) — 일상에 달콤한 감동을 전하는 프리미엄 디저트 브랜드 끄레델리는 엄선된 최상급 원료와 트렌디한 레시피로 고품격 디저트를 선보이는 전문 브랜드입니다. 이번 전시에서는 끄레델리만의 차별화된 베스트셀러 제품 라인업부터 신제품까지 한자리에서 만나보실 수 있습니다.",
@@ -3468,8 +4083,35 @@
    ]
   },
   "R-01": {
-   "summary": "",
-   "image": "/booths/magok-livingmarket-2026/R-01.webp"
+   "summary": "더 더치 치즈앤모어 — 치즈 브랜드. 신세계백화점 강남점·본점에서 설 선물세트를 판매했고, 삼성동·강남구청역 인근에서 직영 캐주얼 다이닝 레스토랑을 운영한다.",
+   "image": "/booths/magok-livingmarket-2026/R-01.webp",
+   "roamInterpretation": "치즈를 직접 들여와 파는 곳이야. 종류가 많아서 맛보고 좁히는 게 빨라.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.8
+    },
+    {
+     "slug": "experience",
+     "strength": 0.7
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "치즈를 맛보고 골라 담을 수 있어.",
+    "experience": "종류별로 맛을 비교하는 자리야."
+   },
+   "thingsToDo": [
+    "치즈 종류별로 맛보기",
+    "선물세트 구성 확인하기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "더 더치 치즈앤모어",
+    "치즈",
+    "캐주얼 다이닝"
+   ],
+   "sourceUrl": "https://www.instagram.com/p/DNaY5ZJPBu1/",
+   "confirmed": false
   },
   "G-15": {
    "summary": "플뢋(floaat) — 플뢋은 섬유공예 기법을 응용한 소품을 만듭니다. 플뢋의 소창컬렉션과 함께 드로잉 작업으로 만들어진 아트 프린트와 타피스트리 오브제를 선보일 계획입니다. 추가적으로, 일본 작가의 프린트 작품도 같이 전시/판매 예정입니다.",
@@ -3715,6 +4357,341 @@
     "IRC",
     "희망을 구조합니다"
    ]
+  },
+  "G-21": {
+   "summary": "유리한(youreehan) — 오묘한 색감과 동양적 기운을 예술로 승화한 유리공예 브랜드. 부산 망미장 작가 13인의 '공예여행' 팀으로 참여한다.",
+   "roamInterpretation": "유리를 불어 색을 얹는 공예 브랜드야. 빛을 통과시켜야 색이 보여서 실물로 봐야 알아.",
+   "valueTags": [
+    {
+     "slug": "inspiration",
+     "strength": 0.9
+    },
+    {
+     "slug": "goods",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "inspiration": "유리에 색이 갇힌 방식을 빛으로 확인하게 돼.",
+    "goods": "작가가 직접 만든 유리 소품을 낱개로 살 수 있어."
+   },
+   "thingsToDo": [
+    "빛에 비춰 색 보기",
+    "작가에게 제작 방식 묻기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "유리한",
+    "유리공예",
+    "동양적 색감"
+   ],
+   "sourceUrl": "https://www.instagram.com/p/Dc-zUaIoxb1/",
+   "confirmed": true,
+   "name": "유리한",
+   "instagram": {
+    "handle": "youreehan_",
+    "url": "https://www.instagram.com/youreehan_/",
+    "header": "망미장 셀러 라인업(부산 공예 작가 13인) — 부스번호·계정·자기소개를 셀러 본인들이 함께 게시",
+    "posts": [
+     "https://www.instagram.com/p/Dc-zUaIoxb1/",
+     "https://www.instagram.com/p/DdA4se5JEQi/",
+     "https://www.instagram.com/p/DdBDmMYSuo7/"
+    ]
+   }
+  },
+  "H-09": {
+   "summary": "로레인(lorraine) — 현악기와 음악을 소재로 원목 소품과 도자기를 융합해 만드는 수공예 공방. 부산 망미장 팀으로 참여한다.",
+   "roamInterpretation": "악기를 모티브로 나무와 도자를 붙이는 공방이야. 왜 이 형태인지 물어보면 이야기가 길어져.",
+   "valueTags": [
+    {
+     "slug": "inspiration",
+     "strength": 0.9
+    },
+    {
+     "slug": "discovery",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "inspiration": "악기의 형태가 생활 소품으로 옮겨진 걸 볼 수 있어.",
+    "discovery": "나무와 도자를 한 물건에 붙이는 방식을 처음 볼 거야."
+   },
+   "thingsToDo": [
+    "악기 모티브 찾아보기",
+    "나무와 도자 이음새 보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "로레인",
+    "현악기",
+    "원목+도자"
+   ],
+   "sourceUrl": "https://www.instagram.com/p/Dc-zUaIoxb1/",
+   "confirmed": true,
+   "name": "로레인",
+   "instagram": {
+    "handle": "stubby_brush",
+    "url": "https://www.instagram.com/stubby_brush/",
+    "header": "망미장 셀러 라인업(부산 공예 작가 13인) — 부스번호·계정·자기소개를 셀러 본인들이 함께 게시",
+    "posts": [
+     "https://www.instagram.com/p/Dc-zUaIoxb1/",
+     "https://www.instagram.com/p/DdA4se5JEQi/",
+     "https://www.instagram.com/p/DdBDmMYSuo7/"
+    ]
+   }
+  },
+  "H-11": {
+   "summary": "더세라핌(The-Seraphim) — '한국형 헤리티지 실버 주얼리'. 925 순은에 전통 매듭과 문화재 문양을 담아 전통 문화유산을 현대 은세공으로 재해석한다. 부산 망미장 팀으로 참여한다.",
+   "roamInterpretation": "문화재 문양을 은으로 옮기는 곳이야. 무늬가 어디서 왔는지 물어보면 작품이 달리 보여.",
+   "valueTags": [
+    {
+     "slug": "inspiration",
+     "strength": 0.9
+    },
+    {
+     "slug": "learning",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "inspiration": "전통 문양이 오늘의 주얼리로 옮겨진 걸 볼 수 있어.",
+    "learning": "어느 문화재에서 온 무늬인지 직접 들을 수 있어."
+   },
+   "thingsToDo": [
+    "문양의 출처 물어보기",
+    "전통 매듭 부분 살펴보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "더세라핌",
+    "925 순은",
+    "전통 매듭"
+   ],
+   "sourceUrl": "https://www.instagram.com/p/Dc-zUaIoxb1/",
+   "confirmed": true,
+   "name": "더세라핌",
+   "instagram": {
+    "handle": "the_seraphim76",
+    "url": "https://www.instagram.com/the_seraphim76/",
+    "header": "망미장 셀러 라인업(부산 공예 작가 13인) — 부스번호·계정·자기소개를 셀러 본인들이 함께 게시",
+    "posts": [
+     "https://www.instagram.com/p/Dc-zUaIoxb1/",
+     "https://www.instagram.com/p/DdA4se5JEQi/",
+     "https://www.instagram.com/p/DdBDmMYSuo7/"
+    ]
+   }
+  },
+  "H-12": {
+   "summary": "모루(morucraft) — 두들겨 만드는 금속공예 '단조'를 소개한다. 커피와 차의 일상을 디자인하고 실생활의 쓰임을 연구한다. 부산 망미장 팀으로 참여한다.",
+   "roamInterpretation": "쇠를 두들겨 커피·차 도구를 만드는 곳이야. 망치 자국이 하나씩 달라서 골라보게 돼.",
+   "valueTags": [
+    {
+     "slug": "inspiration",
+     "strength": 0.8
+    },
+    {
+     "slug": "goods",
+     "strength": 0.7
+    }
+   ],
+   "recommendationReasons": {
+    "inspiration": "단조로 만든 표면 결이 가까이서 보여.",
+    "goods": "커피·차 도구를 낱개로 고를 수 있어."
+   },
+   "thingsToDo": [
+    "단조 표면 결 비교하기",
+    "커피 도구 손에 쥐어보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "모루",
+    "단조",
+    "금속공예"
+   ],
+   "sourceUrl": "https://www.instagram.com/p/Dc-zUaIoxb1/",
+   "confirmed": true,
+   "name": "모루",
+   "instagram": {
+    "handle": "morucraft",
+    "url": "https://www.instagram.com/morucraft/",
+    "header": "망미장 셀러 라인업(부산 공예 작가 13인) — 부스번호·계정·자기소개를 셀러 본인들이 함께 게시",
+    "posts": [
+     "https://www.instagram.com/p/Dc-zUaIoxb1/",
+     "https://www.instagram.com/p/DdA4se5JEQi/",
+     "https://www.instagram.com/p/DdBDmMYSuo7/"
+    ]
+   }
+  },
+  "H-13": {
+   "summary": "유어컬러즈(YOUR COLORS) — 빈티지 제품에 페인팅·염색·디스트레스드·자수 등 수작업 커스텀을 더해 단 하나뿐인 제품을 만든다. 부산 망미장 팀으로 참여한다.",
+   "roamInterpretation": "빈티지에 손으로 덧칠하고 수놓아 하나뿐인 물건으로 바꾸는 곳이야. 같은 게 두 개 없어서 고르는 게 곧 재미야.",
+   "valueTags": [
+    {
+     "slug": "discovery",
+     "strength": 0.9
+    },
+    {
+     "slug": "goods",
+     "strength": 0.7
+    }
+   ],
+   "recommendationReasons": {
+    "discovery": "같은 물건이 하나도 없는 부스야.",
+    "goods": "마음에 드는 한 점을 바로 집어올 수 있어."
+   },
+   "thingsToDo": [
+    "같은 종류끼리 무늬 비교하기",
+    "커스텀 기법 물어보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "유어컬러즈",
+    "빈티지 커스텀",
+    "디스트레스드"
+   ],
+   "sourceUrl": "https://www.instagram.com/p/Dc-zUaIoxb1/",
+   "confirmed": true,
+   "name": "유어컬러즈",
+   "instagram": {
+    "handle": "yourcolors___",
+    "url": "https://www.instagram.com/yourcolors___/",
+    "header": "망미장 셀러 라인업(부산 공예 작가 13인) — 부스번호·계정·자기소개를 셀러 본인들이 함께 게시",
+    "posts": [
+     "https://www.instagram.com/p/Dc-zUaIoxb1/",
+     "https://www.instagram.com/p/DdA4se5JEQi/",
+     "https://www.instagram.com/p/DdBDmMYSuo7/"
+    ]
+   }
+  },
+  "H-14": {
+   "summary": "마리드파리(Marie de Paris) — '시간이 지날수록 더욱 깊어지는 아름다움을 지닌 빈티지 오브제와 의류'. 부산 망미장 팀으로 참여한다.",
+   "roamInterpretation": "빈티지 오브제와 옷을 골라 오는 곳이야. 물건마다 나이가 달라서 하나씩 봐야 해.",
+   "valueTags": [
+    {
+     "slug": "discovery",
+     "strength": 0.9
+    },
+    {
+     "slug": "goods",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "discovery": "연대가 제각각인 물건을 한자리에서 봐.",
+    "goods": "마음에 드는 한 점을 바로 데려올 수 있어."
+   },
+   "thingsToDo": [
+    "오브제 연대 물어보기",
+    "의류 상태 확인하기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "마리드파리",
+    "빈티지 오브제"
+   ],
+   "sourceUrl": "https://www.instagram.com/p/Dc-zUaIoxb1/",
+   "confirmed": true,
+   "name": "마리드파리",
+   "instagram": {
+    "handle": "marie.de.paris",
+    "url": "https://www.instagram.com/marie.de.paris/",
+    "header": "망미장 셀러 라인업(부산 공예 작가 13인) — 부스번호·계정·자기소개를 셀러 본인들이 함께 게시",
+    "posts": [
+     "https://www.instagram.com/p/Dc-zUaIoxb1/",
+     "https://www.instagram.com/p/DdA4se5JEQi/",
+     "https://www.instagram.com/p/DdBDmMYSuo7/"
+    ]
+   }
+  },
+  "M-04": {
+   "summary": "옻칠채 — 천연 옻칠 목재 식기·소품 브랜드(호아랑). 나무 무늬를 그대로 살려 한 점씩 다르게 만든다. 핸드아티코리아·서울 카페&베이커리페어 참가 이력.",
+   "roamInterpretation": "옻을 칠한 나무 그릇을 만드는 곳이야. 결이 하나씩 달라서 골라보는 게 재미야.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.8
+    },
+    {
+     "slug": "inspiration",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "옻칠 식기를 낱개로 고를 수 있어.",
+    "inspiration": "나무 무늬가 옻칠 아래로 비치는 걸 볼 수 있어."
+   },
+   "thingsToDo": [
+    "결이 다른 그릇끼리 비교하기",
+    "옻칠 관리법 묻기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "옻칠채",
+    "천연 옻칠",
+    "호아랑"
+   ],
+   "sourceUrl": "https://www.instagram.com/explore/search/keyword/?q=%EC%98%BB%EC%B9%A0%EC%B1%84",
+   "confirmed": false
+  },
+  "M-08": {
+   "summary": "문재필 옻칠갤러리 — 논산에 있는 옻칠 작가 갤러리. 옻칠 조형물과 그림을 만들며 2026년 부산 갤러리재희에서 개인전을 열었다.",
+   "roamInterpretation": "옻칠로 그림과 조형물을 만드는 작가 갤러리야. 겹겹이 쌓은 층이 만드는 깊이를 가까이서 봐야 알아.",
+   "valueTags": [
+    {
+     "slug": "inspiration",
+     "strength": 0.9
+    },
+    {
+     "slug": "learning",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "inspiration": "옻칠이 층으로 쌓여 깊어지는 걸 눈으로 확인하게 돼.",
+    "learning": "작가에게 옻칠 공정을 직접 물어볼 수 있어."
+   },
+   "thingsToDo": [
+    "옻칠 층의 깊이 들여다보기",
+    "작업 기간 물어보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "문재필",
+    "옻칠갤러리",
+    "논산"
+   ],
+   "sourceUrl": "https://www.instagram.com/p/CtxSOBKI83j/",
+   "confirmed": false
+  },
+  "N-14": {
+   "summary": "이구도예 — 도예가 구자룡 작가의 공방. 흙을 꼬집어 성형하는 '핀칭잔'이 대표작으로, 손의 감각만으로 두께를 조절해 얇게 빚는다. 흑도자기 작업으로 알려졌다.",
+   "roamInterpretation": "손으로 꼬집어 빚는 핀칭잔을 만드는 곳이야. 얇기가 손끝으로만 잡힌 거라 들어봐야 알아.",
+   "valueTags": [
+    {
+     "slug": "inspiration",
+     "strength": 0.9
+    },
+    {
+     "slug": "goods",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "inspiration": "기계 없이 손만으로 얇게 빚는 방식을 봐.",
+    "goods": "핀칭잔을 직접 들어보고 고를 수 있어."
+   },
+   "thingsToDo": [
+    "핀칭잔 들어서 두께 느껴보기",
+    "흑도자기 색 비교하기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "이구도예",
+    "핀칭잔",
+    "구자룡"
+   ],
+   "sourceUrl": "https://www.instagram.com/explore/search/keyword/?q=%EC%9D%B4%EA%B5%AC%EB%8F%84%EC%98%88",
+   "confirmed": false
   }
  }
 }
