@@ -43,6 +43,22 @@ const LABEL: Record<keyof DraftFields, string> = {
   sourceUrl: "출처",
 };
 
+/** 확인한 값 중 **실제로 채워진 것만** 보낸다. 빈 필드를 보내면 운영 값을 지운다. */
+function verifiedPatch(v: VerifiedFact): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  if (v.summary?.trim()) out.summary = v.summary;
+  if (v.roamInterpretation?.trim()) out.roamInterpretation = v.roamInterpretation;
+  if (v.valueTags?.length) out.valueTags = v.valueTags;
+  if (v.recommendationReasons && Object.keys(v.recommendationReasons).length)
+    out.recommendationReasons = v.recommendationReasons;
+  if (v.thingsToDo?.length) out.thingsToDo = v.thingsToDo;
+  if (v.timing?.length) out.timing = v.timing;
+  if (v.memoryHooks?.length) out.memoryHooks = v.memoryHooks;
+  const src = v.sourceUrl ?? v.instagram?.url;
+  if (src) out.sourceUrl = src;
+  return out;
+}
+
 function render(v: unknown): string {
   if (v == null) return "";
   if (Array.isArray(v))
@@ -71,8 +87,7 @@ export function VerifyQueue({ rows }: { rows: VerifyRow[] }) {
       await api.post("/api/admin/verify", {
         boothId: r.boothId,
         choice,
-        summary: r.verified.summary,
-        sourceUrl: r.verified.sourceUrl ?? r.verified.instagram?.url,
+        patch: verifiedPatch(r.verified),
       });
       setDone((d) => ({ ...d, [r.boothId]: choice }));
       toast.success(
@@ -182,11 +197,9 @@ export function VerifyQueue({ rows }: { rows: VerifyRow[] }) {
                   {FIELDS.map((f) => {
                     const cur = render(r.current[f]);
                     const ver =
-                      f === "summary"
-                        ? r.verified.summary
-                        : f === "sourceUrl"
-                          ? (r.verified.sourceUrl ?? ig?.url ?? "")
-                          : "";
+                      f === "sourceUrl"
+                        ? (r.verified.sourceUrl ?? ig?.url ?? "")
+                        : render(r.verified[f as keyof typeof r.verified]);
                     if (!cur && !ver) return null;
                     const differs = cur.trim() !== ver.trim();
                     return (
@@ -211,7 +224,8 @@ export function VerifyQueue({ rows }: { rows: VerifyRow[] }) {
             </div>
 
             <p className="text-xs text-muted-foreground">
-              교체하면 요약과 출처만 바뀝니다 — 나머지 필드는 운영 값을 그대로 둡니다.
+              교체하면 <b>확인한 값이 있는 필드만</b> 바뀝니다 — 비어 있는 필드는
+              운영 값을 그대로 둡니다.
             </p>
 
             <div className="flex flex-wrap gap-2">

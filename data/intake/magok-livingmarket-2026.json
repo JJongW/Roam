@@ -44,8 +44,33 @@
    ],
    "instagramUrl": "https://www.instagram.com/the_dot_space",
    "enrichment": {
-    "summary": "더닷(THE DOT) — 'Art with function, Life becoming art'. 국내 최초로 뉴욕 MoMA에서 제품 디자인을 선보였고, 유리·금속·목재로 인테리어 오브제와 리빙 제품을 만든다. 마곡리빙마켓에서 오브제를 직접 볼 수 있다.",
-    "sourceUrl": "https://www.instagram.com/the_dot_space/"
+    "summary": "더닷(THE DOT) — 'Art with function, Life becoming art'. 국내 최초로 뉴욕 MoMA에서 제품 디자인을 선보였고, 유리·금속·목재로 인테리어 오브제와 리빙 제품을 만든다. 시그니처는 Drawing Line 시리즈.",
+    "sourceUrl": "https://www.instagram.com/the_dot_space/",
+    "roamInterpretation": "드로잉을 그대로 입체로 옮긴 오브제를 만드는 곳이야. 사진으로만 보던 걸 공간에 놓인 채로 볼 수 있어.",
+    "valueTags": [
+     {
+      "slug": "inspiration",
+      "strength": 0.9
+     },
+     {
+      "slug": "goods",
+      "strength": 0.7
+     }
+    ],
+    "recommendationReasons": {
+     "inspiration": "선 하나를 물건으로 옮기는 방식을 눈앞에서 볼 수 있어.",
+     "goods": "화병·거울·와인잔까지 실물로 고를 수 있어."
+    },
+    "thingsToDo": [
+     "Drawing Line 시리즈 실물 보기",
+     "유리·금속·목재 마감 만져서 비교하기",
+     "쇼룸 운영 안내 확인하기"
+    ],
+    "memoryHooks": [
+     "Drawing Line",
+     "MoMA",
+     "오브제"
+    ]
    },
    "images": [
     "/booths/magok-livingmarket-2026/A-05_1.webp",
@@ -95,8 +120,34 @@
     "STUDIO MOOD"
    ],
    "enrichment": {
-    "summary": "스튜디오무드가 처음으로 박람회에 참가한다 — 오프라인에서 제품과 공간을 처음 선보인다. 초대권 이벤트(5팀, 초대권 2매+시크릿 기프트)를 진행했다. 감성 철제 오브제를 만드는 스튜디오.",
-    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
+    "summary": "스튜디오무드 — 감성적인 철제 오브제를 만드는 스튜디오. 스피커 커버·티슈 케이스·시계 등 생활용품을 철제 디자인으로 낸다. 이번이 첫 박람회 참가로, 오프라인에서 제품과 공간을 처음 선보인다.",
+    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+    "roamInterpretation": "철로 만든 생활 소품을 내는 곳인데, 오프라인에 나오는 게 이번이 처음이야.",
+    "valueTags": [
+     {
+      "slug": "discovery",
+      "strength": 0.9
+     },
+     {
+      "slug": "goods",
+      "strength": 0.6
+     }
+    ],
+    "recommendationReasons": {
+     "discovery": "온라인에만 있던 브랜드를 처음 실물로 보는 자리야.",
+     "goods": "티슈 케이스·시계 같은 작은 것부터 고를 수 있어."
+    },
+    "thingsToDo": [
+     "철제 마감 직접 만져보기",
+     "공간 연출된 모습으로 보기"
+    ],
+    "timing": [
+     "첫 참가라 초반에 물량이 넉넉하다"
+    ],
+    "memoryHooks": [
+     "철제 오브제",
+     "첫 박람회"
+    ]
    }
   },
   {
@@ -141,8 +192,36 @@
     "LIGHTREE"
    ],
    "enrichment": {
-    "summary": "LIGHTREE. 여행 브랜드 — ELITE 캐리어, 트래블 파우치·월렛, DREAMI SOFA. 추석 특가로 B급 캐리어 10~20% OFF, 소파 20% OFF.",
-    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
+    "summary": "라잇트리(LIGHTREE) — 여행 브랜드. ELITE 캐리어, 트래블 파우치·월렛, DREAMI SOFA를 낸다. 마곡리빙마켓에서 B급 캐리어 10~20%, 소파 20% 추석 특가를 진행한다.",
+    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+    "roamInterpretation": "캐리어랑 트래블 파우치를 만드는 여행 브랜드야. 현장 B급 특가가 제일 크게 붙는 곳 중 하나야.",
+    "valueTags": [
+     {
+      "slug": "goods",
+      "strength": 0.9
+     },
+     {
+      "slug": "trend",
+      "strength": 0.5
+     }
+    ],
+    "recommendationReasons": {
+     "goods": "B급 캐리어가 10~20% 빠져서 실물 확인하고 집어올 수 있어.",
+     "trend": "여행 가방을 리빙 마켓에서 만나는 조합이 흔치 않아."
+    },
+    "thingsToDo": [
+     "ELITE 캐리어 바퀴·손잡이 확인하기",
+     "트래블 파우치 수납 열어보기",
+     "DREAMI SOFA 앉아보기"
+    ],
+    "timing": [
+     "추석 특가라 인기 사이즈는 초반에 빠진다"
+    ],
+    "memoryHooks": [
+     "ELITE 캐리어",
+     "B급 특가",
+     "DREAMI SOFA"
+    ]
    },
    "images": [
     "/booths/magok-livingmarket-2026/A-15.webp"
@@ -184,8 +263,36 @@
    ],
    "instagramUrl": "https://www.instagram.com/kustem_official",
    "enrichment": {
-    "summary": "kustem_official. LG 올레드 TV에 커스템 디자인을 더하는 1:1 맞춤 프레임 '스타일프레임'. 마곡리빙마켓에서 스타일프레임 레어로우 에디션을 첫 공개하고 8가지 컬러를 선보인다. 레어로우(D-30)와 커스템 두 부스에서 동시에 볼 수 있다.",
-    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
+    "summary": "커스템(kustem) — 모듈러 디자인 TV 브랜드. LG 올레드 TV에 씌우는 1:1 맞춤 프레임 '스타일프레임'을 만든다. 마곡리빙마켓에서 스타일프레임 레어로우 에디션을 8가지 컬러로 첫 공개하고, 레어로우(D-30) 부스와 동시에 전시한다.",
+    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+    "roamInterpretation": "TV를 그대로 두고 프레임만 바꿔 공간을 바꾸는 브랜드야. 레어로우 에디션을 여기서 처음 푸는데 두 부스에 나뉘어 있어.",
+    "valueTags": [
+     {
+      "slug": "trend",
+      "strength": 0.9
+     },
+     {
+      "slug": "inspiration",
+      "strength": 0.6
+     }
+    ],
+    "recommendationReasons": {
+     "trend": "레어로우 에디션 첫 공개를 현장에서 먼저 볼 수 있어.",
+     "inspiration": "가전을 가구처럼 두는 방식이 눈에 들어와."
+    },
+    "thingsToDo": [
+     "스타일프레임 8가지 컬러 비교하기",
+     "레어로우 부스(D-30)와 이어서 보기",
+     "트롤리 TV 움직여보기"
+    ],
+    "timing": [
+     "첫 공개라 초반에 사람이 몰린다"
+    ],
+    "memoryHooks": [
+     "스타일프레임",
+     "레어로우 에디션",
+     "모듈러 TV"
+    ]
    },
    "images": [
     "/booths/magok-livingmarket-2026/B-03_1.webp",
@@ -212,8 +319,31 @@
     "LIZENS CO.,LTD"
    ],
    "enrichment": {
-    "summary": "주최 브랜드 큐레이션 '시선쟁탈전' 라인업에 포함. 별도 게시물에 '리젠스가 참여합니다! 제1전시장 B-14'.",
-    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
+    "summary": "리젠스 — 주방 생활의 기준을 새로 제안하는 브랜드. 스테인리스 사각 싱크볼 등 주방 설비를 만든다. 제1전시장 B-14로 참여를 직접 알렸고, 주최 브랜드 큐레이션 라인업에도 들었다.",
+    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+    "roamInterpretation": "주방 싱크와 설비를 새로 짜는 브랜드야. 주최가 꼽은 라인업에 들어서 부스 자체가 크게 서 있어.",
+    "valueTags": [
+     {
+      "slug": "discovery",
+      "strength": 0.7
+     },
+     {
+      "slug": "inspiration",
+      "strength": 0.6
+     }
+    ],
+    "recommendationReasons": {
+     "discovery": "주방을 통째로 바꾸는 관점을 보여주는 부스야.",
+     "inspiration": "싱크 하나로 주방 인상이 어떻게 달라지는지 볼 수 있어."
+    },
+    "thingsToDo": [
+     "스테인리스 사각 싱크볼 실물 보기",
+     "마감 이음새 확인하기"
+    ],
+    "memoryHooks": [
+     "사각 싱크볼",
+     "스테인리스"
+    ]
    }
   },
   {
@@ -229,8 +359,31 @@
    "websiteUrl": "https://ziatti.co.kr",
    "instagramUrl": "https://www.instagram.com/ziatti_official",
    "enrichment": {
-    "summary": "ZIATTI — '나무의 온도 그대로, 원목가구의 본질'. 주최 큐레이션 라인업.",
-    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
+    "summary": "지아띠(ZIATTI) — '나무의 온도 그대로, 원목가구가 지녀야 할 본질을 지킵니다'. 2009년부터 원목으로 식탁·소파·침대를 만든다. 주최 브랜드 큐레이션 라인업에 포함됐다.",
+    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+    "roamInterpretation": "원목 결을 그대로 살리는 가구를 만드는 곳이야. 큰 가구를 실제 크기로 보고 앉아볼 수 있어.",
+    "valueTags": [
+     {
+      "slug": "inspiration",
+      "strength": 0.8
+     },
+     {
+      "slug": "rest",
+      "strength": 0.5
+     }
+    ],
+    "recommendationReasons": {
+     "inspiration": "나무 결과 마감을 실물로 비교할 수 있어.",
+     "rest": "식탁·소파에 실제로 앉아보며 고를 수 있어."
+    },
+    "thingsToDo": [
+     "원목 결 만져보기",
+     "식탁 높이 앉아서 확인하기"
+    ],
+    "memoryHooks": [
+     "원목가구",
+     "나무의 온도"
+    ]
    },
    "images": [
     "/booths/magok-livingmarket-2026/B-20_1.webp",
@@ -258,8 +411,36 @@
    ],
    "instagramUrl": "https://www.instagram.com/aph_official",
    "enrichment": {
-    "summary": "SPACE & STYLE 구역 BOOTH B30, 입구 기준 좌측. 현장 혜택 있음.",
-    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
+    "summary": "아파트먼트하우스 — '공동주택의 가장 간결한 가구'. 인하우스 디자인으로 소파를 만들고 DMC점·과천점 쇼룸을 운영한다. SPACE & STYLE 구역 B30, 입구 기준 좌측에 있고 현장 혜택을 연다.",
+    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+    "roamInterpretation": "공동주택 크기에 맞춘 소파를 만드는 곳이야. 입구에서 왼쪽으로 바로 보여서 초반에 들르기 좋아.",
+    "valueTags": [
+     {
+      "slug": "rest",
+      "strength": 0.8
+     },
+     {
+      "slug": "goods",
+      "strength": 0.6
+     }
+    ],
+    "recommendationReasons": {
+     "rest": "소파에 앉아보며 집 거실 크기를 가늠할 수 있어.",
+     "goods": "현장 혜택이 붙어 있어 실제 구매까지 이어져."
+    },
+    "thingsToDo": [
+     "소파에 앉아 깊이 확인하기",
+     "비스포크 상담 받아보기",
+     "쇼룸 예약 문의하기"
+    ],
+    "timing": [
+     "입구 기준 좌측이라 들어오자마자 붐빈다"
+    ],
+    "memoryHooks": [
+     "공동주택 소파",
+     "B30",
+     "비스포크"
+    ]
    },
    "images": [
     "/booths/magok-livingmarket-2026/B-30_1.webp",
@@ -287,8 +468,32 @@
    ],
    "instagramUrl": "https://www.instagram.com/studio_fodder",
    "enrichment": {
-    "summary": "studio FODDER — '철제의 견고함과 온도감을 담아낸 가구'. 주최 큐레이션 라인업.",
-    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
+    "summary": "스튜디오 퍼더(studio FODDER) — 'From Follows Function'. 철제의 견고함과 온도감을 담은 가구를 만든다. 클록H, OVID 사이드테이블, 와이드 드로어 등을 낸다. 주최 브랜드 큐레이션 라인업.",
+    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+    "roamInterpretation": "기능이 형태를 만든다는 원칙으로 철제 가구를 짜는 곳이야. 주최가 '시선을 사로잡는 부스'로 꼽았어.",
+    "valueTags": [
+     {
+      "slug": "inspiration",
+      "strength": 0.9
+     },
+     {
+      "slug": "discovery",
+      "strength": 0.6
+     }
+    ],
+    "recommendationReasons": {
+     "inspiration": "형태가 왜 그렇게 나왔는지 설명되는 가구야.",
+     "discovery": "철제인데 차갑지 않게 만드는 방식을 볼 수 있어."
+    },
+    "thingsToDo": [
+     "OVID 사이드테이블 실물 보기",
+     "와이드 드로어 열어보기"
+    ],
+    "memoryHooks": [
+     "OVID",
+     "철제 가구",
+     "From Follows Function"
+    ]
    },
    "images": [
     "/booths/magok-livingmarket-2026/C-01_1.webp",
@@ -356,8 +561,31 @@
     "CYVAC LIGHT"
    ],
    "enrichment": {
-    "summary": "'싸이벡 라이트' 공기정화 청소기. 로얄퀸클럽이 부스번호 C-14로 명시하며 입장권 이벤트를 열었다. 특허받은 필트레이션.",
-    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
+    "summary": "싸이벡 — 특허받은 필트레이션을 적용한 공기정화 청소기 '싸이벡 라이트'. 로얄퀸클럽이 부스번호 C-14를 명시하며 입장권 이벤트를 열었다.",
+    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+    "roamInterpretation": "청소하면서 공기까지 거르는 청소기를 만드는 곳이야. 필터 방식이 특허라 시연을 보는 게 빨라.",
+    "valueTags": [
+     {
+      "slug": "discovery",
+      "strength": 0.7
+     },
+     {
+      "slug": "goods",
+      "strength": 0.6
+     }
+    ],
+    "recommendationReasons": {
+     "discovery": "필트레이션 구조를 직접 열어 보여주는 부스야.",
+     "goods": "현장에서 흡입력을 시연으로 확인하고 고를 수 있어."
+    },
+    "thingsToDo": [
+     "필터 구조 열어서 보기",
+     "흡입 시연 보기"
+    ],
+    "memoryHooks": [
+     "싸이벡 라이트",
+     "필트레이션"
+    ]
    },
    "images": [
     "/booths/magok-livingmarket-2026/C-14.webp"
@@ -504,8 +732,33 @@
    ],
    "instagramUrl": "https://www.instagram.com/mzm_archive",
    "enrichment": {
-    "summary": "무제움(MUZEUM) — 브랜드 아이덴티티를 담은 가구 디자인·제작. 맞춤 제작부터 공간 스타일링까지 하고 오피스·병원·라운지 프로젝트를 한다. 대표작 Spin Stack은 오크와 스테인리스 스틸로 만든 회전 수납 가구다.",
-    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
+    "summary": "무제움(MUZEUM) — '일상 속의 예술적 경험'. 브랜드 아이덴티티를 담은 가구를 디자인·제작하고 오피스·병원·라운지 공간 프로젝트를 한다. 대표작 Spin Stack은 오크와 스테인리스로 만든 회전 수납 가구다.",
+    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+    "roamInterpretation": "회전하는 수납장 Spin Stack을 만든 곳이야. 오크 결과 스테인리스가 맞물리는 걸 가까이서 봐야 알아.",
+    "valueTags": [
+     {
+      "slug": "inspiration",
+      "strength": 0.9
+     },
+     {
+      "slug": "discovery",
+      "strength": 0.6
+     }
+    ],
+    "recommendationReasons": {
+     "inspiration": "가구에 움직임을 숨겨두는 방식이 눈에 들어와.",
+     "discovery": "공간 렌탈·프로젝트까지 하는 팀이라 얘기가 넓어."
+    },
+    "thingsToDo": [
+     "Spin Stack 돌려보기",
+     "오크와 스테인리스 마감 비교하기",
+     "쇼룸 방문 예약 묻기"
+    ],
+    "memoryHooks": [
+     "Spin Stack",
+     "회전 수납",
+     "오크"
+    ]
    },
    "images": [
     "/booths/magok-livingmarket-2026/D-20_1.webp",
@@ -533,8 +786,33 @@
    ],
    "instagramUrl": "https://www.instagram.com/rareraw_official",
    "enrichment": {
-    "summary": "주최 브랜드 큐레이션 라인업에 포함. 커스템과 협업한 '스타일프레임 레어로우 에디션'을 두 부스에서 동시 공개.",
-    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
+    "summary": "레어로우(rareraw) — '드문(rare)'과 '날것(raw)'을 합친 이름. 사용자의 라이프스타일에 맞춰 완성되는 모듈 시스템 SYSTEM000을 만든다. 커스템과 협업한 '스타일프레임 레어로우 에디션'을 두 부스에서 동시 공개한다.",
+    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+    "roamInterpretation": "선반을 필요한 만큼 짜 맞추는 모듈 시스템을 만드는 곳이야. 커스템 부스(B-03)에도 같은 에디션이 있어.",
+    "valueTags": [
+     {
+      "slug": "inspiration",
+      "strength": 0.8
+     },
+     {
+      "slug": "trend",
+      "strength": 0.6
+     }
+    ],
+    "recommendationReasons": {
+     "inspiration": "내 방 치수에 맞춰 어떻게 짜는지 그려볼 수 있어.",
+     "trend": "커스템과의 협업 에디션을 여기서 처음 봐."
+    },
+    "thingsToDo": [
+     "SYSTEM000 모듈 조합 보기",
+     "커스템 부스(B-03)와 이어서 보기",
+     "10 COLORS 색상 비교하기"
+    ],
+    "memoryHooks": [
+     "SYSTEM000",
+     "모듈 선반",
+     "레어로우 에디션"
+    ]
    },
    "images": [
     "/booths/magok-livingmarket-2026/D-30_1.webp",
@@ -813,8 +1091,36 @@
    ],
    "instagramUrl": "https://www.instagram.com/naroe.official",
    "enrichment": {
-    "summary": "나로에(NAROÉ) — 기준 있는 삶을 위한 라이프스타일 브랜드. 디시케어·핸드워시 등 향이 있는 생활용품을 만든다. 'NAROÉ INVITES YOU — MAGOK LIVING MARKET 10–13 SEP 2026'로 초대권 이벤트를 열었고 추석 스페셜 20% 할인을 진행한다.",
-    "sourceUrl": "https://www.instagram.com/naroe.official/"
+    "summary": "나로에(NAROÉ) — '기준 있는 삶을 위한 라이프스타일 브랜드'. 디시케어·핸드워시 등 향이 있는 생활용품을 만든다. 'NAROÉ INVITES YOU — MAGOK LIVING MARKET'으로 초대권 이벤트를 열었고 추석 스페셜 20% 할인을 한다.",
+    "sourceUrl": "https://www.instagram.com/naroe.official/",
+    "roamInterpretation": "주방·욕실 세정제에 향을 입히는 브랜드야. 애시우드·뱀부레몬·진저 같은 향을 맡아보고 고르면 돼.",
+    "valueTags": [
+     {
+      "slug": "goods",
+      "strength": 0.8
+     },
+     {
+      "slug": "experience",
+      "strength": 0.6
+     }
+    ],
+    "recommendationReasons": {
+     "goods": "추석 스페셜로 20%가 붙어 세트로 담기 좋아.",
+     "experience": "향을 직접 맡아보고 고르는 게 이 부스의 전부야."
+    },
+    "thingsToDo": [
+     "세 가지 향 맡아 비교하기",
+     "디시케어 손에 덜어보기",
+     "선물 세트 구성 보기"
+    ],
+    "timing": [
+     "추석 특가 기간이라 세트가 먼저 빠진다"
+    ],
+    "memoryHooks": [
+     "애시우드",
+     "뱀부레몬",
+     "디시케어"
+    ]
    },
    "images": [
     "/booths/magok-livingmarket-2026/F-22_1.webp",
@@ -847,8 +1153,32 @@
    ],
    "instagramUrl": "https://www.instagram.com/conte.de.leciel",
    "enrichment": {
-    "summary": "꽁뜨레씨엘(Conte de Leciel) — 오브제·조명·텍스타일 소품을 다루는 크래프트맨십 부티크. '일상을 예술로 채우는 공간, 당신의 취향을 담은 집'을 내걸고 마곡리빙마켓 2026에 참여한다.",
-    "sourceUrl": "https://www.instagram.com/conte.de.leciel/"
+    "summary": "꽁뜨레씨엘(Conte de Leciel) — 크래프트맨십 부티크. 오브제·조명·텍스타일 소품을 다룬다. '일상을 예술로 채우는 공간, 당신의 취향을 담은 집'을 내걸고 마곡리빙마켓 2026에 참여한다.",
+    "sourceUrl": "https://www.instagram.com/conte.de.leciel/",
+    "roamInterpretation": "손으로 만든 오브제와 텍스타일을 모아두는 곳이야. 작은 것 하나로 방 분위기를 바꾸려는 사람한테 맞아.",
+    "valueTags": [
+     {
+      "slug": "goods",
+      "strength": 0.8
+     },
+     {
+      "slug": "inspiration",
+      "strength": 0.7
+     }
+    ],
+    "recommendationReasons": {
+     "goods": "접시·글라스·패브릭을 낱개로 골라올 수 있어.",
+     "inspiration": "물건을 어떻게 놓는지까지 연출해서 보여줘."
+    },
+    "thingsToDo": [
+     "유리 오브제 색 비교하기",
+     "자수 텍스타일 만져보기"
+    ],
+    "memoryHooks": [
+     "크래프트맨십",
+     "오브제",
+     "텍스타일"
+    ]
    },
    "images": [
     "/booths/magok-livingmarket-2026/F-25_1.webp",
@@ -1082,8 +1412,32 @@
     "floaat"
    ],
    "enrichment": {
-    "summary": "플랫(floaat) — 섬유공예 기법으로 만드는 핸드메이드 패브릭 소품. 자수 손수건·파우치·스카프와 천연수세미를 만든다. 마곡리빙마켓 포스터를 직접 올렸고 연희시장 마켓에도 나갔다.",
-    "sourceUrl": "https://www.instagram.com/floaat_seoul/"
+    "summary": "플랫(floaat) — 섬유공예 기법으로 만드는 핸드메이드 패브릭 소품. 자수 손수건·파우치·스카프와 천연수세미를 만든다. 마곡리빙마켓 포스터를 직접 올렸고 연희시장 마켓에도 나간다.",
+    "sourceUrl": "https://www.instagram.com/floaat_seoul/",
+    "roamInterpretation": "자수 손수건이랑 천연수세미를 손으로 만드는 곳이야. 같은 무늬가 하나도 없어서 골라보는 재미가 있어.",
+    "valueTags": [
+     {
+      "slug": "goods",
+      "strength": 0.8
+     },
+     {
+      "slug": "discovery",
+      "strength": 0.6
+     }
+    ],
+    "recommendationReasons": {
+     "goods": "손수건·파우치를 낱개로 고를 수 있어.",
+     "discovery": "기계로 못 만드는 섬유공예 기법을 가까이서 봐."
+    },
+    "thingsToDo": [
+     "자수 손수건 무늬 하나씩 보기",
+     "천연수세미 만져보기"
+    ],
+    "memoryHooks": [
+     "자수 손수건",
+     "천연수세미",
+     "섬유공예"
+    ]
    },
    "images": [
     "/booths/magok-livingmarket-2026/G-15_1.webp",
@@ -1148,8 +1502,32 @@
    "websiteUrl": "https://kookim.kr",
    "instagramUrl": "https://www.instagram.com/koo_kim_",
    "enrichment": {
-    "summary": "구김(KOOKIM) — 도예가 김민수와 염색공예가 구희진의 부부작가 브랜드. 마곡리빙마켓 초대권과 부스배치도를 직접 올렸다.",
-    "sourceUrl": "https://www.instagram.com/koo_kim_/"
+    "summary": "구김(KOOKIM) — 도예가 김민수와 염색공예가 구희진의 부부작가 브랜드. 도자기와 염색 소품을 함께 낸다. 마곡리빙마켓 초대권과 부스배치도를 직접 올렸다.",
+    "sourceUrl": "https://www.instagram.com/koo_kim_/",
+    "roamInterpretation": "도예와 염색을 하는 부부가 같이 내는 부스야. 그릇과 천이 한자리에 있어서 조합을 보게 돼.",
+    "valueTags": [
+     {
+      "slug": "goods",
+      "strength": 0.8
+     },
+     {
+      "slug": "inspiration",
+      "strength": 0.6
+     }
+    ],
+    "recommendationReasons": {
+     "goods": "작가가 직접 빚은 그릇을 낱개로 살 수 있어.",
+     "inspiration": "도자와 염색을 한 상에 놓는 방식을 볼 수 있어."
+    },
+    "thingsToDo": [
+     "작가에게 굽는 방식 물어보기",
+     "그릇과 천 조합해보기"
+    ],
+    "memoryHooks": [
+     "부부작가",
+     "도예",
+     "염색공예"
+    ]
    },
    "images": [
     "/booths/magok-livingmarket-2026/G-22_1.webp",
@@ -1374,8 +1752,35 @@
    ],
    "instagramUrl": "https://www.instagram.com/clauman.official",
    "enrichment": {
-    "summary": "클라우망1981(CLAUMAN 1981) — 프리미엄 인테리어 오브제 타월. 마곡리빙마켓(9.10~9.13) 참여를 본인 계정에서 알리고 초대권 이벤트를 열었다. 2026 디자인 어워드 수상, 데이브 타월 50% 할인 등 자체 행사를 운영한다.",
-    "sourceUrl": "https://www.instagram.com/clauman.official/"
+    "summary": "클라우망1981(CLAUMAN 1981) — 프리미엄 인테리어 오브제 타월. 'A very small beginning changes your life'. 2026 디자인 어워드 수상작이 있고, 마곡리빙마켓(9.10~9.13) 초대권 이벤트를 열었다.",
+    "sourceUrl": "https://www.instagram.com/clauman.official/",
+    "roamInterpretation": "타월을 인테리어 오브제로 만드는 브랜드야. 색을 걸어두는 걸 전제로 만들어서 실물 색을 봐야 알아.",
+    "valueTags": [
+     {
+      "slug": "goods",
+      "strength": 0.8
+     },
+     {
+      "slug": "trend",
+      "strength": 0.6
+     }
+    ],
+    "recommendationReasons": {
+     "goods": "데이브 타월 같은 대표 라인을 현장가로 담을 수 있어.",
+     "trend": "타월을 인테리어로 보는 관점이 이 부스의 핵심이야."
+    },
+    "thingsToDo": [
+     "색상별로 걸어놓은 것 비교하기",
+     "가운(로브) 두께 확인하기"
+    ],
+    "timing": [
+     "할인 라인은 색상이 빨리 빠진다"
+    ],
+    "memoryHooks": [
+     "데이브 타월",
+     "CLAUMAN DAY",
+     "오브제 타월"
+    ]
    },
    "images": [
     "/booths/magok-livingmarket-2026/I-03_1.webp",
@@ -1433,8 +1838,32 @@
    ],
    "websiteUrl": "https://livingdesignfair.co.kr",
    "enrichment": {
-    "summary": "이 행사의 주최사다 — 디자인하우스와 월간 〈행복이 가득한 집〉이 마곡리빙마켓을 연다. 참가 브랜드가 아니라 주최 부스.",
-    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
+    "summary": "디자인하우스 — 이 행사의 주최사다. 월간 〈행복이 가득한 집〉과 함께 마곡리빙마켓을 열고, 2026년 창립 50주년을 맞았다. 참가 브랜드가 아니라 주최 부스다.",
+    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+    "roamInterpretation": "이 마켓을 여는 곳이야. 참가 브랜드가 아니라 행사 본부라고 보면 돼.",
+    "valueTags": [
+     {
+      "slug": "learning",
+      "strength": 0.7
+     },
+     {
+      "slug": "discovery",
+      "strength": 0.5
+     }
+    ],
+    "recommendationReasons": {
+     "learning": "행사 전체 구성을 여기서 먼저 파악할 수 있어.",
+     "discovery": "어디부터 볼지 감이 안 서면 여기서 시작하면 돼."
+    },
+    "thingsToDo": [
+     "전체 부스 배치 안내받기",
+     "월간 〈행복이 가득한 집〉 살펴보기"
+    ],
+    "memoryHooks": [
+     "주최사",
+     "행복이 가득한 집",
+     "창립 50주년"
+    ]
    },
    "images": [
     "/booths/magok-livingmarket-2026/J-01.webp"
@@ -1546,8 +1975,34 @@
    ],
    "instagramUrl": "https://www.instagram.com/1hows",
    "enrichment": {
-    "summary": "'Stress Less Market' 기획. '덜 귀찮게, 덜 불편하게, 더 기분 좋게' 슬로건. 1집러 셀러존 운영.",
-    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
+    "summary": "1집구석 — 'DESIGN YOUR SINGLE LIFE'. 마곡리빙마켓에서 'Stress Less Market'을 연다. '덜 귀찮게, 덜 불편하게, 더 기분 좋게'를 슬로건으로 일상 스트레스를 줄이는 아이템을 모으고, 1집러 셀러존도 함께 운영한다.",
+    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+    "roamInterpretation": "혼자 사는 집의 귀찮음을 줄이는 물건만 모아둔 기획이야. 셀러존까지 있어서 한 부스에서 여러 브랜드를 봐.",
+    "valueTags": [
+     {
+      "slug": "discovery",
+      "strength": 0.9
+     },
+     {
+      "slug": "goods",
+      "strength": 0.7
+     }
+    ],
+    "recommendationReasons": {
+     "discovery": "작은 브랜드 여럿을 한 부스에서 한 번에 봐.",
+     "goods": "바로 집어올 수 있는 생활 소품 위주야."
+    },
+    "thingsToDo": [
+     "1집러 셀러존 한 바퀴 돌기",
+     "'덜 귀찮게' 아이템 골라보기"
+    ],
+    "timing": [
+     "셀러존은 물량이 적어 초반이 낫다"
+    ],
+    "memoryHooks": [
+     "Stress Less Market",
+     "1집러 셀러존"
+    ]
    },
    "images": [
     "/booths/magok-livingmarket-2026/K-01_1.webp",
@@ -1575,8 +2030,31 @@
    "websiteUrl": "https://minohan.kr",
    "instagramUrl": "https://www.instagram.com/minohan_korea",
    "enrichment": {
-    "summary": "미노항 부스 운영. 인스타 DM으로 무료 모바일 초대장 선착순 배포(마감).",
-    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
+    "summary": "미노항 코리아 — '쓰임 좋은 그릇가게 미노항'. 일본 미노야키 도자기를 들여와 판다. 마곡리빙마켓 부스를 운영하고 인스타 DM으로 무료 모바일 초대장을 선착순 배포했다.",
+    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+    "roamInterpretation": "쓰기 좋은 그릇을 골라 들여오는 가게야. 낱개로 사서 조합하기 좋게 깔아둬.",
+    "valueTags": [
+     {
+      "slug": "goods",
+      "strength": 0.9
+     },
+     {
+      "slug": "rest",
+      "strength": 0.5
+     }
+    ],
+    "recommendationReasons": {
+     "goods": "밥그릇·접시를 하나씩 골라 담을 수 있어.",
+     "rest": "매일 쓰는 그릇을 손에 쥐어보고 고르는 자리야."
+    },
+    "thingsToDo": [
+     "그릇 무게 손에 들어보기",
+     "6만원 이상 사은품 조건 확인하기"
+    ],
+    "memoryHooks": [
+     "미노야키",
+     "쓰임 좋은 그릇"
+    ]
    },
    "images": [
     "/booths/magok-livingmarket-2026/K-13_1.webp",
@@ -1604,8 +2082,36 @@
    ],
    "instagramUrl": "https://www.instagram.com/hueum_official",
    "enrichment": {
-    "summary": "신제품 테이블웨어를 9/10 온라인 프리론칭과 동시 공개. 추석선물 큐레이션 섹션(U-01/U-02)에 인기 찻잔세트 전시. 전품목 10% SALE.",
-    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
+    "summary": "휴움(HUEUM) — '오래도록 지키고 싶은 자연의 고유한 색을 담아냅니다'. 홈테이블웨어·홈카페 도자기를 만든다. 9/10 온라인 프리론칭과 동시에 신제품을 현장 공개하고, 추석선물 큐레이션 섹션(U-01·U-02)에도 인기 찻잔세트를 낸다. 전품목 10% 할인.",
+    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+    "roamInterpretation": "자연의 색을 그대로 담는 도자 테이블웨어야. 신제품이 온라인과 같은 날 여기서 처음 나와.",
+    "valueTags": [
+     {
+      "slug": "goods",
+      "strength": 0.8
+     },
+     {
+      "slug": "rest",
+      "strength": 0.6
+     }
+    ],
+    "recommendationReasons": {
+     "goods": "전품목 10%라 세트로 맞추기 좋아.",
+     "rest": "찻잔을 손에 쥐어보고 고르는 게 이 부스의 재미야."
+    },
+    "thingsToDo": [
+     "신제품 테이블웨어 먼저 보기",
+     "찻잔 손잡이 잡아보기",
+     "추석 큐레이션(U-01/U-02)에서 이어보기"
+    ],
+    "timing": [
+     "9/10 프리론칭 당일에 신제품이 가장 많다"
+    ],
+    "memoryHooks": [
+     "홈테이블웨어",
+     "찻잔세트",
+     "프리론칭"
+    ]
    },
    "images": [
     "/booths/magok-livingmarket-2026/K-14_1.webp",
@@ -1691,7 +2197,31 @@
    "instagramUrl": "https://www.instagram.com/neufheures.official",
    "enrichment": {
     "summary": "네베호(NEUF HEURES) — '09:00, 익숙한 것이 새로워지는 시간'. 키친클로스·앞치마·코스터·트리벳·컵 등 주방 리넨과 소품을 만든다. 'INVITATION EVENT — MAGOK LIVING MARKET 2026'으로 초대 이벤트를 열었다.",
-    "sourceUrl": "https://www.instagram.com/neufheures.official/"
+    "sourceUrl": "https://www.instagram.com/neufheures.official/",
+    "roamInterpretation": "주방 리넨을 단정하게 만드는 브랜드야. 앞치마랑 키친클로스 짜임을 만져봐야 차이를 알아.",
+    "valueTags": [
+     {
+      "slug": "goods",
+      "strength": 0.8
+     },
+     {
+      "slug": "inspiration",
+      "strength": 0.5
+     }
+    ],
+    "recommendationReasons": {
+     "goods": "앞치마·코스터를 낱개로 고를 수 있어.",
+     "inspiration": "주방을 정돈해 보이게 하는 방식이 눈에 들어와."
+    },
+    "thingsToDo": [
+     "키친클로스 짜임 만져보기",
+     "앞치마 길이 대보기"
+    ],
+    "memoryHooks": [
+     "주방 리넨",
+     "앞치마",
+     "09:00"
+    ]
    },
    "images": [
     "/booths/magok-livingmarket-2026/L-08_1.webp",
@@ -1779,8 +2309,35 @@
     "toeun"
    ],
    "enrichment": {
-    "summary": "부스번호 L-16이라고 본인이 명시. 토분은 온라인 판매라 현장엔 그릇을 가져온다. 신제품 20%·B품/단종 50% 할인.",
-    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
+    "summary": "토은 — 수제 토분과 그릇을 만든다. 부스번호 L-16이라고 본인이 명시했고, 토분은 온라인으로만 팔아 현장엔 그릇을 가져온다. 신제품 20%, B품·단종 50% 할인.",
+    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+    "roamInterpretation": "토분으로 알려진 곳인데 현장엔 그릇만 가져와. B품 50%가 붙어서 실물 보고 고르는 재미가 커.",
+    "valueTags": [
+     {
+      "slug": "goods",
+      "strength": 0.9
+     },
+     {
+      "slug": "discovery",
+      "strength": 0.5
+     }
+    ],
+    "recommendationReasons": {
+     "goods": "B품·단종이 50%라 값이 크게 빠져.",
+     "discovery": "온라인에서 못 보던 그릇 라인을 여기서 봐."
+    },
+    "thingsToDo": [
+     "B품 흠집 직접 확인하기",
+     "단종 품목 먼저 훑기"
+    ],
+    "timing": [
+     "B품·단종은 초반에 빠진다"
+    ],
+    "memoryHooks": [
+     "수제 토분",
+     "B품 50%",
+     "L-16"
+    ]
    }
   },
   {
@@ -1807,8 +2364,32 @@
    "websiteUrl": "https://cerazine.co.kr",
    "instagramUrl": "https://www.instagram.com/monthly_ceramic.art",
    "enrichment": {
-    "summary": "Relié studio와 함께 참여. 도자·공예 작품과 오브제를 선보인다.",
-    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
+    "summary": "월간도예 — 1996년부터 나온 도자예술 전문지. 마곡리빙마켓에는 Relié studio와 함께 참여해 도자·공예 작품과 오브제를 선보인다.",
+    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+    "roamInterpretation": "도자 전문지가 직접 여는 자리야. 잡지에서 보던 작가 작품을 실물로 봐.",
+    "valueTags": [
+     {
+      "slug": "learning",
+      "strength": 0.8
+     },
+     {
+      "slug": "inspiration",
+      "strength": 0.6
+     }
+    ],
+    "recommendationReasons": {
+     "learning": "도자를 만드는 사람들의 얘기를 직접 들을 수 있어.",
+     "inspiration": "전시장에서 보던 공예가 식탁에 놓인 모습으로 보여."
+    },
+    "thingsToDo": [
+     "Relié studio 작품 보기",
+     "월간도예 지난 호 훑어보기"
+    ],
+    "memoryHooks": [
+     "월간도예",
+     "Relié studio",
+     "도자예술"
+    ]
    },
    "images": [
     "/booths/magok-livingmarket-2026/M-01_1.webp",
@@ -1883,8 +2464,36 @@
    "websiteUrl": "https://angyeartmuseum.com",
    "instagramUrl": "https://www.instagram.com/artmuseumag",
    "enrichment": {
-    "summary": "안계미술관 — 부스 N-01, 가든라운지 옆 센터부스. 함께하는 작가 13명이 테이블웨어·도자·섬유·벽 오브제를 선보인다. 본관에선 'Origin Loop'전(2026.09.02~09.18)을 연다.",
-    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
+    "summary": "안계미술관 — 작가가 직접 운영하는 artist-run space. 부스 N-01은 가든라운지 옆 센터부스이고, 함께하는 작가 13명이 테이블웨어·도자·섬유·벽 오브제를 낸다. 본관에선 'Origin Loop'전(9.02~09.18)이 열린다.",
+    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+    "roamInterpretation": "작가 13명이 함께 내는 부스야. 가든라운지 옆 한가운데라 쉬다가 바로 들르기 좋아.",
+    "valueTags": [
+     {
+      "slug": "inspiration",
+      "strength": 0.9
+     },
+     {
+      "slug": "discovery",
+      "strength": 0.7
+     }
+    ],
+    "recommendationReasons": {
+     "inspiration": "전시장에서 보던 공예를 식탁·선반 위에서 봐.",
+     "discovery": "작가 13명이 한자리라 취향이 갈리는 걸 비교해."
+    },
+    "thingsToDo": [
+     "작가별 테이블웨어 비교하기",
+     "벽 오브제 걸린 모습 보기",
+     "가든라운지에서 쉬었다 오기"
+    ],
+    "timing": [
+     "가든라운지 옆이라 쉬는 시간대에 붐빈다"
+    ],
+    "memoryHooks": [
+     "작가 13명",
+     "센터부스",
+     "Origin Loop"
+    ]
    },
    "images": [
     "/booths/magok-livingmarket-2026/N-01_1.webp",
@@ -2010,8 +2619,35 @@
     "hobby-kitchen"
    ],
    "enrichment": {
-    "summary": "'아프리카농장, 아농'. 마켓에서만 전품목 20% 할인.",
-    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
+    "summary": "아농(아프리카농장) — 가드닝 브랜드. 마곡리빙마켓에서만 전품목 20% 할인을 진행하고 초대권 이벤트를 열었다.",
+    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+    "roamInterpretation": "식물과 가드닝 소품을 내는 곳이야. 이 마켓에서만 전품목 20%가 붙어.",
+    "valueTags": [
+     {
+      "slug": "goods",
+      "strength": 0.8
+     },
+     {
+      "slug": "rest",
+      "strength": 0.6
+     }
+    ],
+    "recommendationReasons": {
+     "goods": "전품목 20%라 여기서 사는 게 가장 싸.",
+     "rest": "집에 초록을 들이려면 여기서 시작하면 돼."
+    },
+    "thingsToDo": [
+     "전품목 20% 대상 확인하기",
+     "화분 크기 비교하기"
+    ],
+    "timing": [
+     "마켓에서만 하는 할인이라 기간이 끝나면 없다"
+    ],
+    "memoryHooks": [
+     "아프리카농장",
+     "전품목 20%",
+     "가드닝"
+    ]
    }
   },
   {
@@ -2032,8 +2668,36 @@
    ],
    "instagramUrl": "https://www.instagram.com/cc396center",
    "enrichment": {
-    "summary": "근화동396 청년창업지원센터 — 춘천 로컬테크 창업 커뮤니티. 마곡리빙마켓에 '브랜드관 마곡리빙마켓편'으로 입주기업 7팀을 선정해 공동 브랜드관을 운영한다(9/10~13, 4일간). 반려견 브랜드 '슬반'도 이 부스에 함께 들어온다.",
-    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
+    "summary": "근화동396 청년창업지원센터 — 춘천의 로컬테크 창업 커뮤니티. 마곡리빙마켓에 '브랜드관 마곡리빙마켓편'으로 입주기업 7팀을 선정해 공동 브랜드관을 운영한다(9/10~13). 반려견 브랜드 '슬반'도 이 부스에 들어오고, 개모차·이동가방을 쓰면 반려견 동반이 가능하다.",
+    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+    "roamInterpretation": "춘천에서 올라온 창업팀 7곳이 한 부스를 나눠 쓰는 곳이야. 여기 들르면 처음 보는 브랜드를 한 번에 여럿 봐.",
+    "valueTags": [
+     {
+      "slug": "discovery",
+      "strength": 0.9
+     },
+     {
+      "slug": "social",
+      "strength": 0.6
+     }
+    ],
+    "recommendationReasons": {
+     "discovery": "이제 막 시작한 브랜드 7팀을 한자리에서 봐.",
+     "social": "만드는 사람이 직접 서 있어서 얘기가 오래 간다."
+    },
+    "thingsToDo": [
+     "7팀 부스를 순서대로 다 보기",
+     "만든 사람에게 시작한 계기 묻기",
+     "슬반(반려견) 코너 보기"
+    ],
+    "timing": [
+     "팀이 번갈아 서 있어 시간대마다 사람이 다르다"
+    ],
+    "memoryHooks": [
+     "춘천",
+     "입주기업 7팀",
+     "슬반"
+    ]
    },
    "images": [
     "/booths/magok-livingmarket-2026/O-01_1.webp",
@@ -2357,8 +3021,34 @@
     "PSD DAKBAL"
    ],
    "enrichment": {
-    "summary": "매년 참가해온 닭발 브랜드. '리빙에서 또 중요한 게 먹는 것'.",
-    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/"
+    "summary": "평산댁 닭발 — 참숯불 닭발 브랜드. 마곡리빙마켓에 매년 참가해왔다.",
+    "sourceUrl": "https://www.instagram.com/explore/tags/마곡리빙마켓/",
+    "roamInterpretation": "참숯에 구운 닭발을 내는 곳이야. 매년 나오는 단골 부스라 자리를 알아두면 편해.",
+    "valueTags": [
+     {
+      "slug": "experience",
+      "strength": 0.8
+     },
+     {
+      "slug": "goods",
+      "strength": 0.6
+     }
+    ],
+    "recommendationReasons": {
+     "experience": "굽는 냄새부터가 이 부스의 전부야.",
+     "goods": "먹어보고 바로 사 갈 수 있어."
+    },
+    "thingsToDo": [
+     "참숯불 닭발 맛보기",
+     "포장 단위 확인하기"
+    ],
+    "timing": [
+     "점심·저녁 시간대에 줄이 길다"
+    ],
+    "memoryHooks": [
+     "참숯불 닭발",
+     "평산댁"
+    ]
    }
   },
   {
