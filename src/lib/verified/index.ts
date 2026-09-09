@@ -21,6 +21,10 @@ export interface VerifiedFact {
   image?: string;
   /** 인스타 게시물에서 딴 여러 장. <CODE>_1.webp … 순서대로. */
   images?: string[];
+  /** 근거 링크. **출처(sourceUrl)는 브랜드 본인 채널만 쓴다** — 주최 게시물이나
+   *  셀러 라인업처럼 남이 쓴 글은 근거이지 출처가 아니다. 검색 결과 주소는
+   *  아예 넣지 않는다(검수자가 다시 찾아야 하니 근거가 못 된다). */
+  evidence?: { label: string; url: string }[];
   /** 주최가 운영하는 온라인 브랜드 디렉터리에 브랜드가 직접 등록한 글.
    *  전시 참여 여부와 브랜드 신원을 동시에 증명하는 1순위 근거다. */
   directory?: {

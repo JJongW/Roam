@@ -145,6 +145,27 @@ export function VerifyQueue({ rows }: { rows: VerifyRow[] }) {
               />
             )}
 
+            {/* 근거 링크 — 출처(브랜드 본계정)와 구분해서 따로 보여준다. */}
+            {r.verified.evidence?.length ? (
+              <section className="rounded-xl border border-border bg-secondary/40 p-3">
+                <p className="text-xs font-semibold">근거</p>
+                <ul className="mt-1 space-y-1">
+                  {r.verified.evidence.map((e) => (
+                    <li key={e.url} className="text-xs">
+                      <a
+                        href={e.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1 underline"
+                      >
+                        {e.label} <ExternalLink className="size-3" />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
+
             {/* 주최 디렉터리 원문 — 브랜드가 직접 등록한 글이라 신원·참여 둘 다 증명한다. */}
             {dir && (
               <section className="rounded-xl border border-border bg-secondary/40 p-3">

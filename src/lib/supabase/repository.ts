@@ -617,6 +617,27 @@ export class SupabaseRepository implements Repository {
     return bearer ? createBearerClient(bearer) : createServerClient();
   }
 
+  /**
+   * 사용자 소유 테이블(app_user·booth_note·user_signal_log·user_brain) 전용.
+   *
+   * iOS는 Bearer로 오니 그 토큰으로 접근해 0041의 owner-scoped RLS가 계속
+   * "자기 것만" 경계를 그어준다. **웹은 Supabase 세션이 아예 없다** — 신원은
+   * 우리가 발급한 `roam_user` 쿠키이고, anon 클라이언트에선 `auth.uid()`가 항상
+   * null이라 정책이 아무것도 매칭하지 못해 읽기는 에러 없이 0행, 쓰기는 42501이
+   * 된다. 구글 로그인이 정확히 이걸로 죽었고(2026-09-09) 노트·브레인도 같은
+   * 이유로 웹에서 조용히 비어 있었다. 0041 주석의 "repository는 항상
+   * service-role로 접근한다"는 전제가 사실이 아니었다.
+   *
+   * 서비스 롤로 바꿔도 0041이 막으려던 것 — 브라우저 번들에 박힌 anon 키로
+   * REST를 직접 때리는 경로 — 은 그대로 막힌다. 그건 anon 키의 정책이지 서버가
+   * 쓰는 키의 정책이 아니다. 웹의 소유권 검사는 라우트의 getCurrentUser()가 한다.
+   */
+  private async userDb(asAdmin = false): Promise<SupabaseClient> {
+    if (asAdmin || process.env.ROAM_WORKER === "1") return createServiceClient();
+    const bearer = await getRequestBearerToken();
+    return bearer ? createBearerClient(bearer) : createServiceClient();
+  }
+
   // --- exhibitions ---------------------------------------------------------
 
   async listExhibitions(opts?: {
@@ -1723,8 +1744,15 @@ export class SupabaseRepository implements Repository {
 
   // --- users (nickname auth) -----------------------------------------------
 
+  // 계정 조회·생성은 **서비스 롤**로 한다. 웹의 신원은 우리가 발급한 `roam_user`
+  // 쿠키이지 Supabase 세션이 아니라, anon 클라이언트에선 `auth.uid()`가 항상
+  // null이다. 0041/0047이 app_user에 건 정책은 전부 `auth.uid()::text = id`라
+  // 읽기는 에러 없이 0행, 쓰기는 42501로 막힌다 — 구글 로그인이 정확히 이걸로
+  // 죽었다(2026-09-09). 0041 주석의 "repository는 항상 service-role로 접근한다"는
+  // 전제가 사실이 아니었다. 라우트가 이미 신원을 검증했으니 여기선 RLS 대신
+  // 서비스 롤로 쓴다(updateNickname이 같은 이유로 먼저 이렇게 고쳐졌다).
   async createUser(nickname: string): Promise<User> {
-    const db = await this.db();
+    const db = createServiceClient();
     const row = { id: uid("user"), nickname, created_at: now() };
     const res = await db.from("app_user").insert(row).select("*").single();
     return mapUser(wrote(res, "계정 생성") as Row);
@@ -1780,7 +1808,9 @@ export class SupabaseRepository implements Repository {
   }
 
   async getUser(id: string, opts?: AdminRead): Promise<User | null> {
-    const db = await this.db(opts?.asAdmin);
+    // opts.asAdmin과 무관하게 서비스 롤 — 위 주석 참고. 그대로 두면 로그인한
+    // 사용자를 "없는 계정"으로 읽어 게이트가 다시 /login으로 돌려보낸다.
+    const db = createServiceClient();
     const { data } = await db
       .from("app_user")
       .select("*")
@@ -1790,7 +1820,7 @@ export class SupabaseRepository implements Repository {
   }
 
   async getUserByNickname(nickname: string): Promise<User | null> {
-    const db = await this.db();
+    const db = createServiceClient();
     const { data } = await db
       .from("app_user")
       .select("*")
@@ -1820,7 +1850,7 @@ export class SupabaseRepository implements Repository {
     provider: string,
     providerAccountId: string,
   ): Promise<User | null> {
-    const db = await this.db();
+    const db = createServiceClient();
     const { data } = await db
       .from("app_user")
       .select("*")
@@ -1831,7 +1861,7 @@ export class SupabaseRepository implements Repository {
   }
 
   async createOAuthUser(identity: OAuthIdentity): Promise<User> {
-    const db = await this.db();
+    const db = createServiceClient();
     const row = {
       id: identity.id ?? uid("user"),
       nickname: identity.nickname,
@@ -1848,7 +1878,7 @@ export class SupabaseRepository implements Repository {
   // --- booth notes ---------------------------------------------------------
 
   async listNotes(userId: string): Promise<BoothNote[]> {
-    const db = await this.db();
+    const db = await this.userDb();
     const { data } = await db
       .from("booth_note")
       .select("*")
@@ -1874,7 +1904,7 @@ export class SupabaseRepository implements Repository {
     input: BoothNoteInput,
     judgedClass: "confident" | "uncertain" | null | undefined,
   ): Promise<BoothNote> {
-    const db = await this.db();
+    const db = await this.userDb();
     // 존재하는 노트를 먼저 읽는다 — 이번 요청이 안 건드리는 필드(undefined)는
     // 기존 값을 그대로 들고 있어야 "이 쓰기 후 최종 상태가 비었는지"를 옳게
     // 판단할 수 있다. 원본 input만 보면 메모만 고치는 요청이 매번 interest·
@@ -1997,7 +2027,7 @@ export class SupabaseRepository implements Repository {
     userId: string,
     exhibitionId: string,
   ): Promise<TasteAccuracy> {
-    const db = await this.db();
+    const db = await this.userDb();
     const { data: booths } = await db
       .from("booth")
       .select("id")
@@ -2034,7 +2064,7 @@ export class SupabaseRepository implements Repository {
     exhibitionId: string,
     limit: number,
   ): Promise<{ boothId: string; boothName: string }[]> {
-    const db = await this.db();
+    const db = await this.userDb();
     const { data: booths } = await db
       .from("booth")
       .select("id, name")
@@ -2068,7 +2098,7 @@ export class SupabaseRepository implements Repository {
     exhibitionId: string,
     limit: number,
   ): Promise<{ boothId: string; boothName: string }[]> {
-    const db = await this.db();
+    const db = await this.userDb();
     const { data: booths } = await db
       .from("booth")
       .select("id, name")
@@ -2100,7 +2130,7 @@ export class SupabaseRepository implements Repository {
   async listExhibitionNotes(
     exhibitionId: string,
   ): Promise<{ boothId: string; memo: string }[]> {
-    const db = await this.db();
+    const db = await this.userDb();
     const { data: booths } = await db
       .from("booth")
       .select("id")
@@ -2445,7 +2475,7 @@ export class SupabaseRepository implements Repository {
   async appendUserSignal(
     sig: Omit<UserSignal, "id" | "createdAt">,
   ): Promise<void> {
-    const db = await this.db();
+    const db = await this.userDb();
     const res = await db.from("user_signal_log").insert({
       id: uid("sig"),
       user_id: sig.userId,
@@ -2463,7 +2493,7 @@ export class SupabaseRepository implements Repository {
     userId: string,
     opts?: { exhibitionId?: string; limit?: number } & AdminRead,
   ): Promise<UserSignal[]> {
-    const db = await this.db(opts?.asAdmin);
+    const db = await this.userDb(opts?.asAdmin);
     let q = db
       .from("user_signal_log")
       .select("*")
@@ -2518,7 +2548,7 @@ export class SupabaseRepository implements Repository {
     userId: string,
     opts?: AdminRead,
   ): Promise<UserBrain | null> {
-    const db = await this.db(opts?.asAdmin);
+    const db = await this.userDb(opts?.asAdmin);
     const { data } = await db
       .from("user_brain")
       .select("data")
@@ -2530,7 +2560,7 @@ export class SupabaseRepository implements Repository {
   }
 
   async saveUserBrain(brain: UserBrain): Promise<void> {
-    const db = await this.db();
+    const db = await this.userDb();
     const res = await db.from("user_brain").upsert({
       user_id: brain.userId,
       data: brain,
