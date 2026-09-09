@@ -23,13 +23,13 @@ import { DEFAULT_RHYTHM, isRhythm } from "@/lib/feed/rhythm";
 import { getI18n } from "@/lib/i18n/server";
 import { isValueSlug } from "@/lib/values";
 import { getCurrentUser } from "@/lib/api/session";
-import { curateFeed } from "@/lib/feed/curate";
+import { curateFeedWithPool } from "@/lib/feed/curate";
 import { readBrain } from "@/lib/memory/service";
 import { getRepository } from "@/lib/repositories";
 
 type Props = {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{ rhythm?: string }>;
+  searchParams: Promise<{ rhythm?: string; round?: string }>;
 };
 
 export async function generateMetadata({ params }: Props) {
@@ -48,7 +48,10 @@ export default async function ExhibitionDetailPage({
   searchParams,
 }: Props) {
   const { slug } = await params;
-  const { rhythm: rhythmRaw } = await searchParams;
+  const { rhythm: rhythmRaw, round: roundRaw } = await searchParams;
+  // "새로 골라줘" 회차. 큐레이션이 결정론이라 이게 없으면 버튼을 눌러도 같은
+  // 여섯 장이 다시 온다(curate.ts의 round 주석 참고).
+  const round = Math.max(0, Math.min(999, Number(roundRaw) || 0));
   const rhythm = isRhythm(rhythmRaw) ? rhythmRaw : DEFAULT_RHYTHM;
   // 전시·로케일·로그인은 서로 독립이라 같이 기다린다(감사 P1-3).
   const [detail, { locale, t }, user] = await Promise.all([
@@ -67,12 +70,15 @@ export default async function ExhibitionDetailPage({
   // 관심 피드: 로그인 사용자는 브레인 + 오늘의 리듬으로 개인화, 비로그인은 인기순
   // (curateFeed가 userId=null이면 개인화 없이 랭킹만 돌린다) — 정보 열람은 계정
   // 벽 없이 되게 한 proxy.ts 방침과 같은 이유. 취향 기록만 로그인이 필요하다.
-  const feedItems = await curateFeed(
+  // 아직 반응 안 한 후보 수도 같이 받는다 — 한 화면(6칸)보다 많아야
+  // "새로 골라줘"가 실제로 다른 걸 준다(interest-feed.tsx).
+  const { items: feedItems, poolLeft } = await curateFeedWithPool(
     slug,
     user?.id ?? null,
     rhythm,
     locale,
     brain ?? undefined,
+    round,
   );
   // 기억 발화: 브레인 상위 관심 가치로 인사(로케일 라벨). VALUE_SLUGS면 t로 번역.
   const topValues = (brain?.interests ?? [])
@@ -250,6 +256,8 @@ export default async function ExhibitionDetailPage({
             categoryById={categoryById}
             memoryLine={memoryLine}
             slug={slug}
+            round={round}
+            poolLeft={poolLeft}
           />
 
           {/* 피드를 다 비워도(성실히 판단 다 함) 회고로 못 가면 안 된다 — "판단이

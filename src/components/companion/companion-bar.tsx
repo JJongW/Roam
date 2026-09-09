@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { toast } from "sonner";
 import { useAuthStore } from "@/lib/stores/auth";
 import { useCompanionStore } from "@/lib/stores/companion";
-import { useRotatingMessage } from "@/lib/hooks/use-rotating-message";
 import { useT } from "@/lib/i18n/provider";
 import type { TFn } from "@/lib/i18n/resolve";
 import { RoamAvatar } from "@/components/companion/roam-avatar";
@@ -19,9 +19,13 @@ import { ProgressCircle } from "@/components/ui/progress-circle";
 import { trackUiClick, type UiControl } from "@/lib/analytics/ui-controls";
 
 /**
- * 상주 컴패니언 바 — 방문객 전 화면에 뜨는 Roam 플로팅 필(로고 + 맥락 발화). 탭하면
- * 대화 시트가 열린다. companion-reframe Phase G. 탭 대화엔 LLM 금지(속도 규칙) —
- * 즉답 로컬 템플릿만. 로그인 전(로그인/온보딩 게이트)엔 뜨지 않는다.
+ * 상주 컴패니언 바 — 방문객 전 화면에 뜨는 Roam 플로팅 필(로고 + 취향 파악도 링).
+ * 탭하면 대화 시트가 열린다. companion-reframe Phase G. 탭 대화엔 LLM 금지
+ * (속도 규칙) — 즉답 로컬 템플릿만. 로그인 전(로그인/온보딩 게이트)엔 뜨지 않는다.
+ *
+ * ⚠️ 발화는 여기서 안 한다 — 상단 토스트로 뺐다. 예전엔 이 필 안에 맥락 발화가
+ * 상시로 회전했는데, 같은 줄에 취향 링까지 있어 둘이 겹쳐 읽혔다("정신사납다").
+ * 지금은 필 = 취향 링(상태, 상시) / 토스트 = 발화(사건, 반응할 때만)로 나뉜다.
  */
 export function CompanionBar() {
   const t = useT();
@@ -34,14 +38,24 @@ export function CompanionBar() {
   const tastePct = useCompanionStore((s) => s.tastePct);
   const [open, setOpen] = useState(false);
 
-  // 즉답(flash)은 잠깐 띄우고 스스로 사라진다 → 맥락 발화로 복귀.
+  // 발화(flash)는 상단 토스트로만 낸다 — 반응했을 때만 잠깐 떴다 스스로 사라진다.
+  // sonner는 이미 top-center로 깔려 있고(providers.tsx) 토스트마다 role="status"
+  // + aria-live를 붙여주며, 모션은 globals.css의 prefers-reduced-motion 전역
+  // 규칙이 죽인다 — 그래서 직접 만들지 않는다.
+  // ⚠️ 이 훅은 아래 early return보다 위에 있어야 한다(훅 규칙이기도 하지만,
+  // 필이 숨는 화면 = 지도·비로그인에서도 발화는 나와야 하기 때문). 지도가
+  // 따로 들고 있던 같은 구독은 이걸로 대체돼 지웠다(map-view.tsx).
   useEffect(() => {
     if (!flash) return;
-    const id = setTimeout(clearFlash, 4500);
-    return () => clearTimeout(id);
+    toast(flash, {
+      // 3.5초 — 한 줄 읽고 사라지는 길이. 남아 있어 봐야 다음 반응을 가린다.
+      duration: 3500,
+      icon: <RoamAvatar className="size-5" />,
+    });
+    clearFlash();
   }, [flash, clearFlash]);
 
-  // 전시 홈(상세)에선 상단 고정 배너 대신 여기서 취향·개수 맞춤 발화를 회전시킨다.
+  // 취향 파악도 링은 전시 홈에서만 — 다른 화면에선 필이 아바타 하나로 줄어든다.
   const isExhibitionHome = /\/exhibitions\/[^/]+$/.test(pathname);
 
   const exhibitionSlugFromPath = pathname.match(/\/exhibitions\/([^/]+)/)?.[1];
@@ -55,16 +69,6 @@ export function CompanionBar() {
       },
       control,
     );
-
-  const lines = useMemo(() => {
-    if (isExhibitionHome && home)
-      return homeLines(home, tasteJudged, tastePct, t);
-    return [contextLine(pathname, t)];
-  }, [isExhibitionHome, home, tasteJudged, tastePct, pathname, t]);
-  // 여러 변주면 천천히 돌려 "말이 계속 바뀌는" 동행 느낌(휘발성).
-  const rotating = useRotatingMessage(lines, lines.length > 1, 5000);
-  // 방금 행동에 대한 즉답이 있으면 그걸 먼저, 없으면 맥락 발화.
-  const line = flash ?? rotating;
 
   // 로그인 사용자 + 방문객 화면에서만. 지도는 자체 전체화면 UI라 겹침 피해 숨김.
   if (!user) return null;
@@ -81,7 +85,10 @@ export function CompanionBar() {
             trackClick("companion_bar_open");
             setOpen(true);
           }}
-          className="pointer-events-auto flex max-w-full items-center gap-2 rounded-full border border-border bg-background/90 py-2 pl-2 pr-4 shadow-[var(--shadow-card)] backdrop-blur-xl active:scale-[0.98]"
+          // 발화 텍스트가 빠져 접근 가능한 이름이 없어졌다 — 로미 아바타는
+          // aria-hidden 이미지라 라벨을 대신 못 준다.
+          aria-label={t("companion.ask")}
+          className="pointer-events-auto flex max-w-full items-center gap-2 rounded-full border border-border bg-background/90 p-2 shadow-[var(--shadow-card)] backdrop-blur-xl active:scale-[0.98]"
         >
           <RoamAvatar />
           {isExhibitionHome && home && tastePct !== null && (
@@ -95,9 +102,6 @@ export function CompanionBar() {
               {t("companion.tastePct", { pct: tastePct, n: tasteJudged })}
             </Chip>
           )}
-          <span className="line-clamp-2 text-left text-sm font-semibold">
-            {line}
-          </span>
         </button>
       </div>
 
@@ -174,43 +178,3 @@ function CompanionChat({
   );
 }
 
-/**
- * 전시 홈 발화 풀 — 취향·개수로 조립, 여러 변주를 회전시킨다.
- * 판정 5개 미만(tastePct===null)이면 취향 말 상태 한 줄을 맨 앞에 섞는다 —
- * 숫자가 없을 때도 로미가 뭘 하고 있는지는 들려준다.
- */
-function homeLines(
-  home: { values: string[]; picked: number },
-  tasteJudged: number,
-  tastePct: number | null,
-  t: TFn,
-): string[] {
-  const tasteLine =
-    tastePct !== null
-      ? null
-      : tasteJudged === 0
-        ? t("companion.tasteUnknown")
-        : t("companion.tasteWarming");
-  const base = (() => {
-    if (home.picked <= 0) return [t("companion.homeEmpty")];
-    if (home.values.length === 0)
-      return [t("companion.homeEmpty"), t("companion.homeAsk")];
-    const values = home.values.slice(0, 2).join("·");
-    return [
-      t("companion.homeValues", { values, n: home.picked }),
-      t("companion.homePicked", { n: home.picked }),
-      t("companion.homeAsk"),
-    ];
-  })();
-  return tasteLine ? [tasteLine, ...base] : base;
-}
-
-/** 화면 맥락별 한 줄 발화. */
-function contextLine(pathname: string, t: TFn): string {
-  if (/\/exhibitions\/[^/]+\/community/.test(pathname))
-    return t("companion.lineCommunity");
-  if (/\/exhibitions\/[^/]+$/.test(pathname))
-    return t("companion.lineExhibition");
-  if (/\/booths\//.test(pathname)) return t("companion.lineBooth");
-  return t("companion.lineDefault");
-}

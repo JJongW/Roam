@@ -148,6 +148,14 @@ export async function curateFeed(
   locale: Locale = DEFAULT_LOCALE,
   /** 호출부가 이미 읽었으면 넘긴다 — 같은 요청에서 브레인을 두 번 읽지 않도록. */
   preloadedBrain?: UserBrain,
+  /**
+   * "새로 골라줘" 회차. 큐레이션은 순수 결정론이라 같은 입력엔 같은 여섯 장이
+   * 나온다 — 반응을 안 한 채 버튼을 누르면 화면이 그대로였고, 사용자에겐
+   * 버튼이 고장 난 것으로 보였다(2026-09-09). 회차만큼 후보 풀을 돌려
+   * **다음 순번**을 보여준다. 무작위가 아니라 회전이라 같은 회차는 늘 같은
+   * 결과이고, 풀을 한 바퀴 돌면 처음으로 돌아온다.
+   */
+  round = 0,
 ): Promise<FeedItem[]> {
   const brain =
     preloadedBrain ?? (userId ? await readBrain(userId) : emptyBrain(""));
@@ -209,7 +217,17 @@ export async function curateFeed(
   // 후보 풀에서 먼저 걷어낸다. used에만 넣으면 안정픽이 rank.ranked를 그대로
   // 훑으면서 add()가 used를 검사하지 않고 push하므로 이미 정한 부스가 그대로 남는다
   // — 가장 위에 보이는 픽이라 "반응해도 안 바뀐다"로 느껴진다.
-  const eligible = rank.ranked.filter((s) => !decided.has(s.booth.id));
+  const eligibleAll = rank.ranked.filter((s) => !decided.has(s.booth.id));
+  // 회차만큼 앞에서 잘라 뒤로 붙인다(wrap-around). 풀이 한 화면보다 작으면
+  // 돌려도 같은 얼굴이라 회전하지 않는다 — 그 경우는 화면이 "더 없다"고 말한다.
+  const PAGE = 6;
+  const eligible =
+    round > 0 && eligibleAll.length > PAGE
+      ? (() => {
+          const off = (round * PAGE) % eligibleAll.length;
+          return [...eligibleAll.slice(off), ...eligibleAll.slice(0, off)];
+        })()
+      : eligibleAll;
 
   const items: FeedItem[] = [];
   const used = new Set(decided);
@@ -248,4 +266,42 @@ export async function curateFeed(
   }
 
   return items;
+}
+
+/**
+ * 피드와 **아직 반응 안 한 후보 수**를 같이 준다.
+ *
+ * 화면은 이 수로 "새로 골라줘"가 실제로 다른 걸 줄 수 있는지 판단한다 — 풀이
+ * 한 화면(6칸)보다 작으면 돌려도 같은 얼굴이라, 버튼 대신 왜 안 바뀌는지를
+ * 말해야 한다(interest-feed.tsx). 전시 홈만 이게 필요해서 curateFeed의 반환을
+ * 바꾸지 않고 여기서 한 겹 더 센다 — rank 결과를 다시 읽지 않고 items로
+ * 역산하면 틀리기 때문에(items는 최대 6칸으로 잘린 값이다) 노트만 한 번 더 본다.
+ */
+export async function curateFeedWithPool(
+  slug: string,
+  userId: string | null,
+  rhythm: Rhythm = DEFAULT_RHYTHM,
+  locale: Locale = DEFAULT_LOCALE,
+  preloadedBrain?: UserBrain,
+  round = 0,
+): Promise<{ items: FeedItem[]; poolLeft: number }> {
+  const items = await curateFeed(
+    slug,
+    userId,
+    rhythm,
+    locale,
+    preloadedBrain,
+    round,
+  );
+  const repo = await getRepository();
+  const exhibitionId = await repo.getExhibitionIdBySlug(slug);
+  if (!exhibitionId) return { items, poolLeft: items.length };
+  const booths = await repo.listBoothsByExhibitionId(exhibitionId);
+  const decided = userId
+    ? decidedBoothIds(await repo.listNotes(userId))
+    : new Set<string>();
+  const poolLeft = booths.filter(
+    (b) => b.kind !== "facility" && !decided.has(b.id),
+  ).length;
+  return { items, poolLeft };
 }

@@ -6,24 +6,37 @@ export const APP_ONBOARDING_DISMISS_KEY = "roam-app-onboarded";
 export const APP_ONBOARDING_PHASE_KEY = "roam-onboarding-app-phase";
 export const APP_ONBOARDING_GUIDE_STEP_KEY = "roam-onboarding-app-guide-step";
 //
-// 로컬 dismissal(anonDismissed, localStorage 기반)이 항상 우선한다 — 한 번 껐으면
-// (완료든 건너뛰기든) 이 브라우저에선 계속 안 뜬다. 로그인 상태에선 서버 신호
-// (needsOnboarding)가 추가로 다시 띄울 이유가 된다 — 로컬엔 기록이 없는 새
-// 브라우저·새 기기에서 계정에 실제로 취향이 없을 때만 해당한다.
+// **누가 껐는지**를 같이 기록한다(`"anon"` 또는 app_user.id). 예전엔 "1"만 저장해
+// 로컬 dismissal이 무조건 최우선이었는데, 그러면 비로그인으로 "먼저 둘러볼게"를
+// 한 번 누른 브라우저는 **로그인해도 온보딩이 영영 안 떴다**. 온보딩 결과(가치·
+// 브레인)는 계정에 묶이므로, 계정이 생기는 순간이야말로 온보딩이 의미를 갖는
+// 시점이다 — 비로그인 기록은 거기서 효력을 잃어야 한다(2026-09-09).
 //
-// 예전엔 로그인 여부로 완전히 갈라(로그인=서버 신호만, 비로그인=로컬만) 판정했는데,
-// 그러면 "방금 로그인 응답의 needsOnboarding는 로그인 시점 기준이라 동기화 전 상태"
-// 라는 타이밍 문제와 "로그인 상태 건너뛰기가 서버에 안 남는다"는 두 가지 버그가
-// 생겼다 — 둘 다 로컬 dismissal을 무조건 최우선으로 두면 사라진다.
+// 이 계정이 직접 끈 기록은 그대로 최우선이다 — 그게 "로그인 응답의
+// needsOnboarding은 로그인 시점 기준이라 낡을 수 있어, 방금 끝낸 온보딩이 로그인
+// 직후 다시 뜬다"는 예전 버그를 막던 조건이다.
+//
+// `dismissedBy`가 옛 값 `"1"`이어도 안전하다 — 로그인 상태에선 어차피 내 id와
+// 달라 서버 신호를 보게 되고, 비로그인이면 예전과 똑같이 "껐음"으로 읽힌다.
 export function isAppOnboardingDismissed(params: {
-  user: unknown;
+  /** 로그인한 계정 id. 비로그인이면 null. */
+  userId?: string | null;
   needsOnboarding: boolean;
-  anonDismissed: boolean;
+  /** localStorage에 남은 "누가 껐는가" — "anon" | app_user.id | 옛 "1" | null. */
+  dismissedBy: string | null;
 }): boolean {
-  return (
-    params.anonDismissed || (params.user ? !params.needsOnboarding : false)
-  );
+  const { userId, needsOnboarding, dismissedBy } = params;
+  if (userId && dismissedBy === userId) return true;
+  if (userId) return !needsOnboarding;
+  return dismissedBy !== null;
 }
+
+/** localStorage에 넣을 소유자 표식. 비로그인은 "anon". */
+export function onboardingDismissOwner(userId?: string | null): string {
+  return userId || ANON_DISMISS_OWNER;
+}
+
+export const ANON_DISMISS_OWNER = "anon";
 
 /**
  * 이 경로에서 온보딩 게이트를 띄워도 되는가.

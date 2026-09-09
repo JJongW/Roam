@@ -237,6 +237,10 @@ const ko = {
     exhaustedMapCta: "지도 보기",
     exhaustedFinishCta: "오늘 관람 정리하기",
     repick: "새로 골라줘",
+    // 후보 풀이 한 화면보다 작으면 돌려도 같은 얼굴이라, 버튼을 주는 대신
+    // 다음에 뭘 하면 되는지 말한다.
+    repickBlocked:
+      "지금 보여줄 수 있는 건 여기까지야. 위 부스에 반응해주면 그걸 보고 다시 골라줄게.",
     repicking: "고르는 중…",
     pickStable: "확실히 네 취향이라",
     pickUnfamiliar: "좀 새로운데 끌릴 것 같아서",
@@ -955,6 +959,8 @@ const en: Dict = {
     exhaustedMapCta: "Open map",
     exhaustedFinishCta: "Wrap up today's visit",
     repick: "Pick more",
+    repickBlocked:
+      "That's everything I have right now. React to a few above and I'll pick again from that.",
     repicking: "Picking…",
     pickStable: "Definitely your taste",
     pickUnfamiliar: "A bit new but I think you'll like it",
