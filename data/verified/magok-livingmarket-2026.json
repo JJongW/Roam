@@ -109,11 +109,14 @@
     "pr": "라잇트리(LIGHTREE)는 ‘DESIGNED BY LOVE’를 바탕으로 컬러를 통해 일상에 즐거움과 새로운 경험을 더하는 디자인 라이프스타일 브랜드입니다. 감각적인 컬러와 실용성을 담은 소파, 아웃도어·여행용품 등을 선보이며, 이번 전시에서는 라잇트리만의 컬러풀하고 위트 있는 라이프스타일을 직접 경험할 수 있습니다.",
     "link": "https://lightree.kr/",
     "source": "https://magoklivingdesignfair.kr/fairOnline.do"
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/A-15.webp"
+   ]
   },
   "B-14": {
    "summary": "(주)리젠스(LIZENS CO.,LTD) — 새로운 주방 라이프스타일의 기준을 제안하다. ㈜리젠스는 고객의 라이프스타일을 반영한 프리미엄 주방 솔루션을 개발하는 가치 중심의 혁신기업입니다. 이번 마곡리빙마켓에서는 신제품 ALTERA를 선보입니다. 은은하게 반사되는 에끌라 텍스처와 부드럽고 고급스러운 벨로라 코팅을 적용해 감각적인 디자인과 뛰어난 완성도를 구현하며, 새로운 프리미엄 주방 경험을 제안합니다.",
-   "sourceUrl": "https://lizens.co.kr/",
+   "sourceUrl": "https://www.instagram.com/lizens.official/",
    "confirmed": true,
    "name": "리젠스",
    "roamInterpretation": "주방 싱크와 설비를 새로 짜는 브랜드야. 주최가 꼽은 라인업에 들어서 부스 자체가 크게 서 있어.",
@@ -148,6 +151,18 @@
     "pr": "㈜리젠스는 고객의 라이프스타일을 반영한 프리미엄 주방 솔루션을 개발하는 가치 중심의 혁신기업입니다. 이번 마곡리빙마켓에서는 신제품 ALTERA를 선보입니다. 은은하게 반사되는 에끌라 텍스처와 부드럽고 고급스러운 벨로라 코팅을 적용해 감각적인 디자인과 뛰어난 완성도를 구현하며, 새로운 프리미엄 주방 경험을 제안합니다.",
     "link": "https://lizens.co.kr/",
     "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/B-14_1.webp",
+    "/booths/magok-livingmarket-2026/B-14_2.webp",
+    "/booths/magok-livingmarket-2026/B-14_3.webp",
+    "/booths/magok-livingmarket-2026/B-14_4.webp",
+    "/booths/magok-livingmarket-2026/B-14_5.webp"
+   ],
+   "instagram": {
+    "handle": "lizens.official",
+    "url": "https://www.instagram.com/lizens.official/",
+    "header": "리젠스 싱크볼 — 건축자재, 싱크볼 제조·판매 전문기업 (주)리젠스, 충남 예산"
    }
   },
   "B-20": {
@@ -157,6 +172,7 @@
    "name": "지아띠",
    "image": "/booths/magok-livingmarket-2026/B-20_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/B-20.webp",
     "/booths/magok-livingmarket-2026/B-20_1.webp",
     "/booths/magok-livingmarket-2026/B-20_2.webp",
     "/booths/magok-livingmarket-2026/B-20_3.webp",
@@ -210,6 +226,7 @@
    "name": "아파트먼트하우스",
    "image": "/booths/magok-livingmarket-2026/B-30_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/B-30.webp",
     "/booths/magok-livingmarket-2026/B-30_1.webp",
     "/booths/magok-livingmarket-2026/B-30_2.webp",
     "/booths/magok-livingmarket-2026/B-30_3.webp",
@@ -267,6 +284,7 @@
    "name": "스튜디오 퍼더",
    "image": "/booths/magok-livingmarket-2026/C-01_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/C-01.webp",
     "/booths/magok-livingmarket-2026/C-01_1.webp",
     "/booths/magok-livingmarket-2026/C-01_2.webp",
     "/booths/magok-livingmarket-2026/C-01_3.webp",
@@ -391,6 +409,7 @@
    "name": "레어로우",
    "image": "/booths/magok-livingmarket-2026/D-30_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/D-30.webp",
     "/booths/magok-livingmarket-2026/D-30_1.webp",
     "/booths/magok-livingmarket-2026/D-30_2.webp",
     "/booths/magok-livingmarket-2026/D-30_3.webp",
@@ -463,6 +482,9 @@
     "주최사",
     "행복이 가득한 집",
     "창립 50주년"
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/J-01.webp"
    ]
   },
   "K-01": {
@@ -472,6 +494,7 @@
    "name": "1집구석",
    "image": "/booths/magok-livingmarket-2026/K-01_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/K-01.webp",
     "/booths/magok-livingmarket-2026/K-01_1.webp",
     "/booths/magok-livingmarket-2026/K-01_2.webp",
     "/booths/magok-livingmarket-2026/K-01_3.webp",
@@ -526,6 +549,7 @@
    "name": "미노항 코리아",
    "image": "/booths/magok-livingmarket-2026/K-13_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/K-13.webp",
     "/booths/magok-livingmarket-2026/K-13_1.webp",
     "/booths/magok-livingmarket-2026/K-13_2.webp",
     "/booths/magok-livingmarket-2026/K-13_3.webp",
@@ -564,6 +588,7 @@
    "name": "휴움",
    "image": "/booths/magok-livingmarket-2026/K-14_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/K-14.webp",
     "/booths/magok-livingmarket-2026/K-14_1.webp",
     "/booths/magok-livingmarket-2026/K-14_2.webp",
     "/booths/magok-livingmarket-2026/K-14_3.webp",
@@ -610,7 +635,7 @@
   },
   "L-16": {
    "summary": "토은(toeun) — 작가의 정성으로 만든 그릇 백자토 위에 자연스러운 철점이 섞인 \"고백자\"를 현대 시대에 맞게 물레성형으로 만든 핸드메이드 그릇입니다.",
-   "sourceUrl": "https://smartstore.naver.com/toeun",
+   "sourceUrl": "https://www.instagram.com/toeun_pot/",
    "confirmed": true,
    "name": "토은",
    "roamInterpretation": "토분으로 알려진 곳인데 현장엔 그릇만 가져와. B품 50%가 붙어서 실물 보고 고르는 재미가 커.",
@@ -648,6 +673,23 @@
     "pr": "백자토 위에 자연스러운 철점이 섞인 \"고백자\"를 현대 시대에 맞게 물레성형으로 만든 핸드메이드 그릇입니다.",
     "link": "https://smartstore.naver.com/toeun",
     "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/L-16_1.webp",
+    "/booths/magok-livingmarket-2026/L-16_2.webp",
+    "/booths/magok-livingmarket-2026/L-16_3.webp",
+    "/booths/magok-livingmarket-2026/L-16_4.webp",
+    "/booths/magok-livingmarket-2026/L-16_5.webp",
+    "/booths/magok-livingmarket-2026/L-16_6.webp",
+    "/booths/magok-livingmarket-2026/L-16_7.webp",
+    "/booths/magok-livingmarket-2026/L-16_8.webp",
+    "/booths/magok-livingmarket-2026/L-16_9.webp",
+    "/booths/magok-livingmarket-2026/L-16_10.webp"
+   ],
+   "instagram": {
+    "handle": "toeun_pot",
+    "url": "https://www.instagram.com/toeun_pot/",
+    "header": "토은 / 토분&가드닝&수제토분 — 오프라인 판매는 하지 않는다(온라인 전용)"
    }
   },
   "M-01": {
@@ -657,6 +699,7 @@
    "name": "월간도예",
    "image": "/booths/magok-livingmarket-2026/M-01_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/M-01.webp",
     "/booths/magok-livingmarket-2026/M-01_1.webp",
     "/booths/magok-livingmarket-2026/M-01_2.webp",
     "/booths/magok-livingmarket-2026/M-01_3.webp",
@@ -701,6 +744,7 @@
    "name": "안계미술관",
    "image": "/booths/magok-livingmarket-2026/N-01_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/N-01.webp",
     "/booths/magok-livingmarket-2026/N-01_1.webp",
     "/booths/magok-livingmarket-2026/N-01_2.webp",
     "/booths/magok-livingmarket-2026/N-01_3.webp",
@@ -743,7 +787,7 @@
   },
   "N-16": {
    "summary": "아농(아프리카농장) — 가드닝 브랜드. 마곡리빙마켓에서만 전품목 20% 할인을 진행하고 초대권 이벤트를 열었다.",
-   "sourceUrl": "https://www.instagram.com/p/Dc-K_Odxk8A/",
+   "sourceUrl": "https://www.instagram.com/africa_farm1/",
    "confirmed": true,
    "name": "아농",
    "roamInterpretation": "식물과 가드닝 소품을 내는 곳이야. 이 마켓에서만 전품목 20%가 붙어.",
@@ -772,6 +816,18 @@
     "아프리카농장",
     "전품목 20%",
     "가드닝"
+   ],
+   "instagram": {
+    "handle": "africa_farm1",
+    "url": "https://www.instagram.com/africa_farm1/",
+    "header": "아프리카농장 — 아프리카 식물 전문 재배 농장(@anong_gardening)"
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/N-16_1.webp",
+    "/booths/magok-livingmarket-2026/N-16_2.webp",
+    "/booths/magok-livingmarket-2026/N-16_3.webp",
+    "/booths/magok-livingmarket-2026/N-16_4.webp",
+    "/booths/magok-livingmarket-2026/N-16_5.webp"
    ]
   },
   "O-01": {
@@ -781,6 +837,7 @@
    "name": "근화동396창업공간",
    "image": "/booths/magok-livingmarket-2026/O-01_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/O-01.webp",
     "/booths/magok-livingmarket-2026/O-01_1.webp",
     "/booths/magok-livingmarket-2026/O-01_2.webp",
     "/booths/magok-livingmarket-2026/O-01_3.webp",
@@ -869,7 +926,12 @@
     "pr": "평산댁 참숯불 닭발 먹기 좋은 컴팩트한 사이즈로 조리 없이 간편하게 즐기는 3가지 닭발(닭발큐브,닭발편육,무뼈닭발)을 소개합니다.",
     "link": "https://smartstore.naver.com/momsmomfnb",
     "source": "https://magoklivingdesignfair.kr/fairOnline.do"
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/Q-07_1.webp",
+    "/booths/magok-livingmarket-2026/Q-07_2.webp",
+    "/booths/magok-livingmarket-2026/Q-07_3.webp"
+   ]
   },
   "B-03": {
    "summary": "커스템(kustem) — TV를 오브제로 바꾸는 모듈러 디자인 TV 브랜드. 커스템 스타일프레임은 LG 올레드 TV 전용 모듈러 디자인 프레임입니다. 벽에 머물던 TV를 공간의 오브제로 새롭게 바꿉니다.",
@@ -878,6 +940,7 @@
    "name": "커스텀",
    "image": "/booths/magok-livingmarket-2026/B-03_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/B-03.webp",
     "/booths/magok-livingmarket-2026/B-03_1.webp",
     "/booths/magok-livingmarket-2026/B-03_2.webp",
     "/booths/magok-livingmarket-2026/B-03_3.webp",
@@ -930,7 +993,7 @@
   },
   "A-08": {
    "summary": "스튜디오 무드(STUDIO MOOD) — 감성을 담은 철제 오브제를 제작하는 스튜디오무드 입니다 스튜디오무드는 철제를 기반으로 공간의 분위기를 완성하는 리빙 브랜드입니다. 가림막, 커버, 오브제 제품을 통해 기능을 넘어 공간에 자연스럽게 스며드는 디자인을 제안하며, 일상을 더 머무르고 싶은 공간으로 만듭니다.",
-   "sourceUrl": "https://smartstore.naver.com/itpkorea",
+   "sourceUrl": "https://www.instagram.com/studio.mood_official/",
    "confirmed": true,
    "name": "스튜디오 무드",
    "roamInterpretation": "철로 만든 생활 소품을 내는 곳인데, 오프라인에 나오는 게 이번이 처음이야.",
@@ -967,6 +1030,23 @@
     "pr": "스튜디오무드는 철제를 기반으로 공간의 분위기를 완성하는 리빙 브랜드입니다. 가림막, 커버, 오브제 제품을 통해 기능을 넘어 공간에 자연스럽게 스며드는 디자인을 제안하며, 일상을 더 머무르고 싶은 공간으로 만듭니다.",
     "link": "https://smartstore.naver.com/itpkorea",
     "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/A-08_1.webp",
+    "/booths/magok-livingmarket-2026/A-08_2.webp",
+    "/booths/magok-livingmarket-2026/A-08_3.webp",
+    "/booths/magok-livingmarket-2026/A-08_4.webp",
+    "/booths/magok-livingmarket-2026/A-08_5.webp",
+    "/booths/magok-livingmarket-2026/A-08_6.webp",
+    "/booths/magok-livingmarket-2026/A-08_7.webp",
+    "/booths/magok-livingmarket-2026/A-08_8.webp",
+    "/booths/magok-livingmarket-2026/A-08_9.webp",
+    "/booths/magok-livingmarket-2026/A-08_10.webp"
+   ],
+   "instagram": {
+    "handle": "studio.mood_official",
+    "url": "https://www.instagram.com/studio.mood_official/",
+    "header": "스튜디오무드 | STUDIO.MOOD — 감성 철제 인테리어"
    }
   },
   "C-14": {
@@ -1013,6 +1093,9 @@
      "label": "주최 브랜드 큐레이션 — Home & Style",
      "url": "https://www.instagram.com/p/Dcuu8QakSoK/"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/C-14.webp"
    ]
   },
   "C-10": {
@@ -1020,6 +1103,7 @@
    "confirmed": true,
    "image": "/booths/magok-livingmarket-2026/C-10_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/C-10.webp",
     "/booths/magok-livingmarket-2026/C-10_1.webp",
     "/booths/magok-livingmarket-2026/C-10_2.webp",
     "/booths/magok-livingmarket-2026/C-10_3.webp",
@@ -1109,6 +1193,10 @@
      "label": "주최 브랜드 디렉터리 원문",
      "url": "https://magoklivingdesignfair.kr/fairOnline.do"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/D-12_1.webp",
+    "/booths/magok-livingmarket-2026/D-12_2.webp"
    ]
   },
   "D-14": {
@@ -1154,6 +1242,13 @@
      "label": "주최 브랜드 디렉터리 원문",
      "url": "https://magoklivingdesignfair.kr/fairOnline.do"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/D-14_1.webp",
+    "/booths/magok-livingmarket-2026/D-14_2.webp",
+    "/booths/magok-livingmarket-2026/D-14_3.webp",
+    "/booths/magok-livingmarket-2026/D-14_4.webp",
+    "/booths/magok-livingmarket-2026/D-14_5.webp"
    ]
   },
   "E-07": {
@@ -1161,6 +1256,7 @@
    "confirmed": false,
    "image": "/booths/magok-livingmarket-2026/E-07_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/E-07.webp",
     "/booths/magok-livingmarket-2026/E-07_1.webp",
     "/booths/magok-livingmarket-2026/E-07_2.webp",
     "/booths/magok-livingmarket-2026/E-07_3.webp",
@@ -1203,6 +1299,7 @@
    "confirmed": true,
    "image": "/booths/magok-livingmarket-2026/F-10_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/F-10.webp",
     "/booths/magok-livingmarket-2026/F-10_1.webp",
     "/booths/magok-livingmarket-2026/F-10_2.webp",
     "/booths/magok-livingmarket-2026/F-10_3.webp",
@@ -1341,6 +1438,11 @@
      "label": "주최 브랜드 큐레이션 — 브랜드 큐레이션 — 침실·욕실",
      "url": "https://www.instagram.com/p/DcATDUBHGAT/"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/H-06_1.webp",
+    "/booths/magok-livingmarket-2026/H-06_2.webp",
+    "/booths/magok-livingmarket-2026/H-06_3.webp"
    ]
   },
   "H-08": {
@@ -1513,7 +1615,10 @@
     "url": "https://www.instagram.com/sildream_bs/",
     "header": "실드림"
    },
-   "sourceUrl": "https://www.instagram.com/sildream_bs/"
+   "sourceUrl": "https://www.instagram.com/sildream_bs/",
+   "images": [
+    "/booths/magok-livingmarket-2026/J-07.webp"
+   ]
   },
   "H-15": {
    "summary": "미파(MIPA) — '옷을 짓고 사람을 잇다. 계절이 기다려지는 옷'. 부산 망미장 팀으로 참여한다.",
@@ -1623,6 +1728,12 @@
      "label": "주최 브랜드 큐레이션 — 브랜드 큐레이션 — 온전한 휴식",
      "url": "https://www.instagram.com/p/DcKmPgejI81/"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/N-15_1.webp",
+    "/booths/magok-livingmarket-2026/N-15_2.webp",
+    "/booths/magok-livingmarket-2026/N-15_3.webp",
+    "/booths/magok-livingmarket-2026/N-15_4.webp"
    ]
   },
   "Q-04": {
@@ -1700,11 +1811,28 @@
     "천연효모",
     "북유럽 호밀빵"
    ],
-   "sourceUrl": "https://www.instagram.com/p/DLYQrvszK-b/"
+   "sourceUrl": "https://www.instagram.com/the_catcher_of_ryebread/",
+   "instagram": {
+    "handle": "the_catcher_of_ryebread",
+    "url": "https://www.instagram.com/the_catcher_of_ryebread/",
+    "header": "호밀빵의 파수꾼 — 연남동 본사 카페, 서울 마포구 연남로 13"
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/Q-17_1.webp",
+    "/booths/magok-livingmarket-2026/Q-17_2.webp",
+    "/booths/magok-livingmarket-2026/Q-17_3.webp",
+    "/booths/magok-livingmarket-2026/Q-17_4.webp",
+    "/booths/magok-livingmarket-2026/Q-17_5.webp",
+    "/booths/magok-livingmarket-2026/Q-17_6.webp",
+    "/booths/magok-livingmarket-2026/Q-17_7.webp",
+    "/booths/magok-livingmarket-2026/Q-17_8.webp",
+    "/booths/magok-livingmarket-2026/Q-17_9.webp",
+    "/booths/magok-livingmarket-2026/Q-17_10.webp"
+   ]
   },
   "O-06": {
    "summary": "브라운라이스팩토리 — 국내산 현미로 쌀과자를 만드는 브랜드. 해남샌드칩에서 시작해 초코미샌드·치즈미샌드 등 라이스크래커를 낸다.",
-   "confirmed": false,
+   "confirmed": true,
    "roamInterpretation": "현미로 쌀과자를 만드는 곳이야. 바삭한 정도는 씹어봐야 알아.",
    "valueTags": [
     {
@@ -1730,7 +1858,24 @@
     "미샌드",
     "해남샌드칩"
    ],
-   "sourceUrl": "https://www.instagram.com/p/DNPlM_QpNlu/"
+   "sourceUrl": "https://www.instagram.com/brownrice.factory/",
+   "instagram": {
+    "handle": "brownrice.factory",
+    "url": "https://www.instagram.com/brownrice.factory/",
+    "header": "브라운라이스팩토리 — 초코미샌드·치즈미샌드·현미바삭, 제조업 13년차"
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/O-06_1.webp",
+    "/booths/magok-livingmarket-2026/O-06_2.webp",
+    "/booths/magok-livingmarket-2026/O-06_3.webp",
+    "/booths/magok-livingmarket-2026/O-06_4.webp",
+    "/booths/magok-livingmarket-2026/O-06_5.webp",
+    "/booths/magok-livingmarket-2026/O-06_6.webp",
+    "/booths/magok-livingmarket-2026/O-06_7.webp",
+    "/booths/magok-livingmarket-2026/O-06_8.webp",
+    "/booths/magok-livingmarket-2026/O-06_9.webp",
+    "/booths/magok-livingmarket-2026/O-06_10.webp"
+   ]
   },
   "P-02": {
    "summary": "크리미웨이(CREAMYWAY) — 국내산 농산물 원료로 만든 단백질 쉐이크 크리미웨이 크리미웨이는 국내산 원료를 바탕으로 맛과 영양을 모두 담은 단백질 쉐이크 브랜드입니다. 바쁜 일상 속에서도 간편하게 단백질을 섭취할 수 있도록 맛있고 부담 없이 즐기는 한 잔을 제안합니다. 오픈 이벤트로 특별한 행사 가격과 합리적인 혜택을 만나볼 수 있습니다. 제품을 맛보고 구매하며 크리미웨이의 건강하고 맛있는 일상을 경험해보세요.",
@@ -1759,7 +1904,7 @@
     "크리미웨이",
     "프로틴 쉐이크"
    ],
-   "sourceUrl": "https://smartstore.naver.com/creamyway",
+   "sourceUrl": "https://www.instagram.com/creamyway_official/",
    "directory": {
     "nameKor": "크리미웨이",
     "nameEng": "CREAMYWAY",
@@ -1774,7 +1919,24 @@
      "label": "주최 브랜드 큐레이션 — Food & Taste",
      "url": "https://www.instagram.com/p/Dcm6--gARa9/"
     }
-   ]
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/P-02_1.webp",
+    "/booths/magok-livingmarket-2026/P-02_2.webp",
+    "/booths/magok-livingmarket-2026/P-02_3.webp",
+    "/booths/magok-livingmarket-2026/P-02_4.webp",
+    "/booths/magok-livingmarket-2026/P-02_5.webp",
+    "/booths/magok-livingmarket-2026/P-02_6.webp",
+    "/booths/magok-livingmarket-2026/P-02_7.webp",
+    "/booths/magok-livingmarket-2026/P-02_8.webp",
+    "/booths/magok-livingmarket-2026/P-02_9.webp",
+    "/booths/magok-livingmarket-2026/P-02_10.webp"
+   ],
+   "instagram": {
+    "handle": "creamyway_official",
+    "url": "https://www.instagram.com/creamyway_official/",
+    "header": "크리미웨이 — 원료부터 제대로, 맛은 더 크리미하게"
+   }
   },
   "P-18": {
    "summary": "네코먼데이 로스터리 — 커피 로스터리. 부산 카페쇼에 참가해왔고 밀크 베이스 음료도 함께 낸다.",
@@ -1865,11 +2027,17 @@
      "label": "주최 브랜드 디렉터리 원문",
      "url": "https://magoklivingdesignfair.kr/fairOnline.do"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/R-08_1.webp",
+    "/booths/magok-livingmarket-2026/R-08_2.webp",
+    "/booths/magok-livingmarket-2026/R-08_3.webp",
+    "/booths/magok-livingmarket-2026/R-08_4.webp"
    ]
   },
   "M-05": {
    "summary": "이어서보 — 한국 전통직물로 조각보를 만드는 브랜드. 대표 제품은 8가지 색의 '풍경조각보'로, 금속 풍경에 매치하거나 책갈피로 쓴다. 티웨어도 함께 낸다.",
-   "confirmed": false,
+   "confirmed": true,
    "roamInterpretation": "전통 조각보를 오늘 쓰는 물건으로 옮기는 곳이야. 색이 여덟 가지라 고르는 데 시간이 걸려.",
    "valueTags": [
     {
@@ -1895,7 +2063,24 @@
     "풍경조각보",
     "전통직물"
    ],
-   "sourceUrl": "https://www.instagram.com/p/DTuW8JwgfvY/"
+   "sourceUrl": "https://www.instagram.com/eosobo_official/",
+   "instagram": {
+    "handle": "eosobo_official",
+    "url": "https://www.instagram.com/eosobo_official/",
+    "header": "이어서보 — 한국적인 아름다움을 동시대 감성으로 재해석. 프로필에 '2026.09.10-13 서울 마곡리빙마켓 코엑스마곡' 명시"
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/M-05_1.webp",
+    "/booths/magok-livingmarket-2026/M-05_2.webp",
+    "/booths/magok-livingmarket-2026/M-05_3.webp",
+    "/booths/magok-livingmarket-2026/M-05_4.webp",
+    "/booths/magok-livingmarket-2026/M-05_5.webp",
+    "/booths/magok-livingmarket-2026/M-05_6.webp",
+    "/booths/magok-livingmarket-2026/M-05_7.webp",
+    "/booths/magok-livingmarket-2026/M-05_8.webp",
+    "/booths/magok-livingmarket-2026/M-05_9.webp",
+    "/booths/magok-livingmarket-2026/M-05_10.webp"
+   ]
   },
   "L-07": {
    "summary": "엘제이엘 갤러리(LJL gallery) — 삶의 무대를 예술로 바꾸는 Artful Living 공예 전문 갤러리 엘제이엘(LJL)은 ‘공간과 장식’을 주제로 우리 곁의 사물이 예술이 되는 순간을 조명한다. 이번 전시는 공간을 감각적으로 바꾸는 벽장식 오브제부터 동시대적 미감을 담은 현대장신구까지, 7인의 작가가 빚어낸 독창적인 형상과 색채를 통해, 우리의 공간과 내면을 아름답게 완성하는 예술적 울림을 전하고자 한다.",
@@ -1938,6 +2123,10 @@
      "label": "주최 브랜드 큐레이션 — 브랜드 큐레이션 — 아카이브",
      "url": "https://www.instagram.com/p/Dc3H3u3jnkt/"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/L-07_1.webp",
+    "/booths/magok-livingmarket-2026/L-07_2.webp"
    ]
   },
   "L-09": {
@@ -1984,6 +2173,9 @@
      "label": "주최 브랜드 디렉터리 원문",
      "url": "https://magoklivingdesignfair.kr/fairOnline.do"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/L-09.webp"
    ]
   },
   "L-15": {
@@ -2034,6 +2226,7 @@
    "confirmed": false,
    "image": "/booths/magok-livingmarket-2026/G-08_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/G-08.webp",
     "/booths/magok-livingmarket-2026/G-08_1.webp",
     "/booths/magok-livingmarket-2026/G-08_2.webp",
     "/booths/magok-livingmarket-2026/G-08_3.webp",
@@ -2098,6 +2291,7 @@
    "confirmed": false,
    "image": "/booths/magok-livingmarket-2026/P-01_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/P-01.webp",
     "/booths/magok-livingmarket-2026/P-01_1.webp",
     "/booths/magok-livingmarket-2026/P-01_2.webp",
     "/booths/magok-livingmarket-2026/P-01_3.webp",
@@ -2170,7 +2364,10 @@
     "홍시빙수",
     "전주 객리단길"
    ],
-   "sourceUrl": "https://www.instagram.com/p/DYEaycdkcZj/"
+   "sourceUrl": "https://www.instagram.com/p/DYEaycdkcZj/",
+   "images": [
+    "/booths/magok-livingmarket-2026/Q-16.webp"
+   ]
   },
   "R-04": {
    "summary": "아라리유정란 — 365일 풀을 먹여 키운 그래스페드 닭이 낳은 오메가3 유정란. 방목과 목초 급여를 함께 하며 회원제 정기배송으로 판다.",
@@ -2200,7 +2397,22 @@
     "그래스페드",
     "방목"
    ],
-   "sourceUrl": "https://www.instagram.com/p/DYpGuNBgSdy/"
+   "sourceUrl": "https://www.instagram.com/30301sy/",
+   "instagram": {
+    "handle": "30301sy",
+    "url": "https://www.instagram.com/30301sy/",
+    "header": "아라리유정란 윤석진 — 포천에서 자연순환유기농법으로 유정란을 생산하는 농부"
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/R-04_1.webp",
+    "/booths/magok-livingmarket-2026/R-04_2.webp",
+    "/booths/magok-livingmarket-2026/R-04_3.webp",
+    "/booths/magok-livingmarket-2026/R-04_4.webp",
+    "/booths/magok-livingmarket-2026/R-04_5.webp",
+    "/booths/magok-livingmarket-2026/R-04_6.webp",
+    "/booths/magok-livingmarket-2026/R-04_7.webp",
+    "/booths/magok-livingmarket-2026/R-04_8.webp"
+   ]
   },
   "R-05": {
    "summary": "내일 뭐 먹지 마켓 — **플리마켓을 여는 주체**다('내일뭐먹지? MARKET' 플리마켓, 행운권추첨·버스킹).",
@@ -2250,6 +2462,9 @@
      "label": "주최 브랜드 큐레이션 — Home & Style",
      "url": "https://www.instagram.com/p/Dcuu8QakSoK/"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/A-06.webp"
    ]
   },
   "J-06": {
@@ -2294,6 +2509,12 @@
      "label": "주최 브랜드 큐레이션 — 브랜드 큐레이션 — 아카이브",
      "url": "https://www.instagram.com/p/Dc3H3u3jnkt/"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/J-06_1.webp",
+    "/booths/magok-livingmarket-2026/J-06_2.webp",
+    "/booths/magok-livingmarket-2026/J-06_3.webp",
+    "/booths/magok-livingmarket-2026/J-06_4.webp"
    ]
   },
   "R-07": {
@@ -2338,6 +2559,12 @@
      "label": "주최 브랜드 디렉터리 원문",
      "url": "https://magoklivingdesignfair.kr/fairOnline.do"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/R-07_1.webp",
+    "/booths/magok-livingmarket-2026/R-07_2.webp",
+    "/booths/magok-livingmarket-2026/R-07_3.webp",
+    "/booths/magok-livingmarket-2026/R-07_4.webp"
    ]
   },
   "A-03": {
@@ -2401,12 +2628,16 @@
      "label": "주최 브랜드 디렉터리 원문",
      "url": "https://magoklivingdesignfair.kr/fairOnline.do"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/A-10.webp"
    ]
   },
   "A-13": {
    "summary": "알마슬립 — 더 깊은 숙면을 위한 침실 브랜드. 주최가 침실·욕실 큐레이션 라인업으로 꼽았다.",
    "image": "/booths/magok-livingmarket-2026/A-13_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/A-13.webp",
     "/booths/magok-livingmarket-2026/A-13_1.webp",
     "/booths/magok-livingmarket-2026/A-13_2.webp",
     "/booths/magok-livingmarket-2026/A-13_3.webp",
@@ -2455,6 +2686,7 @@
    "summary": "로우리트 콜렉티브(Lowlit Collective) — 버려진 플라스틱, 오래 곁에 둘 지속 가능한 가구로 로우리트 콜렉티브는 폐플라스틱을 되살려 지속 가능한 가구와 조명을 만드는 서울 기반 디자인 스튜디오입니다. 재활용 플라스틱 고유의 불규칙한 색과 질감은 감출 결점이 아닌 각 제품만의 서사입니다. 이번 전시에서는 테이블, 스툴, 조명 컬렉션과 함께 소재의 순환 과정을 선보이며 덜 쓰고 오래 쓰는 삶에 어울리는 아름다운 선택지를 제안합니다.",
    "image": "/booths/magok-livingmarket-2026/B-01_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/B-01.webp",
     "/booths/magok-livingmarket-2026/B-01_1.webp",
     "/booths/magok-livingmarket-2026/B-01_2.webp",
     "/booths/magok-livingmarket-2026/B-01_3.webp",
@@ -2508,6 +2740,7 @@
    "summary": "정원놀이-최정원작가(Choi Jeong Won) — '자연을 곁에 두는 방식'을 제안합니다. 정원놀이는 누구나 놀이처럼 쉽고 즐겁게 자연을 경험하길 바라는 마음에서 시작된 작가 브랜드 입니다. 식물, 생화, 닥섬유(한지), 옻칠 등 자연의 생명력이 담긴 재료를 탐구하며, 자연의 본질을 일상의 공간으로 들여오는 시각적 기록 작업을 지속하고 있습니다.",
    "image": "/booths/magok-livingmarket-2026/C-03_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/C-03.webp",
     "/booths/magok-livingmarket-2026/C-03_1.webp",
     "/booths/magok-livingmarket-2026/C-03_2.webp",
     "/booths/magok-livingmarket-2026/C-03_3.webp",
@@ -2560,6 +2793,7 @@
    "summary": "페이퍼콘크리트(PAPER CONCRETE) — 버려진 종이 조각이 일상 속 아트 피스가 되다. 우리 일상과 업무 공간에서 매일 막대하게 버려지는 파쇄지. '페이퍼콘크리트'는 쓸모를 다해 잘게 부서진 폐종이를 수거하고 압착하여, 전에 없던 새로운 친환경 인테리어 타일과 조형 오브제를 제안하는 소재 중심의 업사이클링 브랜드입니다.",
    "image": "/booths/magok-livingmarket-2026/D-01_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/D-01.webp",
     "/booths/magok-livingmarket-2026/D-01_1.webp",
     "/booths/magok-livingmarket-2026/D-01_2.webp",
     "/booths/magok-livingmarket-2026/D-01_3.webp",
@@ -2656,12 +2890,16 @@
      "label": "주최 브랜드 큐레이션 — 브랜드 큐레이션 — 아카이브",
      "url": "https://www.instagram.com/p/Dc3H3u3jnkt/"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/D-10.webp"
    ]
   },
   "D-13": {
    "summary": "아모스아인스가구(AMOSAINS furniture) — 책상을 설계한 사람들이 만든 디자인 멀티탭 A.Power Series는 공간과 조화를 이루도록 설계된 디자인 멀티탭입니다. 이번 전시에서는 2구, 5구, 스탠드형, 이동형 등 다양한 제품 라인업과 실제 업무 환경을 함께 구성하여 기능성과 디자인을 직접 체험할 수 있는 공간을 선보입니다. 전원 공급 장치를 넘어, 워크스페이스를 완성하는 새로운 공간 경험을 제안합니다.",
    "image": "/booths/magok-livingmarket-2026/D-13_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/D-13.webp",
     "/booths/magok-livingmarket-2026/D-13_1.webp",
     "/booths/magok-livingmarket-2026/D-13_2.webp",
     "/booths/magok-livingmarket-2026/D-13_3.webp",
@@ -2758,12 +2996,16 @@
      "label": "주최 브랜드 디렉터리 원문",
      "url": "https://magoklivingdesignfair.kr/fairOnline.do"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/D-02.webp"
    ]
   },
   "D-03": {
    "summary": "그리너 오브젝트(GREENER OBJECT) — 커피박으로 만든, 오래 두고 싶은 리빙 오브제 그리너오브젝트는 버려지는 커피박·맥주박으로 리빙 오브제를 만듭니다. 잘 말려 생분해 소재와 섞으면 단단한 보드가 되어 플라스틱과 아크릴을 대신합니다. 파리바게트·5성급 호텔 납품으로 검증한 소재를, 마곡리빙마켓에서는 집 안으로 들입니다. 네컷사진 액자와 가족 현판을 선보이고 맞춤 제작 상담도 진행합니다. 버려지던 소재에서 오래 두고 싶은 오브제로.",
    "image": "/booths/magok-livingmarket-2026/D-03_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/D-03.webp",
     "/booths/magok-livingmarket-2026/D-03_1.webp",
     "/booths/magok-livingmarket-2026/D-03_2.webp",
     "/booths/magok-livingmarket-2026/D-03_3.webp",
@@ -2822,6 +3064,7 @@
    "summary": "코웨이 — 정수기·공기청정기·비데를 렌털로 공급하는 환경가전 기업.",
    "image": "/booths/magok-livingmarket-2026/E-05_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/E-05.webp",
     "/booths/magok-livingmarket-2026/E-05_1.webp",
     "/booths/magok-livingmarket-2026/E-05_2.webp",
     "/booths/magok-livingmarket-2026/E-05_3.webp",
@@ -2870,6 +3113,7 @@
    "summary": "발롱드파리(BallonDeParis) — 프랑스 100년의 현악기 기술을 담은 디자인 스피커 발롱드파리는 프랑스에서 약 100년 전, 현악기를 제작하던 가렐 가문에서 시작된 음향기기 브랜드입니다. 악기를 만들던 장인의 감각을 바탕으로, 공간에 자연스럽게 스며드는 소리를 추구합니다. 파리 본사의 가렐 가문 4대 형제인 라파엘 가렐과 줄리앙 가렐이 디자인과 사운드 기획을 하였고, 숙련된 아티스트들이 하나하나 수작업으로 완성하고 있습니다.",
    "image": "/booths/magok-livingmarket-2026/E-03_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/E-03.webp",
     "/booths/magok-livingmarket-2026/E-03_1.webp",
     "/booths/magok-livingmarket-2026/E-03_2.webp",
     "/booths/magok-livingmarket-2026/E-03_3.webp",
@@ -2966,6 +3210,9 @@
      "label": "주최 브랜드 큐레이션 — 브랜드 큐레이션 — 모노톤",
      "url": "https://www.instagram.com/p/Dcxj0boFKNE/"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/E-01.webp"
    ]
   },
   "F-12": {
@@ -3011,12 +3258,16 @@
      "label": "주최 브랜드 디렉터리 원문",
      "url": "https://magoklivingdesignfair.kr/fairOnline.do"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/F-12.webp"
    ]
   },
   "F-01": {
    "summary": "테이블타임즈 — '사람들이 모이고, 대화하고, 기억을 나누는 자리'인 테이블에서 출발한 브랜드. 이름부터 테이블에서 시작했다고 밝힌다.",
    "image": "/booths/magok-livingmarket-2026/F-01_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/F-01.webp",
     "/booths/magok-livingmarket-2026/F-01_1.webp",
     "/booths/magok-livingmarket-2026/F-01_2.webp",
     "/booths/magok-livingmarket-2026/F-01_3.webp",
@@ -3061,6 +3312,7 @@
    "confirmed": true,
    "sourceUrl": "https://www.naroe.co.kr",
    "images": [
+    "/booths/magok-livingmarket-2026/F-22.webp",
     "/booths/magok-livingmarket-2026/F-22_1.webp",
     "/booths/magok-livingmarket-2026/F-22_2.webp",
     "/booths/magok-livingmarket-2026/F-22_3.webp",
@@ -3153,6 +3405,9 @@
      "label": "주최 브랜드 디렉터리 원문",
      "url": "https://magoklivingdesignfair.kr/fairOnline.do"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/F-20.webp"
    ]
   },
   "F-21": {
@@ -3184,7 +3439,10 @@
     "오브제형 방향제"
    ],
    "sourceUrl": "https://www.instagram.com/p/DX8Ec9ljzw_/",
-   "confirmed": false
+   "confirmed": false,
+   "images": [
+    "/booths/magok-livingmarket-2026/F-21.webp"
+   ]
   },
   "F-17": {
    "summary": "캠프로그 스튜디오 — '언제 어느 곳이나 손쉽게 입기 편한 옷'을 제안하는 브랜드. 캠핑 의류와 원목 용품을 함께 내며 캠핑&피크닉페어 참가, 더현대 대구 팝업 이력이 있다.",
@@ -3215,7 +3473,10 @@
     "원목 용품"
    ],
    "sourceUrl": "https://www.instagram.com/p/DG979xhvd4L/",
-   "confirmed": false
+   "confirmed": false,
+   "images": [
+    "/booths/magok-livingmarket-2026/F-17.webp"
+   ]
   },
   "F-25": {
    "summary": "꽁떼르씨엘(CONTE DE LECIEL) — 손끝에서 시작되는 따뜻한 이야기 꽁떼르씨엘(Conte de Leciel)은 국내외 작가와 공방의 핸드메이드 제품과 개성 있는 리빙 오브제를 소개하는 크래프트 부티크입니다. 제작자의 손길과 이야기가 담긴 물건을 통해 일상에 작은 즐거움과 오래 간직할 가치를 제안하며, 온라인 스토어와 오프라인 팝업 및 편집숍에서 고객과 만나고 있습니다.",
@@ -3223,6 +3484,7 @@
    "confirmed": true,
    "sourceUrl": "https://www.contedeleciel.com",
    "images": [
+    "/booths/magok-livingmarket-2026/F-25.webp",
     "/booths/magok-livingmarket-2026/F-25_1.webp",
     "/booths/magok-livingmarket-2026/F-25_2.webp",
     "/booths/magok-livingmarket-2026/F-25_3.webp",
@@ -3313,17 +3575,24 @@
      "label": "주최 브랜드 디렉터리 원문",
      "url": "https://magoklivingdesignfair.kr/fairOnline.do"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/G-01.webp"
    ]
   },
   "F-26": {
    "summary": "",
-   "image": "/booths/magok-livingmarket-2026/F-26.webp"
+   "image": "/booths/magok-livingmarket-2026/F-26.webp",
+   "images": [
+    "/booths/magok-livingmarket-2026/F-26.webp"
+   ]
   },
   "F-28": {
    "summary": "후니팟(HUNYPOT) — 호주 아로마테라피스트의 아로마테라피 홈케어 브랜드 세정, 스크럽, 아로마테라피를 하나로. 보드럽 바디워시는 에센셜 오일 10ml 한 병과 식물성 오일 약 70%를 담은 바디 워시 바입니다. 부드러운 양모 커버가 피부 결을 순하게 정돈하고, 100% 에센셜 오일의 향이 매일의 샤워를 피부와 마음을 위한 편안한 아로마테라피로 바꿔줍니다.",
    "image": "/booths/magok-livingmarket-2026/F-28_1.webp",
    "confirmed": true,
    "images": [
+    "/booths/magok-livingmarket-2026/F-28.webp",
     "/booths/magok-livingmarket-2026/F-28_1.webp",
     "/booths/magok-livingmarket-2026/F-28_2.webp",
     "/booths/magok-livingmarket-2026/F-28_3.webp",
@@ -3381,6 +3650,7 @@
    "summary": "디엠피 북스(dmpbooks) — 디자인 책 전문 서점. 카페·디자인 관련 서적을 직수입해 최신 자료를 소개한다. 제주카페스타 등 행사 참가 이력.",
    "image": "/booths/magok-livingmarket-2026/G-03_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/G-03.webp",
     "/booths/magok-livingmarket-2026/G-03_1.webp",
     "/booths/magok-livingmarket-2026/G-03_2.webp",
     "/booths/magok-livingmarket-2026/G-03_3.webp",
@@ -3426,6 +3696,7 @@
    "confirmed": true,
    "sourceUrl": "https://www.instagram.com/koo_kim_/",
    "images": [
+    "/booths/magok-livingmarket-2026/G-22.webp",
     "/booths/magok-livingmarket-2026/G-22_1.webp",
     "/booths/magok-livingmarket-2026/G-22_2.webp",
     "/booths/magok-livingmarket-2026/G-22_3.webp",
@@ -3488,12 +3759,16 @@
     "url": "https://www.instagram.com/orekoko_official/",
     "header": "오레코코 / Orecoco Cosmetic"
    },
-   "sourceUrl": "https://www.instagram.com/orekoko_official/"
+   "sourceUrl": "https://www.instagram.com/orekoko_official/",
+   "images": [
+    "/booths/magok-livingmarket-2026/G-20.webp"
+   ]
   },
   "G-09": {
    "summary": "스튜디오071(Studio071) — Such a new goods, Studio071. 어디에나 있는 제품은 만들지 않습니다. 스튜디오071은 기능, 디자인, 소재 중 그 어떤 하나라도 타제품과 완벽히 구별되는 독특한 굿즈 제품만을 기획하고 제조합니다.",
    "image": "/booths/magok-livingmarket-2026/G-09_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/G-09.webp",
     "/booths/magok-livingmarket-2026/G-09_1.webp",
     "/booths/magok-livingmarket-2026/G-09_2.webp",
     "/booths/magok-livingmarket-2026/G-09_3.webp",
@@ -3552,6 +3827,7 @@
    "image": "/booths/magok-livingmarket-2026/G-10_1.webp",
    "caution": "부천대학교 공식 계정 — 입시·학사 계정이라 '앵커 섬유패션과' 부스 내용은 확인되지 않는다.",
    "images": [
+    "/booths/magok-livingmarket-2026/G-10.webp",
     "/booths/magok-livingmarket-2026/G-10_1.webp",
     "/booths/magok-livingmarket-2026/G-10_2.webp",
     "/booths/magok-livingmarket-2026/G-10_3.webp",
@@ -3610,6 +3886,7 @@
    "summary": "도미노우드(DOMINO) — 미니멀한 감성을 나무에 담는 라이프스타일 브랜드. 부산 망미장 팀으로 참여한다.",
    "image": "/booths/magok-livingmarket-2026/G-27_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/G-27.webp",
     "/booths/magok-livingmarket-2026/G-27_1.webp",
     "/booths/magok-livingmarket-2026/G-27_2.webp",
     "/booths/magok-livingmarket-2026/G-27_3.webp",
@@ -3672,6 +3949,7 @@
    "confirmed": true,
    "sourceUrl": "https://clauman.com/",
    "images": [
+    "/booths/magok-livingmarket-2026/I-03.webp",
     "/booths/magok-livingmarket-2026/I-03_1.webp",
     "/booths/magok-livingmarket-2026/I-03_2.webp",
     "/booths/magok-livingmarket-2026/I-03_3.webp",
@@ -3728,7 +4006,10 @@
     "url": "https://www.instagram.com/beddingcafe/",
     "header": "베딩카페"
    },
-   "sourceUrl": "https://www.instagram.com/beddingcafe/"
+   "sourceUrl": "https://www.instagram.com/beddingcafe/",
+   "images": [
+    "/booths/magok-livingmarket-2026/H-01.webp"
+   ]
   },
   "H-03": {
    "summary": "림블(RIMBLE) — 위트 있는 아트웍이 담긴 패브릭 브랜드. 주최 브랜드 큐레이션 라인업.",
@@ -3771,6 +4052,7 @@
    },
    "sourceUrl": "https://www.instagram.com/rimble_/",
    "images": [
+    "/booths/magok-livingmarket-2026/H-03.webp",
     "/booths/magok-livingmarket-2026/H-03_1.webp",
     "/booths/magok-livingmarket-2026/H-03_2.webp",
     "/booths/magok-livingmarket-2026/H-03_3.webp",
@@ -3821,12 +4103,16 @@
      "label": "주최 브랜드 큐레이션 — 브랜드 큐레이션 — 침실·욕실",
      "url": "https://www.instagram.com/p/DcATDUBHGAT/"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/I-05.webp"
    ]
   },
   "J-04": {
    "summary": "가현아트(Gahyun Art) — 일상을 미술관으로 만드는 프리미엄 판화, 가현아트 가현아트는 국내 유일한 수작업 스튜디오로, 가현판화공방과 가현아트갤러리로 구성되어 있습니다. 예술가와 관람객이 소통하고 창의적인 경험을 나눌 수 있는 특별한 공간입니다.",
    "image": "/booths/magok-livingmarket-2026/J-04_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/J-04.webp",
     "/booths/magok-livingmarket-2026/J-04_1.webp",
     "/booths/magok-livingmarket-2026/J-04_2.webp",
     "/booths/magok-livingmarket-2026/J-04_3.webp",
@@ -3884,6 +4170,7 @@
    "image": "/booths/magok-livingmarket-2026/K-17_1.webp",
    "caution": "내셔널지오그래픽 코리아 공식 계정 — 다큐 콘텐츠 계정이다. 부스는 라이선스 굿즈로 보이나 이 계정으로는 확인되지 않는다.",
    "images": [
+    "/booths/magok-livingmarket-2026/K-17.webp",
     "/booths/magok-livingmarket-2026/K-17_1.webp",
     "/booths/magok-livingmarket-2026/K-17_2.webp",
     "/booths/magok-livingmarket-2026/K-17_3.webp",
@@ -3944,6 +4231,7 @@
    "confirmed": true,
    "sourceUrl": "https://www.neuf-heures.kr",
    "images": [
+    "/booths/magok-livingmarket-2026/L-08.webp",
     "/booths/magok-livingmarket-2026/L-08_1.webp",
     "/booths/magok-livingmarket-2026/L-08_2.webp",
     "/booths/magok-livingmarket-2026/L-08_3.webp",
@@ -3995,6 +4283,7 @@
    "image": "/booths/magok-livingmarket-2026/L-13_1.webp",
    "caution": "대한적십자사 공식 계정 — 구호·모금 활동 계정이라 이 부스에서 무엇을 하는지는 알 수 없다.",
    "images": [
+    "/booths/magok-livingmarket-2026/L-13.webp",
     "/booths/magok-livingmarket-2026/L-13_1.webp",
     "/booths/magok-livingmarket-2026/L-13_2.webp",
     "/booths/magok-livingmarket-2026/L-13_3.webp",
@@ -4093,12 +4382,16 @@
      "label": "주최 브랜드 디렉터리 원문",
      "url": "https://magoklivingdesignfair.kr/fairOnline.do"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/O-05.webp"
    ]
   },
   "N-10": {
    "summary": "그레시종(GRECISION) — 그레시종은 장인 정신이 깃든 테이블웨어를 소개합니다. 그레시종은 식탁에서의 시간을 예술적으로 바꿔 줄 장인 정신이 담긴 테이블웨어를 제안합니다. 모든 그레시종 제품은 헤리티지가 깊고, 시공간을 초월하는 디자인과 띄어난 품질을 추구합니다.장인의 진심의 깃든 테이블웨어들로 일상에 윤택한 에너지가 더해지길 기대합니다.",
    "image": "/booths/magok-livingmarket-2026/N-10_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/N-10.webp",
     "/booths/magok-livingmarket-2026/N-10_1.webp",
     "/booths/magok-livingmarket-2026/N-10_2.webp",
     "/booths/magok-livingmarket-2026/N-10_3.webp",
@@ -4156,6 +4449,7 @@
    "summary": "칼파벳(Kalphabets) — 일상 속 즐거움을 선물하는 칼파벳 한글과자로 시작한 브랜드 Kalphabets는 이번 전시를 통해 한국의 글자와 문화, 일상에서 발견한 한국의 재미를 담은 제품을 소개합니다.",
    "image": "/booths/magok-livingmarket-2026/P-13_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/P-13.webp",
     "/booths/magok-livingmarket-2026/P-13_1.webp",
     "/booths/magok-livingmarket-2026/P-13_2.webp",
     "/booths/magok-livingmarket-2026/P-13_3.webp",
@@ -4213,6 +4507,7 @@
    "summary": "(주)헬스베버리지 — 스페인 '하시엔다 구즈만' 엑스트라버진 올리브오일과 이탈리아 구에르조니 발사믹을 들여온다. 미슐랭 스타 셰프가 선택한 올리브오일로 소개되고 추석 선물세트를 낸다.",
    "image": "/booths/magok-livingmarket-2026/P-03_1.webp",
    "images": [
+    "/booths/magok-livingmarket-2026/P-03.webp",
     "/booths/magok-livingmarket-2026/P-03_1.webp",
     "/booths/magok-livingmarket-2026/P-03_2.webp",
     "/booths/magok-livingmarket-2026/P-03_3.webp",
@@ -4275,6 +4570,9 @@
      "label": "주최 브랜드 디렉터리 원문",
      "url": "https://magoklivingdesignfair.kr/fairOnline.do"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/P-17.webp"
    ]
   },
   "P-07": {
@@ -4320,6 +4618,9 @@
      "label": "주최 브랜드 큐레이션 — Food & Taste",
      "url": "https://www.instagram.com/p/Dcm6--gARa9/"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/P-07.webp"
    ]
   },
   "Q-09": {
@@ -4351,7 +4652,10 @@
     "곰탕데이"
    ],
    "sourceUrl": "https://www.instagram.com/p/DcvK9AHEeK4/",
-   "confirmed": false
+   "confirmed": false,
+   "images": [
+    "/booths/magok-livingmarket-2026/Q-09.webp"
+   ]
   },
   "Q-02": {
    "summary": "끄레델리(Ggredeli) — 일상에 달콤한 감동을 전하는 프리미엄 디저트 브랜드 끄레델리는 엄선된 최상급 원료와 트렌디한 레시피로 고품격 디저트를 선보이는 전문 브랜드입니다. 이번 전시에서는 끄레델리만의 차별화된 베스트셀러 제품 라인업부터 신제품까지 한자리에서 만나보실 수 있습니다.",
@@ -4396,6 +4700,9 @@
      "label": "주최 브랜드 큐레이션 — Food & Taste",
      "url": "https://www.instagram.com/p/Dcm6--gARa9/"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/Q-02.webp"
    ]
   },
   "Q-14": {
@@ -4441,6 +4748,9 @@
      "label": "주최 브랜드 큐레이션 — Food & Taste",
      "url": "https://www.instagram.com/p/Dcm6--gARa9/"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/Q-14.webp"
    ]
   },
   "Q-01": {
@@ -4485,6 +4795,9 @@
      "label": "주최 브랜드 큐레이션 — Food & Taste",
      "url": "https://www.instagram.com/p/Dcm6--gARa9/"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/Q-01.webp"
    ]
   },
   "R-09": {
@@ -4530,6 +4843,9 @@
      "label": "주최 브랜드 큐레이션 — Food & Taste",
      "url": "https://www.instagram.com/p/Dcm6--gARa9/"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/R-09.webp"
    ]
   },
   "R-03": {
@@ -4576,6 +4892,9 @@
      "label": "주최 브랜드 디렉터리 원문",
      "url": "https://magoklivingdesignfair.kr/fairOnline.do"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/R-03.webp"
    ]
   },
   "R-01": {
@@ -4607,7 +4926,10 @@
     "캐주얼 다이닝"
    ],
    "sourceUrl": "https://www.instagram.com/p/DNaY5ZJPBu1/",
-   "confirmed": false
+   "confirmed": false,
+   "images": [
+    "/booths/magok-livingmarket-2026/R-01.webp"
+   ]
   },
   "G-15": {
    "summary": "플뢋(floaat) — 플뢋은 섬유공예 기법을 응용한 소품을 만듭니다. 플뢋의 소창컬렉션과 함께 드로잉 작업으로 만들어진 아트 프린트와 타피스트리 오브제를 선보일 계획입니다. 추가적으로, 일본 작가의 프린트 작품도 같이 전시/판매 예정입니다.",
@@ -4713,6 +5035,12 @@
      "label": "주최 브랜드 큐레이션 — 브랜드 큐레이션 — 아카이브",
      "url": "https://www.instagram.com/p/Dc3H3u3jnkt/"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/E-09_1.webp",
+    "/booths/magok-livingmarket-2026/E-09_2.webp",
+    "/booths/magok-livingmarket-2026/E-09_3.webp",
+    "/booths/magok-livingmarket-2026/E-09_4.webp"
    ]
   },
   "J-09": {
@@ -4757,6 +5085,12 @@
      "label": "주최 브랜드 큐레이션 — 브랜드 큐레이션 — 온전한 휴식",
      "url": "https://www.instagram.com/p/DcKmPgejI81/"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/J-09_1.webp",
+    "/booths/magok-livingmarket-2026/J-09_2.webp",
+    "/booths/magok-livingmarket-2026/J-09_3.webp",
+    "/booths/magok-livingmarket-2026/J-09_4.webp"
    ]
   },
   "Q-18": {
@@ -4906,6 +5240,10 @@
      "label": "주최 브랜드 디렉터리 원문",
      "url": "https://magoklivingdesignfair.kr/fairOnline.do"
     }
+   ],
+   "images": [
+    "/booths/magok-livingmarket-2026/P-15_1.webp",
+    "/booths/magok-livingmarket-2026/P-15_2.webp"
    ]
   },
   "G-21": {
@@ -5297,8 +5635,25 @@
     "옻칠갤러리",
     "논산"
    ],
-   "sourceUrl": "https://www.instagram.com/p/CtxSOBKI83j/",
-   "confirmed": false
+   "sourceUrl": "https://www.instagram.com/haesong_ottchil/",
+   "confirmed": false,
+   "instagram": {
+    "handle": "haesong_ottchil",
+    "url": "https://www.instagram.com/haesong_ottchil/",
+    "header": "문재필옻칠갤러리 — 충남 무형유산 제47호 칠장"
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/M-08_1.webp",
+    "/booths/magok-livingmarket-2026/M-08_2.webp",
+    "/booths/magok-livingmarket-2026/M-08_3.webp",
+    "/booths/magok-livingmarket-2026/M-08_4.webp",
+    "/booths/magok-livingmarket-2026/M-08_5.webp",
+    "/booths/magok-livingmarket-2026/M-08_6.webp",
+    "/booths/magok-livingmarket-2026/M-08_7.webp",
+    "/booths/magok-livingmarket-2026/M-08_8.webp",
+    "/booths/magok-livingmarket-2026/M-08_9.webp",
+    "/booths/magok-livingmarket-2026/M-08_10.webp"
+   ]
   },
   "N-14": {
    "summary": "이구도예 — 도예가 구자룡 작가의 공방. 흙을 꼬집어 성형하는 '핀칭잔'이 대표작으로, 손의 감각만으로 두께를 조절해 얇게 빚는다. 흑도자기 작업으로 알려졌다.",

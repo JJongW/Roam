@@ -38,6 +38,8 @@ export function InterestFeed({
   categoryById,
   memoryLine,
   slug,
+  round = 0,
+  poolLeft = 0,
 }: {
   items: FeedItem[];
   categoryById: Record<string, Category>;
@@ -45,6 +47,11 @@ export function InterestFeed({
   memoryLine?: string;
   /** 반응 시 "저장 안 됨" 안내를 전시당 1회로 제한하는 데 쓴다(JudgmentBar). */
   slug: string;
+  /** "새로 골라줘" 회차. 누를 때마다 +1 해서 서버가 다음 순번을 주게 한다. */
+  round?: number;
+  /** 아직 반응 안 한 부스 수. 한 화면(6칸)보다 적으면 돌려도 같은 얼굴이라
+   *  버튼 대신 "왜 안 바뀌는지"를 말한다 — 예전엔 눌러도 아무 일이 없었다. */
+  poolLeft?: number;
 }) {
   const t = useT();
   const router = useRouter();
@@ -96,10 +103,16 @@ export function InterestFeed({
   // 때마다 1.2초 뒤 자동으로 전체 라우트를 새로고침해서, 읽고 있는 도중에 화면 위쪽이
   // 다시 그려지고 목록이 움직였다. 스크롤을 되돌리지 않으려면 새 내용은 아래에서만
   // 자라야 한다 — 버튼도 아래 두고, 누르기 전엔 아무것도 안 움직인다.
+  const canRepick = poolLeft > items.length;
   function repick() {
+    if (!canRepick) return;
     say(t("companion.recurated"));
     startRepick(() => {
-      router.refresh();
+      // router.refresh()만으로는 안 바뀐다 — 큐레이션이 순수 결정론이라 같은
+      // 입력엔 같은 여섯 장이 나온다. 회차를 올려 서버가 다음 순번을 고르게 한다.
+      const sp = new URLSearchParams(window.location.search);
+      sp.set("round", String(round + 1));
+      router.replace(`?${sp.toString()}`, { scroll: false });
     });
   }
 
@@ -387,22 +400,31 @@ export function InterestFeed({
           );
         })}
 
-        {/* 목록의 끝 — 새로 고르기는 여기서만 일어난다(위에서 자동으로 바뀌지 않는다). */}
-        <button
-          type="button"
-          onClick={() => {
-            trackClick("feed_repick");
-            repick();
-          }}
-          disabled={repicking}
-          className="flex min-h-11 w-full items-center justify-center gap-1.5 rounded-2xl border border-dashed border-border text-sm font-semibold text-muted-foreground active:bg-accent/40 disabled:opacity-60"
-        >
-          <RefreshCw
-            className={cn("size-4", repicking && "animate-spin")}
-            aria-hidden
-          />
-          {repicking ? t("feed.repicking") : t("feed.repick")}
-        </button>
+        {/* 목록의 끝 — 새로 고르기는 여기서만 일어난다(위에서 자동으로 바뀌지 않는다).
+            더 돌릴 후보가 없으면 버튼을 눌러도 같은 여섯 장이 나온다 — 그럴 땐
+            버튼 대신 **왜 안 바뀌는지**를 말한다. 예전엔 눌러도 아무 일이 없어
+            고장 난 것처럼 보였다(2026-09-09). */}
+        {canRepick ? (
+          <button
+            type="button"
+            onClick={() => {
+              trackClick("feed_repick");
+              repick();
+            }}
+            disabled={repicking}
+            className="flex min-h-11 w-full items-center justify-center gap-1.5 rounded-2xl border border-dashed border-border text-sm font-semibold text-muted-foreground active:bg-accent/40 disabled:opacity-60"
+          >
+            <RefreshCw
+              className={cn("size-4", repicking && "animate-spin")}
+              aria-hidden
+            />
+            {repicking ? t("feed.repicking") : t("feed.repick")}
+          </button>
+        ) : (
+          <p className="rounded-2xl border border-dashed border-border px-4 py-3 text-center text-sm text-muted-foreground">
+            {t("feed.repickBlocked")}
+          </p>
+        )}
       </div>
     </section>
   );

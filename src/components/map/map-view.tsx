@@ -31,7 +31,6 @@ import { ExhibitionMap, HEAT_TIERS } from "@/components/map/exhibition-map";
 import { CategoryChip } from "@/components/booth/category-chip";
 import { JudgmentBar } from "@/components/booth/judgment-bar";
 import { ValueChips } from "@/components/values/value-chips";
-import { RoamAvatar } from "@/components/companion/roam-avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useLocale, useT } from "@/lib/i18n/provider";
@@ -77,16 +76,9 @@ export function MapView({
   } | null>(null);
   const [heatLoading, setHeatLoading] = useState(false);
 
-  // 반응 즉답(로미 발화) — companion-bar는 지도에서 숨겨지므로(자체 전체화면 UI)
-  // 여기서 flash를 구독해 토스트로 띄운다. 안 그러면 지도에서 끌림/별로를 눌러도
-  // 아무 반응이 없어 "내 반응이 아무것도 안 바꾼다"고 느껴진다.
-  const flash = useCompanionStore((s) => s.flash);
-  const clearFlash = useCompanionStore((s) => s.clearFlash);
-  useEffect(() => {
-    if (!flash) return;
-    toast(flash, { icon: <RoamAvatar className="size-5" /> });
-    clearFlash();
-  }, [flash, clearFlash]);
+  // 반응 즉답(로미 발화)은 여기서 구독하지 않는다 — CompanionBar가 화면에 안 보일
+  // 때(지도·비로그인)에도 flash를 상단 토스트로 낸다. 여기 같은 구독을 남겨두면
+  // 지도에서만 토스트가 두 번 뜬다.
 
   const hydrated = useHydrated();
   const storeRecords = useVisitStore((s) => s.records);
