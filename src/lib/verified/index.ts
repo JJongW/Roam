@@ -21,6 +21,20 @@ export interface VerifiedFact {
   image?: string;
   /** 인스타 게시물에서 딴 여러 장. <CODE>_1.webp … 순서대로. */
   images?: string[];
+  /** 주최가 운영하는 온라인 브랜드 디렉터리에 브랜드가 직접 등록한 글.
+   *  전시 참여 여부와 브랜드 신원을 동시에 증명하는 1순위 근거다. */
+  directory?: {
+    nameKor: string;
+    nameEng?: string;
+    category?: string;
+    /** 브랜드가 쓴 한 줄 소개. */
+    intro?: string;
+    /** 브랜드가 쓴 상세 소개 원문. */
+    pr?: string;
+    /** 브랜드가 등록한 자사 링크. */
+    link?: string;
+    source: string;
+  };
   /** 읽은 근거 그대로. 검수자가 요약만 보고 판단하지 않도록 원문을 같이 보여준다. */
   instagram?: {
     handle: string;

@@ -3,7 +3,7 @@
  "exhibitionSlug": "magok-livingmarket-2026",
  "booths": {
   "A-05": {
-   "summary": "더닷(THE DOT) — 'Art with function, Life becoming art'. 국내 최초로 뉴욕 MoMA에서 제품 디자인을 선보였고, 유리·금속·목재로 인테리어 오브제와 리빙 제품을 만든다. 시그니처는 Drawing Line 시리즈.",
+   "summary": "더닷(THE DOT) — 기능을 갖춘 예술, 예술이 된 일상, THE DOT. 국내 최초로 뉴욕 MoMA에서 제품 디자인을 선보인 THE DOT은 다양한 소재의 인테리어 오브제와 리빙 제품을 전개하는 디자인 브랜드입니다. 제품 디자인을 넘어 건축과 브랜딩 등 다양한 영역에서 새로운 디자인 경험을 제안합니다. 기능을 갖춘 예술, 예술이 된 일상. THE DOT",
    "sourceUrl": "https://www.instagram.com/p/Dc0Gp8OksXU/",
    "confirmed": true,
    "name": "더닷",
@@ -50,10 +50,19 @@
     "Drawing Line",
     "MoMA",
     "오브제"
-   ]
+   ],
+   "directory": {
+    "nameKor": "더닷",
+    "nameEng": "THE DOT",
+    "category": "",
+    "intro": "기능을 갖춘 예술, 예술이 된 일상, THE DOT.",
+    "pr": "국내 최초로 뉴욕 MoMA에서 제품 디자인을 선보인 THE DOT은 다양한 소재의 인테리어 오브제와 리빙 제품을 전개하는 디자인 브랜드입니다. 제품 디자인을 넘어 건축과 브랜딩 등 다양한 영역에서 새로운 디자인 경험을 제안합니다. 기능을 갖춘 예술, 예술이 된 일상. THE DOT",
+    "link": "thedotdesign.kr",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "A-15": {
-   "summary": "라잇트리(LIGHTREE) — 여행 브랜드. ELITE 캐리어, 트래블 파우치·월렛, DREAMI SOFA를 낸다. 마곡리빙마켓에서 B급 캐리어 10~20%, 소파 20% 추석 특가를 진행한다.",
+   "summary": "라잇트리(LIGHTREE) — “Colorful trip” LIGHTREE 라잇트리(LIGHTREE)는 ‘DESIGNED BY LOVE’를 바탕으로 컬러를 통해 일상에 즐거움과 새로운 경험을 더하는 디자인 라이프스타일 브랜드입니다. 감각적인 컬러와 실용성을 담은 소파, 아웃도어·여행용품 등을 선보이며, 이번 전시에서는 라잇트리만의 컬러풀하고 위트 있는 라이프스타일을 직접 경험할 수 있습니다.",
    "sourceUrl": "https://www.instagram.com/p/Dc8Fpc1GUG2/",
    "confirmed": true,
    "name": "라잇트리",
@@ -85,10 +94,19 @@
     "ELITE 캐리어",
     "B급 특가",
     "DREAMI SOFA"
-   ]
+   ],
+   "directory": {
+    "nameKor": "라잇트리",
+    "nameEng": "LIGHTREE",
+    "category": "",
+    "intro": "“Colorful trip” LIGHTREE",
+    "pr": "라잇트리(LIGHTREE)는 ‘DESIGNED BY LOVE’를 바탕으로 컬러를 통해 일상에 즐거움과 새로운 경험을 더하는 디자인 라이프스타일 브랜드입니다. 감각적인 컬러와 실용성을 담은 소파, 아웃도어·여행용품 등을 선보이며, 이번 전시에서는 라잇트리만의 컬러풀하고 위트 있는 라이프스타일을 직접 경험할 수 있습니다.",
+    "link": "https://lightree.kr/",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "B-14": {
-   "summary": "리젠스 — 주방 생활의 기준을 새로 제안하는 브랜드. 스테인리스 사각 싱크볼 등 주방 설비를 만든다. 제1전시장 B-14로 참여를 직접 알렸고, 주최 브랜드 큐레이션 라인업에도 들었다.",
+   "summary": "(주)리젠스(LIZENS CO.,LTD) — 새로운 주방 라이프스타일의 기준을 제안하다. ㈜리젠스는 고객의 라이프스타일을 반영한 프리미엄 주방 솔루션을 개발하는 가치 중심의 혁신기업입니다. 이번 마곡리빙마켓에서는 신제품 ALTERA를 선보입니다. 은은하게 반사되는 에끌라 텍스처와 부드럽고 고급스러운 벨로라 코팅을 적용해 감각적인 디자인과 뛰어난 완성도를 구현하며, 새로운 프리미엄 주방 경험을 제안합니다.",
    "sourceUrl": "https://www.instagram.com/p/Dc0cEy1lJfi/",
    "confirmed": true,
    "name": "리젠스",
@@ -115,10 +133,19 @@
    "memoryHooks": [
     "사각 싱크볼",
     "스테인리스"
-   ]
+   ],
+   "directory": {
+    "nameKor": "(주)리젠스",
+    "nameEng": "LIZENS CO.,LTD",
+    "category": "주방",
+    "intro": "새로운 주방 라이프스타일의 기준을 제안하다.",
+    "pr": "㈜리젠스는 고객의 라이프스타일을 반영한 프리미엄 주방 솔루션을 개발하는 가치 중심의 혁신기업입니다. 이번 마곡리빙마켓에서는 신제품 ALTERA를 선보입니다. 은은하게 반사되는 에끌라 텍스처와 부드럽고 고급스러운 벨로라 코팅을 적용해 감각적인 디자인과 뛰어난 완성도를 구현하며, 새로운 프리미엄 주방 경험을 제안합니다.",
+    "link": "https://lizens.co.kr/",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "B-20": {
-   "summary": "지아띠(ZIATTI) — '나무의 온도 그대로, 원목가구가 지녀야 할 본질을 지킵니다'. 2009년부터 원목으로 식탁·소파·침대를 만든다. 주최 브랜드 큐레이션 라인업에 포함됐다.",
+   "summary": "지아띠(ZIATTI) — 나무의 온도 그대로, 원목가구의 본질을 지킵니다. 지아띠는 나무의 본질에 집중하여 아름답고 견고한 가구를 만듭니다. 빠르고 쉽게 생산하는 가구를 지양하고, 오랜 사용과 고유한 디자인에 초점을 두고 시간이 갈수록 깊어지는 슬로 퍼니처의 가치를 제안합니다. 테이블, 체어와 같은 다이닝 가구를 중심으로 소파, 침대 등 리빙 가구, 라이프스타일 오브제까지 만나보실 수 있습니다.",
    "sourceUrl": "https://www.instagram.com/p/DdAq6v1jfcM/",
    "confirmed": true,
    "name": "지아띠",
@@ -153,10 +180,19 @@
    "memoryHooks": [
     "원목가구",
     "나무의 온도"
-   ]
+   ],
+   "directory": {
+    "nameKor": "지아띠",
+    "nameEng": "ZIATTI",
+    "category": "가구",
+    "intro": "나무의 온도 그대로, 원목가구의 본질을 지킵니다.",
+    "pr": "지아띠는 나무의 본질에 집중하여 아름답고 견고한 가구를 만듭니다. 빠르고 쉽게 생산하는 가구를 지양하고, 오랜 사용과 고유한 디자인에 초점을 두고 시간이 갈수록 깊어지는 슬로 퍼니처의 가치를 제안합니다. 테이블, 체어와 같은 다이닝 가구를 중심으로 소파, 침대 등 리빙 가구, 라이프스타일 오브제까지 만나보실 수 있습니다.",
+    "link": "www.ziatti.co.kr",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "B-30": {
-   "summary": "아파트먼트하우스 — '공동주택의 가장 간결한 가구'. 인하우스 디자인으로 소파를 만들고 DMC점·과천점 쇼룸을 운영한다. SPACE & STYLE 구역 B30, 입구 기준 좌측에 있고 현장 혜택을 연다.",
+   "summary": "아파트먼트하우스(APARTMENTHOUSE) — 합리적인 소파의 새로운 기준, 아파트먼트하우스 아파트먼트하우스는 공동주택이라는 한정된 공간과 그 안에서 살아가는 사람들의 다양한 생활 방식을 이해하며, 각자의 삶과 공간에 가장 잘 어울리는 가구를 만듭니다. 본질에 집중한 디자인과 오래 사용할 수 있는 소재를 바탕으로 일상에 자연스럽게 스며드는 가구를 제안합니다.",
    "sourceUrl": "https://www.instagram.com/p/Dcxj0boFKNE/",
    "confirmed": true,
    "name": "아파트먼트하우스",
@@ -195,10 +231,19 @@
     "공동주택 소파",
     "B30",
     "비스포크"
-   ]
+   ],
+   "directory": {
+    "nameKor": "아파트먼트하우스",
+    "nameEng": "APARTMENTHOUSE",
+    "category": "",
+    "intro": "합리적인 소파의 새로운 기준, 아파트먼트하우스",
+    "pr": "아파트먼트하우스는 공동주택이라는 한정된 공간과 그 안에서 살아가는 사람들의 다양한 생활 방식을 이해하며, 각자의 삶과 공간에 가장 잘 어울리는 가구를 만듭니다. 본질에 집중한 디자인과 오래 사용할 수 있는 소재를 바탕으로 일상에 자연스럽게 스며드는 가구를 제안합니다.",
+    "link": "apartmenthouse.kr",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "C-01": {
-   "summary": "스튜디오 퍼더(studio FODDER) — 'From Follows Function'. 철제의 견고함과 온도감을 담은 가구를 만든다. 클록H, OVID 사이드테이블, 와이드 드로어 등을 낸다. 주최 브랜드 큐레이션 라인업.",
+   "summary": "스튜디오 퍼더(STUDIO Fodder) — 철제의 견고함과 온도감을 담아낸 가구 브랜드 퍼더 기능이 형태를 만든다는 원칙 아래, 절제된 철제의 날렵함 속에서도 따뜻한 안락함을 품은 가구를 만듭니다. 금속이 주는 견고함 위에 퍼더만의 특별함을 담아, 일상에 부드럽게 녹아드는 디자인을 선보입니다. 우리 집처럼 편안한 온기를 품은 퍼더의 가구를 경험해 보세요.",
    "sourceUrl": "https://www.instagram.com/p/DdAq6v1jfcM/",
    "confirmed": true,
    "name": "스튜디오 퍼더",
@@ -234,10 +279,19 @@
     "OVID",
     "철제 가구",
     "From Follows Function"
-   ]
+   ],
+   "directory": {
+    "nameKor": "스튜디오 퍼더",
+    "nameEng": "STUDIO Fodder",
+    "category": "가구/인테리어",
+    "intro": "철제의 견고함과 온도감을 담아낸 가구 브랜드 퍼더",
+    "pr": "기능이 형태를 만든다는 원칙 아래, 절제된 철제의 날렵함 속에서도 따뜻한 안락함을 품은 가구를 만듭니다. 금속이 주는 견고함 위에 퍼더만의 특별함을 담아, 일상에 부드럽게 녹아드는 디자인을 선보입니다. 우리 집처럼 편안한 온기를 품은 퍼더의 가구를 경험해 보세요.",
+    "link": "www.studiofodder.com",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "D-20": {
-   "summary": "무제움(MUZEUM) — '일상 속의 예술적 경험'. 브랜드 아이덴티티를 담은 가구를 디자인·제작하고 오피스·병원·라운지 공간 프로젝트를 한다. 대표작 Spin Stack은 오크와 스테인리스로 만든 회전 수납 가구다.",
+   "summary": "무제움(MUZEUM) — 하나의 오브제에서 시작되는 새로운 공간의 서사 MUZEUM은 20세기 모더니즘 디자인의 유산을 수집하고 탐구하며, 이를 동시대의 감각으로 재해석합니다. 다양한 아티스트와의 협업을 통해 가구의 기능적 경계를 넘어 독립적인 아트 오브제로 확장하며, 공간에 새로운 감각과 서사를 제안합니다.",
    "sourceUrl": "https://www.instagram.com/p/DdAq6v1jfcM/",
    "confirmed": true,
    "name": "무제움",
@@ -285,10 +339,19 @@
     "Spin Stack",
     "회전 수납",
     "오크"
-   ]
+   ],
+   "directory": {
+    "nameKor": "무제움",
+    "nameEng": "MUZEUM",
+    "category": "무제움 브랜드 소개서",
+    "intro": "하나의 오브제에서 시작되는 새로운 공간의 서사",
+    "pr": "MUZEUM은 20세기 모더니즘 디자인의 유산을 수집하고 탐구하며, 이를 동시대의 감각으로 재해석합니다. 다양한 아티스트와의 협업을 통해 가구의 기능적 경계를 넘어 독립적인 아트 오브제로 확장하며, 공간에 새로운 감각과 서사를 제안합니다.",
+    "link": "https://muzeum.co.kr/",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "D-30": {
-   "summary": "레어로우(rareraw) — '드문(rare)'과 '날것(raw)'을 합친 이름. 사용자의 라이프스타일에 맞춰 완성되는 모듈 시스템 SYSTEM000을 만든다. 커스템과 협업한 '스타일프레임 레어로우 에디션'을 두 부스에서 동시 공개한다.",
+   "summary": "레어로우(rareraw) — 퍼니처·ACC·리퍼브를 한자리에 준비했습니다. 레어로우가 마곡 리빙마켓에 특별한 혜택과 함께 찾아갑니다. 바로 고를 수 있는 퍼니처와 ACC, 그리고 다시 쓰임을 기다리는 리퍼브 제품까지 한자리에서 만나보세요.",
    "sourceUrl": "https://www.instagram.com/p/DczxPAuIImd/",
    "confirmed": true,
    "name": "레어로우",
@@ -325,7 +388,16 @@
     "SYSTEM000",
     "모듈 선반",
     "레어로우 에디션"
-   ]
+   ],
+   "directory": {
+    "nameKor": "레어로우",
+    "nameEng": "rareraw",
+    "category": "",
+    "intro": "퍼니처·ACC·리퍼브를 한자리에 준비했습니다.",
+    "pr": "레어로우가 마곡 리빙마켓에 특별한 혜택과 함께 찾아갑니다. 바로 고를 수 있는 퍼니처와 ACC, 그리고 다시 쓰임을 기다리는 리퍼브 제품까지 한자리에서 만나보세요.",
+    "link": "www.rareraw.com",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "J-01": {
    "summary": "디자인하우스 — 이 행사의 주최사다. 월간 〈행복이 가득한 집〉과 함께 마곡리빙마켓을 열고, 2026년 창립 50주년을 맞았다. 참가 브랜드가 아니라 주최 부스다.",
@@ -360,7 +432,7 @@
    ]
   },
   "K-01": {
-   "summary": "1집구석 — 'DESIGN YOUR SINGLE LIFE'. 마곡리빙마켓에서 'Stress Less Market'을 연다. '덜 귀찮게, 덜 불편하게, 더 기분 좋게'를 슬로건으로 일상 스트레스를 줄이는 아이템을 모으고, 1집러 셀러존도 함께 운영한다.",
+   "summary": "1집구석(1hows) — Stress Less Market 혼자 감당해야 하는 삶의 스트레스를 없앨 수는 없지만, 줄일 수는 있습니다. <1집구석> 기획관은 1인 가구의 일상 속 스트레스를 줄여 줄 생활 아이템과 유용한 정보를 큐레이션한 'Stress Less Market'을 선보입니다.",
    "sourceUrl": "https://www.instagram.com/p/Dc2FTYYEilx/",
    "confirmed": true,
    "name": "1집구석",
@@ -402,7 +474,16 @@
    "memoryHooks": [
     "Stress Less Market",
     "1집러 셀러존"
-   ]
+   ],
+   "directory": {
+    "nameKor": "1집구석",
+    "nameEng": "1hows",
+    "category": "",
+    "intro": "Stress Less Market",
+    "pr": "혼자 감당해야 하는 삶의 스트레스를 없앨 수는 없지만, 줄일 수는 있습니다. <1집구석> 기획관은 1인 가구의 일상 속 스트레스를 줄여 줄 생활 아이템과 유용한 정보를 큐레이션한 'Stress Less Market'을 선보입니다.",
+    "link": "https://1hows.com/",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "K-13": {
    "summary": "미노항 코리아 — '쓰임 좋은 그릇가게 미노항'. 일본 미노야키 도자기를 들여와 판다. 마곡리빙마켓 부스를 운영하고 인스타 DM으로 무료 모바일 초대장을 선착순 배포했다.",
@@ -443,7 +524,7 @@
    ]
   },
   "K-14": {
-   "summary": "휴움(HUEUM) — '오래도록 지키고 싶은 자연의 고유한 색을 담아냅니다'. 홈테이블웨어·홈카페 도자기를 만든다. 9/10 온라인 프리론칭과 동시에 신제품을 현장 공개하고, 추석선물 큐레이션 섹션(U-01·U-02)에도 인기 찻잔세트를 낸다. 전품목 10% 할인.",
+   "summary": "휴움(HUEUM) — 일상의 균형을 제안하는 홈 도자 테이블웨어 휴움은 ‘새로운 색이 움트다’라는 의미로, 오래도록 지키고 싶은 자연의 고유한 색을 담은 홈 테이블웨어를 만듭니다. 차 한 잔의 여유와 균형 잡힌 식사, 간단한 브런치를 즐기는 일상의 작은 순간을 통해 삶의 균형을 찾아가고, 그 시간이 더욱 아름답고 깊어지기를 희망합니다. Balance for a Better Life | HUEUM",
    "sourceUrl": "https://www.instagram.com/p/Dc7kUuRmSWJ/",
    "confirmed": true,
    "name": "휴움",
@@ -482,10 +563,19 @@
     "홈테이블웨어",
     "찻잔세트",
     "프리론칭"
-   ]
+   ],
+   "directory": {
+    "nameKor": "휴움",
+    "nameEng": "HUEUM",
+    "category": "홈 도자 테이블웨어",
+    "intro": "일상의 균형을 제안하는 홈 도자 테이블웨어",
+    "pr": "휴움은 ‘새로운 색이 움트다’라는 의미로, 오래도록 지키고 싶은 자연의 고유한 색을 담은 홈 테이블웨어를 만듭니다. 차 한 잔의 여유와 균형 잡힌 식사, 간단한 브런치를 즐기는 일상의 작은 순간을 통해 삶의 균형을 찾아가고, 그 시간이 더욱 아름답고 깊어지기를 희망합니다. Balance for a Better Life | HUEUM",
+    "link": "www.hueum.com",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "L-16": {
-   "summary": "토은 — 수제 토분과 그릇을 만든다. 부스번호 L-16이라고 본인이 명시했고, 토분은 온라인으로만 팔아 현장엔 그릇을 가져온다. 신제품 20%, B품·단종 50% 할인.",
+   "summary": "토은(toeun) — 작가의 정성으로 만든 그릇 백자토 위에 자연스러운 철점이 섞인 \"고백자\"를 현대 시대에 맞게 물레성형으로 만든 핸드메이드 그릇입니다.",
    "sourceUrl": "https://www.instagram.com/p/Dcsiqg5Rev3/",
    "confirmed": true,
    "name": "토은",
@@ -515,7 +605,16 @@
     "수제 토분",
     "B품 50%",
     "L-16"
-   ]
+   ],
+   "directory": {
+    "nameKor": "토은",
+    "nameEng": "toeun",
+    "category": "",
+    "intro": "작가의 정성으로 만든 그릇",
+    "pr": "백자토 위에 자연스러운 철점이 섞인 \"고백자\"를 현대 시대에 맞게 물레성형으로 만든 핸드메이드 그릇입니다.",
+    "link": "https://smartstore.naver.com/toeun",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "M-01": {
    "summary": "월간도예 — 1996년부터 나온 도자예술 전문지. 마곡리빙마켓에는 Relié studio와 함께 참여해 도자·공예 작품과 오브제를 선보인다.",
@@ -642,7 +741,7 @@
    ]
   },
   "O-01": {
-   "summary": "근화동396 청년창업지원센터 — 춘천의 로컬테크 창업 커뮤니티. 마곡리빙마켓에 '브랜드관 마곡리빙마켓편'으로 입주기업 7팀을 선정해 공동 브랜드관을 운영한다(9/10~13). 반려견 브랜드 '슬반'도 이 부스에 들어오고, 개모차·이동가방을 쓰면 반려견 동반이 가능하다.",
+   "summary": "근화동396창업공간(Chuncheon Local Tech) — 아이디어가 현실이 되는 로컬 창업 브랜드관 근화동396청년창업지원센터는 춘천의 유망 창업기업이 함께 성장하는 창업지원 플랫폼입니다. 이번 브랜드관에서는 로컬 콘텐츠, 라이프스타일, 푸드, 반려동물, 헬스케어, 스마트기술 등 다양한 분야의 창업기업이 참여하여 혁신적인 제품과 서비스를 선보입니다.",
    "sourceUrl": "https://www.instagram.com/p/Dc-eBqkEtfM/",
    "confirmed": true,
    "name": "근화동396창업공간",
@@ -686,10 +785,19 @@
     "춘천",
     "입주기업 7팀",
     "슬반"
-   ]
+   ],
+   "directory": {
+    "nameKor": "근화동396창업공간",
+    "nameEng": "Chuncheon Local Tech",
+    "category": "",
+    "intro": "아이디어가 현실이 되는 로컬 창업 브랜드관",
+    "pr": "근화동396청년창업지원센터는 춘천의 유망 창업기업이 함께 성장하는 창업지원 플랫폼입니다. 이번 브랜드관에서는 로컬 콘텐츠, 라이프스타일, 푸드, 반려동물, 헬스케어, 스마트기술 등 다양한 분야의 창업기업이 참여하여 혁신적인 제품과 서비스를 선보입니다.",
+    "link": "http://hello-p6.com/kr",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "Q-07": {
-   "summary": "평산댁 닭발 — 참숯불 닭발 브랜드. 마곡리빙마켓에 매년 참가해왔다.",
+   "summary": "평산댁 닭발(PSD DAKBAL) — 내 인생 첫 닭발! <평산댁 참숯불 닭발> 평산댁 참숯불 닭발 먹기 좋은 컴팩트한 사이즈로 조리 없이 간편하게 즐기는 3가지 닭발(닭발큐브,닭발편육,무뼈닭발)을 소개합니다.",
    "sourceUrl": "https://www.instagram.com/p/Dc2IrMtBlrA/",
    "confirmed": true,
    "name": "평산댁 닭발",
@@ -718,10 +826,19 @@
    "memoryHooks": [
     "참숯불 닭발",
     "평산댁"
-   ]
+   ],
+   "directory": {
+    "nameKor": "평산댁 닭발",
+    "nameEng": "PSD DAKBAL",
+    "category": "식품",
+    "intro": "내 인생 첫 닭발! <평산댁 참숯불 닭발>",
+    "pr": "평산댁 참숯불 닭발 먹기 좋은 컴팩트한 사이즈로 조리 없이 간편하게 즐기는 3가지 닭발(닭발큐브,닭발편육,무뼈닭발)을 소개합니다.",
+    "link": "https://smartstore.naver.com/momsmomfnb",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "B-03": {
-   "summary": "커스템(kustem) — 모듈러 디자인 TV 브랜드. LG 올레드 TV에 씌우는 1:1 맞춤 프레임 '스타일프레임'을 만든다. 마곡리빙마켓에서 스타일프레임 레어로우 에디션을 8가지 컬러로 첫 공개하고, 레어로우(D-30) 부스와 동시에 전시한다.",
+   "summary": "커스템(kustem) — TV를 오브제로 바꾸는 모듈러 디자인 TV 브랜드. 커스템 스타일프레임은 LG 올레드 TV 전용 모듈러 디자인 프레임입니다. 벽에 머물던 TV를 공간의 오브제로 새롭게 바꿉니다.",
    "sourceUrl": "https://www.instagram.com/p/Dcxj0boFKNE/",
    "confirmed": true,
    "name": "커스텀",
@@ -760,10 +877,19 @@
     "스타일프레임",
     "레어로우 에디션",
     "모듈러 TV"
-   ]
+   ],
+   "directory": {
+    "nameKor": "커스템",
+    "nameEng": "kustem",
+    "category": "",
+    "intro": "TV를 오브제로 바꾸는 모듈러 디자인 TV 브랜드.",
+    "pr": "커스템 스타일프레임은 LG 올레드 TV 전용 모듈러 디자인 프레임입니다. 벽에 머물던 TV를 공간의 오브제로 새롭게 바꿉니다.",
+    "link": "www.kustem.xyz",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "A-08": {
-   "summary": "스튜디오무드 — 감성적인 철제 오브제를 만드는 스튜디오. 스피커 커버·티슈 케이스·시계 등 생활용품을 철제 디자인으로 낸다. 이번이 첫 박람회 참가로, 오프라인에서 제품과 공간을 처음 선보인다.",
+   "summary": "스튜디오 무드(STUDIO MOOD) — 감성을 담은 철제 오브제를 제작하는 스튜디오무드 입니다 스튜디오무드는 철제를 기반으로 공간의 분위기를 완성하는 리빙 브랜드입니다. 가림막, 커버, 오브제 제품을 통해 기능을 넘어 공간에 자연스럽게 스며드는 디자인을 제안하며, 일상을 더 머무르고 싶은 공간으로 만듭니다.",
    "sourceUrl": "https://www.instagram.com/p/DcxfVx1T55h/",
    "confirmed": true,
    "name": "스튜디오 무드",
@@ -792,10 +918,19 @@
    "memoryHooks": [
     "철제 오브제",
     "첫 박람회"
-   ]
+   ],
+   "directory": {
+    "nameKor": "스튜디오 무드",
+    "nameEng": "STUDIO MOOD",
+    "category": "홈데코",
+    "intro": "감성을 담은 철제 오브제를 제작하는 스튜디오무드 입니다",
+    "pr": "스튜디오무드는 철제를 기반으로 공간의 분위기를 완성하는 리빙 브랜드입니다. 가림막, 커버, 오브제 제품을 통해 기능을 넘어 공간에 자연스럽게 스며드는 디자인을 제안하며, 일상을 더 머무르고 싶은 공간으로 만듭니다.",
+    "link": "https://smartstore.naver.com/itpkorea",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "C-14": {
-   "summary": "싸이벡 — 특허받은 필트레이션을 적용한 공기정화 청소기 '싸이벡 라이트'. 로얄퀸클럽이 부스번호 C-14를 명시하며 입장권 이벤트를 열었다.",
+   "summary": "싸이벡 라이트(CYVAC LIGHT) — 특허받은 필트레이션, 공기정화 청소기 싸이벡 라이트 47년 기업의 역사를 가진 (주)로얄퀸클럽인터내셔널에서 국내 판매하고, (주)코네트인더스트리에서 제조/수출하는, 작지만 강한 특허받은 필트레이션의 공기정화기능을 갖춘 청소기 <싸이벡 라이트> 반려동물의 털과 먼지, 냄새 및 알러지로 고생하는 분들이 원하는 '진짜 청소'가 가능할 뿐 아니라 미세먼지를 다시 내뿜지 않아 공기정화기능까지 가능한 명품 청소기",
    "sourceUrl": "https://www.instagram.com/p/Dcuu8QakSoK/",
    "confirmed": true,
    "name": "싸이벡",
@@ -823,10 +958,19 @@
    "memoryHooks": [
     "싸이벡 라이트",
     "필트레이션"
-   ]
+   ],
+   "directory": {
+    "nameKor": "싸이벡 라이트",
+    "nameEng": "CYVAC LIGHT",
+    "category": "",
+    "intro": "특허받은 필트레이션, 공기정화 청소기 싸이벡 라이트",
+    "pr": "47년 기업의 역사를 가진 (주)로얄퀸클럽인터내셔널에서 국내 판매하고, (주)코네트인더스트리에서 제조/수출하는, 작지만 강한 특허받은 필트레이션의 공기정화기능을 갖춘 청소기 <싸이벡 라이트> 반려동물의 털과 먼지, 냄새 및 알러지로 고생하는 분들이 원하는 '진짜 청소'가 가능할 뿐 아니라 미세먼지를 다시 내뿜지 않아 공기정화기능까지 가능한 명품 청소기",
+    "link": "www.cyvac.com",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "C-10": {
-   "summary": "쏘랩(SOLAB) — 포근하고 아늑한 휴식을 주는 소파 브랜드. 대표 제품은 '쏘랩 슬립소파 V3'이고 전국 설치·지정일 배송을 한다.",
+   "summary": "쏘랩소파(SOLAB) — 최고의 편안함을 만드는 소파 브랜드 쏘랩소파는 소파의 소재부터 구조, 착좌감까지 끊임없이 연구하며 공간과 라이프스타일에 맞는 최고의 편안함을 만드는 프리미엄 소파를 소개합니다",
    "confirmed": true,
    "image": "/booths/magok-livingmarket-2026/C-10_1.webp",
    "images": [
@@ -860,15 +1004,93 @@
     "슬립소파 V3",
     "쏘랩"
    ],
-   "sourceUrl": "https://www.instagram.com/p/DchxZ66GTda/"
+   "sourceUrl": "https://www.instagram.com/p/DchxZ66GTda/",
+   "directory": {
+    "nameKor": "쏘랩소파",
+    "nameEng": "SOLAB",
+    "category": "가구 소파",
+    "intro": "최고의 편안함을 만드는 소파 브랜드",
+    "pr": "쏘랩소파는 소파의 소재부터 구조, 착좌감까지 끊임없이 연구하며 공간과 라이프스타일에 맞는 최고의 편안함을 만드는 프리미엄 소파를 소개합니다",
+    "link": "www.solab.kr",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "D-12": {
-   "summary": "허리펴자 하라체어 — 자세교정 의자 브랜드 하라체어.",
-   "confirmed": false
+   "summary": "허리펴자 하라체어(HARA CHAIR) — 허리펴자 하라체어 허리펴자 하라체어",
+   "confirmed": true,
+   "sourceUrl": "https://magoklivingdesignfair.kr/fairOnline.do",
+   "directory": {
+    "nameKor": "허리펴자 하라체어",
+    "nameEng": "HARA CHAIR",
+    "category": "",
+    "intro": "허리펴자 하라체어",
+    "pr": "허리펴자 하라체어",
+    "link": "www.harachair.co.kr",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   },
+   "roamInterpretation": "자세교정 의자 브랜드 하라체어야. 앉아보지 않으면 판단이 안 되는 종류라 부스에서 직접 앉아보면 돼.",
+   "valueTags": [
+    {
+     "slug": "rest",
+     "strength": 0.8
+    },
+    {
+     "slug": "goods",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "rest": "오래 앉는 사람한테는 앉아보는 게 전부야.",
+    "goods": "모델별로 등판·좌판을 비교할 수 있어."
+   },
+   "thingsToDo": [
+    "모델별로 앉아 비교하기",
+    "등받이 조절해보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "하라체어",
+    "자세교정"
+   ]
   },
   "D-14": {
-   "summary": "듀프리 — 제습함. '유쾌한생각'과 공동 판매, 런칭 기념 할인 이력.",
-   "confirmed": false
+   "summary": "듀프리(DEWFREE) — 소중한 일상을 오래 지키는 프리미엄 보관 솔루션 듀프리는 습도와 환경 변화로부터 소중한 물건을 보호하는 라이프스타일 보관 솔루션 브랜드입니다. 다양한 생활용품과 취미용품을 더욱 쾌적하고 안전하게 보관하는 새로운 기준을 제안합니다.",
+   "confirmed": true,
+   "sourceUrl": "https://magoklivingdesignfair.kr/fairOnline.do",
+   "directory": {
+    "nameKor": "듀프리",
+    "nameEng": "DEWFREE",
+    "category": "",
+    "intro": "소중한 일상을 오래 지키는 프리미엄 보관 솔루션",
+    "pr": "듀프리는 습도와 환경 변화로부터 소중한 물건을 보호하는 라이프스타일 보관 솔루션 브랜드입니다. 다양한 생활용품과 취미용품을 더욱 쾌적하고 안전하게 보관하는 새로운 기준을 제안합니다.",
+    "link": "https://smartstore.naver.com/dewfree?NaPm=ct%3Dmq8sntzf%7Cci%3Dcheckout%7Ctr%3Dds%7Ctrx%3Dnull%7Chk%3Dbb10df9bc88ce28d0b6eb0148d4121ba529ed7d3",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   },
+   "roamInterpretation": "습도에서 물건을 지키는 보관함을 만드는 곳이야. 카메라·필름·취미용품 두는 사람한테 맞아.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.8
+    },
+    {
+     "slug": "discovery",
+     "strength": 0.5
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "제습함을 크기별로 비교하고 고를 수 있어.",
+    "discovery": "습도 관리가 왜 필요한지 설명을 들을 수 있어."
+   },
+   "thingsToDo": [
+    "제습함 크기 비교하기",
+    "습도 조절 방식 물어보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "듀프리",
+    "제습함",
+    "보관 솔루션"
+   ]
   },
   "E-07": {
    "summary": "포세이온 — 프리미엄 기능성 필터 샤워헤드(BT100). 두피·피부 임상으로 효능을 검증했고 딥블루·스노우화이트 등 색상을 낸다. 킨텍스 박람회 등에서 체험 부스를 운영해왔다.",
@@ -888,7 +1110,7 @@
    ]
   },
   "F-10": {
-   "summary": "유어타올(UR TOWEL) — '매일 아침을 기분 좋게'. 타월 브랜드로 주최 침실·욕실 큐레이션에 들었다.",
+   "summary": "유어타올(ur towel) — 세탁이 필요 없는 타올 “일상의 불편을 ‘제로’로 만드는 기능성 프리미엄 타올”",
    "confirmed": true,
    "image": "/booths/magok-livingmarket-2026/F-10_1.webp",
    "images": [
@@ -927,7 +1149,16 @@
     "유어타올",
     "매일 아침"
    ],
-   "sourceUrl": "https://www.instagram.com/p/DcATDUBHGAT/"
+   "sourceUrl": "https://www.instagram.com/p/DcATDUBHGAT/",
+   "directory": {
+    "nameKor": "유어타올",
+    "nameEng": "ur towel",
+    "category": "타올",
+    "intro": "세탁이 필요 없는 타올",
+    "pr": "“일상의 불편을 ‘제로’로 만드는 기능성 프리미엄 타올”",
+    "link": "urtowel.com",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "G-28": {
    "summary": "린보워크샵 — 부산 망미동 가죽공방 겸 쇼룸(F1963 테라로사 후문). 가죽공예품과 소품.",
@@ -1024,7 +1255,7 @@
    "confirmed": false
   },
   "N-15": {
-   "summary": "오도마(OHDOMA) — '자연의 결을 닮은 살림'. 주최 큐레이션에 두 번 이름을 올렸다.",
+   "summary": "오도마(ohdoma) — 오도마, 공간을 더 빛나게 해드리는 아름다운 배경 \"살아가면서 가장 아름다운 일은 누군가의 배경이 되어주는 일이다\" 안도현 시인의 말처럼, 오도마는 식탁 위 음식을 돋보이게하는 '따뜻한 배경'을 만듭니다. 이번 전시에서 오도마는 화려함 대신 '배경의 미학'으로 일상을 빛내줄 정서적 안식을 전해드립니다.",
    "confirmed": true,
    "roamInterpretation": "나무 결을 그대로 살린 살림살이를 내는 곳이야. 결이 다 달라서 골라보는 재미가 있어.",
    "valueTags": [
@@ -1050,7 +1281,16 @@
     "오도마",
     "자연의 결"
    ],
-   "sourceUrl": "https://www.instagram.com/p/DcKmPgejI81/"
+   "sourceUrl": "https://www.instagram.com/p/DcKmPgejI81/",
+   "directory": {
+    "nameKor": "오도마",
+    "nameEng": "ohdoma",
+    "category": "",
+    "intro": "오도마, 공간을 더 빛나게 해드리는 아름다운 배경",
+    "pr": "\"살아가면서 가장 아름다운 일은 누군가의 배경이 되어주는 일이다\" 안도현 시인의 말처럼, 오도마는 식탁 위 음식을 돋보이게하는 '따뜻한 배경'을 만듭니다. 이번 전시에서 오도마는 화려함 대신 '배경의 미학'으로 일상을 빛내줄 정서적 안식을 전해드립니다.",
+    "link": "https://blog.naver.com/hi2385",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "Q-04": {
    "summary": "참융뜰 — '99 홍도라지조청'을 만드는 수제 건강식품 브랜드. 4년근 무농약 도라지를 15일에 걸쳐 9번 찌고 9번 말리는 구증구포 공정으로 달인다. 홍도라지·작두콩·곰보배추·수세미·대추·생강·유근피·감초·배 9가지 약재를 쓰고 전부 국내산 100%다.",
@@ -1101,7 +1341,7 @@
    "confirmed": false
   },
   "P-02": {
-   "summary": "크리미웨이(CREAMYWAY) — '건강한 프로틴 쉐이크'. 주최 Food & Taste 큐레이션 라인업.",
+   "summary": "크리미웨이(CREAMYWAY) — 국내산 농산물 원료로 만든 단백질 쉐이크 크리미웨이 크리미웨이는 국내산 원료를 바탕으로 맛과 영양을 모두 담은 단백질 쉐이크 브랜드입니다. 바쁜 일상 속에서도 간편하게 단백질을 섭취할 수 있도록 맛있고 부담 없이 즐기는 한 잔을 제안합니다. 오픈 이벤트로 특별한 행사 가격과 합리적인 혜택을 만나볼 수 있습니다. 제품을 맛보고 구매하며 크리미웨이의 건강하고 맛있는 일상을 경험해보세요.",
    "confirmed": true,
    "roamInterpretation": "프로틴 쉐이크를 만드는 곳이야. 맛을 보고 고르면 돼.",
    "valueTags": [
@@ -1127,22 +1367,66 @@
     "크리미웨이",
     "프로틴 쉐이크"
    ],
-   "sourceUrl": "https://www.instagram.com/p/Dcm6--gARa9/"
+   "sourceUrl": "https://www.instagram.com/p/Dcm6--gARa9/",
+   "directory": {
+    "nameKor": "크리미웨이",
+    "nameEng": "CREAMYWAY",
+    "category": "식품/ 단백질쉐이크",
+    "intro": "국내산 농산물 원료로 만든 단백질 쉐이크 크리미웨이",
+    "pr": "크리미웨이는 국내산 원료를 바탕으로 맛과 영양을 모두 담은 단백질 쉐이크 브랜드입니다. 바쁜 일상 속에서도 간편하게 단백질을 섭취할 수 있도록 맛있고 부담 없이 즐기는 한 잔을 제안합니다. 오픈 이벤트로 특별한 행사 가격과 합리적인 혜택을 만나볼 수 있습니다. 제품을 맛보고 구매하며 크리미웨이의 건강하고 맛있는 일상을 경험해보세요.",
+    "link": "https://smartstore.naver.com/creamyway",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "P-18": {
    "summary": "네코먼데이 로스터리 — 커피. '밀크' 등 자체 음료 라인 할인 운영.",
    "confirmed": false
   },
   "R-08": {
-   "summary": "꼬마루 수제육포 — 치즈·고추·마늘 원물을 직접 넣은 부드럽고 짜지 않은 프리미엄 수제육포. @kkomaroo74.",
-   "confirmed": false
+   "summary": "꼬마루 수제육포(KKOMAROO) — 한돈으로 만든 저염식 수제육포 꼬마루는 다년간의 육가공 노하우를 바탕으로 각 고기의 특성을 분석 및 연구하여 품질과 맛에서 으뜸가는 수제 육포를 만듭니다. 특히 양질의 고기만을 선별하고 청결하고 기술력 있는 가공을 거치며, 최선을 다해 소비자에게 다가갈 수 있도록 노력하고 있습니다.",
+   "confirmed": true,
+   "sourceUrl": "https://magoklivingdesignfair.kr/fairOnline.do",
+   "roamInterpretation": "한돈으로 저염 수제육포를 만드는 곳이야. 짜지 않은 육포를 찾는다면 여기서 맛보면 돼.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.8
+    },
+    {
+     "slug": "experience",
+     "strength": 0.7
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "맛보고 바로 사 갈 수 있어.",
+    "experience": "저염이 어떤 맛인지 씹어봐야 알아."
+   },
+   "thingsToDo": [
+    "저염 육포 맛보기",
+    "고기 부위 물어보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "꼬마루",
+    "저염 수제육포",
+    "한돈"
+   ],
+   "directory": {
+    "nameKor": "꼬마루 수제육포",
+    "nameEng": "KKOMAROO / KKOMAROO",
+    "category": "",
+    "intro": "한돈으로 만든 저염식 수제육포",
+    "pr": "꼬마루는 다년간의 육가공 노하우를 바탕으로 각 고기의 특성을 분석 및 연구하여 품질과 맛에서 으뜸가는 수제 육포를 만듭니다. 특히 양질의 고기만을 선별하고 청결하고 기술력 있는 가공을 거치며, 최선을 다해 소비자에게 다가갈 수 있도록 노력하고 있습니다.",
+    "link": "https://kkomaroo2.shop.blogpay.co.kr/good/product_list",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "M-05": {
    "summary": "이어서보 — 티웨어(찻잔·다구). 찻자리용 제품.",
    "confirmed": false
   },
   "L-07": {
-   "summary": "엘제이엘 갤러리(LJL Gallery) — 주최 아카이브 큐레이션에 포함된 갤러리.",
+   "summary": "엘제이엘 갤러리(LJL gallery) — 삶의 무대를 예술로 바꾸는 Artful Living 공예 전문 갤러리 엘제이엘(LJL)은 ‘공간과 장식’을 주제로 우리 곁의 사물이 예술이 되는 순간을 조명한다. 이번 전시는 공간을 감각적으로 바꾸는 벽장식 오브제부터 동시대적 미감을 담은 현대장신구까지, 7인의 작가가 빚어낸 독창적인 형상과 색채를 통해, 우리의 공간과 내면을 아름답게 완성하는 예술적 울림을 전하고자 한다.",
    "confirmed": true,
    "roamInterpretation": "갤러리가 부스로 나온 곳이야. 작품을 사는 자리로 보면 돼.",
    "valueTags": [
@@ -1167,12 +1451,56 @@
    "memoryHooks": [
     "엘제이엘 갤러리"
    ],
-   "sourceUrl": "https://www.instagram.com/p/Dc3H3u3jnkt/"
+   "sourceUrl": "https://www.instagram.com/p/Dc3H3u3jnkt/",
+   "directory": {
+    "nameKor": "엘제이엘 갤러리",
+    "nameEng": "LJL gallery",
+    "category": "",
+    "intro": "삶의 무대를 예술로 바꾸는 Artful Living",
+    "pr": "공예 전문 갤러리 엘제이엘(LJL)은 ‘공간과 장식’을 주제로 우리 곁의 사물이 예술이 되는 순간을 조명한다. 이번 전시는 공간을 감각적으로 바꾸는 벽장식 오브제부터 동시대적 미감을 담은 현대장신구까지, 7인의 작가가 빚어낸 독창적인 형상과 색채를 통해, 우리의 공간과 내면을 아름답게 완성하는 예술적 울림을 전하고자 한다.",
+    "link": "Instagram/ljl_gallery",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "L-09": {
-   "summary": "해튼 헤리티지 — hattonlife.com. 와인 디스플레이 공간에 어울리는 제품. 코엑스 K핸드메이드페어 참가 이력.",
-   "confirmed": false,
-   "image": "/booths/magok-livingmarket-2026/L-09.webp"
+   "summary": "해튼 헤리티지(HATTON heritage) — 수천 번의 두드림으로 완성된 금속, 일상을 예술로 금속의 고유한 결을 살린 수공예 해머드(Hammered) 기법으로 현대적으로 미감을 푸는 해튼 헤리티지",
+   "confirmed": true,
+   "image": "/booths/magok-livingmarket-2026/L-09.webp",
+   "sourceUrl": "https://magoklivingdesignfair.kr/fairOnline.do",
+   "directory": {
+    "nameKor": "해튼 헤리티지",
+    "nameEng": "HATTON heritage",
+    "category": "리빙, 인테리어",
+    "intro": "수천 번의 두드림으로 완성된 금속, 일상을 예술로",
+    "pr": "금속의 고유한 결을 살린 수공예 해머드(Hammered) 기법으로 현대적으로 미감을 푸는 해튼 헤리티지",
+    "link": "www.hattonlife.com",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   },
+   "roamInterpretation": "금속을 수천 번 두드리는 해머드 기법으로 만드는 리빙 브랜드야. 표면의 망치 자국이 하나씩 달라서 가까이서 봐야 해.",
+   "valueTags": [
+    {
+     "slug": "inspiration",
+     "strength": 0.9
+    },
+    {
+     "slug": "goods",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "inspiration": "망치 자국이 남긴 결을 가까이서 볼 수 있어.",
+    "goods": "금속 소품을 낱개로 고를 수 있어."
+   },
+   "thingsToDo": [
+    "해머드 표면 결 보기",
+    "같은 제품끼리 무늬 비교하기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "HATTON heritage",
+    "해머드",
+    "수공예 금속"
+   ]
   },
   "L-15": {
    "summary": "디자인북 — 검색 결과가 아트북/포스터 출판 쪽으로 나온다.",
@@ -1246,7 +1574,7 @@
    "confirmed": false
   },
   "A-06": {
-   "summary": "아람채리빙 — 나전칠기 모티브의 전통 모듈 가구. 2012년 시작한 아람채 한옥스튜디오의 리빙 브랜드로 은평 한옥마을에 있다.",
+   "summary": "아람채리빙(ARAMCHAE) — 〈기억의 빛, 다시 살아나는 시간〉 아람채는 버려진 자개장 속에 잠든 한국적 아름다움과 삶의 기억을 현대적 디자인으로 되살리는 업사이클링 브랜드입니다. 전통 공예의 영롱한 자개빛을 미니멀한 형태에 담아 과거의 감성과 미래의 지속가능성을 잇는 새로운 한국적 디자인을 제안합니다. 오래된 자개장의 기억과 정서를 현대적으로 재해석해 오늘의 공간에서 다시 빛나게 합니다.",
    "confirmed": true,
    "image": "/booths/magok-livingmarket-2026/A-06.webp",
    "roamInterpretation": "자개 무늬를 현대 가구로 옮기는 곳이야. 전통 문양이 모듈 가구에 어떻게 붙는지 실물로 봐야 알아.",
@@ -1274,10 +1602,19 @@
     "한옥스튜디오",
     "모듈 가구"
    ],
-   "sourceUrl": "https://www.instagram.com/p/Dcuu8QakSoK/"
+   "sourceUrl": "https://www.instagram.com/p/Dcuu8QakSoK/",
+   "directory": {
+    "nameKor": "아람채리빙",
+    "nameEng": "ARAMCHAE",
+    "category": "",
+    "intro": "〈기억의 빛, 다시 살아나는 시간〉",
+    "pr": "아람채는 버려진 자개장 속에 잠든 한국적 아름다움과 삶의 기억을 현대적 디자인으로 되살리는 업사이클링 브랜드입니다. 전통 공예의 영롱한 자개빛을 미니멀한 형태에 담아 과거의 감성과 미래의 지속가능성을 잇는 새로운 한국적 디자인을 제안합니다. 오래된 자개장의 기억과 정서를 현대적으로 재해석해 오늘의 공간에서 다시 빛나게 합니다.",
+    "link": "www.miiseum.com",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "J-06": {
-   "summary": "노웬(NOWHEN) — 주최 아카이브 큐레이션에 포함된 브랜드. 목재를 다루는 라인업으로 소개됐다.",
+   "summary": "노웬(NOWHEN) — 살아있는 조각이 선사하는 아날로그 세계로 초대합니다 NOWHEN은 고정된 형태 대신 시간의 흐름을 담아내는 키네틱 조각품를 선보입니다. 인위적인 제어보다 단순한 기계적 원리로 매 순간 예측 불가능한 움직임을 창조하며, 완성된 결과보다 변화하는 과정의 아름다움에 집중합니다. 아날로그적 감각이 빚어낸 찰나의 균형을 통해 어느 시간에도 속하지 않는 독창적인 조형 세계를 구축합니다.",
    "confirmed": true,
    "roamInterpretation": "나무를 다루는 곳이야. 결과 마감을 직접 보면 판단이 빨라.",
    "valueTags": [
@@ -1303,11 +1640,54 @@
     "노웬",
     "NOWHEN"
    ],
-   "sourceUrl": "https://www.instagram.com/p/Dc3H3u3jnkt/"
+   "sourceUrl": "https://www.instagram.com/p/Dc3H3u3jnkt/",
+   "directory": {
+    "nameKor": "노웬",
+    "nameEng": "NOWHEN",
+    "category": "갤러리",
+    "intro": "살아있는 조각이 선사하는 아날로그 세계로 초대합니다",
+    "pr": "NOWHEN은 고정된 형태 대신 시간의 흐름을 담아내는 키네틱 조각품를 선보입니다. 인위적인 제어보다 단순한 기계적 원리로 매 순간 예측 불가능한 움직임을 창조하며, 완성된 결과보다 변화하는 과정의 아름다움에 집중합니다. 아날로그적 감각이 빚어낸 찰나의 균형을 통해 어느 시간에도 속하지 않는 독창적인 조형 세계를 구축합니다.",
+    "link": "www.nowhenstudio.com",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "R-07": {
-   "summary": "메멜트 — 크림치즈. 코엑스 홈테이블데코페어 참가 이력이 있다.",
-   "confirmed": false
+   "summary": "메멜트(MEMELT) — 한번 맛보면 절대 잊을 수 없는 크림치즈! '크림치즈는 왜 베이글에만 발라 먹을까?'라는 생각에서 시작된 메멜트 크림치즈는 2016년도부터 크림치즈만을 판매한 크림치즈 전문점입니다. 수작업으로 원재료의 맛을 살려 조리해 인위적이지 않고 신선한 맛을 자랑합니다. 그동안 빵을 먹기 위해 크림치즈를 구입하셨나요? 이제 크림치즈를 먹기 위해 냉장고 문을 열게 되실 거예요.",
+   "confirmed": true,
+   "sourceUrl": "https://magoklivingdesignfair.kr/fairOnline.do",
+   "directory": {
+    "nameKor": "메멜트",
+    "nameEng": "MEMELT",
+    "category": "",
+    "intro": "한번 맛보면 절대 잊을 수 없는 크림치즈!",
+    "pr": "'크림치즈는 왜 베이글에만 발라 먹을까?'라는 생각에서 시작된 메멜트 크림치즈는 2016년도부터 크림치즈만을 판매한 크림치즈 전문점입니다. 수작업으로 원재료의 맛을 살려 조리해 인위적이지 않고 신선한 맛을 자랑합니다. 그동안 빵을 먹기 위해 크림치즈를 구입하셨나요? 이제 크림치즈를 먹기 위해 냉장고 문을 열게 되실 거예요.",
+    "link": "https://smartstore.naver.com/memelt",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   },
+   "roamInterpretation": "2016년부터 크림치즈만 만들어온 전문점이야. 빵에 바르는 게 아니라 크림치즈를 먹으러 오게 만드는 게 목표라고 한다.",
+   "valueTags": [
+    {
+     "slug": "experience",
+     "strength": 0.8
+    },
+    {
+     "slug": "goods",
+     "strength": 0.7
+    }
+   ],
+   "recommendationReasons": {
+    "experience": "크림치즈를 종류별로 맛보는 자리야.",
+    "goods": "맛보고 바로 사 갈 수 있어."
+   },
+   "thingsToDo": [
+    "크림치즈 종류별로 맛보기",
+    "보관 기간 확인하기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "메멜트",
+    "크림치즈 전문점"
+   ]
   },
   "A-03": {
    "summary": "",
@@ -1321,8 +1701,44 @@
    ]
   },
   "A-10": {
-   "summary": "",
-   "image": "/booths/magok-livingmarket-2026/A-10.webp"
+   "summary": "트레티트레(TRETTITRE) — 빛과 음악이 머무는 공간 TRETTITRE는 사운드와 빛, 공간의 조화를 추구하는 라이프스타일 오디오 브랜드입니다. 이번 전시에서는 360도 사운드와 감각적인 조명, 디자인이 어우러진 스피커와 턴테이블을 직접 경험할 수 있습니다.",
+   "image": "/booths/magok-livingmarket-2026/A-10.webp",
+   "confirmed": true,
+   "sourceUrl": "https://magoklivingdesignfair.kr/fairOnline.do",
+   "directory": {
+    "nameKor": "트레티트레",
+    "nameEng": "TRETTITRE",
+    "category": "홈 오디오·라이프스타일 가전",
+    "intro": "빛과 음악이 머무는 공간",
+    "pr": "TRETTITRE는 사운드와 빛, 공간의 조화를 추구하는 라이프스타일 오디오 브랜드입니다. 이번 전시에서는 360도 사운드와 감각적인 조명, 디자인이 어우러진 스피커와 턴테이블을 직접 경험할 수 있습니다.",
+    "link": "https://www.sound-collection.com",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   },
+   "roamInterpretation": "스피커와 턴테이블을 만드는 라이프스타일 오디오 브랜드야. 360도 사운드와 조명을 같이 켜두니 소리를 들어봐야 알아.",
+   "valueTags": [
+    {
+     "slug": "experience",
+     "strength": 0.8
+    },
+    {
+     "slug": "inspiration",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "experience": "스피커 소리를 현장에서 직접 들을 수 있어.",
+    "inspiration": "빛과 소리를 한 물건에 묶는 방식이 눈에 들어와."
+   },
+   "thingsToDo": [
+    "360도 사운드 들어보기",
+    "턴테이블 만져보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "TRETTITRE",
+    "360도 사운드",
+    "턴테이블"
+   ]
   },
   "A-13": {
    "summary": "알마슬립 — 더 깊은 숙면을 위한 침실 브랜드. 주최가 침실·욕실 큐레이션 라인업으로 꼽았다.",
@@ -1362,7 +1778,7 @@
    "confirmed": true
   },
   "B-01": {
-   "summary": "로우리트 콜렉티브(LOWLIT COLLECTIVE) — 버려진 플라스틱을 조명으로 되살리는 브랜드. 주최는 '감각적인 라이팅'으로 꼽았다.",
+   "summary": "로우리트 콜렉티브(Lowlit Collective) — 버려진 플라스틱, 오래 곁에 둘 지속 가능한 가구로 로우리트 콜렉티브는 폐플라스틱을 되살려 지속 가능한 가구와 조명을 만드는 서울 기반 디자인 스튜디오입니다. 재활용 플라스틱 고유의 불규칙한 색과 질감은 감출 결점이 아닌 각 제품만의 서사입니다. 이번 전시에서는 테이블, 스툴, 조명 컬렉션과 함께 소재의 순환 과정을 선보이며 덜 쓰고 오래 쓰는 삶에 어울리는 아름다운 선택지를 제안합니다.",
    "image": "/booths/magok-livingmarket-2026/B-01_1.webp",
    "images": [
     "/booths/magok-livingmarket-2026/B-01_1.webp",
@@ -1397,10 +1813,19 @@
     "LOWLIT"
    ],
    "sourceUrl": "https://www.instagram.com/p/Dcxj0boFKNE/",
-   "confirmed": true
+   "confirmed": true,
+   "directory": {
+    "nameKor": "로우리트 콜렉티브",
+    "nameEng": "Lowlit Collective",
+    "category": "",
+    "intro": "버려진 플라스틱, 오래 곁에 둘 지속 가능한 가구로",
+    "pr": "로우리트 콜렉티브는 폐플라스틱을 되살려 지속 가능한 가구와 조명을 만드는 서울 기반 디자인 스튜디오입니다. 재활용 플라스틱 고유의 불규칙한 색과 질감은 감출 결점이 아닌 각 제품만의 서사입니다. 이번 전시에서는 테이블, 스툴, 조명 컬렉션과 함께 소재의 순환 과정을 선보이며 덜 쓰고 오래 쓰는 삶에 어울리는 아름다운 선택지를 제안합니다.",
+    "link": "lowlit.co",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "C-03": {
-   "summary": "최정원 작가(CHOI JEONG WON) — 자연의 생명력을 담은 오브제를 만드는 작가. 주최 Home & Deco 큐레이션에 이름을 올렸다.",
+   "summary": "정원놀이-최정원작가(Choi Jeong Won) — '자연을 곁에 두는 방식'을 제안합니다. 정원놀이는 누구나 놀이처럼 쉽고 즐겁게 자연을 경험하길 바라는 마음에서 시작된 작가 브랜드 입니다. 식물, 생화, 닥섬유(한지), 옻칠 등 자연의 생명력이 담긴 재료를 탐구하며, 자연의 본질을 일상의 공간으로 들여오는 시각적 기록 작업을 지속하고 있습니다.",
    "image": "/booths/magok-livingmarket-2026/C-03_1.webp",
    "images": [
     "/booths/magok-livingmarket-2026/C-03_1.webp",
@@ -1434,10 +1859,19 @@
     "자연 오브제"
    ],
    "sourceUrl": "https://www.instagram.com/p/DcXeOm3gavZ/",
-   "confirmed": true
+   "confirmed": true,
+   "directory": {
+    "nameKor": "정원놀이-최정원작가",
+    "nameEng": "Choi Jeong Won",
+    "category": "",
+    "intro": "'자연을 곁에 두는 방식'을 제안합니다.",
+    "pr": "정원놀이는 누구나 놀이처럼 쉽고 즐겁게 자연을 경험하길 바라는 마음에서 시작된 작가 브랜드 입니다. 식물, 생화, 닥섬유(한지), 옻칠 등 자연의 생명력이 담긴 재료를 탐구하며, 자연의 본질을 일상의 공간으로 들여오는 시각적 기록 작업을 지속하고 있습니다.",
+    "link": "gardennory.com",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "D-01": {
-   "summary": "페이퍼 콘크리트(PAPER CONCRETE) — 종잇조각을 굳혀 오브제로 만드는 브랜드. 주최는 '종잇조각의 변신'으로 소개했다.",
+   "summary": "페이퍼콘크리트(PAPER CONCRETE) — 버려진 종이 조각이 일상 속 아트 피스가 되다. 우리 일상과 업무 공간에서 매일 막대하게 버려지는 파쇄지. '페이퍼콘크리트'는 쓸모를 다해 잘게 부서진 폐종이를 수거하고 압착하여, 전에 없던 새로운 친환경 인테리어 타일과 조형 오브제를 제안하는 소재 중심의 업사이클링 브랜드입니다.",
    "image": "/booths/magok-livingmarket-2026/D-01_1.webp",
    "images": [
     "/booths/magok-livingmarket-2026/D-01_1.webp",
@@ -1476,10 +1910,19 @@
     "페이퍼 콘크리트"
    ],
    "sourceUrl": "https://www.instagram.com/p/Dcxj0boFKNE/",
-   "confirmed": true
+   "confirmed": true,
+   "directory": {
+    "nameKor": "페이퍼콘크리트",
+    "nameEng": "PAPER CONCRETE",
+    "category": "",
+    "intro": "버려진 종이 조각이 일상 속 아트 피스가 되다.",
+    "pr": "우리 일상과 업무 공간에서 매일 막대하게 버려지는 파쇄지. '페이퍼콘크리트'는 쓸모를 다해 잘게 부서진 폐종이를 수거하고 압착하여, 전에 없던 새로운 친환경 인테리어 타일과 조형 오브제를 제안하는 소재 중심의 업사이클링 브랜드입니다.",
+    "link": "www.tileclingmesh.com",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "D-10": {
-   "summary": "바이에른오토 아우디(Bayern Auto Audi) — 아우디 공식 딜러. 주최 아카이브 큐레이션에 포함돼 전시장에 차량을 들인다.",
+   "summary": "바이에른오토 아우디(Bayern Auto Audi) — 내일을 위한 새로운 선택. 아우디 공식딜러 바이에른오토 바이에른오토는 아우디 공식 딜러사로, 이번 전시에서 대표 프로모션 모델인 The New Audi A6를 선보입니다. HUD, 인터랙션 라이트, Bang & Olufsen 사운드 시스템, 스마트 주차 어시스트, MMI 터치 인터페이스 등 첨단 기술을 직접 체험할 수 있으며, 전문 세일즈 컨설턴트를 통해 차량 정보와 구매 혜택도 안내받을 수 있습니다.",
    "image": "/booths/magok-livingmarket-2026/D-10.webp",
    "roamInterpretation": "전시장 안에 차가 서 있는 부스야. 리빙 마켓에서 차를 보는 건 흔치 않아.",
    "valueTags": [
@@ -1506,10 +1949,19 @@
     "바이에른오토"
    ],
    "sourceUrl": "https://www.instagram.com/p/Dc3H3u3jnkt/",
-   "confirmed": true
+   "confirmed": true,
+   "directory": {
+    "nameKor": "바이에른오토 아우디",
+    "nameEng": "Bayern Auto Audi",
+    "category": "바이에른오소 소개서",
+    "intro": "내일을 위한 새로운 선택. 아우디 공식딜러 바이에른오토",
+    "pr": "바이에른오토는 아우디 공식 딜러사로, 이번 전시에서 대표 프로모션 모델인 The New Audi A6를 선보입니다. HUD, 인터랙션 라이트, Bang & Olufsen 사운드 시스템, 스마트 주차 어시스트, MMI 터치 인터페이스 등 첨단 기술을 직접 체험할 수 있으며, 전문 세일즈 컨설턴트를 통해 차량 정보와 구매 혜택도 안내받을 수 있습니다.",
+    "link": "https://www.bayernauto.kr/",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "D-13": {
-   "summary": "아모스아인스 가구(AMOSAINS furniture) — 디자인과 실용성을 더한 가전 모듈을 만든다. 가전을 감추거나 품는 가구가 주력이다.",
+   "summary": "아모스아인스가구(AMOSAINS furniture) — 책상을 설계한 사람들이 만든 디자인 멀티탭 A.Power Series는 공간과 조화를 이루도록 설계된 디자인 멀티탭입니다. 이번 전시에서는 2구, 5구, 스탠드형, 이동형 등 다양한 제품 라인업과 실제 업무 환경을 함께 구성하여 기능성과 디자인을 직접 체험할 수 있는 공간을 선보입니다. 전원 공급 장치를 넘어, 워크스페이스를 완성하는 새로운 공간 경험을 제안합니다.",
    "image": "/booths/magok-livingmarket-2026/D-13_1.webp",
    "images": [
     "/booths/magok-livingmarket-2026/D-13_1.webp",
@@ -1548,14 +2000,58 @@
     "아모스아인스"
    ],
    "sourceUrl": "https://www.instagram.com/p/DchxZ66GTda/",
-   "confirmed": true
+   "confirmed": true,
+   "directory": {
+    "nameKor": "아모스아인스가구",
+    "nameEng": "AMOSAINS furniture",
+    "category": "",
+    "intro": "책상을 설계한 사람들이 만든 디자인 멀티탭",
+    "pr": "A.Power Series는 공간과 조화를 이루도록 설계된 디자인 멀티탭입니다. 이번 전시에서는 2구, 5구, 스탠드형, 이동형 등 다양한 제품 라인업과 실제 업무 환경을 함께 구성하여 기능성과 디자인을 직접 체험할 수 있는 공간을 선보입니다. 전원 공급 장치를 넘어, 워크스페이스를 완성하는 새로운 공간 경험을 제안합니다.",
+    "link": "https://www.amosains.com/",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "D-02": {
-   "summary": "",
-   "image": "/booths/magok-livingmarket-2026/D-02.webp"
+   "summary": "산아쿠아플랜츠(SAN Aqua Plants) — 내 공간 속 작은 자연 산아쿠아플랜츠는 팔루다리움, 비바리움, 테라리움을 통해 일상 속 작은 자연을 제안하는 자연 생태 브랜드입니다. 숲과 물, 생명이 어우러진 살아있는 생태계를 담아 공간에 특별한 힐링을 선사합니다. 이번 전시에서는 다양한 팔루다리움 작품과 자연 인테리어를 만나보시고, 맞춤형 생태 공간 상담도 함께 받아보세요.",
+   "image": "/booths/magok-livingmarket-2026/D-02.webp",
+   "confirmed": true,
+   "sourceUrl": "https://magoklivingdesignfair.kr/fairOnline.do",
+   "directory": {
+    "nameKor": "산아쿠아플랜츠",
+    "nameEng": "SAN Aqua Plants",
+    "category": "",
+    "intro": "내 공간 속 작은 자연",
+    "pr": "산아쿠아플랜츠는 팔루다리움, 비바리움, 테라리움을 통해 일상 속 작은 자연을 제안하는 자연 생태 브랜드입니다. 숲과 물, 생명이 어우러진 살아있는 생태계를 담아 공간에 특별한 힐링을 선사합니다. 이번 전시에서는 다양한 팔루다리움 작품과 자연 인테리어를 만나보시고, 맞춤형 생태 공간 상담도 함께 받아보세요.",
+    "link": "https://m.place.naver.com/place/1085405629/home",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   },
+   "roamInterpretation": "팔루다리움·비바리움·테라리움을 만드는 자연 생태 브랜드야. 유리 안에 숲과 물이 같이 들어 있어서 들여다보면 오래 서 있게 돼.",
+   "valueTags": [
+    {
+     "slug": "rest",
+     "strength": 0.8
+    },
+    {
+     "slug": "discovery",
+     "strength": 0.7
+    }
+   ],
+   "recommendationReasons": {
+    "rest": "살아 있는 생태계를 들여다보며 쉬어가는 자리야.",
+    "discovery": "팔루다리움이 뭔지 실물로 처음 보게 될 거야."
+   },
+   "thingsToDo": [
+    "팔루다리움 작품 들여다보기",
+    "맞춤형 생태 공간 상담 받기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "팔루다리움",
+    "작은 자연"
+   ]
   },
   "D-03": {
-   "summary": "",
+   "summary": "그리너 오브젝트(GREENER OBJECT) — 커피박으로 만든, 오래 두고 싶은 리빙 오브제 그리너오브젝트는 버려지는 커피박·맥주박으로 리빙 오브제를 만듭니다. 잘 말려 생분해 소재와 섞으면 단단한 보드가 되어 플라스틱과 아크릴을 대신합니다. 파리바게트·5성급 호텔 납품으로 검증한 소재를, 마곡리빙마켓에서는 집 안으로 들입니다. 네컷사진 액자와 가족 현판을 선보이고 맞춤 제작 상담도 진행합니다. 버려지던 소재에서 오래 두고 싶은 오브제로.",
    "image": "/booths/magok-livingmarket-2026/D-03_1.webp",
    "images": [
     "/booths/magok-livingmarket-2026/D-03_1.webp",
@@ -1568,6 +2064,42 @@
     "/booths/magok-livingmarket-2026/D-03_8.webp",
     "/booths/magok-livingmarket-2026/D-03_9.webp",
     "/booths/magok-livingmarket-2026/D-03_10.webp"
+   ],
+   "confirmed": true,
+   "sourceUrl": "https://magoklivingdesignfair.kr/fairOnline.do",
+   "directory": {
+    "nameKor": "그리너 오브젝트",
+    "nameEng": "GREENER OBJECT",
+    "category": "리빙 오브제",
+    "intro": "커피박으로 만든, 오래 두고 싶은 리빙 오브제",
+    "pr": "그리너오브젝트는 버려지는 커피박·맥주박으로 리빙 오브제를 만듭니다. 잘 말려 생분해 소재와 섞으면 단단한 보드가 되어 플라스틱과 아크릴을 대신합니다. 파리바게트·5성급 호텔 납품으로 검증한 소재를, 마곡리빙마켓에서는 집 안으로 들입니다. 네컷사진 액자와 가족 현판을 선보이고 맞춤 제작 상담도 진행합니다. 버려지던 소재에서 오래 두고 싶은 오브제로.",
+    "link": "www.greenerobject.com",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   },
+   "roamInterpretation": "버려지는 커피박·맥주박을 굳혀 오브제로 만드는 곳이야. 재료가 커피 찌꺼기라는 걸 만져보면 알아.",
+   "valueTags": [
+    {
+     "slug": "discovery",
+     "strength": 0.9
+    },
+    {
+     "slug": "goods",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "discovery": "커피 찌꺼기가 단단한 보드가 되는 과정을 볼 수 있어.",
+    "goods": "네컷사진 액자·가족 현판을 맞춤으로 주문할 수 있어."
+   },
+   "thingsToDo": [
+    "커피박 보드 만져보기",
+    "네컷사진 액자 맞춤 상담"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "커피박",
+    "생분해 보드",
+    "GREENER OBJECT"
    ]
   },
   "E-05": {
@@ -1587,7 +2119,7 @@
    ]
   },
   "E-03": {
-   "summary": "발롱드파리(Ballon De Paris) — 무드를 전환하는 유니크한 오브제 브랜드. 주최 브랜드 큐레이션 라인업.",
+   "summary": "발롱드파리(BallonDeParis) — 프랑스 100년의 현악기 기술을 담은 디자인 스피커 발롱드파리는 프랑스에서 약 100년 전, 현악기를 제작하던 가렐 가문에서 시작된 음향기기 브랜드입니다. 악기를 만들던 장인의 감각을 바탕으로, 공간에 자연스럽게 스며드는 소리를 추구합니다. 파리 본사의 가렐 가문 4대 형제인 라파엘 가렐과 줄리앙 가렐이 디자인과 사운드 기획을 하였고, 숙련된 아티스트들이 하나하나 수작업으로 완성하고 있습니다.",
    "image": "/booths/magok-livingmarket-2026/E-03_1.webp",
    "images": [
     "/booths/magok-livingmarket-2026/E-03_1.webp",
@@ -1626,10 +2158,19 @@
     "오브제"
    ],
    "sourceUrl": "https://www.instagram.com/p/DchxZ66GTda/",
-   "confirmed": true
+   "confirmed": true,
+   "directory": {
+    "nameKor": "발롱드파리",
+    "nameEng": "BallonDeParis",
+    "category": "",
+    "intro": "프랑스 100년의 현악기 기술을 담은 디자인 스피커",
+    "pr": "발롱드파리는 프랑스에서 약 100년 전, 현악기를 제작하던 가렐 가문에서 시작된 음향기기 브랜드입니다. 악기를 만들던 장인의 감각을 바탕으로, 공간에 자연스럽게 스며드는 소리를 추구합니다. 파리 본사의 가렐 가문 4대 형제인 라파엘 가렐과 줄리앙 가렐이 디자인과 사운드 기획을 하였고, 숙련된 아티스트들이 하나하나 수작업으로 완성하고 있습니다.",
+    "link": "www.ballondeparis.co.kr",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "E-01": {
-   "summary": "에이비엠티(ABMT) — 다양한 비례와 크기의 모듈 선반을 만든다. 주최는 '사랑스러운 컬러감의 모듈 가구'로도 꼽았다.",
+   "summary": "에이비엠티(ABMT) — 다양한 비례와 컬러로 완성하는 무한한 가능성 ABMT ABMT 모듈은 1963년 프리츠 할러의 볼 조인트 구조를 기반으로 제작되어, 공간에 맞춰 자유롭게 재구성하고 스토리지를 손쉽게 확장할 수 있습니다. 소재는 SE0 등급의 자작 합판을 사용해 친환경적이면서도 따뜻하고 튼튼한 내구성을 자랑합니다.",
    "image": "/booths/magok-livingmarket-2026/E-01.webp",
    "roamInterpretation": "선반을 비례로 조합하는 곳이야. 색이 여러 개라 조합을 눈으로 맞춰보게 돼.",
    "valueTags": [
@@ -1656,11 +2197,55 @@
     "ABMT"
    ],
    "sourceUrl": "https://www.instagram.com/p/Dcxj0boFKNE/",
-   "confirmed": true
+   "confirmed": true,
+   "directory": {
+    "nameKor": "에이비엠티",
+    "nameEng": "ABMT",
+    "category": "",
+    "intro": "다양한 비례와 컬러로 완성하는 무한한 가능성 ABMT",
+    "pr": "ABMT 모듈은 1963년 프리츠 할러의 볼 조인트 구조를 기반으로 제작되어, 공간에 맞춰 자유롭게 재구성하고 스토리지를 손쉽게 확장할 수 있습니다. 소재는 SE0 등급의 자작 합판을 사용해 친환경적이면서도 따뜻하고 튼튼한 내구성을 자랑합니다.",
+    "link": "abmt.me",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "F-12": {
-   "summary": "",
-   "image": "/booths/magok-livingmarket-2026/F-12.webp"
+   "summary": "단디미코(DANDI MIKO) — 아이디어 문구 굿즈 전문 고객의 책상위에 당신의 브랜드와 함께하는 아이디어 문구 판촉물 전문 기업, 단디미코",
+   "image": "/booths/magok-livingmarket-2026/F-12.webp",
+   "confirmed": true,
+   "sourceUrl": "https://magoklivingdesignfair.kr/fairOnline.do",
+   "directory": {
+    "nameKor": "단디미코",
+    "nameEng": "DANDI MIKO",
+    "category": "",
+    "intro": "아이디어 문구 굿즈 전문",
+    "pr": "고객의 책상위에 당신의 브랜드와 함께하는 아이디어 문구 판촉물 전문 기업, 단디미코",
+    "link": "www.dandimiko.com",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   },
+   "roamInterpretation": "책상 위에 두는 문구 굿즈를 만드는 곳이야. 작고 싼 것부터 집어보기 좋아.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.8
+    },
+    {
+     "slug": "discovery",
+     "strength": 0.5
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "문구를 낱개로 골라 담을 수 있어.",
+    "discovery": "흔치 않은 아이디어 문구를 구경하게 돼."
+   },
+   "thingsToDo": [
+    "아이디어 문구 하나씩 보기",
+    "판촉 제작 조건 묻기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "단디미코",
+    "아이디어 문구"
+   ]
   },
   "F-01": {
    "summary": "테이블타임즈 — 친환경 집기로 행사·전시 공간을 기획하고 시공하는 팀. 2026 인벤타리오, 캐릭터라이선싱페어, 부산 살림 마켓, ITB Asia 부산관 등 박람회 부스와 라운지를 만들어왔다.",
@@ -1679,7 +2264,7 @@
    ]
   },
   "F-22": {
-   "summary": "나로에(NAROÉ) — '기준 있는 삶을 위한 라이프스타일 브랜드'. 디시케어·핸드워시 등 향이 있는 생활용품을 만든다. 'NAROÉ INVITES YOU — MAGOK LIVING MARKET'으로 초대권 이벤트를 열었고 추석 스페셜 20% 할인을 한다.",
+   "summary": "나로에(NAROÉ) — 기준 있는 삶을 위한 라이프스타일 브랜드 NAROÉ 남과 비교하는 대신 나만의 감각과 미감으로 기준을 세우는 삶. NAROÉ(나로에)는 그 기준을 찾기 위해 '나로 돌아간다'는 뜻을 이름에 담았습니다. 로고는 청룡영화상 수상자인 서성경 미술감독이 함께해 미감을 살렸으며, 첫 제품 '젠틀 디시 케어'는 설거지라는 반복적인 순간에도 향과 감촉의 기준을 두어 일상의 평범한 순간을 '나를 돌보는 시간'으로 바꿉니다",
    "image": "/booths/magok-livingmarket-2026/F-22_1.webp",
    "confirmed": true,
    "sourceUrl": "https://www.instagram.com/naroe.official/",
@@ -1722,11 +2307,55 @@
     "애시우드",
     "뱀부레몬",
     "디시케어"
-   ]
+   ],
+   "directory": {
+    "nameKor": "나로에",
+    "nameEng": "NAROÉ",
+    "category": "",
+    "intro": "기준 있는 삶을 위한 라이프스타일 브랜드 NAROÉ",
+    "pr": "남과 비교하는 대신 나만의 감각과 미감으로 기준을 세우는 삶. NAROÉ(나로에)는 그 기준을 찾기 위해 '나로 돌아간다'는 뜻을 이름에 담았습니다. 로고는 청룡영화상 수상자인 서성경 미술감독이 함께해 미감을 살렸으며, 첫 제품 '젠틀 디시 케어'는 설거지라는 반복적인 순간에도 향과 감촉의 기준을 두어 일상의 평범한 순간을 '나를 돌보는 시간'으로 바꿉니다",
+    "link": "www.naroe.co.kr",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "F-20": {
-   "summary": "",
-   "image": "/booths/magok-livingmarket-2026/F-20.webp"
+   "summary": "엘리크(ELLEEK) — 파인 주얼리의 정교함을 일상에 담는 ELLEEK ELLEEK은 빛이 머무는 순간과 사람의 고유한 분위기를 섬세한 주얼리로 담아냅니다. 과하지 않은 반짝임, 오래 바라볼수록 깊어지는 아름다움. 일상에 조용히 스며들어 나만의 우아함이 되는 주얼리를 만듭니다.",
+   "image": "/booths/magok-livingmarket-2026/F-20.webp",
+   "confirmed": true,
+   "sourceUrl": "https://magoklivingdesignfair.kr/fairOnline.do",
+   "directory": {
+    "nameKor": "엘리크",
+    "nameEng": "ELLEEK",
+    "category": "쥬얼리",
+    "intro": "파인 주얼리의 정교함을 일상에 담는 ELLEEK",
+    "pr": "ELLEEK은 빛이 머무는 순간과 사람의 고유한 분위기를 섬세한 주얼리로 담아냅니다. 과하지 않은 반짝임, 오래 바라볼수록 깊어지는 아름다움. 일상에 조용히 스며들어 나만의 우아함이 되는 주얼리를 만듭니다.",
+    "link": "www.elleek.co.kr",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   },
+   "roamInterpretation": "파인 주얼리를 일상용으로 줄여 만드는 곳이야. 과하지 않은 반짝임이 기준이라 착용해봐야 알아.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.8
+    },
+    {
+     "slug": "inspiration",
+     "strength": 0.5
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "주얼리를 직접 착용해보고 고를 수 있어.",
+    "inspiration": "과하지 않게 빛나는 선을 어떻게 잡는지 보여줘."
+   },
+   "thingsToDo": [
+    "주얼리 착용해보기",
+    "빛 아래서 비교하기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "ELLEEK",
+    "파인 주얼리"
+   ]
   },
   "F-21": {
    "summary": "",
@@ -1737,7 +2366,7 @@
    "image": "/booths/magok-livingmarket-2026/F-17.webp"
   },
   "F-25": {
-   "summary": "꽁뜨레씨엘(Conte de Leciel) — 크래프트맨십 부티크. 오브제·조명·텍스타일 소품을 다룬다. '일상을 예술로 채우는 공간, 당신의 취향을 담은 집'을 내걸고 마곡리빙마켓 2026에 참여한다.",
+   "summary": "꽁떼르씨엘(CONTE DE LECIEL) — 손끝에서 시작되는 따뜻한 이야기 꽁떼르씨엘(Conte de Leciel)은 국내외 작가와 공방의 핸드메이드 제품과 개성 있는 리빙 오브제를 소개하는 크래프트 부티크입니다. 제작자의 손길과 이야기가 담긴 물건을 통해 일상에 작은 즐거움과 오래 간직할 가치를 제안하며, 온라인 스토어와 오프라인 팝업 및 편집숍에서 고객과 만나고 있습니다.",
    "image": "/booths/magok-livingmarket-2026/F-25_1.webp",
    "confirmed": true,
    "sourceUrl": "https://www.instagram.com/conte.de.leciel/",
@@ -1777,20 +2406,65 @@
     "크래프트맨십",
     "오브제",
     "텍스타일"
-   ]
+   ],
+   "directory": {
+    "nameKor": "꽁떼르씨엘",
+    "nameEng": "CONTE DE LECIEL",
+    "category": "",
+    "intro": "손끝에서 시작되는 따뜻한 이야기",
+    "pr": "꽁떼르씨엘(Conte de Leciel)은 국내외 작가와 공방의 핸드메이드 제품과 개성 있는 리빙 오브제를 소개하는 크래프트 부티크입니다. 제작자의 손길과 이야기가 담긴 물건을 통해 일상에 작은 즐거움과 오래 간직할 가치를 제안하며, 온라인 스토어와 오프라인 팝업 및 편집숍에서 고객과 만나고 있습니다.",
+    "link": "www.contedeleciel.com",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "G-01": {
-   "summary": "",
-   "image": "/booths/magok-livingmarket-2026/G-01.webp"
+   "summary": "파나띠꼬(FANATICO) — 공간을 완성하는 마지막 인테리어, 향기 파나띠꼬는 공간과 브랜드가 전하고자 하는 분위기를 향기로 표현하는 향기마케팅 브랜드입니다. 공간의 크기와 용도에 맞는 전자디퓨저와 다양한 향기 샘플을 선보이며, 향에 따라 공간의 인상이 어떻게 달라지는지 직접 경험할 수 있습니다. 시그니처 향 개발부터 디퓨저·룸스프레이·사쉐 등 향기 굿즈 제작까지 공간과 일상을 잇는 향기 솔루션을 직접 경험해 보세요.",
+   "image": "/booths/magok-livingmarket-2026/G-01.webp",
+   "confirmed": true,
+   "sourceUrl": "https://magoklivingdesignfair.kr/fairOnline.do",
+   "directory": {
+    "nameKor": "파나띠꼬",
+    "nameEng": "FANATICO",
+    "category": "홈데코·리빙소품",
+    "intro": "공간을 완성하는 마지막 인테리어, 향기",
+    "pr": "파나띠꼬는 공간과 브랜드가 전하고자 하는 분위기를 향기로 표현하는 향기마케팅 브랜드입니다. 공간의 크기와 용도에 맞는 전자디퓨저와 다양한 향기 샘플을 선보이며, 향에 따라 공간의 인상이 어떻게 달라지는지 직접 경험할 수 있습니다. 시그니처 향 개발부터 디퓨저·룸스프레이·사쉐 등 향기 굿즈 제작까지 공간과 일상을 잇는 향기 솔루션을 직접 경험해 보세요.",
+    "link": "https://fanatico.kr",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   },
+   "roamInterpretation": "공간의 향을 만드는 곳이야. 향 샘플이 여러 개라 맡아보며 고르면 돼.",
+   "valueTags": [
+    {
+     "slug": "experience",
+     "strength": 0.8
+    },
+    {
+     "slug": "inspiration",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "experience": "향에 따라 공간 인상이 달라지는 걸 직접 맡아봐.",
+    "inspiration": "향을 인테리어의 마지막 한 겹으로 보는 관점이야."
+   },
+   "thingsToDo": [
+    "향기 샘플 여러 개 맡아보기",
+    "전자디퓨저 크기 비교하기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "파나띠꼬",
+    "향기 마케팅",
+    "전자디퓨저"
+   ]
   },
   "F-26": {
    "summary": "",
    "image": "/booths/magok-livingmarket-2026/F-26.webp"
   },
   "F-28": {
-   "summary": "후니팟(HUNYPOT) — 호주 아로마테라피스트의 아로마테라피 홈케어 브랜드. 디퓨저·바디럽·이너피스 등 향 제품을 만들고 박람회 부스를 자주 연다.",
+   "summary": "후니팟(HUNYPOT) — 호주 아로마테라피스트의 아로마테라피 홈케어 브랜드 세정, 스크럽, 아로마테라피를 하나로. 보드럽 바디워시는 에센셜 오일 10ml 한 병과 식물성 오일 약 70%를 담은 바디 워시 바입니다. 부드러운 양모 커버가 피부 결을 순하게 정돈하고, 100% 에센셜 오일의 향이 매일의 샤워를 피부와 마음을 위한 편안한 아로마테라피로 바꿔줍니다.",
    "image": "/booths/magok-livingmarket-2026/F-28_1.webp",
-   "confirmed": false,
+   "confirmed": true,
    "images": [
     "/booths/magok-livingmarket-2026/F-28_1.webp",
     "/booths/magok-livingmarket-2026/F-28_2.webp",
@@ -1802,6 +2476,41 @@
     "/booths/magok-livingmarket-2026/F-28_8.webp",
     "/booths/magok-livingmarket-2026/F-28_9.webp",
     "/booths/magok-livingmarket-2026/F-28_10.webp"
+   ],
+   "sourceUrl": "https://magoklivingdesignfair.kr/fairOnline.do",
+   "directory": {
+    "nameKor": "후니팟",
+    "nameEng": "HUNYPOT",
+    "category": "",
+    "intro": "호주 아로마테라피스트의 아로마테라피 홈케어 브랜드",
+    "pr": "세정, 스크럽, 아로마테라피를 하나로. 보드럽 바디워시는 에센셜 오일 10ml 한 병과 식물성 오일 약 70%를 담은 바디 워시 바입니다. 부드러운 양모 커버가 피부 결을 순하게 정돈하고, 100% 에센셜 오일의 향이 매일의 샤워를 피부와 마음을 위한 편안한 아로마테라피로 바꿔줍니다.",
+    "link": "www.hunypot.co.kr",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   },
+   "roamInterpretation": "호주 아로마테라피스트가 만든 홈케어 브랜드야. 향을 맡아보는 게 이 부스의 전부야.",
+   "valueTags": [
+    {
+     "slug": "experience",
+     "strength": 0.8
+    },
+    {
+     "slug": "rest",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "experience": "에센셜 오일 향을 직접 맡고 고를 수 있어.",
+    "rest": "매일 샤워를 쉬는 시간으로 바꾸는 물건이야."
+   },
+   "thingsToDo": [
+    "보드럽 바디워시 향 맡아보기",
+    "양모 커버 만져보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "후니팟",
+    "보드럽 바디워시",
+    "아로마테라피"
    ]
   },
   "G-03": {
@@ -1868,7 +2577,7 @@
    "image": "/booths/magok-livingmarket-2026/G-20.webp"
   },
   "G-09": {
-   "summary": "스튜디오071 — 기념품·굿즈 브랜드. 태극기 반사 키홀더, 서울역·노량진 표지판 키링, 버블랩 슬리브, COBAGS 등 한국을 소재로 한 소품을 만든다.",
+   "summary": "스튜디오071(Studio071) — Such a new goods, Studio071. 어디에나 있는 제품은 만들지 않습니다. 스튜디오071은 기능, 디자인, 소재 중 그 어떤 하나라도 타제품과 완벽히 구별되는 독특한 굿즈 제품만을 기획하고 제조합니다.",
    "image": "/booths/magok-livingmarket-2026/G-09_1.webp",
    "images": [
     "/booths/magok-livingmarket-2026/G-09_1.webp",
@@ -1881,10 +2590,45 @@
     "/booths/magok-livingmarket-2026/G-09_8.webp",
     "/booths/magok-livingmarket-2026/G-09_9.webp",
     "/booths/magok-livingmarket-2026/G-09_10.webp"
+   ],
+   "confirmed": true,
+   "sourceUrl": "https://magoklivingdesignfair.kr/fairOnline.do",
+   "directory": {
+    "nameKor": "스튜디오071",
+    "nameEng": "Studio071",
+    "category": "",
+    "intro": "Such a new goods, Studio071.",
+    "pr": "어디에나 있는 제품은 만들지 않습니다. 스튜디오071은 기능, 디자인, 소재 중 그 어떤 하나라도 타제품과 완벽히 구별되는 독특한 굿즈 제품만을 기획하고 제조합니다.",
+    "link": "https://071.studio/",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   },
+   "roamInterpretation": "기능·디자인·소재 중 하나는 반드시 다르게 만드는 굿즈 스튜디오야. 어디서 본 물건이 아니라는 게 기준이야.",
+   "valueTags": [
+    {
+     "slug": "discovery",
+     "strength": 0.9
+    },
+    {
+     "slug": "goods",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "discovery": "다른 데서 못 본 형태를 찾게 되는 부스야.",
+    "goods": "작은 굿즈부터 골라올 수 있어."
+   },
+   "thingsToDo": [
+    "가장 낯선 물건부터 집어보기",
+    "소재 물어보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "Studio071",
+    "독특한 굿즈"
    ]
   },
   "G-10": {
-   "summary": "",
+   "summary": "부천대학교앵커사업단(Bucheon University) — 섬유와 디자인, AI가 융합된 지속가능한 라이프스타일 부천대학교 앵커사업단은 섬유·패션 기업과 공동으로 기획·개발한 기업협력 시제품과 학생 작품을 전시합니다. 전통문화의 감성과 현대적인 라이프스타일을 접목한 의류, 패션소품, 홈텍스타일 및 생활용품을 선보이며, 산학협력을 통해 개발된 우수 성과를 소비자와 바이어에게 소개하고 시장 반응을 확인하여 제품의 상품화 및 판로 확대를 추진하고자 합니다.",
    "image": "/booths/magok-livingmarket-2026/G-10_1.webp",
    "caution": "부천대학교 공식 계정 — 입시·학사 계정이라 '앵커 섬유패션과' 부스 내용은 확인되지 않는다.",
    "images": [
@@ -1898,6 +2642,42 @@
     "/booths/magok-livingmarket-2026/G-10_8.webp",
     "/booths/magok-livingmarket-2026/G-10_9.webp",
     "/booths/magok-livingmarket-2026/G-10_10.webp"
+   ],
+   "confirmed": true,
+   "sourceUrl": "https://magoklivingdesignfair.kr/fairOnline.do",
+   "directory": {
+    "nameKor": "부천대학교앵커사업단",
+    "nameEng": "Bucheon University",
+    "category": "",
+    "intro": "섬유와 디자인, AI가 융합된 지속가능한 라이프스타일",
+    "pr": "부천대학교 앵커사업단은 섬유·패션 기업과 공동으로 기획·개발한 기업협력 시제품과 학생 작품을 전시합니다. 전통문화의 감성과 현대적인 라이프스타일을 접목한 의류, 패션소품, 홈텍스타일 및 생활용품을 선보이며, 산학협력을 통해 개발된 우수 성과를 소비자와 바이어에게 소개하고 시장 반응을 확인하여 제품의 상품화 및 판로 확대를 추진하고자 합니다.",
+    "link": "https://www.bc.ac.kr/bcu/main.do",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   },
+   "roamInterpretation": "부천대 앵커사업단이 기업·학생과 만든 시제품을 내는 부스야. 아직 시장에 안 나온 물건이 섞여 있어.",
+   "valueTags": [
+    {
+     "slug": "discovery",
+     "strength": 0.9
+    },
+    {
+     "slug": "learning",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "discovery": "상품화 전 시제품을 먼저 보게 돼.",
+    "learning": "만든 학생·기업에게 개발 배경을 물어볼 수 있어."
+   },
+   "thingsToDo": [
+    "시제품과 학생 작품 구분해 보기",
+    "개발 배경 물어보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "부천대 앵커사업단",
+    "시제품",
+    "홈텍스타일"
    ]
   },
   "G-27": {
@@ -1917,7 +2697,7 @@
    ]
   },
   "I-03": {
-   "summary": "클라우망1981(CLAUMAN 1981) — 프리미엄 인테리어 오브제 타월. 'A very small beginning changes your life'. 2026 디자인 어워드 수상작이 있고, 마곡리빙마켓(9.10~9.13) 초대권 이벤트를 열었다.",
+   "summary": "클라우망1981(CLAUMAN1981) — 공간의 무드를 완성하는 프리미엄 인테리어 오브제 타월 -",
    "image": "/booths/magok-livingmarket-2026/I-03_1.webp",
    "confirmed": true,
    "sourceUrl": "https://www.instagram.com/clauman.official/",
@@ -1959,7 +2739,16 @@
     "데이브 타월",
     "CLAUMAN DAY",
     "오브제 타월"
-   ]
+   ],
+   "directory": {
+    "nameKor": "클라우망1981",
+    "nameEng": "CLAUMAN1981",
+    "category": "",
+    "intro": "공간의 무드를 완성하는 프리미엄 인테리어 오브제 타월",
+    "pr": "-",
+    "link": "https://clauman.com/",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "H-01": {
    "summary": "",
@@ -1996,7 +2785,7 @@
    "confirmed": true
   },
   "I-05": {
-   "summary": "브리즈우드가든(Breezywood Garden) — 안심 알러지케어 침구 브랜드. 주최 침실·욕실 큐레이션 라인업.",
+   "summary": "브리즈우드가든(Breezywood Garden) — 잠이 행복해지는 마법같은 구스이불 브리즈우드가든 폴란드 마더구스 이불은 항공 직수입한 최상급 마더구스를 초고밀도 알러지케어 원단에 담아 털빠짐 없이 물세탁이 가능한 커버 없는 구름같은 이불입니다. 만져보면 부드럽고 덮으면 행복해 가족이 떠오릅니다.",
    "image": "/booths/magok-livingmarket-2026/I-05.webp",
    "roamInterpretation": "알러지 걱정을 줄이는 침구를 만드는 곳이야. 소재 인증부터 물어보면 빨라.",
    "valueTags": [
@@ -2023,10 +2812,19 @@
     "알러지케어 침구"
    ],
    "sourceUrl": "https://www.instagram.com/p/DcATDUBHGAT/",
-   "confirmed": true
+   "confirmed": true,
+   "directory": {
+    "nameKor": "브리즈우드가든",
+    "nameEng": "Breezywood Garden",
+    "category": "",
+    "intro": "잠이 행복해지는 마법같은 구스이불",
+    "pr": "브리즈우드가든 폴란드 마더구스 이불은 항공 직수입한 최상급 마더구스를 초고밀도 알러지케어 원단에 담아 털빠짐 없이 물세탁이 가능한 커버 없는 구름같은 이불입니다. 만져보면 부드럽고 덮으면 행복해 가족이 떠오릅니다.",
+    "link": "www.breezywoodgarden.co.kr",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "J-04": {
-   "summary": "가현아트갤러리(Gahyun Art Gallery) — 주최 아카이브 큐레이션에 포함된 갤러리. 작품을 들고 부스로 나온다.",
+   "summary": "가현아트(Gahyun Art) — 일상을 미술관으로 만드는 프리미엄 판화, 가현아트 가현아트는 국내 유일한 수작업 스튜디오로, 가현판화공방과 가현아트갤러리로 구성되어 있습니다. 예술가와 관람객이 소통하고 창의적인 경험을 나눌 수 있는 특별한 공간입니다.",
    "image": "/booths/magok-livingmarket-2026/J-04_1.webp",
    "images": [
     "/booths/magok-livingmarket-2026/J-04_1.webp",
@@ -2064,10 +2862,19 @@
     "가현아트갤러리"
    ],
    "sourceUrl": "https://www.instagram.com/p/Dc3H3u3jnkt/",
-   "confirmed": true
+   "confirmed": true,
+   "directory": {
+    "nameKor": "가현아트",
+    "nameEng": "Gahyun Art",
+    "category": "갤러리",
+    "intro": "일상을 미술관으로 만드는 프리미엄 판화, 가현아트",
+    "pr": "가현아트는 국내 유일한 수작업 스튜디오로, 가현판화공방과 가현아트갤러리로 구성되어 있습니다. 예술가와 관람객이 소통하고 창의적인 경험을 나눌 수 있는 특별한 공간입니다.",
+    "link": "www.gahyunart.com",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "K-17": {
-   "summary": "",
+   "summary": "내셔널지오그래픽(NATIONAL GEOGRAPHIC) — 네모난 창을 통해 바라본 새로운 세상 1888년 설립된 내셔널지오그래픽 협회는 탐험과 환경보호를 통해 지구와 인류에 공헌하고 있는 세계 최대 규모의 비영리 단체입니다. 내셔널지오그래픽은 지구의 일기장으로 세계의 지리뿐만 아니라 과학, 탐험, 자연, 인류, 문화, 환경, 우주 등 다양한 분야를 심도있게 다루는 세계 최고의 종합 교양지이며 생동감 넘치는 사진으로 지구의 모습을 전하고 있습니다.",
    "image": "/booths/magok-livingmarket-2026/K-17_1.webp",
    "caution": "내셔널지오그래픽 코리아 공식 계정 — 다큐 콘텐츠 계정이다. 부스는 라이선스 굿즈로 보이나 이 계정으로는 확인되지 않는다.",
    "images": [
@@ -2081,10 +2888,46 @@
     "/booths/magok-livingmarket-2026/K-17_8.webp",
     "/booths/magok-livingmarket-2026/K-17_9.webp",
     "/booths/magok-livingmarket-2026/K-17_10.webp"
+   ],
+   "confirmed": true,
+   "sourceUrl": "https://magoklivingdesignfair.kr/fairOnline.do",
+   "directory": {
+    "nameKor": "내셔널지오그래픽",
+    "nameEng": "NATIONAL GEOGRAPHIC",
+    "category": "",
+    "intro": "네모난 창을 통해 바라본 새로운 세상",
+    "pr": "1888년 설립된 내셔널지오그래픽 협회는 탐험과 환경보호를 통해 지구와 인류에 공헌하고 있는 세계 최대 규모의 비영리 단체입니다. 내셔널지오그래픽은 지구의 일기장으로 세계의 지리뿐만 아니라 과학, 탐험, 자연, 인류, 문화, 환경, 우주 등 다양한 분야를 심도있게 다루는 세계 최고의 종합 교양지이며 생동감 넘치는 사진으로 지구의 모습을 전하고 있습니다.",
+    "link": "www.ybmpublwiz.co.kr",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   },
+   "roamInterpretation": "1888년 시작한 내셔널지오그래픽의 잡지 부스야. 사진으로 세상을 보는 사람한테 맞아.",
+   "valueTags": [
+    {
+     "slug": "learning",
+     "strength": 0.9
+    },
+    {
+     "slug": "inspiration",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "learning": "과학·탐험·자연을 다룬 지난 호를 훑어볼 수 있어.",
+    "inspiration": "사진 한 장이 오래 남는 종류의 잡지야."
+   },
+   "thingsToDo": [
+    "지난 호 사진 훑어보기",
+    "정기구독 조건 묻기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "내셔널지오그래픽",
+    "1888",
+    "지구의 일기장"
    ]
   },
   "L-08": {
-   "summary": "네베호(NEUF HEURES) — '09:00, 익숙한 것이 새로워지는 시간'. 키친클로스·앞치마·코스터·트리벳·컵 등 주방 리넨과 소품을 만든다. 'INVITATION EVENT — MAGOK LIVING MARKET 2026'으로 초대 이벤트를 열었다.",
+   "summary": "네베흐(NEUF HEURES) — 일상에 새로운 감각을 더하는 라이프스타일 소품 NEUF HEURES는 프랑스어로 ’9시‘입니다. 우리에게 9시는 서로의 취향을 공유하고 상상하며 새로운 것을 이야기하는 시간입니다. 일상에서 익숙하게 사용하던 사물을 감각적인 디자인으로 재해석하고, 새로운 가치를 담습니다. 기능과 본질에 집중하여 생활을 보다 풍요롭게 해주고 시간이 흘러도 변함없는 제품을 제안합니다.",
    "image": "/booths/magok-livingmarket-2026/L-08_1.webp",
    "confirmed": true,
    "sourceUrl": "https://www.instagram.com/neufheures.official/",
@@ -2124,10 +2967,19 @@
     "주방 리넨",
     "앞치마",
     "09:00"
-   ]
+   ],
+   "directory": {
+    "nameKor": "네베흐",
+    "nameEng": "NEUF HEURES",
+    "category": "",
+    "intro": "일상에 새로운 감각을 더하는 라이프스타일 소품",
+    "pr": "NEUF HEURES는 프랑스어로 ’9시‘입니다. 우리에게 9시는 서로의 취향을 공유하고 상상하며 새로운 것을 이야기하는 시간입니다. 일상에서 익숙하게 사용하던 사물을 감각적인 디자인으로 재해석하고, 새로운 가치를 담습니다. 기능과 본질에 집중하여 생활을 보다 풍요롭게 해주고 시간이 흘러도 변함없는 제품을 제안합니다.",
+    "link": "www.neuf-heures.kr",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "L-13": {
-   "summary": "",
+   "summary": "대한적십자사(대한적십자사) — 나의 소원을 담을 액막이 명태 만들기 무료체험 나의 소원을 담을 액막이 명태 만들기 무료체험 및 대한적십자사 인도주의 사업 안내",
    "image": "/booths/magok-livingmarket-2026/L-13_1.webp",
    "caution": "대한적십자사 공식 계정 — 구호·모금 활동 계정이라 이 부스에서 무엇을 하는지는 알 수 없다.",
    "images": [
@@ -2141,14 +2993,86 @@
     "/booths/magok-livingmarket-2026/L-13_8.webp",
     "/booths/magok-livingmarket-2026/L-13_9.webp",
     "/booths/magok-livingmarket-2026/L-13_10.webp"
+   ],
+   "confirmed": true,
+   "sourceUrl": "https://magoklivingdesignfair.kr/fairOnline.do",
+   "directory": {
+    "nameKor": "대한적십자사",
+    "nameEng": "대한적십자사",
+    "category": "",
+    "intro": "나의 소원을 담을 액막이 명태 만들기 무료체험",
+    "pr": "나의 소원을 담을 액막이 명태 만들기 무료체험 및 대한적십자사 인도주의 사업 안내",
+    "link": "https://www.redcross.or.kr/seoul/main.do",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   },
+   "roamInterpretation": "대한적십자사 부스야. **액막이 명태 만들기 무료 체험**을 한다 — 이 전시에서 몇 안 되는 만들기 체험이야.",
+   "valueTags": [
+    {
+     "slug": "experience",
+     "strength": 0.9
+    },
+    {
+     "slug": "social",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "experience": "직접 만들어서 들고 나오는 자리야.",
+    "social": "인도주의 사업 안내를 함께 들을 수 있어."
+   },
+   "thingsToDo": [
+    "액막이 명태 만들기 체험하기",
+    "소원 적어 넣기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "액막이 명태",
+    "무료 체험",
+    "대한적십자사"
    ]
   },
   "O-05": {
-   "summary": "",
-   "image": "/booths/magok-livingmarket-2026/O-05.webp"
+   "summary": "비엘씨커피(BLC COFFEE) — 좋은 커피를 통해 일상의 가치를 더하는 커피 로스터스 비엘씨커피는 스페셜티 커피가 가진 고유한 향미와 가치를 깊이 이해하고, 엄선된 스페셜티 원두를 정교하게 로스팅하여 한 잔의 커피 안에 산지의 개성과 풍미를 온전히 담아내는 커피 브랜드입니다. 좋은 커피를 넘어, 스페셜티 커피를 통해 일상 속에서 새로운 맛과 경험, 그리고 더 나은 삶의 가치를 전하고자 합니다.",
+   "image": "/booths/magok-livingmarket-2026/O-05.webp",
+   "confirmed": true,
+   "sourceUrl": "https://magoklivingdesignfair.kr/fairOnline.do",
+   "directory": {
+    "nameKor": "비엘씨커피",
+    "nameEng": "BLC COFFEE",
+    "category": "",
+    "intro": "좋은 커피를 통해 일상의 가치를 더하는 커피 로스터스",
+    "pr": "비엘씨커피는 스페셜티 커피가 가진 고유한 향미와 가치를 깊이 이해하고, 엄선된 스페셜티 원두를 정교하게 로스팅하여 한 잔의 커피 안에 산지의 개성과 풍미를 온전히 담아내는 커피 브랜드입니다. 좋은 커피를 넘어, 스페셜티 커피를 통해 일상 속에서 새로운 맛과 경험, 그리고 더 나은 삶의 가치를 전하고자 합니다.",
+    "link": "www.blccoffee.com",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   },
+   "roamInterpretation": "스페셜티 원두를 직접 로스팅하는 곳이야. 산지별로 맛이 갈려서 마셔보는 게 빨라.",
+   "valueTags": [
+    {
+     "slug": "experience",
+     "strength": 0.8
+    },
+    {
+     "slug": "goods",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "experience": "산지별 향미를 한자리에서 비교할 수 있어.",
+    "goods": "마셔보고 원두를 사 갈 수 있어."
+   },
+   "thingsToDo": [
+    "산지별로 시음 비교하기",
+    "로스팅 정도 물어보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "비엘씨커피",
+    "스페셜티",
+    "로스터스"
+   ]
   },
   "N-10": {
-   "summary": "그레시종(PRECISION) — '쓰임에 정성을 더한 식기'. 주최 식탁 큐레이션 라인업.",
+   "summary": "그레시종(GRECISION) — 그레시종은 장인 정신이 깃든 테이블웨어를 소개합니다. 그레시종은 식탁에서의 시간을 예술적으로 바꿔 줄 장인 정신이 담긴 테이블웨어를 제안합니다. 모든 그레시종 제품은 헤리티지가 깊고, 시공간을 초월하는 디자인과 띄어난 품질을 추구합니다.장인의 진심의 깃든 테이블웨어들로 일상에 윤택한 에너지가 더해지길 기대합니다.",
    "image": "/booths/magok-livingmarket-2026/N-10_1.webp",
    "images": [
     "/booths/magok-livingmarket-2026/N-10_1.webp",
@@ -2187,10 +3111,19 @@
     "PRECISION"
    ],
    "sourceUrl": "https://www.instagram.com/p/DcXeOm3gavZ/",
-   "confirmed": true
+   "confirmed": true,
+   "directory": {
+    "nameKor": "그레시종",
+    "nameEng": "GRECISION",
+    "category": "브랜드 행사",
+    "intro": "그레시종은 장인 정신이 깃든 테이블웨어를 소개합니다.",
+    "pr": "그레시종은 식탁에서의 시간을 예술적으로 바꿔 줄 장인 정신이 담긴 테이블웨어를 제안합니다. 모든 그레시종 제품은 헤리티지가 깊고, 시공간을 초월하는 디자인과 띄어난 품질을 추구합니다.장인의 진심의 깃든 테이블웨어들로 일상에 윤택한 에너지가 더해지길 기대합니다.",
+    "link": "www.grecision.com",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "P-13": {
-   "summary": "칼파벳(KALPHABETES) — 주최 아카이브 큐레이션에 초콜릿으로 소개된 브랜드.",
+   "summary": "칼파벳(Kalphabets) — 일상 속 즐거움을 선물하는 칼파벳 한글과자로 시작한 브랜드 Kalphabets는 이번 전시를 통해 한국의 글자와 문화, 일상에서 발견한 한국의 재미를 담은 제품을 소개합니다.",
    "image": "/booths/magok-livingmarket-2026/P-13_1.webp",
    "images": [
     "/booths/magok-livingmarket-2026/P-13_1.webp",
@@ -2229,7 +3162,16 @@
     "KALPHABETES"
    ],
    "sourceUrl": "https://www.instagram.com/p/Dc3H3u3jnkt/",
-   "confirmed": true
+   "confirmed": true,
+   "directory": {
+    "nameKor": "칼파벳",
+    "nameEng": "Kalphabets",
+    "category": "",
+    "intro": "일상 속 즐거움을 선물하는 칼파벳",
+    "pr": "한글과자로 시작한 브랜드 Kalphabets는 이번 전시를 통해 한국의 글자와 문화, 일상에서 발견한 한국의 재미를 담은 제품을 소개합니다.",
+    "link": "https://hangeulkwaja.com/",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "P-03": {
    "summary": "(주)헬스베버리지 — 스페인 '하시엔다 구즈만' 엑스트라버진 올리브오일과 이탈리아 구에르조니 발사믹을 들여온다. 미슐랭 스타 셰프가 선택한 올리브오일로 소개되고 추석 선물세트를 낸다.",
@@ -2248,11 +3190,47 @@
    ]
   },
   "P-17": {
-   "summary": "",
-   "image": "/booths/magok-livingmarket-2026/P-17.webp"
+   "summary": "에센티아팩토리(ESSENTIA FACTORY) — “커피를 어렵지 않게, 취향은 더 선명하게.” 에센티아 팩토리는 “커피를 공유하다”​라는 가치 아래, 누구나 어렵지 않게 다양한 커피를 경험하고 자신의 취향을 발견할 수 있도록 돕는 커피 전문 브랜드입니다. 이번 전시에서는 원두, 드립백, 캡슐커피 등 다양한 제품을 통해 산지와 가공방식에 따라 달라지는 커피의 매력과 맛의 차이를 보다 쉽고 재미있게 경험할 수 있도록 소개합니다.",
+   "image": "/booths/magok-livingmarket-2026/P-17.webp",
+   "confirmed": true,
+   "sourceUrl": "https://magoklivingdesignfair.kr/fairOnline.do",
+   "directory": {
+    "nameKor": "에센티아팩토리",
+    "nameEng": "ESSENTIA FACTORY",
+    "category": "식품 - 커피",
+    "intro": "“커피를 어렵지 않게, 취향은 더 선명하게.”",
+    "pr": "에센티아 팩토리는 “커피를 공유하다”​라는 가치 아래, 누구나 어렵지 않게 다양한 커피를 경험하고 자신의 취향을 발견할 수 있도록 돕는 커피 전문 브랜드입니다. 이번 전시에서는 원두, 드립백, 캡슐커피 등 다양한 제품을 통해 산지와 가공방식에 따라 달라지는 커피의 매력과 맛의 차이를 보다 쉽고 재미있게 경험할 수 있도록 소개합니다.",
+    "link": "essentiafactory.com",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   },
+   "roamInterpretation": "원두·드립백·캡슐을 함께 내는 커피 브랜드야. 가공방식에 따라 맛이 어떻게 갈리는지 보여주는 게 목적이야.",
+   "valueTags": [
+    {
+     "slug": "learning",
+     "strength": 0.7
+    },
+    {
+     "slug": "experience",
+     "strength": 0.7
+    }
+   ],
+   "recommendationReasons": {
+    "learning": "산지와 가공방식이 맛을 어떻게 바꾸는지 배워.",
+    "experience": "원두·드립백·캡슐을 나란히 맛볼 수 있어."
+   },
+   "thingsToDo": [
+    "가공방식별로 맛 비교하기",
+    "드립백 구성 보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "에센티아팩토리",
+    "드립백",
+    "가공방식"
+   ]
   },
   "P-07": {
-   "summary": "페렐로 올리브(Perello) — 스페인 올리브 브랜드. 주최 Food & Taste 큐레이션 라인업.",
+   "summary": "페렐로 올리브(Perello) — 압도적인 올리브 1964년 가스파르 페렐로 솔레르(Gaspar Perelló Soler)가 바르셀로나 라 보케리아 시장에서 시작한 Perelló는 60년 전통의 스페인 프리미엄 올리브 브랜드입니다. 안달루시아 지역의 고품질 올리브를 선보이며 성장을 거듭한 Perelló는 현재 스페인을 넘어 세계적인 올리브 브랜드로 자리잡았습니다.",
    "image": "/booths/magok-livingmarket-2026/P-07.webp",
    "roamInterpretation": "스페인 올리브를 들여오는 곳이야. 짠맛과 크기가 종류마다 달라서 맛보는 게 빨라.",
    "valueTags": [
@@ -2279,14 +3257,23 @@
     "스페인 올리브"
    ],
    "sourceUrl": "https://www.instagram.com/p/Dcm6--gARa9/",
-   "confirmed": true
+   "confirmed": true,
+   "directory": {
+    "nameKor": "페렐로 올리브",
+    "nameEng": "Perello",
+    "category": "해외 수입식품 / 올리브절임",
+    "intro": "압도적인 올리브",
+    "pr": "1964년 가스파르 페렐로 솔레르(Gaspar Perelló Soler)가 바르셀로나 라 보케리아 시장에서 시작한 Perelló는 60년 전통의 스페인 프리미엄 올리브 브랜드입니다. 안달루시아 지역의 고품질 올리브를 선보이며 성장을 거듭한 Perelló는 현재 스페인을 넘어 세계적인 올리브 브랜드로 자리잡았습니다.",
+    "link": "https://gourmetree.co.kr",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "Q-09": {
    "summary": "",
    "image": "/booths/magok-livingmarket-2026/Q-09.webp"
   },
   "Q-02": {
-   "summary": "끄레델리(GGREDELI) — '달콤한 프리미엄 디저트'. 주최 Food & Taste 큐레이션 라인업.",
+   "summary": "끄레델리(Ggredeli) — 일상에 달콤한 감동을 전하는 프리미엄 디저트 브랜드 끄레델리는 엄선된 최상급 원료와 트렌디한 레시피로 고품격 디저트를 선보이는 전문 브랜드입니다. 이번 전시에서는 끄레델리만의 차별화된 베스트셀러 제품 라인업부터 신제품까지 한자리에서 만나보실 수 있습니다.",
    "image": "/booths/magok-livingmarket-2026/Q-02.webp",
    "roamInterpretation": "디저트를 만드는 곳이야. 맛보고 사 가는 부스라 오후엔 줄이 생겨.",
    "valueTags": [
@@ -2313,10 +3300,19 @@
     "프리미엄 디저트"
    ],
    "sourceUrl": "https://www.instagram.com/p/Dcm6--gARa9/",
-   "confirmed": true
+   "confirmed": true,
+   "directory": {
+    "nameKor": "끄레델리",
+    "nameEng": "Ggredeli",
+    "category": "식품 디저트",
+    "intro": "일상에 달콤한 감동을 전하는 프리미엄 디저트 브랜드",
+    "pr": "끄레델리는 엄선된 최상급 원료와 트렌디한 레시피로 고품격 디저트를 선보이는 전문 브랜드입니다. 이번 전시에서는 끄레델리만의 차별화된 베스트셀러 제품 라인업부터 신제품까지 한자리에서 만나보실 수 있습니다.",
+    "link": "www.decoriaconf.co.kr",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "Q-14": {
-   "summary": "부부티(BUBUTI) — '정성스러운 프리미엄 티'. 주최 Food & Taste 큐레이션 라인업.",
+   "summary": "부부티(BUBUTI) — 차(茶)가 처음이라면, 부부티 부부티는 차(茶)가 처음인 분을 위한 우롱차 브랜드입니다. 맛과 향은 기본이고, 부부티가 차를 고를 때 마지막으로 묻는 것은 매일 마셔도 몸이 편안한가입니다. 가향하지 않은 차나무 잎 100%만 쓰고, 긴장이 풀리고 머리가 맑아지는지, 매일 곁에 둘 수 있는지를 봅니다. 이번 전시에서는 보자기에 싼 추석 선물세트와 무이산 우롱차 시음을 준비했습니다.",
    "image": "/booths/magok-livingmarket-2026/Q-14.webp",
    "roamInterpretation": "차를 블렌딩하는 곳이야. 향을 맡아보고 고르면 돼.",
    "valueTags": [
@@ -2343,10 +3339,19 @@
     "프리미엄 티"
    ],
    "sourceUrl": "https://www.instagram.com/p/Dcm6--gARa9/",
-   "confirmed": true
+   "confirmed": true,
+   "directory": {
+    "nameKor": "부부티",
+    "nameEng": "BUBUTI",
+    "category": "",
+    "intro": "차(茶)가 처음이라면, 부부티",
+    "pr": "부부티는 차(茶)가 처음인 분을 위한 우롱차 브랜드입니다. 맛과 향은 기본이고, 부부티가 차를 고를 때 마지막으로 묻는 것은 매일 마셔도 몸이 편안한가입니다. 가향하지 않은 차나무 잎 100%만 쓰고, 긴장이 풀리고 머리가 맑아지는지, 매일 곁에 둘 수 있는지를 봅니다. 이번 전시에서는 보자기에 싼 추석 선물세트와 무이산 우롱차 시음을 준비했습니다.",
+    "link": "bubuti.kr",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "Q-01": {
-   "summary": "어벤져스와인(AVENGERS WINE) — 주최 Food & Taste 큐레이션 라인업의 와인 브랜드.",
+   "summary": "어벤져스와인(AVENGERS WINE) — 와인과 논알콜을 아우른 새로운 음료 문화를 제안 어벤져스와인은 전 세계의 숨은 와인과 봉봉 시리즈, 프리미엄 무·논알코올 와인을 소개하며 새로운 음료 문화를 제안합니다. 11개국 31개 와이너리, 약 160여 종의 와인을 통해 다양한 경험을 제공합니다.",
    "image": "/booths/magok-livingmarket-2026/Q-01.webp",
    "roamInterpretation": "와인을 골라 들여오는 곳이야. 추천을 물어보면 빨리 좁혀져.",
    "valueTags": [
@@ -2372,10 +3377,19 @@
     "어벤져스와인"
    ],
    "sourceUrl": "https://www.instagram.com/p/Dcm6--gARa9/",
-   "confirmed": true
+   "confirmed": true,
+   "directory": {
+    "nameKor": "어벤져스와인",
+    "nameEng": "AVENGERS WINE",
+    "category": "",
+    "intro": "와인과 논알콜을 아우른 새로운 음료 문화를 제안",
+    "pr": "어벤져스와인은 전 세계의 숨은 와인과 봉봉 시리즈, 프리미엄 무·논알코올 와인을 소개하며 새로운 음료 문화를 제안합니다. 11개국 31개 와이너리, 약 160여 종의 와인을 통해 다양한 경험을 제공합니다.",
+    "link": "https://avengerswine.com/",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "R-09": {
-   "summary": "헬레닉 와인(HELLENIC WINE) — 그리스 와인을 들여오는 브랜드. 주최 Food & Taste 큐레이션 라인업.",
+   "summary": "헬레닉 와인(HELLENIC WINE) — 그리스 와인 전문 수입사 헬레닉와인 2014년부터 그리스 와인을 한국 시장에 수입하고 소개해오고 있으며, 특히 그리스 토착 품종을 이용한 와인의 유니크한 매력을 선보이고자 합니다.",
    "image": "/booths/magok-livingmarket-2026/R-09.webp",
    "roamInterpretation": "그리스 와인을 다루는 곳이야. 한국에서 흔치 않은 산지라 설명을 듣는 게 재밌어.",
    "valueTags": [
@@ -2402,18 +3416,63 @@
     "그리스"
    ],
    "sourceUrl": "https://www.instagram.com/p/Dcm6--gARa9/",
-   "confirmed": true
+   "confirmed": true,
+   "directory": {
+    "nameKor": "헬레닉 와인",
+    "nameEng": "HELLENIC WINE",
+    "category": "",
+    "intro": "그리스 와인 전문 수입사 헬레닉와인",
+    "pr": "2014년부터 그리스 와인을 한국 시장에 수입하고 소개해오고 있으며, 특히 그리스 토착 품종을 이용한 와인의 유니크한 매력을 선보이고자 합니다.",
+    "link": "www.hellenicwine.co.kr",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "R-03": {
-   "summary": "",
-   "image": "/booths/magok-livingmarket-2026/R-03.webp"
+   "summary": "올라브 코리아(OLAVEKOREA Since2012) — 건강을 위한 시작, 올라브코리아 SINCE 2012 올라브 코리아(Since 2012)​는 장폐색과 아토피 피부염을 극복하고자 했던 개인적인 건강 여정에서 시작되었습니다. 15년 동안 프리미엄 올리브오일과 효능 평가를 완료한 유기농 수제 카스틸 비누를 선보이며, 유행보다 본질을 생각하는 브랜드로 건강하고 자연을 닮은 라이프스타일을 제안하고 있습니다.",
+   "image": "/booths/magok-livingmarket-2026/R-03.webp",
+   "confirmed": true,
+   "sourceUrl": "https://magoklivingdesignfair.kr/fairOnline.do",
+   "directory": {
+    "nameKor": "올라브 코리아",
+    "nameEng": "OLAVEKOREA Since2012",
+    "category": "식품(엑스트라버진올리브오일, 발사믹식초), 화장품(유기농수제비누)",
+    "intro": "건강을 위한 시작, 올라브코리아 SINCE 2012",
+    "pr": "올라브 코리아(Since 2012)​는 장폐색과 아토피 피부염을 극복하고자 했던 개인적인 건강 여정에서 시작되었습니다. 15년 동안 프리미엄 올리브오일과 효능 평가를 완료한 유기농 수제 카스틸 비누를 선보이며, 유행보다 본질을 생각하는 브랜드로 건강하고 자연을 닮은 라이프스타일을 제안하고 있습니다.",
+    "link": "www.olavekorea.com",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   },
+   "roamInterpretation": "2012년부터 프리미엄 올리브오일과 유기농 수제 카스틸 비누를 만드는 곳이야. 건강 문제를 겪고 시작한 브랜드라 설명이 길어.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.8
+    },
+    {
+     "slug": "learning",
+     "strength": 0.5
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "올리브오일과 비누를 함께 고를 수 있어.",
+    "learning": "왜 이 조합인지 시작한 이야기를 들을 수 있어."
+   },
+   "thingsToDo": [
+    "엑스트라버진 올리브오일 맛보기",
+    "카스틸 비누 향 맡아보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "올라브 코리아",
+    "카스틸 비누",
+    "올리브오일"
+   ]
   },
   "R-01": {
    "summary": "",
    "image": "/booths/magok-livingmarket-2026/R-01.webp"
   },
   "G-15": {
-   "summary": "플랫(floaat) — 섬유공예 기법으로 만드는 핸드메이드 패브릭 소품. 자수 손수건·파우치·스카프와 천연수세미를 만든다. 마곡리빙마켓 포스터를 직접 올렸고 연희시장 마켓에도 나간다.",
+   "summary": "플뢋(floaat) — 플뢋은 섬유공예 기법을 응용한 소품을 만듭니다. 플뢋의 소창컬렉션과 함께 드로잉 작업으로 만들어진 아트 프린트와 타피스트리 오브제를 선보일 계획입니다. 추가적으로, 일본 작가의 프린트 작품도 같이 전시/판매 예정입니다.",
    "confirmed": true,
    "sourceUrl": "https://www.instagram.com/floaat_seoul/",
    "images": [
@@ -2453,7 +3512,16 @@
     "자수 손수건",
     "천연수세미",
     "섬유공예"
-   ]
+   ],
+   "directory": {
+    "nameKor": "플뢋",
+    "nameEng": "floaat",
+    "category": "",
+    "intro": "플뢋은 섬유공예 기법을 응용한 소품을 만듭니다.",
+    "pr": "플뢋의 소창컬렉션과 함께 드로잉 작업으로 만들어진 아트 프린트와 타피스트리 오브제를 선보일 계획입니다. 추가적으로, 일본 작가의 프린트 작품도 같이 전시/판매 예정입니다.",
+    "link": "www.instagram.com/floaat_seoul",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "F-14": {
    "summary": "",
@@ -2466,7 +3534,7 @@
    "image": "/booths/magok-livingmarket-2026/F-14_1.webp"
   },
   "E-09": {
-   "summary": "월간 건축문화(Archi-lab) — 건축 전문지. 주최 아카이브 큐레이션에 포함돼 지난 호와 아카이브를 들고 나온다.",
+   "summary": "월간 건축문화(A&C(Archi-LAB)) — 디자인서적/ 예술,패션/ 건축,인테리어 월간 건축문화는 건축, 인테리어 중심으로 전공자와 일반 독자를 모두 아우르는 도서 구성으로 열람과 구매를 유도한다. 책의 맥락과 활용 가치를 전달하며, 참여형 이벤트와 연계해 체류 시간과 구매 전환을 높인다. 이를 통해 단순 판매를 넘어 전문성과 감각을 갖춘 건축, 인테리어, 디자인, 미술 관련 전문 출판사 이미지를 구축할 계획이다.",
    "roamInterpretation": "건축 잡지가 직접 여는 자리야. 읽을 거리를 찾는 사람한테 맞아.",
    "valueTags": [
     {
@@ -2492,10 +3560,19 @@
     "Archi-lab"
    ],
    "sourceUrl": "https://www.instagram.com/p/Dc3H3u3jnkt/",
-   "confirmed": true
+   "confirmed": true,
+   "directory": {
+    "nameKor": "월간 건축문화",
+    "nameEng": "A&C(Archi-LAB)",
+    "category": "",
+    "intro": "디자인서적/ 예술,패션/ 건축,인테리어",
+    "pr": "월간 건축문화는 건축, 인테리어 중심으로 전공자와 일반 독자를 모두 아우르는 도서 구성으로 열람과 구매를 유도한다. 책의 맥락과 활용 가치를 전달하며, 참여형 이벤트와 연계해 체류 시간과 구매 전환을 높인다. 이를 통해 단순 판매를 넘어 전문성과 감각을 갖춘 건축, 인테리어, 디자인, 미술 관련 전문 출판사 이미지를 구축할 계획이다.",
+    "link": "archilab.kr",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "J-09": {
-   "summary": "코리아엣지(KOREAEDGE) — '감각적인 식탁의 완성'. 식기·테이블웨어 브랜드로 주최 큐레이션에 들었다.",
+   "summary": "코리아엣지(KoreaEdge) — 전통의 감성을 일상에서 직접 사용해보세요 코리아엣지는 전통의 미를 현대적으로 풀어내어 일상에서 사용하는 제품으로 제안하는 라이프스타일 브랜드입니다. 이번 전시에서는 주력 제품과 신제품을 선보이며, 방문객이 직접 보고 브랜드의 감성과 사용성을 경험할 수 있도록 구성하였습니다. 이를 통해 브랜드의 가치와 제품의 매력을 자연스럽게 전달하고자 합니다.",
    "roamInterpretation": "식탁을 통째로 맞추는 곳이야. 그릇을 한자리에 깔아둬서 조합이 보여.",
    "valueTags": [
     {
@@ -2521,7 +3598,16 @@
     "식탁"
    ],
    "sourceUrl": "https://www.instagram.com/p/DcKmPgejI81/",
-   "confirmed": true
+   "confirmed": true,
+   "directory": {
+    "nameKor": "코리아엣지",
+    "nameEng": "KoreaEdge",
+    "category": "주방/주방용품",
+    "intro": "전통의 감성을 일상에서 직접 사용해보세요",
+    "pr": "코리아엣지는 전통의 미를 현대적으로 풀어내어 일상에서 사용하는 제품으로 제안하는 라이프스타일 브랜드입니다. 이번 전시에서는 주력 제품과 신제품을 선보이며, 방문객이 직접 보고 브랜드의 감성과 사용성을 경험할 수 있도록 구성하였습니다. 이를 통해 브랜드의 가치와 제품의 매력을 자연스럽게 전달하고자 합니다.",
+    "link": "https://smartstore.naver.com/koreaedge",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   }
   },
   "Q-18": {
    "summary": "웃차(WOOTCHA) — '감각적인 블렌딩 티'. 주최 Food & Taste 큐레이션 라인업.",
@@ -2551,6 +3637,84 @@
    ],
    "sourceUrl": "https://www.instagram.com/p/Dcm6--gARa9/",
    "confirmed": true
+  },
+  "P-10": {
+   "summary": "어물전꼴뚜기(badasusan) — 국가대표 마른안주 \"어물전꼴뚜기\"를 소개합니다. 2010년부터 현제까지 500차례가 넘는 국내에 널리 알려진 식품전시 및 백화점등에서 전국의 폭 넓은 고객들에게 제품의 우수성을 널리 알려 뛰어난 성장을 거듭하고 있습니다. 2023년 1월에 ‘어물전 꼴뚜기’라는 브랜드를 런칭하고, 한국식품안전관리인증원으로부터 2024년 8월에는 식품제조 haccp을 인증받아 현제까지 홍보,판매를 진행하고 있습니다.",
+   "confirmed": true,
+   "sourceUrl": "https://magoklivingdesignfair.kr/fairOnline.do",
+   "directory": {
+    "nameKor": "어물전꼴뚜기",
+    "nameEng": "badasusan",
+    "category": "식품",
+    "intro": "국가대표 마른안주 \"어물전꼴뚜기\"를 소개합니다.",
+    "pr": "2010년부터 현제까지 500차례가 넘는 국내에 널리 알려진 식품전시 및 백화점등에서 전국의 폭 넓은 고객들에게 제품의 우수성을 널리 알려 뛰어난 성장을 거듭하고 있습니다. 2023년 1월에 ‘어물전 꼴뚜기’라는 브랜드를 런칭하고, 한국식품안전관리인증원으로부터 2024년 8월에는 식품제조 haccp을 인증받아 현제까지 홍보,판매를 진행하고 있습니다.",
+    "link": "네이버에 \"어물전꼴뚜기\"검색",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   },
+   "roamInterpretation": "2010년부터 전시·백화점을 돌아온 마른안주 브랜드야. 2024년 식품제조 HACCP 인증을 받았다.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.8
+    },
+    {
+     "slug": "experience",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "맛보고 바로 포장해 사 갈 수 있어.",
+    "experience": "마른안주를 종류별로 맛보는 자리야."
+   },
+   "thingsToDo": [
+    "종류별로 맛보기",
+    "포장 단위 확인하기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "어물전꼴뚜기",
+    "마른안주",
+    "HACCP"
+   ]
+  },
+  "P-15": {
+   "summary": "국제구조위원회(IRC Korea) — 희망을 구조합니다 90년 넘는 역사의 국제구조위원회는 인도적 위기에 처한 사람들의 생존, 회복, 재건을 돕습니다. 국제구조위원회는 전 세계 40개 이상의 위기국가에서 의료, 안전, 경제적 안정, 교육, 그리고 권리 증진 분야에 걸쳐 통합적인 솔루션을 제공하고 있습니다.",
+   "confirmed": true,
+   "sourceUrl": "https://magoklivingdesignfair.kr/fairOnline.do",
+   "directory": {
+    "nameKor": "국제구조위원회",
+    "nameEng": "IRC Korea",
+    "category": "",
+    "intro": "희망을 구조합니다",
+    "pr": "90년 넘는 역사의 국제구조위원회는 인도적 위기에 처한 사람들의 생존, 회복, 재건을 돕습니다. 국제구조위원회는 전 세계 40개 이상의 위기국가에서 의료, 안전, 경제적 안정, 교육, 그리고 권리 증진 분야에 걸쳐 통합적인 솔루션을 제공하고 있습니다.",
+    "link": "https://www.rescue.org/kr",
+    "source": "https://magoklivingdesignfair.kr/fairOnline.do"
+   },
+   "roamInterpretation": "90년 넘게 인도적 위기 지역에서 일해온 구호 단체 부스야. 물건을 파는 자리가 아니라 왜 이 일이 필요한지 듣는 자리야.",
+   "valueTags": [
+    {
+     "slug": "learning",
+     "strength": 0.9
+    },
+    {
+     "slug": "social",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "learning": "40개 위기국가에서 무엇을 하는지 직접 들을 수 있어.",
+    "social": "만드는 사람이 아니라 활동하는 사람과 이야기하게 돼."
+   },
+   "thingsToDo": [
+    "활동 분야 설명 듣기",
+    "후원 방식 물어보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "국제구조위원회",
+    "IRC",
+    "희망을 구조합니다"
+   ]
   }
  }
 }
