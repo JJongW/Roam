@@ -26,7 +26,7 @@ export const mlmExhibition: Exhibition = {
     "리빙·푸드·공예 브랜드 138곳이 모이는 마곡리빙마켓. Home & Deco, Food & Taste, Space & Style, Hobby & Play 네 구역으로 나뉘고, 공식 부스배치도를 그대로 옮겨 실제 위치로 안내합니다.",
   startDate: "2026-09-10",
   endDate: "2026-09-13",
-  coverImageUrl: undefined,
+  coverImageUrl: "/booths/magok-livingmarket-2026/livingmarket_poster.png",
   mapImageUrl: undefined,
   mapWidth: mlmFloor.width,
   mapHeight: mlmFloor.height,

@@ -1,5 +1,6 @@
 "use client";
 
+import { boothPlaceholder } from "@/lib/booth/placeholder";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Search, X, Loader2, ChevronRight } from "lucide-react";
@@ -138,7 +139,7 @@ export function BoothSearch({
               // 목록 조회는 images를 안 가져온다(BOOTH_LIST_COLS) — 전엔 b.images?.[0]을
               // 먼저 봤지만 늘 undefined라 실질적으로 logoUrl만 쓰였다. 타입이
               // 그 사실을 말하게 되면서 코드도 사실대로 적는다.
-              const thumb = b.logoUrl;
+              const thumb = b.logoUrl ?? boothPlaceholder(b.exhibitionId);
               return (
                 <Link
                   key={b.id}

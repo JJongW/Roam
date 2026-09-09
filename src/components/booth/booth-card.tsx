@@ -3,6 +3,7 @@ import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Icon } from "@/components/common/icon";
 import { CategoryChip } from "@/components/booth/category-chip";
+import { boothPlaceholder } from "@/lib/booth/placeholder";
 import type { Booth, Category } from "@/lib/types";
 
 export function BoothCard({
@@ -22,7 +23,8 @@ export function BoothCard({
   action?: React.ReactNode;
   className?: string;
 }) {
-  const thumb = booth.images?.[0] ?? booth.logoUrl;
+  const thumb =
+    booth.images?.[0] ?? booth.logoUrl ?? boothPlaceholder(booth.exhibitionId);
   if (compact) {
     return (
       <Link
