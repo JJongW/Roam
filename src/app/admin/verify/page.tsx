@@ -37,13 +37,17 @@ export default async function AdminVerifyPage() {
       boothId: b.id,
       code: b.code ?? "",
       name: b.name,
-      current,
-      verified: v.summary,
-      sourceUrl: v.sourceUrl,
-      confirmed: Boolean(v.confirmed),
+      // 대조는 요약만이 아니라 초안 전체로 한다.
+      current: { ...(b.enrichment ?? {}), summary: current },
+      verified: v,
     });
   }
-  rows.sort((a, b) => Number(b.confirmed) - Number(a.confirmed) || a.code.localeCompare(b.code));
+  rows.sort(
+    (a, b) =>
+      Number(Boolean(b.verified.instagram)) - Number(Boolean(a.verified.instagram)) ||
+      Number(Boolean(b.verified.confirmed)) - Number(Boolean(a.verified.confirmed)) ||
+      a.code.localeCompare(b.code),
+  );
 
   return (
     <div className="space-y-6">

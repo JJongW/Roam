@@ -34,6 +34,14 @@ for (const [code, v] of Object.entries(verified.booths ?? {})) {
   b.enrichment ??= {};
   b.enrichment.summary = v.summary.slice(0, 300);
   if (v.sourceUrl) b.enrichment.sourceUrl = v.sourceUrl;
+  // 저작 6종도 같이 옮긴다 — 확인한 값이 있는 필드만. 빈 값을 실어 보내면
+  // 인입이 "빈 칸"으로 세어 운영의 기존 값을 지운다.
+  if (v.roamInterpretation?.trim()) b.enrichment.roamInterpretation = v.roamInterpretation.slice(0, 300);
+  if (v.valueTags?.length) b.enrichment.valueTags = v.valueTags;
+  if (Object.keys(v.recommendationReasons ?? {}).length) b.enrichment.recommendationReasons = v.recommendationReasons;
+  if (v.thingsToDo?.length) b.enrichment.thingsToDo = v.thingsToDo;
+  if (v.timing?.length) b.enrichment.timing = v.timing;
+  if (v.memoryHooks?.length) b.enrichment.memoryHooks = v.memoryHooks;
   // 내려받은 대표 이미지도 부스로 옮긴다 — 부스 상세와 피드가 이걸 쓴다.
   // 인스타 게시물에서 딴 여러 장이 있으면 그걸 쓴다(<CODE>_1..N.webp).
   if (v.images?.length) b.images = v.images;
@@ -59,9 +67,9 @@ const post = async (apply) => {
 const { plan } = await post(false);
 console.log(`미리보기 — 채움 ${plan.fills.length} · 충돌 ${plan.conflicts.length} · 오류 ${plan.errors.length}`);
 // 충돌은 이미 다른 값이 있는 자리다. --overwrite 없이는 사람이 보게 남긴다.
-const sum = plan.conflicts.filter((c) => c.field === "enrichment.summary");
+const sum = plan.conflicts.filter((c) => c.field.startsWith("enrichment."));
 if (sum.length && !OVERWRITE) {
-  console.log(`요약 충돌 ${sum.length}곳 — 덮지 않았다(--overwrite로 덮을 수 있다):`);
+  console.log(`저작 필드 충돌 ${sum.length}곳 — 덮지 않았다(--overwrite로 덮을 수 있다):`);
   for (const c of sum.slice(0, 10)) console.log(`   ${c.code}  현재: ${String(c.current).slice(0, 70)}…`);
 }
 if (DRY) { console.log("--dry: 적용 안 함"); process.exit(0); }

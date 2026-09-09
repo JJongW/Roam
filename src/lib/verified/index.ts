@@ -5,6 +5,13 @@ import { join } from "node:path";
  *  자사 사이트에서 읽은 것이다. data/verified/<slug>.json. */
 export interface VerifiedFact {
   summary: string;
+  /** 로미 한 줄. 부스가 무엇인지(사실) + 왜 지금 너한테. */
+  roamInterpretation?: string;
+  valueTags?: { slug: string; strength: number }[];
+  recommendationReasons?: Record<string, string>;
+  thingsToDo?: string[];
+  timing?: string[];
+  memoryHooks?: string[];
   sourceUrl?: string;
   /** 브랜드 본인이 이 전시 참여를 밝힌 경우. 참여 여부는 100%다. */
   confirmed?: boolean;

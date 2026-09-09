@@ -6,8 +6,8 @@ const bodySchema = z.object({
   boothId: z.string().min(1),
   /** "verified" = 확인한 값으로 교체, "keep" = 운영 값 유지(기록만 남긴다). */
   choice: z.enum(["verified", "keep"]),
-  summary: z.string().max(300).optional(),
-  sourceUrl: z.string().max(500).optional(),
+  /** 교체할 값 전부. 비어 있는 필드는 보내지 않는다 — 운영 값이 그대로 남는다. */
+  patch: z.record(z.string(), z.unknown()).optional(),
 });
 
 /**
@@ -22,15 +22,17 @@ export async function POST(req: Request) {
   if (denied) return denied;
   const parsed = await parseBody(req, bodySchema);
   if (!parsed.ok) return parsed.res;
-  const { boothId, choice, summary, sourceUrl } = parsed.data;
+  const { boothId, choice, patch } = parsed.data;
 
   if (choice === "keep") return ok({ applied: false });
-  if (!summary?.trim()) return fail("VALIDATION", "교체할 요약이 없습니다");
+  if (!patch || Object.keys(patch).length === 0) {
+    return fail("VALIDATION", "교체할 값이 없습니다");
+  }
 
   const repo = await getRepository();
   await repo.upsertBoothEnrichment(
     boothId,
-    { summary, ...(sourceUrl ? { sourceUrl } : {}) },
+    patch as Parameters<typeof repo.upsertBoothEnrichment>[1],
     {
       source: "verified",
       actor: (await getUserId()) ?? null,
