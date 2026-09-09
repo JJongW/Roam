@@ -1,5 +1,6 @@
 "use client";
 
+import { boothPlaceholder } from "@/lib/booth/placeholder";
 import { useEffect, useRef, useState, useTransition } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -419,7 +420,8 @@ function BoothThumb({
 }) {
   // 피드는 목록 조회로 부스를 받는다 — images는 안 담겨 오므로(BOOTH_LIST_COLS)
   // 전엔 booth.images?.[0]이 늘 undefined였고 실질적으로 logoUrl만 쓰였다.
-  const thumb = booth.logoUrl;
+  // 사진이 아직 없는 부스는 전시 아이콘으로 자리를 메운다(placeholder.ts).
+  const thumb = booth.logoUrl ?? boothPlaceholder(booth.exhibitionId);
   return (
     <span
       className={cn(
