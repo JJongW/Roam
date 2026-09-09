@@ -2179,26 +2179,27 @@
    ]
   },
   "L-15": {
-   "summary": "디자인북 — 검색 결과가 아트북/포스터 출판 쪽으로 나온다.",
-   "confirmed": false,
-   "instagram": {
-    "handle": "designbook.kr",
-    "url": "https://www.instagram.com/designbook.kr/",
-    "header": "디자인북"
+   "summary": "디자인북 — 주최 부스 명단의 Hobby & Play / Kitchen & Tableware 구역 참가사(L-15). 같은 이름의 인스타 계정(@designbook.kr, 인테리어 디자인 스튜디오)과 서점(@designbook_hongik)이 있으나 이 부스의 것이라고 확정할 근거가 없다.",
+   "roamInterpretation": "이름만 알고 있는 부스야. 주방·테이블웨어가 모인 줄에 있으니 지나는 길에 확인해보면 돼.",
+   "valueTags": [
+    {
+     "slug": "discovery",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "discovery": "미리 알 수 없는 부스라 직접 보는 게 유일한 방법이야."
    },
-   "sourceUrl": "https://www.instagram.com/designbook.kr/",
-   "images": [
-    "/booths/magok-livingmarket-2026/L-15_1.webp",
-    "/booths/magok-livingmarket-2026/L-15_2.webp",
-    "/booths/magok-livingmarket-2026/L-15_3.webp",
-    "/booths/magok-livingmarket-2026/L-15_4.webp",
-    "/booths/magok-livingmarket-2026/L-15_5.webp",
-    "/booths/magok-livingmarket-2026/L-15_6.webp",
-    "/booths/magok-livingmarket-2026/L-15_7.webp",
-    "/booths/magok-livingmarket-2026/L-15_8.webp",
-    "/booths/magok-livingmarket-2026/L-15_9.webp",
-    "/booths/magok-livingmarket-2026/L-15_10.webp"
-   ]
+   "thingsToDo": [
+    "무엇을 다루는 곳인지 물어보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "디자인북",
+    "L-15"
+   ],
+   "unverified": true,
+   "note": "이전 초안은 요약이 '아트북/포스터 출판', 로미 한 줄이 '주방과 식탁을 위한 디자인 제품'으로 서로 다른 브랜드를 말했다. 둘 다 근거가 없어 삭제."
   },
   "K-18": {
    "summary": "에스코리아 — 국내 제작 하이엔드 인이어(이어폰) 제조사.",
@@ -2415,8 +2416,32 @@
    ]
   },
   "R-05": {
-   "summary": "내일 뭐 먹지 마켓 — **플리마켓을 여는 주체**다('내일뭐먹지? MARKET' 플리마켓, 행운권추첨·버스킹).",
-   "confirmed": false
+   "summary": "내일 뭐 먹지 마켓 — 주최 부스 명단의 Food & Taste 구역 참가사(R-05). 이름 그대로 먹거리를 모아 파는 마켓 형태로 보이나, 운영 주체를 확인할 공개 근거를 찾지 못했다.",
+   "roamInterpretation": "먹거리를 모아놓은 부스야. 뭐가 나오는지는 그날 가서 봐야 알아.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.6
+    },
+    {
+     "slug": "discovery",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "먹거리 구역이라 맛보고 사 갈 수 있어.",
+    "discovery": "미리 알 수 없는 구성이라 직접 보는 게 유일한 방법이야."
+   },
+   "thingsToDo": [
+    "어떤 먹거리가 나왔는지 훑어보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "내일 뭐 먹지 마켓",
+    "R-05"
+   ],
+   "unverified": true,
+   "note": "이전 초안의 로미 한 줄·근거·할 것이 전부 동명 웹툰('오늘 점심 뭐 먹지?', 주인공 오두리, 전국 맛집 114곳)을 말했다. 이 부스와 무관해 삭제."
   },
   "A-06": {
    "summary": "아람채리빙(ARAMCHAE) — 〈기억의 빛, 다시 살아나는 시간〉 아람채는 버려진 자개장 속에 잠든 한국적 아름다움과 삶의 기억을 현대적 디자인으로 되살리는 업사이클링 브랜드입니다. 전통 공예의 영롱한 자개빛을 미니멀한 형태에 담아 과거의 감성과 미래의 지속가능성을 잇는 새로운 한국적 디자인을 제안합니다. 오래된 자개장의 기억과 정서를 현대적으로 재해석해 오늘의 공간에서 다시 빛나게 합니다.",
@@ -5683,6 +5708,64 @@
     "구자룡"
    ],
    "confirmed": false
+  },
+  "N-09": {
+   "summary": "아리아 — 주최 부스 명단의 Hobby & Play / Kitchen & Tableware 구역 참가사(N-09). 옆 부스 N-07이 '온도 아리아'라 같은 계열로 보이지만, 브랜드 실체를 확인할 수 있는 공개 근거를 찾지 못했다.",
+   "roamInterpretation": "이름만 알고 있는 부스야. 도자·테이블웨어가 모인 줄에 있으니 지나는 길에 한 번 들여다보면 돼.",
+   "valueTags": [
+    {
+     "slug": "discovery",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "discovery": "뭘 파는지 미리 알 수 없는 부스라 직접 보는 게 유일한 방법이야."
+   },
+   "thingsToDo": [
+    "무엇을 다루는 곳인지 물어보기",
+    "옆 N-07 온도 아리아와 같은 브랜드인지 확인하기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "아리아",
+    "N-09"
+   ],
+   "unverified": true,
+   "note": "자동 초안이 해외 에어프라이어 브랜드 'Aria'(AWM-433 등)를 confidence 1.00으로 물어왔다. 이 부스와 무관해 전량 삭제했다. 점수로는 다른 브랜드를 못 거른다는 사례."
+  },
+  "G-07": {
+   "summary": "스프링잼 / 깃샘(GITSAM) 공동 부스. 깃샘은 'Exquisite fine jewelry maison — where meaningful stories meet timeless craftmanship'을 내건 파인 주얼리 브랜드로 2026 밀란 패션위크(Milan Loves Seoul)에 전시했다. 스프링잼 쪽은 확인하지 못했다.",
+   "roamInterpretation": "두 브랜드가 한 부스를 나눠 쓰는 곳이야. 깃샘 주얼리는 밀란까지 나갔던 라인이라 실물로 보면 다르게 보여.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.7
+    },
+    {
+     "slug": "inspiration",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "주얼리를 직접 착용해보고 고를 수 있어.",
+    "inspiration": "이야기를 담아 세공한다는 게 어떤 뜻인지 실물로 봐."
+   },
+   "thingsToDo": [
+    "깃샘 주얼리 착용해보기",
+    "스프링잼이 무엇을 내는지 물어보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "깃샘",
+    "GITSAM",
+    "파인 주얼리"
+   ],
+   "sourceUrl": "https://www.instagram.com/gitsamofficial/",
+   "instagram": {
+    "handle": "gitsamofficial",
+    "url": "https://www.instagram.com/gitsamofficial/",
+    "header": "깃샘(GITSAM) — Exquisite fine jewelry maison · gitsam.kr · Milano 2026 하이라이트"
+   }
   }
  }
 }

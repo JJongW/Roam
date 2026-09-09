@@ -2206,7 +2206,35 @@
    "kind": "exhibitor",
    "tags": [
     "home-deco"
-   ]
+   ],
+   "enrichment": {
+    "summary": "스프링잼 / 깃샘(GITSAM) 공동 부스. 깃샘은 'Exquisite fine jewelry maison — where meaningful stories meet timeless craftmanship'을 내건 파인 주얼리 브랜드로 2026 밀란 패션위크(Milan Loves Seoul)에 전시했다. 스프링잼 쪽은 확인하지 못했다.",
+    "sourceUrl": "https://www.instagram.com/gitsamofficial/",
+    "roamInterpretation": "두 브랜드가 한 부스를 나눠 쓰는 곳이야. 깃샘 주얼리는 밀란까지 나갔던 라인이라 실물로 보면 다르게 보여.",
+    "valueTags": [
+     {
+      "slug": "goods",
+      "strength": 0.7
+     },
+     {
+      "slug": "inspiration",
+      "strength": 0.6
+     }
+    ],
+    "recommendationReasons": {
+     "goods": "주얼리를 직접 착용해보고 고를 수 있어.",
+     "inspiration": "이야기를 담아 세공한다는 게 어떤 뜻인지 실물로 봐."
+    },
+    "thingsToDo": [
+     "깃샘 주얼리 착용해보기",
+     "스프링잼이 무엇을 내는지 물어보기"
+    ],
+    "memoryHooks": [
+     "깃샘",
+     "GITSAM",
+     "파인 주얼리"
+    ]
+   }
   },
   {
    "code": "G-08",
@@ -4016,8 +4044,25 @@
     "hobby-kitchen"
    ],
    "enrichment": {
-    "summary": "디자인북 — 검색 결과가 아트북/포스터 출판 쪽으로 나온다.",
-    "sourceUrl": "https://www.instagram.com/designbook.kr/"
+    "summary": "디자인북 — 주최 부스 명단의 Hobby & Play / Kitchen & Tableware 구역 참가사(L-15). 같은 이름의 인스타 계정(@designbook.kr, 인테리어 디자인 스튜디오)과 서점(@designbook_hongik)이 있으나 이 부스의 것이라고 확정할 근거가 없다.",
+    "sourceUrl": "https://www.instagram.com/designbook.kr/",
+    "roamInterpretation": "이름만 알고 있는 부스야. 주방·테이블웨어가 모인 줄에 있으니 지나는 길에 확인해보면 돼.",
+    "valueTags": [
+     {
+      "slug": "discovery",
+      "strength": 0.6
+     }
+    ],
+    "recommendationReasons": {
+     "discovery": "미리 알 수 없는 부스라 직접 보는 게 유일한 방법이야."
+    },
+    "thingsToDo": [
+     "무엇을 다루는 곳인지 물어보기"
+    ],
+    "memoryHooks": [
+     "디자인북",
+     "L-15"
+    ]
    },
    "images": [
     "/booths/magok-livingmarket-2026/L-15_1.webp",
@@ -4387,7 +4432,28 @@
    "kind": "exhibitor",
    "tags": [
     "hobby-kitchen"
-   ]
+   ],
+   "enrichment": {
+    "summary": "아리아 — 주최 부스 명단의 Hobby & Play / Kitchen & Tableware 구역 참가사(N-09). 옆 부스 N-07이 '온도 아리아'라 같은 계열로 보이지만, 브랜드 실체를 확인할 수 있는 공개 근거를 찾지 못했다.",
+    "roamInterpretation": "이름만 알고 있는 부스야. 도자·테이블웨어가 모인 줄에 있으니 지나는 길에 한 번 들여다보면 돼.",
+    "valueTags": [
+     {
+      "slug": "discovery",
+      "strength": 0.6
+     }
+    ],
+    "recommendationReasons": {
+     "discovery": "뭘 파는지 미리 알 수 없는 부스라 직접 보는 게 유일한 방법이야."
+    },
+    "thingsToDo": [
+     "무엇을 다루는 곳인지 물어보기",
+     "옆 N-07 온도 아리아와 같은 브랜드인지 확인하기"
+    ],
+    "memoryHooks": [
+     "아리아",
+     "N-09"
+    ]
+   }
   },
   {
    "code": "N-10",
@@ -5842,7 +5908,29 @@
     "food-taste"
    ],
    "enrichment": {
-    "summary": "내일 뭐 먹지 마켓 — **플리마켓을 여는 주체**다('내일뭐먹지? MARKET' 플리마켓, 행운권추첨·버스킹)."
+    "summary": "내일 뭐 먹지 마켓 — 주최 부스 명단의 Food & Taste 구역 참가사(R-05). 이름 그대로 먹거리를 모아 파는 마켓 형태로 보이나, 운영 주체를 확인할 공개 근거를 찾지 못했다.",
+    "roamInterpretation": "먹거리를 모아놓은 부스야. 뭐가 나오는지는 그날 가서 봐야 알아.",
+    "valueTags": [
+     {
+      "slug": "goods",
+      "strength": 0.6
+     },
+     {
+      "slug": "discovery",
+      "strength": 0.6
+     }
+    ],
+    "recommendationReasons": {
+     "goods": "먹거리 구역이라 맛보고 사 갈 수 있어.",
+     "discovery": "미리 알 수 없는 구성이라 직접 보는 게 유일한 방법이야."
+    },
+    "thingsToDo": [
+     "어떤 먹거리가 나왔는지 훑어보기"
+    ],
+    "memoryHooks": [
+     "내일 뭐 먹지 마켓",
+     "R-05"
+    ]
    }
   },
   {
