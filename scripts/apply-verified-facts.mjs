@@ -30,7 +30,12 @@ let merged = 0, missing = [];
 for (const [code, v] of Object.entries(verified.booths ?? {})) {
   const b = byCode.get(code);
   if (!b) { missing.push(code); continue; }
-  if (!v.summary?.trim()) continue;
+  // 이미지는 요약과 **독립**이다 — 계정은 찾았는데 아직 글을 못 쓴 부스가 있다.
+  // 예전엔 summary가 없으면 통째로 건너뛰어 그런 부스의 사진이 운영에 영영
+  // 안 올라갔다(A-03·F-14·F-26·G-20·H-01이 그 상태였다).
+  if (v.images?.length) b.images = v.images;
+  else if (v.image && !(b.images ?? []).includes(v.image)) b.images = [v.image];
+  if (!v.summary?.trim()) { merged++; continue; }
   b.enrichment ??= {};
   b.enrichment.summary = v.summary.slice(0, 300);
   if (v.sourceUrl) b.enrichment.sourceUrl = v.sourceUrl;
@@ -42,10 +47,6 @@ for (const [code, v] of Object.entries(verified.booths ?? {})) {
   if (v.thingsToDo?.length) b.enrichment.thingsToDo = v.thingsToDo;
   if (v.timing?.length) b.enrichment.timing = v.timing;
   if (v.memoryHooks?.length) b.enrichment.memoryHooks = v.memoryHooks;
-  // 내려받은 대표 이미지도 부스로 옮긴다 — 부스 상세와 피드가 이걸 쓴다.
-  // 인스타 게시물에서 딴 여러 장이 있으면 그걸 쓴다(<CODE>_1..N.webp).
-  if (v.images?.length) b.images = v.images;
-  else if (v.image && !(b.images ?? []).includes(v.image)) b.images = [v.image];
   merged++;
 }
 if (missing.length) console.log("도면·인입에 없는 코드:", missing.join(", "));
