@@ -225,7 +225,7 @@ export interface Repository {
   ): Promise<Paginated<Review> & { summary: { count: number } }>;
   createReview(
     boothId: string,
-    sessionId: string,
+    userId: string,
     input: ReviewInput,
   ): Promise<Review>;
 
@@ -387,16 +387,16 @@ export interface Repository {
     opts?: { cursor?: string; limit?: number },
   ): Promise<Paginated<CommunityPost>>;
   createPost(
-    sessionId: string,
+    userId: string,
     exhibitionId: string,
     input: CommunityPostInput,
   ): Promise<CommunityPost>;
   getPost(id: string): Promise<CommunityPost | null>;
   /**
-   * Delete a post only if it belongs to the given session. Returns whether a
+   * Delete a post only if it belongs to the given account. Returns whether a
    * row was removed, plus any attached media so the caller can clean it up.
    */
-  deletePost(id: string, sessionId: string): Promise<DeletePostResult>;
+  deletePost(id: string, userId: string): Promise<DeletePostResult>;
   /**
    * Report a post for abuse. Deduped per reporter session. Once
    * REPORT_HIDE_THRESHOLD distinct sessions report it, listPosts hides it.

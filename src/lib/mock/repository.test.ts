@@ -516,12 +516,13 @@ describe("MockRepository", () => {
     // 주의: createdAt은 밀리초 단위(new Date().toISOString())라 빠르게 연속 생성하면
     // 같은 타임스탬프가 나올 수 있다 — 정렬 순서(어느 게 "가장 최근"인지)는 단언하지
     // 않고, 전체 개수와 limit 동작만 확인한다.
+    // 시드 스토어에는 계정이 하나 들어 있다 — 시드 리뷰·커뮤니티 글의 소유자(0056).
     await repo.createUser("a");
     await repo.createUser("b");
     await repo.createUser("c");
     const all = await repo.listUsers();
-    expect(all).toHaveLength(3);
-    expect(all.map((u) => u.nickname).sort()).toEqual(["a", "b", "c"]);
+    expect(all).toHaveLength(4);
+    expect(all.map((u) => u.nickname).sort()).toEqual(["a", "b", "c", "시드"]);
     const limited = await repo.listUsers({ limit: 2 });
     expect(limited).toHaveLength(2);
   });

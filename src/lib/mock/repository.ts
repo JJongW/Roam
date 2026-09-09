@@ -144,7 +144,8 @@ function buildStore(): Store {
     bookmarks: [],
     posts: s.communityPosts,
     reports: [],
-    users: [],
+    // 시드 리뷰·글의 소유 계정(0056). 비워두면 mock에서 그 행들이 고아가 된다.
+    users: [s.seedUser],
     notes: [],
     analytics: [],
     aiQueries: [],
@@ -708,13 +709,13 @@ export class MockRepository implements Repository {
 
   async createReview(
     boothId: string,
-    sessionId: string,
+    userId: string,
     input: ReviewInput,
   ): Promise<Review> {
     const review: Review = {
       id: uid("rv"),
       boothId,
-      sessionId,
+      userId,
       createdAt: now(),
       ...input,
     };
@@ -896,14 +897,14 @@ export class MockRepository implements Repository {
   }
 
   async createPost(
-    sessionId: string,
+    userId: string,
     exhibitionId: string,
     input: CommunityPostInput,
   ): Promise<CommunityPost> {
     const post: CommunityPost = {
       id: uid("cp"),
       exhibitionId,
-      sessionId,
+      userId,
       authorName: input.authorName,
       body: input.body,
       boothId: input.boothId,
@@ -920,9 +921,9 @@ export class MockRepository implements Repository {
     return store().posts.find((p) => p.id === id) ?? null;
   }
 
-  async deletePost(id: string, sessionId: string): Promise<DeletePostResult> {
+  async deletePost(id: string, userId: string): Promise<DeletePostResult> {
     const posts = store().posts;
-    const i = posts.findIndex((p) => p.id === id && p.sessionId === sessionId);
+    const i = posts.findIndex((p) => p.id === id && p.userId === userId);
     if (i === -1) return { deleted: false };
     const [removed] = posts.splice(i, 1);
     return {

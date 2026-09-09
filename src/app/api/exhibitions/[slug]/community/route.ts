@@ -1,6 +1,6 @@
 import { getRepository } from "@/lib/repositories";
-import { created, ok, parseBody, notFound } from "@/lib/api/http";
-import { ensureSession } from "@/lib/api/session";
+import { created, fail, ok, parseBody, notFound } from "@/lib/api/http";
+import { getCurrentUser } from "@/lib/api/session";
 import { communityPostInputSchema } from "@/lib/schemas";
 
 type Ctx = { params: Promise<{ slug: string }> };
@@ -28,11 +28,8 @@ export async function POST(req: Request, { params }: Ctx) {
   const repo = await getRepository();
   const detail = await repo.getExhibition(slug);
   if (!detail) return notFound("전시를 찾을 수 없습니다");
-  const session = await ensureSession(detail.exhibition.id);
-  const post = await repo.createPost(
-    session.id,
-    detail.exhibition.id,
-    parsed.data,
-  );
+  const user = await getCurrentUser();
+  if (!user) return fail("UNAUTHORIZED", "로그인이 필요합니다");
+  const post = await repo.createPost(user.id, detail.exhibition.id, parsed.data);
   return created({ post });
 }
