@@ -232,7 +232,7 @@
    "instagramUrl": "https://www.instagram.com/almasleep_official",
    "enrichment": {
     "summary": "알마슬립 — 더 깊은 숙면을 위한 침실 브랜드. 주최가 침실·욕실 큐레이션 라인업으로 꼽았다.",
-    "sourceUrl": "https://www.instagram.com/p/DcATDUBHGAT/",
+    "sourceUrl": "https://www.instagram.com/almasleep_official/",
     "roamInterpretation": "숙면을 목표로 침구를 짜는 곳이야. 누워보지 않으면 고를 수 없는 종류라 부스에서 직접 시도해보면 돼.",
     "valueTags": [
      {
@@ -1374,7 +1374,8 @@
      "코웨이",
      "렌털",
      "환경가전"
-    ]
+    ],
+    "sourceUrl": "https://www.instagram.com/coway.kr/"
    },
    "images": [
     "/booths/magok-livingmarket-2026/E-05_1.webp",
@@ -1616,8 +1617,16 @@
     "home-deco"
    ],
    "enrichment": {
-    "summary": "알비 빈티지포스터 — '알비마켓'을 여는 빈티지 포스터·엽서 셀렉트숍. 루비박스출판사가 운영하는 성수동 매장."
-   }
+    "summary": "알비 빈티지포스터 — '알비마켓'을 여는 빈티지 포스터·엽서 셀렉트숍. 루비박스출판사가 운영하는 성수동 매장.",
+    "sourceUrl": "https://www.instagram.com/arby_official_/"
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/F-11_1.webp",
+    "/booths/magok-livingmarket-2026/F-11_2.webp",
+    "/booths/magok-livingmarket-2026/F-11_3.webp",
+    "/booths/magok-livingmarket-2026/F-11_4.webp",
+    "/booths/magok-livingmarket-2026/F-11_5.webp"
+   ]
   },
   {
    "code": "F-12",
@@ -2372,8 +2381,16 @@
     "home-deco"
    ],
    "enrichment": {
-    "summary": "소잉팩토리 X 퐁당자수 — 재봉 공방. 수원 RED점에서 호보백 만들기 등 소잉워크샵 운영."
-   }
+    "summary": "소잉팩토리 X 퐁당자수 — 재봉 공방. 수원 RED점에서 호보백 만들기 등 소잉워크샵 운영.",
+    "sourceUrl": "https://www.instagram.com/pongdangjasu_official/"
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/G-16_1.webp",
+    "/booths/magok-livingmarket-2026/G-16_2.webp",
+    "/booths/magok-livingmarket-2026/G-16_3.webp",
+    "/booths/magok-livingmarket-2026/G-16_4.webp",
+    "/booths/magok-livingmarket-2026/G-16_5.webp"
+   ]
   },
   {
    "code": "G-20",
@@ -2424,7 +2441,14 @@
      "유리공예",
      "동양적 색감"
     ]
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/G-21_1.webp",
+    "/booths/magok-livingmarket-2026/G-21_2.webp",
+    "/booths/magok-livingmarket-2026/G-21_3.webp",
+    "/booths/magok-livingmarket-2026/G-21_4.webp",
+    "/booths/magok-livingmarket-2026/G-21_5.webp"
+   ]
   },
   {
    "code": "G-22",
@@ -2583,7 +2607,14 @@
      "LINBO",
      "가죽 공방"
     ]
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/G-28_1.webp",
+    "/booths/magok-livingmarket-2026/G-28_2.webp",
+    "/booths/magok-livingmarket-2026/G-28_3.webp",
+    "/booths/magok-livingmarket-2026/G-28_4.webp",
+    "/booths/magok-livingmarket-2026/G-28_5.webp"
+   ]
   },
   {
    "code": "H-01",
@@ -2610,7 +2641,7 @@
    "websiteUrl": "https://www.rimblekorea.com",
    "enrichment": {
     "summary": "림블(RIMBLE) — 위트 있는 아트웍이 담긴 패브릭 브랜드. 주최 브랜드 큐레이션 라인업.",
-    "sourceUrl": "https://www.instagram.com/p/DchxZ66GTda/",
+    "sourceUrl": "https://www.instagram.com/rimble_/",
     "roamInterpretation": "그림이 들어간 패브릭을 만드는 곳이야. 무늬가 웃겨서 보다 보면 오래 서 있게 돼.",
     "valueTags": [
      {
@@ -2636,7 +2667,11 @@
     ]
    },
    "images": [
-    "/booths/magok-livingmarket-2026/H-03.webp"
+    "/booths/magok-livingmarket-2026/H-03_1.webp",
+    "/booths/magok-livingmarket-2026/H-03_2.webp",
+    "/booths/magok-livingmarket-2026/H-03_3.webp",
+    "/booths/magok-livingmarket-2026/H-03_4.webp",
+    "/booths/magok-livingmarket-2026/H-03_5.webp"
    ]
   },
   {
@@ -2715,7 +2750,14 @@
      "매듭토드",
      "비건레더"
     ]
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/H-08_1.webp",
+    "/booths/magok-livingmarket-2026/H-08_2.webp",
+    "/booths/magok-livingmarket-2026/H-08_3.webp",
+    "/booths/magok-livingmarket-2026/H-08_4.webp",
+    "/booths/magok-livingmarket-2026/H-08_5.webp"
+   ]
   },
   {
    "code": "H-09",
@@ -2754,7 +2796,19 @@
      "현악기",
      "원목+도자"
     ]
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/H-09_1.webp",
+    "/booths/magok-livingmarket-2026/H-09_2.webp",
+    "/booths/magok-livingmarket-2026/H-09_3.webp",
+    "/booths/magok-livingmarket-2026/H-09_4.webp",
+    "/booths/magok-livingmarket-2026/H-09_5.webp",
+    "/booths/magok-livingmarket-2026/H-09_6.webp",
+    "/booths/magok-livingmarket-2026/H-09_7.webp",
+    "/booths/magok-livingmarket-2026/H-09_8.webp",
+    "/booths/magok-livingmarket-2026/H-09_9.webp",
+    "/booths/magok-livingmarket-2026/H-09_10.webp"
+   ]
   },
   {
    "code": "H-10",
@@ -2792,7 +2846,14 @@
      "쉐리925",
      "실버쥬얼리"
     ]
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/H-10_1.webp",
+    "/booths/magok-livingmarket-2026/H-10_2.webp",
+    "/booths/magok-livingmarket-2026/H-10_3.webp",
+    "/booths/magok-livingmarket-2026/H-10_4.webp",
+    "/booths/magok-livingmarket-2026/H-10_5.webp"
+   ]
   },
   {
    "code": "H-11",
@@ -2831,7 +2892,14 @@
      "925 순은",
      "전통 매듭"
     ]
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/H-11_1.webp",
+    "/booths/magok-livingmarket-2026/H-11_2.webp",
+    "/booths/magok-livingmarket-2026/H-11_3.webp",
+    "/booths/magok-livingmarket-2026/H-11_4.webp",
+    "/booths/magok-livingmarket-2026/H-11_5.webp"
+   ]
   },
   {
    "code": "H-12",
@@ -2870,7 +2938,14 @@
      "단조",
      "금속공예"
     ]
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/H-12_1.webp",
+    "/booths/magok-livingmarket-2026/H-12_2.webp",
+    "/booths/magok-livingmarket-2026/H-12_3.webp",
+    "/booths/magok-livingmarket-2026/H-12_4.webp",
+    "/booths/magok-livingmarket-2026/H-12_5.webp"
+   ]
   },
   {
    "code": "H-13",
@@ -2909,7 +2984,19 @@
      "빈티지 커스텀",
      "디스트레스드"
     ]
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/H-13_1.webp",
+    "/booths/magok-livingmarket-2026/H-13_2.webp",
+    "/booths/magok-livingmarket-2026/H-13_3.webp",
+    "/booths/magok-livingmarket-2026/H-13_4.webp",
+    "/booths/magok-livingmarket-2026/H-13_5.webp",
+    "/booths/magok-livingmarket-2026/H-13_6.webp",
+    "/booths/magok-livingmarket-2026/H-13_7.webp",
+    "/booths/magok-livingmarket-2026/H-13_8.webp",
+    "/booths/magok-livingmarket-2026/H-13_9.webp",
+    "/booths/magok-livingmarket-2026/H-13_10.webp"
+   ]
   },
   {
    "code": "H-14",
@@ -2947,7 +3034,14 @@
      "마리드파리",
      "빈티지 오브제"
     ]
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/H-14_1.webp",
+    "/booths/magok-livingmarket-2026/H-14_2.webp",
+    "/booths/magok-livingmarket-2026/H-14_3.webp",
+    "/booths/magok-livingmarket-2026/H-14_4.webp",
+    "/booths/magok-livingmarket-2026/H-14_5.webp"
+   ]
   },
   {
    "code": "H-15",
@@ -3133,7 +3227,14 @@
      "제주 월정리",
      "내추럴 패브릭"
     ]
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/I-06_1.webp",
+    "/booths/magok-livingmarket-2026/I-06_2.webp",
+    "/booths/magok-livingmarket-2026/I-06_3.webp",
+    "/booths/magok-livingmarket-2026/I-06_4.webp",
+    "/booths/magok-livingmarket-2026/I-06_5.webp"
+   ]
   },
   {
    "code": "J-01",
@@ -3290,7 +3391,8 @@
    ],
    "websiteUrl": "https://sildream.com",
    "enrichment": {
-    "summary": "실드림 — 디자인 실리콘 주방용품. 대한민국 실리콘 주방용품 선두 기업이라고 자칭."
+    "summary": "실드림 — 디자인 실리콘 주방용품. 대한민국 실리콘 주방용품 선두 기업이라고 자칭.",
+    "sourceUrl": "https://www.instagram.com/sildream_bs/"
    },
    "images": [
     "/booths/magok-livingmarket-2026/J-07.webp"
@@ -3800,8 +3902,21 @@
     "hobby-kitchen"
    ],
    "enrichment": {
-    "summary": "디자인북 — 검색 결과가 아트북/포스터 출판 쪽으로 나온다."
-   }
+    "summary": "디자인북 — 검색 결과가 아트북/포스터 출판 쪽으로 나온다.",
+    "sourceUrl": "https://www.instagram.com/designbook.kr/"
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/L-15_1.webp",
+    "/booths/magok-livingmarket-2026/L-15_2.webp",
+    "/booths/magok-livingmarket-2026/L-15_3.webp",
+    "/booths/magok-livingmarket-2026/L-15_4.webp",
+    "/booths/magok-livingmarket-2026/L-15_5.webp",
+    "/booths/magok-livingmarket-2026/L-15_6.webp",
+    "/booths/magok-livingmarket-2026/L-15_7.webp",
+    "/booths/magok-livingmarket-2026/L-15_8.webp",
+    "/booths/magok-livingmarket-2026/L-15_9.webp",
+    "/booths/magok-livingmarket-2026/L-15_10.webp"
+   ]
   },
   {
    "code": "L-16",
@@ -4596,7 +4711,8 @@
    "websiteUrl": "https://healthbeverage.co.kr",
    "instagramUrl": "https://www.instagram.com/healthbeverage_official",
    "enrichment": {
-    "summary": "(주)헬스베버리지 — 스페인 '하시엔다 구즈만' 엑스트라버진 올리브오일과 이탈리아 구에르조니 발사믹을 들여온다. 미슐랭 스타 셰프가 선택한 올리브오일로 소개되고 추석 선물세트를 낸다."
+    "summary": "(주)헬스베버리지 — 스페인 '하시엔다 구즈만' 엑스트라버진 올리브오일과 이탈리아 구에르조니 발사믹을 들여온다. 미슐랭 스타 셰프가 선택한 올리브오일로 소개되고 추석 선물세트를 낸다.",
+    "sourceUrl": "https://www.instagram.com/healthbeverage_official/"
    },
    "images": [
     "/booths/magok-livingmarket-2026/P-03_1.webp",
@@ -4697,7 +4813,7 @@
    ],
    "enrichment": {
     "summary": "어물전꼴뚜기(badasusan) — 국가대표 마른안주 \"어물전꼴뚜기\"를 소개합니다. 2010년부터 현제까지 500차례가 넘는 국내에 널리 알려진 식품전시 및 백화점등에서 전국의 폭 넓은 고객들에게 제품의 우수성을 널리 알려 뛰어난 성장을 거듭하고 있습니다. 2023년 1월에 ‘어물전 꼴뚜기’라는 브랜드를 런칭하고, 한국식품안전관리인증원으로부터 2024년 8월에는 식품제조 haccp을 인증받아 현제까지 홍보,판매를 진행하고 있습니다.",
-    "sourceUrl": "https://magoklivingdesignfair.kr/fairOnline.do",
+    "sourceUrl": "https://www.instagram.com/bada.susan/",
     "roamInterpretation": "2010년부터 전시·백화점을 돌아온 마른안주 브랜드야. 2024년 식품제조 HACCP 인증을 받았다.",
     "valueTags": [
      {
@@ -4722,7 +4838,14 @@
      "마른안주",
      "HACCP"
     ]
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/P-10_1.webp",
+    "/booths/magok-livingmarket-2026/P-10_2.webp",
+    "/booths/magok-livingmarket-2026/P-10_3.webp",
+    "/booths/magok-livingmarket-2026/P-10_4.webp",
+    "/booths/magok-livingmarket-2026/P-10_5.webp"
+   ]
   },
   {
    "code": "P-13",
@@ -4892,7 +5015,7 @@
    ],
    "enrichment": {
     "summary": "네코먼데이 로스터리 — 커피 로스터리. 부산 카페쇼에 참가해왔고 밀크 베이스 음료도 함께 낸다.",
-    "sourceUrl": "https://www.instagram.com/explore/search/keyword/?q=%EB%84%A4%EC%BD%94%EB%A8%BC%EB%8D%B0%EC%9D%B4",
+    "sourceUrl": "https://www.instagram.com/neko.monday/",
     "roamInterpretation": "직접 볶은 원두를 내는 로스터리야. 마셔보고 고르는 게 빨라.",
     "valueTags": [
      {
@@ -4916,7 +5039,19 @@
      "네코먼데이",
      "로스터리"
     ]
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/P-18_1.webp",
+    "/booths/magok-livingmarket-2026/P-18_2.webp",
+    "/booths/magok-livingmarket-2026/P-18_3.webp",
+    "/booths/magok-livingmarket-2026/P-18_4.webp",
+    "/booths/magok-livingmarket-2026/P-18_5.webp",
+    "/booths/magok-livingmarket-2026/P-18_6.webp",
+    "/booths/magok-livingmarket-2026/P-18_7.webp",
+    "/booths/magok-livingmarket-2026/P-18_8.webp",
+    "/booths/magok-livingmarket-2026/P-18_9.webp",
+    "/booths/magok-livingmarket-2026/P-18_10.webp"
+   ]
   },
   {
    "code": "Q-01",
@@ -5050,7 +5185,14 @@
      "구증구포",
      "4년근 무농약 도라지"
     ]
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/Q-04_1.webp",
+    "/booths/magok-livingmarket-2026/Q-04_2.webp",
+    "/booths/magok-livingmarket-2026/Q-04_3.webp",
+    "/booths/magok-livingmarket-2026/Q-04_4.webp",
+    "/booths/magok-livingmarket-2026/Q-04_5.webp"
+   ]
   },
   {
    "code": "Q-07",
@@ -5299,7 +5441,7 @@
    ],
    "enrichment": {
     "summary": "웃차(WOOTCHA) — '감각적인 블렌딩 티'. 주최 Food & Taste 큐레이션 라인업.",
-    "sourceUrl": "https://www.instagram.com/p/Dcm6--gARa9/",
+    "sourceUrl": "https://www.instagram.com/woot.cha/",
     "roamInterpretation": "블렌딩 차를 만드는 곳이야. 향이 서로 달라서 맡아보면 금방 골라져.",
     "valueTags": [
      {
@@ -5323,7 +5465,14 @@
      "웃차",
      "블렌딩 티"
     ]
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/Q-18_1.webp",
+    "/booths/magok-livingmarket-2026/Q-18_2.webp",
+    "/booths/magok-livingmarket-2026/Q-18_3.webp",
+    "/booths/magok-livingmarket-2026/Q-18_4.webp",
+    "/booths/magok-livingmarket-2026/Q-18_5.webp"
+   ]
   },
   {
    "code": "R-01",
