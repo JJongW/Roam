@@ -2199,7 +2199,19 @@
     "L-15"
    ],
    "unverified": true,
-   "note": "이전 초안은 요약이 '아트북/포스터 출판', 로미 한 줄이 '주방과 식탁을 위한 디자인 제품'으로 서로 다른 브랜드를 말했다. 둘 다 근거가 없어 삭제."
+   "note": "이전 초안은 요약이 '아트북/포스터 출판', 로미 한 줄이 '주방과 식탁을 위한 디자인 제품'으로 서로 다른 브랜드를 말했다. 둘 다 근거가 없어 삭제.",
+   "images": [
+    "/booths/magok-livingmarket-2026/L-15_1.webp",
+    "/booths/magok-livingmarket-2026/L-15_2.webp",
+    "/booths/magok-livingmarket-2026/L-15_3.webp",
+    "/booths/magok-livingmarket-2026/L-15_4.webp",
+    "/booths/magok-livingmarket-2026/L-15_5.webp",
+    "/booths/magok-livingmarket-2026/L-15_6.webp",
+    "/booths/magok-livingmarket-2026/L-15_7.webp",
+    "/booths/magok-livingmarket-2026/L-15_8.webp",
+    "/booths/magok-livingmarket-2026/L-15_9.webp",
+    "/booths/magok-livingmarket-2026/L-15_10.webp"
+   ]
   },
   "K-18": {
    "summary": "에스코리아 — 국내 제작 하이엔드 인이어(이어폰) 제조사.",
@@ -3606,10 +3618,38 @@
    ]
   },
   "F-26": {
-   "summary": "",
-   "image": "/booths/magok-livingmarket-2026/F-26.webp",
+   "summary": "하트 풋(Heart Foot) — (주)닥터큐메딕스가 만드는 발목 펌프 안마기 브랜드. 'DQ-5000' 등 유·무선 모델을 내고, 층간소음 억제와 근적외선 융합 기술을 내세운다. 부산 동래 매장을 운영하며 백화점 팝업을 돌아왔다.",
+   "roamInterpretation": "발목을 눌러 혈액순환을 돕는 기계를 만드는 곳이야. 5분 올려두는 물건이라 직접 올려봐야 안다.",
+   "valueTags": [
+    {
+     "slug": "rest",
+     "strength": 0.8
+    },
+    {
+     "slug": "goods",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "rest": "발을 올려놓고 5분 쉬어보는 자리야.",
+    "goods": "유선·무선 모델을 나란히 놓고 비교할 수 있어."
+   },
+   "thingsToDo": [
+    "직접 발을 올려 체험해보기",
+    "유선·무선 모델 차이 물어보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "하트풋",
+    "발목 펌프",
+    "DQ-5000"
+   ],
+   "sourceUrl": "https://heart-foot.com/",
    "images": [
-    "/booths/magok-livingmarket-2026/F-26.webp"
+    "/booths/magok-livingmarket-2026/F-26.webp",
+    "/booths/magok-livingmarket-2026/F-26_1.webp",
+    "/booths/magok-livingmarket-2026/F-26_2.webp",
+    "/booths/magok-livingmarket-2026/F-26_3.webp"
    ]
   },
   "F-28": {
@@ -5009,14 +5049,33 @@
    }
   },
   "F-14": {
-   "summary": "",
+   "summary": "리즈 — 주최 부스 명단의 Home & Deco 구역 참가사(F-14). 이름이 일반명사에 가까워 인스타·웹 어디서도 이 부스의 브랜드를 특정하지 못했다.",
+   "roamInterpretation": "이름만 알고 있는 부스야. 홈&데코 줄에 있으니 지나는 길에 확인해보면 돼.",
+   "valueTags": [
+    {
+     "slug": "discovery",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "discovery": "미리 알 수 없는 부스라 직접 보는 게 유일한 방법이야."
+   },
+   "thingsToDo": [
+    "무엇을 다루는 곳인지 물어보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "리즈",
+    "F-14"
+   ],
+   "unverified": true,
+   "note": "인스타 topsearch(리즈 홈/liz living/리즈오브제)·웹 검색 모두 동명 인물·해외 계정만 나온다. 주최 온라인 디렉터리에도 항목이 없다.",
    "images": [
     "/booths/magok-livingmarket-2026/F-14_1.webp",
     "/booths/magok-livingmarket-2026/F-14_2.webp",
     "/booths/magok-livingmarket-2026/F-14_3.webp",
     "/booths/magok-livingmarket-2026/F-14_4.webp"
-   ],
-   "image": "/booths/magok-livingmarket-2026/F-14_1.webp"
+   ]
   },
   "E-09": {
    "summary": "월간 건축문화(A&C(Archi-LAB)) — 디자인서적/ 예술,패션/ 건축,인테리어 월간 건축문화는 건축, 인테리어 중심으로 전공자와 일반 독자를 모두 아우르는 도서 구성으로 열람과 구매를 유도한다. 책의 맥락과 활용 가치를 전달하며, 참여형 이벤트와 연계해 체류 시간과 구매 전환을 높인다. 이를 통해 단순 판매를 넘어 전문성과 감각을 갖춘 건축, 인테리어, 디자인, 미술 관련 전문 출판사 이미지를 구축할 계획이다.",
@@ -5766,6 +5825,36 @@
     "url": "https://www.instagram.com/gitsamofficial/",
     "header": "깃샘(GITSAM) — Exquisite fine jewelry maison · gitsam.kr · Milano 2026 하이라이트"
    }
+  },
+  "L-10": {
+   "summary": "토토방 — 도예·목공 공방. 수제 원목 도마('토토방 도마')와 도자 작업을 하며 2026 핸드아티코리아(8.13~16, 코엑스 Hall B)에 참가했다. 브랜드 인스타 계정은 찾지 못했다.",
+   "roamInterpretation": "나무 도마와 도자를 손으로 만드는 공방이야. 결이 하나씩 달라서 만져보고 골라야 해.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.7
+    },
+    {
+     "slug": "inspiration",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "수제 도마를 낱개로 골라올 수 있어.",
+    "inspiration": "기계로 못 내는 나무 결과 손자국을 가까이서 봐."
+   },
+   "thingsToDo": [
+    "도마 결 만져 비교하기",
+    "관리법 물어보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "토토방",
+    "수제 원목 도마",
+    "핸드아티코리아"
+   ],
+   "unverified": true,
+   "note": "게시물 근거(#토토방 #토토방도마 #도예공방, 2026 핸드아티코리아 X 토토방)로 실체는 확인했으나 브랜드 본계정은 못 찾았다."
   }
  }
 }

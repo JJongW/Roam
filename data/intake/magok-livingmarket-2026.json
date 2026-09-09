@@ -1752,7 +1752,27 @@
     "/booths/magok-livingmarket-2026/F-14_2.webp",
     "/booths/magok-livingmarket-2026/F-14_3.webp",
     "/booths/magok-livingmarket-2026/F-14_4.webp"
-   ]
+   ],
+   "enrichment": {
+    "summary": "리즈 — 주최 부스 명단의 Home & Deco 구역 참가사(F-14). 이름이 일반명사에 가까워 인스타·웹 어디서도 이 부스의 브랜드를 특정하지 못했다.",
+    "roamInterpretation": "이름만 알고 있는 부스야. 홈&데코 줄에 있으니 지나는 길에 확인해보면 돼.",
+    "valueTags": [
+     {
+      "slug": "discovery",
+      "strength": 0.6
+     }
+    ],
+    "recommendationReasons": {
+     "discovery": "미리 알 수 없는 부스라 직접 보는 게 유일한 방법이야."
+    },
+    "thingsToDo": [
+     "무엇을 다루는 곳인지 물어보기"
+    ],
+    "memoryHooks": [
+     "리즈",
+     "F-14"
+    ]
+   }
   },
   {
    "code": "F-17",
@@ -2022,8 +2042,39 @@
    "websiteUrl": "https://heart-foot.com",
    "instagramUrl": "https://www.instagram.com/irobotdrfoot",
    "images": [
-    "/booths/magok-livingmarket-2026/F-26.webp"
-   ]
+    "/booths/magok-livingmarket-2026/F-26.webp",
+    "/booths/magok-livingmarket-2026/F-26_1.webp",
+    "/booths/magok-livingmarket-2026/F-26_2.webp",
+    "/booths/magok-livingmarket-2026/F-26_3.webp"
+   ],
+   "enrichment": {
+    "summary": "하트 풋(Heart Foot) — (주)닥터큐메딕스가 만드는 발목 펌프 안마기 브랜드. 'DQ-5000' 등 유·무선 모델을 내고, 층간소음 억제와 근적외선 융합 기술을 내세운다. 부산 동래 매장을 운영하며 백화점 팝업을 돌아왔다.",
+    "sourceUrl": "https://heart-foot.com/",
+    "roamInterpretation": "발목을 눌러 혈액순환을 돕는 기계를 만드는 곳이야. 5분 올려두는 물건이라 직접 올려봐야 안다.",
+    "valueTags": [
+     {
+      "slug": "rest",
+      "strength": 0.8
+     },
+     {
+      "slug": "goods",
+      "strength": 0.6
+     }
+    ],
+    "recommendationReasons": {
+     "rest": "발을 올려놓고 5분 쉬어보는 자리야.",
+     "goods": "유선·무선 모델을 나란히 놓고 비교할 수 있어."
+    },
+    "thingsToDo": [
+     "직접 발을 올려 체험해보기",
+     "유선·무선 모델 차이 물어보기"
+    ],
+    "memoryHooks": [
+     "하트풋",
+     "발목 펌프",
+     "DQ-5000"
+    ]
+   }
   },
   {
    "code": "F-28",
@@ -3977,7 +4028,34 @@
    "kind": "exhibitor",
    "tags": [
     "hobby-kitchen"
-   ]
+   ],
+   "enrichment": {
+    "summary": "토토방 — 도예·목공 공방. 수제 원목 도마('토토방 도마')와 도자 작업을 하며 2026 핸드아티코리아(8.13~16, 코엑스 Hall B)에 참가했다. 브랜드 인스타 계정은 찾지 못했다.",
+    "roamInterpretation": "나무 도마와 도자를 손으로 만드는 공방이야. 결이 하나씩 달라서 만져보고 골라야 해.",
+    "valueTags": [
+     {
+      "slug": "goods",
+      "strength": 0.7
+     },
+     {
+      "slug": "inspiration",
+      "strength": 0.6
+     }
+    ],
+    "recommendationReasons": {
+     "goods": "수제 도마를 낱개로 골라올 수 있어.",
+     "inspiration": "기계로 못 내는 나무 결과 손자국을 가까이서 봐."
+    },
+    "thingsToDo": [
+     "도마 결 만져 비교하기",
+     "관리법 물어보기"
+    ],
+    "memoryHooks": [
+     "토토방",
+     "수제 원목 도마",
+     "핸드아티코리아"
+    ]
+   }
   },
   {
    "code": "L-13",
