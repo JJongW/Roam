@@ -7,6 +7,7 @@ import { useVisitStore, pushNote } from "@/lib/stores/visit";
 import { clearSessionState } from "@/lib/hooks/use-session-state";
 import {
   APP_ONBOARDING_DISMISS_KEY,
+  onboardingDismissOwner,
   APP_ONBOARDING_GUIDE_STEP_KEY,
   APP_ONBOARDING_PHASE_KEY,
 } from "@/lib/onboarding/app-onboarding-gate";
@@ -25,7 +26,8 @@ interface AuthState {
   setNeedsOnboarding: (v: boolean) => void;
   /** 앱 최초진입 온보딩을 이 브라우저에서 껐는지(완료든 건너뛰기든) — localStorage
    *  기반, AppOnboardingGate가 구독한다. */
-  anonOnboardingDismissed: boolean;
+  /** localStorage에 남은 "누가 껐는가" — "anon" | app_user.id | 옛 "1" | null. */
+  onboardingDismissedBy: string | null;
   dismissAppOnboarding: () => void;
   /** 닉네임 버튼(계정 시트)에서 "온보딩 다시 하기" — 로컬 dismiss를 풀고 서버
    *  신호(needsOnboarding)도 다시 세워 AppOnboardingGate가 처음부터 다시 뜨게 한다. */
@@ -100,28 +102,32 @@ async function syncAndAnnounce() {
   }
 }
 
-export const useAuthStore = create<AuthState>((set) => ({
+export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   ready: false,
   loginOpen: false,
   needsOnboarding: false,
   setNeedsOnboarding: (v) => set({ needsOnboarding: v }),
-  anonOnboardingDismissed:
-    typeof window !== "undefined" &&
-    !!localStorage.getItem(APP_ONBOARDING_DISMISS_KEY),
+  onboardingDismissedBy:
+    typeof window === "undefined"
+      ? null
+      : localStorage.getItem(APP_ONBOARDING_DISMISS_KEY),
+  // 끈 사람을 같이 남긴다 — 비로그인으로 끈 기록은 로그인하는 순간 효력을
+  // 잃어야 온보딩이 계정에 붙는다(app-onboarding-gate.ts 주석 참고).
   dismissAppOnboarding: () => {
+    const owner = onboardingDismissOwner(get().user?.id);
     if (typeof window !== "undefined") {
-      localStorage.setItem(APP_ONBOARDING_DISMISS_KEY, "1");
+      localStorage.setItem(APP_ONBOARDING_DISMISS_KEY, owner);
     }
     clearSessionState(APP_ONBOARDING_PHASE_KEY, APP_ONBOARDING_GUIDE_STEP_KEY);
-    set({ anonOnboardingDismissed: true });
+    set({ onboardingDismissedBy: owner });
   },
   restartAppOnboarding: () => {
     if (typeof window !== "undefined") {
       localStorage.removeItem(APP_ONBOARDING_DISMISS_KEY);
     }
     clearSessionState(APP_ONBOARDING_PHASE_KEY, APP_ONBOARDING_GUIDE_STEP_KEY);
-    set({ anonOnboardingDismissed: false, needsOnboarding: true });
+    set({ onboardingDismissedBy: null, needsOnboarding: true });
   },
   openLogin: () => set({ loginOpen: true }),
   closeLogin: () => set({ loginOpen: false }),

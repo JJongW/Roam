@@ -3,89 +3,120 @@ import {
   canShowAppOnboarding,
   isAppOnboardingDismissed,
   isBoothDeepLinkPath,
+  onboardingDismissOwner,
 } from "@/lib/onboarding/app-onboarding-gate";
 
 describe("isAppOnboardingDismissed", () => {
-  it("비로그인 + 로컬 dismiss 안 됨 → 안 끝남(다시 뜸)", () => {
+  it("비로그인 + 로컬 기록 없음 → 안 끝남(다시 뜸)", () => {
     expect(
       isAppOnboardingDismissed({
-        user: null,
+        userId: null,
         needsOnboarding: true,
-        anonDismissed: false,
+        dismissedBy: null,
       }),
     ).toBe(false);
   });
 
-  it("비로그인 + 로컬 dismiss 됨 → 끝남(안 뜸)", () => {
+  it("비로그인 + 비로그인으로 껐음 → 이 브라우저에선 안 뜬다", () => {
     expect(
       isAppOnboardingDismissed({
-        user: null,
+        userId: null,
         needsOnboarding: true,
-        anonDismissed: true,
+        dismissedBy: "anon",
       }),
     ).toBe(true);
   });
 
-  it("로그인 + 서버가 온보딩 필요하다고 함 + 로컬 dismiss 안 됨 → 안 끝남", () => {
+  // 이 파일의 핵심 회귀 — 예전엔 로컬 dismissal이 무조건 이겨서, 비로그인으로
+  // 한 번 건너뛴 브라우저는 로그인해도 온보딩이 영영 안 떴다.
+  it("비로그인으로 껐다가 로그인 → 다시 뜬다(계정에 취향이 없으면)", () => {
     expect(
       isAppOnboardingDismissed({
-        user: { id: "u1" },
+        userId: "u1",
         needsOnboarding: true,
-        anonDismissed: false,
+        dismissedBy: "anon",
       }),
     ).toBe(false);
   });
 
-  it("로그인 + 서버가 온보딩 다 했다고 함 → 끝남", () => {
+  it("비로그인으로 껐다가 로그인 → 계정에 이미 취향이 있으면 안 뜬다", () => {
     expect(
       isAppOnboardingDismissed({
-        user: { id: "u1" },
+        userId: "u1",
         needsOnboarding: false,
-        anonDismissed: false,
+        dismissedBy: "anon",
       }),
     ).toBe(true);
   });
 
-  it("비로그인 때 완료하고 방금 로그인(서버는 아직 동기화 전이라 needsOnboarding=true) → 로컬 dismiss가 우선이라 끝남", () => {
-    // 로그인 응답의 needsOnboarding은 소급 반영 전 시점 기준이라 낡을 수 있다 —
-    // 이 케이스가 바로 그 타이밍 버그를 재현한다. anonDismissed가 이미 true라
-    // 결과에 영향을 안 준다.
+  // 로그인 응답의 needsOnboarding은 로그인 시점 기준이라 낡을 수 있다 —
+  // 내가 방금 끝낸 기록이 있으면 그게 이긴다.
+  it("이 계정이 직접 껐으면 needsOnboarding이 낡아도 안 뜬다", () => {
     expect(
       isAppOnboardingDismissed({
-        user: { id: "u1" },
+        userId: "u1",
         needsOnboarding: true,
-        anonDismissed: true,
+        dismissedBy: "u1",
       }),
     ).toBe(true);
+  });
+
+  it("같은 브라우저에서 다른 계정으로 로그인하면 그 계정 기준으로 판정한다", () => {
+    expect(
+      isAppOnboardingDismissed({
+        userId: "u2",
+        needsOnboarding: true,
+        dismissedBy: "u1",
+      }),
+    ).toBe(false);
+  });
+
+  it("옛 값 '1'이 남아 있어도 안전하다 — 로그인이면 서버 신호를 본다", () => {
+    expect(
+      isAppOnboardingDismissed({
+        userId: "u1",
+        needsOnboarding: true,
+        dismissedBy: "1",
+      }),
+    ).toBe(false);
+    expect(
+      isAppOnboardingDismissed({
+        userId: null,
+        needsOnboarding: true,
+        dismissedBy: "1",
+      }),
+    ).toBe(true);
+  });
+
+  it("로그인 + 기록 없음 + 서버가 필요하다고 함 → 뜬다", () => {
+    expect(
+      isAppOnboardingDismissed({
+        userId: "u1",
+        needsOnboarding: true,
+        dismissedBy: null,
+      }),
+    ).toBe(false);
+  });
+});
+
+describe("onboardingDismissOwner", () => {
+  it("비로그인은 anon, 로그인은 계정 id", () => {
+    expect(onboardingDismissOwner(null)).toBe("anon");
+    expect(onboardingDismissOwner(undefined)).toBe("anon");
+    expect(onboardingDismissOwner("u1")).toBe("u1");
   });
 });
 
 describe("canShowAppOnboarding", () => {
-  it("랜딩(/)에서도 뜬다 — 홈을 먼저 보여줘도 OAuth 재심사가 계속 반려돼서 이 제약을 없앴다", () => {
+  it("모든 경로에서 뜬다 — 랜딩 포함", () => {
     expect(canShowAppOnboarding("/")).toBe(true);
-  });
-
-  it("전시 상세에서도 뜬다", () => {
     expect(canShowAppOnboarding("/exhibitions/sibf-2026")).toBe(true);
-  });
-
-  it("지도에서도 뜬다 — 공유 링크로 바로 들어온 사람도 만나야 한다", () => {
-    expect(canShowAppOnboarding("/exhibitions/sibf-2026/map")).toBe(true);
-  });
-
-  it("부스 상세에서도 뜬다", () => {
-    expect(canShowAppOnboarding("/booths/b_a1406")).toBe(true);
   });
 });
 
 describe("isBoothDeepLinkPath", () => {
-  it("부스 상세 경로는 배너 완화 대상", () => {
-    expect(isBoothDeepLinkPath("/booths/b_a1406")).toBe(true);
-  });
-
-  it("홈·전시·지도는 대상 아님 — 기존 풀스크린 그대로", () => {
-    expect(isBoothDeepLinkPath("/")).toBe(false);
-    expect(isBoothDeepLinkPath("/exhibitions/sibf-2026")).toBe(false);
-    expect(isBoothDeepLinkPath("/exhibitions/sibf-2026/map")).toBe(false);
+  it("부스 상세만 딥링크로 본다", () => {
+    expect(isBoothDeepLinkPath("/booths/abc")).toBe(true);
+    expect(isBoothDeepLinkPath("/exhibitions/x")).toBe(false);
   });
 });

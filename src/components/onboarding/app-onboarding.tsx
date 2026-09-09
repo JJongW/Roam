@@ -57,7 +57,7 @@ export function AppOnboardingGate() {
   const setNeedsOnboarding = useAuthStore((s) => s.setNeedsOnboarding);
   // 계정 시트의 "온보딩 다시 하기"가 이 값을 직접 풀 수 있어야 해서(닉네임 버튼
   // 눌러 이 게이트 바깥에서 트리거) 컴포넌트 로컬 state가 아니라 store에 둔다.
-  const anonDismissed = useAuthStore((s) => s.anonOnboardingDismissed);
+  const dismissedBy = useAuthStore((s) => s.onboardingDismissedBy);
   const dismissAppOnboarding = useAuthStore((s) => s.dismissAppOnboarding);
   const signalAppOnboardingComplete = useCompanionStore(
     (s) => s.signalAppOnboardingComplete,
@@ -78,9 +78,9 @@ export function AppOnboardingGate() {
   );
 
   const onboarded = isAppOnboardingDismissed({
-    user,
+    userId: user?.id ?? null,
     needsOnboarding,
-    anonDismissed,
+    dismissedBy,
   });
   // "다시 하기"로 dismiss가 풀려 게이트가 다시 뜰 때, 지난번 멈춰있던 단계(예:
   // "saving")가 그대로 남아있으면 화면이 처음부터가 아니라 중간부터 뜬다 — 껐다가
