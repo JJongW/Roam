@@ -116,6 +116,7 @@ export function VerifyQueue({ rows }: { rows: VerifyRow[] }) {
       {rows.map((r) => {
         const picked = done[r.boothId];
         const ig = r.verified.instagram;
+        const dir = r.verified.directory;
         return (
           <Card key={r.boothId} className="space-y-4 p-4">
             <div className="flex flex-wrap items-center gap-2">
@@ -142,6 +143,56 @@ export function VerifyQueue({ rows }: { rows: VerifyRow[] }) {
                 alt={`${r.name} 대표 이미지`}
                 className="h-40 w-full rounded-xl object-cover"
               />
+            )}
+
+            {/* 근거 링크 — 출처(브랜드 본계정)와 구분해서 따로 보여준다. */}
+            {r.verified.evidence?.length ? (
+              <section className="rounded-xl border border-border bg-secondary/40 p-3">
+                <p className="text-xs font-semibold">근거</p>
+                <ul className="mt-1 space-y-1">
+                  {r.verified.evidence.map((e) => (
+                    <li key={e.url} className="text-xs">
+                      <a
+                        href={e.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1 underline"
+                      >
+                        {e.label} <ExternalLink className="size-3" />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
+
+            {/* 주최 디렉터리 원문 — 브랜드가 직접 등록한 글이라 신원·참여 둘 다 증명한다. */}
+            {dir && (
+              <section className="rounded-xl border border-border bg-secondary/40 p-3">
+                <div className="flex flex-wrap items-center gap-2 text-xs">
+                  <span className="font-semibold">주최 브랜드 디렉터리</span>
+                  <span className="text-muted-foreground">
+                    {dir.nameKor}
+                    {dir.nameEng ? ` · ${dir.nameEng}` : ""}
+                    {dir.category ? ` · ${dir.category}` : ""}
+                  </span>
+                  <a
+                    href={dir.source}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1 underline"
+                  >
+                    원문 <ExternalLink className="size-3" />
+                  </a>
+                </div>
+                {dir.intro && <p className="mt-2 text-xs font-semibold">{dir.intro}</p>}
+                {dir.pr && (
+                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{dir.pr}</p>
+                )}
+                {dir.link && (
+                  <p className="mt-1 text-xs text-muted-foreground">브랜드 등록 링크: {dir.link}</p>
+                )}
+              </section>
             )}
 
             {/* 근거 원문 — 요약만 보고 판단하지 않도록 읽은 것을 그대로 둔다. */}
