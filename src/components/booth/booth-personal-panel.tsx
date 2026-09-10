@@ -10,6 +10,7 @@ import { NotePhotos } from "@/components/booth/note-photos";
 import { JudgmentBar } from "@/components/booth/judgment-bar";
 import { useT } from "@/lib/i18n/provider";
 import { boothValueSlugs } from "@/lib/values";
+import { acceptsJudgment } from "@/lib/booth/judgeable";
 import type { Booth, Category } from "@/lib/types";
 
 /**
@@ -56,14 +57,16 @@ export function BoothPersonalPanel({
     <section className="space-y-2.5">
       <h2 className="text-base font-bold">{t("booth.recordHeading")}</h2>
 
-      <JudgmentBar
-        mode="adaptive"
-        boothId={booth.id}
-        boothName={booth.name}
-        interestSlugs={boothValueSlugs(booth)}
-        categoryLabel={category?.name}
-        exhibitionSlug={exhibitionSlug}
-      />
+      {acceptsJudgment(booth) && (
+        <JudgmentBar
+          mode="adaptive"
+          boothId={booth.id}
+          boothName={booth.name}
+          interestSlugs={boothValueSlugs(booth)}
+          categoryLabel={category?.name}
+          exhibitionSlug={exhibitionSlug}
+        />
+      )}
 
       <div className="relative">
         <NotebookPen className="pointer-events-none absolute left-3 top-3 size-4 text-muted-foreground" />
