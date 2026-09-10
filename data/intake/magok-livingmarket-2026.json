@@ -2234,7 +2234,14 @@
      "GITSAM",
      "파인 주얼리"
     ]
-   }
+   },
+   "images": [
+    "/booths/magok-livingmarket-2026/G-07_1.webp",
+    "/booths/magok-livingmarket-2026/G-07_2.webp",
+    "/booths/magok-livingmarket-2026/G-07_3.webp",
+    "/booths/magok-livingmarket-2026/G-07_4.webp",
+    "/booths/magok-livingmarket-2026/G-07_5.webp"
+   ]
   },
   {
    "code": "G-08",
@@ -2508,8 +2515,17 @@
    ],
    "websiteUrl": "https://orekoko.kr",
    "images": [
-    "/booths/magok-livingmarket-2026/G-20.webp"
-   ]
+    "/booths/magok-livingmarket-2026/G-20_1.webp",
+    "/booths/magok-livingmarket-2026/G-20_2.webp",
+    "/booths/magok-livingmarket-2026/G-20_3.webp",
+    "/booths/magok-livingmarket-2026/G-20_4.webp",
+    "/booths/magok-livingmarket-2026/G-20_5.webp"
+   ],
+   "enrichment": {
+    "summary": "오레코코 / Orecoco Cosmetic — 인체지방 기질세포 배양액을 쓰는 스킨케어 브랜드. 프로필에 '오직! 피부를 위한 원료만 채우다', #nopurifiedwater(정제수 무첨가)를 내걸었다. 앰플·에센스 중심의 고가 라인.",
+    "sourceUrl": "https://www.instagram.com/orekoko_official/"
+   },
+   "instagramUrl": "https://www.instagram.com/orekoko_official/"
   },
   {
    "code": "G-21",
@@ -2737,7 +2753,10 @@
    ],
    "websiteUrl": "https://beddingcafe.com",
    "images": [
-    "/booths/magok-livingmarket-2026/H-01.webp"
+    "/booths/magok-livingmarket-2026/H-01_1.webp",
+    "/booths/magok-livingmarket-2026/H-01_2.webp",
+    "/booths/magok-livingmarket-2026/H-01_3.webp",
+    "/booths/magok-livingmarket-2026/H-01_4.webp"
    ]
   },
   {
@@ -3517,8 +3536,8 @@
    ],
    "websiteUrl": "https://sildream.com",
    "enrichment": {
-    "summary": "실드림 — 디자인 실리콘 주방용품. 대한민국 실리콘 주방용품 선두 기업이라고 자칭.",
-    "sourceUrl": "https://www.instagram.com/sildream_bs/"
+    "summary": "실드림 — 디자인 실리콘 주방용품. 대한민국 실리콘 주방용품 선두 기업이라고 자칭. ※ 인스타 @sildream_bs는 안산 사동 뜨개공방으로 동명이인이라 연결을 끊었다(2026-09-10 확인).",
+    "sourceUrl": "https://sildream.com"
    },
    "images": [
     "/booths/magok-livingmarket-2026/J-07.webp"
