@@ -95,3 +95,4 @@ public/Coex_도면/
 # 인입 전 백업(운영 값 스냅샷) — 되돌리기용 로컬 안전망이다. 이제 change_log가
 # 같은 일을 하므로 레포에 쌓아둘 이유가 없다.
 /data/intake/_backup/
+/data/_backup/

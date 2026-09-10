@@ -437,7 +437,7 @@ export type SignalKind =
  *
  * 전 필드가 필요하면 `listBoothsFull`·`getBoothDetail`을 쓴다.
  */
-export type BoothListItem = Omit<Booth, "images" | "longDescription">;
+export type BoothListItem = Omit<Booth, "longDescription">;
 
 /** 워커가 집어 가는 잡 한 건. type·payload는 워커마다 다르다. */
 export interface Job {
