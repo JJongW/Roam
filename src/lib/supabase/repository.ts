@@ -281,7 +281,7 @@ function mapCategory(r: Row): Category {
 // Those load only on the booth detail (getBoothDetail), so list/map queries stay
 // lean. mapBooth defaults the omitted fields to "" / [].
 const BOOTH_LIST_COLS =
-  "id,exhibition_id,hall_id,category_id,code,kind,name,company,aliases,description,logo_url,instagram_url,website_url,tags,x,y,popularity,created_at";
+  "id,exhibition_id,hall_id,category_id,code,kind,name,company,aliases,description,images,logo_url,instagram_url,website_url,tags,x,y,popularity,created_at";
 
 function mapJob(r: Row): Job {
   return {
@@ -323,7 +323,7 @@ function mapCandidate(r: Row): EnrichmentCandidate {
 /** 목록 조회 결과 매핑 — 안 가져온 두 컬럼을 **빈 값으로 지어내지 않고 뺀다.**
  *  전엔 mapBooth가 strArr(undefined)→[] 로 채워서 "값이 비었다"처럼 보였다. */
 function mapBoothListItem(r: Row): BoothListItem {
-  const { images: _images, longDescription: _long, ...rest } = mapBooth(r);
+  const { longDescription: _long, ...rest } = mapBooth(r);
   return rest;
 }
 

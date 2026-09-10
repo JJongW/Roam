@@ -166,9 +166,11 @@ function now(): string {
   return new Date().toISOString();
 }
 
-/** 목록 조회가 안 가져오는 두 컬럼을 실제로 뺀다 — supabase의 BOOTH_LIST_COLS 재현. */
+/** 목록 조회가 안 가져오는 컬럼을 실제로 뺀다 — supabase의 BOOTH_LIST_COLS 재현.
+ *  images는 부스 카드 썸네일이 쓰므로 목록에도 실린다(빠뜨리면 모든 부스가
+ *  boothPlaceholder로 떨어져 한 전시의 카드가 전부 같은 그림이 된다). */
 function stripListCols(b: Booth): BoothListItem {
-  const { images: _images, longDescription: _long, ...rest } = b;
+  const { longDescription: _long, ...rest } = b;
   return rest;
 }
 
