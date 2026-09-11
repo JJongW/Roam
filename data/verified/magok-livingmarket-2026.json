@@ -404,7 +404,7 @@
   },
   "D-30": {
    "summary": "레어로우(rareraw) — 퍼니처·ACC·리퍼브를 한자리에 준비했습니다. 레어로우가 마곡 리빙마켓에 특별한 혜택과 함께 찾아갑니다. 바로 고를 수 있는 퍼니처와 ACC, 그리고 다시 쓰임을 기다리는 리퍼브 제품까지 한자리에서 만나보세요.",
-   "sourceUrl": "https://www.rareraw.com",
+   "sourceUrl": "https://www.instagram.com/rareraw_official/",
    "confirmed": true,
    "name": "레어로우",
    "image": "/booths/magok-livingmarket-2026/D-30_1.webp",
@@ -450,7 +450,22 @@
     "pr": "레어로우가 마곡 리빙마켓에 특별한 혜택과 함께 찾아갑니다. 바로 고를 수 있는 퍼니처와 ACC, 그리고 다시 쓰임을 기다리는 리퍼브 제품까지 한자리에서 만나보세요.",
     "link": "www.rareraw.com",
     "source": "https://magoklivingdesignfair.kr/fairOnline.do"
-   }
+   },
+   "instagram": {
+    "handle": "rareraw_official",
+    "url": "https://www.instagram.com/rareraw_official/",
+    "header": "레어로우 rareraw — Threads 마곡리빙마켓 피드에서 확인"
+   },
+   "evidence": [
+    {
+     "label": "브랜드가 디렉터리에 등록한 링크",
+     "url": "https://www.rareraw.com"
+    },
+    {
+     "label": "Threads 마곡리빙마켓 검색 피드",
+     "url": "https://www.threads.com/@rareraw_official"
+    }
+   ]
   },
   "J-01": {
    "summary": "디자인하우스 — 이 행사의 주최사다. 월간 〈행복이 가득한 집〉과 함께 마곡리빙마켓을 열고, 2026년 창립 50주년을 맞았다. 참가 브랜드가 아니라 주최 부스다.",
@@ -935,7 +950,7 @@
   },
   "B-03": {
    "summary": "커스템(kustem) — TV를 오브제로 바꾸는 모듈러 디자인 TV 브랜드. 커스템 스타일프레임은 LG 올레드 TV 전용 모듈러 디자인 프레임입니다. 벽에 머물던 TV를 공간의 오브제로 새롭게 바꿉니다.",
-   "sourceUrl": "https://www.kustem.xyz",
+   "sourceUrl": "https://www.instagram.com/kustem_official/",
    "confirmed": true,
    "name": "커스텀",
    "image": "/booths/magok-livingmarket-2026/B-03_1.webp",
@@ -988,8 +1003,21 @@
     {
      "label": "주최 브랜드 큐레이션 — 브랜드 큐레이션 — 모노톤",
      "url": "https://www.instagram.com/p/Dcxj0boFKNE/"
+    },
+    {
+     "label": "브랜드가 디렉터리에 등록한 링크",
+     "url": "https://www.kustem.xyz"
+    },
+    {
+     "label": "Threads 마곡리빙마켓 검색 피드",
+     "url": "https://www.threads.com/@kustem_official"
     }
-   ]
+   ],
+   "instagram": {
+    "handle": "kustem_official",
+    "url": "https://www.instagram.com/kustem_official/",
+    "header": "커스템 KUSTEM — Threads 마곡리빙마켓 피드에서 확인"
+   }
   },
   "A-08": {
    "summary": "스튜디오 무드(STUDIO MOOD) — 감성을 담은 철제 오브제를 제작하는 스튜디오무드 입니다 스튜디오무드는 철제를 기반으로 공간의 분위기를 완성하는 리빙 브랜드입니다. 가림막, 커버, 오브제 제품을 통해 기능을 넘어 공간에 자연스럽게 스며드는 디자인을 제안하며, 일상을 더 머무르고 싶은 공간으로 만듭니다.",
@@ -2199,7 +2227,19 @@
     "L-15"
    ],
    "unverified": true,
-   "note": "이전 초안은 요약이 '아트북/포스터 출판', 로미 한 줄이 '주방과 식탁을 위한 디자인 제품'으로 서로 다른 브랜드를 말했다. 둘 다 근거가 없어 삭제."
+   "note": "이전 초안은 요약이 '아트북/포스터 출판', 로미 한 줄이 '주방과 식탁을 위한 디자인 제품'으로 서로 다른 브랜드를 말했다. 둘 다 근거가 없어 삭제.",
+   "images": [
+    "/booths/magok-livingmarket-2026/L-15_1.webp",
+    "/booths/magok-livingmarket-2026/L-15_2.webp",
+    "/booths/magok-livingmarket-2026/L-15_3.webp",
+    "/booths/magok-livingmarket-2026/L-15_4.webp",
+    "/booths/magok-livingmarket-2026/L-15_5.webp",
+    "/booths/magok-livingmarket-2026/L-15_6.webp",
+    "/booths/magok-livingmarket-2026/L-15_7.webp",
+    "/booths/magok-livingmarket-2026/L-15_8.webp",
+    "/booths/magok-livingmarket-2026/L-15_9.webp",
+    "/booths/magok-livingmarket-2026/L-15_10.webp"
+   ]
   },
   "K-18": {
    "summary": "에스코리아 — 국내 제작 하이엔드 인이어(이어폰) 제조사.",
@@ -3335,7 +3375,7 @@
    "summary": "나로에(NAROÉ) — 기준 있는 삶을 위한 라이프스타일 브랜드 NAROÉ 남과 비교하는 대신 나만의 감각과 미감으로 기준을 세우는 삶. NAROÉ(나로에)는 그 기준을 찾기 위해 '나로 돌아간다'는 뜻을 이름에 담았습니다. 로고는 청룡영화상 수상자인 서성경 미술감독이 함께해 미감을 살렸으며, 첫 제품 '젠틀 디시 케어'는 설거지라는 반복적인 순간에도 향과 감촉의 기준을 두어 일상의 평범한 순간을 '나를 돌보는 시간'으로 바꿉니다",
    "image": "/booths/magok-livingmarket-2026/F-22_1.webp",
    "confirmed": true,
-   "sourceUrl": "https://www.naroe.co.kr",
+   "sourceUrl": "https://www.instagram.com/naroe.official/",
    "images": [
     "/booths/magok-livingmarket-2026/F-22.webp",
     "/booths/magok-livingmarket-2026/F-22_1.webp",
@@ -3385,7 +3425,22 @@
     "pr": "남과 비교하는 대신 나만의 감각과 미감으로 기준을 세우는 삶. NAROÉ(나로에)는 그 기준을 찾기 위해 '나로 돌아간다'는 뜻을 이름에 담았습니다. 로고는 청룡영화상 수상자인 서성경 미술감독이 함께해 미감을 살렸으며, 첫 제품 '젠틀 디시 케어'는 설거지라는 반복적인 순간에도 향과 감촉의 기준을 두어 일상의 평범한 순간을 '나를 돌보는 시간'으로 바꿉니다",
     "link": "www.naroe.co.kr",
     "source": "https://magoklivingdesignfair.kr/fairOnline.do"
-   }
+   },
+   "instagram": {
+    "handle": "naroe.official",
+    "url": "https://www.instagram.com/naroe.official/",
+    "header": "나로에 NAROÉ — Threads에 '2026 마곡리빙마켓 초대권 증정 이벤트' 게시"
+   },
+   "evidence": [
+    {
+     "label": "브랜드가 디렉터리에 등록한 링크",
+     "url": "https://www.naroe.co.kr"
+    },
+    {
+     "label": "Threads 마곡리빙마켓 검색 피드",
+     "url": "https://www.threads.com/@naroe.official"
+    }
+   ]
   },
   "F-20": {
    "summary": "엘리크(ELLEEK) — 파인 주얼리의 정교함을 일상에 담는 ELLEEK ELLEEK은 빛이 머무는 순간과 사람의 고유한 분위기를 섬세한 주얼리로 담아냅니다. 과하지 않은 반짝임, 오래 바라볼수록 깊어지는 아름다움. 일상에 조용히 스며들어 나만의 우아함이 되는 주얼리를 만듭니다.",
@@ -3606,10 +3661,38 @@
    ]
   },
   "F-26": {
-   "summary": "",
-   "image": "/booths/magok-livingmarket-2026/F-26.webp",
+   "summary": "하트 풋(Heart Foot) — (주)닥터큐메딕스가 만드는 발목 펌프 안마기 브랜드. 'DQ-5000' 등 유·무선 모델을 내고, 층간소음 억제와 근적외선 융합 기술을 내세운다. 부산 동래 매장을 운영하며 백화점 팝업을 돌아왔다.",
+   "roamInterpretation": "발목을 눌러 혈액순환을 돕는 기계를 만드는 곳이야. 5분 올려두는 물건이라 직접 올려봐야 안다.",
+   "valueTags": [
+    {
+     "slug": "rest",
+     "strength": 0.8
+    },
+    {
+     "slug": "goods",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "rest": "발을 올려놓고 5분 쉬어보는 자리야.",
+    "goods": "유선·무선 모델을 나란히 놓고 비교할 수 있어."
+   },
+   "thingsToDo": [
+    "직접 발을 올려 체험해보기",
+    "유선·무선 모델 차이 물어보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "하트풋",
+    "발목 펌프",
+    "DQ-5000"
+   ],
+   "sourceUrl": "https://heart-foot.com/",
    "images": [
-    "/booths/magok-livingmarket-2026/F-26.webp"
+    "/booths/magok-livingmarket-2026/F-26.webp",
+    "/booths/magok-livingmarket-2026/F-26_1.webp",
+    "/booths/magok-livingmarket-2026/F-26_2.webp",
+    "/booths/magok-livingmarket-2026/F-26_3.webp"
    ]
   },
   "F-28": {
@@ -5009,14 +5092,33 @@
    }
   },
   "F-14": {
-   "summary": "",
+   "summary": "리즈 — 주최 부스 명단의 Home & Deco 구역 참가사(F-14). 이름이 일반명사에 가까워 인스타·웹 어디서도 이 부스의 브랜드를 특정하지 못했다.",
+   "roamInterpretation": "이름만 알고 있는 부스야. 홈&데코 줄에 있으니 지나는 길에 확인해보면 돼.",
+   "valueTags": [
+    {
+     "slug": "discovery",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "discovery": "미리 알 수 없는 부스라 직접 보는 게 유일한 방법이야."
+   },
+   "thingsToDo": [
+    "무엇을 다루는 곳인지 물어보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "리즈",
+    "F-14"
+   ],
+   "unverified": true,
+   "note": "인스타 topsearch(리즈 홈/liz living/리즈오브제)·웹 검색 모두 동명 인물·해외 계정만 나온다. 주최 온라인 디렉터리에도 항목이 없다.",
    "images": [
     "/booths/magok-livingmarket-2026/F-14_1.webp",
     "/booths/magok-livingmarket-2026/F-14_2.webp",
     "/booths/magok-livingmarket-2026/F-14_3.webp",
     "/booths/magok-livingmarket-2026/F-14_4.webp"
-   ],
-   "image": "/booths/magok-livingmarket-2026/F-14_1.webp"
+   ]
   },
   "E-09": {
    "summary": "월간 건축문화(A&C(Archi-LAB)) — 디자인서적/ 예술,패션/ 건축,인테리어 월간 건축문화는 건축, 인테리어 중심으로 전공자와 일반 독자를 모두 아우르는 도서 구성으로 열람과 구매를 유도한다. 책의 맥락과 활용 가치를 전달하며, 참여형 이벤트와 연계해 체류 시간과 구매 전환을 높인다. 이를 통해 단순 판매를 넘어 전문성과 감각을 갖춘 건축, 인테리어, 디자인, 미술 관련 전문 출판사 이미지를 구축할 계획이다.",
@@ -5766,6 +5868,36 @@
     "url": "https://www.instagram.com/gitsamofficial/",
     "header": "깃샘(GITSAM) — Exquisite fine jewelry maison · gitsam.kr · Milano 2026 하이라이트"
    }
+  },
+  "L-10": {
+   "summary": "토토방 — 도예·목공 공방. 수제 원목 도마('토토방 도마')와 도자 작업을 하며 2026 핸드아티코리아(8.13~16, 코엑스 Hall B)에 참가했다. 브랜드 인스타 계정은 찾지 못했다.",
+   "roamInterpretation": "나무 도마와 도자를 손으로 만드는 공방이야. 결이 하나씩 달라서 만져보고 골라야 해.",
+   "valueTags": [
+    {
+     "slug": "goods",
+     "strength": 0.7
+    },
+    {
+     "slug": "inspiration",
+     "strength": 0.6
+    }
+   ],
+   "recommendationReasons": {
+    "goods": "수제 도마를 낱개로 골라올 수 있어.",
+    "inspiration": "기계로 못 내는 나무 결과 손자국을 가까이서 봐."
+   },
+   "thingsToDo": [
+    "도마 결 만져 비교하기",
+    "관리법 물어보기"
+   ],
+   "timing": [],
+   "memoryHooks": [
+    "토토방",
+    "수제 원목 도마",
+    "핸드아티코리아"
+   ],
+   "unverified": true,
+   "note": "게시물 근거(#토토방 #토토방도마 #도예공방, 2026 핸드아티코리아 X 토토방)로 실체는 확인했으나 브랜드 본계정은 못 찾았다."
   }
  }
 }
