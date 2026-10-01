@@ -23,10 +23,10 @@ describe("참가사 백필 흐름", () => {
     const exhibitions = await repo.listExhibitions({ limit: 10 });
     const [a, b] = exhibitions.data;
     const hall = async (id: string) => (await repo.listHalls(id))[0].id;
-    const cat = async (id: string) => (await repo.listCategories(id))[0].id;
+    const cat = async () => (await repo.listCategories())[0].id;
     for (const ex of [a, b]) {
       await repo.createBooth({
-        exhibitionId: ex.id, hallId: await hall(ex.id), categoryId: await cat(ex.id),
+        exhibitionId: ex.id, hallId: await hall(ex.id), categoryId: await cat(),
         name: "메멜트 테스트", company: "메멜트 테스트", description: "", longDescription: "",
         images: [], tags: [], x: 0, y: 0, popularity: 50,
       });
