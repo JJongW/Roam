@@ -214,3 +214,34 @@ describe("buildGrounding", () => {
     expect(g.quote).toBeNull();
   });
 });
+
+// 행사를 넘는 기억(설계 2026-10-02 §6): 내 지난 반응 > 이번 행사의 내 반응 > 브랜드의 지난 출전.
+describe("buildGrounding — 행사를 넘는 기억", () => {
+  const b = booth({ goodsKeywords: [], themeTags: [], roamInterpretation: "크림치즈만 만드는 곳이야." });
+
+  it("내가 지난 행사에서 반응했던 브랜드면 그걸 먼저 말한다", () => {
+    const g = buildGrounding(b, [], "ko", { name: "옆 부스", kind: "curious" }, {
+      mine: { exhibition: "2026 마곡리빙마켓", name: "메멜트", kind: "curious" },
+      past: { exhibition: "2026 마곡리빙마켓", name: "메멜트", sameName: true },
+    });
+    expect(g.why).toContain("2026 마곡리빙마켓");
+    expect(g.why).toContain("메멜트");
+    expect(g.why).not.toContain("옆 부스");
+  });
+
+  it("지난 출전은 이번 행사의 내 반응보다 뒤다", () => {
+    const g = buildGrounding(b, [], "ko", { name: "옆 부스", kind: "curious" }, {
+      past: { exhibition: "2026 마곡리빙마켓", name: "메멜트", sameName: true },
+    });
+    expect(g.why).toContain("옆 부스");
+  });
+
+  it("다른 근거가 없으면 지난 출전을 말한다 — 이름이 달랐으면 그때 이름으로", () => {
+    expect(
+      buildGrounding(b, [], "ko", undefined, { past: { exhibition: "2026 마곡리빙마켓", name: "메멜트", sameName: true } }).why,
+    ).toContain("지난 2026 마곡리빙마켓에도 나왔던");
+    expect(
+      buildGrounding(b, [], "ko", undefined, { past: { exhibition: "2026 마곡리빙마켓", name: "블리스", sameName: false } }).why,
+    ).toContain("‘블리스’");
+  });
+});

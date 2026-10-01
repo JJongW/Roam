@@ -183,3 +183,26 @@ describe("createLinkPicker — 근거 링크는 최대 N회, 서로 다른 부�
     expect(pick(taggedBooth("cand1", "discovery"))).toBeUndefined();
   });
 });
+
+describe("createHistoryPicker", () => {
+  it("내 지난 반응은 늘, 지난 출전은 피드당 두 번까지", async () => {
+    const { createHistoryPicker } = await import("./curate");
+    const memory = Object.fromEntries(
+      ["a", "b", "c"].map((id) => [id, { currentName: "메멜트", past: { exhibition: "2026 마곡리빙마켓", name: "메멜트" } }]),
+    );
+    memory.d = { currentName: "블리스", mine: { exhibition: "2026 마곡리빙마켓", name: "프리미엄 남아공 수제 육포", kind: "curious" } } as never;
+    const pick = createHistoryPicker(memory);
+    expect(pick("a")?.past?.sameName).toBe(true);
+    expect(pick("b")?.past).toBeDefined();
+    expect(pick("c")).toBeUndefined();
+    expect(pick("d")?.mine?.name).toBe("프리미엄 남아공 수제 육포");
+  });
+
+  it("이번 행사 근거가 붙는 카드엔 지난 출전을 안 쓰고 횟수도 아낀다", async () => {
+    const { createHistoryPicker } = await import("./curate");
+    const memory = { a: { currentName: "x", past: { exhibition: "e", name: "x" } }, b: { currentName: "y", past: { exhibition: "e", name: "y" } } };
+    const pick = createHistoryPicker(memory, 1);
+    expect(pick("a", true)).toBeUndefined();
+    expect(pick("b")?.past).toBeDefined();
+  });
+});

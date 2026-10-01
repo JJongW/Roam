@@ -32,6 +32,8 @@ import type {
   WelcomeKit,
   ExhibitorGraph,
   ExhibitorLinkCandidate,
+  BoothBrandMemory,
+  BoothAppearance,
 } from "@/lib/types";
 import type { TasteAccuracy } from "@/lib/memory/taste";
 import type { ExhibitorPlan } from "@/lib/exhibitor/plan";
@@ -122,6 +124,11 @@ export interface Repository {
     plan: ExhibitorPlan,
   ): Promise<{ exhibitors: number; participants: number; assignments: number; candidates: number }>;
   listExhibitorLinkCandidates(status?: string): Promise<ExhibitorLinkCandidate[]>;
+  /** 이 행사 부스마다 같은 브랜드의 **이전** 회차 출전과, userId가 있으면 그 사용자의
+   *  긍정 반응(user_exhibitor_judgment_history). key = boothId. */
+  exhibitorHistory(exhibitionId: string, userId: string | null): Promise<Record<string, BoothBrandMemory>>;
+  /** 이 부스와 같은 브랜드의 다른 회차 부스들(최근 회차 먼저). */
+  boothAppearances(boothId: string): Promise<BoothAppearance[]>;
   /** 승인 = 그 부스의 참가사를 대상 참가사에 **통째로 합친다**(모든 회차의 참가 사실).
    *  반려 = 따로 둔다. */
   decideExhibitorLinkCandidate(

@@ -61,12 +61,21 @@ function summaryClause(text: string, max = 44): string {
 /**
  * 부스 + 사용자 상위 관심 가치(slug)로 근거 카드를 만든다.
  */
+export interface BrandHistory {
+  mine?: { exhibition: string; name: string; kind: "must" | "curious" | "good" };
+  past?: { exhibition: string; name: string; sameName: boolean };
+}
+
 export function buildGrounding(
   booth: BoothListItem,
   userValueSlugs: string[],
   locale: Locale = DEFAULT_LOCALE,
   /** 이 부스를 꺼낸 계기가 된 내 지난 반응 — 근거를 가치 이름이 아니라 내 행동으로 말한다. */
   because?: { name: string; kind: "must" | "curious" | "good" },
+  /** 이 브랜드의 다른 행사 기록(참가사 연결, 설계 2026-10-02 §6). 이름은 그 행사에
+   *  표기된 명칭이다. mine은 이 사용자 본인의 긍정 반응만 — 남의 반응도, 내 부정
+   *  반응도 말하지 않는다("별로라던 곳"은 판단을 대신 내려 버린다). */
+  history?: BrandHistory,
 ): Grounding {
   const t = makeT(DICTS[locale]);
   const e = booth.enrichment;
@@ -121,7 +130,20 @@ export function buildGrounding(
   // must·curious는 관람 전 긍정 의사(예전 status='interested')로 묶이고,
   // good은 현장에서 확인된 긍정(예전 status='visited')이다 — 문구는 그대로,
   // 매핑되는 조건만 새 어휘로 바뀐다.
-  const link = because
+  // 우선순위: 내 지난 반응(행사를 넘는 기억) > 이번 행사의 내 반응 > 브랜드의 지난 출전
+  // > 겹치는 가치의 저작 근거. 기억이 근거로 가장 강하다 — 내가 실제로 했던 일이라서.
+  const mine = history?.mine;
+  const past = history?.past;
+  const link = mine
+    ? t(mine.kind === "good" ? "grounding.memoryVisited" : "grounding.memoryInterested", {
+        exhibition: mine.exhibition,
+        name: mine.name,
+      })
+    : !because && past
+      ? past.sameName
+        ? t("grounding.pastAppearance", { exhibition: past.exhibition })
+        : t("grounding.pastAppearanceAs", { exhibition: past.exhibition, name: past.name })
+      : because
     ? t(
         because.kind === "good"
           ? "grounding.becauseVisited"

@@ -8,7 +8,8 @@ import { brainInterestWeights, mergeBrainInterests } from "@/lib/memory/apply";
 import { readBrain } from "@/lib/memory/service";
 import { getRepository } from "@/lib/repositories";
 import { deriveCue } from "@/lib/feed/cue";
-import { buildGrounding, type Grounding } from "@/lib/feed/grounding";
+import { buildGrounding, type BrandHistory, type Grounding } from "@/lib/feed/grounding";
+import { flatName } from "@/lib/exhibitor/identity";
 import { DEFAULT_RHYTHM, RHYTHM_MIX, type Rhythm } from "@/lib/feed/rhythm";
 import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n/config";
 import { emptyBrain } from "@/lib/memory/distill";
@@ -17,6 +18,7 @@ import type {
     BoothListItem,
   BoothNote,
   UserBrain,
+  BoothBrandMemory,
 } from "@/lib/types";
 
 export type PickKind = "stable" | "unfamiliar" | "adventure";
@@ -78,6 +80,25 @@ export function createLinkPicker(
     usedBoothIds.add(hit.booth.id);
     uses++;
     return { name: hit.booth.name, kind: hit.kind };
+  };
+}
+
+/** 브랜드의 다른 행사 기록 선택기. mine은 늘, past는 피드당 maxPast번까지. 순수 클로저. */
+export function createHistoryPicker(
+  memory: Record<string, BoothBrandMemory>,
+  maxPast = 2,
+): (boothId: string, hasBecause?: boolean) => BrandHistory | undefined {
+  let pastUses = 0;
+  return (boothId: string, hasBecause = false) => {
+    const m = memory[boothId];
+    if (!m) return undefined;
+    if (m.mine) return { mine: m.mine };
+    // 이번 행사의 내 반응이 근거로 붙는 카드엔 지난 출전을 안 말한다 — 횟수도 안 쓴다.
+    if (!m.past || hasBecause || pastUses >= maxPast) return undefined;
+    pastUses++;
+    return {
+      past: { ...m.past, sameName: flatName(m.past.name) === flatName(m.currentName) },
+    };
   };
 }
 
@@ -186,7 +207,16 @@ export async function curateFeed(
   // 피드는 6칸짜리 결정 큐라(rhythm.ts) 이미 정한 부스가 칸을 차지하면 새 후보가
   // 올라올 자리가 없다. 다시 보는 곳은 지도(색)와 내 메모장(네 상태 다 표시)이다.
   // 노트는 서버에 있어 재접속해도 유지된다.
-  const notes = userId ? await (await getRepository()).listNotes(userId) : [];
+  const repo = await getRepository();
+  const [notes, memory] = await Promise.all([
+    userId ? repo.listNotes(userId) : Promise.resolve([]),
+    // 같은 브랜드의 다른 행사 기록(설계 2026-10-02 §6). 실패해도 피드는 떠야 한다 —
+    // 기억은 덧붙이는 근거라 없으면 지금처럼 말하면 된다.
+    repo.exhibitorHistory(rank.exhibitionId, userId).catch((e) => {
+      console.error("[curateFeed] exhibitorHistory 실패", e);
+      return {} as Record<string, BoothBrandMemory>;
+    }),
+  ]);
   const decided = decidedBoothIds(notes);
 
   // "왜 지금 너한테"를 가치 이름이 아니라 **내가 실제로 누른 부스**로 말하기 위한 표.
@@ -213,6 +243,10 @@ export async function curateFeed(
   // 항상 사실을 말하므로(fact 없는 카드가 더는 없다), 근거 링크를 그 여부에 묶을
   // 이유가 없어졌다.
   const becauseOf = createLinkPicker(positives);
+  // "지난 ○○에도 나왔던 브랜드야"는 사실이라 누구에게나 말해도 되지만, 피드당 2번까지만 —
+  // 모든 카드가 "지난번에도 나왔어"면 정보가 아니다. 내 지난 반응은 제한하지 않는다
+  // (그 사람에게만 보이고, 가장 강한 근거다).
+  const historyOf = createHistoryPicker(memory);
 
   // 후보 풀에서 먼저 걷어낸다. used에만 넣으면 안정픽이 rank.ranked를 그대로
   // 훑으면서 add()가 used를 검사하지 않고 push하므로 이미 정한 부스가 그대로 남는다
@@ -241,12 +275,10 @@ export async function curateFeed(
       ),
       pick,
       cue: deriveCue(booth, rank.eventsByBooth[booth.id] ?? []),
-      grounding: buildGrounding(
-        booth,
-        userValueSlugs,
-        locale,
-        becauseOf(booth),
-      ),
+      grounding: (() => {
+        const because = becauseOf(booth);
+        return buildGrounding(booth, userValueSlugs, locale, because, historyOf(booth.id, Boolean(because)));
+      })(),
     });
     used.add(booth.id);
   };

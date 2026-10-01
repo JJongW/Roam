@@ -471,6 +471,24 @@ export interface ExhibitorGraph {
   candidates: { boothId: string; exhibitorId: string; status: string }[];
 }
 
+/** 한 부스(=그 브랜드)의 다른 행사 기록 — 로미 2절 재료(설계 2026-10-02 §6). */
+export interface BoothBrandMemory {
+  /** 이 부스가 이번 행사에 표기된 이름 — 지난 이름과 같은지 비교용. */
+  currentName: string;
+  past?: { exhibition: string; name: string };
+  /** 이 사용자 본인의 긍정 반응만. */
+  mine?: { exhibition: string; name: string; kind: "must" | "curious" | "good" };
+}
+
+/** 부스 상세 "다른 행사에서도" 한 줄. */
+export interface BoothAppearance {
+  exhibitionName: string;
+  startDate: string;
+  displayName: string;
+  boothId: string;
+  boothCode?: string;
+}
+
 /** "같은 브랜드인가요?" — 이름만 같아서 사람이 판단해야 하는 연결(0057). */
 export interface ExhibitorLinkCandidate {
   id: string;

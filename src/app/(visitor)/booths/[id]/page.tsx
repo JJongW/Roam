@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import { Ticket, ExternalLink, Globe } from "lucide-react";
 import { getBoothDetailCached } from "@/lib/repositories/cached";
+import { getRepository } from "@/lib/repositories";
+import Link from "next/link";
 import { AppBar } from "@/components/common/app-bar";
 import { BookmarkButton } from "@/components/booth/bookmark-button";
 import { BoothAiSummary } from "@/components/booth/booth-ai-summary";
@@ -38,6 +40,10 @@ export default async function BoothDetailPage({ params }: Props) {
 
   const { booth, category, welcomeKit, events, reviews, reviewSummary } =
     detail;
+  // 같은 브랜드의 다른 행사 출전(참가사 연결, 설계 2026-10-02 §6). 실패해도 페이지는 뜬다.
+  const appearances = await (await getRepository())
+    .boothAppearances(booth.id)
+    .catch(() => []);
   const { t } = await getI18n();
   const about = boothAbout(booth);
 
@@ -212,6 +218,22 @@ export default async function BoothDetailPage({ params }: Props) {
                         </p>
                       </section>
                     )}
+
+                  {/* 다른 행사에서도 — 그 행사에 표기된 이름 그대로(설계 §3). */}
+                  {appearances.length > 0 && (
+                    <section className="space-y-2">
+                      <h2 className="text-base font-bold">{t("booth.otherExhibitions")}</h2>
+                      <ul className="space-y-1.5">
+                        {appearances.map((a) => (
+                          <li key={a.boothId}>
+                            <Link href={`/booths/${a.boothId}`} className="text-[15px] text-foreground/90 underline-offset-4 hover:underline">
+                              {a.exhibitionName} · ‘{a.displayName}’{a.boothCode ? ` · ${t("booth.code", { code: a.boothCode })}` : ""}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
+                  )}
 
                   {/* 수동 주입 추가정보(굿즈·팁) — 있을 때만. */}
                   {booth.enrichment &&

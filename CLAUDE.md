@@ -53,6 +53,9 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
   확인**(`/admin/verify/brands`, 0057 후보). 판정은 `lib/exhibitor/identity.ts` 하나 — 품질 게이트의
   신원 앵커와 공유한다. 인입 적용이 끝나면 연결 + **이월 초안**(지난 회차의 승인 정보, 행사 한정
   표현 제외)이 자동으로 돈다. 소개·사진은 참가사에 복사하지 않는다 — 가장 최근 승인 부스가 원천.
+  로미 2절 우선순위: **내 지난 반응**(긍정만, 그 사용자에게만) > 이번 행사의 내 반응 > **브랜드의
+  지난 출전**(피드당 2번) > 겹치는 가치의 저작 근거(`curate.ts` createHistoryPicker). 부스 상세엔
+  "다른 행사에서도"(그 행사의 표기 이름 + 부스 번호).
   설계 `docs/superpowers/specs/2026-10-02-cross-exhibition-brand-design.md`.
 - **주최자 콘솔** `/admin`: 전시·부스·이벤트·대기 관리 + 분석 대시보드(히트맵·인기부스·동선흐름·퍼널).
 - **커뮤니티는 웹에서 뺐다**(2026-10-01) — 전시 커뮤니티 페이지와 부스 상세 "방문자" 탭을

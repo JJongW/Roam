@@ -321,6 +321,7 @@ const ko = {
     mapCardDesc: "전시장을 직접 둘러보고 끌리는 부스에 반응해봐",
     aboutQuoteBy: "작가가 직접 쓴 소개",
     aboutEmpty: "아직 이 부스를 소개할 자료를 찾지 못했어. 주최 측 목록엔 이름과 위치만 있어.",
+    otherExhibitions: "다른 행사에서도",
     notesCard: "내 메모장",
     notesCardDesc: "가봤거나 남겨둔 부스, 적어둔 메모를 여기서 봐",
   },
@@ -436,6 +437,10 @@ const ko = {
     // 근거는 가치 이름이 아니라 내가 실제로 누른 부스로 말한다.
     becauseInterested: "아까 ‘{booth}’에 관심 보여서 같이 꺼냈어.",
     becauseVisited: "‘{booth}’ 가봤다길래 같이 꺼냈어.",
+    memoryInterested: "{exhibition} 때 ‘{name}’에 관심 보였던 그 브랜드야.",
+    memoryVisited: "{exhibition} 때 ‘{name}’ 가봤던 그 브랜드야.",
+    pastAppearance: "지난 {exhibition}에도 나왔던 브랜드야.",
+    pastAppearanceAs: "지난 {exhibition}에도 ‘{name}’ 이름으로 나왔던 브랜드야.",
     whatGoods: "여기 {goods} 있어",
     // 부스 당사자가 쓴 소개를 인용할 때 붙이는 출처. 로미 말로 고쳐 쓰지 않고
     // 출처를 밝히는 이유는 booth/voice.ts 참고.
@@ -1042,6 +1047,7 @@ const en: Dict = {
     mapCardDesc: "Explore the venue and react to booths that draw you",
     aboutQuoteBy: "In the artist\u2019s own words",
     aboutEmpty: "We couldn\u2019t find anything about this booth yet \u2014 the organizer\u2019s list only has its name and location.",
+    otherExhibitions: "At other fairs too",
     notesCard: "My notes",
     notesCardDesc: "Booths you've seen or saved, and what you wrote",
   },
@@ -1159,6 +1165,10 @@ const en: Dict = {
     becauseInterested:
       "You showed interest in “{booth}”, so I pulled this too.",
     becauseVisited: "You saw “{booth}”, so I pulled this too.",
+    memoryInterested: "Same brand as “{name}” — you were into it at {exhibition}.",
+    memoryVisited: "Same brand as “{name}” — you visited it at {exhibition}.",
+    pastAppearance: "This brand was at {exhibition} too.",
+    pastAppearanceAs: "This brand was at {exhibition} too, as “{name}”.",
     whatGoods: "Has {goods}",
     quoteSource: "In the exhibitor's own words",
     whatCompanyFallback: "It's the “{name}” booth",
