@@ -44,7 +44,11 @@ export async function runDraftBatch(
     return { error: `전시를 찾을 수 없습니다: ${input.exhibitionSlug}` };
   }
 
-  const booths = await repo.listBoothsFull(exhibitionId);
+  const [booths, categories] = await Promise.all([
+    repo.listBoothsFull(exhibitionId),
+    repo.listCategories(exhibitionId),
+  ]);
+  const categoryName = new Map(categories.map((c) => [c.id, c.name]));
   const wanted = input.codes?.length
     ? booths.filter((b) => b.code && input.codes!.includes(b.code))
     : booths
@@ -122,7 +126,7 @@ export async function runDraftBatch(
         const report = gradeCandidate({
           payload: kept,
           sources,
-          booth,
+          booth: { ...booth, categoryName: categoryName.get(booth.categoryId) },
           seenPhrases,
           seenActions,
           requested: missing,

@@ -425,3 +425,31 @@ describe("주최 소개 = 신뢰 근거", () => {
     expect(c).toContain("unanchored");
   });
 });
+
+// 주류박람회(2026-10-01): booth.company가 분류 요약이 아니라 **실제 회사명**인
+// 전시에서 분류 되읽기가 오탐됐다. "꼬마루 육포" 부스의 "꼬마루는 수제 육포…"가 걸렸다.
+describe("분류 되읽기 — 회사명이 진짜 회사명인 전시", () => {
+  const payload = (summary: string) => ({ summary, valueTags: [{ slug: "goods", strength: 0.7 }] });
+  const codes = (input: GradeInput) => gradeCandidate(input).issues.map((i) => i.code);
+
+  it("회사명을 주어로 쓰면 되읽기가 아니다", () => {
+    expect(
+      codes({ booth: { name: "꼬마루 육포", company: "꼬마루", categoryName: "관련식품" }, sources: [], payload: payload("꼬마루는 무보존제 수제 육포를 만든다.") }),
+    ).not.toContain("category_readback");
+  });
+
+  it("띄어쓰기·법인 표기가 달라도 같은 이름으로 본다", () => {
+    expect(
+      codes({ booth: { name: "헬로우 디스틸러리", categoryName: "전통주" }, sources: [], payload: payload("헬로우디스틸러리는 곡물 향을 살린 전통주를 빚는다.") }),
+    ).not.toContain("category_readback");
+    expect(
+      codes({ booth: { name: "농업회사법인 주식회사 진양조장", categoryName: "전통주" }, sources: [], payload: payload("진양조장은 전통주를 빚는 양조장이다.") }),
+    ).not.toContain("category_readback");
+  });
+
+  it("부스·회사 이름 없이 분류만 주어면 여전히 걸린다", () => {
+    expect(
+      codes({ booth: { name: "꼬마루 육포", company: "꼬마루", categoryName: "전통주" }, sources: [], payload: payload("전통주는 쌀과 누룩으로 빚는 술이다.") }),
+    ).toContain("category_readback");
+  });
+});
