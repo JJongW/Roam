@@ -54,6 +54,13 @@ describe("planIntake — 신규", () => {
     expect(plan.warnings).toEqual([]);
   });
 
+  // 생성 항목에 aliases가 빠져 있어서 첫 인입에서 조용히 사라지고, 두 번째
+  // 실행에서야 "채움"으로 나왔다(2026-10-01 주류박람회 인입, 99건).
+  it("새 부스도 aliases를 싣는다", () => {
+    const plan = run(file([{ code: "H01", name: "천비향", category: "수집의 집", aliases: ["좋은술"] }]));
+    expect(plan.creates[0].aliases).toEqual(["좋은술"]);
+  });
+
   it("도면에 없는 code는 0,0으로 만들고 경고를 남긴다", () => {
     const plan = run(file([{ code: "ZZ9", name: "미배치" }]));
     expect(plan.creates[0]).toMatchObject({ x: 0, y: 0 });

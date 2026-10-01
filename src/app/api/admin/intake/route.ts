@@ -129,6 +129,7 @@ async function applyPlan(
         instagramUrl: c.instagramUrl,
         websiteUrl: c.websiteUrl,
         tags: c.tags,
+        aliases: c.aliases,
         x: c.x,
         y: c.y,
         popularity: 50,

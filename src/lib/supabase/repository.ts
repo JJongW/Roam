@@ -571,6 +571,9 @@ function boothToRow(input: Partial<BoothInput>): Row {
   if (input.instagramUrl !== undefined) row.instagram_url = input.instagramUrl;
   if (input.websiteUrl !== undefined) row.website_url = input.websiteUrl;
   if (input.tags !== undefined) row.tags = input.tags;
+  // 매퍼에 빠져 있어서 인입이 보낸 별칭이 생성·채움 양쪽에서 성공 응답과 함께
+  // 버려졌다(2026-10-01). 필드를 BoothInput에 더하면 여기도 더한다.
+  if (input.aliases !== undefined) row.aliases = input.aliases;
   if (input.x !== undefined) row.x = input.x;
   if (input.y !== undefined) row.y = input.y;
   if (input.popularity !== undefined) row.popularity = input.popularity;

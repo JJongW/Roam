@@ -158,6 +158,9 @@ export const boothInputSchema = z.object({
   instagramUrl: z.string().url().optional(),
   websiteUrl: z.string().url().optional(),
   tags: z.array(z.string()).default([]),
+  /** 공동입점·정식명 등 같은 부스를 가리키는 다른 이름. default 없음 —
+   *  부분 수정에서 안 보낸 키가 빈 배열로 둔갑하면 기존 별칭이 지워진다. */
+  aliases: z.array(z.string()).optional(),
   x: z.number(),
   y: z.number(),
   popularity: z.number().int().min(0).max(100).default(50),
