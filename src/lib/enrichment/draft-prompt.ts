@@ -22,7 +22,7 @@ const VOICE_RULES = [
 
 export interface DraftTarget {
   booth: Pick<Booth, "code" | "name" | "company" | "description" | "tags"> &
-    Partial<Pick<Booth, "websiteUrl" | "instagramUrl">>;
+    Partial<Pick<Booth, "websiteUrl" | "instagramUrl" | "longDescription">>;
   /** 이미 있는 저작 정보 — 초안기는 **빈 필드만** 채운다. */
   existing?: {
     summary?: string;
@@ -65,6 +65,11 @@ export function draftUserPrompt(t: DraftTarget): string {
     `이름: ${b.name}`,
     b.company && b.company !== b.name ? `회사/브랜드: ${b.company}` : "",
     b.description ? `주최 측 공식 소개: ${b.description}` : "",
+    // 짧은 소개(300자)만 주면 제품·수상 같은 구체적인 사실이 빠진다. 주최가 받은
+    // 전문이 있으면 그게 가장 믿을 만한 재료다.
+    b.longDescription && b.longDescription !== b.description
+      ? `주최 측 공식 소개(전문):\n${b.longDescription}`
+      : "",
     b.tags?.length ? `분야 태그: ${b.tags.join(", ")}` : "",
     t.existing?.summary ? `이미 있는 요약: ${t.existing.summary}` : "",
     t.existing?.roamInterpretation

@@ -48,6 +48,7 @@ export async function POST(req: Request) {
       // 초안기가 그때 요청했던 필드 = payload에 담긴 키.
       requested: Object.keys(payload),
       hadMaterial: Boolean(booth.description || booth.enrichment?.summary),
+      organizerMaterial: Boolean(booth.description),
     });
     const line = payload.roamInterpretation?.trim();
     if (line) seenPhrases.add(line);

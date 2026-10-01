@@ -40,6 +40,12 @@ export interface GradeInput {
   /** 부스에 이미 공식 소개 같은 재료가 있었나. 있으면 검색 결과가 없어도 그 재료로
    *  쓴 것이라 "근거 없음"의 무게가 다르다. */
   hadMaterial?: boolean;
+  /** 주최 측이 받은 업체 소개가 있다(인입으로 들어온 booth.description).
+   *  2026-10-01 결정: **무조건 신뢰**한다 — 그 글이 출처이자 신원이다. 부스번호와
+   *  업체를 맞붙인 게 주최라서, 검색으로 브랜드를 다시 확인할 이유가 없다.
+   *  우리가 쓴 요약(enrichment.summary)은 여기 들지 않는다 — 자동 통과한 초안이
+   *  다음 초안의 근거가 되는 순환을 막는다. */
+  organizerMaterial?: boolean;
 }
 
 /**
@@ -165,7 +171,8 @@ export function gradeCandidate(input: GradeInput): QualityReport {
   };
 
   // ── 근거 ────────────────────────────────────────────────────────────────
-  if (sources.length === 0) {
+  const trusted = Boolean(input.organizerMaterial);
+  if (sources.length === 0 && !trusted) {
     add({
       code: "no_sources",
       message: input.hadMaterial
@@ -206,7 +213,7 @@ export function gradeCandidate(input: GradeInput): QualityReport {
       const text = `${s.title ?? ""} ${s.uri}`.toLowerCase();
       return known.some((k) => text.includes(k.match));
     });
-  if (!anchored) {
+  if (!anchored && !trusted) {
     add({
       code: "unanchored",
       message: known.length
@@ -221,7 +228,7 @@ export function gradeCandidate(input: GradeInput): QualityReport {
   // 근거가 하나뿐이면 맞대볼 데가 없다. 실제로 운영에 자동 반영된 것 중
   // 미국 브랜드를 한국 부스로 착각한 초안(아리아→homedepot의 에어프라이어),
   // 내용이 없는 초안(디자인북→언론 리스팅 1건)이 전부 단일 출처였다.
-  if (sources.length === 1) {
+  if (sources.length === 1 && !trusted) {
     add({
       code: "single_source",
       message: `출처가 ${sources[0].title ?? "1건"} 하나뿐이다 — 맞대볼 근거가 없다`,

@@ -399,3 +399,29 @@ describe("신원 앵커 — 같은 회사의 다른 도메인, 플랫폼 계정"
     ).toContain("unanchored");
   });
 });
+
+// 2026-10-01 결정: 주최 측이 받은 업체 소개(인입으로 들어온 booth.description)는
+// 무조건 신뢰한다. 그게 출처이자 신원이다 — 부스번호와 업체를 맞붙인 게 주최다.
+describe("주최 소개 = 신뢰 근거", () => {
+  const payload = {
+    summary: "평택 쌀과 자가 누룩으로 빚는 전통주 양조장이다.",
+    roamInterpretation: "다섯 번 빚은 천비향 약주를 맛볼 수 있어.",
+    valueTags: [{ slug: "experience", strength: 0.8 }],
+    recommendationReasons: { experience: "천비향 약주를 시음할 수 있어." },
+    thingsToDo: ["천비향 약주 시음하기"],
+  };
+  const codes = (input: GradeInput) => gradeCandidate(input).issues.map((i) => i.code);
+
+  it("주최 소개가 있으면 검색 출처·신원 앵커가 없어도 막지 않는다", () => {
+    const c = codes({ booth: { name: "천비향" }, sources: [], payload, organizerMaterial: true });
+    expect(c).not.toContain("no_sources");
+    expect(c).not.toContain("unanchored");
+    expect(c).not.toContain("single_source");
+  });
+
+  it("주최 소개가 없으면 예전 규칙 그대로", () => {
+    const c = codes({ booth: { name: "천비향" }, sources: [], payload });
+    expect(c).toContain("no_sources");
+    expect(c).toContain("unanchored");
+  });
+});

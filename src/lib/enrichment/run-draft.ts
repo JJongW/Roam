@@ -127,6 +127,7 @@ export async function runDraftBatch(
           seenActions,
           requested: missing,
           hadMaterial: Boolean(booth.description || booth.enrichment?.summary),
+          organizerMaterial: Boolean(booth.description),
         });
         if (!best || report.confidence > best.report.confidence) {
           best = { payload: kept, sources, report };

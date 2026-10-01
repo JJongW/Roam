@@ -88,3 +88,13 @@ describe("draftUserPrompt — 확인된 주소", () => {
     expect(draftUserPrompt({ booth, missing: ["summary"] })).not.toContain("공식 주소");
   });
 });
+
+describe("draftUserPrompt — 주최 소개 전문", () => {
+  it("긴 소개(회사소개·제품)를 싣는다", () => {
+    const p = draftUserPrompt({
+      booth: { code: "H-06", name: "천비향", company: "좋은술", description: "짧은 소개", tags: [], longDescription: "주요 제품: 천비향약주, 화주" },
+      missing: ["summary"],
+    });
+    expect(p).toContain("천비향약주, 화주");
+  });
+});
