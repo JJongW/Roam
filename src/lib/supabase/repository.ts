@@ -61,7 +61,10 @@ import type {
   VisitPurpose,
   VisitorSession,
   WelcomeKit,
+  ExhibitorGraph,
+  ExhibitorLinkCandidate,
 } from "@/lib/types";
+import type { ExhibitorPlan, Ref } from "@/lib/exhibitor/plan";
 import type {
   AnalyticsEventInput,
   BookmarkInput,
@@ -146,6 +149,36 @@ function wrote<T>(res: WriteResult<T>, what: string): T {
   const data = maybeWrote(res, what);
   if (data == null) throw new Error(`${what} 실패: 저장된 행이 없습니다`);
   return data;
+}
+
+/** 테이블 전체를 페이지를 넘겨 끝까지 읽는다. PostgREST는 한 번에 1천 행까지만 준다 —
+ *  잘린 채 돌려주면 "없음"이 "다 읽었음"으로 위장된다. 실패는 던진다(`?? []` 금지). */
+async function readAll<T>(
+  run: (from: number, to: number) => PromiseLike<{ data: T[] | null; error: { message: string } | null }>,
+  what: string,
+): Promise<T[]> {
+  const PAGE = 1000;
+  const out: T[] = [];
+  for (let from = 0; ; from += PAGE) {
+    const { data, error } = await run(from, from + PAGE - 1);
+    if (error) throw new Error(`${what} 조회 실패: ${error.message}`);
+    out.push(...(data ?? []));
+    if (!data || data.length < PAGE) return out;
+  }
+}
+
+/** 큰 배열을 나눠 넣는다(요청 본문 크기). */
+async function insertChunked(
+  rows: Row[],
+  what: string,
+  run: (slice: Row[]) => PromiseLike<WriteResult<unknown[]>>,
+): Promise<number> {
+  let n = 0;
+  for (let i = 0; i < rows.length; i += 500) {
+    const res = await run(rows.slice(i, i + 500));
+    n += (wrote(res, what) as unknown[]).length;
+  }
+  return n;
 }
 
 /**
@@ -966,6 +999,172 @@ export class SupabaseRepository implements Repository {
       .maybeSingle();
     const data = maybeWrote(res, "부스 수정");
     return data ? mapBooth(data as Row) : null;
+  }
+
+  async loadExhibitorGraph(): Promise<ExhibitorGraph> {
+    const db = createServiceClient();
+    const [ex, pa, bp, lc] = await Promise.all([
+      readAll<Row>((a, b) => db.from("exhibitor").select("id,canonical_name,instagram_url,website_url").order("id").range(a, b), "참가사"),
+      readAll<Row>((a, b) => db.from("exhibition_participant").select("id,exhibitor_id,exhibition_id,display_name").order("id").range(a, b), "참가 사실"),
+      readAll<Row>((a, b) => db.from("booth_participant").select("booth_id,participant_id,role").order("booth_id").range(a, b), "부스 배정"),
+      readAll<Row>((a, b) => db.from("exhibitor_link_candidate").select("booth_id,exhibitor_id,status").order("id").range(a, b), "연결 후보"),
+    ]);
+    return {
+      exhibitors: ex.map((r) => ({
+        id: str(r.id),
+        canonicalName: str(r.canonical_name),
+        instagramUrl: optStr(r.instagram_url),
+        websiteUrl: optStr(r.website_url),
+      })),
+      participants: pa.map((r) => ({
+        id: str(r.id),
+        exhibitorId: str(r.exhibitor_id),
+        exhibitionId: str(r.exhibition_id),
+        displayName: str(r.display_name),
+      })),
+      assignments: bp.map((r) => ({
+        boothId: str(r.booth_id),
+        participantId: str(r.participant_id),
+        role: r.role === "co_exhibitor" ? "co_exhibitor" : "primary",
+      })),
+      candidates: lc.map((r) => ({ boothId: str(r.booth_id), exhibitorId: str(r.exhibitor_id), status: str(r.status) })),
+    };
+  }
+
+  async applyExhibitorPlan(plan: ExhibitorPlan) {
+    const db = createServiceClient();
+    const exId = new Map(plan.exhibitors.map((e) => [e.key, uid("exr")]));
+    const ptId = new Map(plan.participants.map((p) => [p.key, uid("xpt")]));
+    const resolveEx = (r: Ref) => ("existing" in r ? r.existing : exId.get(r.new)!);
+    const resolvePt = (r: Ref) => ("existing" in r ? r.existing : ptId.get(r.new)!);
+    const t = now();
+    const exhibitors = await insertChunked(
+      plan.exhibitors.map((e) => ({
+        id: exId.get(e.key),
+        // 0040: slug not null unique. 한글 이름에서 파생하면 겹치고 깨진다 — id를 쓴다.
+        slug: exId.get(e.key),
+        canonical_name: e.canonicalName,
+        instagram_url: e.instagramUrl ?? null,
+        website_url: e.websiteUrl ?? null,
+        created_at: t,
+        updated_at: t,
+      })),
+      "참가사 생성",
+      (rows) => db.from("exhibitor").insert(rows).select("id"),
+    );
+    const participants = await insertChunked(
+      plan.participants.map((p) => ({
+        id: ptId.get(p.key),
+        exhibition_id: p.exhibitionId,
+        exhibitor_id: resolveEx(p.exhibitorRef),
+        display_name: p.displayName,
+        created_at: t,
+        updated_at: t,
+      })),
+      "참가 사실 생성",
+      (rows) => db.from("exhibition_participant").insert(rows).select("id"),
+    );
+    const assignments = await insertChunked(
+      plan.assignments.map((a) => ({
+        booth_id: a.boothId,
+        participant_id: resolvePt(a.participantRef),
+        role: a.role,
+        created_at: t,
+      })),
+      "부스 배정",
+      (rows) => db.from("booth_participant").insert(rows).select("booth_id"),
+    );
+    // 같은 쌍은 한 번만(unique) — 백필을 다시 돌려도 중복이 안 생긴다.
+    let candidates = 0;
+    for (let i = 0; i < plan.candidates.length; i += 500) {
+      const res = await db
+        .from("exhibitor_link_candidate")
+        .upsert(
+          plan.candidates.slice(i, i + 500).map((c) => ({
+            id: uid("xlc"),
+            booth_id: c.boothId,
+            exhibitor_id: resolveEx(c.target),
+            reason: c.reason,
+            created_at: t,
+          })),
+          { onConflict: "booth_id,exhibitor_id", ignoreDuplicates: true },
+        )
+        .select("id");
+      candidates += (maybeWrote(res, "연결 후보") ?? []).length;
+    }
+    return { exhibitors, participants, assignments, candidates };
+  }
+
+  async listExhibitorLinkCandidates(status = "pending"): Promise<ExhibitorLinkCandidate[]> {
+    const db = createServiceClient();
+    const rows = await readAll<Row>(
+      (a, b) => db.from("exhibitor_link_candidate").select("*").eq("status", status).order("created_at").range(a, b),
+      "연결 후보",
+    );
+    return rows.map(mapLinkCandidate);
+  }
+
+  async decideExhibitorLinkCandidate(
+    id: string,
+    decision: "approved" | "rejected",
+    actor: string | null,
+  ): Promise<ExhibitorLinkCandidate | null> {
+    const db = createServiceClient();
+    const { data: cand, error } = await db.from("exhibitor_link_candidate").select("*").eq("id", id).maybeSingle();
+    if (error) throw new Error(`연결 후보 조회 실패: ${error.message}`);
+    if (!cand || (cand as Row).status !== "pending") return cand ? mapLinkCandidate(cand as Row) : null;
+    const c = cand as Row;
+    if (decision === "approved") {
+      // 그 부스가 지금 속한 참가사(from)를 대상(to)에 통째로 합친다 — 모든 회차.
+      const { data: asg, error: e1 } = await db
+        .from("booth_participant").select("participant_id").eq("booth_id", str(c.booth_id)).eq("role", "primary").maybeSingle();
+      if (e1) throw new Error(`부스 배정 조회 실패: ${e1.message}`);
+      if (!asg) throw new Error("이 부스는 아직 참가사에 배정되지 않았습니다 — 백필부터");
+      const { data: fromP, error: e2 } = await db
+        .from("exhibition_participant").select("exhibitor_id").eq("id", str((asg as Row).participant_id)).single();
+      if (e2) throw new Error(`참가 사실 조회 실패: ${e2.message}`);
+      const from = str((fromP as Row).exhibitor_id);
+      const to = str(c.exhibitor_id);
+      if (from !== to) await this.mergeExhibitor(from, to);
+    }
+    const res = await db
+      .from("exhibitor_link_candidate")
+      .update({ status: decision, reviewed_at: now(), reviewed_by: actor })
+      .eq("id", id)
+      .select("*")
+      .single();
+    return mapLinkCandidate(wrote(res, "연결 후보 판단") as Row);
+  }
+
+  /** from 참가사를 to에 합친다. 같은 회차에 to의 참가 사실이 이미 있으면 부스 배정을
+   *  그쪽으로 옮기고 from의 참가 사실은 지운다. 없으면 참가 사실의 주인을 바꾼다. */
+  private async mergeExhibitor(from: string, to: string): Promise<void> {
+    const db = createServiceClient();
+    const { data: fromPs, error } = await db.from("exhibition_participant").select("id,exhibition_id").eq("exhibitor_id", from);
+    if (error) throw new Error(`참가 사실 조회 실패: ${error.message}`);
+    for (const p of (fromPs ?? []) as Row[]) {
+      const { data: same, error: e } = await db
+        .from("exhibition_participant").select("id").eq("exhibitor_id", to).eq("exhibition_id", str(p.exhibition_id)).maybeSingle();
+      if (e) throw new Error(`참가 사실 조회 실패: ${e.message}`);
+      if (same) {
+        maybeWrote(
+          await db.from("booth_participant").update({ participant_id: str((same as Row).id) }).eq("participant_id", str(p.id)).select("booth_id"),
+          "부스 배정 이동",
+        );
+        maybeWrote(await db.from("exhibition_participant").delete().eq("id", str(p.id)).select("id"), "참가 사실 정리");
+      } else {
+        wrote(
+          await db.from("exhibition_participant").update({ exhibitor_id: to, updated_at: now() }).eq("id", str(p.id)).select("id"),
+          "참가 사실 이동",
+        );
+      }
+    }
+    // from을 겨눈 다른 후보는 대상이 사라지니 정리한다.
+    maybeWrote(
+      await db.from("exhibitor_link_candidate").update({ status: "superseded", reviewed_at: now() }).eq("exhibitor_id", from).eq("status", "pending").select("id"),
+      "연결 후보 정리",
+    );
+    maybeWrote(await db.from("exhibitor").delete().eq("id", from).select("id"), "참가사 정리");
   }
 
   async createEnrichmentCandidates(
@@ -2655,4 +2854,17 @@ export class SupabaseRepository implements Repository {
     const reflected = await this.listReflectedUserIds(exhibitionId);
     return computeJourneyFunnel(signals, new Set(reflected));
   }
+}
+
+function mapLinkCandidate(r: Row): ExhibitorLinkCandidate {
+  return {
+    id: str(r.id),
+    boothId: str(r.booth_id),
+    exhibitorId: str(r.exhibitor_id),
+    reason: str(r.reason),
+    status: str(r.status) as ExhibitorLinkCandidate["status"],
+    reviewedAt: optStr(r.reviewed_at),
+    reviewedBy: optStr(r.reviewed_by) ?? null,
+    createdAt: str(r.created_at),
+  };
 }

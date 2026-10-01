@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { cookies } from "next/headers";
 import { getRepository } from "@/lib/repositories";
 import { listExhibitionsCached } from "@/lib/repositories/cached";
@@ -53,6 +54,9 @@ export default async function AdminVerifyPage() {
     <div className="space-y-6">
       <header>
         <h1 className="text-2xl font-extrabold">대조 검수</h1>
+        <p className="text-sm">
+          <Link href="/admin/verify/brands" className="underline">같은 브랜드인가요? →</Link>
+        </p>
         <p className="text-sm text-muted-foreground">
           자동 초안이 쓴 글과 사람이 직접 확인한 글이 다를 때, 무엇이 맞는지
           고릅니다. 인스타가 늘 옳은 것도 아니라 한 건씩 봅니다.

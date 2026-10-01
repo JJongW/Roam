@@ -1,5 +1,6 @@
 import { VALUE_TAGS, isValueSlug } from "@/lib/values";
 import { isSomeoneElsesVoice } from "@/lib/booth/voice";
+import { anchorKey, flatName, type AnchorKey } from "@/lib/exhibitor/identity";
 import type { BoothEnrichmentAuthorInput } from "@/lib/schemas";
 
 export interface QualityIssue {
@@ -124,46 +125,6 @@ function norm(s: string): string {
  * - 빈말 금지 — 없는 근거를 지어내지 않는다
  * - recommendationReasons의 키는 valueTags 안에 있어야 한다
  */
-interface AnchorKey {
-  /** 메시지에 보여줄 이름. */
-  label: string;
-  /** 근거의 제목·주소에 이 문자열이 있으면 이 부스 얘기로 본다. */
-  match: string;
-}
-
-/** 여러 브랜드가 같은 호스트를 쓰는 곳 — 호스트가 아니라 계정(첫 경로)이 신원이다.
- *  예전엔 instagram.com 호스트로 맞대서, 근거에 남의 인스타가 하나만 있어도 통과했다. */
-const PLATFORM_HOSTS = new Set([
-  "instagram.com",
-  "linktr.ee",
-  "smartstore.naver.com",
-  "blog.naver.com",
-  "m.blog.naver.com",
-  "facebook.com",
-  "youtube.com",
-]);
-/** 같은 회사가 .com과 .co.kr을 함께 쓰는 일이 흔하다(국순당여주명주 ksdyeoju.com ↔ .co.kr). */
-const PUBLIC_SUFFIX = /\.(?:co|or|ne|go|ac|pe)\.kr$|\.[a-z]{2,6}$/;
-/** 이보다 짧은 도메인 이름은 남의 도메인 안에도 흔히 들어 있어 신원이 못 된다. */
-const MIN_STEM = 5;
-
-function anchorKey(url: string): AnchorKey | null {
-  let u: URL;
-  try {
-    u = new URL(url);
-  } catch {
-    return null;
-  }
-  const host = u.hostname.replace(/^www\./, "").toLowerCase();
-  if (PLATFORM_HOSTS.has(host)) {
-    const handle = u.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
-    return handle ? { label: `${host}/${handle}`, match: `${host}/${handle}` } : null;
-  }
-  const stem = host.replace(PUBLIC_SUFFIX, "").split(".").pop() ?? "";
-  if (stem.length < MIN_STEM) return { label: host, match: host };
-  return { label: host, match: stem };
-}
-
 export function gradeCandidate(input: GradeInput): QualityReport {
   const { payload: p, sources, booth } = input;
   const issues: QualityIssue[] = [];
@@ -259,8 +220,7 @@ export function gradeCandidate(input: GradeInput): QualityReport {
   const cat = (booth.categoryName ?? booth.company)?.trim();
   // 부스명이든 회사명이든 이 부스를 가리키는 이름이 주어면 되읽기가 아니다.
   // 띄어쓰기·법인 표기는 무시한다("헬로우 디스틸러리" = "헬로우디스틸러리").
-  const flat = (s: string) =>
-    s.replace(/주식회사|농업회사법인|영농조합법인|\(주\)|㈜|\(사\)/g, "").replace(/\s+/g, "");
+  const flat = flatName;
   const nameShown = [booth.name, booth.company]
     .map((n) => (n ? flat(n) : ""))
     .filter((n) => n.length >= 2 && n !== (cat ? flat(cat) : ""))
