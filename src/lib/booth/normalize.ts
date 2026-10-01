@@ -1,8 +1,8 @@
 import type { BoothListItem } from "@/lib/types";
 
 /**
- * Canonical booth-name normalization, shared by screenshot matching, official-
- * list reconciliation, and integrity audits. Keeping one definition means a name
+ * Canonical booth-name normalization, shared by official-list reconciliation
+ * and integrity audits. Keeping one definition means a name
  * that matches in one place matches everywhere.
  *
  * Strips whitespace/punctuation, lowercases, and drops common publisher suffixes
@@ -32,7 +32,7 @@ export function isUnassignedBooth(booth: BoothListItem): boolean {
 }
 
 /** Lounge/stage/aux area on the map that isn't a participating exhibitor.
- *  Excluded from recommendation, swipe, and screenshot matching. */
+ *  Excluded from recommendation and swipe. */
 export function isFacility(booth: BoothListItem): boolean {
   return booth.kind === "facility";
 }

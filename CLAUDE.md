@@ -63,8 +63,8 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
   큐에서 빠지고, 되돌아보는 곳은 지도 색과 내 메모장이다. 새로 고르기는 **자동이 아니라
   목록 맨 아래 버튼**으로만 — 읽는 중에 화면이 다시 그려지면 안 된다. 새로 온 카드는
   '여기부터 새로 골랐어' 아래에만 붙는다(위에 끼워 넣지 않는다).
-- 실제 Gemini 호출처는 4곳뿐: `/api/ai/booth-summary`(~1.8초) · `/api/ai/community-summary`(~2.5초) ·
-  `/api/ai/screenshot`(비전) · `/api/exhibitions/[slug]/keywords`.
+- 실제 Gemini 호출처는 3곳뿐: `/api/ai/booth-summary`(~1.8초) · `/api/ai/community-summary`(~2.5초) ·
+  `/api/exhibitions/[slug]/keywords`. (스크린샷→부스 매칭 `/api/ai/screenshot`은 부르는 화면이 끝내 없어 2026-10-01 삭제.)
 - **thinking off 필수**: gemini-2.5-flash는 thinking 기본 ON이라 응답이 8~15초+로 느려짐 → 모든 호출에 `thinkingConfig.thinkingBudget=0`(gemini.ts). 이거 빼면 LLM이 타임아웃돼 전부 결정론 폴백된다.
 - 래퍼 `src/lib/ai/gemini.ts`: `generateJSON`/`generateText`/**`generateGrounded`**(tools=googleSearch+urlContext, JSON 강제 불가 → `extractJSON`로 살림) · server-only · 재시도+모델 폴백 · `hasGemini` 게이트.
 - **지연 구간엔 무조건 로딩 UX + 라이팅**: `src/lib/loading-messages.ts` + `useRotatingMessage`(2.2s 회전).
@@ -74,11 +74,6 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
 `ai/booth-recommender.ts`(`recommendBoothIds`) · `onboarding/onboarding-flow.ts` ·
 `onboarding/onboarding-inference.ts` · `onboarding/onboarding-types.ts` ·
 repo의 `logAiQuery`/`topQueryKeywords`(+ `ai_query_log` 테이블).
-
-`/api/ai/screenshot`은 다른 부류 — API 라우트 자체는 살아있고 완성돼 있으나(vision 인식 +
-결정론 매칭 분리 설계), **부르는 프론트 화면이 코드 어디에도 없다**. 저관여 진입 재설계
-(`feat/low-involvement-entry`, 머지 안 됨) 잔재 — 그 방향이 피드 기반 온보딩으로 대체되며
-백엔드만 남음. 되살리려면 진입점(예: 피드 상단 "스크린샷으로 찾기")부터 새로 만들어야 한다.
 
 ## 온보딩 = 가치 선택 (전시 홈 안에서)
 - 별도 온보딩 페이지는 **없다**. 전시 홈이 `components/onboarding/value-onboarding.tsx`를 띄우고,

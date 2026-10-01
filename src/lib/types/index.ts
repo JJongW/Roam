@@ -106,12 +106,12 @@ export interface Booth {
   code?: string;
   /** "exhibitor" (default) or "facility" — lounge/stage/aux areas that are on
    *  the map but aren't participating publishers, so they stay out of
-   *  recommendation, swipe, and screenshot matching. */
+   *  recommendation and swipe. */
   kind?: BoothKind;
   name: string;
   company: string;
   /** Co-located exhibitors sharing this booth code (e.g. a country pavilion or
-   *  a shared indie stand). Surfaced in search + screenshot matching so any of
+   *  a shared indie stand). Surfaced in search so any of
    *  them resolves to this booth, even though the map shows one name. */
   aliases?: string[];
   description: string;

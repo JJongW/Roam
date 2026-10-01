@@ -45,6 +45,9 @@ function pickImage(html, base) {
 
 const targets = intake.booths
   .filter((b) => b.kind !== "facility" && b.websiteUrl)
+  // 인입 파일에 이미 사진이 있는 부스는 건너뛴다 — 받아도 인입이 "배열이 차 있음"으로
+  // 충돌 처리해서 안 쓰이고, 주최 제공 사진이 사이트 og:image보다 낫다.
+  .filter((b) => FORCE || !(b.images?.length))
   .filter((b) => FORCE || !existsSync(`${OUT}/${b.code}.webp`))
   .slice(0, LIMIT);
 console.log(`${slug} · 대상 ${targets.length}곳`);
@@ -64,6 +67,10 @@ async function one(b) {
         if (!r.ok) continue;
         const buf = Buffer.from(await r.arrayBuffer());
         if (buf.length < 2000) continue;               // 스페이서·아이콘 거르기
+        // 단색(흰 화면·검은 화면)은 용량이 커도 버린다 — "이미지 확보됨"으로 집계돼
+        // 진짜 사진을 찾을 기회를 막는 게 이미지 없음보다 나쁘다(#109 오레코코).
+        const { channels } = await sharp(buf).stats();
+        if (channels.slice(0, 3).every((c) => c.stdev < 6)) continue;
         await sharp(buf)
           .resize(640, 640, { fit: "cover", position: "attention" })
           .webp({ quality: 74 })

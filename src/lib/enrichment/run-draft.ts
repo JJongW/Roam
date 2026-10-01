@@ -174,36 +174,12 @@ export async function runDraftBatch(
   // 검수 77건 실측에서 0.95 이상 + 근거 있음은 41/41 승인이었다. 그 조건만
   // 사람 없이 내보낸다. 반영은 개별 승인과 **같은 경로**(upsertBoothEnrichment)를
   // 타므로 change_log에 남고, "자동 통과"라는 이유가 붙어 나중에 골라낼 수 있다.
-  let autoPassed = 0;
-  const fresh = await repo.listEnrichmentCandidates({
-    exhibitionId,
-    status: "pending",
-    limit: 1000,
+  const auto = await autoPassPending(repo, exhibitionId, {
+    boothIds: new Set(rows.map((r) => r.boothId)),
+    actor: input.actor ?? null,
   });
-  const mine = new Set(rows.map((r) => r.boothId));
-  for (const c of fresh) {
-    if (!mine.has(c.boothId)) continue;
-    const policy = reviewPolicy(c.confidence, c.issues);
-    if (policy.decision !== "auto_pass") continue;
-    try {
-      await repo.upsertBoothEnrichment(
-        c.boothId,
-        c.payload as BoothEnrichmentPatch,
-        {
-          source: "drafter",
-          actor: input.actor ?? null,
-          reason: `자동 통과(신뢰도 ${c.confidence.toFixed(2)}, 근거 ${c.sources.length}건)`,
-        },
-      );
-      await repo.setCandidateStatus(c.id, "approved", null, "자동 통과");
-      autoPassed += 1;
-    } catch (e) {
-      failures.push({
-        code: c.boothId,
-        message: `자동 반영 실패: ${e instanceof Error ? e.message : String(e)}`,
-      });
-    }
-  }
+  const autoPassed = auto.autoPassed;
+  failures.push(...auto.failures);
 
   return {
     requested: targets.length,
@@ -223,4 +199,47 @@ export async function runDraftBatch(
       low: rows.filter((r) => r.confidence < 0.5).length,
     },
   };
+}
+
+/**
+ * 대기 중인 초안 중 자동 통과 조건을 넘는 것을 반영한다. 초안 직후와 **재채점 직후**
+ * 둘 다 부른다 — 예전엔 초안 때만 돌아서, 게이트 규칙을 고치고 재채점해 0.95를
+ * 넘겨도 사람이 승인하기 전까지 영원히 대기에 남았다(주류박람회, 2026-10-01).
+ */
+export async function autoPassPending(
+  repo: Repository,
+  exhibitionId: string,
+  opts: { boothIds?: Set<string>; actor: string | null },
+): Promise<{ autoPassed: number; failures: { code: string; message: string }[] }> {
+  let autoPassed = 0;
+  const failures: { code: string; message: string }[] = [];
+  const fresh = await repo.listEnrichmentCandidates({
+    exhibitionId,
+    status: "pending",
+    limit: 1000,
+  });
+  for (const c of fresh) {
+    if (opts.boothIds && !opts.boothIds.has(c.boothId)) continue;
+    const policy = reviewPolicy(c.confidence, c.issues);
+    if (policy.decision !== "auto_pass") continue;
+    try {
+      await repo.upsertBoothEnrichment(
+        c.boothId,
+        c.payload as BoothEnrichmentPatch,
+        {
+          source: "drafter",
+          actor: opts.actor,
+          reason: `자동 통과(신뢰도 ${c.confidence.toFixed(2)}, 근거 ${c.sources.length}건)`,
+        },
+      );
+      await repo.setCandidateStatus(c.id, "approved", null, "자동 통과");
+      autoPassed += 1;
+    } catch (e) {
+      failures.push({
+        code: c.boothId,
+        message: `자동 반영 실패: ${e instanceof Error ? e.message : String(e)}`,
+      });
+    }
+  }
+  return { autoPassed, failures };
 }

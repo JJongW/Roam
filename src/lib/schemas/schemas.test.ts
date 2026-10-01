@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   boothEnrichmentAuthorInputSchema,
   boothEnrichmentPatchSchema,
+  boothPatchInputSchema,
 } from "@/lib/schemas";
 import {
   userPreferenceInputSchema,
@@ -103,5 +104,16 @@ describe("boothEnrichmentPatchSchema", () => {
       .parse({ thingsToDo: ["a"] });
     expect(Object.keys(viaPartial)).toContain("summary"); // ← 안 보냈는데 생긴다
     expect((viaPartial as { summary?: string }).summary).toBe("");
+  });
+});
+
+// .partial()은 default()를 안 막는다(zod 4) — {aliases: []}만 보낸 PATCH가
+// description·images·tags를 빈 값으로 만들어 운영 데이터를 덮을 뻔했다(2026-10-01).
+describe("boothPatchInputSchema", () => {
+  it("안 보낸 키를 만들지 않는다", () => {
+    expect(boothPatchInputSchema.parse({ aliases: [] })).toEqual({ aliases: [] });
+  });
+  it("보낸 키는 그대로 검증한다", () => {
+    expect(() => boothPatchInputSchema.parse({ instagramUrl: "not-a-url" })).toThrow();
   });
 });
