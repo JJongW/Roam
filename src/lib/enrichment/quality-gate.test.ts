@@ -338,3 +338,64 @@ describe("근거 없는 부스에서 드러난 실패 — 마곡 50부스", () =
     expect(r.issues.map((i) => i.code)).not.toContain("speculation");
   });
 });
+
+// 주류박람회(2026-10-01): 186건 중 157건이 unanchored. 근거 쪽 문제가 둘이었다.
+describe("신원 앵커 — 같은 회사의 다른 도메인, 플랫폼 계정", () => {
+  const payload = {
+    summary: "여주 쌀로 빚는 전통주 양조장이다.",
+    roamInterpretation: "여주 쌀 막걸리를 맛볼 수 있어.",
+    valueTags: [{ slug: "experience", strength: 0.8 }],
+    recommendationReasons: { experience: "여주 쌀 막걸리를 시음할 수 있어." },
+    thingsToDo: ["여주 쌀 막걸리 시음하기"],
+  };
+  const codes = (input: GradeInput) => gradeCandidate(input).issues.map((i) => i.code);
+
+  it("도메인 끝만 다르면(.com ↔ .co.kr) 같은 회사로 본다", () => {
+    expect(
+      codes({
+        booth: { name: "국순당여주명주", websiteUrl: "https://www.ksdyeoju.com" },
+        sources: [
+          { uri: "https://x/1", title: "ksdyeoju.co.kr" },
+          { uri: "https://x/2", title: "agrinet.co.kr" },
+        ],
+        payload,
+      }),
+    ).not.toContain("unanchored");
+  });
+
+  it("인스타는 호스트가 아니라 계정으로 맞댄다 — 남의 인스타는 앵커가 아니다", () => {
+    expect(
+      codes({
+        booth: { name: "댄싱사이더", instagramUrl: "https://www.instagram.com/dancingcider" },
+        sources: [
+          { uri: "https://www.instagram.com/someoneelse", title: "instagram.com" },
+          { uri: "https://x/2", title: "kihya.com" },
+        ],
+        payload,
+      }),
+    ).toContain("unanchored");
+    expect(
+      codes({
+        booth: { name: "댄싱사이더", instagramUrl: "https://www.instagram.com/dancingcider" },
+        sources: [
+          { uri: "https://www.instagram.com/dancingcider/", title: "instagram.com" },
+          { uri: "https://x/2", title: "kihya.com" },
+        ],
+        payload,
+      }),
+    ).not.toContain("unanchored");
+  });
+
+  it("너무 짧은 도메인 이름으로는 맞대지 않는다", () => {
+    expect(
+      codes({
+        booth: { name: "술", websiteUrl: "https://sul.kr" },
+        sources: [
+          { uri: "https://x/1", title: "sulmarket.com" },
+          { uri: "https://x/2", title: "b.com" },
+        ],
+        payload,
+      }),
+    ).toContain("unanchored");
+  });
+});

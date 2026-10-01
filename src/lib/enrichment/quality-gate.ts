@@ -114,6 +114,46 @@ function norm(s: string): string {
  * - 빈말 금지 — 없는 근거를 지어내지 않는다
  * - recommendationReasons의 키는 valueTags 안에 있어야 한다
  */
+interface AnchorKey {
+  /** 메시지에 보여줄 이름. */
+  label: string;
+  /** 근거의 제목·주소에 이 문자열이 있으면 이 부스 얘기로 본다. */
+  match: string;
+}
+
+/** 여러 브랜드가 같은 호스트를 쓰는 곳 — 호스트가 아니라 계정(첫 경로)이 신원이다.
+ *  예전엔 instagram.com 호스트로 맞대서, 근거에 남의 인스타가 하나만 있어도 통과했다. */
+const PLATFORM_HOSTS = new Set([
+  "instagram.com",
+  "linktr.ee",
+  "smartstore.naver.com",
+  "blog.naver.com",
+  "m.blog.naver.com",
+  "facebook.com",
+  "youtube.com",
+]);
+/** 같은 회사가 .com과 .co.kr을 함께 쓰는 일이 흔하다(국순당여주명주 ksdyeoju.com ↔ .co.kr). */
+const PUBLIC_SUFFIX = /\.(?:co|or|ne|go|ac|pe)\.kr$|\.[a-z]{2,6}$/;
+/** 이보다 짧은 도메인 이름은 남의 도메인 안에도 흔히 들어 있어 신원이 못 된다. */
+const MIN_STEM = 5;
+
+function anchorKey(url: string): AnchorKey | null {
+  let u: URL;
+  try {
+    u = new URL(url);
+  } catch {
+    return null;
+  }
+  const host = u.hostname.replace(/^www\./, "").toLowerCase();
+  if (PLATFORM_HOSTS.has(host)) {
+    const handle = u.pathname.split("/").filter(Boolean)[0]?.toLowerCase();
+    return handle ? { label: `${host}/${handle}`, match: `${host}/${handle}` } : null;
+  }
+  const stem = host.replace(PUBLIC_SUFFIX, "").split(".").pop() ?? "";
+  if (stem.length < MIN_STEM) return { label: host, match: host };
+  return { label: host, match: stem };
+}
+
 export function gradeCandidate(input: GradeInput): QualityReport {
   const { payload: p, sources, booth } = input;
   const issues: QualityIssue[] = [];
@@ -158,24 +198,19 @@ export function gradeCandidate(input: GradeInput): QualityReport {
   // 도메인에 근거가 닿았는지를 따로 본다.
   const known = [booth.websiteUrl, booth.instagramUrl]
     .filter((u): u is string => Boolean(u))
-    .map((u) => {
-      try {
-        return new URL(u).hostname.replace(/^www\./, "").toLowerCase();
-      } catch {
-        return "";
-      }
-    })
-    .filter(Boolean);
+    .map(anchorKey)
+    .filter((k): k is AnchorKey => k !== null);
   const anchored =
     known.length > 0 &&
-    sources.some((s) =>
-      known.some((h) => `${s.title ?? ""} ${s.uri}`.toLowerCase().includes(h)),
-    );
+    sources.some((s) => {
+      const text = `${s.title ?? ""} ${s.uri}`.toLowerCase();
+      return known.some((k) => text.includes(k.match));
+    });
   if (!anchored) {
     add({
       code: "unanchored",
       message: known.length
-        ? `근거가 이 부스의 확인된 주소(${known.join(", ")})에 닿지 않는다 — 다른 브랜드 얘기일 수 있다`
+        ? `근거가 이 부스의 확인된 주소(${known.map((k) => k.label).join(", ")})에 닿지 않는다 — 다른 브랜드 얘기일 수 있다`
         : "이 부스의 확인된 주소가 없어 신원을 맞대볼 수 없다",
       // 점수를 크게 깎지는 않는다. 사람이 볼 때는 여전히 쓸모 있는 초안이다.
       // 다만 **자동 통과는 막는다**(review-policy의 NEVER_AUTO).

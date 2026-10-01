@@ -69,3 +69,22 @@ describe("draftUserPrompt", () => {
     expect(p).not.toContain("회사/브랜드");
   });
 });
+
+// 품질 게이트는 근거가 이 부스의 확인된 주소에 닿아야 자동 통과시킨다. 그런데
+// 초안기는 그 주소를 몰랐다 — 닿는 건 검색 운이었다(주류박람회 186건 중 157건 unanchored).
+describe("draftUserPrompt — 확인된 주소", () => {
+  const booth = { code: "H-06", name: "천비향", company: "좋은술", description: "", tags: [] };
+
+  it("확인된 웹사이트·인스타를 싣는다", () => {
+    const p = draftUserPrompt({
+      booth: { ...booth, websiteUrl: "https://www.cheonbihyang.com", instagramUrl: "https://www.instagram.com/cheonbihyang" },
+      missing: ["summary"],
+    });
+    expect(p).toContain("https://www.cheonbihyang.com");
+    expect(p).toContain("https://www.instagram.com/cheonbihyang");
+  });
+
+  it("주소가 없으면 그 줄을 쓰지 않는다", () => {
+    expect(draftUserPrompt({ booth, missing: ["summary"] })).not.toContain("공식 주소");
+  });
+});
