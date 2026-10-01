@@ -63,6 +63,8 @@ import type {
   WelcomeKit,
   ExhibitorGraph,
   ExhibitorLinkCandidate,
+  BoothBrandMemory,
+  BoothAppearance,
 } from "@/lib/types";
 import type { ExhibitorPlan, Ref } from "@/lib/exhibitor/plan";
 import type {
@@ -1093,6 +1095,112 @@ export class SupabaseRepository implements Repository {
       candidates += (maybeWrote(res, "연결 후보") ?? []).length;
     }
     return { exhibitors, participants, assignments, candidates };
+  }
+
+  async exhibitorHistory(exhibitionId: string, userId: string | null): Promise<Record<string, BoothBrandMemory>> {
+    const db = createServiceClient();
+    const { data: cur, error: e0 } = await db.from("exhibition").select("start_date").eq("id", exhibitionId).maybeSingle();
+    if (e0) throw new Error(`전시 조회 실패: ${e0.message}`);
+    const curStart = str((cur as Row | null)?.start_date);
+    const mineParts = await readAll<Row>(
+      (a, b) => db.from("exhibition_participant").select("id,exhibitor_id,display_name").eq("exhibition_id", exhibitionId).order("id").range(a, b),
+      "참가 사실",
+    );
+    if (mineParts.length === 0) return {};
+    const partById = new Map(mineParts.map((p) => [str(p.id), p]));
+    const asg = await inChunks<Row>([...partById.keys()], "부스 배정", (slice) =>
+      db.from("booth_participant").select("booth_id,participant_id").eq("role", "primary").in("participant_id", slice),
+    );
+    const exIds = [...new Set(mineParts.map((p) => str(p.exhibitor_id)))];
+    const others = await inChunks<Row>(exIds, "다른 회차 참가", (slice) =>
+      db
+        .from("exhibition_participant")
+        .select("exhibitor_id,display_name,exhibition_id,exhibition:exhibition_id(name,start_date)")
+        .in("exhibitor_id", slice)
+        .neq("exhibition_id", exhibitionId),
+    );
+    // 참가사마다 **이전** 회차 중 가장 최근 하나.
+    const pastByEx = new Map<string, { exhibition: string; name: string; start: string }>();
+    for (const o of others) {
+      const ex = (o.exhibition ?? {}) as Row;
+      const start = str(ex.start_date);
+      if (!start || (curStart && start >= curStart)) continue;
+      const prev = pastByEx.get(str(o.exhibitor_id));
+      if (!prev || start > prev.start) pastByEx.set(str(o.exhibitor_id), { exhibition: str(ex.name), name: str(o.display_name), start });
+    }
+    // 이 사용자의 긍정 반응 — 끌림·꼭(관심) 또는 가봄 좋았음. 부정은 말하지 않는다.
+    const mineByEx = new Map<string, { exhibition: string; name: string; kind: "must" | "curious" | "good"; at: string }>();
+    if (userId) {
+      const judged = await inChunks<Row>(exIds, "참가사별 판단 이력", (slice) =>
+        db
+          .from("user_exhibitor_judgment_history")
+          .select("exhibitor_id,exhibition_id,exhibition_name,participant_name,interest,verdict,updated_at")
+          .eq("user_id", userId)
+          .in("exhibitor_id", slice)
+          .neq("exhibition_id", exhibitionId),
+      );
+      for (const j of judged) {
+        const kind = j.verdict === "good" ? "good" : !j.verdict && (j.interest === "must" || j.interest === "curious") ? (j.interest as "must" | "curious") : null;
+        if (!kind) continue;
+        const at = str(j.updated_at);
+        const prev = mineByEx.get(str(j.exhibitor_id));
+        if (!prev || at > prev.at) mineByEx.set(str(j.exhibitor_id), { exhibition: str(j.exhibition_name), name: str(j.participant_name), kind, at });
+      }
+    }
+    const out: Record<string, BoothBrandMemory> = {};
+    for (const a of asg) {
+      const part = partById.get(str(a.participant_id));
+      if (!part) continue;
+      const ex = str(part.exhibitor_id);
+      const past = pastByEx.get(ex);
+      const mine = mineByEx.get(ex);
+      if (!past && !mine) continue;
+      out[str(a.booth_id)] = {
+        currentName: str(part.display_name),
+        ...(past ? { past: { exhibition: past.exhibition, name: past.name } } : {}),
+        ...(mine ? { mine: { exhibition: mine.exhibition, name: mine.name, kind: mine.kind } } : {}),
+      };
+    }
+    return out;
+  }
+
+  async boothAppearances(boothId: string): Promise<BoothAppearance[]> {
+    const db = createServiceClient();
+    const { data: asg, error } = await db
+      .from("booth_participant")
+      .select("participant:participant_id(exhibitor_id,exhibition_id)")
+      .eq("booth_id", boothId)
+      .eq("role", "primary")
+      .maybeSingle();
+    if (error) throw new Error(`부스 배정 조회 실패: ${error.message}`);
+    const part = ((asg as Row | null)?.participant ?? null) as Row | null;
+    if (!part) return [];
+    const others = await readAll<Row>(
+      (a, b) =>
+        db
+          .from("exhibition_participant")
+          .select("id,display_name,exhibition:exhibition_id(name,start_date),booth_participant(booth_id,role,booth:booth_id(code))")
+          .eq("exhibitor_id", str(part.exhibitor_id))
+          .neq("exhibition_id", str(part.exhibition_id))
+          .order("id")
+          .range(a, b),
+      "다른 회차 참가",
+    );
+    const out: BoothAppearance[] = [];
+    for (const o of others) {
+      const ex = (o.exhibition ?? {}) as Row;
+      for (const bp of (o.booth_participant ?? []) as Row[]) {
+        if (bp.role !== "primary") continue;
+        out.push({
+          exhibitionName: str(ex.name),
+          startDate: str(ex.start_date),
+          displayName: str(o.display_name),
+          boothId: str(bp.booth_id),
+          boothCode: optStr(((bp.booth ?? {}) as Row).code),
+        });
+      }
+    }
+    return out.sort((a, b) => b.startDate.localeCompare(a.startDate));
   }
 
   async listExhibitorLinkCandidates(status = "pending"): Promise<ExhibitorLinkCandidate[]> {

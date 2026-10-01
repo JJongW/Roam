@@ -62,6 +62,8 @@ import type {
   WelcomeKit,
   ExhibitorGraph,
   ExhibitorLinkCandidate,
+  BoothBrandMemory,
+  BoothAppearance,
 } from "@/lib/types";
 import type {
   AnalyticsEventInput,
@@ -369,6 +371,71 @@ export class MockRepository implements Repository {
       candidates++;
     }
     return { exhibitors: plan.exhibitors.length, participants: plan.participants.length, assignments: plan.assignments.length, candidates };
+  }
+
+  async exhibitorHistory(exhibitionId: string, userId: string | null): Promise<Record<string, BoothBrandMemory>> {
+    const st = store();
+    const gph = st.exhibitorGraph;
+    const exOf = new Map(st.exhibitions.map((e) => [e.id, e]));
+    const curStart = exOf.get(exhibitionId)?.startDate ?? "";
+    const part = new Map(gph.participants.map((p) => [p.id, p]));
+    const boothExhibition = new Map(st.booths.map((b) => [b.id, b.exhibitionId]));
+    const out: Record<string, BoothBrandMemory> = {};
+    for (const a of gph.assignments) {
+      if (a.role !== "primary") continue;
+      const p = part.get(a.participantId);
+      if (!p || p.exhibitionId !== exhibitionId) continue;
+      const others = gph.participants.filter((o) => o.exhibitorId === p.exhibitorId && o.exhibitionId !== exhibitionId);
+      const past = others
+        .map((o) => ({ o, start: exOf.get(o.exhibitionId)?.startDate ?? "" }))
+        .filter((x) => x.start && (!curStart || x.start < curStart))
+        .sort((x, y) => y.start.localeCompare(x.start))[0];
+      let mine: BoothBrandMemory["mine"];
+      if (userId) {
+        const otherPartIds = new Set(others.map((o) => o.id));
+        const otherBooths = new Set(gph.assignments.filter((x) => x.role === "primary" && otherPartIds.has(x.participantId)).map((x) => x.boothId));
+        const note = st.notes
+          .filter((n) => n.userId === userId && otherBooths.has(n.boothId))
+          .map((n) => ({ n, kind: n.verdict === "good" ? "good" : !n.verdict && (n.interest === "must" || n.interest === "curious") ? n.interest : null }))
+          .filter((x) => x.kind)
+          .sort((x, y) => y.n.updatedAt.localeCompare(x.n.updatedAt))[0];
+        if (note) {
+          const exId = boothExhibition.get(note.n.boothId)!;
+          const op = others.find((o) => o.exhibitionId === exId);
+          mine = { exhibition: exOf.get(exId)?.name ?? exId, name: op?.displayName ?? "", kind: note.kind as "must" | "curious" | "good" };
+        }
+      }
+      if (!past && !mine) continue;
+      out[a.boothId] = {
+        currentName: p.displayName,
+        ...(past ? { past: { exhibition: exOf.get(past.o.exhibitionId)?.name ?? "", name: past.o.displayName } } : {}),
+        ...(mine ? { mine } : {}),
+      };
+    }
+    return out;
+  }
+
+  async boothAppearances(boothId: string): Promise<BoothAppearance[]> {
+    const st = store();
+    const gph = st.exhibitorGraph;
+    const a = gph.assignments.find((x) => x.boothId === boothId && x.role === "primary");
+    const p = a && gph.participants.find((x) => x.id === a.participantId);
+    if (!p) return [];
+    const exOf = new Map(st.exhibitions.map((e) => [e.id, e]));
+    return gph.participants
+      .filter((o) => o.exhibitorId === p.exhibitorId && o.exhibitionId !== p.exhibitionId)
+      .flatMap((o) =>
+        gph.assignments
+          .filter((x) => x.participantId === o.id && x.role === "primary")
+          .map((x) => ({
+            exhibitionName: exOf.get(o.exhibitionId)?.name ?? "",
+            startDate: exOf.get(o.exhibitionId)?.startDate ?? "",
+            displayName: o.displayName,
+            boothId: x.boothId,
+            boothCode: st.booths.find((b) => b.id === x.boothId)?.code,
+          })),
+      )
+      .sort((x, y) => y.startDate.localeCompare(x.startDate));
   }
 
   async listExhibitorLinkCandidates(status = "pending"): Promise<ExhibitorLinkCandidate[]> {
