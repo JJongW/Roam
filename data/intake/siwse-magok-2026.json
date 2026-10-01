@@ -628,7 +628,10 @@
     "sw-traditional"
    ],
    "websiteUrl": "https://corevest.co.kr",
-   "instagramUrl": "https://www.instagram.com/corevest_brewing"
+   "instagramUrl": "https://www.instagram.com/corevest_brewing",
+   "images": [
+    "/booths/siwse-magok-2026/D-09.webp"
+   ]
   },
   {
    "code": "D-10",
@@ -1138,6 +1141,9 @@
    "tags": [
     "sw-food",
     "sw-etc"
+   ],
+   "images": [
+    "/booths/siwse-magok-2026/E-27.webp"
    ]
   },
   {
@@ -1834,7 +1840,10 @@
     "sw-etc"
    ],
    "websiteUrl": "https://gafi.or.kr",
-   "instagramUrl": "https://www.instagram.com/gafi_official_agro"
+   "instagramUrl": "https://www.instagram.com/gafi_official_agro",
+   "images": [
+    "/booths/siwse-magok-2026/G-15.webp"
+   ]
   },
   {
    "code": "G-17",
