@@ -11,6 +11,14 @@
 const BY_SLUG: Record<string, string> = {
   "magok-livingmarket-2026":
     "/booths/magok-livingmarket-2026/livingmarket_icon.png",
+  // 브랜드를 특정할 사진이 없는 부스는 행사 포스터로 메운다(사용자 결정 2026-10-02).
+  "siwse-magok-2026": "/booths/siwse-magok-2026/poster.webp",
+};
+
+/** 관리자 화면(POST /api/exhibitions)으로 만든 전시는 id가 slug에서 파생되지 않는다
+ *  (무작위 id). 아래 `exh_<slug>` 되돌리기가 안 먹으므로 직접 잇는다. */
+const ID_TO_SLUG: Record<string, string> = {
+  exh_0vqhgewmmupcsmeq: "siwse-magok-2026",
 };
 
 /**
@@ -20,8 +28,8 @@ const BY_SLUG: Record<string, string> = {
  */
 export function boothPlaceholder(key?: string | null): string | undefined {
   if (!key) return undefined;
-  const slug = key.startsWith("exh_")
+  const slug = ID_TO_SLUG[key] ?? (key.startsWith("exh_")
     ? key.slice(4).replace(/_/g, "-")
-    : key;
+    : key);
   return BY_SLUG[slug];
 }

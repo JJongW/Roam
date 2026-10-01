@@ -115,29 +115,38 @@ export const bookmarkInputSchema = z.object({
 });
 export type BookmarkInput = z.infer<typeof bookmarkInputSchema>;
 
-export const exhibitionInputSchema = z.object({
+/** 전시 필드 — default 없음. 부분 수정(exhibitionPatchInputSchema)이 이걸 쓴다. */
+const exhibitionFields = z.object({
   slug: z
     .string()
     .min(2)
     .regex(/^[a-z0-9-]+$/, "소문자·숫자·하이픈만"),
   name: z.string().min(2).max(120),
   venue: z.string().min(1).max(120),
-  description: z.string().max(2000).default(""),
+  description: z.string().max(2000),
   startDate: z.string(),
   endDate: z.string(),
   coverImageUrl: z.string().url().optional(),
   mapImageUrl: z.string().url().optional(),
-  mapWidth: z.number().int().min(100).max(10000).default(1000),
-  mapHeight: z.number().int().min(100).max(10000).default(700),
+  mapWidth: z.number().int().min(100).max(10000),
+  mapHeight: z.number().int().min(100).max(10000),
   tips: z
     .object({
       transportation: z.string().optional(),
       parking: z.string().optional(),
       ticket: z.string().optional(),
       guide: z.string().optional(),
-    })
-    .default({}),
+    }),
 });
+export const exhibitionInputSchema = exhibitionFields.extend({
+  description: exhibitionFields.shape.description.default(""),
+  mapWidth: exhibitionFields.shape.mapWidth.default(1000),
+  mapHeight: exhibitionFields.shape.mapHeight.default(700),
+  tips: exhibitionFields.shape.tips.default({}),
+});
+/** 부분 수정. `.partial()`은 default를 안 막아서(zod 4) 안 보낸 키가 기본값으로
+ *  생긴다 — 커버만 바꿔도 설명이 지워지고 지도 크기가 1000×700으로 덮였다. */
+export const exhibitionPatchInputSchema = exhibitionFields.partial();
 export type ExhibitionInput = z.infer<typeof exhibitionInputSchema>;
 
 /** 부스 필드 — default 없음. 부분 수정(boothPatchInputSchema)이 이걸 쓴다. */
@@ -226,15 +235,20 @@ export const boothPatchInputSchema = boothFields.partial().extend({
   enrichment: boothEnrichmentAuthorInputSchema.optional(),
 });
 
-export const eventInputSchema = z.object({
+const eventFields = z.object({
   boothId: z.string().min(1),
   title: z.string().min(1).max(140),
-  description: z.string().max(1000).default(""),
+  description: z.string().max(1000),
   startTime: z.string(),
   endTime: z.string(),
   rewardInfo: z.string().max(300).optional(),
   capacity: z.number().int().min(0).max(100000).optional(),
 });
+export const eventInputSchema = eventFields.extend({
+  description: eventFields.shape.description.default(""),
+});
+/** 부분 수정 — default 없는 eventFields에서. `.partial()`은 default를 안 막는다(zod 4). */
+export const eventPatchInputSchema = eventFields.partial();
 export type EventInput = z.infer<typeof eventInputSchema>;
 
 export const analyticsEventInputSchema = z.object({

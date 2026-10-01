@@ -1,6 +1,6 @@
 import { getRepository } from "@/lib/repositories";
 import { noContent, notFound, ok, parseBody, requireAdmin } from "@/lib/api/http";
-import { exhibitionInputSchema } from "@/lib/schemas";
+import { exhibitionPatchInputSchema } from "@/lib/schemas";
 
 type Ctx = { params: Promise<{ slug: string }> };
 
@@ -17,7 +17,7 @@ export async function PATCH(req: Request, { params }: Ctx) {
   const denied = await requireAdmin();
   if (denied) return denied;
   const { slug: id } = await params;
-  const parsed = await parseBody(req, exhibitionInputSchema.partial());
+  const parsed = await parseBody(req, exhibitionPatchInputSchema);
   if (!parsed.ok) return parsed.res;
   const repo = await getRepository();
   const updated = await repo.updateExhibition(id, parsed.data);
