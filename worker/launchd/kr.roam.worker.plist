@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Roam 워커 — 맥미니 상시 구동. docker 없이 launchd로 돈다(2026-10-01).
+  설치: worker/launchd/install.sh
+  로그: ~/Library/Logs/roam-worker.log
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>kr.roam.worker</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/zsh</string>
+    <string>__WORKTREE__/worker/launchd/run.sh</string>
+  </array>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <!-- launchd의 PATH는 비어 있다. nvm 경로라 node 버전을 바꾸면 install.sh를 다시 돌린다. -->
+    <key>PATH</key><string>__NODE_BIN__:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    <!-- 초안은 Gemini 호출이라 병렬이 이득이 아니다 — 하나만(docker-compose.yml과 같은 판단). -->
+    <key>WORKER_TYPES</key><string>enrichment_draft</string>
+    <key>WORKER_IDLE_MS</key><string>10000</string>
+  </dict>
+  <key>RunAtLoad</key><true/>
+  <key>KeepAlive</key><true/>
+  <!-- 죽자마자 재시작을 반복하지 않게(예: .env 누락). -->
+  <key>ThrottleInterval</key><integer>60</integer>
+  <key>StandardOutPath</key><string>__HOME__/Library/Logs/roam-worker.log</string>
+  <key>StandardErrorPath</key><string>__HOME__/Library/Logs/roam-worker.log</string>
+</dict>
+</plist>
