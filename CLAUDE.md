@@ -50,8 +50,8 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
 - **부스/이벤트**: `Booth`(code 자연키, kind exhibitor|facility, tags=카테고리 slug, aliases 공동입점), `BoothEvent`.
 - **주최자 콘솔** `/admin`: 전시·부스·이벤트·대기 관리 + 분석 대시보드(히트맵·인기부스·동선흐름·퍼널).
 - **부가**: 커뮤니티 포스트(미디어), 개인 메모장(visited/skip/메모/사진), 북마크, 푸시(FCM — **현재 키 미설정이라 비활성**), 닉네임 인증.
-- **소유자 키**: 노트·브레인·신호·북마크는 `app_user.id`. ⚠️ 리뷰·커뮤니티 포스트는 아직
-  `visitor_session.id` 기준이라 계정에 안 묶인다(미해결, 감사 P1-2).
+- **소유자 키**: 노트·브레인·신호·북마크·리뷰·커뮤니티 포스트 전부 `app_user.id`
+  (리뷰·포스트는 2026-10-01 `0056`으로 전환, 감사 P1-2 종결).
 - **로그인(부분 게이트)**: `app_user`(닉네임=공개키) 단일 계정 테이블. 닉네임 무비번 + **Google OAuth**(Supabase Auth). 신원은 앱 자체 쿠키 `roam_user`로 통일 — OAuth 콜백(`/auth/callback`)은 Supabase 세션으로 identity만 읽고 `signOut`, `app_user` upsert 후 `roam_user` 발급. mock 모드(Supabase 키 없음)엔 Google 버튼 숨김(닉네임만). **게이트** `src/proxy.ts`(Next 16 proxy 컨벤션): `roam_user` 없으면 `/login?next=`로 307. 공개=`/`·`/privacy`·`/terms`(구글 OAuth 심사가 직접 연다 — 막으면 심사 탈락)와 정확 패턴 `/exhibitions/[slug]`·`/exhibitions/[slug]/map`·`/booths/[id]`. 하위 경로는 패턴에 안 걸려 자동으로 로그인 필수. 예외 프리픽스=`/login`·`/auth`·`/admin`(자체 코드 게이트)·`/api`·정적. 로미의 개인화는 라우트가 아니라 **컴포넌트 레벨**에서 막는다. 로그인 화면 `src/app/login/`. 외부 설정·설계: `docs/decisions/2026-07-07_google-oauth-login.md`.
 - 도메인 타입 단일 소스: `src/lib/types/index.ts`. 설계 문서: `.claude/plans/`(architecture·erd·api-spec).
 
