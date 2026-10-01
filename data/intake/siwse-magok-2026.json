@@ -1,0 +1,3851 @@
+{
+ "version": 1,
+ "exhibitionSlug": "siwse-magok-2026",
+ "booths": [
+  {
+   "code": "A-01",
+   "name": "증정품 수령처(티켓 구매자 전용)",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "편의시설",
+   "categorySlug": "sw-facility",
+   "kind": "facility",
+   "tags": [
+    "sw-facility"
+   ]
+  },
+  {
+   "code": "A-02",
+   "name": "서비스센터",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "편의시설",
+   "categorySlug": "sw-facility",
+   "kind": "facility",
+   "tags": [
+    "sw-facility"
+   ]
+  },
+  {
+   "code": "A-03",
+   "name": "세척",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "편의시설",
+   "categorySlug": "sw-facility",
+   "kind": "facility",
+   "tags": [
+    "sw-facility"
+   ]
+  },
+  {
+   "code": "A-04",
+   "name": "얼음",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "편의시설",
+   "categorySlug": "sw-facility",
+   "kind": "facility",
+   "tags": [
+    "sw-facility"
+   ]
+  },
+  {
+   "code": "A-05",
+   "name": "택배 접수처",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "편의시설",
+   "categorySlug": "sw-facility",
+   "kind": "facility",
+   "tags": [
+    "sw-facility"
+   ]
+  },
+  {
+   "code": "A-06",
+   "name": "바이어 / 비즈니스 라운지",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "편의시설",
+   "categorySlug": "sw-facility",
+   "kind": "facility",
+   "tags": [
+    "sw-facility"
+   ]
+  },
+  {
+   "code": "A-07",
+   "name": "세미나 / 이벤트룸",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "편의시설",
+   "categorySlug": "sw-facility",
+   "kind": "facility",
+   "tags": [
+    "sw-facility"
+   ]
+  },
+  {
+   "code": "B-01",
+   "name": "제주특별자치도",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "제주특별자치도관광협회",
+   "aliases": [
+    "제주특별자치도관광협회"
+   ],
+   "description": "당신의 일상에 제주를 더하다.",
+   "longDescription": "당신의 일상에 제주를 더하다.\n“더 가고 싶은 제주, 더 오래 있고 싶은 제주”\n\n제주의 사계절을 일상처럼 경험하는 방법, 계절이 바뀔 때마다 다시 찾고 싶은 이유가 있습니다. 스쳐가는 하루가 아니라, 진짜 제주를 만나는 시간 - 우리가 원하고 그리는 여행의 방식입니다.\n\n제주는 계절마다 다른 이름을 가집니다. 언제 방문해도, 처음 보는 제주가 기다리고 있습니다.\n봄 - 여행이 피는 계절, 여름 – 제주를 달리는 계절, 가을 – 바람 타고 가는 계절, 겨울 – 머무는 계절\n\n주요 제품: 제주방문 단체관광객 지원, 제주여행 공공플랫폼 탐나오, 제주시티투어버스\n\n[제주방문 단체관광객 유형별 \"탐나는전\" 지원]\n제주를 찾는 15인 이상 단체관광객에게 1인당 3만원의 제주 지역화폐 \"탐나는전\"을 지원합니다.\n제주방문 7일 전까지 온라인으로 사전신청 후, 제주여행을 시작하는 날 바로 제주공항/항만에서 수령할 수 있습니다.\n\n[제주여행 공공플랫폼 탐나오]\n제주여행에 필요한 항공, 숙박, 렌트카, 관광지, 맛집, 특산/기념품을 한번에 구매할 수 있는 공공플랫폼 \"탐나오\"\n탐나오의 다양한 할인 프로모션과 혜택으로 가성비 제주여행을 만나보세요.\n\n[제주시티투어버스]\n탑승권 한 장으로 하루 동안 총 21개의 정거장에서 자유롭게 타고 내리며 제주시 곳곳을 여행할 수 있는 순환형 투어 프로그램입니다.",
+   "websiteUrl": "https://www.tamnao.co.kr",
+   "logoUrl": "/booths/siwse-magok-2026/logo/B-01.webp",
+   "images": [
+    "/booths/siwse-magok-2026/B-01_1.webp",
+    "/booths/siwse-magok-2026/B-01_2.webp",
+    "/booths/siwse-magok-2026/B-01_3.webp"
+   ],
+   "category": "기타",
+   "categorySlug": "sw-etc",
+   "tags": [
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "B-03",
+   "name": "익수제약㈜",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "익수제약(주)",
+   "aliases": [
+    "익수제약(주)"
+   ],
+   "description": "전통을 다루는 가장 트렌디한 제약회사  익수제약은 한방 천연물 생약 제제 기술을 연구하고 대한민국 대표 명약인 '익수 공진단'과 '용표 우황청심원'을 만들어 온 탄탄하고 든든한 기업입니다.",
+   "longDescription": "전통을 다루는 가장 트렌디한 제약회사\n\n익수제약은 한방 천연물 생약 제제 기술을 연구하고\n대한민국 대표 명약인 '익수 공진단'과 '용표 우황청심원'을 만들어 온\n탄탄하고 든든한 기업입니다.\n\n전통 명약의 본질과 기술을 지키면서도\n이로운 한방을 익숙하고 새롭게 경험할 수 있도록 끊임없이 노력하는\n스마트한 기업입니다.\n\n주요 제품: 취어스액(삼두해정탕), 익수공진단, 용표우황청심원\n\n취어스액(삼두해정탕)\n\n식품의약품안전처로부터 숙취 증상 '음주로 인한 두통,구토,목마름, 과음으로 인한 소화기능장애'에 대해\n효능효과를 인정받은 일반의약품 숙취해소제입니다.",
+   "websiteUrl": "https://iksu-cheers.com/",
+   "logoUrl": "/booths/siwse-magok-2026/logo/B-03.webp",
+   "images": [
+    "/booths/siwse-magok-2026/B-03_1.webp",
+    "/booths/siwse-magok-2026/B-03_2.webp",
+    "/booths/siwse-magok-2026/B-03_3.webp"
+   ],
+   "category": "기타",
+   "categorySlug": "sw-etc",
+   "tags": [
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "B-04",
+   "name": "한닙두잇",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "주식회사 앰비션플랜",
+   "aliases": [
+    "주식회사 앰비션플랜"
+   ],
+   "description": "k - wave의 시작은 k-food로 부터.",
+   "longDescription": "k - wave의 시작은 k-food로 부터.\n우리의 시작은 김스낵입니다.\n4번 바삭하게 구워 달짭쪼름한 김스낵\n\n주요 제품: 한닙두잇 스파이시 김스낵, 한닙두잇 와사비 김스낵, 한닙두잇 고메치즈 김스낵\n\n김을 4장 겹쳐 4번 구워냈다!\n스윗솔트, 스파이시, 고메치즈, 와사비 맛 술안주 김스낵",
+   "websiteUrl": "https://hannibdoeat.com/",
+   "logoUrl": "/booths/siwse-magok-2026/logo/B-04.webp",
+   "images": [
+    "/booths/siwse-magok-2026/B-04_1.webp",
+    "/booths/siwse-magok-2026/B-04_2.webp",
+    "/booths/siwse-magok-2026/B-04_3.webp",
+    "/booths/siwse-magok-2026/B-04_4.webp"
+   ],
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "B-05",
+   "name": "옥수주조",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "현대적 감각으로 전통주의 새로운 맛을 창조하고 있습니다.",
+   "longDescription": "현대적 감각으로 전통주의 새로운 맛을 창조하고 있습니다.\n전통주가 가진 고정관념을 깨고, 더 친근하고 새로운 스타일의 막걸리를 제공하기 위해 끊임없이 노력하고 있습니다.\n우리의 마스코트 캐릭터 '오키(OKI)'는 이러한 정신을 반영하여 제품 디자인에 활용되고 있습니다.\n인공적인 첨가물 없이, 재료 본연의 맛을 최대한 살리기 위한 다양한 실험을 통해,\n옥수주조는 진정한 맛의 막걸리를 선보이고자 합니다.\n\n주요 제품: 옥주, 이밤에취해, 옥주15 감신무\n\n우리 쌀을 기반으로 한 전통주를 현대적인 감각으로 재해석하여,\n누구나 부담 없이 즐길 수 있는 프리미엄 막걸리를 제조하는 양조 브랜드입니다.\n\n김포산 쌀을 활용하고, 자체 개발한 쌀 로스팅 및 쌀가루 발효 공법을 통해 기존 막걸리와 차별화된 부드러움과 풍미를 구현합니다.\n또한 과일, 곡물, 원재료 본연의 맛을 살린 다양한 제품 라인업을 통해 전통주의 대중화와 글로벌화를 동시에 지향하고 있습니다.",
+   "instagramUrl": "https://www.instagram.com/oksujujo",
+   "logoUrl": "/booths/siwse-magok-2026/logo/B-05.webp",
+   "images": [
+    "/booths/siwse-magok-2026/B-05_1.webp",
+    "/booths/siwse-magok-2026/B-05_2.webp",
+    "/booths/siwse-magok-2026/B-05_3.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "B-07",
+   "name": "오사카야끼",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "일본식 야끼를 만드는 업체 입니다.",
+   "longDescription": "일본식 야끼를 만드는 업체 입니다.\n남해 독일마을 수제 소세지도 같이 판매 합니다\n\n주요 제품: 타코야끼, 야끼소바, 수제 소세지\n\n야채와 면을 같이 볶은 음식 입니다.",
+   "logoUrl": "/booths/siwse-magok-2026/logo/B-07.webp",
+   "images": [
+    "/booths/siwse-magok-2026/B-07_1.webp",
+    "/booths/siwse-magok-2026/B-07_2.webp",
+    "/booths/siwse-magok-2026/B-07_3.webp",
+    "/booths/siwse-magok-2026/B-07_4.webp",
+    "/booths/siwse-magok-2026/B-07_5.webp"
+   ],
+   "category": "기타",
+   "categorySlug": "sw-etc",
+   "tags": [
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "B-09",
+   "name": "휴게존",
+   "hall": "마곡 컨벤션센터 1층",
+   "category": "편의시설",
+   "categorySlug": "sw-facility",
+   "kind": "facility",
+   "tags": [
+    "sw-facility"
+   ]
+  },
+  {
+   "code": "B-10",
+   "name": "베르메디",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "longDescription": "주요 제품: 밀크씨슬, 미라클 브이차,",
+   "logoUrl": "/booths/siwse-magok-2026/logo/B-10.webp",
+   "images": [
+    "/booths/siwse-magok-2026/B-10_1.webp",
+    "/booths/siwse-magok-2026/B-10_2.webp"
+   ],
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food",
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "C-01",
+   "name": "임포쿡",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "C-02",
+   "name": "유어와인즈",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "longDescription": "주요 제품: , ,",
+   "logoUrl": "/booths/siwse-magok-2026/logo/C-02.webp",
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "C-03",
+   "name": "(주)엘케이코리아",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "프랑스/이태리/스페인 와인 수입 유통하는 회사입니다.",
+   "longDescription": "프랑스/이태리/스페인 와인 수입 유통하는 회사입니다.\n주류도매장 17년 경력의 대표와 와인수입업계 26년 경력의 대표가 만나 작년에 생긴 신생 수입사입니다.\n두 대표의 경력을 바탕으로 젊은 감각의 트랜드를 읽어 초/중급자를 대상으로 와인을 쉽게 다가갈 수 있기를 바라며, 와인의 대중화를 위해 노력하고 있습니다.\n\n주요 제품: 고보네 말바시아 디 카소로조, 고보네 피에몬테 바르베라 아파씨멘토, 마렝삭 샤도네이\n\n고보네 말바시아 디 카소로조 : 기분좋은 단맛이 입안을 감쌀때 레드의 타닌성분이 산미를 제공하여 기분이 상쾌해지면서 좋아진다.\n지친 하루를 리프레쉬하게 만들어 주는 와인.\n\n고보네 피에몬테 바르베라 아파씨멘토 : 바르베라 품종을 수확 후 50~60일 자연건조 시켜 포도알이 농축 된 상태에서 와인을 만들게 된다. 아주 약간의 기분 좋은 단맛이 느껴질 때 말린자두향과 블랙커런트, 아로마향이 함께 느껴지며, 타닌감, 바디감, 산미 등 아주 균형잡힌 오각형 와인의 맛을 느낄 수 있다.\n\n마렝삭 샤도네이 : 살구 향이 입안을 개운하게 행구어주며, 오크숙성으로 인한 샤도네이 답지 않은 바디감을 선사하며, 미네랄 성분이 풍부하여 약간의 짠맛이 느껴진다. 이 짠맛은 감칠맛을 자극시켜 각종 해산물 요리와 파스타의 맛을 극으로 끌어 올리게 된다. 또한 스파이시한 맛이 느껴져 매운 음식과도 잘 어울린다.",
+   "logoUrl": "/booths/siwse-magok-2026/logo/C-03.webp",
+   "images": [
+    "/booths/siwse-magok-2026/C-03_1.webp",
+    "/booths/siwse-magok-2026/C-03_2.webp",
+    "/booths/siwse-magok-2026/C-03_3.webp",
+    "/booths/siwse-magok-2026/C-03_4.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "C-04",
+   "name": "주식회사 성신주류",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "기타",
+   "categorySlug": "sw-etc",
+   "tags": [
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "C-05",
+   "name": "까치돌배주",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "밤바치농장",
+   "aliases": [
+    "밤바치농장",
+    "21,900시간의 오랜 기다림, 까치돌배주"
+   ],
+   "description": "강원도 홍천군 소재 토종 돌배를 직접 재배하여 가공, 술 생산",
+   "longDescription": "강원도 홍천군 소재\n토종 돌배를 직접 재배하여 가공, 술 생산\n\n주요 제품: 까치돌배주 16.5, 까치돌배주 47,\n\n유기농 돌배 40% 함유된 강원홍천 지역특산주 (리큐르)\n\n원재료명 및 함량 : 돌배40.6%(국내산100%), 돌배(국내산100%)증류원액\n\n인공첨가물 없이, 약 2년 6개월에 거쳐 만들어진 정성 담긴 술",
+   "websiteUrl": "https://bambachi.imweb.me",
+   "logoUrl": "/booths/siwse-magok-2026/logo/C-05.webp",
+   "images": [
+    "/booths/siwse-magok-2026/C-05_1.webp",
+    "/booths/siwse-magok-2026/C-05_2.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "C-07",
+   "name": "중국4대명주 분주",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "주식회사 케이씨아이총판",
+   "aliases": [
+    "주식회사 케이씨아이총판"
+   ],
+   "longDescription": "주요 제품: , ,",
+   "logoUrl": "/booths/siwse-magok-2026/logo/C-07.webp",
+   "category": "사케·중국술",
+   "categorySlug": "sw-sake-baijiu",
+   "tags": [
+    "sw-sake-baijiu"
+   ]
+  },
+  {
+   "code": "C-08",
+   "name": "와인코리아 - 샤토마니",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "와인코리아(주)농업회사법인",
+   "aliases": [
+    "와인코리아(주)농업회사법인"
+   ],
+   "description": "*32년 전통, 영동의 자연을 담은 우리 와인.",
+   "longDescription": "*32년 전통, 영동의 자연을 담은 우리 와인.\n포도 재배부터 양조까지 직접 관리하는 와인코리아의 대표 브랜드 샤토마니가 한국 와인의 품격을 선보입니다.\n이번 서울국제주류 &와인박람회에서 한국 와인의 깊이와 가능성을 경험해보세요.\n\n* 샤토마니는 불어로 대저택, 성(Castle)을 의미하는  Chateau와 충북 소백산 줄기의 푸르름을 머금은 마니산의 Mani가 합성된 단어로 와인코리아의 개척정신과 도전의식을 담은 30년 역사의 와인 브랜드입니다.\n\n주요 제품: 드라이 레드, 스위트 레드, 아이스 와인\n\n*드라이 레드:   균형감 있는 미디움 바디의 부드러움과 적당한 떫은 맛이 어우러진 정통 드라이 와인으로 육류와 어울립니다.\n\n*스위트 레드:   숙성된 국내산 캠벨 얼리의 달콤함으로 자연스럽게 입에 감기는 맛으로 와인초보자와 여성분들에게 추천합니다\n\n*아이스 와인:   한겨울에 얼은 씨 없는 델라웨어와 청포도 품종으로 만든 달콤한 맛과 진한 향이 어우러진 부드러운 와인입니다.\n\n*드라이 화이트:   다양한 청포도의 환상적인 블랜딩으로 싱그러운 시트러스향과 산뜻하고 깔끔한 맛이 일품입니다.\n\n*단 프리미엄 (복분자 와인):   농익은 블랙베리의 원숙한 향과 단맛, 산미가 부드럽게  긴 여운을 남기며 기름진 장어, 돼지고기와 어울립니다.\n\n*유비노 (유자와인):  상큼한 유자향과 레몬향이 조화를 이룬 감미로운 애프터 와인으로 굴, 새우 등 해산물 요리에 잘 어울립니다.",
+   "websiteUrl": "https://winekorea.kr",
+   "logoUrl": "/booths/siwse-magok-2026/logo/C-08.webp",
+   "images": [
+    "/booths/siwse-magok-2026/C-08_1.webp",
+    "/booths/siwse-magok-2026/C-08_2.webp",
+    "/booths/siwse-magok-2026/C-08_3.webp",
+    "/booths/siwse-magok-2026/C-08_4.webp",
+    "/booths/siwse-magok-2026/C-08_5.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "C-09",
+   "name": "공사사양조",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "농업회사법인 주식회사 공사사양조",
+   "aliases": [
+    "농업회사법인 주식회사 공사사양조",
+    "세종시전통주, 공사사양조"
+   ],
+   "description": "공사사양조는 2023년 7월 14일 설립된 세종시의 로컬 양조장입니다.",
+   "longDescription": "공사사양조는 2023년 7월 14일 설립된 세종시의 로컬 양조장입니다. 같은 해 조청으로 빚은 증류주 '삭'을 출시하며 전통 증류주의 새로운 가능성을 제시했습니다.\n2024년 대한민국 증류주품평회에서 '삭 블랙 50'으로 우수상을 수상했으며, 2025년과 2026년 대한민국 주류대상에서는 각각 30도와 50도 제품으로 대상을 수상하며 제품의 품질과 경쟁력을 인정받았습니다. 2026년에는 '삭'을 기반으로 부담 없이 즐길 수 있는 저도수 지역소주 '제비'를 출시했으며, 현재 세종시 특산물인 복숭아와 자두를 활용한 RTD 제품 '삭 피치'와 '삭 플럼'도 개발하고 있습니다.\n\n전통적인 양조 과정은 공정이 복잡하고 변수가 많아 제품 생산까지 오랜 시간이 필요하며, 누룩 향이나 곡물의 탄 맛이 익숙하지 않은 젊은 소비자에게는 다소 어렵게 느껴질 수 있습니다. 그러나 공사사양조는 이런 기존 전통주 제조 방식의 한계를 현대적인 양조 기술로 풀어냈습니다. 자체 개발한 조청 발효 및 증류 기술을 통해 기존의 복잡한 양조 공정을 약 30% 이상 줄였으며, 동일한 규모의 양조시설과 비교해 생산량을 40% 이상 높이는 성과를 거두었습니다. 전통적인 재료의 가치를 이어가면서도 오늘날의 소비자가 편안하게 즐길 수 있는 현대적인 술을 만드는 것이 공사사양조의 방향입니다.\n\n그 중심에는 누구도 쉽게 생각하지 못했던 '조청으로 증류주를 만든다'는 선택이 있습니다.\n일반적인 양조 방식처럼 쌀에 제국 공정을 거치거나 누룩을 혼합하는 대신, 쌀과 엿기름으로 조청을 빚은 뒤 이를 발효하고 증류합니다. 이를 통해 여러 생산 공정을 줄이면서도 쌀이 가진 고유한 풍미와 조청 특유의 은은한 단맛을 술에 온전히 담아냈습니다.\n조청은 별도의 첨가물 없이 쌀과 엿기름으로 만드는 천연 감미료로, 조선시대에는 궁중에서도 즐겨 사용하던 귀한 식재료였습니다. 공사사양조는 세종시에서 생산된 쌀과 엿기름으로 만든 조청을 활용해, 쌀 특유의 고소한 곡물 향과 과하지 않은 단맛이 길게 이어지는 증류주를 완성했습니다.\n그 결과 '삭'에서는 전통주 특유의 깊이와 정취를 느낄 수 있는 동시에, 현대적인 양조 기술에서 비롯된 깨끗하고 정제된 인상을 함께 경험할 수 있습니다. 마치 위스키와 고량주, 사케가 지닌 서로 다른 매력을 한 잔에 담아낸 듯한 독창적인 풍미가 '삭'의 가장 큰 특징입니다.\n\n또한 2026년, 공사사양조는 이러한 '삭'을 기반으로 새로운 지역소주 '제비'를 선보였습니다.\n세종시의 옛 이름인 '연기군'의 '연기' 통일신라 시대부터 이어져 온 지명입니다. '연기'는 제비를 뜻하는 한자 연(鷰)을 사용하며, 제비는 오랫동안 이 지역을 상징하는 존재로 여겨져 왔습니다.\n그러한 제비는 겨울이면 따뜻한 남쪽으로 떠났다가 봄이 되면 어김없이 고향으로 돌아옵니다. 사람들의 집 가까이에 둥지를 틀고 함께 살아가며 해충을 잡아주고, 복을 가져다주는 길조로 사랑받아 왔습니다.\n그 제비처럼 세종시 조치원에 둥지를 틀고 시작한 공사사양조는 지역의 재료와 이야기를 담아, 누구나 부담 없이 편안하게 즐길 수 있는 저도수 지역소주 '제비'를 만들었습니다.\n\n전통의 재료를 오늘의 기술로 다시 빚는 양조장.\n공사사양조는 조청으로 만든 증류주 '삭'과 지역소주 '제비'를 통해 세종을 대표하는 새로운 술 문화를 만들어가고 있습니다.\n\n주요 제품: 삭, 삭 블랙 50, 제비소주\n\n'삭'은 100% 세종 쌀로 만든 고급 조청을 정성스럽게 발효하여 만든 증류주로, 다채로운 향과 깔끔한 풍미가 특징인 부드러운 술입니다. 향이 은은하고 목넘김이 부드러워 데일리로 즐기기 좋은 30도와 묵직하고 강렬한 향으로 특별하게 즐기기 좋은 50도. 이렇게 두 도수로 나오고 있습니다.\n'제비 소주'는 '삭'의 증류원액으로 만들어진 저도수 브랜드로, 삭에서 느껴지던 특유의 은은한 조청향에 더해 매우 부드럽고 깔끔한 향과 목넘김을 지닌 세종시의 새로운 로컬 소주입니다.",
+   "instagramUrl": "https://www.instagram.com/sak_spirits_044/#",
+   "logoUrl": "/booths/siwse-magok-2026/logo/C-09.webp",
+   "images": [
+    "/booths/siwse-magok-2026/C-09_1.webp",
+    "/booths/siwse-magok-2026/C-09_2.webp",
+    "/booths/siwse-magok-2026/C-09_3.webp",
+    "/booths/siwse-magok-2026/C-09_4.webp",
+    "/booths/siwse-magok-2026/C-09_5.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional",
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "C-10",
+   "name": "열수한강막걸리/미라실 울프 와인",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "농업회사법인(주)미라실",
+   "aliases": [
+    "농업회사법인(주)미라실"
+   ],
+   "websiteUrl": "http://www.mirasilwolf.com/",
+   "logoUrl": "/booths/siwse-magok-2026/logo/C-10.webp",
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine",
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "C-11",
+   "name": "미카의달콤한작업실",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "미세스카카오",
+   "aliases": [
+    "미세스카카오"
+   ],
+   "description": "Mrs.",
+   "longDescription": "Mrs. Cacao(미카의달콤한작업실)는 제주의 자연과 이야기를 카카오에 담아 프리미엄 초콜릿과 디저트를 선보이는 제주 로컬 브랜드입니다.\n\n한라산, 화산석, 비자림 등 제주를 모티브로 한 초콜릿을 비롯해\n고품질 원료와 섬세한 레시피로 다양한 카카오 디저트를 만들고 있습니다.\n\n와인·위스키·맥주 등 다양한 주류와 어울리는 초콜릿 페어링을 통해\n'제주를 맛보고 경험하는 새로운 미식의 즐거움'을 제안합니다.\n\n주요 제품: 한라산화산석초콜릿, 제주카페송이, 제주아망송이\n\n미카의 달콤한 작업실 초콜릿은 제주의 자연과 풍경을 초콜릿으로 표현한 프리미엄 수제 초콜릿입니다.\n한라산의 화산석, 제주 숲의 버섯, 제주 카페 문화를 모티브로 디자인된 제품으로,\n제주를 대표하는 자연과 문화를 초콜릿으로 담아낸 것이 특징입니다.\n\n제품 디자인은 디자인 등록이 완료된 제품이며, 초콜릿 레시피는 출원된 자체 개발 레시피를 사용하고 있습니다.\n또한 해외 판매를 위한 FDA 등록, ISO22000을 완료하였으며,\n농촌융복합산업(6차산업) 인증을 받은 제주 지역 특화 가공 제품입니다.\n국내외 관광객들에게 제주를 대표하는 프리미엄 기념품 초콜릿으로 판매되고 있습니다.",
+   "websiteUrl": "https://www.mrscacao.co.kr",
+   "logoUrl": "/booths/siwse-magok-2026/logo/C-11.webp",
+   "images": [
+    "/booths/siwse-magok-2026/C-11_1.webp",
+    "/booths/siwse-magok-2026/C-11_2.webp",
+    "/booths/siwse-magok-2026/C-11_3.webp",
+    "/booths/siwse-magok-2026/C-11_4.webp",
+    "/booths/siwse-magok-2026/C-11_5.webp"
+   ],
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food",
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "C-12",
+   "name": "평산댁닭발",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "에서는 기존의 화끈한 매운 닭발의 이미지를 탈피하고, 다양한 술과 완벽하게 페어링 가능한 요리로서 닭발의 새로운 매력을 선보이고 있습니다.",
+   "longDescription": "에서는 기존의 화끈한 매운 닭발의 이미지를 탈피하고, 다양한 술과 완벽하게 페어링 가능한 요리로서 닭발의 새로운 매력을 선보이고 있습니다.\n\n주요 제품: 닭발큐브, 닭발편육, 무뼈닭발\n\n눈물 쏙 빼며 먹던 매운 닭발을 와인과 페어링하며 우아하게 즐길 방법은 없을까? 닭발 러버의 깊은 고민 끝에 탄생한 평산댁은 매콤한 숯불 닭발의 맛은 그대로 느끼면서 먹기 좋은 컴팩트한 사이즈로 조리 없이 간편하게 즐기는 3가지 닭발(닭발큐브,닭발편육,무뼈닭발)을 소개합니다.\n숯불의 불맛과 닭발 고유의 식감은 살리고, 눈이 즐거운 디자인으로 닭발을 다양하게 즐겨보세요!",
+   "websiteUrl": "https://smartstore.naver.com/momsmomfnb",
+   "logoUrl": "/booths/siwse-magok-2026/logo/C-12.webp",
+   "images": [
+    "/booths/siwse-magok-2026/C-12_1.webp",
+    "/booths/siwse-magok-2026/C-12_2.webp",
+    "/booths/siwse-magok-2026/C-12_3.webp",
+    "/booths/siwse-magok-2026/C-12_4.webp",
+    "/booths/siwse-magok-2026/C-12_5.webp"
+   ],
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "C-13",
+   "name": "헬레닉와인",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "헬레닉셀러",
+   "aliases": [
+    "헬레닉셀러"
+   ],
+   "description": "세계에서 가장 오래된 와인 산지 중 하나인 그리스의 와인을 소개합니다.",
+   "longDescription": "세계에서 가장 오래된 와인 산지 중 하나인 그리스의 와인을 소개합니다.\n\n프리미엄 디저트 와인부터, 강렬한 아로마를 지닌 드라이 와인까지\n다양한 라인업을 보유하고 있습니다.\n\n주요 제품: 말라구지아, 오모로, 사모스 스위트와인\n\n*망고, 파인애플 계열의 아로마, 말라구지아\n*포트와인 느낌의 스위트 레드 와인 오모로\n*프리미엄 모스카토, 사모스 디저트 와인",
+   "logoUrl": "/booths/siwse-magok-2026/logo/C-13.webp",
+   "images": [
+    "/booths/siwse-magok-2026/C-13_1.webp",
+    "/booths/siwse-magok-2026/C-13_2.webp",
+    "/booths/siwse-magok-2026/C-13_3.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "C-17",
+   "name": "계절스푼",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "계절스푼은 올리브의 대중화와 홈파티에 어울리는 안주류를 주로 올리브를 하나의 음식으로 제조하고 있습니다.",
+   "longDescription": "계절스푼은 올리브의 대중화와 홈파티에 어울리는 안주류를 주로 올리브를 하나의 음식으로 제조하고 있습니다.\n올리브를 싫어하시는 분들도 눈 감고 드시면 올리브인지 모를 정도로 고급스럽고 맛있는 올리브를 만들고 있으며\n올리브 하면 스페인 스페인 하면 올리브! 계절스푼은 주한스페인상공회의소 회원으로 스페인과 가장 가까우며\n주한스페인상공회의소를 통해 스페인의 다양한 상품을 홍보하고 있습니다.\n계절스푼 부스에 오셔서 올리브 시식해 보시고 스페인 관련 상품도 구경해 보시고 가세요~\n\n주요 제품: 올리브 피클, 올리브 무침, 썬드라이 토마토\n\n올리브절임 : 일반 올리브의 짜고 맛없다는 편견을 깨고 짜지 않고 첨가물을 사용하지 않고 새콤달콤하게 절인 올리브절임 입니다.\n\n올리브무침 : 짜지않은 올리브를 페페론치노와 다양한 이태리향신료를 곁들여 매콤하고 향긋하게 안주나 반찬대용으로 올리브를 버무린 올리브무침\n\n썬드라이 토마토 : 기존의 썬드라이 토마토는 잊으세요. 자연의 온도에서 30시간 이상 말리고 양념까지 하여 썬드라이 토마토만 드셔도 충분히 맛있습니다.",
+   "websiteUrl": "https://smartstore.naver.com/ss_spoon?NaPm=ct%3Dma2j0ava%7Cci%3Dcheckout%7Ctr%3Dds%7Ctrx%3Dnull%7Chk%3D8569e1af0639036a362f3e28d31656c3c34bbee8",
+   "logoUrl": "/booths/siwse-magok-2026/logo/C-17.webp",
+   "images": [
+    "/booths/siwse-magok-2026/C-17_1.webp",
+    "/booths/siwse-magok-2026/C-17_2.webp",
+    "/booths/siwse-magok-2026/C-17_3.webp",
+    "/booths/siwse-magok-2026/C-17_4.webp",
+    "/booths/siwse-magok-2026/C-17_5.webp"
+   ],
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "C-18",
+   "name": "아미",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "🍷 세계의 다채로운 맛을 연결하는 '아미(AMI)'입니다!",
+   "longDescription": "🍷 세계의 다채로운 맛을 연결하는 '아미(AMI)'입니다!\n아미는 이탈리아(트레비소, 베네치아, 움브리아, 사르데냐, 시칠리아)와 스페인 후미야 지역에서 엄선한 와인 및 샹그리아를 수입, 유통하고 있습니다.\n또한 체코 브르노 양조장에서 장인 정신으로 생산되는 '골드칵(GOLDCOCK)' 싱글몰트, 블렌디드, 피티드 위스키 라인업을 함께 선보입니다!✨\n여기에 술과 최고의 궁합을 자랑하는 스페인 전통 버터 만테카도 쿠키와 스페인 정통 문어(뽈포)숙회 까지!🧀🐙\n아미 부스에서 맛있는 이야기와 함께 즐거운 시음·시식, 그리고 특별한 현장 구매 혜택까지 모두 만나보세요!🥂\n\n주요 제품: 아라고스타 베르멘티노, 스페인 버터 만테카도, 체코 골드칵 20년 싱글몰트 위스키\n\n1. 아라고스타 베르멘티노 (Aragosta Vermentino)\n\n- 카테고리: 스틸 화이트 와인 (White Wine)\n- 원산지: 이탈리아 사르데냐 섬 (Sardegna, Italy)\n- 특징: 사르데냐 섬의 토착 품종인 '베르멘티노' 포도로 만든 프리미엄 화이트 와인입니다. 산뜻한 풍미와 깔끔한 목넘김이 일품입니다.\n- 추천 페어링: 생선회, 랍스터·새우 등 갑각류 요리 및 각종 해산물\n\n2. 스페인 전통 버터 만테카도 (Mantecado)\n\n- 카테고리: 프리미엄 전통 디저트 (Shortbread / Cookie)\n- 원산지: 스페인 남부 (Spain)\n- 특징: 스페인에서 연말과 크리스마스 시즌에 즐겨 먹는 정통 쇼트브레드입니다. 버터 함량 20%로 입안에서 부드럽게 녹아내리는 식감이 특징이며, 남녀노소 누구나 부담 없이 즐기기 좋은 디저트입니다.\n\n3. 체코 골드칵 20년 싱글몰트 위스키 (Goldcock 20Y Single Malt)\n\n- 카테고리: 프리미엄 싱글몰트 위스키 (Single Malt Whisky)\n- 원산지: 체코 브르노 (Brno, Czech Republic)\n- 특징: 체코 동부 브르노의 양조장에서 생산된 유러피안 체코 오크 카스크에서 20년간(1999년~2019년) 숙성된 싱글 카스크 위스키입니다. 부드러운 목넘김과 은은하고 깔끔한 잔향이 매우 매력적입니다.\n소장 가치: [국내 70병 한정 수량 입고] 희소성이 높은 리미티드 에디션입니다.",
+   "instagramUrl": "https://www.instagram.com/ami_trading_kr/",
+   "logoUrl": "/booths/siwse-magok-2026/logo/C-18.webp",
+   "images": [
+    "/booths/siwse-magok-2026/C-18_1.webp",
+    "/booths/siwse-magok-2026/C-18_2.webp",
+    "/booths/siwse-magok-2026/C-18_3.webp",
+    "/booths/siwse-magok-2026/C-18_4.webp",
+    "/booths/siwse-magok-2026/C-18_5.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine",
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "C-19",
+   "name": "메멜트",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "'크림치즈는 왜 베이글에만 발라 먹을까?'라는 생각에서 시작된 메멜트 크림치즈는 2016년도부터 크림치즈 단일 품목만을 판매한 크림치즈 전문점입니다.",
+   "longDescription": "'크림치즈는 왜 베이글에만 발라 먹을까?'라는 생각에서 시작된 메멜트 크림치즈는\n2016년도부터 크림치즈 단일 품목만을 판매한 크림치즈 전문점입니다.\n\n메멜트 크림치즈는 자연치즈에 햇 채소, 햇 과일을 첨가해 모든 공정을 수작업으로 제조합니다.\n인위적인 가공 크림치즈의 맛에 질리셨다면 신선한 원재료의 맛을 그대로 살린 메멜트 크림치즈를 맛 보세요.\n\n그동안 당신의 크림치즈가 빵을 먹기 위한 곁들임 음식이었나요?\n이제는 크림치즈를 먹기 위해 냉장고 문을 열게 되실 거예요.\n\n주요 제품: 고추 크림치즈, 딸기 크림치즈, 양파 크림치즈",
+   "websiteUrl": "https://smartstore.naver.com/memelt",
+   "logoUrl": "/booths/siwse-magok-2026/logo/C-19.webp",
+   "images": [
+    "/booths/siwse-magok-2026/C-19_1.webp",
+    "/booths/siwse-magok-2026/C-19_2.webp",
+    "/booths/siwse-magok-2026/C-19_3.webp"
+   ],
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "C-20",
+   "name": "설로인㈜",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "설로인(주)",
+   "aliases": [
+    "설로인(주)"
+   ],
+   "description": "누구나 믿을 수 있는 고기를 쉽게, 설로인  설로인은 최고 품질의 한우를 제공하는 프리미엄 한우 브랜드로 독자적인 기술로 한우의 맛과 풍미를 업그레이드하여 안전하고 정확하게 상품화하고 있습니다.",
+   "longDescription": "누구나 믿을 수 있는 고기를 쉽게, 설로인\n\n설로인은 최고 품질의 한우를 제공하는 프리미엄 한우 브랜드로 독자적인 기술로 한우의 맛과 풍미를 업그레이드하여 안전하고 정확하게 상품화하고 있습니다.\n\n주요 제품: 한우에너지스틱, 르통,\n\n한우 에너지 스틱 : 설로인이 엄선한 한우에 아르기닌, 타우린, 구연산 등 활력 성분을 더해 한우 고유의 영양에 추가 에너지를 더한 프리미엄 한우 영양 간식입니다.\n르통 : 설로인 르통은 한국적으로 재해석한 소고기 하몽으로, 와규를 2주간 저온 건조하여 식감이 부드러우면서도 촉촉하고, 트러플이 듬뿍 들어가 풍미가 매력적인 제품입니다.",
+   "websiteUrl": "https://www.sirloin.co.kr",
+   "logoUrl": "/booths/siwse-magok-2026/logo/C-20.webp",
+   "images": [
+    "/booths/siwse-magok-2026/C-20_1.webp",
+    "/booths/siwse-magok-2026/C-20_2.webp",
+    "/booths/siwse-magok-2026/C-20_3.webp",
+    "/booths/siwse-magok-2026/C-20_4.webp"
+   ],
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "D-01",
+   "name": "(주)오팩",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "와인 및 주류의 병 등을 포장하는 전문 패키지 제작 업체로서 패키지를 친환경 소재로 제작 판매하는 업체입니다.",
+   "longDescription": "와인 및 주류의 병 등을 포장하는 전문 패키지 제작 업체로서\n패키지를 친환경 소재로 제작 판매하는 업체입니다.\n\n주요 제품: P-1, P-2, DP-6\n\n1. 100% 친환경 소재로 와인병 트레이를 제작한 고급 패키지입니다.\n\n2. 깨지기 쉬운 유리병을 택배 및 운반 시 깨지지 않도록 보호 완충하는 친환경 종이 박스입니다.",
+   "websiteUrl": "https://opack.it.kr",
+   "logoUrl": "/booths/siwse-magok-2026/logo/D-01.webp",
+   "category": "기타",
+   "categorySlug": "sw-etc",
+   "tags": [
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "D-02",
+   "name": "페넬로페 & 바즈타운",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "제이앤제이트레이더",
+   "aliases": [
+    "제이앤제이트레이더"
+   ],
+   "description": "제이엔제이트레이더 회사는 국내 면세 주류 판매 업체로 인천공항 면세점 ,제주중문면세점, 김포 롯데면점,김해 경복궁면세점등 주력 상품 카발란 외, 토카이 와인, 인도위스키 람푸르 2종, 플라이 국내 내수 제품 아래 3가지 제품 판매를 GS 와인 25 편의점을 통해 판매 진행 하고 있습니다.",
+   "longDescription": "제이엔제이트레이더 회사는 국내 면세 주류 판매 업체로 인천공항 면세점 ,제주중문면세점, 김포 롯데면점,김해 경복궁면세점등\n주력 상품 카발란 외, 토카이 와인, 인도위스키 람푸르 2종, 플라이 국내 내수 제품 아래 3가지 제품 판매를 GS 와인 25 편의점을\n통해 판매 진행 하고 있습니다.\n자세한 내용은 PDF 파일 전송해 드리겠습니다.\n\n주요 제품: 페넬로페, 바즈타운, 람푸르2종\n\nPENELOPE BOURBON\n\n미국 켄터키의 전통적인 버번 제조 방식에 현대적인 감각을 더한 프리미엄 버번 브랜드, 페넬로페.\n독창적인 블렌딩과 부드럽고 풍부한 풍미를 바탕으로 다양한 개성의 버번을 선보입니다.\n\n바즈타운 버번(Bardstown Bourbon)은 켄터키 버번의 전통을 바탕으로 현대적인 감각을 더해 다양한 버번을 선보이는 브랜드입니다. 정통 버번의 깊이 있는 풍미와 개성 있는 스타일을 통해 버번의 새로운 매력을 선사합니다.",
+   "logoUrl": "/booths/siwse-magok-2026/logo/D-02.webp",
+   "images": [
+    "/booths/siwse-magok-2026/D-02_1.webp",
+    "/booths/siwse-magok-2026/D-02_2.webp",
+    "/booths/siwse-magok-2026/D-02_3.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "D-03",
+   "name": "더블유에스통상㈜",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "더블유에스통상(주)",
+   "aliases": [
+    "더블유에스통상(주)"
+   ],
+   "description": "WS통상은 단순히 와인을 수입하지 않습니다.",
+   "longDescription": "WS통상은 단순히 와인을 수입하지 않습니다. 한 잔의 와인에 담긴 생산자의 철학과 이야기를 한국 시장의 감성으로 전하는 ‘브랜드 큐레이터’입니다. 다양한 국가와 스타일의 와인을 소개하며, 와인 문화의 폭을 넓히기 위해 최선을 다하고 있습니다.\n\n주요 제품: 샤또 삐뽀, 파인 릿지, 주스티노스 마데이라",
+   "websiteUrl": "https://www.wstrading.co.kr",
+   "logoUrl": "/booths/siwse-magok-2026/logo/D-03.webp",
+   "images": [
+    "/booths/siwse-magok-2026/D-03_1.webp",
+    "/booths/siwse-magok-2026/D-03_2.webp",
+    "/booths/siwse-magok-2026/D-03_3.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "D-05",
+   "name": "청나라 황제의 건국주 아이씬주로",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "주식회사 아이씬주로",
+   "aliases": [
+    "주식회사 아이씬주로",
+    "SINCE 1635, 청나라 황제의 건국주 아이씬주로"
+   ],
+   "description": "1.",
+   "longDescription": "1. \"아이씬주로(愛新覺羅)\" = 청나라 황실의 성씨\n· 조선의 \"이\"씨처럼, 청나라시기 황제들은 '아이씬주로 누르하치(건국제), 아이씬주로 푸이(마지막 황제)'가 이름임.\n· 현재 중국 심양에 위치한 아이씬주로 양조장은 1635년부터 해당 가문의 후손들이 대대로 운영하고 있으며,\n· 2025년 현재도 양조장 겸 박물원의 장은 \"아이씬주로 푸윤\"님이 운영 중 (황실의 후손)\n· 해당 양조장 겸 박물원은 중국 문화여유부(文化和旅游部)가 지정한 AAAA급 관광지이기도 함.\n\n2. 1635년 설립 / '일반인은 알 수 없던 술'\n· 본디, 황실에만 납품되었으며 공산화 이후에는 중국 고위관료들만 먹을 수 있었던 귀한 술\n· 양조장이 랴오닝 성(遼寧省)에 위치함으로, 랴오닝 성 정부 공식 만찬주로 활용되었으며 일반인들은 존재도 알 수 없었음.\n· 본격적으로 중국 내에서도 시판이 허용된 것은 비교적 최근. 하지만 1)제조과정이 100% 수제방식이며(공장 기계제작이 아님), 2)정치적 이유(공산당)으로 인해 타 사 대비 중국 내 공격적인 확장 및 마케팅 난해.\n· 허나, 한국 / 일본 / 싱가폴 수출 및 2023년 중화노자호 선정(후술) 등, 지속적 성장 및 확장해가는 중.\n\n3. 고량주 중 5.5%, '중화노자호' 취득 기업\n· '중화노자호'란, 중국 상무부(商务部)가 인정한 중국 전통 노포기업을 의미함.\n· 세부 기준으로는 1)깊은 역사적 가치 보유, 2)중화민족의 전통을 전승, 3)민족의 특색과 지역문화특징 보유 등이 있음.\n· 중화노자호 인증 기업은 중국 내 전체 기업 34만개 중 1,455개 (약 0.4%)이며,\n· 중국 전체 백주 제조기업 980개 중 54개 (약 5.5%)에 불과함.\n\n4. since 975, 만족(여진족) 특유의 제조방식\n· 주조방식은 요나라 여진족의 양조기법에서 기원함. (975년)\n· 프리미엄 백주에 활용되는 '고태법(누룩을 빚어 발효하는 형식)'은 기본이며,\n· 특이사항으로, '혈장법'이란 특수한 용기에 담아 장기간 숙성 (3 ~ 20년)\n· 이 '혈장법'이란 붉은 소나무와 흰 종이를 번갈아 가며 만든 용기를 말하며, 용기의 제작과정에서 녹용, 송화가루, 인삼, 구기자 등이 활용됨.\n· 아이씬주로의 술은 이 방식으로 인해 특유의 깊고 부드러운 맛과 향을 제공함.\n\n5. 술 뿐 아닌, 차 / 의복 / 서예 등 '문화'를 일구는 기업\n· 황실에서 향유하던 문화를 계승함. 구체적으로는 차 / 술 / 향 / 꽃 / 책 / 거문고 / 복식(의복) / 도자기 / 화장 / 육예(六藝)가 그것임.\n· 중국 내 '문화원'을 설립, 황실 문화를 꾸준히 전파 중.\n· 한국 내에서도 추후 차 수입, 체험관 설립 등으로 업역을 확장해나갈 예정.\n\n주요 제품: 대청관양, 홍운주, 정황기주\n\n1. 대청관양\n★★ 2025 대한민국 주류대상 백주부분 대상 ★★\n· 500ml / 농향형 / 도수 42% / 8년산 30%, 3년산 70% 블렌딩\n· 높은 도수에도 부드러운 목넘김이 특징이며, 풍부하고 넓은 범위의 향을 보유\n· 아이씬주로 백주 라인 중 입문용 추천 술\n· 의미 : 대청제국의 황제가 신하에게 하사하는 술\n\n2. 홍운주\n· 500ml / 농향형 / 도수 42% / 10년산 30%, 3년산 70% 블랜딩\n· 홍운 = 더할나위 없는 행복을 의미. 파티 및 축하주\n\n3. 정황기주\n· 500ml / 농향형 / 도수52% / 20년산 20%, 10년산 30%, 5년산 50%\n· 황제 직속부대 8기군의 대장, '정황기'군으로부터 이름을 따옴\n· 도수는 높지만 오히려 아래 라인들보다 부드러움.",
+   "websiteUrl": "http://www.aixin.co.kr/",
+   "logoUrl": "/booths/siwse-magok-2026/logo/D-05.webp",
+   "images": [
+    "/booths/siwse-magok-2026/D-05_1.webp",
+    "/booths/siwse-magok-2026/D-05_2.webp",
+    "/booths/siwse-magok-2026/D-05_3.webp",
+    "/booths/siwse-magok-2026/D-05_4.webp",
+    "/booths/siwse-magok-2026/D-05_5.webp"
+   ],
+   "category": "사케·중국술",
+   "categorySlug": "sw-sake-baijiu",
+   "tags": [
+    "sw-sake-baijiu"
+   ]
+  },
+  {
+   "code": "D-06",
+   "name": "(주)윤강상사",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "㈜윤강상사는 연 8억병 이상 팔리는 중국 최고의 보양주인 경주(劲酒), 삼국지 조조가 한나라 황제에게 진상한 황실공품인 고정공주(古井贡酒), 중국 바이주를 대표하는 오량액(五糧液) 계열제품의 한국내 수입 총판업체입니다.",
+   "longDescription": "㈜윤강상사는 연 8억병 이상 팔리는 중국 최고의 보양주인 경주(劲酒), 삼국지 조조가 한나라 황제에게 진상한 황실공품인 고정공주(古井贡酒), 중국 바이주를 대표하는 오량액(五糧液) 계열제품의 한국내 수입 총판업체입니다.\n\n주요 제품: 중국경주(中国劲酒), 고정공주(古井贡酒), 오량액(五粮液)",
+   "websiteUrl": "http://www.yoonkang.co.kr",
+   "logoUrl": "/booths/siwse-magok-2026/logo/D-06.webp",
+   "category": "사케·중국술",
+   "categorySlug": "sw-sake-baijiu",
+   "tags": [
+    "sw-sake-baijiu"
+   ]
+  },
+  {
+   "code": "D-09",
+   "name": "코아베스트",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "농업회사법인(주)코아베스트",
+   "aliases": [
+    "농업회사법인(주)코아베스트"
+   ],
+   "logoUrl": "/booths/siwse-magok-2026/logo/D-09.webp",
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "D-10",
+   "name": "빅드림",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "logoUrl": "/booths/siwse-magok-2026/logo/D-10.webp",
+   "category": "하드리쿼",
+   "categorySlug": "sw-spirits",
+   "tags": [
+    "sw-spirits"
+   ]
+  },
+  {
+   "code": "D-11",
+   "name": "주식회사 초가",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "일본의 사케(청주)의 범람에 맞서는 국산 사케(청주)의 최선봉.",
+   "longDescription": "일본의 사케(청주)의 범람에 맞서는 국산 사케(청주)의 최선봉.\n동급(본양조식:혼죠조)의 일본 사케(청주)에 비하여 저가의 가격을 제공하면서도 단순한 가격 경쟁이 아니라 일본 사케(청주)의 중위권(본양조식:혼죠조)에 비하여 뒤지지 않는 품격을 견지함.\n\n주요 제품: 그림자, ,\n\n본양조식 본격사케(청주)\n한국 음식에 어우러지는 한국형 사케.\n단맛과 신맛의 밸랜스는 일본 청주와 확연히 달라, 한국인의 입맛에 어울림.\n국산품으로 가격면에서 일본 사케보다 월등한 경쟁력.\n\n본양조식(혼죠조:本醸造式) 본격 사케(청주)\n본양조식: 주정(30%)를 원료(쌀)1kg당 100ml 이하로 첨가한 방식\n(일본 청주 주세법 기준)\n참고: 한국의 청주 제조시 알코올 첨가 허용량 (주세법시행령제3조1항제3호)\n주정(30%)를 원료(쌀)1kg당 2.4리터까지 첨가 허용",
+   "websiteUrl": "https://www.choga.co.kr",
+   "logoUrl": "/booths/siwse-magok-2026/logo/D-11.webp",
+   "images": [
+    "/booths/siwse-magok-2026/D-11_1.webp",
+    "/booths/siwse-magok-2026/D-11_2.webp"
+   ],
+   "category": "사케·중국술",
+   "categorySlug": "sw-sake-baijiu",
+   "tags": [
+    "sw-sake-baijiu"
+   ]
+  },
+  {
+   "code": "D-12",
+   "name": "마이넛쵸스",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "켐브리지",
+   "aliases": [
+    "켐브리지"
+   ],
+   "description": "안녕하세요.",
+   "longDescription": "안녕하세요. 켐브리지(Chembridge)입니다.\n\n켐브리지는 고객과의 케미(Chemi)를 중요하게 생각하고, 좋은 제품을 국내 시장에 연결하는 탄탄한 다리(Bridge) 역할을 하고자 하는 기업입니다.\n\n현재 켐브리지는 MyNutchos의 국내 공식 단독 수입사로, 본사와의 독점 계약을 통해 정식으로 수입·통관한 제품을 국내에 공급하고 있습니다.\n\n현재는 온라인 스토어와 호텔 채널을 중심으로 유통하고 있으며, 앞으로는 푸드트럭, 행사, 야외 F&B, 컨세션 등 다양한 현장 중심의 유통 채널로 사업을 확대해 나가고 있습니다.\n\n오늘 소개해 드릴 제품은 말레이시아 프리미엄 스낵 브랜드 MyNutchos입니다.\n\nMyNutchos는 바삭한 멸치와 고소한 캐슈넛을 조합한 프리미엄 안주 스낵으로, 앤초비의 감칠맛과 캐슈넛의 고소함, 그리고 바삭한 식감을 한 번에 즐길 수 있는 제품입니다.\n\n주요 제품: MyNutchos 프리미엄 스낵, ,\n\nMyNutchos는 바삭한 엔초비와 고소한 캐슈넛을 조합한 프리미엄 스낵입니다.\n\n일반적인 견과류 스낵과는 달리 엔초비와 캐슈넛이라는 차별화된 조합을 통해 독특하면서도 부담 없이 즐길 수 있는 맛을 구현했습니다.\n\nMyNutchos는 엄선된 엔초비와 캐슈넛을 조합한 프리미엄 안주 스낵으로, 단짠의 감칠맛과 고소한 풍미, 바삭한 식감을 동시에 즐길 수 있는 제품입니다.\n\n또한 단백질과 영양을 함께 챙길 수 있는 프리미엄 스낵으로, 간단한 간식은 물론 맥주나 와인과 함께 즐기는 안주용으로도 잘 어울립니다.\n\n그리고 100g의 깔끔하고 고급스러운 패키지로 구성되어 있어 선물용이나 호텔, F&B 채널에서도 활용하기 좋은 제품입니다.\n\n직접 드셔보시면 일반적인 견과류 스낵과는 다른 MyNutchos만의 맛과 식감을 느끼실 수 있습니다.",
+   "logoUrl": "/booths/siwse-magok-2026/logo/D-12.webp",
+   "images": [
+    "/booths/siwse-magok-2026/D-12_1.webp",
+    "/booths/siwse-magok-2026/D-12_2.webp",
+    "/booths/siwse-magok-2026/D-12_3.webp"
+   ],
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "D-13",
+   "name": "주식회사 도아인터내쇼날",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "저희 도아인터내쇼날은 독일과 체코의 우수한 맥주를 수입하여 한국에 소개하고 있습니다.",
+   "longDescription": "저희 도아인터내쇼날은 독일과 체코의 우수한 맥주를 수입하여 한국에 소개하고 있습니다.\n최고의 품질과 역사를 지닌 맥주를 소개함으로서, 단순히 맥주를 수입하는 것이 아닌\n맥주문화의 이해와 전달을 위해 노력하고 있습니다.\n\n주요 제품: 가펠레몬, 프리마토르, 가펠쾰쉬\n\n#가펠레몬\n\n가펠쾰쉬와 천연레몬쥬스를 믹스한 라들러\n스타일의 상큼한 저알콜 레몬맥주인 가펠레몬은\n부담없이 가볍고 즐겁게 맥주를 즐기고 싶은\n모든 분들께 최상의 대안으로 고도수의 술과\n믹스해도 최상의 결과물을 만들어 줍니다.\n\n#프리마토바이젠\n\n체코어로 ‘시장(市長)’이란 이름의 프리마토 바이젠은\n유서 깊은 체코 나호트 지역의 전통 양조장에서\n생산된 최상급 밀맥아만을 사용한 정통 헤페바이젠으로\n풍성한 거품과 향긋한 정향, 달콤한 바나나\n같은 맛으로 월드 챔피언이라는 별명으로 더 잘 알려져 있습니다\n\n#가펠쾰쉬\n\n독일 쾰른에서 생산되는 밝은 황금빛의 맥주로\n에일효모를 사용하지만 라거와 같이 빙점에서\n장시간 숙성되는 전통맥주. 벌꿀과 청사과의 향과\n라거의 부드럽고 상쾌한 목넘김을 동시에 느낄 수\n있는 최고의 데일리비어\n\n#패스브라우저애플\n\n신선한 천연 사과 과즙을 듬뿍 담아낸\n독일 정통 스타일의 무알콜 음료 패스브라우저 애플은\n알콜에 대한 부담 없이 언제 어디서나 상쾌함을 즐기고 싶은\n모든 분들께 최적의 선택으로, 일상에서의 갈증 해소는 물론\n건강하고 청량한 활력을 가득 불어넣어 줍니다.\n\n#슈렝케를라메르첸\n\n전통 방식의 훈연 몰트를 사용해 짙은 바디감과\n깊은 스모키 향을 품은 밤베르크 훈제맥주 슈렝케를라 메르첸은\n특별하고 묵직한 맥주의 풍미를 경험하고 싶은\n모든 분들께 최고의 한 잔으로, 소시지나 바비큐 등\n다양한 육류 요리와 함께할 때 최상의 마리아주를 선사합니다.",
+   "instagramUrl": "https://www.instagram.com/gaffelkorea/",
+   "logoUrl": "/booths/siwse-magok-2026/logo/D-13.webp",
+   "images": [
+    "/booths/siwse-magok-2026/D-13_1.webp",
+    "/booths/siwse-magok-2026/D-13_2.webp",
+    "/booths/siwse-magok-2026/D-13_3.webp",
+    "/booths/siwse-magok-2026/D-13_4.webp",
+    "/booths/siwse-magok-2026/D-13_5.webp"
+   ],
+   "category": "맥주",
+   "categorySlug": "sw-beer",
+   "tags": [
+    "sw-beer",
+    "sw-food"
+   ]
+  },
+  {
+   "code": "D-14",
+   "name": "주식회사 알코베스트",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "알코베스트(ALCOBEST CO., LTD.)는 세계 각국의 독창적이고 품질 높은 주류를 발굴하여 국내에 소개하는 전문 수입·유통 기업입니다.",
+   "longDescription": "알코베스트(ALCOBEST CO., LTD.)는 세계 각국의 독창적이고 품질 높은 주류를 발굴하여 국내에 소개하는 전문 수입·유통 기업입니다. 러시아 정통 보드카, 영국 위스키, 아르메니아 코냑과 와인 등 각 지역의 역사와 전통을 담은 다양한 주류 포트폴리오를 구축하고 있으며, 차별화된 제품을 통해 국내 주류 시장에 새로운 선택과 경험을 제공하고 있습니다.\n\n주요 제품: 보드카 , 코냑 , 와인\n\n알코베스트는 러시아, 영국, 아르메니아 등 다양한 국가의 주류를 국내에 수입·유통하고 있습니다. 러시아의 전통적인 보드카를 비롯하여, 깊은 풍미와 개성을 지닌 영국 위스키, 오랜 주류 제조 역사를 바탕으로 한 아르메니아 코냑과 와인 등 각 국가의 특색을 담은 다양한 제품을 선보이고 있습니다.\n\n러시아 보드카는 깔끔하고 부드러운 맛과 특유의 청량한 목넘김을 즐길 수 있는 제품으로, 스트레이트는 물론 칵테일 등 다양한 방식으로 즐길 수 있습니다. 영국 위스키는 풍부한 향과 균형 잡힌 맛을 갖춘 제품을 중심으로 구성되어 있으며, 제품별로 다양한 향과 풍미를 경험할 수 있습니다.\n\n아르메니아 코냑은 숙성을 통해 형성된 깊고 부드러운 풍미와 풍부한 향이 특징이며, 아르메니아 와인은 현지의 포도 품종과 자연환경에서 비롯된 개성 있는 맛과 향을 만나볼 수 있습니다.\n\n알코베스트는 각 국가의 전통과 개성을 느낄 수 있는 다양한 주류를 엄선하여 국내 소비자 및 유통 파트너에게 소개하고 있습니다.",
+   "logoUrl": "/booths/siwse-magok-2026/logo/D-14.webp",
+   "images": [
+    "/booths/siwse-magok-2026/D-14_1.webp",
+    "/booths/siwse-magok-2026/D-14_2.webp",
+    "/booths/siwse-magok-2026/D-14_3.webp",
+    "/booths/siwse-magok-2026/D-14_4.webp",
+    "/booths/siwse-magok-2026/D-14_5.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine",
+    "sw-beer",
+    "sw-spirits",
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "D-15",
+   "name": "주식회사 호록",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "2024년 10월에 설립된 신생 수입사입니다.",
+   "longDescription": "2024년 10월에 설립된 신생 수입사입니다.\n한일간의 교류, 특히 민간부분에서의 교류가 어느 때 보다 더욱 활발해 지고 있는 상황에서 아직까지 한국에 소개되지 않은 좋은 품질의 일본 지역제품들을 한국에 소개하고자 합니다. 이를 통해 한국 소비자 들에게 가까운 나라인 일본제품에 대한 더 많은 선택권과 정보를 제공하고, 일본의 지역 생산자 들에겐 한국 소비자에 대한 이해도를 높여 양국간의 민간교류에 앞장서고자 합니다.\n\n주요 제품: 코에도 맥주, ,\n\n코에도 브루어리는 1994년 일본 주세법 개정이후 2년간의 노력으로 1996년 토쿄 근교의 사이타마현 카와고에시에서 카와고에시의 특산물인 고구마를 이용한 맥주 양조에 성공한 것이 그 시작입니다. 이후 지역상생을 도모하며 고품질의 지역맥주를 다양한 라인업을 통해 선보이고 있으며, 일본에서 제작한 독일계 맥주로 본고장인 독일에서도 다양한 수상경력으로 인정받고 있는 브루어리입니다. 일본내에서도 토쿄 근방을 넘어서 전국적으로 유통되고 있으며, 미국 등 여러 국가에도 10년간 꾸준히 인정받고 있는 제품을 만들고 있습니다.",
+   "websiteUrl": "https://www.horock.co.kr",
+   "logoUrl": "/booths/siwse-magok-2026/logo/D-15.webp",
+   "images": [
+    "/booths/siwse-magok-2026/D-15_1.webp",
+    "/booths/siwse-magok-2026/D-15_2.webp",
+    "/booths/siwse-magok-2026/D-15_3.webp",
+    "/booths/siwse-magok-2026/D-15_4.webp",
+    "/booths/siwse-magok-2026/D-15_5.webp"
+   ],
+   "category": "맥주",
+   "categorySlug": "sw-beer",
+   "tags": [
+    "sw-beer"
+   ]
+  },
+  {
+   "code": "D-16",
+   "name": "마시주",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "일본에서온 프리미엄 진 과 유자사케 포르투칼와인을 취급하는 수입사 MASIJU입니다",
+   "longDescription": "일본에서온 프리미엄 진 과 유자사케 포르투칼와인을 취급하는 수입사 MASIJU입니다\n\n주요 제품: 마이린겐 크래프트진, 야마나시 유자사케, 루레이로와인",
+   "websiteUrl": "https://Www.masiju.co.kr",
+   "logoUrl": "/booths/siwse-magok-2026/logo/D-16.webp",
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine",
+    "sw-beer",
+    "sw-spirits",
+    "sw-sake-baijiu"
+   ]
+  },
+  {
+   "code": "D-17",
+   "name": "비더블유아이코리아 주식회사",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "BWI의 B는 맥주(Beer), W는 와인, 위스키 (Wine&Whisky), I는 International drinks 를 의미합니다",
+   "longDescription": "BWI의 B는 맥주(Beer), W는 와인, 위스키 (Wine&Whisky), I는 International drinks 를 의미합니다 BWIKOREA 는 2017년부터 세계각국의 우수한 주류 및 음료 제품을 수입하여 국내시장에 소개중입니다\n\n주요 제품: 스카나비노 브라케토 다퀴, 바로스 콜헤이타 2007, 펜더린 셰리우드\n\n1. 스카나비노 브라케토 다퀴\n스카나비노는 1920년 세워진 오랜 역사의 와이너리로 Perlino 와인그룹의 일원으로 세계 40여개국에 수출되고 있습니다. 이탈리아 아퀴마을의 브라케토로 만든 브라케토 다퀴는 알코올 함량이 6.5% 의 기포가 강한 스푸만테 레드와인으로 청량음료같은 달콤함은 케익, 과일, 초코렛과 잘 어울립니다.\n2. 바로스콜헤이타 2007\n바로스는 1913년에 설립이래 100년이상 고품질 포트와인 브랜드로 자리잡은 세계적인 명성의 포트와인입니다. 포트와인은 와인에 브랜디를 첨가하여 당도와 알코올 도수가 높고 오래 보관이 가능한 와인입니다 콜헤이타 2007 은 2007년 수확한 포도로 담근 포도주를 최소 7년이상 숙성한 토니 콜헤이타 포트입니다.\n3. 펜더린 셰리우드\n펜더린 증류소는 영국 웨일즈에 위치한 증류소로 3개의 증류소를 운영중에 있습니다. 엑스 버번 배럴및 엑스 올로로소 셰리 캐스크 숙성을 통해 풍부한 과일향이 우러나는 고품격위스키 입니다.",
+   "websiteUrl": "https://www.bwikorea.co.kr",
+   "logoUrl": "/booths/siwse-magok-2026/logo/D-17.webp",
+   "images": [
+    "/booths/siwse-magok-2026/D-17_1.webp",
+    "/booths/siwse-magok-2026/D-17_2.webp",
+    "/booths/siwse-magok-2026/D-17_3.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine",
+    "sw-beer",
+    "sw-spirits",
+    "sw-food",
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "D-18",
+   "name": "제이디아이 / 젤소모라 모스카토 다스티",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "제이디아이",
+   "aliases": [
+    "제이디아이"
+   ],
+   "description": "Just Drink It",
+   "longDescription": "Just Drink It\n\n주요 제품: 젤소모라 모스카토 다스티, 젤소모라 브라케토 다뀌,\n\nSweet wine",
+   "logoUrl": "/booths/siwse-magok-2026/logo/D-18.webp",
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "D-20",
+   "name": "Krasnoyarsk Vodka Distillery",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "Krasnoyarsk Vodka Distillery Limited Liability Company",
+   "aliases": [
+    "Krasnoyarsk Vodka Distillery Limited Liability Company"
+   ],
+   "description": "Krasnoyarsk Vodka Distillery LLC is the oldest enterprise in the Krasnoyarsk Territory, founded in 1903 by merchant Shcherbakov.",
+   "longDescription": "Krasnoyarsk Vodka Distillery LLC is the oldest enterprise in the Krasnoyarsk Territory, founded in 1903 by merchant Shcherbakov. Today, the distillery produces vodka from Lux and Alpha spirits, soft Yenisei water, and natural ingredients: honey, fruits, nuts, and Siberian herbs. The best specialists develop the recipes, using innovative technologies. The product quality exceeds GOST standards thanks to a well-established quality control system at every stage of production.\n\n주요 제품: Siberia-Matushka Export vodka 0,5L 56%, Siberian Spirit vodka, 0,5l 40% vol., Siberian Spirit Spice special vodka, 0,5l 40% vol.\n\nSiberia-Matushka Export - the true spirit of the siberian expanse.\n\nThe name \"SIBERIA-MATUSHKA\" embodies more than just its geographical origin - it reflects a deep reverence for the traditions of the Russian people. Siberia, a land of boundless forests and open skies, offers nature's riches with unyielding generosity. Particular attention is paid\n\nto the carafe-shaped bottle - its elegant design and silhouette evoke a sense of home, warmth, and the heartfelt hospitality of Siberia. More than a vessel, it is a tribute to the spirit of Russian gatherings - welcoming, generous, and sincere.\n\nEach bottle of \"Siberia-Matushka\" tells a story where nature and craftsmanship unite to create a singular spirit. With every drop, immerse yourself in the soul of Siberia -pure, noble, and timeless.\n\nSiberian Spirit vodka - Crafted by nature, guided by tradition\n\nEvery \"Siberian Spirit\" creation be it vodka, gin, or bitter--is born from a deep love and respect for nature. Using only natural ingredients, the brand's master distillers preserve time-honored recipes, passed down through generations with care and devotion. This commitment allows for a perfect harmony of flavor and aroma, transporting you to the very heart of the Siberian taiga.\n\nEach sip of \"Siberian Spirit\" fills you with the strength and vitality of this extraordinary land.\nSiberian Spirit Spice special FEEL THE POWER OF SIBERIA.\n\nFrom the ancient taiga forests, sacred lakes and untamed mountains emerges \"SIBERIAN SPIRIT\"\n\nThis premium collection captures the untamed essence of Siberian wilderness through masterfully crafted spirits. Each expression reflects the region's natural bounty and centuries-old traditions, distilling the raw power of our land into every bottle. SIBERIAN SPIRIT is not merely spirits - it's liquid artistry embodying Siberia's indomitable soul. Each sip channels the raw power and vitality of this extraordinary land, transporting you to untouched forests where every berry, herb and honeycomb pulses with wild energy.\n\nSIBERIAN SPIRIT - your gateway to authentic Siberian flavors!",
+   "websiteUrl": "https://www.kvz24.ru",
+   "logoUrl": "/booths/siwse-magok-2026/logo/D-20.webp",
+   "images": [
+    "/booths/siwse-magok-2026/D-20_1.webp",
+    "/booths/siwse-magok-2026/D-20_2.webp",
+    "/booths/siwse-magok-2026/D-20_3.webp"
+   ],
+   "category": "하드리쿼",
+   "categorySlug": "sw-spirits",
+   "tags": [
+    "sw-spirits",
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "E-01",
+   "name": "금용",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "금용 (유)",
+   "aliases": [
+    "금용 (유)"
+   ],
+   "websiteUrl": "https://www.goldendragon.co.kr",
+   "logoUrl": "/booths/siwse-magok-2026/logo/E-01.webp",
+   "category": "사케·중국술",
+   "categorySlug": "sw-sake-baijiu",
+   "tags": [
+    "sw-sake-baijiu"
+   ]
+  },
+  {
+   "code": "E-02",
+   "name": "꼬마루 육포",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "꼬마루",
+   "aliases": [
+    "꼬마루"
+   ],
+   "longDescription": "주요 제품: , ,",
+   "websiteUrl": "https://kkomaroo6649.modoo.at",
+   "logoUrl": "/booths/siwse-magok-2026/logo/E-02.webp",
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "E-04",
+   "name": "비즈앤치어스",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "websiteUrl": "https://www.kleinerfeigling.kr",
+   "logoUrl": "/booths/siwse-magok-2026/logo/E-04.webp",
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine",
+    "sw-spirits"
+   ]
+  },
+  {
+   "code": "E-05",
+   "name": "(주)비눔인터내셔널",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "비눔인터내셔널의 제품은 고객의 일상에 빛나는 '조연'이 되겠습니다.",
+   "longDescription": "비눔인터내셔널의 제품은 고객의 일상에\n빛나는 '조연'이 되겠습니다.\n고객의 식탁 한 편에, 사진 속 어딘가에\n저희 제품이 자리한다면 저희 미션은 성공입니다.\n\n주요 제품: 챠오 캔와인, 올드 세일러 커피, 일 피아토 와인\n\n1. 다양한 해외 수상 경력과 높은 평점의 와인입니다.\n2. 최고 품질의 포도를 사용한 와인입니다.\n3. 쉽고 맛있게 즐기는 챠오 캔와인 부터\n명품 커피 바르베라로 만들어 커피향 진~한 올드 세일러 커피까지 다양한 종류를 선보입니다.",
+   "logoUrl": "/booths/siwse-magok-2026/logo/E-05.webp",
+   "images": [
+    "/booths/siwse-magok-2026/E-05_1.webp",
+    "/booths/siwse-magok-2026/E-05_2.webp",
+    "/booths/siwse-magok-2026/E-05_3.webp",
+    "/booths/siwse-magok-2026/E-05_4.webp",
+    "/booths/siwse-magok-2026/E-05_5.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine",
+    "sw-spirits"
+   ]
+  },
+  {
+   "code": "E-06",
+   "name": "자스페로 와인",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "자스페로 와인은 2017년 설립 이래, 긍정적인 와인 문화를 정착시키고 고객 만족을 최우선으로 지향하고 있습니다.",
+   "longDescription": "자스페로 와인은 2017년 설립 이래, 긍정적인 와인 문화를 정착시키고 고객 만족을 최우선으로 지향하고 있습니다.\n저희 자스페로 와인은 현재 유럽의 전통적인 와인산지인 프랑스(부르고뉴, 보르도, 상파뉴, 루아르, 론, 남부 프랑스),\n이태리(피에몬테, 베네토, 칼라브리아, 시칠리), 스페인(까탈루냐, 까리네냐) 뿐만 아니라 뛰어난 잠재력을 가진 호주(남호주)에서 70여 종의 다양한 와인을 수입하고 있습니다.\n\n주요 제품: 스페인 따론지노 블러드 오렌지, 말말 모스카토, 바킹헷지 소비뇽 블랑\n\n1. Diamante Zero Red [디아망떼 제로 레드]\n- 신선한 과실미와 균형감이 돋보이는 무알콜 레드 와인\n- 부드러운 바디와 깊은 풍미로 식사의 완성도를 높이는 스타일\n- 파스타, 로스트 육류, 치즈 등 다양한 음식과 폭넓은 페어링\n\n2. Diamante Zero Sparkling [디아망떼 제로 스파클링]\n- 산뜻한 버블과 섬세한 아로마가 조화를 이루는 프리미엄 무알콜 스파클링\n- 화이트 페어, 그린 애플, 시트러스의 산뜻한 과실미와 우아한 미네랄감\n- 아페리티프부터 과일, 숙성 치즈, 헤이즐넛 디저트까지 세련된 페어링\n\n3. Mal Mal Moscato [말말 모스카토]\n- 저온 발효로 과실향을 극대화한 프레시 모스카토\n- 열대 과일, 아카시아, 허니의 달콤한 풍미와 산미의 밸런스\n- 가볍게 칠링해 디저트와 함께, 또는 단독으로도 좋은 와인\n\n4. Barking Hedge Sauvignon Blanc [바킹 헷지 소비뇽 블랑]\n- 말보로 와이라우·와이호파이 밸리에서 자란 프리미엄 포도\n- 열대 과일과 시트러스, 허브가 어우러진 생동감 있는 아로마\n- 뉴질랜드 화이트 와인의 정석, 상쾌한 스타일\n\n5. Tarongino Grapefruit [따론지노 자몽]\n- 스페인 발렌시아산 자몽 100% 리얼 착즙 와인\n- 풍부한 비타민 C 듬뿍!\n\n6. Tarongino Blood Orange [따론지노 블러드 오렌지]\n- 자몽과 오렌지를 교배 시킨 스페인 발렌시아산 블러드 오렌지 100% 리얼 착즙 와인\n- 자몽과 오렌지 두 과일의 매력을 동시에!\n- 풍부한 비타민 C 듬뿍!\n\n7. Cascina Roberto Brachetto [카시나 로베르토 브라케토]\n- 피에몬테 지역에서 생산된 아로마틱한 스위트 레드 와인\n- 라즈베리의 상큼한 과일 향과 부드러운 머스키한 아로마\n- 차갑게 즐기면 더욱 매력적인 루비 컬러 와인",
+   "instagramUrl": "https://www.instagram.com/zasperowine/",
+   "logoUrl": "/booths/siwse-magok-2026/logo/E-06.webp",
+   "images": [
+    "/booths/siwse-magok-2026/E-06_1.webp",
+    "/booths/siwse-magok-2026/E-06_2.webp",
+    "/booths/siwse-magok-2026/E-06_3.webp",
+    "/booths/siwse-magok-2026/E-06_4.webp",
+    "/booths/siwse-magok-2026/E-06_5.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "E-07",
+   "name": "테누타 일 팔체토",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "한산더블유앤비",
+   "aliases": [
+    "한산더블유앤비"
+   ],
+   "description": "이태리 피에몬테 지역에서 모스카토가 가장 유명한 카넬리 지역에서 프리미엄 모스카토를 생산하는 와이너리",
+   "longDescription": "이태리 피에몬테 지역에서 모스카토가 가장 유명한 카넬리 지역에서 프리미엄 모스카토를 생산하는 와이너리\n\n주요 제품: 델 판트 모스카토 까넬리, 일 팔체토 브라케토 다퀴,",
+   "logoUrl": "/booths/siwse-magok-2026/logo/E-07.webp",
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "E-08",
+   "name": "(주)머스트와인",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "longDescription": "주요 제품: , ,",
+   "logoUrl": "/booths/siwse-magok-2026/logo/E-08.webp",
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "E-09",
+   "name": "준앤폴초이스",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "독일 리큐르, 스페인 와인, 스페인 & 포르투갈 식품 등 수입",
+   "longDescription": "독일 리큐르, 스페인 와인, 스페인 & 포르투갈 식품 등 수입\n\n주요 제품: 티핀, 슈슈, 모스카토디오초아\n\n티핀 : 경쟁 제품이 없는 티 베이스 리큐르 (독일 /알코올 24%)\n\n슈슈 : 생딸기 과육이 55% 들어 있는 보드카 베이스 리큐르(독일/알코올 15%)\n\n모스카토디오초아 : 프리미엄 모스카토(스페인 /알코올 5%)",
+   "websiteUrl": "https://www.junandpaul.com",
+   "logoUrl": "/booths/siwse-magok-2026/logo/E-09.webp",
+   "images": [
+    "/booths/siwse-magok-2026/E-09_1.webp",
+    "/booths/siwse-magok-2026/E-09_2.webp",
+    "/booths/siwse-magok-2026/E-09_3.webp",
+    "/booths/siwse-magok-2026/E-09_4.webp",
+    "/booths/siwse-magok-2026/E-09_5.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine",
+    "sw-spirits",
+    "sw-food"
+   ]
+  },
+  {
+   "code": "E-10",
+   "name": "하시엔다 데 테파 데킬라 (YNK Inc.)",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "(주)와이앤케이어소시에이트",
+   "aliases": [
+    "(주)와이앤케이어소시에이트"
+   ],
+   "description": "YNK는 프리미엄 주류 수입 및 유통을 전문으로 하는 기업으로, 전 세계에서 엄선한 고품질의 주류 브랜드를 국내 시장에 소개하고 있습니다.",
+   "longDescription": "YNK는 프리미엄 주류 수입 및 유통을 전문으로 하는 기업으로, 전 세계에서 엄선한 고품질의 주류 브랜드를 국내 시장에 소개하고 있습니다. 우리는 단순한 주류 수입을 넘어, 글로벌 트렌드를 반영한 브랜드 큐레이션과 차별화된 마케팅 전략을 통해 국내 소비자들에게 새로운 주류 경험을 제공합니다.\n특히, 멕시코 전통 데킬라의 깊이 있는 문화와 품질을 한국 시장에 알리고자, 프리미엄 데킬라 브랜드 ‘Hacienda de Tepa’의 공식 수입사로서 국내 유통을 시작하였으며, 데킬라 시장의 확대와 고급화를 선도하고 있습니다.\n\n주요 제품: 하시엔다 데 테파 데킬라 블랑코, 하시엔다 데 테파 데킬라 레포사도, 하시엔다 데 테파 데킬라 레포사도 크리스탈리노\n\nHacienda de Tepa는 멕시코 할리스코주에서 생산되는 프리미엄 데킬라 브랜드입니다. 아란다스 지역은 데킬라 생산의 최적의 조건을 갖춘 곳으로, Hacienda de Tepa는 100% 블루 아가베(Blue Agave)를 사용하여 최상의 품질을 자랑합니다.\n이 브랜드는 전통적인 제조 방식과 현대적인 여과 기술을 결합하여 깊고 부드러운 풍미를 구현하며, Hacienda de Tepa는 블루 아가베의 순수한 맛을 살리면서도 오크 숙성을 통해 더욱 복합적이고 세련된 풍미를 제공하는 프리미엄 데킬라 브랜드입니다. 블랑코부터 레포사도, 아녜호, 그리고 한정판 레포사도 블랙까지 다양한 선택지가 있으며, 깔끔하면서도 깊은 맛을 즐기기에 최적의 제품들입니다.\n\nHacienda de Tepa Blanco\n• 국문명: 하시엔다 데 테파 블랑코\n• 영문명: Hacienda de Tepa Blanco\n• 제품 설명:\n하시엔다 데 테파 블랑코는 숙성 과정을 거치지 않은 순수한 데킬라로, 블루 아가베 본연의 신선하고 상쾌한 풍미를 경험할 수 있습니다. 밝은 시트러스 향과 허브 노트가 조화를 이루며, 부드러운 텍스처와 깨끗한 마무리를 자랑합니다. 스트레이트 샷으로 즐기거나 마가리타와 같은 칵테일에 이상적인 제품입니다.\n• 향미 특징: 신선한 아가베, 시트러스, 허브, 후추\n\nHacienda de Tepa Reposado\n• 국문명: 하시엔다 데 테파 레포사도\n• 영문명: Hacienda de Tepa Reposado\n• 제품 설명:\n최소 8개월간 오크통에서 숙성된 레포사도는 블랑코보다 더 깊고 부드러운 맛을 제공합니다. 오크 숙성 과정에서 바닐라, 카라멜, 견과류의 풍미가 더해져 더욱 균형 잡힌 맛을 자랑합니다. 스트레이트 또는 온더락으로 마시기 좋으며, 부드러움과 깊이를 동시에 느낄 수 있습니다.\n• 향미 특징: 바닐라, 캐러멜, 구운 아몬드, 시트러스\n\nHacienda de Tepa Reposado Cristalino\n• 국문명: 하시엔다 데 테파 레포사도 크리스탈리노\n• 영문명: Hacienda de Tepa Reposado Cristalino\n• 제품 설명:\n크리스탈리노는 레포사도를 특수 여과 과정을 통해 정제하여 깨끗한 외관과 깊은 풍미를 동시에 제공하는 제품입니다. 일반 레포사도의 숙성된 맛을 그대로 유지하면서도 깔끔한 마무리를 자랑하며, 고급스러운 스타일을 원하는 소비자에게 인기가 많습니다.\n• 향미 특징: 은은한 스파이스, 부드러운 피니쉬\n\nHacienda de Tepa Añejo\n• 국문명: 하시엔다 데 테파 아녜호\n• 영문명: Hacienda de Tepa Añejo\n• 제품 설명:\n최소 18개월 동안 오크통에서 숙성되어 더욱 깊고 풍부한 맛을 지닌 데킬라입니다. 블랙 초콜릿, 드라이드 프루트, 시가, 스파이스 등의 복합적인 풍미가 어우러져 스트레이트나 고급 칵테일 베이스로 완벽합니다.\n• 향미 특징: 블랙 초콜릿, 구운 나무, 건과류, 시나몬\n\nHacienda de Tepa Reposado Black\n• 국문명: 하시엔다 데 테파 레포사도 블랙\n• 영문명: Hacienda de Tepa Reposado Black\n• 제품 설명:\n특별한 블랙 오크 배럴에서 숙성된 한정판 레포사도 데킬라로, 더욱 강렬한 바닐라와 스모키한 풍미를 경험할 수 있습니다. 일반 레포사도보다 한층 깊고 진한 색감과 맛을 지니며, 고급스러운 바틀 디자인이 특징입니다.\n• 향미 특징: 스모키 바닐라, 구운 오크, 초콜릿, 후추",
+   "instagramUrl": "https://www.instagram.com/tequila_hacienda_korea/",
+   "logoUrl": "/booths/siwse-magok-2026/logo/E-10.webp",
+   "images": [
+    "/booths/siwse-magok-2026/E-10_1.webp",
+    "/booths/siwse-magok-2026/E-10_2.webp",
+    "/booths/siwse-magok-2026/E-10_3.webp",
+    "/booths/siwse-magok-2026/E-10_4.webp",
+    "/booths/siwse-magok-2026/E-10_5.webp"
+   ],
+   "category": "하드리쿼",
+   "categorySlug": "sw-spirits",
+   "tags": [
+    "sw-spirits"
+   ]
+  },
+  {
+   "code": "E-11",
+   "name": "서머홀 증류소",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "에든버러의 창조적 정신을 담아낸 증류소, 서머홀.",
+   "longDescription": "에든버러의 창조적 정신을 담아낸 증류소, 서머홀.\n\n서머홀 증류소는 스코틀랜드 에든버러 중심에 위치한 독립 증류소로, 전통과 혁신이 공존하는 공간에서 위스키와 진의 새로운 가치를 만들어가고 있습니다.\n100년 이상의 역사를 지닌 수의과대학 실험실을 리모델링한 특별한 공간에서 탄생한 서머홀은, 수작업 증류 방식과 독창적인 레시피를 바탕으로 더 브루디 헨(The Broody Hen) 위스키, 피커링스 진(Pickerings Gin) 등 전 세계적으로 사랑받는 제품을 선보이고 있습니다.\n\n특히, 감각적인 병 디자인과 스토리텔링이 담긴 브랜드 세계관은 단순한 술을 넘어 ‘한 잔의 위스키, 그 너머의 스토리’를 전하고자 합니다.\n\n주요 제품: 피커링스진, 더브루디헨, 네이비스트랭스\n\n더 브루디 헨 (The Broody Hen Scotch Whisky)\n스코틀랜드 전통 방식으로 탄생한 더 브루디 헨은 부드럽고 고소한 몰트 향, 은은한 오크 터치, 달콤한 바닐라의 여운이 특징인 스카치 위스키입니다. 입문자부터 위스키 애호가까지 모두 만족할 수 있는 균형 잡힌 풍미를 자랑하며, 에든버러 예술의 중심지인 서머홀의 자유롭고 대담한 정신을 담아냈습니다.\n\n피커링스 진 (Pickering’s Gin)\n피커링스 오리지널 레시피는 1947년 인도에서 유래된 클래식한 진 레시피를 기반으로 9가지 식물성 보태니컬을 저온에서 정성스럽게 증류하여 입안 가득 퍼지는 은은한 향과 깊이 있는 맛을 선사합니다. 깔끔한 마무리와 풍성한 향미는 진토닉은 물론\n다양한 칵테일 베이스로도 활용도 뛰어나며, 감각적인 병 디자인은 바 공간에서의 시각적 매력도 더해줍니다.",
+   "websiteUrl": "https://summerhall.co.kr/",
+   "logoUrl": "/booths/siwse-magok-2026/logo/E-11.webp",
+   "images": [
+    "/booths/siwse-magok-2026/E-11_1.webp",
+    "/booths/siwse-magok-2026/E-11_2.webp",
+    "/booths/siwse-magok-2026/E-11_3.webp",
+    "/booths/siwse-magok-2026/E-11_4.webp",
+    "/booths/siwse-magok-2026/E-11_5.webp"
+   ],
+   "category": "하드리쿼",
+   "categorySlug": "sw-spirits",
+   "tags": [
+    "sw-spirits"
+   ]
+  },
+  {
+   "code": "E-12",
+   "name": "발레리나 사케",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "(주)해밀트레이딩",
+   "aliases": [
+    "(주)해밀트레이딩"
+   ],
+   "description": "안녕하세요.",
+   "longDescription": "안녕하세요.\n(주)해밀트레이딩은 2011년 7월 20일 개업한 축산물 및 축산가공제품 유통 및 프렌차이즈 위스키 직수입 회사입니다.\n글로벌 식품산업을 선도하는 1위 기업의 경영이념으로 현재 해외 축산물 수출자와 직거래를 통한 도매업체 및 프랜차이즈 업체에 판매 하고 있으며 내터잭위스키 한국총판을 운영하고 있습니다.\n안전한 먹거리제공과 업무혁신을 통한 성장동력 확보, 글로벌 식품기업 추진하는 (주)해밀트레이딩입니다.\n\n주요 제품: natterjack Cask Strength, natterjack blend 1,\n\n1. natterjack 700ml Cask Strength (63%)\n아일랜드 포트 스틸, 3증류, 옥수수 80%, 몰트 20%의 미국 버번 스타일 매쉬빌을 사용, 버진아메리칸 오크 피니쉬를 한 캐스크 스트랭스 제품입니다. 내터잭 최고 마스터 블렌더가 맛과 향을 디자인하여 복합적인 풍미와 뛰어난 균형감을 자랑합니다. 캐스크 스트랭스 제품임에도 느껴지는 극상의 부드러움과 직관적인 맛은 모두에게 큰 즐거움을 선사합니다.\n\n2. natterjack 700 ml blend 1 (40%)\n아일랜드 포트 스틸, 3증류, 옥수수 80%, 몰트 20%의 미국 버번 스타일 매쉬빌을 사용, 버진아메리칸 오크 피니쉬를 한 블렌드 제품입니다.. 내터잭 최고 마스터 블렌더가 맛과 향을 디자인하여 복합적인 풍미와 뛰어난 균형감을 자랑합니다. 고 도수가 어려운 소비자들을 위해 만들어진 제품으로 내터잭 특유의 부드러움과 직관적이 맛이 장점인 제품입니다.",
+   "websiteUrl": "https://www.natterjackkorea.com/",
+   "logoUrl": "/booths/siwse-magok-2026/logo/E-12.webp",
+   "images": [
+    "/booths/siwse-magok-2026/E-12_1.webp",
+    "/booths/siwse-magok-2026/E-12_2.webp"
+   ],
+   "category": "기타",
+   "categorySlug": "sw-etc",
+   "tags": [
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "E-13",
+   "name": "Japan Pavilion",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "National Tax Agency, Japan",
+   "aliases": [
+    "National Tax Agency, Japan"
+   ],
+   "description": "일본 전국의 소주, 사케, 리큐르 양조장 등 10곳이 출품합니다.",
+   "longDescription": "일본 전국의 소주, 사케, 리큐르 양조장 등 10곳이 출품합니다. 부스 내에서는 시음도 가능하니, 꼭 방문해 주세요.\n\n주요 제품: Japanese alcoholic beverages, Japanese Shochu, Japanese Sake\n\n출품업체는 다음과 같습니다\n・Okuchi Shuzo Co., Ltd.\n・Tensei Spiritual Liquor Corporation\n・REXWELL BEVERAGE LLC\n・Diony Co., Ltd.\n・SATSUMA SHUZO CO., LTD.\n・MITSUTAKE SHUZOJO CO., LTD.\n・MITSUGEN COMPANY LIMITED\n・AMABUKI SHUZO CO., LTD.\n・CHOYA UMESHU CO., LTD.\n・KAIRINDO K.K.",
+   "logoUrl": "/booths/siwse-magok-2026/logo/E-13.webp",
+   "category": "하드리쿼",
+   "categorySlug": "sw-spirits",
+   "tags": [
+    "sw-spirits",
+    "sw-sake-baijiu",
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "E-23",
+   "name": "더 더치 치즈앤모어",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "주식회사 더더치치즈앤네이처",
+   "aliases": [
+    "주식회사 더더치치즈앤네이처"
+   ],
+   "description": "뛰어난 맛과 퀄리티로 인정받는 네덜란드 프리미엄 치즈 브랜드 \"더 더치 치즈앤모어\" 입니다.",
+   "longDescription": "뛰어난 맛과 퀄리티로 인정받는 네덜란드 프리미엄 치즈 브랜드 \"더 더치 치즈앤모어\" 입니다. 한국에서 맛볼 수 없었던 다양한 맛의 유럽 현지 치즈들을 선보이며 한국의 치즈시장을 선도해나가고 있습니다.\n\n주요 제품: , ,",
+   "logoUrl": "/booths/siwse-magok-2026/logo/E-23.webp",
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "E-24",
+   "name": "블루와인컴퍼니",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "하던 것을 하며 새로운 것에 도전한다\" - 블루와인컴퍼니의 컨셉입니다.",
+   "longDescription": "하던 것을 하며 새로운 것에 도전한다\"\n- 블루와인컴퍼니의 컨셉입니다.\n\n사과. 포도. 블루베리 3가지의 과실로 11종의 와인을 만들며\n가성비 와인으로 인기가 높습니다.\n\n주요 제품: 사과와인, 포도와인, 블루베리와인",
+   "instagramUrl": "https://www.instagram.com/berr",
+   "logoUrl": "/booths/siwse-magok-2026/logo/E-24.webp",
+   "images": [
+    "/booths/siwse-magok-2026/E-24_1.webp",
+    "/booths/siwse-magok-2026/E-24_2.webp",
+    "/booths/siwse-magok-2026/E-24_3.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "E-25",
+   "name": "프리미엄 남아공 수제 육포",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "블리스",
+   "aliases": [
+    "블리스"
+   ],
+   "description": "블리스(VLEES)는 아프리카에서 20여 년간 거주한 대표가 설립한 프리미엄 육포 브랜드로, 700년 전통의 남아공 정통 레시피를 기반으로 차별화된 고단백 영양 육가공품을 제공합니다.",
+   "longDescription": "블리스(VLEES)는 아프리카에서 20여 년간 거주한 대표가 설립한 프리미엄 육포 브랜드로, 700년 전통의 남아공 정통 레시피를 기반으로 차별화된 고단백 영양 육가공품을 제공합니다.\n\n한국에서 남아공 현지인들과 함께 HACCP 인증 시설에서 생산하며, 기존 육포보다 부드러운 식감과 깊은 풍미를 자랑하는 제품을 선보이고 있습니다. 수분율이 높고 저온 건조 방식으로 제조되어 와인 및 주류와 완벽한 페어링을 이루며, 고급 패키지 디자인을 통해 프리미엄 브랜드로 자리 잡았습니다.\n\n현재 국내 주요 유통망 및 백화점 팝업스토어, 면세점, 주류 전문 바틀샵 등에 입점해 있으며, B2B 및 해외 수출을 통해 글로벌 시장 진출도 추진 중입니다.\n\n블리스는 한국식품의 세계화를 목표로, 지속적인 연구개발을 통해 혁신적인 제품을 선보이며 소비자들에게 건강하고 맛있는 프리미엄 육포를 제공하고자 합니다.\n\n주요 제품: 빌통, 칠리바이트, 드루어보스\n\n블리스(VLEES)는 700년 전통의 남아공 샤퀴테리 기술을 바탕으로, 최상급 원육과 천연 향신료를 사용하여 200시간 이상 저온 건조한 프리미엄 육포를 제공합니다. 기존 육포 대비 40~50% 높은 수분 함량으로 더욱 부드럽고 깊은 풍미를 자랑하며, HACCP 인증 시설에서 위생적으로 생산됩니다.",
+   "websiteUrl": "https://linktr.ee/vlees_biltong",
+   "logoUrl": "/booths/siwse-magok-2026/logo/E-25.webp",
+   "images": [
+    "/booths/siwse-magok-2026/E-25_1.webp",
+    "/booths/siwse-magok-2026/E-25_2.webp",
+    "/booths/siwse-magok-2026/E-25_3.webp",
+    "/booths/siwse-magok-2026/E-25_4.webp"
+   ],
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food",
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "E-26",
+   "name": "꼬치페스타",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "청춘에프앤비",
+   "aliases": [
+    "청춘에프앤비"
+   ],
+   "description": "쓰촨식 마라꼬치로 주류와 환상의 궁합입니다.",
+   "longDescription": "쓰촨식 마라꼬치로 주류와 환상의 궁합입니다.\n\n주요 제품: 항정살마라꼬치, 물떡마라꼬치, 양고기마라꼬치",
+   "websiteUrl": "https://www.linglingmala.com/",
+   "logoUrl": "/booths/siwse-magok-2026/logo/E-26.webp",
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "E-27",
+   "name": "세경상사",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "websiteUrl": "https://www.gfair.co.kr",
+   "logoUrl": "/booths/siwse-magok-2026/logo/E-27.webp",
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food",
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "E-28",
+   "name": "바다향기·가문어 아귀포",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "F-01",
+   "name": "산과보롬",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "F-02",
+   "name": "2026 충남술TOP10",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "충남경제진흥원",
+   "aliases": [
+    "충남경제진흥원"
+   ],
+   "description": "충남술TOP10 선정업체(농업회사법인 주로 주식회사, 우쥬라익썸 주식회사 농업회사법인, 한산모시양조장, 자향소곡주, 토박이 소곡주, 농업회사법인㈜두레양조, 농업회사법인예산사과와인주식회사, 농업회사법인 랩투보틀 주식회사, 농업회사법인 주식회사 목천도가, 농업회사법인신평양조장 주식회사)",
+   "longDescription": "충남술TOP10 선정업체(농업회사법인 주로 주식회사, 우쥬라익썸 주식회사 농업회사법인, 한산모시양조장, 자향소곡주, 토박이 소곡주, 농업회사법인㈜두레양조, 농업회사법인예산사과와인주식회사, 농업회사법인 랩투보틀 주식회사, 농업회사법인 주식회사 목천도가, 농업회사법인신평양조장 주식회사)\n\n주요 제품: 탁주, 과실주, 약청주, 증류주\n\n1. 농업회사법인 주로 주식회사: 쌀쌀이랑 생막걸리(탁주)\n2. 우쥬라익썸 주식회사 농업회사법인: 색조작주 흰 01(탁주)\n3. 한산모시양조장: 한산소곡주(약청주)\n4. 자향소곡주: 한산소곡주(약청주)\n5. 토박이 소곡주: 한산소곡주(약청주)\n6. 농업회사법인㈜두레양조: 두레앙샤인마스캇와인(과실주)\n7. 농업회사법인예산사과와인주식회사: 추사50(증류주)\n8. 농업회사법인 랩투보틀 주식회사: 배로40 피어펙트 르네상스(증류주)\n9. 농업회사법인 주식회사 목천도가: 파동(증류주)\n10. 농업회사법인신평양조장 주식회사: 고마소주40(증류주)",
+   "logoUrl": "/booths/siwse-magok-2026/logo/F-02.webp",
+   "images": [
+    "/booths/siwse-magok-2026/F-02_1.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "F-03",
+   "name": "베라와인",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "베라글로벌",
+   "aliases": [
+    "베라글로벌"
+   ],
+   "longDescription": "주요 제품: , ,",
+   "logoUrl": "/booths/siwse-magok-2026/logo/F-03.webp",
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine",
+    "sw-food"
+   ]
+  },
+  {
+   "code": "F-04",
+   "name": "베터베버리지컴퍼니",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "베터베버리지컴퍼니(Better Beverage Company)의 와인은 전 세계 수만 명의 소믈리에 중 300명도 되지 않는 마스터 소믈리에(Master Sommelier) 자격을 191번째로 취득한 데니스 켈리가 모든 과정을 직접 책임지고 선별합니다.",
+   "longDescription": "베터베버리지컴퍼니(Better Beverage Company)의 와인은 전 세계 수만 명의 소믈리에 중 300명도 되지 않는\n마스터 소믈리에(Master Sommelier) 자격을 191번째로 취득한 데니스 켈리가 모든 과정을 직접 책임지고 선별합니다.\n\n데니스 켈리(Dennis Kelly)는 미국 출신의 세계적인 와인 전문가로,\n2008년부터 2015년까지 나파밸리의 전설적인 토마스 켈러(Thomas Keller)가 이끄는 미쉐린 3스타 레스토랑 프렌치 런드리(The French Laundry)에서 헤드 소믈리에로 근무하여 세계 최고 수준의 와인 프로그램을 운영했습니다.\n\n프렌치 런드리 재직중이던 2010년에는 저명한 Wine & Spirits 매거진으로부터 “Best New Sommelier”로 선정됐고\n그가 관리한 와인 리스트는 Wine Spectator로부터 “그랜드 어워드(Grand Award)”로 여러 차례 수상했습니다.\n\n이제는 그의 자부심이 담긴 고품질의 캘리포니아 와인을 한국시장에도 합리적인 가격으로 가져왔습니다.\n\n주요 제품: Super Necessary, Eye Candy, Side Eye",
+   "instagramUrl": "http://www.instagram.com/better_beverage",
+   "logoUrl": "/booths/siwse-magok-2026/logo/F-04.webp",
+   "images": [
+    "/booths/siwse-magok-2026/F-04_1.webp",
+    "/booths/siwse-magok-2026/F-04_2.webp",
+    "/booths/siwse-magok-2026/F-04_3.webp",
+    "/booths/siwse-magok-2026/F-04_4.webp",
+    "/booths/siwse-magok-2026/F-04_5.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "F-05",
+   "name": "(주)와이브라더스컴퍼니",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "주식회사 와이브라더스컴퍼니",
+   "aliases": [
+    "주식회사 와이브라더스컴퍼니"
+   ],
+   "logoUrl": "/booths/siwse-magok-2026/logo/F-05.webp",
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "F-06",
+   "name": "모스께토 & 베르비니",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "F-08",
+   "name": "칠락와인",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "F-09",
+   "name": "(주)케이에프제이코리아",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "중국술 공부가주 한국수입총판",
+   "longDescription": "중국술 공부가주 한국수입총판\n\n주요 제품: 공부가주, 자약, 부장10년\n\n공자집안의 전통양조를 계승 발전시켜 중국백주역사 대표제품인\n공부가주는 삼향(백주본연의 맛, 마실때의 맛, 뒷맛의 향)으로 유명한\n문화명주입니다.",
+   "websiteUrl": "https://www.kfj-korea.com",
+   "logoUrl": "/booths/siwse-magok-2026/logo/F-09.webp",
+   "images": [
+    "/booths/siwse-magok-2026/F-09_1.webp",
+    "/booths/siwse-magok-2026/F-09_2.webp",
+    "/booths/siwse-magok-2026/F-09_3.webp",
+    "/booths/siwse-magok-2026/F-09_4.webp",
+    "/booths/siwse-magok-2026/F-09_5.webp"
+   ],
+   "category": "사케·중국술",
+   "categorySlug": "sw-sake-baijiu",
+   "tags": [
+    "sw-sake-baijiu"
+   ]
+  },
+  {
+   "code": "F-10",
+   "name": "주식회사 빅샷임포츠",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "longDescription": "주요 제품: , ,",
+   "websiteUrl": "https://www.bigshotimports.com",
+   "logoUrl": "/booths/siwse-magok-2026/logo/F-10.webp",
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine",
+    "sw-spirits"
+   ]
+  },
+  {
+   "code": "F-11",
+   "name": "(주) 지피주류",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "주식회사 지피주류",
+   "aliases": [
+    "주식회사 지피주류"
+   ],
+   "description": "주식회사 지피주류는 2018년 부터 안후이 주도주업유한공사(상해 주권위탁거래소: 코드번호 205859)와 전략적 파트너로서 중국 전통방식인 고태법으로 빛은 고품질의 바이주를 한국에 소개하기 위하여 노력 하여왔습니다.",
+   "longDescription": "주식회사 지피주류는\n2018년 부터 안후이 주도주업유한공사(상해 주권위탁거래소: 코드번호 205859)와 전략적 파트너로서\n중국 전통방식인 고태법으로 빛은 고품질의 바이주를 한국에 소개하기 위하여 노력 하여왔습니다.\n전통고태법으로 제대로 빛은 전통 바이주를 소개 하기 위하여 1년여 간의 준비기간을 거쳐\n진단향 이라는 자체 고유브랜드를 개발하여 새로이 출시 하게 되였습니다.\n진단향 은 기존의 중국 바이주 중 고품질의 바이주 를 기초로 한국인의 기호와 입맛을 고려하여\n국내 술 기호에 어울릴 수 있도록 저주도의 술로서 맑고 부드러운 향과 부드러운 목 넘김 깨끗하고 깔끔한 뒷 끝\n을 강조하였으며 가격적인 부분에서도 국내소비자들의 부담을 최소화 하기 위하여 품질대비\n대중적이며 합리적인 가격으로 책정 하여 국내에 수입 유통 할 수 있게 되였고\n그외 품질대비 가성비 좋은 여러 바이주를 수입,유통,판매를 하고 있습니다\n\n주요 제품: 뇌교9년, 귀주뇌교주42, 진단향42",
+   "logoUrl": "/booths/siwse-magok-2026/logo/F-11.webp",
+   "images": [
+    "/booths/siwse-magok-2026/F-11_1.webp",
+    "/booths/siwse-magok-2026/F-11_2.webp",
+    "/booths/siwse-magok-2026/F-11_3.webp",
+    "/booths/siwse-magok-2026/F-11_4.webp"
+   ],
+   "category": "사케·중국술",
+   "categorySlug": "sw-sake-baijiu",
+   "tags": [
+    "sw-sake-baijiu"
+   ]
+  },
+  {
+   "code": "F-12",
+   "name": "양양 초향정 미수곡주",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "양양 초향정",
+   "aliases": [
+    "양양 초향정"
+   ],
+   "description": "초향정은 2008년도부터 전통주 연구를 시작하여 18년간의 연구 결과를 \"미수곡주\"와 미수곡탄에 다",
+   "longDescription": "초향정은 2008년도부터 전통주 연구를 시작하여 18년간의 연구 결과를 \"미수곡주\"와 미수곡탄에 다 담았습니다.\n청정지역 양양에서 생산되는 멥쌀, 찹쌀을 주원료로 하고 발효제는 직접 경작하여 생산하는 밀로 누룩을 만들어 사용을 합니다.\n이 외의 당화제, 발효제, 기타 첨가물 없이 오로지 이 3가지만 가지고 전통주 발효를 합니다.\n\n미 (米) 산세 으뜸이고 수려한 양양 청정지역의 쌀과\n수 (水) 설악산 깊은 골에서 발원한 물\n곡 (麯) 직접 생산하는 전통 밀 누룩만으로\n주 (酒) 빚어 정성을 다 하였습니다.\n\n[핵심 기술력]\n\n1. 발효의 핵심: 환경 제어와 누룩의 역할\n전통주 미수곡주의 발효의 시작과 끝은 효소와 효모의 활성도에 달려 있습니다. 미생물을 정밀하게 제어하고 영양 밸런스와 용존 산소를 조절하는 환경 제어는 필수적입니다. 그중에서도 가장 결정적인 요소는 누룩입니다.\n특히 밀 누룩은 일반 곡류(단백질 3~4%)에 비해 월등히 높은 16% 수준의 단백질을 함유하고 있어, 발효 과정에서 풍부한 향기 성분을 발현시키는 핵심 원천이 됩니다.\n\n2. 독보적 기술: 초향정 미수곡탄의 제조 공정\n미수곡탄은 전통 밀 누룩을 직접 디뎌 발효원으로 삼고, 이를 삼양주(세 번 빚는 술) 방식으로 양조하여 향기를 온전히 가두는 독보적인 기술을 적용합니다\n-발효 단계: 30일간의 장기 발효를 통해 미수곡주(삼양주)만의 깊은 향과 미를 완성합니다.\n-증류 단계: 지게미를 걸러낸 맑은 약주를 상압증류하여 미수곡탄만의 강렬하고 복합적인 풍미를 추출합니다.\n\n3. 향기 발현의 과학적 경로\n미수곡탄의 향은 인위적인 가향이 아닌, 재료 본연의 잠재력이 화학적 결합을 통해 완성된 결과물입니다.\n-고소한 풍미: [단백질 → 아미노산 → 피라진(Pyrazine)] 경로를 통해 초콜릿과 같은 깊은 풍미 생성\n-청량한 과일향: [당 → 알코올 + 유기산 → 에스테르(Ester)] 경로를 통해 화사한 과일 향 생성\n\n4. 전통의 현대적 재해석, 미생물 공학의 결정체\n결국 미수곡탄은 단순히 옛 방식을 답습하는 것에 그치지 않고, 밀 누룩이 가진 단백질과 당의 잠재력을 미생물 공학적 관점에서 극한까지 끌어올린 산물입니다.\n고도수 알코올 환경 속에서 피라진의 묵직한 고소함과 에스테르의 화사한 향이 조화롭게 만나는 지점을 완성함으로써, 인위적인 첨가물 없이도 시간과 미생물이 빚어낸 복합미를 과학적으로 증명하고 있습니다. 이는 한국 전통 증류주가 나아가야 할 프리미엄의 기준을 제시합니다.\n\n주요 제품: 미수곡주 탁주 18도, 미수곡주 약주18도, 전통소주 미수곡탄 52도\n\n양양 초향정의 '미수곡주'와 '미수곡탄'은 직접 경작한 밀로 만든 누룩과 삼양주 기법을 기반으로 완성되는 연계형 전통주입니다. 미수곡주를 약주로 정제하여 미수곡탄을 제조하며, 인위적 가향 없이 원재료의 화학적 결합과 독보적인 향기 제어 기술로 풍미를 완성합니다.\n\n1.생산 과정\n원료 및 누룩: 직접 경작한 밀을 디뎌 만든 수제 밀 누룩 사용\n-삼양주 발효 (미수곡주): 밀 누룩을 기반으로 빚어낸 삼양주 탁주\n-정 제 (약 주): 미수곡주를 약주 형태로 정제하여 완성\n-증 류 (미수곡탄): 미수곡주의 약주를 상압증류\n\n2. 향기 발현의 과학적 경로\n(고소한 풍미: 초콜릿 향)\n-경로: 단백질 - 아미노산 - 피라진(Pyrazine)\n-원재료의 단백질이 분해 및 결합하여 깊고 고소한 풍미 형성\n(청량한 과일향)\n-경로: 당 - 알코올 + 유기산 - 에스테르(Ester)\n-발효 과정에서 생성된 성분이 결합하여 화사한 과일 향 형성\n\n3. 핵심 기술력\n향기 제어 기술: 발효 과정에서 발생하는 천연 향을 손실 없이 술 속에 가두어 발현시키는 독자적 기술 적용\n\n[미수곡탄 미니어처 증정]\n2026 대한민국주류대상 대상과, 2026 베스트신상품 대상을 수상한 미수곡 탄 52도를 구매하시는 고객 사은 행사로 한정 20개 미니어처 증정합니다.\n\n[할인 행사]\n미수곡주, 미수곡 탄 전 품목 10% 할인행사를 진행합니다.",
+   "websiteUrl": "https://misugokju.kr",
+   "logoUrl": "/booths/siwse-magok-2026/logo/F-12.webp",
+   "images": [
+    "/booths/siwse-magok-2026/F-12_1.webp",
+    "/booths/siwse-magok-2026/F-12_2.webp",
+    "/booths/siwse-magok-2026/F-12_3.webp",
+    "/booths/siwse-magok-2026/F-12_4.webp",
+    "/booths/siwse-magok-2026/F-12_5.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "F-13",
+   "name": "와인브라더스",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "와인브라더스 인터내셔널",
+   "aliases": [
+    "와인브라더스 인터내셔널"
+   ],
+   "description": "좋은 와인 좋은 가격에 수입 유통 하는 와인계의 루키",
+   "longDescription": "좋은 와인 좋은 가격에 수입 유통 하는 와인계의 루키\n\n주요 제품: 젬마디루나 모스카토, 젬마디루나 프로세코, 젬마디루나 레드잼",
+   "logoUrl": "/booths/siwse-magok-2026/logo/F-13.webp",
+   "images": [
+    "/booths/siwse-magok-2026/F-13_1.webp",
+    "/booths/siwse-magok-2026/F-13_2.webp",
+    "/booths/siwse-magok-2026/F-13_3.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "F-14",
+   "name": "오드린 & 베베마루",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "기타",
+   "categorySlug": "sw-etc",
+   "tags": [
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "F-16",
+   "name": "주식회사 바인브로",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "수입 수류 와인 및 각종 주류 악세서리 전문 도소매 업체",
+   "longDescription": "수입 수류 와인 및 각종 주류 악세서리 전문 도소매 업체\n\n주요 제품: 수입주류, 와인잔, 수입주방\n\n현 이태리,프랑스,스페인 와인 수입 및 유통\n각종 수입 브랜드 와인잔 및 악세서리 리델, 쇼트즈위젤, 외 약 2,000가지 상품 도매 및 소매, 유통 전문",
+   "websiteUrl": "https://www.vinebro.com",
+   "logoUrl": "/booths/siwse-magok-2026/logo/F-16.webp",
+   "images": [
+    "/booths/siwse-magok-2026/F-16_1.webp",
+    "/booths/siwse-magok-2026/F-16_2.webp",
+    "/booths/siwse-magok-2026/F-16_3.webp",
+    "/booths/siwse-magok-2026/F-16_4.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "F-17",
+   "name": "알제이글로벌그룹㈜ 마스",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "알제이글로벌그룹 주식회사",
+   "aliases": [
+    "알제이글로벌그룹 주식회사"
+   ],
+   "description": "알제이글로벌그룹 은 현재 후쿠미츠야 양조장의 사케를 수입하고 있으며 앞으로 와인 맥주 다양한 주류를 수입할 예정입니다",
+   "longDescription": "알제이글로벌그룹 은 현재 후쿠미츠야 양조장의 사케를 수입하고 있으며 앞으로 와인 맥주 다양한 주류를 수입할 예정입니다\n작년에 백스코 주류 박람회 참관 경험이 있습니다.\n\n주요 제품: 쿠로오비 유유 토쿠베츠준마이, 하츠고코로 준마이 다이긴조, 모모토세\n\n400년 전통의 후쿠미츠야 양조장은 이시카와현의 카나자와에서 시작되었습니다 이 양조장에서 생산된 사케가 특별한 이유는 숙성기술 특별한 물 과 쌀 에있습니다 일본 내에서도 최고라 할수있는 숙성 기술과 열정을 가지고있으며 이 양조장에서 생산된 사케는 후쿠미츠야의 역사처럼 깊은 맛을 느끼실수 있습니다.",
+   "logoUrl": "/booths/siwse-magok-2026/logo/F-17.webp",
+   "category": "사케·중국술",
+   "categorySlug": "sw-sake-baijiu",
+   "tags": [
+    "sw-sake-baijiu"
+   ]
+  },
+  {
+   "code": "F-18",
+   "name": "치코비노 인터내셔날",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "치코비노",
+   "aliases": [
+    "치코비노"
+   ],
+   "description": "치코비노는 2005년 설립된 와인 수입 및 유통 전문 회사로 높은 퀄러티와 국제적인 명성을 지닌 와인 브랜드를 수입, 유통하는 와인 전문 수입사 입니다.",
+   "longDescription": "치코비노는 2005년 설립된 와인 수입 및 유통 전문 회사로 높은 퀄러티와 국제적인 명성을 지닌 와인 브랜드를 수입, 유통하는 와인 전문 수입사 입니다.\n\n해외에서 훌륭한 퀄러티의 와인을 생산하고 좋은 평가를 받는 유수의 와이너리를 한국 와인시장에 소개하고 다양한 와인 이벤트 , 행사를 통해 널리 알리는데 주력하며,\n\n소믈리에, 호텔, 레스토랑 매니저 등 업계 종사자의 관계 유지를 통하여 와인 지식과 경험을 쌓고, 브랜드 인지도를 높여 국내에 정착시키기 위해 노력하고 있습니다.\n\n주요 제품: , ,",
+   "instagramUrl": "https://www.instagram.com/chikovino_wine/",
+   "logoUrl": "/booths/siwse-magok-2026/logo/F-18.webp",
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "F-19",
+   "name": "(주)니혼사케",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "사케·중국술",
+   "categorySlug": "sw-sake-baijiu",
+   "tags": [
+    "sw-sake-baijiu"
+   ]
+  },
+  {
+   "code": "F-20",
+   "name": "셀렉티브 세덕티브",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "셀렉티브세덕티브",
+   "aliases": [
+    "셀렉티브세덕티브"
+   ],
+   "description": "뉴질랜드 출신 부부가 대표로 있는 뉴질랜드 부티끄 와이너리 전문 수입사로 SELECTIVE ‘까다로운 ‘ SEDUCTIVE ‘매혹적인’, ‘까다롭게 골라, 매혹시키겠다’ 는 목표를 가지고 부티크 매장에 납품하는 최고의 뉴질랜드 와인들을 선보이는 스페셜리스트 수입사입니다.",
+   "longDescription": "뉴질랜드 출신 부부가 대표로 있는 뉴질랜드 부티끄 와이너리 전문 수입사로\nSELECTIVE ‘까다로운 ‘ SEDUCTIVE ‘매혹적인’, ‘까다롭게 골라, 매혹시키겠다’ 는 목표를 가지고\n부티크 매장에 납품하는 최고의 뉴질랜드 와인들을 선보이는 스페셜리스트 수입사입니다.\n\n주요 제품: 에스컨 샤도네이 , 아히카 쇼비뇽블랑 , 마오리 포인트 피노누아\n\n뉴질랜드 혹스베이의 부티끄 와이너리에서 만든 샤도네이\n\n2022 Chardonnay (혹스베이 )\n애스컨 샤도네이\n\n복숭아, 바닐라, 캐슈넛, 구운 버터, 베이킹 향신료, 요거트 등의 복합적인 향이 특징입니다. 풍부한 바디감과 부드러운 질감, 강렬한 맛이 돋보이며 구운 사과, 복숭아, 바닐라, 견과류의 풍미가 조화롭게 어우러져 있습니다. 또한, 베이킹 향신료와 돌의 뉘앙스가 살짝 느껴지며, 드라이한 마무리와 함께 중간 이상의 복합성을 지니고 있어 균일하게 지속되는 풍미 프로필을 제공합니다.\n\n아히카 쇼비뇽 블랑 (말보로)\n\n아히 카(Ahi Kā)는 전문 포도 재배자와 블랭크 캔버스 소유주 간의 협력으로 탄생한 와인입니다. 인상적인 품질과 가치를 자랑하는 2023년 빈티지(5성급)는 단일 포도원인 딜런스 포인트(Dillons Point)에서 재배되었습니다. 연한 레몬색/녹색을 띠며, 입안을 가득 채우는 생동감 넘치는 맛과 잘 익은 패션프루트/라임 풍미의 훌륭한 무게감과 집중도를 자랑합니다. 모호한 짭짤한 느낌이 더해져 있으며, 훌륭한 섬세함과 건조하면서도 지속적인 여운을 남깁니다.\n\nGOLD DIGGER PINOT NOIR\n(골드디거 피노누아 )\n93pts - Sam Kim. 4.5 stars – Michael Cooper. 92pts - Raymond Chan. 91 pts - Cam Douglas, MS.\n영광의 유산: 19세기 뉴질랜드 센트럴 오타고의 황금기를 기리며 탄생한 특별한 와인.\n마오리 포인트 포도밭에서 손으로 수확한 포도만을 사용하며, 자연 효모로 발효하고 숙성된 오크 배럴에서 숙성합니다 젊음의 에너지를 간직하면서도, 과일, 향신료, 흙내음, 꽃의 조화\n친환경 선택: 무여과, 무필터링, 비건 친화적이며, 최소한의 처리와 황산염 사용\n테이스팅 노트 : 체리와 꽃의 향긋함에 마른 허브, 버섯, 사냥감의 힌트가 더해져 매혹적인 아로마를 선사합니다. 부드질감과 생동감 넘치는 맛이 뛰어난 과일 순수함과 복잡함을 하나로 묶어줍니다.",
+   "websiteUrl": "https://www.selectiveseductive.com",
+   "logoUrl": "/booths/siwse-magok-2026/logo/F-20.webp",
+   "images": [
+    "/booths/siwse-magok-2026/F-20_1.webp",
+    "/booths/siwse-magok-2026/F-20_2.webp",
+    "/booths/siwse-magok-2026/F-20_3.webp",
+    "/booths/siwse-magok-2026/F-20_4.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "F-21",
+   "name": "글뤼바인 / 뱅쇼",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "(주) 글뤼바인 코리아",
+   "aliases": [
+    "(주) 글뤼바인 코리아"
+   ],
+   "longDescription": "주요 제품: , ,",
+   "logoUrl": "/booths/siwse-magok-2026/logo/F-21.webp",
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "F-24",
+   "name": "조지아와인",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "Georgeous Wine — 와인의 고향에서 건네는 깊은 향과 이야기.",
+   "longDescription": "Georgeous Wine — 와인의 고향에서 건네는 깊은 향과 이야기. 8,000년 와인의 시작, 조지아! Georgeous Wine이 전하는 정통 조지아 와인으로 당신의 테이블에 품격을 더하세요. 고대의 전통과 장인의 손길, 지금 진짜 와인을 경험해보세요!\n\n주요 제품: 조지아 앰버 2018, 조지아 스파클링, 킨즈마라울리 프리미엄\n\n조지아 앰버 2018/ Georgeous Amber2018\n조지아/오렌지 드라이 와인/750ml\n조지아 카헤티산 키시와 카후리 무츠바네로 만든 전통 크베브리 앰버 와인. 12개월 껍질 발효 로 깊은 풍미와 건과일, 허브 향의 부케. 풀바디에 균형 잡힌 맛.",
+   "instagramUrl": "https://www.instagram.com/gerogeouswine",
+   "logoUrl": "/booths/siwse-magok-2026/logo/F-24.webp",
+   "images": [
+    "/booths/siwse-magok-2026/F-24_1.webp",
+    "/booths/siwse-magok-2026/F-24_2.webp",
+    "/booths/siwse-magok-2026/F-24_3.webp",
+    "/booths/siwse-magok-2026/F-24_4.webp",
+    "/booths/siwse-magok-2026/F-24_5.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "F-25",
+   "name": "낭만부부",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "메밀꽃 피는 항아리",
+   "aliases": [
+    "메밀꽃 피는 항아리"
+   ],
+   "description": "바른 먹거리를 추구하는 자연을 닮은 브랜드 낭만부부 (Nang Man Boo Boo)  정직한 재료, 정성의 시간, 진심을 담다!",
+   "longDescription": "바른 먹거리를 추구하는 자연을 닮은 브랜드\n낭만부부 (Nang Man Boo Boo)\n\n정직한 재료, 정성의 시간, 진심을 담다!\n\"우리 가족에게 주고 싶은 것만 담았습니다.“\n\n메밀꽃 피는 항아리는 단순히 떡을 만드는 회사가 아닙니다.\n정직한 재료, 건강한 철학, 지역과의 상생을 바탕으로\nHACCP 인증 생산시설과 숙련된 장인들이\n다음 세대도 믿고 먹을 수 있는 먹거리를 빚어냅니다.\n\n전통의 혼을 빚고, 오늘의 감성을 담다!\n전통의 손끝에서, 오늘의 식탁으로.\n\n치즈떡, 디저트 떡, 간편식 떡, 떡볶이 밀키트.\n\n메밀꽃 피는 항아리는 전통 장인의 정성과 기술을 바탕으로\n현대인의 입맛과 라이프스타일에 어울리는 새로운 떡의 방식을 제안합니다.\n익숙한 떡에 낯선 즐거움을 더한 퓨전 떡,\n세대를 잇는 건강한 간식이 됩니다.\n\n주요 제품: 모짜렐라 치즈 가래떡, 치즈 몽땅 떡볶이, 미니 달떡\n\n* 모짜렐라 치즈 가래떡\n치즈는 언제나 정답입니다. 자연치즈 43% 함유, 뽀얀 모짜렐라 자연치즈를 품은 우리쌀로 만든 프리미엄 간식\n\n* 구워먹는 치즈바\n겉바속촉의 모짜렐라 치즈가 황금빛으로 녹는 3가지 맛의 프리미엄 치즈바입니다.\n오븐이나 에어프라이어에 구워내면 더욱 고소하고, 홈파티, 캠핑시 그릴에 구워서\n고기, 와인 등과 함께 페어링하기 좋은 제품으로, 어른들에게는 든든한 술안주,\n아이들에게는 맛있는 간식으로 다양하게 활용 가능합니다.\n\n* 치즈 몽땅 떡볶이 밀키트\n전문점 맛을 10분 만에, 매일 먹고 싶은 홈레스토랑 떡볶이\n부드럽게 퍼지는 치즈의 풍미, 매운맛이 부담스러운 이들을 위한 크리미한 선택\n구성 : 총 500g 2인분 (떡볶이 떡 300g + 부산어묵 80g + 소스 120g)",
+   "websiteUrl": "https://smartstore.naver.com/mapihang",
+   "logoUrl": "/booths/siwse-magok-2026/logo/F-25.webp",
+   "images": [
+    "/booths/siwse-magok-2026/F-25_1.webp",
+    "/booths/siwse-magok-2026/F-25_2.webp",
+    "/booths/siwse-magok-2026/F-25_3.webp",
+    "/booths/siwse-magok-2026/F-25_4.webp"
+   ],
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "F-26",
+   "name": "리니겨미네 대구막창",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "와이피동진상사",
+   "aliases": [
+    "와이피동진상사"
+   ],
+   "description": "최고만을 고집하는 리니겨미네입니다.",
+   "longDescription": "최고만을 고집하는 리니겨미네입니다.\n싸다고 아무거나 팔지않습니다.\n구미에서 오마카세식으로 막창가게 운영중입니다.\n\n주요 제품: 막창구이 100그램,200그램, 훈제납작막창 500그램세트, 훈제막창 500그램세트\n\n최고급 원육으로 만들고 냄새나는 곱 부분을 제거하여 누린내 없고 바삭하게 즐길수있습니다",
+   "logoUrl": "/booths/siwse-magok-2026/logo/F-26.webp",
+   "images": [
+    "/booths/siwse-magok-2026/F-26_1.webp",
+    "/booths/siwse-magok-2026/F-26_2.webp",
+    "/booths/siwse-magok-2026/F-26_3.webp"
+   ],
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "G-01",
+   "name": "오이도양조장",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "오이도양조장 농업회사법인 주식회사",
+   "aliases": [
+    "오이도양조장 농업회사법인 주식회사"
+   ],
+   "description": "오이도양조장은 시흥의 맑은 쌀과 지역 농산물을 바탕으로 전통을 재해석하는 수제 양조장입니다.",
+   "longDescription": "오이도양조장은 시흥의 맑은 쌀과 지역 농산물을 바탕으로 전통을 재해석하는 수제 양조장입니다. 전통방식의 양조 철학을 바탕으로 인공 감미료를 일절 쓰지 않는 무감미료 원칙을 고수하며, 지역 농가와의 상생을 바탕으로 자연 본연의 깊은 풍미를 담아내며, 미식을 사랑하는 분들께 깔끔하고 진정성 있는 프리미엄 전통주의 가치와 따뜻한 경험을 선물합니다.\n\n주요 제품: 결 52% 쌀증류식소주, 결 39% 고구마소주, 결 12% 쌀막걸리\n\n'결' 시리즈는 100% 시흥산 쌀과 꿀고구마로 빚어낸 오이도양조장의 프리미엄 수제 전통주 라인입니다. 인공 첨가물 없이 원재료 자체의 부드러운 단맛과 정교한 목넘김을 자랑합니다. 깊은 풍미의 쌀 증류식 소주(25%, 39%, 52%), 달콤한 풍미의 고구마 소주(25%, 39%), 그리고 부드러운 묵직함이 돋보이는 쌀 막걸리(9%, 12%)까지, 미식과 조화를 이루는 다채로운 도수의 프리미엄 술을 선보입니다.",
+   "instagramUrl": "https://www.instagram.com/oido.distillery/",
+   "logoUrl": "/booths/siwse-magok-2026/logo/G-01.webp",
+   "images": [
+    "/booths/siwse-magok-2026/G-01_1.webp",
+    "/booths/siwse-magok-2026/G-01_2.webp",
+    "/booths/siwse-magok-2026/G-01_3.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "G-02",
+   "name": "술빚는전가네",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "대한민국우리술품평회에서 4관왕을 차지한 막걸리 본고장 포천 산정호수에 위치한 찾아가는 양조장",
+   "longDescription": "대한민국우리술품평회에서 4관왕을 차지한 막걸리 본고장 포천 산정호수에 위치한 찾아가는 양조장\n\n주요 제품: 산정호수 동정춘막걸리, 궁예의 눈물, 전스 스피릿55\n\n우리술품평회 2관왕을 차지한 조선 3대 명주의 하나인 동정춘을 재현한 산정호수 동정춘 막걸리",
+   "websiteUrl": "https://www.sooldoga.com",
+   "logoUrl": "/booths/siwse-magok-2026/logo/G-02.webp",
+   "images": [
+    "/booths/siwse-magok-2026/G-02_1.webp",
+    "/booths/siwse-magok-2026/G-02_2.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "G-03",
+   "name": "배구양조장",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "배구양조장 업체 소개 연인이 술을 빚고, 사랑을 빚는 양조장  배구양조장(BAEGU Brewery)은 경기도 포천의 좋은 물과 국내산 쌀, 전통 누룩을 바탕으로 프리미엄 막걸리를 빚는 수제 전통주 양조장입니다.",
+   "longDescription": "배구양조장 업체 소개\n연인이 술을 빚고, 사랑을 빚는 양조장\n\n배구양조장(BAEGU Brewery)은 경기도 포천의 좋은 물과 국내산 쌀, 전통 누룩을 바탕으로 프리미엄 막걸리를 빚는 수제 전통주 양조장입니다.\n\n배구양조장의 이야기는 술을 공부하며 만난 두 사람으로부터 시작되었습니다. 서로 다른 삶을 살아오던 ‘배씨’와 ‘구씨’는 전통주를 배우고 술을 빚는 과정에서 인연이 되었고, 함께 발효의 시간을 견디며 연인에서 양조장의 동반자로 성장했습니다.\n\n술 한 병이 완성되기 위해서는 좋은 재료뿐 아니라 기다림과 정성이 필요합니다. 쌀을 씻고, 고두밥을 짓고, 누룩을 섞고, 발효의 변화를 매일 살피는 과정은 두 사람이 서로를 이해하고 관계를 만들어가는 시간과 닮아 있습니다.\n\n주요 제품: 배씨, 구씨 , 배구\n\n배구양조장의 술 빚는 원칙\n국내산 쌀과 누룩, 정제수로 빚습니다.\n인공감미료를 사용하지 않습니다.\n저온에서 천천히 발효하고 충분히 숙성합니다.\n제품별 발효 횟수와 숙성기간을 엄격하게 지킵니다.\n소량 생산을 통해 향과 맛, 산미의 균형을 세심하게 관리합니다.\n음식과 함께 즐길 때 더욱 가치가 살아나는 프리미엄 막걸리를 지향합니다.\n\n구씨\n가볍고 산뜻하게 즐기는 데일리 프리미엄 막걸리\n\n알코올 도수 9%｜용량 500ml｜삼양주｜4개월 숙성｜판매가 15,000원\n\n구씨는 밝고 경쾌한 산미와 산뜻한 과실 향이 돋보이는 프리미엄 막걸리입니다.\n\n첫맛에서는 쌀이 가진 은은한 단맛이 부드럽게 느껴지고, 중반부터 산미가 가볍게 올라오며 참외와 멜론을 연상시키는 향으로 이어집니다. 무겁지 않은 질감과 깔끔한 마무리 덕분에 프리미엄 막걸리를 처음 접하는 고객도 편안하게 즐길 수 있습니다.\n\n삼양주 방식으로 세 번에 걸쳐 정성스럽게 빚고 4개월 동안 숙성하여, 가벼운 인상 안에서도 충분한 깊이와 균형을 완성했습니다.\n\n맛과 향\n첫맛: 은은하고 자연스러운 쌀의 단맛\n중간 맛: 산뜻하게 올라오는 산미\n향: 참외·멜론 계열의 밝은 과실 향\n질감: 가볍고 부드러운 목 넘김\n마무리: 깔끔하고 산뜻한 여운\n추천 고객\n달기만 한 막걸리가 부담스러운 고객\n가볍고 산뜻한 술을 선호하는 고객\n프리미엄 막걸리를 처음 경험하는 고객\n식사와 편안하게 즐길 술을 찾는 고객\n음식 페어링\n\n구씨의 가벼운 산미는 담백하거나 기름기가 있는 음식의 맛을 깔끔하게 정리해 줍니다.\n\n해물파전·부추전,두부김치,보쌈·수육,생선구이,닭구이·닭강정,담백한 나물요리와 샐러드\n\n한 줄 소개\n\n“참외와 멜론을 닮은 산뜻함, 매일의 식탁을 가볍게 밝혀주는 막걸리.”\n\n배씨\n풍부한 과실 향과 균형을 담은 프리미엄 막걸리\n\n알코올 도수 9%｜용량 500ml｜삼양주｜4개월 숙성｜판매가 15,000원\n\n배씨는 쌀의 부드러운 단맛과 풍부한 과실 향, 선명한 산미가 조화롭게 이어지는 균형형 프리미엄 막걸리입니다.\n\n입안에 닿는 순간 잘 익은 복숭아와 사과를 연상시키는 풍성한 향이 펼쳐지고, 중반에는 기분 좋은 산미가 술의 중심을 잡아줍니다. 단맛과 산미 중 어느 한쪽으로 치우치지 않아 식사주뿐 아니라 선물용 술로도 좋은 선택입니다.\n\n삼양주 방식으로 빚어 맛의 층을 쌓고 4개월 동안 안정적으로 숙성하여, 부드러움 속에서도 풍부한 향과 깊이를 느낄 수 있습니다.\n\n맛과 향\n첫맛: 부드럽고 풍성한 쌀의 단맛\n중간 맛: 단맛을 정돈하는 균형 잡힌 산미\n향: 잘 익은 복숭아·사과 계열의 풍부한 과실 향\n질감: 부드럽고 적당한 볼륨감\n마무리: 과실 향과 산미가 조화롭게 이어지는 여운\n추천 고객\n향이 풍부한 막걸리를 선호하는 고객\n단맛과 산미의 균형을 중요하게 생각하는 고객\n한식과 함께 즐길 고급 식사주를 찾는 고객\n집들이·명절·감사 선물을 준비하는 고객\n음식 페어링\n\n배씨는 감칠맛이 풍부한 한식과 만나면 과실 향과 부드러운 단맛이 더욱 선명해집니다.\n\n한우 불고기,갈비찜·떡갈비,잡채,간장게장,버섯전골,훈제오리,숙성회\n\n한 줄 소개\n\n“풍성한 과실 향과 단정한 산미가 어우러진, 배구양조장의 균형 잡힌 프리미엄 막걸리.”\n\n배구\n다섯 달의 시간으로 완성한 하이엔드 프리미엄 막걸리\n\n알코올 도수 12%｜용량 500ml｜사양주｜5개월 숙성｜판매가 20,000원\n\n배구는 배구양조장의 철학과 양조 기술을 가장 깊이 있게 담아낸 하이엔드 프리미엄 막걸리입니다.\n\n네 번에 걸쳐 술을 빚는 사양주 방식으로 맛과 향의 밀도를 높이고, 5개월 동안 천천히 숙성하여 깊고 복합적인 풍미를 완성했습니다.\n\n첫맛에서는 쌀에서 비롯된 농밀하고 부드러운 단맛이 느껴지며, 시간이 지나면서 잘 익은 복숭아와 사과를 닮은 과실 향과 선명한 산미가 층층이 펼쳐집니다. 12도의 풍부한 무게감이 있지만 끝맛은 지나치게 무겁지 않고 깨끗하게 정리됩니다.\n\n천천히 온도 변화를 느끼며 마실수록 향과 맛의 변화가 뚜렷하게 드러나는 술로, 특별한 식사와 기념일, 품격 있는 선물에 잘 어울립니다.\n\n맛과 향\n첫맛: 농밀하고 부드러운 쌀의 단맛\n중간 맛: 풍부한 과실 향과 입체적인 산미\n향: 잘 익은 복숭아·사과·은은한 곡물 향\n질감: 밀도감 있고 부드러운 바디감\n마무리: 깊고 긴 산미와 깨끗한 여운\n추천 고객\n깊고 진한 프리미엄 막걸리를 원하는 고객\n와인·사케 등 미식주를 즐기는 고객\n고급 한식과 어울리는 술을 찾는 고객\n기념일·명절·거래처용 특별한 선물을 찾는 고객\n음식 페어링\n\n배구의 깊은 맛과 높은 밀도는 풍미가 진하거나 숙성된 음식과 좋은 조화를 이룹니다.\n\n한우구이·갈비구이,육전,장어구이,갈비찜,숙성회,묵은지 수육,버섯전골,숙성 치즈와 견과류\n\n한 줄 소개\n\n“네 번 빚고 다섯 달을 기다려 완성한, 배구양조장의 시간과 철학을 담은 막걸리.”",
+   "instagramUrl": "https://www.instagram.com/baegu_brewery/",
+   "logoUrl": "/booths/siwse-magok-2026/logo/G-03.webp",
+   "images": [
+    "/booths/siwse-magok-2026/G-03_1.webp",
+    "/booths/siwse-magok-2026/G-03_2.webp",
+    "/booths/siwse-magok-2026/G-03_3.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "G-04",
+   "name": "남한강증류소 농업회사법인",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "남한강증류소 농업회사법인 주)",
+   "aliases": [
+    "남한강증류소 농업회사법인 주)"
+   ],
+   "description": "회사의 설립자는 미국에서 생화학과 식품미생물을 전공(양조효모)하여 박사학위를 취득하고 영국·독일 등지에서 다양한 양조기술을 연구해 온 학자이자 양조기술사(영국) 이다.",
+   "longDescription": "회사의 설립자는 미국에서 생화학과 식품미생물을 전공(양조효모)하여 박사학위를 취득하고 영국·독일 등지에서 다양한 양조기술을 연구해 온 학자이자 양조기술사(영국) 이다. “지역 농산물을 활용하여 부가가치를 높이겠다”는 목표 아래 은퇴 후 경기도 광주시 초월읍에 남한강증류소를 설립하였다.\n\n남한강 유역은 국내 최고의 쌀 생산지로 쌀은 발효 중 메탄올 생산량이 제일 적은 우수한 양조원료이다. 개발자는 오랫동안 축적해온 양조기술을 통해 세계 시장에서 위스키를 능가할 새로운 증류주를 만들 수 있다고 확신하며, 쌀 기반 K-스피릿을 글로벌 시장에 선보이고자 합니다. 쌀을 소재화하여 새로운 수출시장에서 세계의 증류주와 경쟁하여 우리술 특히 쌀로 만든 증류주의 우수성을 입증하고자 한다. (쌀은 보리, 밀과 옥수수 등의 곡물류나, 포도나 사과 등 과일과 비교할 수 없을 정도로 우수한 양조적 특성을 가졌다.)\n\n주요 제품: 남한강43, 남한강 27,\n\n1. 남한강 43\n∎ 향･맛･색감\n- 부드럽고 깔끔한 단맛(입안에서 충분히 머금어 평가시 더 뚜렷함:\n43도에서 알코올 단맛/쓴맛의 조화 극대화)\n- 은은한 과일향과 곡물향\n- 프리미엄 쌀 소주 특유의 차별화된 풍미, 부드러움\n- 깨끗하게 깨어남\n∎ 페어링 음식\n- 해산물, 조개찜, 일식·초밥류\n- 다양한 한식 및 중식과도 조화\n- 불고기, 스테이크, BBQ 등 육류 요리\n- 니트나 언더락\n\n2. 남한강 27\n∎ 향･맛･색감\n- 부드럽고 깔끔한 맛(입안에서 충분히 머금어 평가시 더 뚜렷)\n- 은은한 과일향과 곡물향\n- 프리미엄 쌀 소주 특유의 차별화된 풍미, 부드러움\n- 깨끗하게 깨어남, 부담없이 즐길 수 있음\n\n∎ 페어링 음식\n- 해산물, 조개찜, 일식·초밥류\n- 다양한 한식 및 중식과도 조화\n- 불고기, 스테이크, BBQ 등 육류 요리\n- 니트나 언더락",
+   "websiteUrl": "https://blog.naver.com/nhkd2024",
+   "logoUrl": "/booths/siwse-magok-2026/logo/G-04.webp",
+   "images": [
+    "/booths/siwse-magok-2026/G-04_1.webp",
+    "/booths/siwse-magok-2026/G-04_2.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "G-05",
+   "name": "대부도 그랑꼬또 와이너리",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "그린영농조합법인",
+   "aliases": [
+    "그린영농조합법인"
+   ],
+   "description": "『대부도의 그랑꼬또 와이너리』",
+   "longDescription": "『대부도의 그랑꼬또 와이너리』\n\n주요 제품: , ,\n\n대부도의 석양을 담은 로제와인과 바다의 청량함이 느껴지는 화이트와인의 명가",
+   "logoUrl": "/booths/siwse-magok-2026/logo/G-05.webp",
+   "images": [
+    "/booths/siwse-magok-2026/G-05_1.webp",
+    "/booths/siwse-magok-2026/G-05_2.webp",
+    "/booths/siwse-magok-2026/G-05_3.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "G-06",
+   "name": "리밋브루잉(화성 마도)",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "리밋브루잉 농업회사법인 주식회사",
+   "aliases": [
+    "리밋브루잉 농업회사법인 주식회사"
+   ],
+   "description": "화성시 마도면에 위치한 리밋브루잉은 화성시의 쌀과 과일을 이용하여 술을 빚고있습니다.",
+   "longDescription": "화성시 마도면에 위치한 리밋브루잉은\n화성시의 쌀과 과일을 이용하여 술을 빚고있습니다.\n\n쌀만을 이용한 탁, 약주\n쌀과 과일을 이용한 기타주류를 생산합니다.\n\n주요 제품: 마도쌀막걸리, 쁘띠 초, 밀림\n\n마도 쌀 막걸리 - 맛은 프리미엄 급의 진한 맛, 용량은 600ml로 가성비 있는 탁주(막걸리)\n산미있는 탁주(막걸리)\n\n쁘띠 초 - 초코막걸리 과일과 카카오가 듬뿍 들어간 디저트 탁주(막걸리)\n\n밀림 - 원주 그대로 가수하지 않고 담았습니다. 크리미하면서도 묵직한 질감,\n단맛과 산도의 밸런스로 진한 과일의 느낌이 있는 탁주(막걸리)",
+   "websiteUrl": "https://smartstore.naver.com/remeet_brewing",
+   "logoUrl": "/booths/siwse-magok-2026/logo/G-06.webp",
+   "images": [
+    "/booths/siwse-magok-2026/G-06_1.webp",
+    "/booths/siwse-magok-2026/G-06_2.webp",
+    "/booths/siwse-magok-2026/G-06_3.webp",
+    "/booths/siwse-magok-2026/G-06_4.webp",
+    "/booths/siwse-magok-2026/G-06_5.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "G-07",
+   "name": "유진농원(MODUANG WINERY)",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "유진농원(모두앙)",
+   "aliases": [
+    "유진농원(모두앙)"
+   ],
+   "description": "가평의 자연을 한 잔에 담다",
+   "longDescription": "가평의 자연을 한 잔에 담다\n유진농원이 추구하는 것은 빠르게 소비되는 제품이 아니라\n가평이라는 지역의 자연과 농업, 사람의 정성을 기억하게 하는 제품입니다.\n\n맑은 자연에서 얻은 원료의 특성을 살리고, 정교한 제조과정을 통해 원료가 가진 풍미와 개성을 더욱 깊이 있게 표현합니다.\n\n박람회에서 만나는 유진농원\n“가평의 자연을 빚고, 지역의 가치를 높이다.”\n\n유진농원은 전통적인 농업의 가치를 현대적인 식품산업으로 연결하며,\n지역 농산물의 새로운 가능성을 제시합니다.\n\n이번 박람회를 통해 유진농원의 제품과 이야기를 직접 만나보시고,\n가평의 자연이 만들어내는 깊은 풍미와 지역 농업의 새로운 가치를 경험해 보시기 바랍니다.\n\n주요 제품: 모두앙레드드라이와인, 모두앙레드스위트와인, 뱅쇼\n\n\"모두앙 레드 드라이 와인\"은 가평의 대표적인 포도 품종인 캠벨얼리 포도를 활용해 만든 과실의 풍미를 살린 레드 와인입니다. 포도의 자연스러운 향과 산미를 중심으로 깔끔하고 드라이한 맛을 구현해 음식과 함께 부담 없이 즐기기 좋은 것이 특징입니다",
+   "websiteUrl": "https://모두앙.kr",
+   "logoUrl": "/booths/siwse-magok-2026/logo/G-07.webp",
+   "images": [
+    "/booths/siwse-magok-2026/G-07_1.webp",
+    "/booths/siwse-magok-2026/G-07_2.webp",
+    "/booths/siwse-magok-2026/G-07_3.webp",
+    "/booths/siwse-magok-2026/G-07_4.webp",
+    "/booths/siwse-magok-2026/G-07_5.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "G-08",
+   "name": "술아원",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "농업회사법인(주)술아원",
+   "aliases": [
+    "농업회사법인(주)술아원"
+   ],
+   "description": "제조되는 모든 제품은 감미료없이 지역농산물만을 사용하여 제조.",
+   "longDescription": "제조되는 모든 제품은 감미료없이 지역농산물만을 사용하여 제조.\n고문헌속 우리의 우수한 술을 복원,연구 현대인의 감각에 맞게 제조.\n가양주 형식으로 모든 재료의 1차적 술빚는 과정은 기계의 힘을 빌리지 않고, 전통방식 그대로 수제(가양주)로 제조.\n30종이상의 전통주를 생산,판매중이며 유럽,일본,싱가포르,홍콩으로 수출중이며 2025년 군납면세주류로 선정되어 전군 부대에 납품중입니다.\n\n주요 제품: 경성과하주, 필25, 복단지\n\n제3회 경기주류대상 ‘대상’ 수상작_경성과하주오크\n\n경성과하주:\n1670년대 에 등장하며 발효주와 증류주를 혼합해서 빚는 조선시대 가장 대표적인 명주\n동증류기로 상압으로 내린 쌀증류주를 브랜딩한 술아원의 프리미엄 과하주.\n\n필25:\n에 기록된 “고구마술을 솥에 넣고 소주를 내린다”를 토대로 연구 복원 했습니다.필은 반드시 必의 정신으로 기필코 이루어 낸다는 의미가 있습니다. 고문헌에 기록된 우리의 우수한 술을 반드시 복원하여 많은 사람들이 즐길수 있도록 하기 위함입니다.\n여주산 고구마를 하나하나 손질하여 발효시킵니다.\n발효가 끝나면 동증류기를 이용하여 상압식증류로 고구마 증류원액을 추출합니다.\n이렇게 얻어진 고구마증류원액은 오랜기간의 숙성을 거쳐 마침내 “필”이 됩니다.",
+   "websiteUrl": "https://www.soolaown.co.kr",
+   "logoUrl": "/booths/siwse-magok-2026/logo/G-08.webp",
+   "images": [
+    "/booths/siwse-magok-2026/G-08_1.webp",
+    "/booths/siwse-magok-2026/G-08_2.webp",
+    "/booths/siwse-magok-2026/G-08_3.webp",
+    "/booths/siwse-magok-2026/G-08_4.webp",
+    "/booths/siwse-magok-2026/G-08_5.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "G-09",
+   "name": "한통술",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "농업회사법인한통술이노베이션주식회사",
+   "aliases": [
+    "농업회사법인한통술이노베이션주식회사"
+   ],
+   "description": "한통술은 누룩으로 빚는 정통 한국술을 지향합니다.",
+   "longDescription": "한통술은 누룩으로 빚는 정통 한국술을 지향합니다.\n오직, 쌀ㆍ물ㆍ누룩ㆍ으로 빚어내는 정통 한국술의 가치를 한 잔의 술에 고스란히 담았습니다.\n\n주요 제품: 이화백주, 이화탁주, 전내기 탁주",
+   "instagramUrl": "https://www.instagram.com/hantongsool",
+   "logoUrl": "/booths/siwse-magok-2026/logo/G-09.webp",
+   "images": [
+    "/booths/siwse-magok-2026/G-09_1.webp",
+    "/booths/siwse-magok-2026/G-09_2.webp",
+    "/booths/siwse-magok-2026/G-09_3.webp",
+    "/booths/siwse-magok-2026/G-09_4.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "G-10",
+   "name": "민주술도가㈜",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "민주술도가(주)",
+   "aliases": [
+    "민주술도가(주)"
+   ],
+   "description": "민주술도가의 민주(民酒)는 백성의 술, 사람의 술을 의미합니다.",
+   "longDescription": "민주술도가의 민주(民酒)는 백성의 술, 사람의 술을 의미합니다. 우리 민족의 첫술은 쌀과 누룩으로 빚은 하얀술(白酒), 즉 막걸리입니다. 민주(民酒)는 5,000년 넘게 이어진 민족의 첫술, 백주(하얀술)을 계승한 전통주입니다. 민주는 깨끗한 쌀, 깨끗한 누룩으로 빚은 순수 막걸리로 저온 발효와 숙성을 거쳐 마시기에 부드럽습니다.\n잘 ​익은 과일의 풍미와 달콤한 질감은 국내산 쌀과 누룩에서 찾아낸 우리 효모의 조화입니다.\n민주술도가의 다양한 술로 한국술 본연의 맛을 느껴보시기 바랍니다!\n\n주요 제품: 추앙-꽃은 피고, 콘체르토 No.1, 꽃술청(淸)\n\n제품명: 추앙-꽃은 피고(CHUANG FLORAL)\n알코올: 12%\n용량: 375ml\n원산지: 국내산(경기도 포천)\n✔ 단, 한 방울의 물 없이 오직 국내산 쌀, 포도, 토종누룩으로 빚어 6종류의 꽃과 4종류의 허브 그리고 3종류의 홉으로 가향한 꽃술!\n✔ 고문헌 ‘증보산림경제’에 수록된 ‘포도주’를 재해석한 술!\n✔ 산도조절제, 효모억제제, 인공감미료 ZERO!\n✔ 포천시가 품질을 보증하는 경기미와 친환경 포도로만...!\n\n제품명: 민주 꽃술 청(淸)\n알코올: 14%\n용량: 375ml\n원산지: 국내산(경기도 포천)\n✔ 오직 쌀, 누룩, 물로만 다섯번 빚어 꽃으로 가향한 오양주!\n✔ 저온발효 90일, 저온 숙성 90일의 기다림과 정성을 담은 술!\n✔ 입안 가득 퍼지는 쌀향과 꽃향!\n✔ 100% 국내산(포천) 쌀로 빚은 맑은 술!\n\n제품명: 콘체르토 1번(No.1)\n알코올: 6%\n용량: 500ml\n원산지: 국내산(경기도 포천)\n✔ 저도수 막걸리(6%)의 대혁명!\n✔ 한국식품연구원의 기술이전(효모)과 민주술도가의 양조기술로 탄생한 술!\n✔ 100% 국내산(포천) 농산물로 빚은 수제막걸리!\n✔ 우리 누룩에서 찾아낸 대한민국 효모와 효소!\n✔ 내추럴 라이스 막걸리(Natural Rice Makgeolli), 화학물질 ZERO!\n✔ 잘 익은 과일의 맛과 시트러스(Citrus) 향이 어우러진 순곡주!\n✔ 경기미 찹쌀이 전하는 팝콘 같은 누룽지의 구수함!",
+   "websiteUrl": "https://민주술도가.com/",
+   "logoUrl": "/booths/siwse-magok-2026/logo/G-10.webp",
+   "images": [
+    "/booths/siwse-magok-2026/G-10_1.webp",
+    "/booths/siwse-magok-2026/G-10_2.webp",
+    "/booths/siwse-magok-2026/G-10_3.webp",
+    "/booths/siwse-magok-2026/G-10_4.webp",
+    "/booths/siwse-magok-2026/G-10_5.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "G-11",
+   "name": "양주골 이가전통주",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "양주골이가전통주는 인공감미료 및 방부제등 어떠한 인위적인 것을 넣지 않은 전통방식 그대로 빚는 술로써 프리미엄 전통주만을 고집하는 것으로 유명하다.",
+   "longDescription": "양주골이가전통주는\n인공감미료 및 방부제등 어떠한 인위적인 것을 넣지 않은 전통방식 그대로 빚는 술로써 프리미엄 전통주만을 고집하는 것으로 유명하다.\n이화주는 ‘2022우리술품평회’에서 탁주부문 최고인 영예의 ‘대상(농림축산식품부 장관상)’을 수상하였으며, 경기주류대상대회에서 최우수상을 수상과,\n대한민국주류대상 대회에서 4년 연속 ‘대상’을 차지하는등기록적인 수상경력을 갖고 있는 가히 대한민국 국가대표 이화주라고 할 수 있겠다.\n\n주요 제품: , ,",
+   "logoUrl": "/booths/siwse-magok-2026/logo/G-11.webp",
+   "images": [
+    "/booths/siwse-magok-2026/G-11_1.webp",
+    "/booths/siwse-magok-2026/G-11_2.webp",
+    "/booths/siwse-magok-2026/G-11_3.webp",
+    "/booths/siwse-magok-2026/G-11_4.webp",
+    "/booths/siwse-magok-2026/G-11_5.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "G-12",
+   "name": "이항주가",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "경기도 수원에서 시작한 '이항주가'는 '이로울 이', '넓을 항', '술 주', '집 가'로 사람들에게 널리 이로움을 주는 술을 만들고 싶다라는 의미를 가진 양조장입니다.",
+   "longDescription": "경기도 수원에서 시작한 '이항주가'는 '이로울 이', '넓을 항', '술 주', '집 가'로 사람들에게 널리 이로움을 주는 술을 만들고 싶다라는 의미를 가진 양조장입니다.\n\n★행사기간 내 이항탁주 제품 15% 할인★\n\n주요 제품: 이항탁주, ,\n\n이항탁주 : 파인애플과 숙성치즈 향과 새콤달콤한 맛의 조화를 느끼실 수 있습니다.",
+   "instagramUrl": "https://www.instagram.com/leehangjuga",
+   "logoUrl": "/booths/siwse-magok-2026/logo/G-12.webp",
+   "images": [
+    "/booths/siwse-magok-2026/G-12_1.webp",
+    "/booths/siwse-magok-2026/G-12_2.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "G-13",
+   "name": "소호 소주",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "호랑이배꼽(밝은세상영농조합)",
+   "aliases": [
+    "호랑이배꼽(밝은세상영농조합)"
+   ],
+   "description": ".",
+   "longDescription": ".\n\n주요 제품: ., ,\n\n.",
+   "logoUrl": "/booths/siwse-magok-2026/logo/G-13.webp",
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "G-14",
+   "name": "추연당 농업회사법인㈜",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "주식회사 농업회사법인 추연당",
+   "aliases": [
+    "주식회사 농업회사법인 추연당"
+   ],
+   "description": "추연당은 경기도 여주에 위치하여 질 좋기로 유명한 여주쌀, 물, 전통누룩 세가지 재료 만으로 고문헌에 기록된 전통방식을 인용하여 전통주를 빚어 우리나라 문화가 지속적으로 이어질 수 있도록 노력하는 양조장입니다.",
+   "longDescription": "추연당은 경기도 여주에 위치하여 질 좋기로 유명한 여주쌀, 물, 전통누룩 세가지 재료 만으로 고문헌에 기록된 전통방식을 인용하여 전통주를 빚어 우리나라 문화가 지속적으로 이어질 수 있도록 노력하는 양조장입니다.\n\n주요 제품: 백년향(탁주) , 순향주(약주), 소여강25도, 42도, 50도(증류식소주)\n\n- 백년향(탁주)\n: 여주쌀, 물, 누룩을 넣어 삼양주 방식으로 빚은 탁주로, 저온숙성 까지 백일 만에 완성되는 술. 쌀에서 우러나오는 단맛과 곡향, 그리고 은은한 누룩향을 품은 드라이한 막걸리.\n\n- 순향주(약주) : 1670년대 우리나라 최초의 한글 조리서 '음식디미방'에 기록된 '순향주법'을 오양주 방식으로 재현/복원한 약주로, 황금빛을 띄며 적절한 질감과 부드러운 목넘김, 은은한 단맛과 드라이한 맛이 특색이며 적당한 감칠맛과 산미가 고소한 곡물향과 어우러짐\n\n- 소여강25도, 42도, 50도(증류식소주) : 여주쌀, 물, 누룩 세가지로 빚은 술의 맑은 부분만 떠내어 추연당 만의 여과기법과 전통방식을 사용하여 상압 증류방식으로 2번내려 전통 옹기에 장기간 숙성한 술로, 도수 별로 개성을 살려 깔끔한 맛과 깊은 향을 동시에 갖춘 프리미엄 증류식 소주.",
+   "websiteUrl": "https://www.isook.co.kr",
+   "logoUrl": "/booths/siwse-magok-2026/logo/G-14.webp",
+   "images": [
+    "/booths/siwse-magok-2026/G-14_1.webp",
+    "/booths/siwse-magok-2026/G-14_2.webp",
+    "/booths/siwse-magok-2026/G-14_3.webp",
+    "/booths/siwse-magok-2026/G-14_4.webp",
+    "/booths/siwse-magok-2026/G-14_5.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional",
+    "sw-food"
+   ]
+  },
+  {
+   "code": "G-15",
+   "name": "경기도농수산진흥원",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "기타",
+   "categorySlug": "sw-etc",
+   "tags": [
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "G-17",
+   "name": "농업회사법인해미읍성딸기와인㈜",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "농업회사법인해미읍성딸기와인(주)",
+   "aliases": [
+    "농업회사법인해미읍성딸기와인(주)"
+   ],
+   "description": "국내 최초 딸기와인 특허 보유!",
+   "longDescription": "국내 최초 딸기와인 특허 보유!\n과학딸기농장에서 직접 재배한 GAP인증 프리미엄 서산 딸기로 빚는 전통 과실주 전문 기업.\n전통주 문화에 현대적 감각을 담아 글로벌 K-주류 시장을 선도합니다.\nK-디저트와 환상의 조합!\n국내 최초 딸기와인과 다양한 전통 과실주를 직접 시음하고, 트렌디한 K-전통주 문화를 경험할 수 있는 특별한 기회를 경험하세요.\n\n주요 제품: 세인트하우스 딸기 스파클링와인 6도, 해미읍성 딸기주 8도, 해미읍성 청포도주 8도\n\n- 세인트하우스 딸기 스파클링와인 6도 750ml\n100% 서산 딸기로 빚은 ‘세인트하우스 딸기 스파클링와인 6도’.\n상큼한 풍미와 은은한 탄산으로 K-FOOD와 완벽한 페어링을 자랑하는 프리미엄 전통 와인\n\n- 해미읍성 딸기주 8도 500ml\n직접 생산한 GAP인증 서산 딸기만 8 도로 가볍게 빚은 핑크빛 과실주 입니다.\n은은한 딸기 향과 상큼한 산미가 어우러져 달콤하지만 깔끔하게 넘어갑니다.\n탄산 없는 스틸 타입이라 식전주·치즈·디저트와 함께 누구나 편하게 즐길 수 있어요.\n냉장고에서 차게 꺼내 한 모금, 딸기의 싱그러움이 입안 가득 퍼집니다.\n\n- 해미읍성 청포도주 8도 500ml\n싱그러운 서산 청포도를 듬뿍 담아 8 도로 가볍게 빚은 연두빛 과실주 입니다.\n한 모금이면 청포도 향이 은은히 퍼지고, 달콤함 뒤에 살짝 톡 쏘는 산미가 입가를 산뜻하게 정리해 줍니다.\n탄산 없는 스틸 타입이라 와인 초보도 부담 없이 즐기실 수 있습니다.\n냉장고에서 차게 꺼내 샐러드·치즈·새우구이와 곁들이면 청포도의 상큼함이 제대로 살아납니다.",
+   "websiteUrl": "https://winesb.co.kr",
+   "logoUrl": "/booths/siwse-magok-2026/logo/G-17.webp",
+   "images": [
+    "/booths/siwse-magok-2026/G-17_1.webp",
+    "/booths/siwse-magok-2026/G-17_2.webp",
+    "/booths/siwse-magok-2026/G-17_3.webp",
+    "/booths/siwse-magok-2026/G-17_4.webp",
+    "/booths/siwse-magok-2026/G-17_5.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine",
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "G-18",
+   "name": "아침마루와이너리",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "와이너리 주식회사",
+   "aliases": [
+    "와이너리 주식회사"
+   ],
+   "description": "데일리 와인부터 프리미엄 와인까지, 숨겨진 보석 같은 와인을 소개시켜드리는 와이너리입니다.",
+   "longDescription": "데일리 와인부터 프리미엄 와인까지, 숨겨진 보석 같은 와인을 소개시켜드리는 와이너리입니다.\n\n주요 제품: 첸토리 모스카토 디 파비아, 무사 까바 브륏, 베서니 퍼스트 빌리지 쉬라즈",
+   "logoUrl": "/booths/siwse-magok-2026/logo/G-18.webp",
+   "images": [
+    "/booths/siwse-magok-2026/G-18_1.webp",
+    "/booths/siwse-magok-2026/G-18_2.webp",
+    "/booths/siwse-magok-2026/G-18_3.webp",
+    "/booths/siwse-magok-2026/G-18_4.webp",
+    "/booths/siwse-magok-2026/G-18_5.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "G-19",
+   "name": "상주 젤코바 와이너리",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "젤코바와이너리",
+   "aliases": [
+    "젤코바와이너리"
+   ],
+   "description": "경북 상주에 자리한 젤코바 와이너리는 40년 경력의 주조 장인이 이끄는 가족 와이너리입니다.",
+   "longDescription": "경북 상주에 자리한 젤코바 와이너리는 40년 경력의 주조 장인이 이끄는 가족 와이너리입니다.\n국내산 산머루, 샤인머스캣, 홍시 등을 원료로 와인과 증류주를 생산하며, 일부 제품은 무가당 발효를 통해 과일 고유의 풍미를 극대화하고 있습니다.\n특히 산머루는 직접 재배부터 수확까지 전 과정을 관리하여 품질과 안정성을 높였습니다.\n전통적인 수작업 방식과 현대적인 감각을 조화롭게 결합하여, 품질 중심의 정직한 술을 만듭니다.\n\n주요 제품: 바쿠스눈물39, 젤코바청수드라이, 파밀리아세미드라이",
+   "websiteUrl": "https://smartstore.naver.com/meouruwinezelkova",
+   "logoUrl": "/booths/siwse-magok-2026/logo/G-19.webp",
+   "images": [
+    "/booths/siwse-magok-2026/G-19_1.webp",
+    "/booths/siwse-magok-2026/G-19_2.webp",
+    "/booths/siwse-magok-2026/G-19_3.webp",
+    "/booths/siwse-magok-2026/G-19_4.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "G-20",
+   "name": "아일랜드와인 주식회사",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "아일랜드와인",
+   "aliases": [
+    "아일랜드와인"
+   ],
+   "description": "제주도에 위치한 와인 수입사 (주)아일랜드와인 입니다.",
+   "longDescription": "제주도에 위치한 와인 수입사 (주)아일랜드와인 입니다. 국내에 잘 소개되어 있지 않은 전 세계의 보물 같은 지역과 품종을 찾아 ‘가격대비 만족도가 높고 유니크한 와인’을 소개해드리는 것이 목표입니다. 오랜 요식업 경력과 와인 선별 노하우를 바탕으로 매장과 요리에 어울리는 와인을 직접 선별하고 추천드리는 와인수입사 입니다.\n\n주요 제품: 프로세코(PROSECCO), 빈토닉(VINTONIC), 실리콰스트로\n\n프로세코(Prosecco)\n: 이탈리아 드라이 스파클링의 대명사인 프로세코. 초록사과, 배, 레몬, 은은한 꽃봉오리의 향을 경험할 수 있으며, 북미와 유럽전역에서 오랫동안 사랑 받아온 가성비 최고의 드라이 스파클링입니다. 에피타이저 뿐만 아니라 기름진 육류, 한식, 일식, 양식 등 국내 다양한 장르의 음식과 환상의 페어링이 가능합니다.\n\n빈토닉(Vintonic)\n: 브런치카페, 야외테라스, 바닷가, 캠핑, 여행지에서 시선을 끄는 스타일리시한 아이템, ‘빈토닉(VINTONIC)’ 은 5.7도의 가벼운 도수와 기분 좋은 청량감으로 연령대 제한없이 인기가 높고, 휴대가 간편하고 유리병 그대로 즐길 수 있어서 테이크아웃 뿐만 아니라 스파클링을 잔으로 판매하기 업주분들의 어려움을 해소해드립니다.\n\n실리콰스트로(Siliquastro)\n: 달콤한 껍질의 깊은 풍미와 잔잔한 세미 탄산의 느낌이 매력적인 디저트 와인이자 이탈리아 세미 스파클링. 이제는 모스카토 말고 귀다로! 소중한 날, 연인들에게 1순위로 추천하는 스위트 레드와인 입니다.",
+   "instagramUrl": "https://www.instagram.com/island_wine_menu?igsh=eG4zYjA2YzR1Ynh2&utm_source=qr",
+   "logoUrl": "/booths/siwse-magok-2026/logo/G-20.webp",
+   "images": [
+    "/booths/siwse-magok-2026/G-20_1.webp",
+    "/booths/siwse-magok-2026/G-20_2.webp",
+    "/booths/siwse-magok-2026/G-20_3.webp",
+    "/booths/siwse-magok-2026/G-20_4.webp",
+    "/booths/siwse-magok-2026/G-20_5.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "G-21",
+   "name": "(주)러스코 조지아 와인",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "G-22",
+   "name": "올빈와인",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "(주)올빈와인",
+   "aliases": [
+    "(주)올빈와인"
+   ],
+   "longDescription": "주요 제품: , ,",
+   "logoUrl": "/booths/siwse-magok-2026/logo/G-22.webp",
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "G-24",
+   "name": "달달위스키",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "(주) 골든캐스크",
+   "aliases": [
+    "(주) 골든캐스크"
+   ],
+   "description": "달달위스키(DalDal)는 스피릿을 좋아한다는 공통점으로 오랜 시간을 함께 공유한 구성원들이 모여, 새로운 문화를 양성하고 그 스토리를 독자들과 함께 공유하기 위해 설립된 한국의 독립병입자 입니다.",
+   "longDescription": "달달위스키(DalDal)는 스피릿을 좋아한다는 공통점으로 오랜 시간을 함께 공유한 구성원들이 모여, 새로운 문화를 양성하고 그 스토리를 독자들과 함께 공유하기 위해 설립된 한국의 독립병입자 입니다.\n\n지금도 전 세계에는 다양한 종류의 스피릿이 생산되고 있으며, 그 표현의 범위가 넓어지는 만큼 주류의 형태도 늘어나고 스피릿 시장의 규모 또한 커지고 있습니다. 그 속에서 우리는 혼란스럽기 보다는 세상에 늘어가는 즐길 거리에 관하여 열린 마음으로 함께 하기를 원합니다.\n\n주요 제품: 달달위스키, 핀 톰슨, 아 드 푸시니",
+   "instagramUrl": "https://www.instagram.com/daldal.whisky/",
+   "logoUrl": "/booths/siwse-magok-2026/logo/G-24.webp",
+   "images": [
+    "/booths/siwse-magok-2026/G-24_1.webp",
+    "/booths/siwse-magok-2026/G-24_2.webp",
+    "/booths/siwse-magok-2026/G-24_3.webp",
+    "/booths/siwse-magok-2026/G-24_4.webp",
+    "/booths/siwse-magok-2026/G-24_5.webp"
+   ],
+   "category": "하드리쿼",
+   "categorySlug": "sw-spirits",
+   "tags": [
+    "sw-spirits"
+   ]
+  },
+  {
+   "code": "G-25",
+   "name": "수도산와이너리",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "와인향기 가득한 수도산 와이너리입니다.",
+   "longDescription": "와인향기 가득한 수도산 와이너리입니다.\n\n주요 제품: 크라테 드라이, 크라테 미디엄 드라이, 크라테 자두\n\n크라테 드라이는 유기농 산머루 100%로 빚은 와인이며 탄닌과 산도 구조의 조화롭고 스파이시한향, 강한 풀바디의 중후함을 느낄 수 있는 드라이 한 레드 와인입니다.\n\n크라테 미디엄 드라이는 유기농 산머루 100% 로 빚은 와인이며 산도와 베리향이 잘 갖춰진 와인으로 세미 스위트 이지만 미디엄 드라이 느낌으로 입안에 넣는 순간 기분이 좋아지는 단맛을 가지고 있습니다.\n\n크라테 자두 와인은 잘 익은 김천의 자두 만을 선별하여 저온 발효 시켰으며 인위적인 자두 향을 사용하지 않고\n자두 본연의 달콤한 맛과 향이 특징입니다.",
+   "websiteUrl": "https://smartstore.naver.com/sdsmeru?NaPm=ct%3Dmogqar0o%7Cci%3Dcheckout%7Ctr%3Dds%7Ctrx%3Dnull%7Chk%3D0b5dd8621d52806d41e79e1f555564e0aaedab25",
+   "logoUrl": "/booths/siwse-magok-2026/logo/G-25.webp",
+   "images": [
+    "/booths/siwse-magok-2026/G-25_1.webp",
+    "/booths/siwse-magok-2026/G-25_2.webp",
+    "/booths/siwse-magok-2026/G-25_3.webp",
+    "/booths/siwse-magok-2026/G-25_4.webp",
+    "/booths/siwse-magok-2026/G-25_5.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "G-26",
+   "name": "샤르베티에",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "logoUrl": "/booths/siwse-magok-2026/logo/G-26.webp",
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "H-01",
+   "name": "(농)국순당여주명주㈜",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "(농)국순당여주명주(주)",
+   "aliases": [
+    "(농)국순당여주명주(주)"
+   ],
+   "description": "“ 증류소주는 좋은 재료와 제법을 시작으로 자연과 함께 빚어집니다.＂  천(天) · 지(地) · 인(人)의 어울림 가치를 담기 위해 국순당은 좋은 재료를 재배하는 농민분들과 함께 농업회사 법인을 설립했습니다.",
+   "longDescription": "“ 증류소주는 좋은 재료와 제법을 시작으로 자연과 함께 빚어집니다.＂\n\n천(天) · 지(地) · 인(人)의 어울림 가치를 담기 위해 국순당은\n좋은 재료를 재배하는 농민분들과 함께 농업회사 법인을 설립했습니다.\n2011년 설립된 국순당 여주명주는 좋은 자연(地)에서 지역 농민분(人)들의 정성으로 자란 우수한 작물을\n여주명주(人)의 좋은 제법으로 여주의 증류소에서 자연(天)과 함께 증류와 숙성으로 빚어냅니다.\n\n왜, '려驪' 일까요?\n려驪는 증류소주가 시작된 고려, 증류소가 위치한 여주에서 지어진 이름입니다.\n려驪는 가라말(검은말)을 의미합니다.\n전통 가치를 담고자 하는 브랜드철학과 여주 지역의 뛰어난 자연과 좋은 재료로 빚어\n그 이름처럼 깊고 풍부한 맛과 향이 매력적입니다.\n\n주요 제품: 려2013本, 려증류소주40, 려40\n\n1) 려 2013 本\n: 려의 스페셜 제품으로 여주명주에서 2013년 증류한 첫 원액을\n10년간 숙성하여 매력적인 향미가 담긴 증류소주입니다.\n◾ 려 2013 本\n▫ 용량 : 500ml\n▫ 도수 : 41.5%\n\n2) 100% 고구마 증류소주 려\n: 100% 여주산 고구마의 향긋함이 상압증류와 옹기숙성으로 더 깊고 풍부한 풍미를 자랑하고\n부드러운 목 넘김이 매력적인 최고급 고구마 증류소주\n◾ 려 고구마 증류소주 40\n▫ 용량 : 375ml\n▫ 도수 : 40%\n◾ 려 고구마 증류소주 25\n▫ 용량 : 375ml\n▫ 도수 : 25%\n\n3) 고구마 증류소주 려(고구마, 쌀 블렌딩)\n: 고구마 상압 증류원액과 쌀 감압증류원액을 블렌딩한 술입니다.\n100% 여주산 고구마와 쌀의 향긋함과 감칠맛이 조화롭고 옹기숙성을 통해 더욱 부드러운 고급 고구마 증류소주\n◾ 려 증류소주 40\n▫ 용량 : 375ml\n▫ 도수 : 40%\n◾ 려 증류소주 25\n▫ 용량 : 375ml\n▫ 도수 : 25%",
+   "websiteUrl": "https://www.ksdyeoju.com",
+   "logoUrl": "/booths/siwse-magok-2026/logo/H-01.webp",
+   "images": [
+    "/booths/siwse-magok-2026/H-01_1.webp",
+    "/booths/siwse-magok-2026/H-01_2.webp",
+    "/booths/siwse-magok-2026/H-01_3.webp",
+    "/booths/siwse-magok-2026/H-01_4.webp",
+    "/booths/siwse-magok-2026/H-01_5.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "H-02",
+   "name": "2026 대한민국주류대상 오크홀릭41도(미소법인)",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "미소농업회사법인 주식회사",
+   "aliases": [
+    "미소농업회사법인 주식회사"
+   ],
+   "description": "2024년에 시작한 미소농업회사법인 주식회사는 국내산 쌀로 오크 소주를 제조하여 2025년에 첫 출시한 기업입니다.",
+   "longDescription": "2024년에 시작한 미소농업회사법인 주식회사는 국내산 쌀로 오크 소주를 제조하여 2025년에 첫 출시한 기업입니다.\n\n주요 제품: 오크홀릭 41도 500ml, 오크홀릭 41도 375ml, 오크홀릭 41도 100ml\n\n1. 제품 개요\n현대 소비자들의 고급스럽고 차별화된 주류에 대한 수요가 증가함에 따라, 전통적인 쌀 소주에 서양의 오크 숙성 기법을 접목하여 탄생한 프리미엄 소주, 은 쌀의 부드러움과 오크의 깊은 풍미가 조화롭게 어우러져, 기존 소주에서는 느낄 수 없었던 독특하고 세련된 맛을 선사합니다.\n\n2. 제품 콘셉트 및 특징\n한국 전통과 서양의 조화 : 우리 쌀로 빚은 깨끗한 소주 원액을 엄선된 서양 오크를 미소만의 독특한 숙성기법으로 숙성시켜, 동서양의 주류 제조 기술을 융합한 혁신적인 소주입니다.\n깊고 풍부한 풍미 : 오크 숙성을 통해 바닐라, 캐러멜, 견과류 등 복합적인 아로마와 부드러운 목 넘김, 긴여운을 특징으로 합니다.\n프리미엄 이미지 : 전통적인 소주병 디자인에서 벗어나, 현대적이고 고급스러운 디자인의 병과 라벨을 사용하여 선물용 및 기념용으로도 손색이 없습니다.\n다양한 음용﻿ 방식 : 스트레이트, 온더락은 물론, 칵테일의 베이스로도 활용 가능하여 다채로운 방식으로 즐길 수 있습니다.",
+   "websiteUrl": "https://meeso215.cafe24.com",
+   "logoUrl": "/booths/siwse-magok-2026/logo/H-02.webp",
+   "images": [
+    "/booths/siwse-magok-2026/H-02_1.webp",
+    "/booths/siwse-magok-2026/H-02_2.webp",
+    "/booths/siwse-magok-2026/H-02_3.webp",
+    "/booths/siwse-magok-2026/H-02_4.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "H-03",
+   "name": "꿀술 (MEAD)",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "아이비영농조합법인",
+   "aliases": [
+    "아이비영농조합법인",
+    "아이비허니 허니와인, 꿀술 (MEAD)"
+   ],
+   "description": "프리미엄 꽃꿀로 빚은 상큼달달한 아이비허니와인은 천연 벌꿀의 깊은 풍미와 자연의 향기를 그대로 담아낸 특별한 전통주입니다.",
+   "longDescription": "프리미엄 꽃꿀로 빚은 상큼달달한 아이비허니와인은 천연 벌꿀의 깊은 풍미와 자연의 향기를 그대로 담아낸 특별한 전통주입니다. 엄선된 꽃꿀을 원료로 사용하여 부드러운 달콤함과 산뜻한 산미가 조화롭게 어우러지며, 누구나 부담 없이 즐길 수 있는 매력적인 맛을 자랑합니다.\n\n아이비허니와인은 천연 벌꿀을 이용해 국내 최초로 벌꿀술 생산을 상용화한 선도적인 업체로, 전통과 기술을 접목하여 차별화된 품질을 만들어가고 있습니다. 자연 그대로의 원료를 사용해 인공 첨가물 없이 건강하고 깨끗한 술을 지향하며, 벌꿀 본연의 영양과 향을 최대한 살리는 제조 방식을 고수하고 있습니다.\n\n주요 제품: 허니비와인, 허니문와인 , 프로포즈와인\n\n프리미엄 허니와인 아이비허니와인은 일체의 첨가물 없이 천연 꽃꿀만을 사용하여 빚어낸 순수한 전통주입니다. 자연 그대로의 꽃향과 꿀향을 온전히 담아내어 첫 모금부터 은은하게 퍼지는 향긋함과 부드러운 달콤함이 인상적입니다.\n\n인공적인 맛을 배제하고 벌꿀 본연의 깊은 풍미를 살린 이 제품은 깔끔하면서도 부담 없는 달콤함으로 누구나 편안하게 즐길 수 있으며, 시간이 지나도 질리지 않는 균형 잡힌 맛으로 꾸준히 사랑받고 있습니다.\n\n아이비허니와인은 품질과 가치를 인정받아 우리술품평회 13회 수상, 소비자가 선정한 인기대상 3회 수상이라는 성과를 이루었으며, 양평관광기념품으로 선정되는 등 지역을 대표하는 명품 전통주로 자리 잡았습니다. 또한 청와대 만찬주 및 건배주로 사용될 만큼 그 품격과 맛을 인정받은 바 있습니다.\n\n자연의 순수함을 담은 깔끔하고 달콤한 한 잔, 아이비허니와인으로 특별한 순간을 더욱 빛내보세요.",
+   "websiteUrl": "https://smartstore.naver.com/ibee0500",
+   "logoUrl": "/booths/siwse-magok-2026/logo/H-03.webp",
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine",
+    "sw-traditional",
+    "sw-food"
+   ]
+  },
+  {
+   "code": "H-04",
+   "name": "술샘",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "술샘 VISION 신(新) 나는 술, 신(信)나는 샘 훌륭한 요리의 기본은 좋은 재료와 신선도에 있듯이, 술샘은 고문헌에 담겨 있는 선조들의 지혜를 바탕으로 우리술 또한 좋은 재료와 정성이 좋은 술을 만드는 기본이 됩니다.",
+   "longDescription": "술샘 VISION\n신(新) 나는 술, 신(信)나는 샘\n훌륭한 요리의 기본은 좋은 재료와 신선도에 있듯이,\n술샘은 고문헌에 담겨 있는 선조들의 지혜를 바탕으로\n우리술 또한 좋은 재료와 정성이 좋은 술을 만드는 기본이 됩니다.\n빠른 속도와 대량 생산보다는 정성과 기본을 지켜 우리술을 만들고 있습니다.\n\n주요 제품: 운탄고도, 이균 참외미나리, 알딸막\n\n늘 새로운 시도로 다양한 신제품을 제안하는 술샘, 2025~2026년 편의점과 협업하여 만든 재미있는 막걸리들과 프리미엄 오크통 숙성 한국의 고량주를 선보입니다.\n\n오크통 숙성 고량주 '운탄고도'는 출시전 첫 시음회로, 소량 준비했으니 빠르게 오셔서 맛보세요!",
+   "websiteUrl": "https://sulseam.com/",
+   "logoUrl": "/booths/siwse-magok-2026/logo/H-04.webp",
+   "images": [
+    "/booths/siwse-magok-2026/H-04_1.webp",
+    "/booths/siwse-magok-2026/H-04_2.webp",
+    "/booths/siwse-magok-2026/H-04_3.webp",
+    "/booths/siwse-magok-2026/H-04_4.webp",
+    "/booths/siwse-magok-2026/H-04_5.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "H-05",
+   "name": "(주)화성양조장",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "(주)화성양조장 농업회사법인",
+   "aliases": [
+    "(주)화성양조장 농업회사법인"
+   ],
+   "instagramUrl": "https://www.instagram.com/mars_brewery",
+   "logoUrl": "/booths/siwse-magok-2026/logo/H-05.webp",
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "H-06",
+   "name": "천비향 (주)좋은술",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "좋은술",
+   "aliases": [
+    "좋은술",
+    "2025년 대통령상 수상, 천비향 (주)좋은술"
+   ],
+   "description": "농업회사법인 좋은술은 경기도 평택을 기반으로 전통 오양주 제법을 현대적으로 재해석하는 프리미엄 전통주 양조장입니다.",
+   "longDescription": "농업회사법인 좋은술은 경기도 평택을 기반으로 전통 오양주 제법을 현대적으로 재해석하는 프리미엄 전통주 양조장입니다. 평택쌀과 자가 배양 누룩을 사용해 원료부터 발효까지 직접 관리하며,\n300일 이상의 저온 숙성으로 깊고 부드러운 풍미를 구현합니다.\n대표 제품 ‘천비향 약주’는 2025 대한민국 우리술품평회 대통령상을 수상하고\nAPEC 공식 만찬주로 선정되며 품질과 브랜드 가치를 인정받았습니다.\n\n주요 제품: 천비향약주, 택이, 화주\n\n‘천비향 약주’는 오양주 방식으로 다섯 번 빚어 은은한 과실향과 부드러운 목넘김이 특징인 프리미엄 약주입니다.\n‘어차피24’는 국내산 무궁화를 활용한 증류주로, 깔끔한 향과 은은한 꽃향이 어우러진 현대적인 한국 소주 스타일의 제품입니다.\n‘화주40’은 전통 약주를 동증류해 만든 프리미엄 증류주로, 화사한 향과 부드러운 단맛, 긴 여운이 특징이며 2023 대한민국 우리술품평회 우수상을 수상했습니다.",
+   "websiteUrl": "https://www.cheonbihyang.com",
+   "logoUrl": "/booths/siwse-magok-2026/logo/H-06.webp",
+   "images": [
+    "/booths/siwse-magok-2026/H-06_1.webp",
+    "/booths/siwse-magok-2026/H-06_2.webp",
+    "/booths/siwse-magok-2026/H-06_3.webp",
+    "/booths/siwse-magok-2026/H-06_4.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "H-07",
+   "name": "두두물물 수블가",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "수블가",
+   "aliases": [
+    "수블가"
+   ],
+   "description": "농업회사법인(주)수블가",
+   "longDescription": "농업회사법인(주)수블가\n\n주요 제품: , ,\n\n깔끔해요!!! 두두물물",
+   "websiteUrl": "https://blog.naver.com/sbga22",
+   "logoUrl": "/booths/siwse-magok-2026/logo/H-07.webp",
+   "images": [
+    "/booths/siwse-magok-2026/H-07_1.webp",
+    "/booths/siwse-magok-2026/H-07_2.webp",
+    "/booths/siwse-magok-2026/H-07_3.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "H-08",
+   "name": "감홍로",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "조선 3대 명주, 감홍로",
+   "aliases": [
+    "조선 3대 명주, 감홍로",
+    "조선 3대 명주, 감홍로"
+   ],
+   "description": "감(甘)은 단맛을, 홍(紅)은 붉은 색을, 로(露)는 증류할 때 소주고리에 맺히는 술이 이슬과 같다는 의미입니다.",
+   "longDescription": "감(甘)은 단맛을, 홍(紅)은 붉은 색을, 로(露)는 증류할 때 소주고리에 맺히는 술이 이슬과 같다는 의미입니다. 또한 로(露)는 임금님께 진상한 술에만 사용 할 수 있는 글자였습니다.\n\n감홍로는 육당 최남선이 꼽은 조선 3대 명주 중 하나입니다. 『춘향전』에서 몽룡과 춘향이 이별하는 장면에서 향단이에게 이별주로 감홍로를 가져오라하는 대목과, 『별주부전』에서 자라가 토끼의 간을 빼앗기 위해 용궁으로 꼬시는 장면에서도 등장하는 조선 최고의 명주입니다. 저희 양조장에는 감홍로만 제조하고 있습니다. 40도의 높은 도수에도 불구하고, 약재의 향이 어우러져 향이 독특하고 마시기에 부드럽습니다. 또한 약재의 약리작용으로 술을 마신 후에도 몸을 따듯하게 하고, 혈액순환을 도우며 항산화작용을 하는 것으로 알려져 있습니다. 『식물본초』에 따르면 감홍로는 구급약으로 상비했다가 사용하였다는 기록이 남아 있습니다. 이기숙 명인은 현재 감홍로를 재현할 수 있는 유일한 사람으로, 이를 인정받아 2012년 전통식품명인 제 43호로 지정받았습니다.\n\n주요 제품: 감홍로400ml, 감홍로 700ml, 감홍로 선물세트",
+   "logoUrl": "/booths/siwse-magok-2026/logo/H-08.webp",
+   "images": [
+    "/booths/siwse-magok-2026/H-08_1.webp",
+    "/booths/siwse-magok-2026/H-08_2.webp",
+    "/booths/siwse-magok-2026/H-08_3.webp",
+    "/booths/siwse-magok-2026/H-08_4.webp",
+    "/booths/siwse-magok-2026/H-08_5.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "H-09",
+   "name": "가양주작",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "농업회사법인 가양주작(주)",
+   "aliases": [
+    "농업회사법인 가양주작(주)"
+   ],
+   "description": "전통주동아리로 시작한 술꾼들의 양조장!",
+   "longDescription": "전통주동아리로 시작한 술꾼들의 양조장!\n술꾼들의 입맛에 맞는 깔끔한 술을 만들어요!!!\n\n주요 제품: 수을43, ,\n\n전통주동아리로 시작한 술꾼들의 양조장!\n술꾼들의 입맛에 맞는 깔끔한 술을 만들어요!!!",
+   "websiteUrl": "https://가양주작.com",
+   "logoUrl": "/booths/siwse-magok-2026/logo/H-09.webp",
+   "images": [
+    "/booths/siwse-magok-2026/H-09_1.webp",
+    "/booths/siwse-magok-2026/H-09_2.webp",
+    "/booths/siwse-magok-2026/H-09_3.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "H-10",
+   "name": "농업회사법인(주)우리술드림",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "경기도 부천 도심에 ‘시간의 음식’, ‘슬오우 푸드’라 불리는 ‘천진난만’을 빚는 양조장입니다.",
+   "longDescription": "경기도 부천 도심에 ‘시간의 음식’, ‘슬오우 푸드’라 불리는 ‘천진난만’을 빚는 양조장입니다.\n천진난만 양조장은 신선도를 유지함과 동시에, 소비자가 언제든 제조 과정을 직접 확인하고 구매할 수 있는 '투명한 쇼룸' 역할을 합니다. 온라인 판매가 허용된 지역특산주 이면서도, 오프라인에서는 지역 주민과의 접점을 넓히는 하이브리드 유통 전략을 구사하고 있는 것입니다.\n천진난만의 내실을 다지는 핵심 동력은 김명선 대표와 남편 김영삼 씨가 직접 술을 빚는 '부부 경영'에 있습니다.\n수제 공정의 섬세함: 부부가 전 공정을 책임지며 곡물의 발효 상태를 실시간으로 관리한다. 이는 배치(Batch)별 품질 편차를 최소화하고 프리미엄의 가치를 유지하는 비결입니다.\n클린 라벨(Clean Label): 인공 첨가물을 일절 넣지 않으며. 부천 지역 농산물의 은은한 단맛과 누룩의 깊은 풍미만으로 승부하며, 옹기에서 100일 이상 자연의 시간을 담아 숙성 과정을 통해 깔끔하고 순수한 맛을 완성하여 숙취없고 깨끗함으로 건강과 미식을 동시에 추구합니다.\n\n주요 제품: 천진난만 약주, 천진난만 탁주,\n\n천진난만의 약주는 첫맛이 부드럽고 은은한 사과향이 납니다. 상큼하고 달큰한 향의 '화이트와인'을 연상됩니다. 도수는 15도입니다. 탁주는 탄산이 없고 약주보다 더 묵직하고 새콤합니다. 도수는 12도, 입안을 개운하게 하는 새콤함이 기름기 있는 음식에 어울릴 맛입니다. 시음을 하면서 새로운 전통주의 묘미에 '천진난만'한 미소가 퍼집니다.",
+   "logoUrl": "/booths/siwse-magok-2026/logo/H-10.webp",
+   "images": [
+    "/booths/siwse-magok-2026/H-10_1.webp",
+    "/booths/siwse-magok-2026/H-10_2.webp",
+    "/booths/siwse-magok-2026/H-10_3.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "H-11",
+   "name": "내올담㈜",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "내올담(주)",
+   "aliases": [
+    "내올담(주)"
+   ],
+   "description": "내올담은 ‘내려오는 전통을 올바르게 계승, 발전시켜 담아내다’는 의미를 담고 있습니다.",
+   "longDescription": "내올담은 ‘내려오는 전통을 올바르게 계승, 발전시켜 담아내다’는 의미를 담고 있습니다. ‘발효곳간’을 컨셉으로 최고급 수제 전통 발효 식품을 생산하고 있으며 가양주 문화와 술빚기, 술과 음식의 페어링을 전문적으로 교육하는 기관이기도 합니다. 무첨가(Natural), 전통(Original), 드라이한 맛(Dry)을 추구합니다.\nLess is More. ‘간결하고 단순한 것이 더 아름답고 적을수록 풍요롭다’는 의미입니다. 술도 최대한 단순하고 간결하게 맛을 내야 하며, 단맛을 최소화해 음식과의 어우러짐을 살려야 한다는 철학을 제품에 담았습니다. 심플하고 드라이한 맛으로 반주로 즐기기 좋은 술을 만듭니다.\n\n주요 제품: 담 진주, 담 골드, 담 다이아몬드\n\n담 3종은‘보석’을 컨셉으로‘한국의 술이 보석처럼 귀한 대접을 받았으면 하는 바램’으로 패션 일러스트레이터 백소영 작가의 일러스트와 김갑순 민화작가의 작품을 콜라보레이션하여 라벨에 담아냈습니다.\n\n청순, 순결, 매력, 건강, 장수와 부를 상징하는 천연보석의 왕 ‘진주(Pearl)’를 모티브로 합니다. 진주의 깨끗하고 아름다운 이미지,부드러우면서도 깊은 맛을 담아내고자 했습니다.\n‘담진주’는 백하주 제법을 바탕으로 탄생했습니다. 멥쌀과 찹쌀을 사용하여 삼양주로 빚고, 5주 간의 발효 기간과 4주 간의 숙성 기간을 거칩니다. 톡 쏘는 산미가 담겼고, 드라이한 맛을 지녔으나 씹을수록 단맛이 나는 밥처럼 마실수록 깊은 맛이 느껴지는 탁주입니다. 슴슴한 양념의 음식과 잘어울립니다.\n\n성공, 성취, 승리, 변치않는 아름다움을 자랑하는 ‘금(Gold)’을 모티브로 합니다. 내올담을 대표하는 술로 황금주 제법을 바탕으로 탄생했으며, 아름답고 황홀한 황금빛 컬러를 띠는 약주입니다.\n‘담골드’는 멥쌀로만 빚고, 5주 간의 발효기간과 10주 간의 숙성기간을 거쳐 완성 합니다. 드라이하면서 깔끔하고 산뜻한 산미가 어우러져 아름다운 균형미를 보여 줍니다. 단맛이 적어 식사시간 내내 음식과 함께 즐기기 좋은 술입니다.\n\n고귀, 신뢰, 불변, 행복, 영원한 사랑을 상징하는 ‘다이아몬드(Diamond)’를 모티브로 합니다. 소주의 맑고 투명한 느낌을 다이아몬드의 반짝임으로 표현하고자 했고, 여유롭게 향을 즐기는 여성의 모습으로 표현해 증류식 소주의 향을 강조하고자 했습니다.\n‘담다이아몬드’는 ‘푸른빛이 감돌며 향이 좋은술’이라는 뜻을 가지고 있는 벽향주를 발효시킨 후 상압증류 했으며,항아리에서 1년 이상의 숙성을 거쳐 완성됩니다. 곡류의 단향, 아카시아 꽃향, 완숙된 과실의 향이 느껴지며, 편안하고 부드러운 소주입니다.입안에서 술이 촉촉히 젖어들어갈 때 느껴지는 벨벳같은 질감을 느껴보세요.",
+   "websiteUrl": "https://www.naeoldarm.com",
+   "logoUrl": "/booths/siwse-magok-2026/logo/H-11.webp",
+   "images": [
+    "/booths/siwse-magok-2026/H-11_1.webp",
+    "/booths/siwse-magok-2026/H-11_2.webp",
+    "/booths/siwse-magok-2026/H-11_3.webp",
+    "/booths/siwse-magok-2026/H-11_4.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional",
+    "sw-food",
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "H-12",
+   "name": "농업회사법인 선인양조㈜",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "농업회사법인 선인양조(주)",
+   "aliases": [
+    "농업회사법인 선인양조(주)"
+   ],
+   "description": "직접 개발한 홍국누룩 '도화곡'의 천연 핑크빛, 양주쌀과 물, 연잎만으로 빚어 발효·저온 숙성한 삼양주 '연분홍막걸리'를 선보입니다.",
+   "longDescription": "직접 개발한 홍국누룩 '도화곡'의 천연 핑크빛, 양주쌀과 물, 연잎만으로 빚어 발효·저온 숙성한 삼양주 '연분홍막걸리'를 선보입니다. 인공첨가물 없이 은은한 연향과 부드러운 단맛, 크리미한 목넘김을 완성했습니다.\n여기에 음력 정월에 단 한 번 빚는 삼오주·삼해주, 양주의 기개를 담은 임꺽정막걸리까지 한자리에 모았습니다.\n고문헌의 지혜를 현대적으로 재해석해 궁중음식지도사 김미숙 대표가 정성껏 빚어내는 곳, 프리미엄 수제 전통주 양조장 선인양조(仙人釀造)입니다.\n선인양조는 독창적인 누룩과 오랜 기다림으로 빚은 깊고 우아한 전통주의 맛입니다.\n\n주요 제품: 삼오주, 연분홍, 삼해주9\n\n삼오주는 '과거급제', '승진합격주'로 불리는 전통주로 음력 정월에 권력과 힘을 상징하는 말날 세번 빚는다. 백일을 저온 발효 후 숙성한 삼오주는 은은한 과일향과 크리미한 목넘김이 특징. 2025 K-라이스페스타에서 대상(농림식품부 장관상)을 수상한 명주이다. 알콜도수는 12도.\n삼해주는 음력 정월, 돼지날에 세번 빚어 백일동안 저온 발효한 전통주로 고려시대부터 천년을 이어 내려온 전통주다. 집집마다 일년동안 복 받기를 기원하며 빚은 절기술로 '운수대통주'로 불린다. 알콜도수 9도, 15도\n임꺽정막걸리는 전통누룩과 바질을 넣어 가양주방식으로 세번 빚은 삼양주다. 적당한 감미와 목넘김, 은은한 바질향이 좋아 반주로 부담없이 마시기에 적당하다. 알콜도수 9도.",
+   "websiteUrl": "https://www.suninbrew.com",
+   "logoUrl": "/booths/siwse-magok-2026/logo/H-12.webp",
+   "images": [
+    "/booths/siwse-magok-2026/H-12_1.webp",
+    "/booths/siwse-magok-2026/H-12_2.webp",
+    "/booths/siwse-magok-2026/H-12_3.webp",
+    "/booths/siwse-magok-2026/H-12_4.webp",
+    "/booths/siwse-magok-2026/H-12_5.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "H-13",
+   "name": "시우마실",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "경기도 청정 지역인 조안면 고래산과 갑산 그리고 운길산에 둘러 쌓여 있는 시우리에서 반딧불이와 함께 크는 쌀과 자가 누룩으로 정성담아 술을 빚는 우리술 양조장입니다.",
+   "longDescription": "경기도 청정 지역인 조안면 고래산과 갑산 그리고 운길산에 둘러 쌓여 있는 시우리에서\n반딧불이와 함께 크는 쌀과 자가 누룩으로 정성담아 술을 빚는 우리술 양조장입니다.\n\n주요 제품: 시우주 Black, 시우주 White, 고래산주\n\n시우주 블랙 ; 시트러스의 산미, 잘 익은 참외향, 고소한 견과류향이 어울려진 맑고 세련된 맛\n시우주 화이트 ; 은은한 산미와 입안에 감도는 꽃향 그리고 깔끔한 마무리로 반주에 어울리는 맑은 술\n고래산주 ; 자두의 산미와 달콤한 단맛이 은은히 퍼지면서 느껴지는 바디감으로 색다른ㄱ 막걸리의 맛을 주는 전통 수제막걸리",
+   "websiteUrl": "https://www.siumasil.co.kr",
+   "logoUrl": "/booths/siwse-magok-2026/logo/H-13.webp",
+   "images": [
+    "/booths/siwse-magok-2026/H-13_1.webp",
+    "/booths/siwse-magok-2026/H-13_2.webp",
+    "/booths/siwse-magok-2026/H-13_3.webp",
+    "/booths/siwse-magok-2026/H-13_4.webp",
+    "/booths/siwse-magok-2026/H-13_5.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "H-14",
+   "name": "오산양조㈜",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "오산양조",
+   "aliases": [
+    "오산양조"
+   ],
+   "description": "오산양조에서 생산하고 있는 전 제품은 지역특산품인 세마쌀을 100% 원료로 사용하며 지역 농가 소득 증대 및 지역경제 발전에 기여하며, 모든 제품과 서비스에 오산의 정체성을 반영하여, 오산을 알리고 자긍심을 높이는데 이바지하고 있습니다.",
+   "longDescription": "오산양조에서 생산하고 있는 전 제품은 지역특산품인 세마쌀을 100% 원료로 사용하며 지역 농가 소득 증대 및 지역경제 발전에 기여하며, 모든 제품과 서비스에 오산의 정체성을 반영하여, 오산을 알리고 자긍심을 높이는데 이바지하고 있습니다.\n또한 지역의 사회,경제,문화 발전을 목표로 한 기업 및 단체와의 다양한 협업을 통해 지역민들의 소통창구로서의 적극적으로 역할을 하는 마을기업으로 운영되고 있습니다.\n\n주요 제품: 독산 53, 산수화, 율\n\n독산 53은 오산 세마쌀을 원료로 빚은 발효주를 숙성시켜 상압증류한 전통방식의 증류식 쌀소주입니다.\n알코올 53%의 고도수에서 입안 가득 퍼지는 향과 깊은 여운을 경험해 보세요.\n\n산수화는 프리미엄 막걸리로 재료에서 오는 고소한 풍미와 자연스러운 단맛, 농후한 질감이 잘 어우러집니다.\n\n율은 프리미엄 약주로 오랜시간 기다려 맑게 거른 약주로 묵직한 단맛과 목넘김이 좋은 우리술입니다.\n쌀 향이 진하고 깔끔한 맛이 특징입니다. 부드럽게 입안에 감도는 느낌과 진한 여운을 남깁니다.",
+   "websiteUrl": "https://osansool.com",
+   "logoUrl": "/booths/siwse-magok-2026/logo/H-14.webp",
+   "images": [
+    "/booths/siwse-magok-2026/H-14_1.webp",
+    "/booths/siwse-magok-2026/H-14_2.webp",
+    "/booths/siwse-magok-2026/H-14_3.webp",
+    "/booths/siwse-magok-2026/H-14_4.webp",
+    "/booths/siwse-magok-2026/H-14_5.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "H-15",
+   "name": "연천양조장",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "농업회사법인연천양조주식회사",
+   "aliases": [
+    "농업회사법인연천양조주식회사"
+   ],
+   "description": "농업회사법인 연천양조 주식회사 \"아라크에서 연천까지 천년의 증류주, 이름은 아래지\"",
+   "longDescription": "농업회사법인 연천양조 주식회사\n\"아라크에서 연천까지 천년의 증류주, 이름은 아래지\"\n\n주요 제품: , ,\n\n\"아라크에서 연천까지 천년의 증류주, 이름은 아래지\"",
+   "websiteUrl": "https://ksool88.modoo.at",
+   "logoUrl": "/booths/siwse-magok-2026/logo/H-15.webp",
+   "images": [
+    "/booths/siwse-magok-2026/H-15_1.webp",
+    "/booths/siwse-magok-2026/H-15_2.webp",
+    "/booths/siwse-magok-2026/H-15_3.webp",
+    "/booths/siwse-magok-2026/H-15_4.webp",
+    "/booths/siwse-magok-2026/H-15_5.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "H-16",
+   "name": "헬로우 디스틸러리",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "헬로우디스틸러리",
+   "aliases": [
+    "헬로우디스틸러리"
+   ],
+   "description": "헬로우디스틸러리는 곡물과 재료가 가진 본연의 향미를 가장 솔직하게 담아내는 술을 만듭니다.",
+   "longDescription": "헬로우디스틸러리는 곡물과 재료가 가진 본연의 향미를 가장 솔직하게 담아내는 술을 만듭니다.\n보리, 밀, 수수, 고구마, 꿀 등 조선시대까지 다양한 재료로 술을 빚는 문화가 있었습니다.\n우리는 그 풍부한 한국 전통주의 문화를 오늘의 감각으로 다시 해석하여\n재료 하나하나의 개성과 향을 느낄 수 있는 탁주와 소주를 선보입니다.\n\n주요 제품: HELLO N°06 수수보리, HELLO N°52 수수보리,",
+   "instagramUrl": "https://www.instagram.com/hellodistillery/",
+   "logoUrl": "/booths/siwse-magok-2026/logo/H-16.webp",
+   "images": [
+    "/booths/siwse-magok-2026/H-16_1.webp",
+    "/booths/siwse-magok-2026/H-16_2.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional",
+    "sw-spirits"
+   ]
+  },
+  {
+   "code": "H-17",
+   "name": "와이너리 주식회사",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "데일리 와인부터 프리미엄 와인까지, 숨겨진 보석 같은 와인을 소개시켜드리는 와이너리입니다.",
+   "longDescription": "데일리 와인부터 프리미엄 와인까지, 숨겨진 보석 같은 와인을 소개시켜드리는 와이너리입니다.\n\n주요 제품: 첸토리 모스카토 디 파비아, 무사 까바 브륏, 베서니 퍼스트 빌리지 쉬라즈",
+   "logoUrl": "/booths/siwse-magok-2026/logo/H-17.webp",
+   "images": [
+    "/booths/siwse-magok-2026/H-17_1.webp",
+    "/booths/siwse-magok-2026/H-17_2.webp",
+    "/booths/siwse-magok-2026/H-17_3.webp",
+    "/booths/siwse-magok-2026/H-17_4.webp",
+    "/booths/siwse-magok-2026/H-17_5.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "H-18",
+   "name": "페렐로 올리브",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "주식회사 아센",
+   "aliases": [
+    "주식회사 아센"
+   ],
+   "description": "제품의 브랜딩 부터 판매까지 경험해보지 못한 새로운 만족을 \"(주)아센\" 이 함께 합니다.",
+   "longDescription": "제품의 브랜딩 부터 판매까지 경험해보지 못한 새로운 만족을 \"(주)아센\" 이 함께 합니다.\n브랜드의 새로운 영감과 유통의 혁신 우리만의 독자성을 추구하며, 고객사와의 신뢰를 최우선으로 생각합니다.\n\n주요 제품: 페렐로 올리브, ,\n\nPerello는 1964년 설립되어 스페인 세비야 남부에서 50년째 이어져 내려오는 프리미엄 올리브 브랜드 입니다.\n바르셀로나의 유명한 라 보케리아 시장의 한 가판대에서 Gaspar Perello Soler는 안달루시아 올리브 나무에서 재배한 최고급 스페인 올리브를 판매하기 시작했습니다.\n\n현재는 스페인 뿐만 아니라 전세계에 널리 알려지고 있습니다.",
+   "websiteUrl": "https://smartstore.naver.com/aseninter",
+   "logoUrl": "/booths/siwse-magok-2026/logo/H-18.webp",
+   "images": [
+    "/booths/siwse-magok-2026/H-18_1.webp",
+    "/booths/siwse-magok-2026/H-18_2.webp",
+    "/booths/siwse-magok-2026/H-18_3.webp",
+    "/booths/siwse-magok-2026/H-18_4.webp",
+    "/booths/siwse-magok-2026/H-18_5.webp"
+   ],
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "H-19",
+   "name": "리트",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "리트 와인은 일상 속에서 가볍게 즐길 수 있는 캐주얼 데일리 와인을 소개합니다.",
+   "longDescription": "리트 와인은 일상 속에서 가볍게 즐길 수 있는 캐주얼 데일리 와인을 소개합니다.\n\n주요 제품: 카사노바 프로세코, 베벨로 벨리니, 산다라 와인\n\n* 카사노바 프로세코(Casanova Prosecco)\n이탈리아 베네토의 감각적인 스파클링, 세련된 산도와 은은한 과일 향으로 어떤 자리에서도 빛나는 데일리 프로세코.\n\n* 베벨로 벨리니 와인(Bevello)\n과실 향이 살아 있는 독일 프루티 스파클링, 달콤하면서도 가볍게 즐기기 좋은 파티·브런치용 와인.\n\n*산다라 와인(Sandara wine)\n트렌드를 담은 상큼하고 가볍고 감각적인 스파클링 와인.",
+   "instagramUrl": "https://www.instagram.com/litwine_official",
+   "logoUrl": "/booths/siwse-magok-2026/logo/H-19.webp",
+   "images": [
+    "/booths/siwse-magok-2026/H-19_1.webp",
+    "/booths/siwse-magok-2026/H-19_2.webp",
+    "/booths/siwse-magok-2026/H-19_3.webp",
+    "/booths/siwse-magok-2026/H-19_4.webp",
+    "/booths/siwse-magok-2026/H-19_5.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine",
+    "sw-spirits",
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "H-20",
+   "name": "제이엘 아이앤씨 & 언보틀드 컴퍼니",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "제이엘아이앤씨",
+   "aliases": [
+    "제이엘아이앤씨"
+   ],
+   "description": "당사는 유럽과 남미에서 가성비 있는 와인을 수입하고 있는 와인 수입사 입니다.",
+   "longDescription": "당사는 유럽과 남미에서 가성비 있는 와인을 수입하고 있는 와인 수입사 입니다.\n2019년 5월에 창업을 했으며 주요 판매처는 슈퍼체인 및 와인샵과 각종 업장입니다.\n작년부터 각종 와인 관련 팝업행사 및 박람회 등에 참여해서\n당사 와인 홍보 및 판매에 적극적으로 진행하고 있는 중입니다.\n앞으로도 고객들과 직접 소통할 수 있는 행사에 적극적으로 참여할 예정이며\n더욱더 가성비 좋은 다양한 와인들을 늘려갈 예정입니다.\n\n주요 제품: 아뚜알레 샤르도네, 베니텐데 끼안티 슈페리오레, 베이비 폼파 모스카텔\n\n아뚜알레 샤르도네 : 이태리 샤르도네이며 와인 유트버로 유명한 \"와인킹\"이 진행한 코엑스 팝업에서 전체 판매량 1위를 했던 와인\n고객들의 가장 많은 평은 \"와 맛있다\"라고 할 정도로 그냥 맛있게 마시는 와인\n\n베니텐데 끼안티 슈페리오레 : 산지오베제 100%로 만들어진 와인이며 \"와인킹\"이 극찬한 와인이자 즐겨 마시는 와인\n2025년 와인잡지 \"디켄터\"에서 진행한 월드와인 품평회에서 91점을 받은 와인\n오크숙성을 하지 않았어도 향으로 풀바디를 느낄 수 있는 매우 매력적인 와인\n\n베이비 폼파 모스카텔 : 스페인 모스카텔 와인으로 디저트 와인이지만 매우 청량감이 있는 와인\n향에서는 꿀향과 더불어 청포도,복숭아,망고 등의 과일향이 더해지고\n기분 좋은 약간의 산미까지 더해져서 입안을 깔끔하게 정리해주는 느낌의 와인\n매우 합리적인 가격도 이 와인의 가장 큰 매력",
+   "logoUrl": "/booths/siwse-magok-2026/logo/H-20.webp",
+   "images": [
+    "/booths/siwse-magok-2026/H-20_1.webp",
+    "/booths/siwse-magok-2026/H-20_2.webp",
+    "/booths/siwse-magok-2026/H-20_3.webp",
+    "/booths/siwse-magok-2026/H-20_4.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "H-21",
+   "name": "앤디스",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "서아",
+   "aliases": [
+    "서아"
+   ],
+   "description": "『남아공 출신 김앤디 대표』 지리산 흑돼지를 활용한 육가공 전문 브랜드 '서아(앤디스)'",
+   "longDescription": "『남아공 출신 김앤디 대표』\n지리산 흑돼지를 활용한 육가공 전문 브랜드 '서아(앤디스)'\n\n주요 제품: 지리산 흑돼지 빌통, 살라미 바이트, 초리조 바이트\n\n지리산 흑돼지 빌통 - 국내 유일 최초로 개발한 흑돼지 빌통입니다. 지리산 흑돼지 특유의 부드러운 육질과 촉촉함이 돋보이는 제품입니다. 국내유일 판매되고 있는 앤디스의 지리산 흑돼지 빌통을 만나보세요!\n\n살라미 - 유럽 전통방식으로 약 한달간 유산소 발효와 건조를 거쳐 만들어집니다. 한국인 입맛에 맞춰 짜지않고 담백한 맛이 특징입니다.\n\n초리조 - 스페인 전통방식으로 약 한달간 유산소 발효와 건조를 거쳐 만들어집니다. 살라미와 달리 파프리카 파우더를 더해 톡 쏘는 매콤한 맛이 특징입니다. 한국인 입맛에 맞춘 입맛으로 살라미와 같이 제일 인기가 많은 제품 중 하나입니다.",
+   "websiteUrl": "https://www.andyskorea.co.kr/",
+   "logoUrl": "/booths/siwse-magok-2026/logo/H-21.webp",
+   "images": [
+    "/booths/siwse-magok-2026/H-21_1.webp",
+    "/booths/siwse-magok-2026/H-21_2.webp",
+    "/booths/siwse-magok-2026/H-21_3.webp",
+    "/booths/siwse-magok-2026/H-21_4.webp",
+    "/booths/siwse-magok-2026/H-21_5.webp"
+   ],
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "H-22",
+   "name": "논알콜 스파클링 티",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "H-24",
+   "name": "알케미스트",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "캐나다의 로컬 RTD를 수입합니다",
+   "longDescription": "캐나다의 로컬 RTD를 수입합니다\n\n주요 제품: Hey Y'all, ,",
+   "instagramUrl": "https://www.instagram.com/alchemist_korea_?igsh=Nmg3eTAyYmc2YmRk",
+   "logoUrl": "/booths/siwse-magok-2026/logo/H-24.webp",
+   "images": [
+    "/booths/siwse-magok-2026/H-24_1.webp",
+    "/booths/siwse-magok-2026/H-24_2.webp"
+   ],
+   "category": "하드리쿼",
+   "categorySlug": "sw-spirits",
+   "tags": [
+    "sw-spirits"
+   ]
+  },
+  {
+   "code": "H-25",
+   "name": "향기품은 수울섬",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "기타",
+   "categorySlug": "sw-etc",
+   "tags": [
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "H-26",
+   "name": "꼬마루 육전",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "꼬마루",
+   "aliases": [
+    "꼬마루"
+   ],
+   "longDescription": "주요 제품: , ,",
+   "websiteUrl": "https://kkomaroo6649.modoo.at",
+   "logoUrl": "/booths/siwse-magok-2026/logo/H-26.webp",
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "J-01",
+   "name": "달과031",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "농업회사법인 열매달평 주식회사",
+   "aliases": [
+    "농업회사법인 열매달평 주식회사"
+   ],
+   "description": "회사명 ‘열매달평’은 부모님의 고향이자 인구소멸 위험지역인 가평에 서울에서 정착하여 설립한 청년로컬 초기창업기업입니다.",
+   "longDescription": "회사명 ‘열매달평’은 부모님의 고향이자 인구소멸 위험지역인 가평에 서울에서 정착하여 설립한 청년로컬 초기창업기업입니다. 지역 농산물을 주원료로 활용하고, 지역 가치를 현대적으로 재해석한 제품을 통해 지속 가능한 지역 기반 브랜드를 만들고자 시작하였습니다.\n\n‘열매달평’에서 ‘열매달’은 9월을 뜻하는 순우리말로 수확과 풍요를 의미하며, ‘평’은 가평의 ‘평’이자 평안할 평(平)의 의미를 담고 있습니다. 즉, 고객에게 풍요로움과 평안한 즐거움을 전하고자 하는 가평의 로컬 기업이라는 뜻을 담고 있습니다.\n\n2024년 가평 전통재래시장 내 사무실로 쓰이던 공실을 임대하여 사업 거점을 마련하였고, 약 2년간 주류제조공장을 직접 구축하며 복잡한 주류 인허가 절차를 완료해 주류제조면허를 취득하였습니다. 이를 바탕으로 2025년 12월 첫 제품인 달과031 3종을 출시하였습니다.\n\n열매달평은 앞으로도 가평의 지역성과 시장성을 함께 담은 브랜드를 성장시켜, 로컬 청년 창업기업의 좋은 사례를 만들고 지역경제 활성화에 기여하고자 합니다.\n\n주요 제품: 달과031(Apple Spirit), 달과031(Pear Spirit), 달과031(Grape Spirit)\n\n[프리미엄 K-하이볼용 과실증류주, 달과031]\n커져가는 하이볼 시장에서 기존 DIY하이볼(위스키 등 일반증류주로 만든 하이볼)과 RTD 캔하이볼이 존재합니다.\nDIY하이볼은 맛은 좋지만, 하이볼 제조 난이도가 높고, 레몬이나 라임을 첨가해야 하는 번거로움이 있습니다. 또한, RTD 캔 하이볼은 심지어 증류도 하지 않고, 단순히 주정에 인공첨가물을 다량 넣은 제품들이 대다수 입니다. 물론 값도 싸고 마시기도 쉽습니다. 하지만 제품의 맛과 품질의 한계는 존재합니다.\n이에 따라 RTD의 편리함을 최대한 살리면서도 DIY의 번거로움을 줄인 프리미엄급 하이볼용 과실증류주 달과031 3종을 지난해 12월 출시했습니다.\n저희 달과031은 법적으로는 전통주이지만, 시장에서 만큼은 전통주 브랜드가 아닌 하이볼 특화 브랜드로 포지셔닝 하고 있습니다.\n\n1. 브랜드명 : 달과031 (Dalgwa031)\n* (상표등록) 달과(Dalgwa / 등록번호 : 40-2492518\n* (특허출원) 과실 증류 스피릿 제조 시스템 및 과실증류 스피릿 제조방법, 상기 방법으로 제조된 과실증류 스피릿(10-2025-0163214)\n\n2. 제품 라인업\n- 달과031 3종 (Apple Spirit / Grape Spirit / Pear Spirit)\n* PL보험(생산물배상책임보험) 보유(현대해상)\n\n3. 제품 출시 : 2025년 12월\n\n4. 제품 스토리 :\n- 가평 농산물을 주원료로 만든 과실 증류주 브랜드로, ‘달과’는 달빛 아래 즐기는 과실 증류주의 감성을, ‘031’은 알코올 도수 31%와 경기도 지역번호(031)의 의미를 담아 지역 정체성을 현대적으로 재해석\n- 하이볼을 즐기는 20~30대 여성의 라이프스타일(홈파티·여행·모임·홈술)에 맞춰 “누구나 쉽고 맛있게” 즐길 수 있도록 기획된 믹스 음용 최적화 과실 증류주 브랜드\n\n5. 제품 특장점 :\n- 혼합 음용 최적화 : 가평 지역 과실을 활용한 과실 증류주로, 하이볼·온더락에 어울리는 향·밸런스를 기준으로 풍미를 설계·제조\n- 초보자도 편한 맛 : 과실 고유의 향은 살리고 알코올의 쓴맛·자극은 낮춰, 달콤상큼한 풍미와 깔끔한 목넘김으로 2030 주류 초보자도 부담 없이 즐길 수 있음.\n- 선물·모임 가치 : 심플하지만 감각적인 패키지와 디퓨저형 병 디자인으로 선물하기에 좋고, 홈파티·모임 등에서 함께 즐기고 보여주기 좋은 제품\n- 고객만족 제품구성 : 구매 시 토닉워터, 푸어러 디스크 등을 증정하여 “바로 타먹는” 실용성과 편의성을 제공\n- 지역성+트렌드 : 가평 과실 기반의 힙한 스토리와 트렌디한 음용 방식을 결합하여 지역가치와 대중성을 동시에 충족",
+   "websiteUrl": "https://www.ohmycompany.com/?NaPm=ct%3Dmi5w802q%7Cci%3Dcheckout%7Ctr%3Dds%7Ctrx%3Dnull%7Chk%3D7c4e8082f6a1aa730b74df4d844d7312d53fec10",
+   "logoUrl": "/booths/siwse-magok-2026/logo/J-01.webp",
+   "images": [
+    "/booths/siwse-magok-2026/J-01_1.webp",
+    "/booths/siwse-magok-2026/J-01_2.webp",
+    "/booths/siwse-magok-2026/J-01_3.webp",
+    "/booths/siwse-magok-2026/J-01_4.webp",
+    "/booths/siwse-magok-2026/J-01_5.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "J-02",
+   "name": "미 고 리 안동소주",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "농업회사법인 (주)헤리테크스피리츠",
+   "aliases": [
+    "농업회사법인 (주)헤리테크스피리츠"
+   ],
+   "description": "농업회사법인 (주)헤리테크 스피리츠는 3대째 이어지고 있는 명인집안의 안동소주 제조법을 더욱 발전시켜 발효부터 숙성까지 전 과정 옹기를 사용하여 소줏고리 증류를 통해 시판 제품 대비 맛과 향을 월등히 높힌 100% 수제 안동소주를 제조하고 있습니다.",
+   "longDescription": "농업회사법인 (주)헤리테크 스피리츠는 3대째 이어지고 있는 명인집안의 안동소주 제조법을 더욱 발전시켜 발효부터 숙성까지 전 과정 옹기를 사용하여 소줏고리 증류를 통해 시판 제품 대비 맛과 향을 월등히 높힌 100% 수제 안동소주를 제조하고 있습니다.\n'전통 항아리에서 전 과정 발효, 숙성 및 소줏고리 증류'를 활용한 기존 전통주의 장인정신과 정밀 화학분석기술을 기반으로 한국을 대표하는 최고의 명주가 될 100% 수제 프리미엄 전통주를 제조하고 있습니다.\n\n미고리 전통주는 안동소주의 정체성과 특성을 계승하면서도 동시에 최신 기술을 상호 결합하여 동시대의 흐름을 추구하는 브랜드를 육성하여 최종적으로는 글로벌 시장에서 한국을 대표하는 프리미엄 주류로 자리 매김 할 수 있는 제품 생산을 목표로 하고 있습니다.\n\n주요 제품: 미고리, 미고리 79Au, 미고리 더루츠\n\n\"미고리\" 안동소주는 소줏고리 증류과정을 거치며, 삼단 단금으로 빚어 발효부터 숙성까지 전과정 옹기를 사용한 프리미엄 안동소주입니다. 전통 방식으로 빚어낸 깊이 있는 향과 강렬한 맛의 특별한 조화로 안동소주의 정수를 맛보실 수 있으며,\n\n“미고리 79Au”는 순도 99.99% 금을 첨가하여 화려한 이미지를 선사하는 43% 일반증류주 이고, 힘있는 첫 맛에서\n부드러운 끝 맛으로 넘어가는 동안 입속에 퍼지는 묵직한 향을 느끼실 수 있습니다.\n\n“미고리 더루츠”는 산삼배양근을 첨가하여 숙성시킨 산삼배양근주로 36% 일반증류주입니다. 깊고 무거운 듯 차분한 삼의 향이 입안을 가득 풍부하게  채우면서, 땅콩의 고소함도 깊숙히 올라옵니다.",
+   "websiteUrl": "https://smartstore.naver.com/megori/",
+   "logoUrl": "/booths/siwse-magok-2026/logo/J-02.webp",
+   "images": [
+    "/booths/siwse-magok-2026/J-02_1.webp",
+    "/booths/siwse-magok-2026/J-02_2.webp",
+    "/booths/siwse-magok-2026/J-02_3.webp",
+    "/booths/siwse-magok-2026/J-02_4.webp",
+    "/booths/siwse-magok-2026/J-02_5.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "J-03",
+   "name": "사뿐히",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "농업회사법인㈜우리두",
+   "aliases": [
+    "농업회사법인㈜우리두"
+   ],
+   "description": "농업회사법인 주식회사 우리두(이하’우리두’)는 지속가능한 농·임업 6차산업 전문기업을 목표로 삼고 강원도 평창군에 자리잡았습니다.",
+   "longDescription": "농업회사법인 주식회사 우리두(이하’우리두’)는 지속가능한 농·임업 6차산업 전문기업을 목표로 삼고 강원도 평창군에 자리잡았습니다. 우리두는 산양삼 가공기술 특허출원 등 기술력을 바탕으로 벤처인증을 받았고연구개발 생산 가공 교육의 지속가능한 6차산업화를 실천하기 위해 노력하고 있는 회사 입니다.\n\n주요 제품: 사뿐히, 화락진생, 비담 산삼주",
+   "websiteUrl": "https://smartstore.naver.com/panaxginseng",
+   "logoUrl": "/booths/siwse-magok-2026/logo/J-03.webp",
+   "images": [
+    "/booths/siwse-magok-2026/J-03_1.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional",
+    "sw-food"
+   ]
+  },
+  {
+   "code": "J-04",
+   "name": "제주곶밭 농업회사법인 주식회사",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "제주말로 '곶'은 숲을 의미합니다.",
+   "longDescription": "제주말로 '곶'은 숲을 의미합니다. 제주곶밭은 숲과 밭에서 나는 자연의 재료로 제주도의 맛과 향을 담은 가향주를 빚습니다. 제주도에 대한 공감각적이고 깊이 있는 식경험을 전하고자 합니다.\n\n주요 제품: 제주 리몬첼로, 베리제주, 무릉리도원\n\n제주 리몬첼로 리큐르 ㅣ ALC 22% ㅣ 500ml\n1) 인공 향료나 색소 없이 오직 제주 레몬의 향과 색을 담은 레몬 리큐르\n2) 달달한 첫 맛에 뒤따라오는 레몬의 상큼함이 매력\n3) 식전주로 즐기거나 하이볼로 만들어 마시기 좋은 술\n\n베리제주 리큐르 ㅣ ALC 22% ㅣ 500ml\n1) 제주도의 귤류 6가지를 블랜딩한 시트러스 리큐르\n2) 직접 만든 한라봉청을 넣어 달짝지근하면서 쌉싸래한 시트러스의 향을 복합적으로 느낄 수 있음\n3) 하이볼 또는 온더락으로 향을 즐기기 좋은 술\n\n무릉리도원 리큐르 ㅣ ALC 22% ㅣ 500ml\n1) 제주도 곶자왈 근처 무릉리라는 마을에서 나오는 개복숭아(산복숭아)와 조천 거문오름의 홍차를 더해 만든 리큐르\n2) 매실이나 살구처럼 풋풋하면서도 농밀한 과실향과 홍차의 은은한 부드러움이 더해진 매력\n3) 홍차가 들어가 바닐라아이스크림이나 생크림을 더해 디저트 칵테일로 즐기기 좋음",
+   "websiteUrl": "https://www.jejugottbatt.com",
+   "logoUrl": "/booths/siwse-magok-2026/logo/J-04.webp",
+   "images": [
+    "/booths/siwse-magok-2026/J-04_1.webp",
+    "/booths/siwse-magok-2026/J-04_2.webp",
+    "/booths/siwse-magok-2026/J-04_3.webp",
+    "/booths/siwse-magok-2026/J-04_4.webp",
+    "/booths/siwse-magok-2026/J-04_5.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "J-05",
+   "name": "아이엠더문 얼려마시는 상큼달달 과일 리큐르!",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "주식회사 아이엠케이컴퍼니",
+   "aliases": [
+    "주식회사 아이엠케이컴퍼니"
+   ],
+   "description": "‘아이엠케이컴퍼니’ 입니다.",
+   "longDescription": "‘아이엠케이컴퍼니’ 입니다. 저희는 검증된 국내 양조장들과의 협업을 통해 새로운 우리 술 문화를 선보이고자 하는 브랜드 플랫폼입니다. 술의 맛 뿐만 아니라, 술 브랜드의 스토리와 디자인 그리고 유통, 판매 채널까지 우리술 제품을 둘러싼 여러가지 분야에서 새로운 관점의 비즈니스를 기획하고 있습니다.\n\n주요 제품: 아이엠더문 375ML 화이트, 아이엠더문 750ML 화이트,\n\n아이엠더문은 조은술세종의 증류주 '이도'를 베이스로 한 연분홍색 전통주 리큐르입니다. 국내산 사과, 포도, 딸기와 더불어 블러드 오렌지, 망고 농축액을 사용하여 달콤하고 향기로운 과일 향과 맛이 특징입니다. 친환경 유기농 우리 쌀로 만든 이도42가 10% 함유되어 있으며, 제품 도수는 17도입니다.",
+   "websiteUrl": "http://www.iamspirits.com",
+   "logoUrl": "/booths/siwse-magok-2026/logo/J-05.webp",
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "J-06",
+   "name": "농업회사법인 주식회사 진양조장",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "J-07",
+   "name": "수미향",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "이학박사(식품학)이자 세계음식박람회 금상 수상자인 대표가 직접 20년전 개발하여 2008년부터 판매중인 한국 전통 간식인 정과를 견과류에 접목한 견과류 정과 음식으로 HACCP인증을 받았으며 대한항공C&D, 생활협동조합(icoop생협)및 현대그린푸드등의 까다로운 인증과정까지 통과하여 계약 및 판매를 이어오고 있습니다.",
+   "longDescription": "이학박사(식품학)이자 세계음식박람회 금상 수상자인 대표가 직접 20년전 개발하여 2008년부터 판매중인 한국 전통 간식인 정과를 견과류에 접목한 견과류 정과 음식으로 HACCP인증을 받았으며 대한항공C&D, 생활협동조합(icoop생협)및 현대그린푸드등의 까다로운 인증과정까지 통과하여 계약 및 판매를 이어오고 있습니다.\n\n주요 제품: 혼합정과(피칸, 호두), 달당피칸(저당제품)/신제품, 매운맛 캐슈넛/신제품",
+   "websiteUrl": "https://smartstore.naver.com/soneuro_official",
+   "logoUrl": "/booths/siwse-magok-2026/logo/J-07.webp",
+   "images": [
+    "/booths/siwse-magok-2026/J-07_1.webp",
+    "/booths/siwse-magok-2026/J-07_2.webp",
+    "/booths/siwse-magok-2026/J-07_3.webp",
+    "/booths/siwse-magok-2026/J-07_4.webp",
+    "/booths/siwse-magok-2026/J-07_5.webp"
+   ],
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "J-08",
+   "name": "딸부잣집김부각",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "3대째 내려온 어머니와 세자매들의 비밀 레시피로 맛과 정성을 담아 만든 수제 찹쌀 김부각입니다.",
+   "longDescription": "3대째 내려온 어머니와 세자매들의 비밀 레시피로 맛과 정성을 담아 만든 수제 찹쌀 김부각입니다. 공장 앞 텃밭에서 직접 키운 청양고추, 강황, 마늘, 양파 등의 각종 채소와 멸치 새우 등을 넣어 만든 육수에 바로 인근 논에서 재배한 찹쌀로 죽을 쒀서 김부각을 제조합니다.\n\n주요 제품: 강황맛 김부각, 매운맛 김부각, 고추 부각\n\n저희 제품의 구성은 전통맛, 강황맛, 매운맛으로 구성되어 있고 각각 설명하자면 바삭 고소 담백한 기본에 충실한 전통맛 김부각, 김부각에 강황을 더하여 더욱 고소해지고 강황의 좋은 성분이 더해져서 건강을 더 챙길 수 있는 강황맛 김부각, 마늘과 청양고추를 추가하여 마늘과 고추의 향이 후각을 자극하고 매콤 감칠맛 나는 게 입맛을 자극하는 매운맛 김부각, 직접 튀겨먹거나 업소에서 보관하기 좋게 튀기기 전 단계의 김부각도 제품으로 만들고 있습니다.\n\n밥반찬이나 맥주 안주로 먹기 좋고 잘게 부숴서 주먹밥을 만들어 먹어도 맜있습니다.\n저희 제품은 HACCP인증을 받은 공장시설에서 제조하여 믿고 먹을 수 있는 남원 전통식품입니다.",
+   "websiteUrl": "https://smartstore.naver.com/nwbugak",
+   "logoUrl": "/booths/siwse-magok-2026/logo/J-08.webp",
+   "images": [
+    "/booths/siwse-magok-2026/J-08_1.webp",
+    "/booths/siwse-magok-2026/J-08_2.webp",
+    "/booths/siwse-magok-2026/J-08_3.webp",
+    "/booths/siwse-magok-2026/J-08_4.webp"
+   ],
+   "category": "기타",
+   "categorySlug": "sw-etc",
+   "tags": [
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "J-09",
+   "name": "경남마을기업 공동브랜드 마을담아",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "사회적협동조합 시드",
+   "aliases": [
+    "사회적협동조합 시드"
+   ],
+   "description": "1.",
+   "longDescription": "1. 농업회사법인(주)다랭이팜\n: 남해 지역 농산물의 부가가치를 높이고 지역경제 활성화를 위해 설립된 마을기업입니다. 지역에서 생산되는 유자를 활용한 다양한 가공식품과 전통주를 개발·생산하고 있으며, 지역 농가와 상생하는 지속가능한 사업을 추진하고 있습니다. 대한민국 주류대상 3년 연속 대상 수상, 6차산업 인증, 모두애 마을기업 선정 등으로 품질과 경쟁력을 인정받고 있으며, 남해를 대표하는 농식품 브랜드로 성장하고 있습니다.\n\n2. 소담공방협동조합\n: '청춘 노년의 재능을 펼칠 소망 담긴 문화 공간'\n- 김해시 진례면 도예촌에 위치한 소담공방협동조합은 35년 이상 경력의 도예가와 시니어층의 도예 창작자들이 함께 제품을 제작하고 판매합니다.\n- 이윤만을 추구하는 기업이 아니라 도예로 일자리 취약계층인 시니어들의 생산적인 활동과 능동적인 삶을 지원하고 지역 내 도예 창작자들의 활발한 예술 활동을 지속할 수 있는 환경을 제공하기 위해 노력합니다.\n- 항상 고객 트렌드에 맞는 도자기 상품을 개발하려고 노력하며 노년의 즐거움을 도자기와 함께 이루어 나가고 있습니다.\n\n3. 함안농부협동조합\n가. 지역 기반 공동체 설립 및 운영\n: 지역 주민과 청년이 함께 참여하는 공동체를 구성하여, 지역 중심의 지속 가능한 사업 운영 기반을 마련하였습니다.\n나. 지역 경제 활성화 및 일자리 창출\n: 지역 농산물 및 농촌 자원을 활용한 로컬 상품 생산과 체험 프로그램 운영을 통해 지역 내 소득 창출 및 경제 활성화에 기여합니다.\n다. 지역 자원의 활용 및 부가가치 창출\n: 지역 농업인의 1차 생산물과 다양한 지역 자원을 적극 활용하여 상품화를 추친하고, 지역 자원의 인지도 및 부가가치 향상 도모합니다.\n라. 협업 기반의 상생 구조 구축\n: 지역 주민 및 참여 주체 간 협력을 통해 안정적인 운영 구조를 마련하고, 지속 가능한 상생 모델 구축이 목표입니다.\n\n주요 제품: 주류, 안주류, 술잔\n\n1. 주류 (농업회사법인(주)다랭이팜)\n가. 생막걸리: 남해쌀 사용/합성감미료 무/직접제조 쌀당화액 첨가로 은은한 단맛/2026년 우리술어워즈 우수상수상\n나. 유자막걸리: 남해쌀과 남해유자 사용 100%/2026년 대한민국 주류대상 대상수상/직접제조한 쌀당화액 첨가로 은은한 단맛/그윽한 유자향\n다. 드림 09: 프리미엄 유자막걸리/알콜함량9%/남해유자와 치자 첨가로 노란색/2024년 대한민국 막걸리 품평회 대상수상/ 2025년 대한민국 주류대상 대상수상\n라. 취월: 전통 삼양주 방식/알콜함량11%/은은하고 부드러운 취기/깔끔한 끝맛으로 여성도 좋아하는 막걸리/ 2026년우리술 어워즈 우수상 수상\n\n2. 안주류(농업회사법인(주)다랭이팜, 함안농부협동조합)\n가. 갈아만든 유자청: 남해 유자를 씨만빼고 통째로 갈아만든 유자청/용도 다양 유자에이드, 샐러드드래싱, 잼대용 칵테일, 유자차 등\n나. 유자가득 유자젤리: 100%남해유자/초저분자 피쉬콜라겐 함유/한입 스틱형/해썹인증\n다. 별별농부 수박식빵: 경남 함안의 대표 특산물 ‘수박’을 모티브로 한 수박 모양 식빵/無인공색소 無방부제/연잎가루, 홍국쌀가루 천연색소 사용/당일 생산 당일 판매 원칙/탕종을 추가하여 부드럽고, 쫀득한 식감이 특징/남녀노소 간편하게 먹을 수 있는 간식\n라. 별별농부 수박식빵 러스크: 수박식빵을 오븐에 한 번 더 구워 만든 러스크/부드럽고 쫀득한 식빵을 바삭하게 구현한 차별화된 식감/無방부제 無인공색소/개별 포장으로 위생적이며, 간편하게 보관 가능/단품 및 세트 구성으로 간식으로도, 선물용으로도 선호도 높음\n\n3. 술잔(소담공방협동조합)\n- 백자 도자기 주병 세트: 단아한 백자 도자기 주병 1개와 넉넉한 도자기 잔 2개 구성/한국적인 곡선의 부드러움을 담아내어 깔끔하고 부드러운 주병 세트\n- 연꽃 사케잔 세트: 연꽃을 품은 백자 사케잔 세트/깔끔하고 은은한 매력의 연꽃 포인트로 사케 매력을 한껏 살려주는 술잔 세트\n- 청자 막걸리 잔: 청자 특유의 우아함이 매력인 막걸리 잔(1개)/넓은 주둥이와 적당한 굽의 균형잡힌 막걸리 잔으로 품위있고 깔끔하게 즐길 수 있음",
+   "websiteUrl": "https://smartstore.naver.com/maul-dam-a?NaPm=ct%3Dlz93s9f7%7Cci%3Dshopn%7Ctr%3Dsls%7Chk%3D64e0734518342a876ff00183bac05f4d57344dec%7Ctrx%3Dundefined",
+   "logoUrl": "/booths/siwse-magok-2026/logo/J-09.webp",
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional",
+    "sw-food",
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "J-10",
+   "name": "소담공방협동조합",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "김해시 진례면 도예촌에 위치한 소담공방협동조합은 35년 이상 경력의 도예가와 시니어층의 도예창작자들이 함께 직접 제품을 제작하고 판매합니다.",
+   "longDescription": "김해시 진례면 도예촌에 위치한 소담공방협동조합은\n35년 이상 경력의 도예가와 시니어층의 도예창작자들이 함께\n직접 제품을 제작하고 판매합니다.\n이윤만을 추구하는 기업이 아니라, 도예로 일자리 취약 계층인\n시니어들의 생산적인 활동과 능동적인 삶을 지원하고 지역 내\n도예 창작자들의 활발한 예술 활동을 지속할 수 있는 환경을\n제공하기 위해 노력합니다.\n\n주요 제품: 도자기 주병, 도자기 막걸리잔, 도자기 사케잔\n\n소담공방협동조합의 제품은 장인의 손길로 정성스럽게 만들어 도자기가 가진 본연의 장점을 살리고 친화경적인 흙을 주재료로 만들어 더욱 위생적입니다. 또한, 고온에서 소성되어 색상 변질이 적고 보온성이 우수합니다.\n한국의 전통미를 살린 수공예 도자기 주병, 잔, 사케잔 등은 균형 잡힌 도자기로 품위 있고 깔끔함과 부드러움을 즐길 수 있습니다.",
+   "websiteUrl": "https://smartstore.naver.com/sodamcoop",
+   "logoUrl": "/booths/siwse-magok-2026/logo/J-10.webp",
+   "images": [
+    "/booths/siwse-magok-2026/J-10_1.webp",
+    "/booths/siwse-magok-2026/J-10_2.webp",
+    "/booths/siwse-magok-2026/J-10_3.webp"
+   ],
+   "category": "기타",
+   "categorySlug": "sw-etc",
+   "tags": [
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "J-11",
+   "name": "농업회사법인(주)다랭이팜",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "농업회사법인 주식회사 다랭이팜",
+   "aliases": [
+    "농업회사법인 주식회사 다랭이팜"
+   ],
+   "description": "경남 남해의 자연을 담아 전통주와 유자가공식품을 만드는 다랭이팜 양조장 & 유자청입니다.",
+   "longDescription": "경남 남해의 자연을 담아 전통주와 유자가공식품을 만드는 다랭이팜 양조장 & 유자청입니다.\n\n남해 유자를 활용한 가공식품과 우리 쌀을 빚어 만든 전통주를 직접 생산하며, 지역 농산물의 가치를 새로운 맛과 상품으로 이어가고 있습니다.\n\n대표 제품으로는 쌀의 자연스러운 단맛과 남해 유자의 향을 담은 프리미엄 막걸리 ‘드림09’, 상큼한 유자 풍미가 살아있는 ‘유자가득 유자막걸리’, 유자 껍질과 과육을 함께 갈아 유자 본연의 맛과 식감을 살린 **‘갈아만든 유자청’**이 있습니다.\n\n남해의 유자와 우리 술을 더 맛있고 새롭게.\n다랭이팜은 남해의 맛과 이야기를 담은 제품으로 우리 전통주와 지역 농산물의 새로운 가치를 만들어가고 있습니다\n\n주요 제품: 유자가득 드림09, 남해 유자막걸리, 갈아만든 유자청\n\n유자가득 드림09\n우리 쌀로 빚은 이양주이며 쌀 당화액의 자연스러운 단맛과 남해 유자의 향긋함을 더한 9% 프리미엄 유자막걸리입니다. 부드러운 단맛과 산뜻한 유자향이 조화롭습니다.\n남해 유자막걸리\n우리 쌀로 빚은 막걸리에 남해 유자즙을 더해 상큼하고 향긋하게 완성한 다랭이팜의 대표 유자막걸리입니다. 부드러운 목넘김과 산뜻한 유자향이 특징입니다\n갈아만든 유자청\n남해 유자의 씨를 제거하고 껍질과 과육을 함께 곱게 갈아 만든 유자청입니다. 유자 본연의 진한 향과 풍부한 식감을 살렸으며 유자차, 에이드 등으로 다양하게 즐길 수 있습니다.",
+   "websiteUrl": "https://smartstore.naver.com/dr1111",
+   "logoUrl": "/booths/siwse-magok-2026/logo/J-11.webp",
+   "images": [
+    "/booths/siwse-magok-2026/J-11_1.webp",
+    "/booths/siwse-magok-2026/J-11_2.webp",
+    "/booths/siwse-magok-2026/J-11_3.webp",
+    "/booths/siwse-magok-2026/J-11_4.webp",
+    "/booths/siwse-magok-2026/J-11_5.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional",
+    "sw-food"
+   ]
+  },
+  {
+   "code": "J-12",
+   "name": "함안농부협동조합",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "“ 가치있는 같이 ” - 진정성 있는 지역 공동체 설립 목표로, 함안농부들과 함께 협동조합 설립 - 지역의 다양한 농업, 농촌 자원을 활용하여 로컬상품을 만드는 협동조합 운영 - 지역 농산물을 활용한 가공, 체험, 관광을 운영하며 즐거운 농촌·농업 문화조성",
+   "longDescription": "“ 가치있는 같이 ”\n- 진정성 있는 지역 공동체 설립 목표로, 함안농부들과 함께 협동조합 설립\n- 지역의 다양한 농업, 농촌 자원을 활용하여 로컬상품을 만드는 협동조합 운영\n- 지역 농산물을 활용한 가공, 체험, 관광을 운영하며 즐거운 농촌·농업 문화조성\n\n주요 제품: 수박식빵, 수박식빵 러스크,\n\n1. 경남 함안의 대표 특산물 ‘수박’을 모티브로 한 수박 모양 식빵\n- 함안 우수 농산물 홍보와 수박식빵 제품 홍보 기대효과\n- 함안의 대표 관광상품화 발전 가능\n2. 無인공색소 無방부제\n- 소바자의 니즈를 고려하여 인공색소, 방부제 사용 하지 않음\n- 인공색소 대체 제품으로 빨간색은 홍국쌀가루, 초록색은 연잎가루 사용\n3. 당일 생산 당일 판매 원칙- 가장 신선하고 품질 좋은 상태의 제품 판매를 원칙으로 당일 생산 제품판매\n- 택배발송시 오후 생산을 하여 24시간전 택배 도착 유도\n5. 탕종을 추가하여 부드럽고, 쫄깃한 식감이 특징\n- 빵의 노화를 최대한 늦추기 위해 저온 숙성방식 사용\n- 부드럽고 쫄깃한 식감을 위해 탕종반죽을 추가하여 제품 생산\n-> 탕종반죽 사용시 빵의 노화를 방지하는 기능 있음",
+   "websiteUrl": "https://smartstore.naver.com/hamanfarm",
+   "logoUrl": "/booths/siwse-magok-2026/logo/J-12.webp",
+   "images": [
+    "/booths/siwse-magok-2026/J-12_1.webp",
+    "/booths/siwse-magok-2026/J-12_2.webp",
+    "/booths/siwse-magok-2026/J-12_3.webp",
+    "/booths/siwse-magok-2026/J-12_4.webp",
+    "/booths/siwse-magok-2026/J-12_5.webp"
+   ],
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "J-13",
+   "name": "팔팔양조장 / 막걸리",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "팔팔양조장",
+   "aliases": [
+    "팔팔양조장"
+   ],
+   "description": "팔팔양조장은 로컬과 원료의 가치를 가장 중요시하는 양조장으로 최상급 원료에서 최고의 제품이 나온다는 믿음으로 양조를하는 양조장입니다.",
+   "longDescription": "팔팔양조장은 로컬과 원료의 가치를 가장 중요시하는 양조장으로 최상급 원료에서 최고의 제품이 나온다는 믿음으로 양조를하는 양조장입니다. 대한민국 최고의 쌀 생산지 중 하나인 김포에 자리를 잡고 ‘특’등급 추청 단일 품종을 이용하여 지역특산주를 생산하고 있으며, 대표 제품으로는 팔팔막걸리/하드포션/하드포션드라이 등이 있습니다.\n현대화된 양조장비와 끊임없는 실험과 데이터 관리로 1년내내 똑같은 품질의 제품을 생산하고 있습니다.\n현재는 막걸리 단일 주종을 생산하고 있지만 추후에는 증류주등 다양한 제품군으로의 확대를 계획하고있습니다.\n\n주요 제품: 팔팔막걸리, ,\n\n팔팔양조장의 제품은 무감미료 제품으로 오직 원료와 발효기술로 만들어내는 막걸리입니다.\n따라서 최고의 원료를 사용하고 엄격하고 꾸준한 발효 통제로 1년내 균질한 제품을 선보이고 있습니다.\n좋은 재료가 들어가면 좋은 제품이 나온다는 제조업에서 가장 기초적이지만 어려운 이론을 실천하고 있습니다.\n일반 저가형 막걸리와 다르게 ‘특’등급 추청 단일품종을 원료로 사용하며, 감미료없이 풍부한 맛을 끌어내기 위해\n2배이상의 쌀을 발효시 사용하고 있어서 원료 고유에서 나오는 신선하고 풍부한 맛을 느끼실수있습니다.",
+   "logoUrl": "/booths/siwse-magok-2026/logo/J-13.webp",
+   "images": [
+    "/booths/siwse-magok-2026/J-13_1.webp",
+    "/booths/siwse-magok-2026/J-13_2.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "J-14",
+   "name": "동선식품 / 오징어볶음",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "J-15",
+   "name": "귀리귀인 / 주류",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "J-16",
+   "name": "비즌양조 / 국수류",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "J-17",
+   "name": "산마을 / 도라지정과",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "J-18",
+   "name": "약주",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "J-19",
+   "name": "휴닛 / 떡갈비",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "J-20",
+   "name": "한국술도가 / 빨간원탁",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "J-21",
+   "name": "꼬마루 육포",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "꼬마루",
+   "aliases": [
+    "꼬마루"
+   ],
+   "longDescription": "주요 제품: , ,",
+   "websiteUrl": "https://kkomaroo6649.modoo.at",
+   "logoUrl": "/booths/siwse-magok-2026/logo/J-21.webp",
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "J-22",
+   "name": "바틀 앤 코르크",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "주식회사 비앤에스컴퍼",
+   "aliases": [
+    "주식회사 비앤에스컴퍼"
+   ],
+   "description": "전세계 술을 사랑하는 사람들을 위한 맞춤형 프랜차이즈 입니다.",
+   "longDescription": "전세계 술을 사랑하는 사람들을 위한 맞춤형 프랜차이즈 입니다.\n\n주요 제품: 위스키, 꼬냑, 리큐르",
+   "websiteUrl": "https://bottle-and-cork.com/",
+   "logoUrl": "/booths/siwse-magok-2026/logo/J-22.webp",
+   "category": "하드리쿼",
+   "categorySlug": "sw-spirits",
+   "tags": [
+    "sw-spirits"
+   ]
+  },
+  {
+   "code": "J-23",
+   "name": "크림새우 새우몽(한우물식품)",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "한우물식품",
+   "aliases": [
+    "한우물식품"
+   ],
+   "description": "‘새우몽’은 김부각으로 시작해 크림새우까지, 안주 문화를 새롭게 정의하는 브랜드입니다.",
+   "longDescription": "‘새우몽’은 김부각으로 시작해 크림새우까지, 안주 문화를 새롭게 정의하는 브랜드입니다.\n기존의 틀에 갇히지 않고, 한국적인 재료에 집중해 가장 트렌디한 스타일로 풀어냅니다.\n백향과, 마라 등 지역 특산물로 직접 개발한 소스를 활용해 어디서도 맛볼 수 없는 이색 크림새우를 완성했으며,\n즉석 조리를 통해 신선한 맛과 즐거움을 더합니다.\n새우몽은 지금, 한국 안주 트렌드를 이끌고 있습니다.\n\n주요 제품: 백향과 크림새우, 크림새우(바질,마라,유자), 김부각 기가막혀(단짠단짠, 와사비맛)\n\n크림새우, 칠리새우. 질리지 않으세요?\n\n늘 보던 안주에 질린 이들을 위한 새로운 선택.\n‘새우몽’은 백향과, 마라 등 직접 개발한 이색 소스를 입힌 크림새우를 제공합니다.\n\n한 입 베어물면 바로 즐기는 바삭함, 단순한 맛을 넘어선 재미와 자극.\n가볍게 먹기 좋지만 한입만으로 잊기 힘든, 안주의 새로운 기준이 될 메뉴.\n\n새우몽은 유행이 아닌, 크림새우의 기준이 됩니다.",
+   "instagramUrl": "https://www.instagram.com/shrimp_mong/",
+   "logoUrl": "/booths/siwse-magok-2026/logo/J-23.webp",
+   "images": [
+    "/booths/siwse-magok-2026/J-23_1.webp",
+    "/booths/siwse-magok-2026/J-23_2.webp",
+    "/booths/siwse-magok-2026/J-23_3.webp",
+    "/booths/siwse-magok-2026/J-23_4.webp"
+   ],
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "J-24",
+   "name": "초록곰맥주",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "초록곰농업회사법인주식회사",
+   "aliases": [
+    "초록곰농업회사법인주식회사"
+   ],
+   "description": "강화도에 위치한 로컬 브루어리",
+   "longDescription": "강화도에 위치한 로컬 브루어리\n\n주요 제품: 고구마라거, 강화에일,",
+   "websiteUrl": "https://www.greenbearbeer.co.kr",
+   "logoUrl": "/booths/siwse-magok-2026/logo/J-24.webp",
+   "category": "맥주",
+   "categorySlug": "sw-beer",
+   "tags": [
+    "sw-beer",
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "J-25",
+   "name": "지비코리아",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "기타",
+   "categorySlug": "sw-etc",
+   "tags": [
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "J-26",
+   "name": "한국 GIN의 시작",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "(주)부자진농업회사법인",
+   "aliases": [
+    "(주)부자진농업회사법인",
+    "부자진, 한국 GIN의 시작"
+   ],
+   "description": "㈜부자진농업회사법인은 경기도 양평에 위치한 프리미엄 크래프트 진 증류소입니다.",
+   "longDescription": "㈜부자진농업회사법인은 경기도 양평에 위치한 프리미엄 크래프트 진 증류소입니다. 브랜드 이름 부자(父子) 는 30년 이상 양평 땅에서 유기농 허브를 키워온 아버지와, 해외에서 증류 기술을 연마하고 돌아온 아들이 함께 설립한 데서 비롯되었습니다.\n\n2020년 한국형 크래프트 진의 시작을 알린 '시그니처 진'을 선보인 이후, 계절성과 지역성을 담아 소량으로 정성껏 빚는 방식을 고집해왔습니다. 현재까지 출시된 17종의 라인업은 저마다 다른 향과 이야기를 가지고 있으며, 모두 국내 로컬 재료를 바탕으로 합니다.\n\n부자진은 기존 런던 드라이 진의 강렬한 주니퍼 중심 구조에서 벗어나, 한국의 식물과 계절이 빚어내는 복합적이고 섬세한 향미를 한 모금씩 천천히 음미하는 시핑진(Sipping Gin)입니다.\n\n대한민국 주류대상, 홍콩 CWSA, 영국 Gin Masters, World Gin Awards 등 세계 주요 품평회에서 다수의 수상을 기록하며, 한국 크래프트 진의 품질을 글로벌 시장에 증명하고 있습니다.\n\n주요 제품: 시그니처 진, 네이비스트랭스 진, 흑.미.진.진\n\n-시그니처 진: 한국 최초 크래프트 진의 시작, 그리고 기준. 월드 진 대회 금메달이 증명하는 균형 잡힌 풍미는 진 본연의 아름다움을 가장 순수하게 담아냅니다. 처음 만나는 한 모금부터 마지막까지, 왜 시그니처인지를 스스로 말합니다.\n\n-네이비스트랭: 58.8%의 높은 도수 속에서도 흔들리지 않는 섬세한 풍미 — 진의 깊이를 온전히 느끼고 싶은 이들을 위한 선택입니다. 니트로도, 칵테일로도 존재감을 잃지 않습니다.\n\n-흑.미.진.진: 양평 흑미가 빚어낸 전혀 다른 진의 세계. 국산 흑미 특유의 고소하고 묵직한 풍미가 진의 보타니컬과 만나 예상치 못한 우아함을 완성합니다. 한 모금이 미식의 경험이 되는 프리미엄 진입니다.",
+   "websiteUrl": "https://bujagin.com",
+   "logoUrl": "/booths/siwse-magok-2026/logo/J-26.webp",
+   "images": [
+    "/booths/siwse-magok-2026/J-26_1.webp",
+    "/booths/siwse-magok-2026/J-26_2.webp",
+    "/booths/siwse-magok-2026/J-26_3.webp",
+    "/booths/siwse-magok-2026/J-26_4.webp",
+    "/booths/siwse-magok-2026/J-26_5.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional",
+    "sw-spirits",
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "K-01",
+   "name": "소정우리술",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "소정우리술은 경남 밀양에서 시작된 로컬 전통주 브랜드로, 가족을 위해 빚어오던 20년 가양주 레시피를 바탕으로 전통 방식과 현대적 양조 환경을 결합해 우리술을 빚고 있습니다.",
+   "longDescription": "소정우리술은 경남 밀양에서 시작된 로컬 전통주 브랜드로, 가족을 위해 빚어오던 20년 가양주 레시피를 바탕으로 전통 방식과 현대적 양조 환경을 결합해 우리술을 빚고 있습니다.\n\n브랜드명 ‘소정(沼井)’은 맑고 깊은 우물처럼 정갈하면서도 여운 있는 술을 만들고자 하는 철학을 담고 있습니다. 직접 재배한 찹쌀과 누룩, 물 이외의 인공첨가물 없이 삼양주 발효와 저온 장기 숙성을 거쳐, 어떤 자리에도 자연스럽게 어우러지는 우리술을 지향합니다.\n\n소정우리술은 **‘당신의 삶에 스며드는 좋은 술’**을 목표로, 직접 농사지은 찹쌀과 깨끗한 원재료, 그리고 꾸준한 품질을 가장 중요한 가치로 삼고 있습니다.\n\n주요 제품: 소정 청주, 소정 약주, 까삐땅 삼양주\n\n① 소정 약주\n깊은 향과 깔끔한 마무리가 돋보이는 우리술. 직접 재배한 찹쌀과 누룩으로 삼양주 방식을 빚어 6개월간 저온 숙성한 뒤, 정성스럽게 여과해 완성했습니다. 인공첨가물 없이 은은한 누룩 향과 쌀의 단맛, 그리고 드라이한 마무리가 균형 있게 표현됩니다. 기름지거나 맛이 강한 음식과 조화가 훌륭하며, 입안을 깔끔하게 정돈해 주는 페어링 특성이 강점입니다.\n\n스타일: 구수한 누룩 향과 쌀의 단맛 뒤에 깔끔한 여운이 감도는 약주\n추천 페어링: 회, 해산물, 소고기나 곱창 등 기름진 음식, 전골 요리\n\n② 소정 청주\n맑고 부드러운 질감이 돋보이는 우리술. 직접 재배한 찹쌀과 누룩을 삼양주 방식으로 빚고 6개월 간 저온 숙성하여 맑게 걸러냈습니다. 쌀 본연의 달콤함과 쫀득한 질감이 특징이며, 인공첨가물 없이도 부드럽고 깊은 단맛을 구현했습니다. 식전주나 가벼운 안주와 함께 마시기 부담 없고, 단맛 뒤에 이어지는 깨끗한 피니시가 인상적입니다.\n\n스타일: 달콤한 향 뒤에 입안을 부드럽게 감싸는 질감의 청주\n추천 페어링: 회, 해산물, 견과류 등 가벼운 안주, 쭈꾸미볶음 등 매콤한 음식\n\n③ 까삐땅 삼양주\n향긋한 과실의 인상과 생동감이 살아 있는 술. 풍부한 향과 입체적인 맛이 특징인 삼양주로, 딸기와 청포도를 연상시키는 산뜻한 과실 향이 은은하게 풍기며 입안에서는 묵직한 바디감과 드라이함을 동시에 느낄 수 있습니다. 발효 과정에서 자연스럽게 생성된 탄산이 시각과 미각에 다채로운 즐거움을 더해줍니다.\n\n스타일: 산뜻한 과실 향과 묵직한 질감이 공존하는 반전 매력의 삼양주\n추천 페어링: 치킨, 피자 등 간이 있는 음식, 육회 등 달콤 짭짤한 요리",
+   "websiteUrl": "https://smartstore.naver.com/sjwrs",
+   "logoUrl": "/booths/siwse-magok-2026/logo/K-01.webp",
+   "images": [
+    "/booths/siwse-magok-2026/K-01_1.webp",
+    "/booths/siwse-magok-2026/K-01_2.webp",
+    "/booths/siwse-magok-2026/K-01_3.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "K-02",
+   "name": "빛올 양조장",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "빛올",
+   "aliases": [
+    "빛올"
+   ],
+   "description": "빛올의 의미는 ‘빛이 올라가는 새벽해’의 의미와 ‘올가닉 친환경재료’를 쓴다라는 의미가 있습니다.",
+   "longDescription": "빛올의 의미는 ‘빛이 올라가는 새벽해’의 의미와 ‘올가닉 친환경재료’를 쓴다라는 의미가 있습니다.\n빛올양조연구소는 ‘정밀하고 세심하게 술을 빚자’라는 의미가 있으며 실제로 다양한 과제를 받아서 연구 및 사업과제를 진행할 예정이라 연구소라고 이름을 두게 되었습니다. 빛올은 함안군의 좋은 농산물과 다양한 역사문화를 활용해 술을 만들려고 노력하고 있으며 2024년에는 ‘함안군 스타기업만들기’ 기업으로 선정되었습니다. 함안군의 많은 관심과 지원을 통해 발효제 사업 중 자가누룩 개발을 앞두고 있으며 2025년도에는 빛올만의 발효제를 제품에 적용시켜 모든 재료를 함안의 것으로 대체함으로써 함안의 역사와 빛 색을 술에 넣음과 동시에 술맛을 한층 더 높일 계획입니다.\n\n주요 제품: 화비, 일월삼주-일주, 일월삼주-이주\n\n제품설명:\n\n일월삼주\n(국문) 일월삼주는 하나의 달을 보는 세배라는 의미입니다. 이는 ‘하나의 사물을 봤을 때 여러 가지 견해가 있다’라는 의미를 가지고 있는데요. 전통주에 들어가는 누룩에는 다양한 균이 들어 있고 다양한 향을 내게 됩니다. 그래서 술의 향을 맡았을 때 여러 향과 맛을 느끼실 수 있습니다. 그리고 술을 빚으면 여과 안 한 도수 높은 원주(막걸리)가 나오는데요 이 술이 일월삼주-일주입니다. 그리고 일주를 맑게 여과한 술이 일월삼주-이주 입니다. 이주는 단양주 방식과 저온발효를 통해 풍부한 과실향이 나는 술이며 24년도 경상남도 최고전통주인 최고으뜸주를 수상한 전통주 입니다.\n\n화비\n화비는 함안의 무형문화재인 낙화놀이를 위해 만든 술로, 불을 연상시키는 컨셉입니다. 황금색으로 로스팅한 쌀을 사용해 구수하고 달달한 숭늉 같은 맛이 나는 탁주이며, 가볍게 즐길 수 있도록 제작되었습니다.",
+   "websiteUrl": "https://shinybrewer.com/",
+   "logoUrl": "/booths/siwse-magok-2026/logo/K-02.webp",
+   "images": [
+    "/booths/siwse-magok-2026/K-02_1.webp",
+    "/booths/siwse-magok-2026/K-02_2.webp",
+    "/booths/siwse-magok-2026/K-02_3.webp",
+    "/booths/siwse-magok-2026/K-02_4.webp",
+    "/booths/siwse-magok-2026/K-02_5.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "K-03",
+   "name": "대밭고을/ 대나무 전통주",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "대밭고을 영농조합법인",
+   "aliases": [
+    "대밭고을 영농조합법인"
+   ],
+   "description": "3대째 이어온 60년의 정성, 10만 평의 대나무 숲에서 시작됩니다.",
+   "longDescription": "3대째 이어온 60년의 정성, 10만 평의 대나무 숲에서 시작됩니다.\n대밭고을은 경남의 푸르른 대나무밭 10만 평을 60년 넘게 3대째 정성껏 가꿔온 전통 있는 사회적 기업입니다. 우리는 건강한 대나무 숲을 조성하기 위해 직접 대나무잎과 수액을 채취·관리하며 임산물을 생산하고, 그 귀한 자연의 원료를 바탕으로 프리미엄 전통주를 빚고 있습니다. 자연의 순환과 정직한 손길이 담긴 우리의 술은 대나무와 함께한 시간, 그리고 장인정신이 깃든 발효의 미학을 전합니다.\n\n주요 제품: 담 the Original, 담 Light, 담 Breeze\n\n담시리즈는 봄철에만 얻을 수 있는 귀한 100% 대나무 수액과 100번 씻은 쌀, 전통 누룩으로 3번 정성껏 빚은 약주입니다. 매년 달라지는 대나무 수액의 성분에 따라 맛과 향이 달라지며, 라벨의 숫자는 생산연도를 의미합니다. 숙성에 따라 빈티지의 묘미도 함께 즐기실 수 있습니다.\n\n대담시리즈는 대나무잎으로 마무리된 깨끗한 삼양주로 전통 석탄주 방식과 대나무잎 숙성으로 깔끔함과 깊은 맛을 자랑하며 장기 저온 숙성으로 완성된 깔끔하고 부드러운 프리미엄 전통주입니다.",
+   "websiteUrl": "https://www.bamboofarm.co.kr",
+   "logoUrl": "/booths/siwse-magok-2026/logo/K-03.webp",
+   "images": [
+    "/booths/siwse-magok-2026/K-03_1.webp",
+    "/booths/siwse-magok-2026/K-03_2.webp",
+    "/booths/siwse-magok-2026/K-03_3.webp",
+    "/booths/siwse-magok-2026/K-03_4.webp",
+    "/booths/siwse-magok-2026/K-03_5.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "K-04",
+   "name": "시골할매",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "K-05",
+   "name": "농업회사법인 메들리 주식회사",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "메들리",
+   "aliases": [
+    "메들리"
+   ],
+   "description": "꿀과 쌀로 술을 빚는 메들리",
+   "longDescription": "꿀과 쌀로 술을 빚는 메들리\n\n주요 제품: 밤마실, 메들리꿀막걸리, 백옥\n\n메들리의 제품들은 당도가 높지않아 음식과의 페어링이 용이하고,\n단일 제품으로 가볍게 즐기기 좋습니다.\n\n1. 밤마실\n뭉근하게 졸인 아카시아 꿀에 유자피와 민트를 더해 발효시킨 술(꿀술, mead)입니다.\n2. 메들리꿀막걸리\n정성껏 빚은 막걸리에 아카시아 꿀을 더해 만들었습니다. 아카시아의 향긋한 풍미와 사과의 산뜻함을 시작으로 잘 익은 포도를 머금은 듯한 짙은 과실의 달큼함을 따라서 은은한 쌀 내음을 남기며 마무리됩니다.\n3. 백옥\n미질이 우수하고 맛이 좋아 인가가 많은 찹쌀인 백옥을 발효하여 오랜 시간 저온숙성 후 맑은 윗부분만 떠내 만든 술입니다.\n금귤의 상큼함으로 시작하여 복숭아의 달짝한 풍미가 향기롭게 느껴지고 가벼운 신맛으로 마무리됩니다.",
+   "websiteUrl": "https://www.ourmedley.com",
+   "logoUrl": "/booths/siwse-magok-2026/logo/K-05.webp",
+   "images": [
+    "/booths/siwse-magok-2026/K-05_1.webp",
+    "/booths/siwse-magok-2026/K-05_2.webp",
+    "/booths/siwse-magok-2026/K-05_3.webp",
+    "/booths/siwse-magok-2026/K-05_4.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "K-06",
+   "name": "비단수제청",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "websiteUrl": "https://silkhoney.co.kr",
+   "logoUrl": "/booths/siwse-magok-2026/logo/K-06.webp",
+   "category": "맥주",
+   "categorySlug": "sw-beer",
+   "tags": [
+    "sw-beer",
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "K-08",
+   "name": "꿈이달쥬 (공사사양조)",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "농업회사법인 주식회사 공사사양조",
+   "aliases": [
+    "농업회사법인 주식회사 공사사양조"
+   ],
+   "description": "공사사양조는 2023년 7월 14일 설립된 세종시의 로컬 양조장입니다.",
+   "longDescription": "공사사양조는 2023년 7월 14일 설립된 세종시의 로컬 양조장입니다. 같은 해 조청으로 빚은 증류주 '삭'을 출시하며 전통 증류주의 새로운 가능성을 제시했습니다.\n2024년 대한민국 증류주품평회에서 '삭 블랙 50'으로 우수상을 수상했으며, 2025년과 2026년 대한민국 주류대상에서는 각각 30도와 50도 제품으로 대상을 수상하며 제품의 품질과 경쟁력을 인정받았습니다. 2026년에는 '삭'을 기반으로 부담 없이 즐길 수 있는 저도수 지역소주 '제비'를 출시했으며, 현재 세종시 특산물인 복숭아와 자두를 활용한 RTD 제품 '삭 피치'와 '삭 플럼'도 개발하고 있습니다.\n\n전통적인 양조 과정은 공정이 복잡하고 변수가 많아 제품 생산까지 오랜 시간이 필요하며, 누룩 향이나 곡물의 탄 맛이 익숙하지 않은 젊은 소비자에게는 다소 어렵게 느껴질 수 있습니다. 그러나 공사사양조는 이런 기존 전통주 제조 방식의 한계를 현대적인 양조 기술로 풀어냈습니다. 자체 개발한 조청 발효 및 증류 기술을 통해 기존의 복잡한 양조 공정을 약 30% 이상 줄였으며, 동일한 규모의 양조시설과 비교해 생산량을 40% 이상 높이는 성과를 거두었습니다. 전통적인 재료의 가치를 이어가면서도 오늘날의 소비자가 편안하게 즐길 수 있는 현대적인 술을 만드는 것이 공사사양조의 방향입니다.\n\n그 중심에는 누구도 쉽게 생각하지 못했던 '조청으로 증류주를 만든다'는 선택이 있습니다.\n일반적인 양조 방식처럼 쌀에 제국 공정을 거치거나 누룩을 혼합하는 대신, 쌀과 엿기름으로 조청을 빚은 뒤 이를 발효하고 증류합니다. 이를 통해 여러 생산 공정을 줄이면서도 쌀이 가진 고유한 풍미와 조청 특유의 은은한 단맛을 술에 온전히 담아냈습니다.\n조청은 별도의 첨가물 없이 쌀과 엿기름으로 만드는 천연 감미료로, 조선시대에는 궁중에서도 즐겨 사용하던 귀한 식재료였습니다. 공사사양조는 세종시에서 생산된 쌀과 엿기름으로 만든 조청을 활용해, 쌀 특유의 고소한 곡물 향과 과하지 않은 단맛이 길게 이어지는 증류주를 완성했습니다.\n그 결과 '삭'에서는 전통주 특유의 깊이와 정취를 느낄 수 있는 동시에, 현대적인 양조 기술에서 비롯된 깨끗하고 정제된 인상을 함께 경험할 수 있습니다. 마치 위스키와 고량주, 사케가 지닌 서로 다른 매력을 한 잔에 담아낸 듯한 독창적인 풍미가 '삭'의 가장 큰 특징입니다.\n\n또한 2026년, 공사사양조는 이러한 '삭'을 기반으로 새로운 지역소주 '제비'를 선보였습니다.\n세종시의 옛 이름인 '연기군'의 '연기' 통일신라 시대부터 이어져 온 지명입니다. '연기'는 제비를 뜻하는 한자 연(鷰)을 사용하며, 제비는 오랫동안 이 지역을 상징하는 존재로 여겨져 왔습니다.\n그러한 제비는 겨울이면 따뜻한 남쪽으로 떠났다가 봄이 되면 어김없이 고향으로 돌아옵니다. 사람들의 집 가까이에 둥지를 틀고 함께 살아가며 해충을 잡아주고, 복을 가져다주는 길조로 사랑받아 왔습니다.\n그 제비처럼 세종시 조치원에 둥지를 틀고 시작한 공사사양조는 지역의 재료와 이야기를 담아, 누구나 부담 없이 편안하게 즐길 수 있는 저도수 지역소주 '제비'를 만들었습니다.\n\n전통의 재료를 오늘의 기술로 다시 빚는 양조장.\n공사사양조는 조청으로 만든 증류주 '삭'과 지역소주 '제비'를 통해 세종을 대표하는 새로운 술 문화를 만들어가고 있습니다.\n\n주요 제품: 삭, 삭 블랙 50, 제비소주\n\n'삭'은 100% 세종 쌀로 만든 고급 조청을 정성스럽게 발효하여 만든 증류주로, 다채로운 향과 깔끔한 풍미가 특징인 부드러운 술입니다. 향이 은은하고 목넘김이 부드러워 데일리로 즐기기 좋은 30도와 묵직하고 강렬한 향으로 특별하게 즐기기 좋은 50도. 이렇게 두 도수로 나오고 있습니다.\n'제비 소주'는 '삭'의 증류원액으로 만들어진 저도수 브랜드로, 삭에서 느껴지던 특유의 은은한 조청향에 더해 매우 부드럽고 깔끔한 향과 목넘김을 지닌 세종시의 새로운 로컬 소주입니다.",
+   "instagramUrl": "https://www.instagram.com/sak_spirits_044/#",
+   "logoUrl": "/booths/siwse-magok-2026/logo/K-08.webp",
+   "images": [
+    "/booths/siwse-magok-2026/K-08_1.webp",
+    "/booths/siwse-magok-2026/K-08_2.webp",
+    "/booths/siwse-magok-2026/K-08_3.webp",
+    "/booths/siwse-magok-2026/K-08_4.webp",
+    "/booths/siwse-magok-2026/K-08_5.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional",
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "K-09",
+   "name": "미담 양조장",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "K-10",
+   "name": "우리술 양조장 마마스팜",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "K-11",
+   "name": "농업회사법인 33GA 주식회사",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "기타",
+   "categorySlug": "sw-etc",
+   "tags": [
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "K-12",
+   "name": "댄싱사이더",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "맥주",
+   "categorySlug": "sw-beer",
+   "tags": [
+    "sw-beer"
+   ]
+  },
+  {
+   "code": "K-13",
+   "name": "문래양조",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "문래양조는 문래 창작촌과 철공소 골목에 위치한 서울의 로컬 브루어리입니다.",
+   "longDescription": "문래양조는 문래 창작촌과 철공소 골목에 위치한 서울의 로컬 브루어리입니다. 골목의 장인정신을 담은 노동주를 만듭니다.\n- OEM / ODM / 단체 주문 및 선물 세트 문의\n: http://pf.kakao.com/_EVxmxlX/chat\n\n주요 제품: 문래방아 막걸리, 문래방아 스파클링, 서울 과하주\n\n1. 문래방아 막걸리\n- 문래동 철공소와 창착촌 골목에서 일하는 사람들을 위한 노동주 스타일의 막걸리입니다. 문래동의 강렬함과 닮은 코리안 민트, 방아와 레몬을 넣어 상큼한 맛이 특징입니다.\n\n2. 문래방아 스파클링\n- 쇠콤달콤 문래동 맛을 담은 천연 탄산 막걸리. 문래방아의 상큼한 맛에 청량감이 더해졌습니다.\n\n3. 서울 과하주\n- Since 1418. 서울의 대표 명주 '과하주'를 현대적인 방식으로 재해석했습니다. 위스키가 연상되는 풍부한 맛과 향이 특징입니다. 언더락으로 드시면 더 맛있습니다.",
+   "instagramUrl": "https://www.instagram.com/mullaebrewery/",
+   "logoUrl": "/booths/siwse-magok-2026/logo/K-13.webp",
+   "images": [
+    "/booths/siwse-magok-2026/K-13_1.webp",
+    "/booths/siwse-magok-2026/K-13_2.webp",
+    "/booths/siwse-magok-2026/K-13_3.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "K-14",
+   "name": "와인브라더스",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "와인브라더스 인터내셔널",
+   "aliases": [
+    "와인브라더스 인터내셔널"
+   ],
+   "description": "좋은 와인 좋은 가격에 수입 유통 하는 와인계의 루키",
+   "longDescription": "좋은 와인 좋은 가격에 수입 유통 하는 와인계의 루키\n\n주요 제품: 젬마디루나 모스카토, 젬마디루나 프로세코, 젬마디루나 레드잼",
+   "logoUrl": "/booths/siwse-magok-2026/logo/K-14.webp",
+   "images": [
+    "/booths/siwse-magok-2026/K-14_1.webp",
+    "/booths/siwse-magok-2026/K-14_2.webp",
+    "/booths/siwse-magok-2026/K-14_3.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "K-16",
+   "name": "노금주가",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "농업회사법인주식회사노금주가",
+   "aliases": [
+    "농업회사법인주식회사노금주가"
+   ],
+   "description": "청정지역 철원의 유일한 전통주 양조장으로 철원에서 생산되는 농사물들을 주재료로 하여 지역특산주인 일지춘을 생산하고있음",
+   "longDescription": "청정지역 철원의 유일한 전통주 양조장으로 철원에서 생산되는 농사물들을 주재료로 하여 지역특산주인 일지춘을 생산하고있음\n\n주요 제품: 일지춘, 일지춘 과하주, 일지춘 40\n\n일지춘 - 청정 지역 철원에서 생산되는 철원 오대쌀과 찹쌀로 빚은 약주로 15%\n일지춘 40 - 일지춘 약주를 증류한 증류식 소주 오랜 시간 옹기 숙성을 하기때문에 술이 부드럽고 향이 좋음\n일지춘 과하주 - 일지춘 약주를 발효시킬때 직접 증류한 소주를 넣어 빚은 과하주, 다른 과하주에 비해 너무 달지 않아 부담없이 즐길수 있음",
+   "websiteUrl": "https://nogeumjuga.com/",
+   "logoUrl": "/booths/siwse-magok-2026/logo/K-16.webp",
+   "images": [
+    "/booths/siwse-magok-2026/K-16_1.webp",
+    "/booths/siwse-magok-2026/K-16_2.webp",
+    "/booths/siwse-magok-2026/K-16_3.webp",
+    "/booths/siwse-magok-2026/K-16_4.webp",
+    "/booths/siwse-magok-2026/K-16_5.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "K-17",
+   "name": "추사 ( 예산사과와인 )",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "K-18",
+   "name": "초월",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "막걸리를 초월하다, 서울의 중심 마포에서 전라남도 땅끝 해남의 쌀을 이용한 전통방식의 무감미료 막걸리를 추구하는 도심 속 양조장 초월.",
+   "longDescription": "막걸리를 초월하다,\n서울의 중심 마포에서 전라남도 땅끝 해남의 쌀을 이용한\n전통방식의 무감미료 막걸리를 추구하는\n도심 속 양조장 초월.\n\n초월은 전통에서 가능성을 발견하고,\n맛의 균형과 새로운 해석을 통하여\n막걸리의 경계를 넘어섭니다.\n\n주요 제품: 초월 6.9, 초월 DEEP, 초월 DEEP Down\n\n초월의 대표 막걸리. 48일 발효 / 숙성을 거쳐 탄생한 은은한 단맛과 산미의 균형으로 주목 받은 미식주 '초월6.9'\n60일 가까이 완전 발효시켜 향긋한 과실향과 반전의 드라이, 스파이시함으로 애주가들을 위한 고도수 원주 '초월 DEEP'과 풍미를 유지하며 편안한 음용성을 구현한 12도 버전의 '초월 DEEP Down'\n찹쌀과 타트체리로 표현한 천연 미탄산의 과실주 뉘앙스의 '초월 SPKL 스파클' 까지 초월의 전 라인업이 함께합니다.",
+   "websiteUrl": "https://linktr.ee/chowolhada",
+   "logoUrl": "/booths/siwse-magok-2026/logo/K-18.webp",
+   "images": [
+    "/booths/siwse-magok-2026/K-18_1.webp",
+    "/booths/siwse-magok-2026/K-18_2.webp",
+    "/booths/siwse-magok-2026/K-18_3.webp",
+    "/booths/siwse-magok-2026/K-18_4.webp",
+    "/booths/siwse-magok-2026/K-18_5.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "K-19",
+   "name": "제3양조",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "농업회사법인 주식회사 제3컴퍼니",
+   "aliases": [
+    "농업회사법인 주식회사 제3컴퍼니"
+   ],
+   "description": "경남 고성군 전통주 양조장, 고성군의 쌀과 물, 계절로 만드는 소박한 술입니다.",
+   "longDescription": "경남 고성군 전통주 양조장, 고성군의 쌀과 물, 계절로 만드는 소박한 술입니다.\n\n주요 제품: 제3탁주, 제3소주, 제3하이\n\n제3탁주, 찹쌀 순곡주\n제3소주, 전통 방식의 단식 증류식 소주\n제3하이, 증류식 소주 베이스의 하이볼",
+   "logoUrl": "/booths/siwse-magok-2026/logo/K-19.webp",
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "K-20",
+   "name": "벗드림양조장/소두방 양조",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "K-21",
+   "name": "아산증류소",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "농업회사법인 아산증류소(주)",
+   "aliases": [
+    "농업회사법인 아산증류소(주)"
+   ],
+   "description": "아산증류소는 충남 아산의 농산물과 지역 이야기를 바탕으로 전통주를 현대적인 감각으로 재해석하는 로컬 증류소입니다.",
+   "longDescription": "아산증류소는 충남 아산의 농산물과 지역 이야기를 바탕으로 전통주를 현대적인 감각으로 재해석하는 로컬 증류소입니다.\n\n발효와 증류의 기본에 충실하면서 재료 본연의 향과 맛을 살린 술을 만들며, 프리미엄 증류주 ‘허니드 미스트’부터 편안하게 즐기는 ‘온양’, 아산의 정체성을 담은 ‘아산소주’까지 지역과 일상을 잇는 다채로운 우리술을 선보이고 있습니다.\n\n주요 제품: 허니드 미스트, 온양, 아산소주\n\n‘허니드 미스트’는 꿀·사과·배를 발효한 뒤 두 번 증류하여 완성한 40도 프리미엄 증류주입니다. 감미료를 사용하지 않고 원재료 본연의 풍미를 응축해, 꿀의 은은하고 부드러운 단맛과 사과·배의 산뜻한 향이 조화롭게 이어집니다. 2026 대한민국주류대상 우리술 증류주 40도 이상 부문에서 대상을 수상했습니다.\n\n‘온양’은 17.5도의 편안한 목넘김과 깔끔한 맛이 특징인 증류식 소주입니다. 부담 없이 즐길 수 있는 부드러운 풍미로 다양한 한식과 잘 어우러지며, 온양의 친근하고 따뜻한 이미지를 담았습니다.\n\n‘아산소주’는 아산이라는 지역의 이름과 정체성을 담아낸 아산증류소의 시그니처 소주입니다. 맑고 정갈한 맛과 깔끔하게 이어지는 여운을 중심으로, 일상의 한잔부터 소중한 사람과 함께하는 자리까지 편안하게 즐길 수 있도록 만들었습니다.",
+   "websiteUrl": "https://smartstore.naver.com/asandistillery",
+   "logoUrl": "/booths/siwse-magok-2026/logo/K-21.webp",
+   "images": [
+    "/booths/siwse-magok-2026/K-21_1.webp",
+    "/booths/siwse-magok-2026/K-21_2.webp",
+    "/booths/siwse-magok-2026/K-21_3.webp",
+    "/booths/siwse-magok-2026/K-21_4.webp",
+    "/booths/siwse-magok-2026/K-21_5.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "K-22",
+   "name": "말린해삼알 | 쿠치코 | 干しくちこ | 네스상사",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "네스상사",
+   "aliases": [
+    "네스상사"
+   ],
+   "description": "한국의 돌기해삼 유명 산지인 태안의 안면도에서 쿠치코(말린해삼알)와 건해삼을 제조 판매하는 회사입니다.",
+   "longDescription": "한국의 돌기해삼 유명 산지인 태안의 안면도에서 쿠치코(말린해삼알)와 건해삼을 제조 판매하는 회사입니다.\n\n건해삼 관련 제조기술이 발달되어 있는 일본의 기술을 도입하여 해안국립공원인 태안반도의 청정해역에서 잡은 자연산 돌기해삼으로 제품을 생산합니다.\n\n주요 제품: 쿠치코(말린해삼알), 건해삼,\n\n품명 : 해삼알 | 말린해삼알 | 干しくちこ\n해삼의 알(생식소)을 선별하여 줄에 걸어 삼각형 모양으로 말린 것이 쿠치코(干しくちこ)입니다.\n쿠치코는 사케(さけ)와 잘 어울리는 고급 안주입니다.\n\n품명 : 건해삼 | Dried Sea Cucumber\n건해삼 관련 제조기술이 발달되어 있는 일본의 기술을 도입하여 해안국립공원인 태안반도의 청정해역에서 잡은 돌기해삼으로 만든 자연산 건해삼입니다.",
+   "websiteUrl": "https://www.haishen.co.kr",
+   "instagramUrl": "https://www.instagram.com/haishen_nace",
+   "logoUrl": "/booths/siwse-magok-2026/logo/K-22.webp",
+   "images": [
+    "/booths/siwse-magok-2026/K-22_1.webp",
+    "/booths/siwse-magok-2026/K-22_2.webp",
+    "/booths/siwse-magok-2026/K-22_3.webp",
+    "/booths/siwse-magok-2026/K-22_4.webp",
+    "/booths/siwse-magok-2026/K-22_5.webp"
+   ],
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "K-24",
+   "name": "농업회사법인 주식회사 인산농장",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "농업회사 법인 주식회사 인산농장은 불세출(不世出)의 신의(神醫)이자 민초(民草)들의 의황(醫皇), 인술(仁術)의 아버지로 존경받는 인산(仁山) 김일훈(金一勳, 1909~1992) 선생의 활인구세(活人救世) 정신을 받들어 질 좋은 먹거리를 재배 생산 보급함으로써 인류건강에 이바지하겠다는 서원(誓願)에 따라 지난 2015년 설립한 기업입니다.",
+   "longDescription": "농업회사 법인 주식회사 인산농장은 불세출(不世出)의 신의(神醫)이자 민초(民草)들의 의황(醫皇), 인술(仁術)의 아버지로 존경받는 인산(仁山) 김일훈(金一勳, 1909~1992) 선생의 활인구세(活人救世) 정신을 받들어 질 좋은 먹거리를 재배 생산 보급함으로써 인류건강에 이바지하겠다는 서원(誓願)에 따라 지난 2015년 설립한 기업입니다.\n\n경남 함양 심산유곡(深山幽谷)의 청정한 자연환경에서 재배 생산된 원료를 인산 선생의 지혜와 경험으로 정립한 슬기로운 가공처리 방식을 활용해서 질 좋은 식품을 만들어 보급하고 있습니다. 저희는 좋은 재료와 뛰어난 기술로 훌륭한 제품을 만들고 우수한 품질의 상품을 엄선하여 인산 가족들께 제공함으로써 각종 암, 난치병, 괴질이 창궐하는 공해시대를 건강하고 행복하게 살 수 있도록 이정표 역할을 하기 위해 망망대해에 닻을 올렸습니다.\n\n삼천리 금수강산의 청정자연환경에서 자생(自生)하거나 지혜롭게 재배한 농림축수산물의 뛰어난 약성을 활용하여 국민건강 나아가 인류건강에 이바지하겠다는 게 인산농장의 설립목적입니다. 인산농장 전 임직원들은 이러한 설립목적에 부합하는 질 좋은 식품들을 지속해서 제조 생산 보급하는 사업을 통해 이제는 배를 부르게 하는 양(量)의 먹거리를 지양하고 몸을 건강하게 하는 질(質)의 먹거리 시대를 열 수 있도록 모든 정성과 노력을 기울여나가겠습니다.\n\n늘 인산농장을 신뢰하고 저희가 생산하거나 취급하는 제품과 상품들을 변함없이 믿고 애용해주시는 인산 가족 여러분의 기대에 어긋나지 않도록 훌륭한 제품과 상품을 지속해서 개발 생산하여 여러분의 성원에 보답하겠습니다. 다시 한번 인산 가족 모두 120세 이상의 자연수명을 건강하고 행복하게 누리시기를 기원합니다.\n\n주요 제품: 탁여현, 적송자, 금강주\n\n인산농장 '죽림칠현'은 경상남도 함양군 인산연수원의 삼봉산 해발 500여미터 지점의 지하 200여 미터 암반층에서 자연적으로 솟아 나오는, 미네랄 풍부한 광천수를 이용해, 질 좋은 찹쌀과 직접만든 누룩으로 15도의 술(탁여현), 16~18도의 술(청비성)을 빚고 그것을 다시 증류시켜 42도(월고해) 53도,72도(적송자) 증류주를 만듭니다. 탁여현과 청비성은 삼양주라고하며, 밑술을 담아 3번에 걸쳐 원재료를 배합하여 담금통에 담아 45일간 발효 후 분리작업을 거친후 영상 5도씨에서 90일간 숙성하여 제품을 생산하고, 증류주(월고해,적송자)는 오양주라고하며, 밑술을 담아 5번에 걸쳐 원재료를 배합하여 담금통에 담아 45일간 발효시킨 후 분리작업을 거친 후 영상 5도씨에서 90일간 숙성과정을 거친 후 월고해는 1회 증류, 적송자는 2회 증류 후 2년 숙성하여 제품을 포장합니다.\n\n저희 주류 '죽림칠현'은 속성발효를 위해 이스트를 쓰지 않고, 단맛을 내기 위해 아스파탐과 각종 화학첨가물을 첨가하지 않습니다.\n\n246일의 시간이 빚은 대한민국 대표 명주를 만나보십시오.",
+   "websiteUrl": "https://www.insanfarm.com",
+   "logoUrl": "/booths/siwse-magok-2026/logo/K-24.webp",
+   "images": [
+    "/booths/siwse-magok-2026/K-24_1.webp",
+    "/booths/siwse-magok-2026/K-24_2.webp",
+    "/booths/siwse-magok-2026/K-24_3.webp",
+    "/booths/siwse-magok-2026/K-24_4.webp",
+    "/booths/siwse-magok-2026/K-24_5.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "L-01",
+   "name": "나과주조",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "나과",
+   "aliases": [
+    "나과"
+   ],
+   "description": "발가벗은 과일, 향의 정수 나과",
+   "longDescription": "발가벗은 과일, 향의 정수\n나과\n\n주요 제품: 나과 허니, 나과 로즈,",
+   "logoUrl": "/booths/siwse-magok-2026/logo/L-01.webp",
+   "images": [
+    "/booths/siwse-magok-2026/L-01_1.webp",
+    "/booths/siwse-magok-2026/L-01_2.webp",
+    "/booths/siwse-magok-2026/L-01_3.webp",
+    "/booths/siwse-magok-2026/L-01_4.webp",
+    "/booths/siwse-magok-2026/L-01_5.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional",
+    "sw-spirits"
+   ]
+  },
+  {
+   "code": "L-02",
+   "name": "나날",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "농업회사법인(주)한증류소",
+   "aliases": [
+    "농업회사법인(주)한증류소"
+   ],
+   "longDescription": "주요 제품: 감싸주는날, 낯꽃, 말띠 리미티드 에디션",
+   "websiteUrl": "http://www.nanal1992.com",
+   "logoUrl": "/booths/siwse-magok-2026/logo/L-02.webp",
+   "images": [
+    "/booths/siwse-magok-2026/L-02_1.webp",
+    "/booths/siwse-magok-2026/L-02_2.webp",
+    "/booths/siwse-magok-2026/L-02_3.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "L-03",
+   "name": "피엔에스와인컴퍼니 피안카넬리",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "피엔에스 와인 컴퍼니",
+   "aliases": [
+    "피엔에스 와인 컴퍼니"
+   ],
+   "description": "이탈리아 와인만을 수입하는 이탈리아 전문 수입사입니다.",
+   "longDescription": "이탈리아 와인만을 수입하는 이탈리아 전문 수입사입니다.\n\n주요 제품: 피안카넬리 모스카토 다스티, 풀리아 팝, 일 폴렌자\n\n이탈리아 피에몬테 아스티에서 가장 높은 지역인 카넬리에서 생산한 모스카토 다스티 입니다\n세계 30개 이상의 수상내역과, 고산지대에서 자란 포도의 특성인 산도 밸런스가 매우 좋은 와인입니다.",
+   "instagramUrl": "https://www.instagram.com/pns_wine_company/",
+   "logoUrl": "/booths/siwse-magok-2026/logo/L-03.webp",
+   "images": [
+    "/booths/siwse-magok-2026/L-03_1.webp",
+    "/booths/siwse-magok-2026/L-03_2.webp",
+    "/booths/siwse-magok-2026/L-03_3.webp",
+    "/booths/siwse-magok-2026/L-03_4.webp"
+   ],
+   "category": "와인",
+   "categorySlug": "sw-wine",
+   "tags": [
+    "sw-wine"
+   ]
+  },
+  {
+   "code": "L-04",
+   "name": "농업회사법인(주)유래",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "경기도 김포에 소재한 우리쌀로만든 증류식 소주를 오크 숙성 하는 주류제조업체임",
+   "longDescription": "경기도 김포에 소재한 우리쌀로만든 증류식 소주를 오크 숙성 하는 주류제조업체임\n\n주요 제품: 유래, ,\n\n우리쌀로 만든 오크숙성 증류식소주",
+   "logoUrl": "/booths/siwse-magok-2026/logo/L-04.webp",
+   "images": [
+    "/booths/siwse-magok-2026/L-04_1.webp",
+    "/booths/siwse-magok-2026/L-04_2.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional",
+    "sw-spirits"
+   ]
+  },
+  {
+   "code": "L-05",
+   "name": "삼척미로/달성주조",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "농업회사법인 삼척미로(주)",
+   "aliases": [
+    "농업회사법인 삼척미로(주)"
+   ],
+   "description": "전통의 시간을 담은 술, 미로주 오래전 강원도 삼척시 미로면에는 작은 양조장이 있었습니다.",
+   "longDescription": "전통의 시간을 담은 술, 미로주\n오래전 강원도 삼척시 미로면에는 작은 양조장이 있었습니다. 시간이 지나며 사라졌지만, 그 이야기를 듣고 우리는 잊혀진 전통을 다시 잇기 위해 이곳 미로면에 양조장을 다시 세우기로 결심했습니다.\n\n그렇게 탄생한 술이 바로 **‘미로주’**입니다. ‘미로’는 지역 이름이자, ‘늙지 않는다’는 뜻을 담은 아름다운 한자 **未老(아닐 미, 늙을 로)**에서 이름을 따왔습니다. 이름처럼, 시간이 지나도 변하지 않는 가치와 정성을 담아내고자 했습니다.\n\n주요 제품: 미로약주, 미로탁주,\n\n미로주는 단순한 전통주가 아닙니다. 예전 미로 지역 어르신들이 집에서 직접 빚어 마시던 가양주 방식, 그리고 고문헌 속에 등장하는 ‘백수환동주(白首還童酒)’의 지혜를 바탕으로 개발한 술입니다. 핵심은 찹쌀과 찐 녹두로 띄운 특별한 누룩인 백수환동곡(白首還童粬). 국내 전통주 중에서도 손이 많이 가고 재료비가 많이 드는 술 중 하나입니다. 누룩을 띄우는 것부터 술이 완성되기까지, 짧게는 몇 주, 길게는 몇 달의 시간이 필요합니다.\n\n하지만 그렇게 탄생한 미로주의 한 모금은 그 모든 기다림의 가치를 증명합니다.\n입안 가득 퍼지는 부드러운 단맛과 복합적인 과일 향, 그리고 녹두 누룩이 전해주는 은은한 꽃 향기는 마시는 순간 특별한 기억이 됩니다. 실제로 “그냥 맛있다”는 말로는 부족하다는 찬사를 받고 있습니다.\n\n우리는 전통의 방식에 현대적인 감각을 더해, 단순한 재현이 아닌 **‘새로운 전통주’**로서 미로주를 만들어가고 있습니다. 현재는 소량 생산으로 한 달에 두 번만 판매되고 있으며, 앞으로 더 많은 분들이 즐길 수 있도록 생산 설비를 확장해갈 예정입니다.\n\n정성과 시간이 빚은 한 잔의 술.\n삼척 미로면에서 시작된 이 술이, 강원도를 넘어 세계인의 술로 기억되기를 바랍니다.",
+   "logoUrl": "/booths/siwse-magok-2026/logo/L-05.webp",
+   "images": [
+    "/booths/siwse-magok-2026/L-05_1.webp",
+    "/booths/siwse-magok-2026/L-05_2.webp",
+    "/booths/siwse-magok-2026/L-05_3.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "L-06",
+   "name": "부산낙동양조",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "부산낙동양조는 부산의 숨어있는 스토리를 발굴하고, 그것을 전통주에 입혀 세상에 알리는 스토리텔링 양조장입니다.",
+   "longDescription": "부산낙동양조는 부산의 숨어있는 스토리를 발굴하고, 그것을 전통주에 입혀 세상에 알리는 스토리텔링 양조장입니다.\n저희 부산낙동양조는 부산 해풍을 맞고 자란 낙동강 하구의 황금빛 쌀을 사용하고, 전통적인 재료와 방법으로 전통주를 빚고 있습니다.\n\n주요 제품: 금샘약주, 여백주vol. 1 55, 여백주vol. 1 45\n\n금샘약주\n- 부산낙동양조의 첫번째 라인업으로 감미료가 들어가지 않은 한국 전통식 맑은술인 순곡약주입니다.\n- 부산낙동양조의 양조장이 위치한 금정구의 이름의 유례가 되는 봉우리 금샘의 스토리를 담은 약주로입니다.\n- 금정산 가장 높은 봉우리인 고당봉 바로 옆에 위치한 봉우리인 금샘은 예전에 불교의 신중 하나인 브라흐마의 금빛 물고기가 오색구름을 타고 내려와 놀다 갔다는 전설이 있습니다.\n- 금샘약주는 단맛이 적은 드라이한 생약주로, 매실과 포도 및 사과의 향이 은은하게 느껴지고, 매콤한 한식과 페어링 했을때, 가장 맛있습니다.\n\n여백주vol. 1 라인업\n- 여백주는 부산낙동양조의 증류식 소주 라인업으로, 음용성이 좋은 25도, 볼륨감이 큰 45도, 강렬한 55도 총 세가지 도수로 이루어져 있습니다.\n- 여백주 시리즈는 부산낙동양조의 스토리텔링을 잠시 멈추고 여백으로 남기면서, 소비자의 이야기에 귀기울이고, 비워둔 여백을 소비자들의 이야기로 채우겠다는 메세지가 담긴 증류식 소주입니다.\n- 전통누룩으로 발효한 원주를 상압식으로 증류하여 초반에는 풀같은 민트향과 조청같은 달짝지근한 질감이 이어지며 생강이나 고추의 스파이시함과 시트러스함이 지속되다가 끝에는 고소한 스모키함으로 마무리되는 증류식 소주입니다.",
+   "logoUrl": "/booths/siwse-magok-2026/logo/L-06.webp",
+   "images": [
+    "/booths/siwse-magok-2026/L-06_1.webp",
+    "/booths/siwse-magok-2026/L-06_2.webp",
+    "/booths/siwse-magok-2026/L-06_3.webp",
+    "/booths/siwse-magok-2026/L-06_4.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "L-07",
+   "name": "양양술곳간",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "농업회사법인(주)양양술곳간",
+   "aliases": [
+    "농업회사법인(주)양양술곳간"
+   ],
+   "description": "청정양양에서 조선누룩으로 발효하고 항아리로 발효/숙성하는 프리미엄 정통 삼양순곡주 약주/탁주를 빚는 양양술곳간입니다.",
+   "longDescription": "청정양양에서 조선누룩으로 발효하고 항아리로 발효/숙성하는 프리미엄 정통 삼양순곡주 약주/탁주를 빚는 양양술곳간입니다.\n\n주요 제품: 약주[모든날에], 탁주[양지백주], 증류주[요즘 우리는]\n\n약주[모든날에 15]는 삼양순곡주로 맛이 깔끔하고 라이트한 단맛과 부드러운 산미 그리고 풍부한 과일향이 조화로운 청주이고\n탁주[양지백주 15]는 묵직하고 걸죽한 질감과 상큼한 곡향이 입안가득 머금을 수있는 막걸리 이며\n증류주[요즘 우리는 45]는 약주[모든날에]에서 증류된 증류주로 술의 참맛을 느낄수있는 전통주입니다.",
+   "websiteUrl": "https://yangyangsoolgodgan.com",
+   "logoUrl": "/booths/siwse-magok-2026/logo/L-07.webp",
+   "images": [
+    "/booths/siwse-magok-2026/L-07_1.webp",
+    "/booths/siwse-magok-2026/L-07_2.webp",
+    "/booths/siwse-magok-2026/L-07_3.webp",
+    "/booths/siwse-magok-2026/L-07_4.webp",
+    "/booths/siwse-magok-2026/L-07_5.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "L-08",
+   "name": "삼오식품",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "L-09",
+   "name": "프롬워터",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "company": "주식회사 더자란",
+   "aliases": [
+    "주식회사 더자란"
+   ],
+   "description": "더자란(브랜드명 '프롬워터')은 ‘직접 짓고, 직접 기르고, 직접 만든다’는 원칙 아래, 스마트팜 설계·시공부터 바질 재배, 바질 페스토 제조, 유통까지 전 과정을 통합 운영하는 농식품 기업입니다.",
+   "longDescription": "더자란(브랜드명 '프롬워터')은 ‘직접 짓고, 직접 기르고, 직접 만든다’는 원칙 아래, 스마트팜 설계·시공부터 바질 재배, 바질 페스토 제조, 유통까지 전 과정을 통합 운영하는 농식품 기업입니다.\n더자란은 국내 바질 생산 인프라와 재배 기술을 바탕으로 신선한 바질과 프리미엄 바질 페스토를 연중 안정적으로 공급하고 있습니다.\n파종부터 제품 출고까지 전 공정을 자체 기술과 운영 시스템으로 관리해 일관된 품질과 가격 경쟁력을 확보했으며, 사계절 최적의 재배 환경을 유지하는 제어 기술을 통해 365일 안정적인 생산 체계를 운영합니다.\n\n주요 제품: 프롬워터 수제 바질페스토 시그니처, ,\n\n프롬워터 바질 페스토 (FROMWATER Basil Pesto Signature)\n\n프롬워터 바질 페스토는 더자란이 직접 운영하는 식물공장에서 재배한 국내산 바질을 사용해 만든 프리미엄 바질 페스토입니다.\n\n○ 높은 바질 함량: 국내산 바질 35%를 함유하여 깊고 진한 바질 본연의 풍미를 구현했습니다.\n\n○ 엄선한 원료: 쓴맛을 줄이기 위해 줄기를 수작업으로 제거하고 부드러운 바질 잎만을 선별하여 사용합니다.\n\n○ 균형 잡힌 레시피: 과도한 산미와 염도를 조절하여 한국인의 입맛에 맞는 균형 잡힌 맛을 완성했습니다.\n\n○ 신선도 보존: 제조 직후 급속 냉동하여 갓 수확한 바질의 향과 신선도를 유지합니다.\n\n○ 안전한 생산: HACCP 인증 시설에서 생산하며, 인공감미료와 보존제를 첨가하지 않았습니다.",
+   "websiteUrl": "https://tjr.co.kr",
+   "logoUrl": "/booths/siwse-magok-2026/logo/L-09.webp",
+   "images": [
+    "/booths/siwse-magok-2026/L-09_1.webp",
+    "/booths/siwse-magok-2026/L-09_2.webp",
+    "/booths/siwse-magok-2026/L-09_3.webp",
+    "/booths/siwse-magok-2026/L-09_4.webp",
+    "/booths/siwse-magok-2026/L-09_5.webp"
+   ],
+   "category": "관련식품",
+   "categorySlug": "sw-food",
+   "tags": [
+    "sw-food"
+   ]
+  },
+  {
+   "code": "L-11",
+   "name": "같이양조장",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional"
+   ]
+  },
+  {
+   "code": "N-10",
+   "name": "(사)한국주류수입협회",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "category": "기타",
+   "categorySlug": "sw-etc",
+   "tags": [
+    "sw-etc"
+   ]
+  },
+  {
+   "code": "S-01",
+   "name": "브리즈앤스트림",
+   "hall": "마곡 컨벤션센터 1층",
+   "kind": "exhibitor",
+   "description": "설악산의 푸른 바람(風)과 내린천의 맑은 줄기(流)가 만나는 강원도 인제.",
+   "longDescription": "설악산의 푸른 바람(風)과 내린천의 맑은 줄기(流)가 만나는 강원도 인제.\n브리즈앤스트림은 한국 고유의 정신인 '풍류'를 위해 시작되었습니다.\n우리는 이 청정 자연을 증류하고 흐르는 시간을 담아, 마침내 한 병의 '마시는 숲'을 완성합니다.\n바람을 마시고, 물길을 따르는 술. 그것이 브리즈앤스트림입니다.\n\n주요 제품: 나물진, 번트메밀, 번트보리",
+   "websiteUrl": "https://breezenstream.com",
+   "logoUrl": "/booths/siwse-magok-2026/logo/S-01.webp",
+   "images": [
+    "/booths/siwse-magok-2026/S-01_1.webp",
+    "/booths/siwse-magok-2026/S-01_2.webp"
+   ],
+   "category": "전통주",
+   "categorySlug": "sw-traditional",
+   "tags": [
+    "sw-traditional",
+    "sw-spirits"
+   ]
+  }
+ ]
+}

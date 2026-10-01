@@ -8,6 +8,7 @@ import sibf from "@/lib/floorplan-sibf.json";
 import sif from "@/lib/floorplan-sif.json";
 import ha from "@/lib/floorplan-house-archive.json";
 import mlm from "@/lib/floorplan-magok-livingmarket.json";
+import siwse from "@/lib/floorplan-siwse-magok.json";
 import coexHallC from "@/lib/venues/coex-hall-c.json";
 import coexPlatz from "@/lib/venues/coex-platz.json";
 import coexHallA from "@/lib/venues/coex-hall-a.json";
@@ -338,6 +339,7 @@ export const VENUE_OF: Record<string, Venue> = {
   "sif-2026": VENUES[(sif as { venue: string }).venue],
   "house-archive-2026": VENUES[(ha as { venue: string }).venue],
   "magok-livingmarket-2026": VENUES[(mlm as { venue: string }).venue],
+  "siwse-magok-2026": VENUES[(siwse as { venue: string }).venue],
 };
 
 export const FLOORPLANS: Record<string, Floorplan> = {
@@ -345,4 +347,5 @@ export const FLOORPLANS: Record<string, Floorplan> = {
   "sif-2026": compose(sif),
   "house-archive-2026": compose(ha),
   "magok-livingmarket-2026": compose(mlm),
+  "siwse-magok-2026": compose(siwse),
 };
