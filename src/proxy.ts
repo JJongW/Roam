@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { USER_COOKIE } from "@/lib/constants";
+import { verifySignedUserId } from "@/lib/auth/user-cookie";
 
 /**
  * Global auth gate. Personalized/interactive visitor pages require a signed-in
@@ -53,7 +54,11 @@ export function proxy(req: NextRequest) {
     return NextResponse.next();
   }
 
-  if (req.cookies.get(USER_COOKIE)?.value) return NextResponse.next();
+  // 존재가 아니라 서명을 본다 — 값이 들어 있기만 하면 통과시키면 `roam_user=아무거나`
+  // 로 게이트를 넘을 수 있고, 그 뒤 메모장·커뮤니티 페이지는 신원을 따로 확인하지
+  // 않는다. 검증 함수는 라우트 핸들러(`getUserId`)와 같은 것을 쓴다.
+  const raw = req.cookies.get(USER_COOKIE)?.value;
+  if (raw && verifySignedUserId(raw)) return NextResponse.next();
 
   const url = req.nextUrl.clone();
   url.pathname = "/login";
