@@ -239,7 +239,14 @@
    "tags": [
     "sw-wine"
    ],
-   "instagramUrl": "https://www.instagram.com/yourwines_official"
+   "instagramUrl": "https://www.instagram.com/yourwines_official",
+   "images": [
+    "/booths/siwse-magok-2026/C-02_1.webp",
+    "/booths/siwse-magok-2026/C-02_2.webp",
+    "/booths/siwse-magok-2026/C-02_3.webp",
+    "/booths/siwse-magok-2026/C-02_4.webp",
+    "/booths/siwse-magok-2026/C-02_5.webp"
+   ]
   },
   {
    "code": "C-03",
@@ -949,7 +956,14 @@
    "tags": [
     "sw-wine"
    ],
-   "instagramUrl": "https://www.instagram.com/mustwine_official"
+   "instagramUrl": "https://www.instagram.com/mustwine_official",
+   "images": [
+    "/booths/siwse-magok-2026/E-08_1.webp",
+    "/booths/siwse-magok-2026/E-08_2.webp",
+    "/booths/siwse-magok-2026/E-08_3.webp",
+    "/booths/siwse-magok-2026/E-08_4.webp",
+    "/booths/siwse-magok-2026/E-08_5.webp"
+   ]
   },
   {
    "code": "E-09",
@@ -1170,7 +1184,14 @@
    "tags": [
     "sw-food"
    ],
-   "instagramUrl": "https://www.instagram.com/sanbo_sb"
+   "instagramUrl": "https://www.instagram.com/sanbo_sb",
+   "images": [
+    "/booths/siwse-magok-2026/F-01_1.webp",
+    "/booths/siwse-magok-2026/F-01_2.webp",
+    "/booths/siwse-magok-2026/F-01_3.webp",
+    "/booths/siwse-magok-2026/F-01_4.webp",
+    "/booths/siwse-magok-2026/F-01_5.webp"
+   ]
   },
   {
    "code": "F-02",
@@ -1239,7 +1260,14 @@
    "tags": [
     "sw-wine"
    ],
-   "instagramUrl": "https://www.instagram.com/y.brothers.wineisgood"
+   "instagramUrl": "https://www.instagram.com/y.brothers.wineisgood",
+   "images": [
+    "/booths/siwse-magok-2026/F-05_1.webp",
+    "/booths/siwse-magok-2026/F-05_2.webp",
+    "/booths/siwse-magok-2026/F-05_3.webp",
+    "/booths/siwse-magok-2026/F-05_4.webp",
+    "/booths/siwse-magok-2026/F-05_5.webp"
+   ]
   },
   {
    "code": "F-06",
@@ -1428,6 +1456,13 @@
    "categorySlug": "sw-wine",
    "tags": [
     "sw-wine"
+   ],
+   "images": [
+    "/booths/siwse-magok-2026/F-18_1.webp",
+    "/booths/siwse-magok-2026/F-18_2.webp",
+    "/booths/siwse-magok-2026/F-18_3.webp",
+    "/booths/siwse-magok-2026/F-18_4.webp",
+    "/booths/siwse-magok-2026/F-18_5.webp"
    ]
   },
   {
@@ -1440,7 +1475,14 @@
    "tags": [
     "sw-sake-baijiu"
    ],
-   "instagramUrl": "https://www.instagram.com/nihonsake_official"
+   "instagramUrl": "https://www.instagram.com/nihonsake_official",
+   "images": [
+    "/booths/siwse-magok-2026/F-19_1.webp",
+    "/booths/siwse-magok-2026/F-19_2.webp",
+    "/booths/siwse-magok-2026/F-19_3.webp",
+    "/booths/siwse-magok-2026/F-19_4.webp",
+    "/booths/siwse-magok-2026/F-19_5.webp"
+   ]
   },
   {
    "code": "F-20",
@@ -1477,7 +1519,14 @@
    "tags": [
     "sw-wine"
    ],
-   "instagramUrl": "https://www.instagram.com/gluehwein_korea"
+   "instagramUrl": "https://www.instagram.com/gluehwein_korea",
+   "images": [
+    "/booths/siwse-magok-2026/F-21_1.webp",
+    "/booths/siwse-magok-2026/F-21_2.webp",
+    "/booths/siwse-magok-2026/F-21_3.webp",
+    "/booths/siwse-magok-2026/F-21_4.webp",
+    "/booths/siwse-magok-2026/F-21_5.webp"
+   ]
   },
   {
    "code": "F-24",
@@ -1970,7 +2019,14 @@
     "sw-wine"
    ],
    "websiteUrl": "https://allvintage.co.kr",
-   "instagramUrl": "https://www.instagram.com/allvin_wine"
+   "instagramUrl": "https://www.instagram.com/allvin_wine",
+   "images": [
+    "/booths/siwse-magok-2026/G-22_1.webp",
+    "/booths/siwse-magok-2026/G-22_2.webp",
+    "/booths/siwse-magok-2026/G-22_3.webp",
+    "/booths/siwse-magok-2026/G-22_4.webp",
+    "/booths/siwse-magok-2026/G-22_5.webp"
+   ]
   },
   {
    "code": "G-24",
@@ -2128,6 +2184,13 @@
    "categorySlug": "sw-traditional",
    "tags": [
     "sw-traditional"
+   ],
+   "images": [
+    "/booths/siwse-magok-2026/H-05_1.webp",
+    "/booths/siwse-magok-2026/H-05_2.webp",
+    "/booths/siwse-magok-2026/H-05_3.webp",
+    "/booths/siwse-magok-2026/H-05_4.webp",
+    "/booths/siwse-magok-2026/H-05_5.webp"
    ]
   },
   {
@@ -2884,7 +2947,12 @@
    "tags": [
     "sw-traditional"
    ],
-   "instagramUrl": "https://www.instagram.com/hanguk_suldoga"
+   "instagramUrl": "https://www.instagram.com/hanguk_suldoga",
+   "images": [
+    "/booths/siwse-magok-2026/J-20_1.webp",
+    "/booths/siwse-magok-2026/J-20_2.webp",
+    "/booths/siwse-magok-2026/J-20_3.webp"
+   ]
   },
   {
    "code": "J-21",
@@ -2966,7 +3034,12 @@
    "tags": [
     "sw-etc"
    ],
-   "instagramUrl": "https://www.instagram.com/gbkorea_co.ltd"
+   "instagramUrl": "https://www.instagram.com/gbkorea_co.ltd",
+   "images": [
+    "/booths/siwse-magok-2026/J-25_1.webp",
+    "/booths/siwse-magok-2026/J-25_2.webp",
+    "/booths/siwse-magok-2026/J-25_3.webp"
+   ]
   },
   {
    "code": "J-26",
@@ -3108,7 +3181,12 @@
     "sw-beer",
     "sw-etc"
    ],
-   "instagramUrl": "https://www.instagram.com/silk_honey1"
+   "instagramUrl": "https://www.instagram.com/silk_honey1",
+   "images": [
+    "/booths/siwse-magok-2026/K-06_1.webp",
+    "/booths/siwse-magok-2026/K-06_2.webp",
+    "/booths/siwse-magok-2026/K-06_3.webp"
+   ]
   },
   {
    "code": "K-08",
@@ -3156,7 +3234,13 @@
    "tags": [
     "sw-traditional"
    ],
-   "instagramUrl": "https://www.instagram.com/mamas__farm"
+   "instagramUrl": "https://www.instagram.com/mamas__farm",
+   "images": [
+    "/booths/siwse-magok-2026/K-10_1.webp",
+    "/booths/siwse-magok-2026/K-10_2.webp",
+    "/booths/siwse-magok-2026/K-10_3.webp",
+    "/booths/siwse-magok-2026/K-10_4.webp"
+   ]
   },
   {
    "code": "K-11",
@@ -3180,7 +3264,12 @@
     "sw-beer"
    ],
    "websiteUrl": "https://dancingcider.com",
-   "instagramUrl": "https://www.instagram.com/dancingcider"
+   "instagramUrl": "https://www.instagram.com/dancingcider",
+   "images": [
+    "/booths/siwse-magok-2026/K-12_1.webp",
+    "/booths/siwse-magok-2026/K-12_2.webp",
+    "/booths/siwse-magok-2026/K-12_3.webp"
+   ]
   },
   {
    "code": "K-13",
@@ -3255,7 +3344,13 @@
    "tags": [
     "sw-wine"
    ],
-   "instagramUrl": "https://www.instagram.com/chusa_wine"
+   "instagramUrl": "https://www.instagram.com/chusa_wine",
+   "images": [
+    "/booths/siwse-magok-2026/K-17_1.webp",
+    "/booths/siwse-magok-2026/K-17_2.webp",
+    "/booths/siwse-magok-2026/K-17_3.webp",
+    "/booths/siwse-magok-2026/K-17_4.webp"
+   ]
   },
   {
    "code": "K-18",
@@ -3304,7 +3399,10 @@
    "tags": [
     "sw-traditional"
    ],
-   "instagramUrl": "https://www.instagram.com/butdream9"
+   "instagramUrl": "https://www.instagram.com/butdream9",
+   "images": [
+    "/booths/siwse-magok-2026/K-20_1.webp"
+   ]
   },
   {
    "code": "K-21",
@@ -3566,7 +3664,12 @@
    "tags": [
     "sw-traditional"
    ],
-   "instagramUrl": "https://www.instagram.com/togetherbrewery"
+   "instagramUrl": "https://www.instagram.com/togetherbrewery",
+   "images": [
+    "/booths/siwse-magok-2026/L-11_1.webp",
+    "/booths/siwse-magok-2026/L-11_2.webp",
+    "/booths/siwse-magok-2026/L-11_3.webp"
+   ]
   },
   {
    "code": "N-10",

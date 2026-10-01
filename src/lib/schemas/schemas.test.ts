@@ -3,6 +3,8 @@ import {
   boothEnrichmentAuthorInputSchema,
   boothEnrichmentPatchSchema,
   boothPatchInputSchema,
+  exhibitionPatchInputSchema,
+  eventPatchInputSchema,
 } from "@/lib/schemas";
 import {
   userPreferenceInputSchema,
@@ -115,5 +117,21 @@ describe("boothPatchInputSchema", () => {
   });
   it("보낸 키는 그대로 검증한다", () => {
     expect(() => boothPatchInputSchema.parse({ instagramUrl: "not-a-url" })).toThrow();
+  });
+});
+
+// 같은 함정이 전시 PATCH에도 있었다 — {coverImageUrl}만 보내면 설명이 지워지고
+// 지도 크기가 1000×700 기본값으로 덮였다(2026-10-02, 보내기 전에 발견).
+describe("exhibitionPatchInputSchema", () => {
+  it("안 보낸 키를 만들지 않는다", () => {
+    expect(exhibitionPatchInputSchema.parse({ coverImageUrl: "https://roam.ai.kr/p.webp" })).toEqual({
+      coverImageUrl: "https://roam.ai.kr/p.webp",
+    });
+  });
+});
+
+describe("eventPatchInputSchema", () => {
+  it("안 보낸 키를 만들지 않는다", () => {
+    expect(eventPatchInputSchema.parse({ title: "시음회" })).toEqual({ title: "시음회" });
   });
 });
