@@ -119,7 +119,8 @@
    "categorySlug": "sw-etc",
    "tags": [
     "sw-etc"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/iksu_official"
   },
   {
    "code": "B-04",
@@ -141,7 +142,8 @@
    "categorySlug": "sw-food",
    "tags": [
     "sw-food"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/hannibdoeat"
   },
   {
    "code": "B-05",
@@ -323,7 +325,8 @@
    "categorySlug": "sw-wine",
    "tags": [
     "sw-wine"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/winekorea_"
   },
   {
    "code": "C-09",
@@ -515,7 +518,8 @@
    "categorySlug": "sw-food",
    "tags": [
     "sw-food"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/sirloin.by"
   },
   {
    "code": "D-01",
@@ -622,7 +626,9 @@
    "categorySlug": "sw-traditional",
    "tags": [
     "sw-traditional"
-   ]
+   ],
+   "websiteUrl": "https://corevest.co.kr",
+   "instagramUrl": "https://www.instagram.com/corevest_brewing"
   },
   {
    "code": "D-10",
@@ -784,7 +790,8 @@
     "sw-spirits",
     "sw-food",
     "sw-etc"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/bwikorea"
   },
   {
    "code": "D-18",
@@ -1005,7 +1012,8 @@
    "categorySlug": "sw-spirits",
    "tags": [
     "sw-spirits"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/summerhall_distillery"
   },
   {
    "code": "E-12",
@@ -1242,7 +1250,8 @@
    "categorySlug": "sw-wine",
    "tags": [
     "sw-wine"
-   ]
+   ],
+   "websiteUrl": "https://csillagwine.com"
   },
   {
    "code": "F-09",
@@ -1375,7 +1384,8 @@
    "categorySlug": "sw-wine",
    "tags": [
     "sw-wine"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/vinebro1"
   },
   {
    "code": "F-17",
@@ -1752,7 +1762,8 @@
    "categorySlug": "sw-traditional",
    "tags": [
     "sw-traditional"
-   ]
+   ],
+   "websiteUrl": "https://yangjumall.com"
   },
   {
    "code": "G-12",
@@ -1821,7 +1832,9 @@
    "categorySlug": "sw-etc",
    "tags": [
     "sw-etc"
-   ]
+   ],
+   "websiteUrl": "https://gafi.or.kr",
+   "instagramUrl": "https://www.instagram.com/gafi_official_agro"
   },
   {
    "code": "G-17",
@@ -1867,7 +1880,8 @@
    "categorySlug": "sw-wine",
    "tags": [
     "sw-wine"
-   ]
+   ],
+   "websiteUrl": "https://amaroum.com"
   },
   {
    "code": "G-19",
@@ -1937,7 +1951,8 @@
    "categorySlug": "sw-wine",
    "tags": [
     "sw-wine"
-   ]
+   ],
+   "websiteUrl": "https://allvintage.co.kr"
   },
   {
    "code": "G-24",
@@ -1994,7 +2009,9 @@
    "categorySlug": "sw-food",
    "tags": [
     "sw-food"
-   ]
+   ],
+   "websiteUrl": "https://charvetier.com",
+   "instagramUrl": "https://www.instagram.com/charvetier"
   },
   {
    "code": "H-01",
@@ -2158,7 +2175,8 @@
    "categorySlug": "sw-traditional",
    "tags": [
     "sw-traditional"
-   ]
+   ],
+   "websiteUrl": "https://ktlea.co.kr"
   },
   {
    "code": "H-09",
@@ -2290,7 +2308,8 @@
    "categorySlug": "sw-traditional",
    "tags": [
     "sw-traditional"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/osansool"
   },
   {
    "code": "H-15",
@@ -2528,7 +2547,8 @@
    "categorySlug": "sw-traditional",
    "tags": [
     "sw-traditional"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/oh_mycompany"
   },
   {
    "code": "J-02",
@@ -2593,7 +2613,8 @@
    "categorySlug": "sw-traditional",
    "tags": [
     "sw-traditional"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/jeju.gott.batt"
   },
   {
    "code": "J-05",
@@ -2949,7 +2970,8 @@
     "sw-traditional",
     "sw-spirits",
     "sw-etc"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/bujagin"
   },
   {
    "code": "K-01",
@@ -2992,7 +3014,8 @@
    "categorySlug": "sw-traditional",
    "tags": [
     "sw-traditional"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/shinybrewer"
   },
   {
    "code": "K-03",
@@ -3048,7 +3071,8 @@
    "categorySlug": "sw-traditional",
    "tags": [
     "sw-traditional"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/our_medley"
   },
   {
    "code": "K-06",
@@ -3097,7 +3121,8 @@
    "categorySlug": "sw-traditional",
    "tags": [
     "sw-traditional"
-   ]
+   ],
+   "websiteUrl": "https://midamju.co.kr"
   },
   {
    "code": "K-10",
@@ -3130,7 +3155,9 @@
    "categorySlug": "sw-beer",
    "tags": [
     "sw-beer"
-   ]
+   ],
+   "websiteUrl": "https://dancingcider.com",
+   "instagramUrl": "https://www.instagram.com/dancingcider"
   },
   {
    "code": "K-13",
