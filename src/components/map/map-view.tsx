@@ -30,6 +30,7 @@ import { FLOORPLANS } from "@/lib/floorplans";
 import { ExhibitionMap, HEAT_TIERS } from "@/components/map/exhibition-map";
 import { CategoryChip } from "@/components/booth/category-chip";
 import { JudgmentBar } from "@/components/booth/judgment-bar";
+import { acceptsJudgment } from "@/lib/booth/judgeable";
 import { ValueChips } from "@/components/values/value-chips";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -372,18 +373,21 @@ export function MapView({
             <BoothPopupMemo key={selected.id} boothId={selected.id} />
 
             {/* 판단 — 관심 여부로 자동 분기(adaptive). 다녀왔는지는 시스템이 몰라도
-                관심을 눌렀는지는 확실히 아는 값이라 그걸로 관심/판정을 가른다. */}
-            <div className="mt-2.5 border-t border-border pt-2.5">
-              <JudgmentBar
-                key={selected.id}
-                mode="adaptive"
-                boothId={selected.id}
-                boothName={selected.name}
-                interestSlugs={boothValueSlugs(selected)}
-                categoryLabel={selectedCat?.name}
-                exhibitionSlug={detail.exhibition.slug}
-              />
-            </div>
+                관심을 눌렀는지는 확실히 아는 값이라 그걸로 관심/판정을 가른다.
+                편의시설엔 묻지 않는다(acceptsJudgment) — 상세 화면과 같은 술어다. */}
+            {acceptsJudgment(selected) && (
+              <div className="mt-2.5 border-t border-border pt-2.5">
+                <JudgmentBar
+                  key={selected.id}
+                  mode="adaptive"
+                  boothId={selected.id}
+                  boothName={selected.name}
+                  interestSlugs={boothValueSlugs(selected)}
+                  categoryLabel={selectedCat?.name}
+                  exhibitionSlug={detail.exhibition.slug}
+                />
+              </div>
+            )}
           </div>
         </div>
       )}
