@@ -16,13 +16,12 @@ const schema = z.object({
   NEXT_PUBLIC_FCM_VAPID_KEY: z.string().optional(),
   FCM_SERVER_KEY: z.string().optional(),
   GEMINI_API_KEY: z.string().min(1).optional(),
-  ORGANIZER_CODE: z.string().min(1).optional(),
   /** roam_user 쿠키 서명용 비밀키. 없으면 로컬 mock 개발용 고정값으로 폴백한다 —
    *  프로덕션엔 반드시 설정해야 쿠키 위조(임의 user id를 쿠키에 넣어 계정 탈취)가
    *  막힌다. */
   SESSION_SECRET: z.string().min(1).optional(),
-  /** 쉼표로 구분한 admin 접근 허용 이메일(Google 로그인 검증 대상). 설정되면
-   *  ORGANIZER_CODE보다 우선한다 — 신원 기반 게이트가 공유 코드보다 강하다. */
+  /** 쉼표로 구분한 admin 접근 허용 이메일(Google 로그인 검증 대상). 운영에서
+   *  비어 있으면 /admin은 닫힌다(isAdminAuthed). */
   ADMIN_EMAILS: z.string().min(1).optional(),
   /** Google Cloud Console의 iOS OAuth 클라이언트 ID — Google idToken의 aud 검증용. */
   GOOGLE_IOS_CLIENT_ID: z.string().min(1).optional(),
@@ -50,7 +49,6 @@ const parsed = schema.safeParse({
   NEXT_PUBLIC_FCM_VAPID_KEY: e(process.env.NEXT_PUBLIC_FCM_VAPID_KEY),
   FCM_SERVER_KEY: e(process.env.FCM_SERVER_KEY),
   GEMINI_API_KEY: e(process.env.GEMINI_API_KEY),
-  ORGANIZER_CODE: e(process.env.ORGANIZER_CODE),
   SESSION_SECRET: e(process.env.SESSION_SECRET),
   ADMIN_EMAILS: e(process.env.ADMIN_EMAILS),
   GOOGLE_IOS_CLIENT_ID: e(process.env.GOOGLE_IOS_CLIENT_ID),
@@ -94,9 +92,6 @@ export const hasCloudinary = Boolean(
   env.CLOUDINARY_API_SECRET,
 );
 
-/** When set, /admin requires entering this code (organizer gate). Off if unset. */
-export const hasOrganizerGate = Boolean(env.ORGANIZER_CODE);
-
 /** roam_user 쿠키 서명 비밀키. 미설정 시 로컬 mock 개발 전용 고정값 — 프로덕션에
  *  이 상태로 배포하면 쿠키 서명이 공개된 값으로 되어 위조 방지 효과가 없다. */
 export const sessionSecret =
@@ -113,11 +108,11 @@ export const adminEmailAllowlist: string[] = (env.ADMIN_EMAILS ?? "")
   .map((e) => e.trim().toLowerCase())
   .filter(Boolean);
 
-/** true면 이메일 화이트리스트가 admin 게이트를 맡는다(ORGANIZER_CODE보다 우선). */
+/** true면 이메일 화이트리스트가 설정돼 있다. */
 export const hasAdminEmailGate = adminEmailAllowlist.length > 0;
 
 /** 이메일 게이트가 실제로 작동 가능한가 — 화이트리스트가 있어도 Supabase(Google
- *  OAuth) 없인 로그인 자체가 불가능하니, 그럴 땐 조직자 코드로 폴백해야 한다.
+ *  OAuth) 없인 로그인 자체가 불가능하다(mock 개발 → 게이트 없이 열림).
  *  isAdminAuthed()와 AdminUnlock의 useGoogle 판정이 반드시 이 값 하나를
  *  같이 써야 한다 — 따로 계산하면(예전처럼) 둘이 어긋나 mock 개발에서
  *  admin이 완전히 잠기는 버그가 재발한다(2026-08-15). */
