@@ -1,5 +1,5 @@
 import "server-only";
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI, UrlRetrievalStatus } from "@google/genai";
 import type { ZodType } from "zod";
 import { env, hasGemini } from "@/lib/env";
 
@@ -206,6 +206,22 @@ export async function generateGrounded(opts: {
         .map((c) => c.web)
         .filter((w): w is NonNullable<typeof w> => Boolean(w?.uri))
         .map((w) => ({ uri: w.uri as string, title: w.title }));
+      // urlContext로 **직접 읽은** 페이지는 groundingChunks에 안 잡힌다. 초안기에 공식
+      // 주소를 주자 모델이 그 사이트만 읽고 쓰는 경우가 늘었는데, 그게 "출처 없음"으로
+      // 감점되고 신원 앵커에도 안 닿았다(주류박람회 재초안 35건, 2026-10-01).
+      // 읽기에 성공한 것만 근거로 센다.
+      for (const m of res.candidates?.[0]?.urlContextMetadata?.urlMetadata ?? []) {
+        const uri = m.retrievedUrl;
+        if (!uri || m.urlRetrievalStatus !== UrlRetrievalStatus.URL_RETRIEVAL_STATUS_SUCCESS) continue;
+        if (sources.some((x) => x.uri === uri)) continue;
+        let title: string | undefined;
+        try {
+          title = new URL(uri).hostname.replace(/^www\./, "");
+        } catch {
+          /* 제목 없이 둔다 */
+        }
+        sources.push({ uri, title });
+      }
       return { text: res.text ?? "", sources };
     } catch (e) {
       lastErr = e;
