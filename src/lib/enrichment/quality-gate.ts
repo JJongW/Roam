@@ -23,6 +23,10 @@ export interface GradeInput {
   booth: {
     name: string;
     company?: string;
+    /** 이 부스의 분류 이름. 분류 되읽기 판정에 쓴다. 없으면 company를 분류로 본다 —
+     *  SIBF·마곡리빙마켓 시드는 company 칸에 분류 요약을 넣었다. 주류박람회처럼
+     *  company가 **진짜 회사명**인 전시에서 그걸 분류로 보면 "꼬마루는 …"이 걸린다. */
+    categoryName?: string;
     /** 이 부스의 것이라고 **이미 확인된** 링크. 초안의 근거가 여기에 닿아야
      *  "그 브랜드 얘기"라고 말할 수 있다. */
     websiteUrl?: string;
@@ -95,7 +99,7 @@ const WEAK_SOURCE =
   /(^|\.)(etsy|ebay|amazon|aliexpress|temu|wish|homedepot|walmart|target|wayfair|hobbylobby|aosom|musinsa|coupang|11st|gmarket|auction|qoo10|interpark|tmon|pinterest|youtube|facebook|instagram|tiktok|wikipedia|namu\.wiki|blog\.naver|naver\.me|kakao|tistory|brunch|heypop|slist|nsenior|dhns|blogpay)\.|fair|expo|festa/i;
 
 /** 정보가 없는 채로 길이만 채우는 상투어. LLM 초안의 대표 실패다. */
-const FILLER = [
+export const FILLER = [
   "다양한",
   "특별한",
   "새로운 경험",
@@ -252,8 +256,15 @@ export function gradeCandidate(input: GradeInput): QualityReport {
   // 부스 이름은 없고 **분류 이름만** 주어로 선 문장은 그 부스 얘기가 아니다.
   // "Home & Deco는 가구·조명을 판매하는 브랜드다" 같은 것 — 분류를 되읽었을 뿐이다.
   const summary = p.summary ?? "";
-  const cat = booth.company?.trim();
-  const nameShown = summary.includes(booth.name.trim());
+  const cat = (booth.categoryName ?? booth.company)?.trim();
+  // 부스명이든 회사명이든 이 부스를 가리키는 이름이 주어면 되읽기가 아니다.
+  // 띄어쓰기·법인 표기는 무시한다("헬로우 디스틸러리" = "헬로우디스틸러리").
+  const flat = (s: string) =>
+    s.replace(/주식회사|농업회사법인|영농조합법인|\(주\)|㈜|\(사\)/g, "").replace(/\s+/g, "");
+  const nameShown = [booth.name, booth.company]
+    .map((n) => (n ? flat(n) : ""))
+    .filter((n) => n.length >= 2 && n !== (cat ? flat(cat) : ""))
+    .some((n) => flat(summary).includes(n));
   if (
     summary &&
     !nameShown &&

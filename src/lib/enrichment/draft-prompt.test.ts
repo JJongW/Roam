@@ -98,3 +98,11 @@ describe("draftUserPrompt — 주최 소개 전문", () => {
     expect(p).toContain("천비향약주, 화주");
   });
 });
+
+describe("draftSystemPrompt — 상투어 목록", () => {
+  it("게이트가 잡는 상투어를 전부 싣는다", async () => {
+    const { FILLER } = await import("./quality-gate");
+    const p = draftSystemPrompt();
+    for (const f of FILLER) expect(p).toContain(f);
+  });
+});

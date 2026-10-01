@@ -25,10 +25,12 @@ export async function POST(req: Request) {
   const exhibitionId = await repo.getExhibitionIdBySlug(parsed.data.exhibitionSlug);
   if (!exhibitionId) return notFound("전시를 찾을 수 없습니다");
 
-  const [pending, booths] = await Promise.all([
+  const [pending, booths, categories] = await Promise.all([
     repo.listEnrichmentCandidates({ exhibitionId, status: "pending", limit: 1000 }),
     repo.listBoothsFull(exhibitionId),
+    repo.listCategories(exhibitionId),
   ]);
+  const categoryName = new Map(categories.map((c) => [c.id, c.name]));
   const boothById = new Map(booths.map((b) => [b.id, b]));
 
   // 배치 안의 중복 판정을 다시 내려면 원래처럼 순서대로 훑어야 한다.
@@ -42,7 +44,7 @@ export async function POST(req: Request) {
     const report = gradeCandidate({
       payload,
       sources: c.sources,
-      booth,
+      booth: { ...booth, categoryName: categoryName.get(booth.categoryId) },
       seenPhrases,
       seenActions,
       // 초안기가 그때 요청했던 필드 = payload에 담긴 키.
