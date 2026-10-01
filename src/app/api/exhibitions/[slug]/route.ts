@@ -1,5 +1,5 @@
 import { getRepository } from "@/lib/repositories";
-import { noContent, notFound, ok, parseBody } from "@/lib/api/http";
+import { noContent, notFound, ok, parseBody, requireAdmin } from "@/lib/api/http";
 import { exhibitionInputSchema } from "@/lib/schemas";
 
 type Ctx = { params: Promise<{ slug: string }> };
@@ -14,6 +14,8 @@ export async function GET(_req: Request, { params }: Ctx) {
 
 // PATCH/DELETE treat the param as the exhibition id (admin).
 export async function PATCH(req: Request, { params }: Ctx) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
   const { slug: id } = await params;
   const parsed = await parseBody(req, exhibitionInputSchema.partial());
   if (!parsed.ok) return parsed.res;
@@ -24,6 +26,8 @@ export async function PATCH(req: Request, { params }: Ctx) {
 }
 
 export async function DELETE(_req: Request, { params }: Ctx) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
   const { slug: id } = await params;
   const repo = await getRepository();
   const okDel = await repo.deleteExhibition(id);
