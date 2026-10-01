@@ -212,7 +212,8 @@ export interface WelcomeKit {
 export interface Review {
   id: string;
   boothId: string;
-  sessionId: string;
+  /** 작성자 계정(`app_user.id`). 0056에서 익명 세션 → 계정으로 전환됐다. */
+  userId: string;
   comment: string;
   authorName: string;
   createdAt: string;
@@ -597,7 +598,8 @@ export type MediaType = (typeof MEDIA_TYPES)[number];
 export interface CommunityPost {
   id: string;
   exhibitionId: string;
-  sessionId: string;
+  /** 작성자 계정(`app_user.id`). 0056에서 익명 세션 → 계정으로 전환됐다. */
+  userId: string;
   authorName: string;
   body: string;
   boothId?: string; // optional booth the post is about

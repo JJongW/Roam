@@ -388,7 +388,7 @@ function mapReview(r: Row): Review {
   return {
     id: str(r.id),
     boothId: str(r.booth_id),
-    sessionId: str(r.session_id),
+    userId: str(r.user_id),
     comment: str(r.comment),
     authorName: str(r.author_name),
     createdAt: str(r.created_at),
@@ -505,7 +505,7 @@ function mapPost(r: Row): CommunityPost {
   return {
     id: str(r.id),
     exhibitionId: str(r.exhibition_id),
-    sessionId: str(r.session_id),
+    userId: str(r.user_id),
     authorName: str(r.author_name),
     body: str(r.body),
     boothId: r.booth_id == null ? undefined : String(r.booth_id),
@@ -1464,14 +1464,14 @@ export class SupabaseRepository implements Repository {
 
   async createReview(
     boothId: string,
-    sessionId: string,
+    userId: string,
     input: ReviewInput,
   ): Promise<Review> {
     const db = await this.db();
     const row = {
       id: uid("rv"),
       booth_id: boothId,
-      session_id: sessionId,
+      user_id: userId,
       comment: input.comment,
       author_name: input.authorName,
       created_at: now(),
@@ -2232,7 +2232,7 @@ export class SupabaseRepository implements Repository {
   }
 
   async createPost(
-    sessionId: string,
+    userId: string,
     exhibitionId: string,
     input: CommunityPostInput,
   ): Promise<CommunityPost> {
@@ -2240,7 +2240,7 @@ export class SupabaseRepository implements Repository {
     const row = {
       id: uid("cp"),
       exhibition_id: exhibitionId,
-      session_id: sessionId,
+      user_id: userId,
       author_name: input.authorName,
       body: input.body,
       booth_id: input.boothId ?? null,
@@ -2267,13 +2267,13 @@ export class SupabaseRepository implements Repository {
     return data ? mapPost(data as Row) : null;
   }
 
-  async deletePost(id: string, sessionId: string): Promise<DeletePostResult> {
+  async deletePost(id: string, userId: string): Promise<DeletePostResult> {
     const db = await this.db();
     const res = await db
       .from("community_post")
       .delete()
       .eq("id", id)
-      .eq("session_id", sessionId)
+      .eq("user_id", userId)
       .select("media_public_id, media_type");
     const row = maybeWrote(res, "글 삭제")?.[0];
     if (!row) return { deleted: false };

@@ -14,6 +14,7 @@ import type {
   Exhibition,
   Hall,
   Review,
+  User,
   WelcomeKit,
 } from "@/lib/types";
 
@@ -317,11 +318,20 @@ export const welcomeKits: WelcomeKit[] = [
   },
 ];
 
+/** 시드 리뷰·커뮤니티 글의 소유 계정. 0056에서 소유자가 익명 세션 → 계정으로
+ *  바뀌면서, 시드 행도 실재하는 `app_user`를 가리켜야 로컬 mock 화면이 채워진다.
+ *  표시 이름은 각 행의 `authorName`이 따로 들고 있다. */
+export const seedUser: User = {
+  id: "user_seed",
+  nickname: "시드",
+  createdAt: at(9, 0),
+};
+
 export const reviews: Review[] = [
   {
     id: "rv1",
     boothId: id(EV_A),
-    sessionId: "seed",
+    userId: seedUser.id,
     comment: "전시 구성이 알차요. 추천!",
     authorName: "지민",
     createdAt: at(14, 40),
@@ -329,7 +339,7 @@ export const reviews: Review[] = [
   {
     id: "rv2",
     boothId: id(EV_B),
-    sessionId: "seed",
+    userId: seedUser.id,
     comment: "신간 할인 폭이 커요.",
     authorName: "현우",
     createdAt: at(15, 20),
@@ -337,7 +347,7 @@ export const reviews: Review[] = [
   {
     id: "rv3",
     boothId: id(W[0]),
-    sessionId: "seed",
+    userId: seedUser.id,
     comment: "굿즈 예쁘고 직원분 친절해요.",
     authorName: "수아",
     createdAt: at(13, 30),
@@ -348,7 +358,7 @@ export const communityPosts: CommunityPost[] = [
   {
     id: "cp1",
     exhibitionId: exhibition.id,
-    sessionId: "seed",
+    userId: seedUser.id,
     authorName: "민지",
     body: `${EV_A} 사인회 대기 30분 넘어요. 지금은 한산한 쪽부터 도세요!`,
     boothId: id(EV_A),
@@ -357,7 +367,7 @@ export const communityPosts: CommunityPost[] = [
   {
     id: "cp2",
     exhibitionId: exhibition.id,
-    sessionId: "seed",
+    userId: seedUser.id,
     authorName: "준호",
     body: `${EV_D} 라운지 스탬프 다 모으면 에코백 추첨해요.`,
     boothId: id(EV_D),
@@ -366,7 +376,7 @@ export const communityPosts: CommunityPost[] = [
   {
     id: "cp3",
     exhibitionId: exhibition.id,
-    sessionId: "seed",
+    userId: seedUser.id,
     authorName: "익명",
     body: `${EV_B} 신간 굿즈 거의 다 나갔어요. 빨리 가보세요!`,
     boothId: id(EV_B),
@@ -384,5 +394,6 @@ export function freshSeed() {
     welcomeKits: structuredClone(welcomeKits),
     reviews: structuredClone(reviews),
     communityPosts: structuredClone(communityPosts),
+    seedUser: structuredClone(seedUser),
   };
 }
