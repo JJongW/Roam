@@ -48,15 +48,24 @@ export async function POST(req: Request) {
     if (!detail) return notFound("부스를 찾을 수 없습니다");
     const { booth, category } = detail;
 
+    // 소개가 없으면 부르지 않는다 — 이름과 분야만 주면 모델이 그럴듯한 한 줄을
+    // 지어낸다. 정보가 없는 부스는 화면이 "자료를 못 찾았다"고 말한다(2026-10-02).
+    const blurb = (booth.longDescription || booth.description || "").trim();
+    if (!blurb) {
+      const empty: Extract = { summary: "", newReleases: [], goods: [] };
+      cache.set(boothId, { data: empty, at: Date.now() });
+      return ok(empty);
+    }
+
     try {
       const data = await generateJSON<Extract>({
         system:
-          "너는 도서전 부스 정보를 정리하는 도우미야. 부스 소개를 보고 아래 JSON으로만 답해. summary: 무엇을 보여주는 곳인지 한국어 한 문장(40자 내외, 과장·이모지·따옴표 없이). newReleases: 소개에 등장하는 신간/전시 도서·작가명(없으면 빈 배열). goods: 굿즈·기념품 종류(없으면 빈 배열). 추측해서 지어내지 말고, 소개에 근거가 있을 때만 넣어.",
+          "너는 전시·박람회 부스 정보를 정리하는 도우미야. 부스 소개를 보고 아래 JSON으로만 답해. summary: 무엇을 보여주는 곳인지 한국어 한 문장(40자 내외, 과장·이모지·따옴표 없이). newReleases: 소개에 등장하는 신간/전시 도서·작가명(없으면 빈 배열). goods: 굿즈·기념품 종류(없으면 빈 배열). 추측해서 지어내지 말고, 소개에 근거가 있을 때만 넣어. 소개로 무엇을 하는 곳인지 알 수 없으면 summary는 빈 문자열.",
         prompt: [
           `부스명: ${booth.name}`,
           `출판사/브랜드: ${booth.company}`,
           `분야: ${category.name}`,
-          `소개: ${booth.longDescription || booth.description}`,
+          `소개: ${blurb}`,
         ].join("\n"),
         schema: extractSchema,
         temperature: 0.2,

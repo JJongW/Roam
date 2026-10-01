@@ -198,6 +198,20 @@ export default async function BoothDetailPage({ params }: Props) {
                       )}
                     </section>
                   )}
+                  {/* 아무 재료도 없으면 숨기지 말고 그렇다고 말한다 — 소개가 통째로 사라지면
+                      정보가 없는 건지 화면이 깨진 건지 구분이 안 된다(2026-10-02). */}
+                  {!about.romi &&
+                    !about.quote &&
+                    !about.fallback &&
+                    !booth.enrichment?.summary?.trim() &&
+                    !booth.enrichment?.roamInterpretation?.trim() && (
+                      <section className="space-y-2">
+                        <h2 className="text-base font-bold">{t("booth.about")}</h2>
+                        <p className="text-[15px] leading-relaxed text-muted-foreground">
+                          {t("booth.aboutEmpty")}
+                        </p>
+                      </section>
+                    )}
 
                   {/* 수동 주입 추가정보(굿즈·팁) — 있을 때만. */}
                   {booth.enrichment &&
