@@ -4,17 +4,16 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n/provider";
 
-type TabKey = "intro" | "record" | "reviews" | "posts";
+type TabKey = "intro" | "record" | "reviews";
 
 const TAB_KEYS: { key: TabKey; i18nKey: string }[] = [
   { key: "intro", i18nKey: "booth.tabIntro" },
   { key: "record", i18nKey: "booth.tabRecord" },
   { key: "reviews", i18nKey: "booth.tabReviews" },
-  { key: "posts", i18nKey: "booth.tabPosts" },
 ];
 
 /**
- * Consolidates the booth detail into tabs (소개 · 나의 기록 · 리뷰 · 방문자) so
+ * Consolidates the booth detail into tabs (소개 · 나의 기록 · 리뷰) so
  * the page doesn't dump everything in one long scroll. Each panel is rendered
  * server-side and passed in; this only switches which one shows.
  */
@@ -22,12 +21,10 @@ export function BoothTabs({
   intro,
   record,
   reviews,
-  posts,
 }: {
   intro: React.ReactNode;
   record: React.ReactNode;
   reviews: React.ReactNode;
-  posts: React.ReactNode;
 }) {
   const tr = useT();
   const [tab, setTab] = useState<TabKey>("intro");
@@ -35,7 +32,6 @@ export function BoothTabs({
     intro,
     record,
     reviews,
-    posts,
   };
 
   return (
