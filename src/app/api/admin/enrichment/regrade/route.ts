@@ -1,7 +1,8 @@
 import { z } from "zod";
-import { notFound, ok, parseBody, requireAdmin } from "@/lib/api/http";
+import { getUserId, notFound, ok, parseBody, requireAdmin } from "@/lib/api/http";
 import { getRepository } from "@/lib/repositories";
 import { gradeCandidate } from "@/lib/enrichment/quality-gate";
+import { autoPassPending } from "@/lib/enrichment/run-draft";
 import type { BoothEnrichmentPatch } from "@/lib/schemas";
 
 const bodySchema = z.object({ exhibitionSlug: z.string().min(1) });
@@ -62,5 +63,7 @@ export async function POST(req: Request) {
       changed += 1;
     }
   }
-  return ok({ examined: pending.length, changed });
+  // 재채점으로 기준을 넘은 것도 초안 직후와 같은 규칙으로 내보낸다.
+  const auto = await autoPassPending(repo, exhibitionId, { actor: await getUserId() });
+  return ok({ examined: pending.length, changed, ...auto });
 }

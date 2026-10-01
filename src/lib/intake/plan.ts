@@ -21,6 +21,7 @@ export interface PlannedCreate {
   instagramUrl?: string;
   websiteUrl?: string;
   tags: string[];
+  aliases: string[];
   x: number;
   y: number;
   enrichment?: Authored;
@@ -233,6 +234,7 @@ function planCreate(
     instagramUrl: row.instagramUrl,
     websiteUrl: row.websiteUrl,
     tags: row.tags ?? [],
+    aliases: row.aliases ?? [],
     x: geo?.x ?? 0,
     y: geo?.y ?? 0,
     enrichment: row.enrichment

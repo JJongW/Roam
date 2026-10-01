@@ -124,10 +124,14 @@ async function one(b) {
   }
   const r = pickHandle(html, site, b.name);
   if (!r) { stat.noLink++; return; }
-  b.instagramUrl = `https://www.instagram.com/${r.handle}`;
+  const url = `https://www.instagram.com/${r.handle}`;
   // 도메인·브랜드명과 안 겹치는 핸들은 사람이 봐야 한다 — 협력사 계정일 수 있다.
-  if (r.weak) { review.push({ code: b.code, name: b.name, site, instagramUrl: b.instagramUrl,
+  // **인입 파일에는 쓰지 않는다.** 예전엔 파일에도 써서, 아무도 확인 목록을 안 보고
+  // 인입을 돌리면 그대로 운영에 올라갔다(주류박람회: 양주시청·알바 계정, 2026-10-01).
+  // 확인하고 나면 사람이 파일에 옮긴다.
+  if (r.weak) { review.push({ code: b.code, name: b.name, site, instagramUrl: url,
       why: "도메인·브랜드명과 안 겹침 — 협력사/제작사 계정일 수 있다" }); stat.weak++; }
+  else b.instagramUrl = url;
   stat.found++;
   console.log(`  ${r.weak ? "?" : "✓"} ${b.code} ${b.name} → @${r.handle}${r.weak ? "  (확인 필요)" : ""}`);
 }

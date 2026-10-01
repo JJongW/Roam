@@ -21,7 +21,8 @@ const VOICE_RULES = [
 ];
 
 export interface DraftTarget {
-  booth: Pick<Booth, "code" | "name" | "company" | "description" | "tags">;
+  booth: Pick<Booth, "code" | "name" | "company" | "description" | "tags"> &
+    Partial<Pick<Booth, "websiteUrl" | "instagramUrl">>;
   /** 이미 있는 저작 정보 — 초안기는 **빈 필드만** 채운다. */
   existing?: {
     summary?: string;
@@ -70,6 +71,14 @@ export function draftUserPrompt(t: DraftTarget): string {
       ? `이미 있는 로미 한 줄: ${t.existing.roamInterpretation}`
       : "",
     t.existing?.sourceUrl ? `참고 링크: ${t.existing.sourceUrl}` : "",
+    // 품질 게이트는 근거가 이 주소에 닿아야 자동 통과시킨다. 초안기가 주소를 모르면
+    // 닿는 건 검색 운이다 — 동명 브랜드로 새는 것도 여기서 막힌다.
+    ...(b.websiteUrl || b.instagramUrl
+      ? [
+          `이 부스의 공식 주소(확인됨): ${[b.websiteUrl, b.instagramUrl].filter(Boolean).join(", ")}`,
+          "이 주소를 먼저 읽고 그 내용을 근거로 쓴다. 이름이 같은 다른 브랜드와 섞지 않는다.",
+        ]
+      : []),
     "",
     "웹에서 이 브랜드를 찾아 확인한 사실만 쓴다. 못 찾으면 해당 필드를 비운다.",
     "",

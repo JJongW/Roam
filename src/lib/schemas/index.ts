@@ -140,7 +140,8 @@ export const exhibitionInputSchema = z.object({
 });
 export type ExhibitionInput = z.infer<typeof exhibitionInputSchema>;
 
-export const boothInputSchema = z.object({
+/** 부스 필드 — default 없음. 부분 수정(boothPatchInputSchema)이 이걸 쓴다. */
+const boothFields = z.object({
   exhibitionId: z.string().min(1),
   hallId: z.string().min(1),
   categoryId: z.string().min(1),
@@ -151,16 +152,26 @@ export const boothInputSchema = z.object({
   kind: z.enum(["exhibitor", "facility"]).optional(),
   name: z.string().min(1).max(120),
   company: z.string().min(1).max(120),
-  description: z.string().max(300).default(""),
-  longDescription: z.string().max(4000).default(""),
-  images: z.array(z.string()).default([]),
+  description: z.string().max(300),
+  longDescription: z.string().max(4000),
+  images: z.array(z.string()),
   logoUrl: z.string().optional(),
   instagramUrl: z.string().url().optional(),
   websiteUrl: z.string().url().optional(),
-  tags: z.array(z.string()).default([]),
+  tags: z.array(z.string()),
+  /** 공동입점·정식명 등 같은 부스를 가리키는 다른 이름. default 없음 —
+   *  부분 수정에서 안 보낸 키가 빈 배열로 둔갑하면 기존 별칭이 지워진다. */
+  aliases: z.array(z.string()).optional(),
   x: z.number(),
   y: z.number(),
-  popularity: z.number().int().min(0).max(100).default(50),
+  popularity: z.number().int().min(0).max(100),
+});
+export const boothInputSchema = boothFields.extend({
+  description: boothFields.shape.description.default(""),
+  longDescription: boothFields.shape.longDescription.default(""),
+  images: boothFields.shape.images.default([]),
+  tags: boothFields.shape.tags.default([]),
+  popularity: boothFields.shape.popularity.default(50),
 });
 export type BoothInput = z.infer<typeof boothInputSchema>;
 
@@ -208,7 +219,10 @@ export const boothEnrichmentPatchSchema = z.object({
 });
 export type BoothEnrichmentPatch = z.infer<typeof boothEnrichmentPatchSchema>;
 
-export const boothPatchInputSchema = boothInputSchema.partial().extend({
+/** 부분 수정. boothInputSchema.partial()로 만들면 안 된다 — zod 4에서 `.partial()`은
+ *  default()를 안 막아서 안 보낸 키가 빈 값으로 생긴다. {aliases: []}만 보내도
+ *  description·images·tags가 지워진다(2026-10-01). 그래서 default 없는 boothFields에서. */
+export const boothPatchInputSchema = boothFields.partial().extend({
   enrichment: boothEnrichmentAuthorInputSchema.optional(),
 });
 
