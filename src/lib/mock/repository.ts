@@ -1,4 +1,5 @@
 import { uid, shortId } from "@/lib/utils";
+import type { ExhibitorPlan, Ref } from "@/lib/exhibitor/plan";
 import type { AuditContext, ChangeEntry } from "@/lib/audit/diff";
 import { diffFields } from "@/lib/audit/diff";
 import { AUDIT_SPECS } from "@/lib/audit/entities";
@@ -59,6 +60,8 @@ import type {
   Job,
   VisitorSession,
   WelcomeKit,
+  ExhibitorGraph,
+  ExhibitorLinkCandidate,
 } from "@/lib/types";
 import type {
   AnalyticsEventInput,
@@ -102,6 +105,9 @@ interface Store {
   jobs: Job[];
   userBrains: Map<string, UserBrain>;
   issueLogs: IssueLog[];
+  /** 0040 + 0057 — 참가사 그래프. */
+  exhibitorGraph: ExhibitorGraph;
+  linkCandidates: ExhibitorLinkCandidate[];
 }
 
 // Persist across HMR / route invocations in a single Node process.
@@ -155,6 +161,8 @@ function buildStore(): Store {
     jobs: [],
     userBrains: new Map(),
     issueLogs: [],
+    exhibitorGraph: { exhibitors: [], participants: [], assignments: [], candidates: [] },
+    linkCandidates: [],
   };
 }
 
@@ -330,6 +338,71 @@ export class MockRepository implements Repository {
     }
     Object.assign(b, input);
     return b;
+  }
+
+  async loadExhibitorGraph(): Promise<ExhibitorGraph> {
+    const gph = store().exhibitorGraph;
+    return {
+      exhibitors: [...gph.exhibitors],
+      participants: [...gph.participants],
+      assignments: [...gph.assignments],
+      candidates: store().linkCandidates.map((c) => ({ boothId: c.boothId, exhibitorId: c.exhibitorId, status: c.status })),
+    };
+  }
+
+  async applyExhibitorPlan(plan: ExhibitorPlan) {
+    const gph = store().exhibitorGraph;
+    const exId = new Map(plan.exhibitors.map((e) => [e.key, uid("exr")]));
+    const ptId = new Map(plan.participants.map((p) => [p.key, uid("xpt")]));
+    const ex = (r: Ref) => ("existing" in r ? r.existing : exId.get(r.new)!);
+    const pt = (r: Ref) => ("existing" in r ? r.existing : ptId.get(r.new)!);
+    for (const e of plan.exhibitors)
+      gph.exhibitors.push({ id: exId.get(e.key)!, canonicalName: e.canonicalName, instagramUrl: e.instagramUrl, websiteUrl: e.websiteUrl });
+    for (const p of plan.participants)
+      gph.participants.push({ id: ptId.get(p.key)!, exhibitorId: ex(p.exhibitorRef), exhibitionId: p.exhibitionId, displayName: p.displayName });
+    for (const a of plan.assignments) gph.assignments.push({ boothId: a.boothId, participantId: pt(a.participantRef), role: a.role });
+    let candidates = 0;
+    for (const c of plan.candidates) {
+      const exhibitorId = ex(c.target);
+      if (store().linkCandidates.some((x) => x.boothId === c.boothId && x.exhibitorId === exhibitorId)) continue;
+      store().linkCandidates.push({ id: uid("xlc"), boothId: c.boothId, exhibitorId, reason: c.reason, status: "pending", createdAt: now() });
+      candidates++;
+    }
+    return { exhibitors: plan.exhibitors.length, participants: plan.participants.length, assignments: plan.assignments.length, candidates };
+  }
+
+  async listExhibitorLinkCandidates(status = "pending"): Promise<ExhibitorLinkCandidate[]> {
+    return store().linkCandidates.filter((c) => c.status === status);
+  }
+
+  async decideExhibitorLinkCandidate(
+    id: string,
+    decision: "approved" | "rejected",
+    actor: string | null,
+  ): Promise<ExhibitorLinkCandidate | null> {
+    const c = store().linkCandidates.find((x) => x.id === id);
+    if (!c || c.status !== "pending") return c ?? null;
+    if (decision === "approved") {
+      const gph = store().exhibitorGraph;
+      const asg = gph.assignments.find((a) => a.boothId === c.boothId && a.role === "primary");
+      if (!asg) throw new Error("이 부스는 아직 참가사에 배정되지 않았습니다 — 백필부터");
+      const from = gph.participants.find((p) => p.id === asg.participantId)!.exhibitorId;
+      const to = c.exhibitorId;
+      if (from !== to) {
+        for (const p of gph.participants.filter((x) => x.exhibitorId === from)) {
+          const same = gph.participants.find((x) => x.exhibitorId === to && x.exhibitionId === p.exhibitionId);
+          if (same) {
+            for (const a of gph.assignments) if (a.participantId === p.id) a.participantId = same.id;
+            gph.participants = gph.participants.filter((x) => x.id !== p.id);
+          } else p.exhibitorId = to;
+        }
+        for (const o of store().linkCandidates)
+          if (o.exhibitorId === from && o.status === "pending") o.status = "superseded";
+        gph.exhibitors = gph.exhibitors.filter((e) => e.id !== from);
+      }
+    }
+    Object.assign(c, { status: decision, reviewedAt: now(), reviewedBy: actor });
+    return c;
   }
 
   async createEnrichmentCandidates(

@@ -459,6 +459,30 @@ export interface Job {
 }
 
 /** 검수 대기 초안 한 건. 자동 초안·참가사 폼·주최 측 제출이 같은 모양으로 들어온다. */
+/**
+ * 참가사 그래프 — 0040(exhibitor · exhibition_participant · booth_participant).
+ * 부스(이번 회차의 자리)와 참가사(행사를 넘는 정체)를 잇는다. 화면과 로미는
+ * 회차별 표기 이름(displayName)을 쓴다(설계 2026-10-02 §3).
+ */
+export interface ExhibitorGraph {
+  exhibitors: { id: string; canonicalName: string; instagramUrl?: string; websiteUrl?: string }[];
+  participants: { id: string; exhibitorId: string; exhibitionId: string; displayName: string }[];
+  assignments: { boothId: string; participantId: string; role: "primary" | "co_exhibitor" }[];
+  candidates: { boothId: string; exhibitorId: string; status: string }[];
+}
+
+/** "같은 브랜드인가요?" — 이름만 같아서 사람이 판단해야 하는 연결(0057). */
+export interface ExhibitorLinkCandidate {
+  id: string;
+  boothId: string;
+  exhibitorId: string;
+  reason: string;
+  status: "pending" | "approved" | "rejected" | "superseded";
+  reviewedAt?: string;
+  reviewedBy?: string | null;
+  createdAt: string;
+}
+
 export interface EnrichmentCandidate {
   id: string;
   boothId: string;

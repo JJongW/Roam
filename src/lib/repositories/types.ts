@@ -30,8 +30,11 @@ import type {
   UserPreference,
   VisitorSession,
   WelcomeKit,
+  ExhibitorGraph,
+  ExhibitorLinkCandidate,
 } from "@/lib/types";
 import type { TasteAccuracy } from "@/lib/memory/taste";
+import type { ExhibitorPlan } from "@/lib/exhibitor/plan";
 import type {
   AnalyticsEventInput,
   BookmarkInput,
@@ -110,6 +113,23 @@ export interface Repository {
   createEnrichmentCandidates(
     rows: Omit<EnrichmentCandidate, "id" | "createdAt" | "status">[],
   ): Promise<number>;
+  // 참가사(행사를 넘는 브랜드) — 0040 + 0057
+  /** 그래프 전체. 1천 행을 넘는다 — 구현은 끝까지 페이지를 넘겨 읽고, 실패하면 던진다
+   *  (잘린 채 돌려주면 "배정된 부스"를 놓쳐 중복 참가사가 생긴다). */
+  loadExhibitorGraph(): Promise<ExhibitorGraph>;
+  /** 계획을 그대로 쓴다. 새 참가사 → 참가 사실 → 배정 → 후보 순. */
+  applyExhibitorPlan(
+    plan: ExhibitorPlan,
+  ): Promise<{ exhibitors: number; participants: number; assignments: number; candidates: number }>;
+  listExhibitorLinkCandidates(status?: string): Promise<ExhibitorLinkCandidate[]>;
+  /** 승인 = 그 부스의 참가사를 대상 참가사에 **통째로 합친다**(모든 회차의 참가 사실).
+   *  반려 = 따로 둔다. */
+  decideExhibitorLinkCandidate(
+    id: string,
+    decision: "approved" | "rejected",
+    actor: string | null,
+  ): Promise<ExhibitorLinkCandidate | null>;
+
   listEnrichmentCandidates(opts?: {
     exhibitionId?: string;
     boothId?: string;
