@@ -9,7 +9,6 @@ import { BoothPersonalPanel } from "@/components/booth/booth-personal-panel";
 import { BoothHighlights } from "@/components/booth/booth-highlights";
 import { BoothGallery } from "@/components/booth/booth-gallery";
 import { BoothTabs } from "@/components/booth/booth-tabs";
-import { BoothPosts } from "@/components/booth/booth-posts";
 import { CategoryChip } from "@/components/booth/category-chip";
 import { ReviewSection } from "@/components/booth/review-section";
 import { EventList } from "@/components/booth/event-list";
@@ -311,7 +310,6 @@ export default async function BoothDetailPage({ params }: Props) {
                   previewCount={2}
                 />
               }
-              posts={<BoothPosts boothId={booth.id} previewCount={2} />}
             />
           </div>
         </div>
