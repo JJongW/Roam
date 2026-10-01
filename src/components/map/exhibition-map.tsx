@@ -483,8 +483,16 @@ export function ExhibitionMap({
     ],
   );
 
-  // The explicit "전체 보기" control: drop the user-adjusted lock and re-fit.
+  // The explicit "전체 보기" control: drop the user-adjusted lock and re-fit —
+  // rotation included, since "전체 보기" reads as "처음 화면으로". Turn the short
+  // way to the nearest upright angle (90°→0°, 270°→360°) — never three
+  // quarter-turns.
   const resetView = useCallback(() => {
+    const upright = Math.round(rotationRef.current / 360) * 360;
+    if (upright !== rotationRef.current) {
+      rotationRef.current = upright;
+      setRotation(upright);
+    }
     userAdjusted.current = false;
     fit(true);
   }, [fit]);
