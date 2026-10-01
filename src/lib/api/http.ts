@@ -1,10 +1,15 @@
 import { NextResponse } from "next/server";
 import { cookies, headers } from "next/headers";
 import { getSupabaseUserFromBearer } from "@/lib/auth/supabase-bearer-user";
-import { signUserId, verifySignedUserId } from "@/lib/auth/user-cookie";
+import {
+  signAdminEmail,
+  signUserId,
+  verifyAdminEmail,
+  verifySignedUserId,
+} from "@/lib/auth/user-cookie";
 import { ZodError, type ZodType } from "zod";
 import { SESSION_COOKIE, USER_COOKIE, ADMIN_COOKIE } from "@/lib/constants";
-import { env, adminEmailAllowlist, adminEmailGateActive } from "@/lib/env";
+import { adminEmailAllowlist, adminEmailGateActive } from "@/lib/env";
 import type { ApiError, ApiErrorCode } from "@/lib/types";
 
 const STATUS: Record<ApiErrorCode, number> = {
@@ -142,49 +147,36 @@ export async function clearUserCookie() {
 }
 
 /** True if the request carries a valid admin-gate cookie.
- *  ADMIN_EMAILS(있으면) 최우선 — 쿠키 값을 매 요청 허용목록과 대조하므로, 목록에서
- *  이메일을 빼면 이미 발급된 쿠키도 바로 무효가 된다(로그아웃 없이도 즉시 회수).
- *  없으면 ORGANIZER_CODE(공유 코드)로 폴백, 둘 다 없으면 게이트 자체가 꺼진다
- *  (로컬 mock 개발 전용 — 실배포에서 이 상태로 두면 /admin이 통째로 열린다). */
+ *  쿠키는 서명된 Google 이메일이고, 매 요청 ADMIN_EMAILS와 대조한다 — 목록에서
+ *  이메일을 빼면 이미 발급된 쿠키도 바로 무효가 된다.
+ *  ADMIN_EMAILS가 없으면: 로컬 개발에선 열고, **운영에선 닫는다**. 예전엔 공유
+ *  조직자 코드로 폴백했는데, 그 코드가 문서에 평문으로 남아 있었고 쿠키 값이 곧
+ *  코드라 한 번 새면 누구든 들어올 수 있었다(2026-10-01). */
 export async function isAdminAuthed(): Promise<boolean> {
-  const store = await cookies();
-  if (adminEmailGateActive) {
-    const email = store.get(ADMIN_COOKIE)?.value?.toLowerCase();
-    return !!email && adminEmailAllowlist.includes(email);
-  }
-  if (!env.ORGANIZER_CODE) return true; // gate disabled when unconfigured
-  return store.get(ADMIN_COOKIE)?.value === env.ORGANIZER_CODE;
+  if (!adminEmailGateActive) return process.env.NODE_ENV !== "production";
+  const raw = (await cookies()).get(ADMIN_COOKIE)?.value;
+  const email = raw ? verifyAdminEmail(raw) : null;
+  return !!email && adminEmailAllowlist.includes(email);
 }
 
 /**
  * Guard an admin-only route handler. Returns a 401 response when the
- * organizer gate is configured but the request lacks a valid admin cookie,
- * or `null` when access is allowed (gate disabled or cookie valid).
+ * request lacks a valid admin cookie, or `null` when access is allowed.
  */
 export async function requireAdmin(): Promise<NextResponse | null> {
   if (await isAdminAuthed()) return null;
   return fail("UNAUTHORIZED", "운영자 인증이 필요합니다");
 }
 
-/** email이 있으면 이메일 화이트리스트 게이트용(값=검증된 Google 이메일).
- *  없으면 기존 조직자 코드 게이트용(값=코드 자체). */
-export async function setAdminCookie(email?: string) {
+/** 허용목록 검증을 마친 Google 이메일로만 부른다(/auth/callback). */
+export async function setAdminCookie(email: string) {
   const store = await cookies();
-  if (email) {
-    store.set(ADMIN_COOKIE, email.toLowerCase(), {
-      httpOnly: true,
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 60 * 24 * 30,
-    });
-    return;
-  }
-  if (!env.ORGANIZER_CODE) return;
-  store.set(ADMIN_COOKIE, env.ORGANIZER_CODE, {
+  store.set(ADMIN_COOKIE, signAdminEmail(email), {
     httpOnly: true,
+    secure: true,
     sameSite: "lax",
     path: "/",
-    maxAge: 60 * 60 * 12,
+    maxAge: 60 * 60 * 24 * 30,
   });
 }
 

@@ -15,8 +15,7 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // 게이트: ADMIN_EMAILS(이메일 화이트리스트)가 있으면 Google 로그인, 없으면
-  // ORGANIZER_CODE(조직자 코드) — isAdminAuthed와 같은 우선순위.
+  // 게이트: Google 로그인 + ADMIN_EMAILS. 운영에서 목록이 비면 닫힌다(isAdminAuthed).
   if (!(await isAdminAuthed())) {
     return <AdminUnlock useGoogle={adminEmailGateActive} />;
   }

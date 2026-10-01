@@ -33,3 +33,19 @@ export function verifySignedUserId(signed: string): string | null {
   if (a.length !== b.length || !timingSafeEqual(a, b)) return null;
   return id;
 }
+
+/** `roam_admin` 쿠키 값. 예전엔 이메일 평문이라 관리자 이메일만 알면 쿠키를 손으로
+ *  만들어 /admin에 들어갈 수 있었다. `admin:` 접두로 서명 공간을 나눠서
+ *  `roam_user` 서명 값이 관리자 쿠키로 재사용되지 않게 한다. */
+const ADMIN_PREFIX = "admin:";
+
+export function signAdminEmail(email: string): string {
+  return signUserId(ADMIN_PREFIX + email.toLowerCase());
+}
+
+export function verifyAdminEmail(signed: string): string | null {
+  const payload = verifySignedUserId(signed);
+  return payload?.startsWith(ADMIN_PREFIX)
+    ? payload.slice(ADMIN_PREFIX.length)
+    : null;
+}

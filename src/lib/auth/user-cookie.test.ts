@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { signUserId, verifySignedUserId } from "@/lib/auth/user-cookie";
+import {
+  signAdminEmail,
+  signUserId,
+  verifyAdminEmail,
+  verifySignedUserId,
+} from "@/lib/auth/user-cookie";
 
 describe("roam_user 쿠키 서명", () => {
   it("서명한 값을 되읽으면 원래 id가 나온다", () => {
@@ -29,5 +34,22 @@ describe("roam_user 쿠키 서명", () => {
   it("id에 점이 들어 있어도 마지막 점 기준으로 갈라 통과한다", () => {
     const signed = signUserId("u.with.dots");
     expect(verifySignedUserId(signed)).toBe("u.with.dots");
+  });
+});
+
+describe("roam_admin 쿠키 서명", () => {
+  it("서명한 이메일을 소문자로 되읽는다", () => {
+    expect(verifyAdminEmail(signAdminEmail("Owner@Example.com"))).toBe(
+      "owner@example.com",
+    );
+  });
+
+  // 예전 쿠키는 이메일 평문이었다 — 관리자 이메일만 알면 손으로 만들 수 있었다.
+  it("평문 이메일은 거부한다", () => {
+    expect(verifyAdminEmail("owner@example.com")).toBeNull();
+  });
+
+  it("roam_user 서명 값은 관리자 쿠키로 쓸 수 없다", () => {
+    expect(verifyAdminEmail(signUserId("owner@example.com"))).toBeNull();
   });
 });
