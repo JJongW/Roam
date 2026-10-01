@@ -1,5 +1,5 @@
 import { getRepository } from "@/lib/repositories";
-import { created, ok, parseBody } from "@/lib/api/http";
+import { created, ok, parseBody, requireAdmin } from "@/lib/api/http";
 import { exhibitionInputSchema } from "@/lib/schemas";
 
 export async function GET(req: Request) {
@@ -13,6 +13,8 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
   const parsed = await parseBody(req, exhibitionInputSchema);
   if (!parsed.ok) return parsed.res;
   const repo = await getRepository();
