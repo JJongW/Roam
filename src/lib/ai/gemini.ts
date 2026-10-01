@@ -104,45 +104,6 @@ export async function generateJSON<T>(opts: {
   );
 }
 
-/**
- * Vision variant: read an inline image (base64) plus a text prompt, return
- * validated JSON. Used to extract publisher/brand/title text from a visitor's
- * screenshot — perception only; booth matching stays deterministic downstream.
- */
-export async function generateJSONFromImage<T>(opts: {
-  prompt: string;
-  image: { data: string; mimeType: string };
-  schema: ZodType<T>;
-  system?: string;
-  temperature?: number;
-}): Promise<T> {
-  return generate(
-    (model) => ({
-      model,
-      contents: [
-        {
-          role: "user",
-          parts: [
-            { text: opts.prompt },
-            {
-              inlineData: {
-                mimeType: opts.image.mimeType,
-                data: opts.image.data,
-              },
-            },
-          ],
-        },
-      ],
-      config: {
-        responseMimeType: "application/json",
-        temperature: opts.temperature ?? 0.1,
-        ...(opts.system ? { systemInstruction: opts.system } : {}),
-      },
-    }),
-    (text) => parseValidated(text, opts.schema),
-  );
-}
-
 /** Plain-text generation (summaries etc.). Same backoff + fallback. */
 export async function generateText(opts: {
   prompt: string;
