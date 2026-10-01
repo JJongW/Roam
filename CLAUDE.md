@@ -48,6 +48,12 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
   부스 상세(리뷰·이벤트·웰컴키트) → 노트 → "오늘 관람 마치기"(회고).
   앞 셋은 공개, 노트·회고부터 로그인.
 - **부스/이벤트**: `Booth`(code 자연키, kind exhibitor|facility, tags=카테고리 slug, aliases 공동입점), `BoothEvent`.
+- **참가사(행사를 넘는 브랜드)**: 0040 `exhibitor` ← `exhibition_participant`(회차별 **표기 이름**
+  display_name) ← `booth_participant`. 인스타·웹 도메인이 겹치면 자동 연결, **이름만 같으면 사람이
+  확인**(`/admin/verify/brands`, 0057 후보). 판정은 `lib/exhibitor/identity.ts` 하나 — 품질 게이트의
+  신원 앵커와 공유한다. 인입 적용이 끝나면 연결 + **이월 초안**(지난 회차의 승인 정보, 행사 한정
+  표현 제외)이 자동으로 돈다. 소개·사진은 참가사에 복사하지 않는다 — 가장 최근 승인 부스가 원천.
+  설계 `docs/superpowers/specs/2026-10-02-cross-exhibition-brand-design.md`.
 - **주최자 콘솔** `/admin`: 전시·부스·이벤트·대기 관리 + 분석 대시보드(히트맵·인기부스·동선흐름·퍼널).
 - **커뮤니티는 웹에서 뺐다**(2026-10-01) — 전시 커뮤니티 페이지와 부스 상세 "방문자" 탭을
   지웠다. API(`/api/exhibitions/[slug]/community`·`/api/community/*`)와 `community_post`

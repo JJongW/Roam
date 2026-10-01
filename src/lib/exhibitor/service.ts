@@ -2,6 +2,8 @@ import type { Repository } from "@/lib/repositories/types";
 import type { Booth, ExhibitorGraph } from "@/lib/types";
 import { identityKeys } from "./identity";
 import { planExhibitorLinks, type ExhibitorPlan, type ExistingExhibitor } from "./plan";
+import { planCarryover, type CarryoverItem } from "./carryover";
+import { autoPassPending } from "@/lib/enrichment/run-draft";
 
 /**
  * 저장소의 참가사 그래프 + 부스들로 연결 계획을 만든다. 백필과 인입이 같은 판정을
@@ -56,4 +58,58 @@ export async function planFromRepository(
     decidedCandidates: new Set(graph.candidates.map((c) => `${c.boothId}|${c.exhibitorId}`)),
   });
   return { plan, graph, booths };
+}
+
+/**
+ * 한 회차에 이월 초안을 만든다. 핵심이 빈 부스 중 같은 참가사의 다른 회차에 승인된
+ * 정보가 있으면 그걸 초안(`source: "carryover"`)으로 넣고, 비어 있는 사진·링크를 채운다.
+ *
+ * 초안은 같은 승인 큐를 탄다. 신뢰도 0.97 — 원천은 이미 승인(사람 또는 자동 통과 ≥0.95)된
+ * 글이고 연결은 인스타·도메인 또는 사람 확인이라, 자동 통과 정책(review-policy)을 그대로
+ * 통과한다. 이름만 같은 쌍은 사람이 합치기 전엔 연결이 아니라 여기 안 온다.
+ */
+export async function runCarryover(
+  repo: Repository,
+  exhibitionId: string,
+  opts: { apply: boolean; actor?: string | null },
+): Promise<{ items: CarryoverItem[]; autoPassed: number }> {
+  const exhibitions = await repo.listExhibitions({ limit: 200 });
+  const [graph, pending, ...perExhibition] = await Promise.all([
+    repo.loadExhibitorGraph(),
+    repo.listEnrichmentCandidates({ exhibitionId, status: "pending", limit: 1000 }),
+    ...exhibitions.data.map((e) => repo.listBoothsFull(e.id)),
+  ]);
+  const items = planCarryover({
+    exhibitionId,
+    graph,
+    exhibitions: exhibitions.data,
+    booths: perExhibition.flat().map((b) => ({ ...b, images: b.images ?? [] })),
+    pendingBoothIds: new Set(pending.map((c) => c.boothId)),
+  });
+  if (!opts.apply || items.length === 0) return { items, autoPassed: 0 };
+
+  await repo.createEnrichmentCandidates(
+    items.map((it) => ({
+      boothId: it.boothId,
+      exhibitionId,
+      source: "carryover",
+      payload: it.payload as Record<string, unknown>,
+      sources: [{ uri: `/booths/${it.sourceBoothId}`, title: it.sourceLabel }],
+      confidence: 0.97,
+      issues: [],
+    })),
+  );
+  for (const it of items) {
+    if (Object.keys(it.boothPatch).length === 0) continue;
+    await repo.updateBooth(it.boothId, it.boothPatch, {
+      source: "carryover",
+      actor: opts.actor ?? null,
+      reason: `이월: ${it.sourceLabel}`,
+    });
+  }
+  const auto = await autoPassPending(repo, exhibitionId, {
+    boothIds: new Set(items.map((i) => i.boothId)),
+    actor: opts.actor ?? null,
+  });
+  return { items, autoPassed: auto.autoPassed };
 }
