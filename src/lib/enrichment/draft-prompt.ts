@@ -139,3 +139,10 @@ export function missingFields(e?: {
   if (!e?.memoryHooks?.length) out.push("memoryHooks");
   return out;
 }
+
+/** 기본 초안 대상인가 — 핵심(요약·로미 한 줄)이 비었을 때만. timing·memoryHooks는
+ *  "모르면 비운다"가 정답이라, 그게 비었다고 미완성으로 보면 승인된 부스까지 매번
+ *  다시 그린다(주류박람회 183곳, 2026-10-02). 특정 부스를 다시 그리려면 codes로 고른다. */
+export function needsDraft(e?: Parameters<typeof missingFields>[0]): boolean {
+  return !e?.summary?.trim() || !e?.roamInterpretation?.trim();
+}

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { draftSystemPrompt, draftUserPrompt, missingFields } from "./draft-prompt";
+import { draftSystemPrompt, draftUserPrompt, missingFields, needsDraft } from "./draft-prompt";
 import { VALUE_SLUGS } from "@/lib/values";
 
 describe("draftSystemPrompt", () => {
@@ -104,5 +104,17 @@ describe("draftSystemPrompt — 상투어 목록", () => {
     const { FILLER } = await import("./quality-gate");
     const p = draftSystemPrompt();
     for (const f of FILLER) expect(p).toContain(f);
+  });
+});
+
+// timing은 "모르면 빈 배열"이 정답이라 비어 있다고 미완성이 아니다. 예전엔 그걸 미완성으로
+// 봐서 승인된 부스까지 전부 다시 그렸다(주류박람회 183곳, 2026-10-02 중단).
+describe("needsDraft", () => {
+  it("요약과 로미 한 줄이 있으면 다시 그리지 않는다", () => {
+    expect(needsDraft({ summary: "a", roamInterpretation: "b", timing: [] })).toBe(false);
+  });
+  it("핵심 필드가 비면 그린다", () => {
+    expect(needsDraft({ summary: "a" })).toBe(true);
+    expect(needsDraft(undefined)).toBe(true);
   });
 });

@@ -1,5 +1,6 @@
 import { extractJSON, generateGrounded } from "@/lib/ai/gemini";
 import {
+  needsDraft,
   draftSystemPrompt,
   draftUserPrompt,
   missingFields,
@@ -54,7 +55,7 @@ export async function runDraftBatch(
     : booths
         // 시설(라운지·센터)은 참가사가 아니라 초안 대상이 아니다.
         .filter((b) => b.kind !== "facility")
-        .filter((b) => missingFields(b.enrichment).length > 0);
+        .filter((b) => needsDraft(b.enrichment));
   const targets = wanted.slice(0, input.limit);
 
   // 루프 A — 지난 반려 사유를 읽어 이번 초안에 넣는다.
