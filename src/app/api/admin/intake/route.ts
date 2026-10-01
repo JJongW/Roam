@@ -3,6 +3,7 @@ import { getUserId, notFound, ok, parseBody, requireAdmin } from "@/lib/api/http
 import { FLOORPLANS } from "@/lib/floorplans";
 import { intakeRequestSchema } from "@/lib/intake/schema";
 import { planIntake } from "@/lib/intake/plan";
+import { planFromRepository, runCarryover } from "@/lib/exhibitor/service";
 import type { IntakePlan } from "@/lib/intake/plan";
 import type { AuditContext } from "@/lib/audit/diff";
 
@@ -47,7 +48,20 @@ export async function POST(req: Request) {
     actor: await getUserId(),
     reason: `인입 ${file.exhibitionSlug}${overwrite ? " (충돌 덮어쓰기)" : ""}`,
   };
-  return ok({ plan, applied: await applyPlan(repo, exhibitionId, plan, audit) });
+  const applied = await applyPlan(repo, exhibitionId, plan, audit);
+  // 새 부스를 참가사(행사를 넘는 브랜드)에 잇고, 이미 아는 브랜드면 지난 회차 정보를
+  // 이월 초안으로 넣는다 — 사람이 따로 돌리지 않아도 인입 한 번에 끝나야 한다
+  // (설계 2026-10-02 §5). 실패해도 부스 인입은 이미 끝났으니 결과에만 적는다.
+  let exhibitors: unknown = null;
+  try {
+    const { plan: linkPlan } = await planFromRepository(repo);
+    const linked = await repo.applyExhibitorPlan(linkPlan);
+    const carry = await runCarryover(repo, exhibitionId, { apply: true, actor: audit.actor });
+    exhibitors = { linked, carryover: carry.items.length, carryoverAutoPassed: carry.autoPassed };
+  } catch (e) {
+    exhibitors = { error: e instanceof Error ? e.message : String(e) };
+  }
+  return ok({ plan, applied, exhibitors });
 }
 
 interface ApplyResult {
