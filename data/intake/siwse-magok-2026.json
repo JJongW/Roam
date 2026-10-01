@@ -213,7 +213,8 @@
    "tags": [
     "sw-food",
     "sw-etc"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/verremedi.kr"
   },
   {
    "code": "C-01",
@@ -237,7 +238,8 @@
    "categorySlug": "sw-wine",
    "tags": [
     "sw-wine"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/yourwines_official"
   },
   {
    "code": "C-03",
@@ -579,7 +581,7 @@
   },
   {
    "code": "D-05",
-   "name": "청나라 황제의 건국주 아이씬주로",
+   "name": "아이씬주로",
    "hall": "마곡 컨벤션센터 1층",
    "kind": "exhibitor",
    "company": "주식회사 아이씬주로",
@@ -946,7 +948,8 @@
    "categorySlug": "sw-wine",
    "tags": [
     "sw-wine"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/mustwine_official"
   },
   {
    "code": "E-09",
@@ -1166,7 +1169,8 @@
    "categorySlug": "sw-food",
    "tags": [
     "sw-food"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/sanbo_sb"
   },
   {
    "code": "F-02",
@@ -1234,7 +1238,8 @@
    "categorySlug": "sw-wine",
    "tags": [
     "sw-wine"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/y.brothers.wineisgood"
   },
   {
    "code": "F-06",
@@ -1369,7 +1374,8 @@
    "categorySlug": "sw-etc",
    "tags": [
     "sw-etc"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/eau_de_lune1218"
   },
   {
    "code": "F-16",
@@ -1433,7 +1439,8 @@
    "categorySlug": "sw-sake-baijiu",
    "tags": [
     "sw-sake-baijiu"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/nihonsake_official"
   },
   {
    "code": "F-20",
@@ -1469,7 +1476,8 @@
    "categorySlug": "sw-wine",
    "tags": [
     "sw-wine"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/gluehwein_korea"
   },
   {
    "code": "F-24",
@@ -1961,7 +1969,8 @@
    "tags": [
     "sw-wine"
    ],
-   "websiteUrl": "https://allvintage.co.kr"
+   "websiteUrl": "https://allvintage.co.kr",
+   "instagramUrl": "https://www.instagram.com/allvin_wine"
   },
   {
    "code": "G-24",
@@ -2069,7 +2078,7 @@
   },
   {
    "code": "H-03",
-   "name": "꿀술 (MEAD)",
+   "name": "아이비허니",
    "hall": "마곡 컨벤션센터 1층",
    "kind": "exhibitor",
    "company": "아이비영농조합법인",
@@ -2807,7 +2816,8 @@
    "categorySlug": "sw-food",
    "tags": [
     "sw-food"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/food__ds_j"
   },
   {
    "code": "J-15",
@@ -2844,7 +2854,7 @@
   },
   {
    "code": "J-18",
-   "name": "약주",
+   "name": "유유양조",
    "hall": "마곡 컨벤션센터 1층",
    "kind": "exhibitor",
    "category": "전통주",
@@ -2873,7 +2883,8 @@
    "categorySlug": "sw-traditional",
    "tags": [
     "sw-traditional"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/hanguk_suldoga"
   },
   {
    "code": "J-21",
@@ -2954,11 +2965,12 @@
    "categorySlug": "sw-etc",
    "tags": [
     "sw-etc"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/gbkorea_co.ltd"
   },
   {
    "code": "J-26",
-   "name": "한국 GIN의 시작",
+   "name": "부자진",
    "hall": "마곡 컨벤션센터 1층",
    "kind": "exhibitor",
    "company": "(주)부자진농업회사법인",
@@ -3095,7 +3107,8 @@
    "tags": [
     "sw-beer",
     "sw-etc"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/silk_honey1"
   },
   {
    "code": "K-08",
@@ -3142,7 +3155,8 @@
    "categorySlug": "sw-traditional",
    "tags": [
     "sw-traditional"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/mamas__farm"
   },
   {
    "code": "K-11",
@@ -3240,7 +3254,8 @@
    "categorySlug": "sw-wine",
    "tags": [
     "sw-wine"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/chusa_wine"
   },
   {
    "code": "K-18",
@@ -3288,7 +3303,8 @@
    "categorySlug": "sw-traditional",
    "tags": [
     "sw-traditional"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/butdream9"
   },
   {
    "code": "K-21",
@@ -3549,7 +3565,8 @@
    "categorySlug": "sw-traditional",
    "tags": [
     "sw-traditional"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/togetherbrewery"
   },
   {
    "code": "N-10",
