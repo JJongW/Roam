@@ -11,7 +11,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "worker": "ROAM_WORKER=1 vite-node -c worker/vite.config.ts worker/index.ts",
-    "worker:once": "ROAM_WORKER=1 WORKER_ONCE=1 vite-node -c worker/vite.config.ts worker/index.ts"
+    "worker:once": "ROAM_WORKER=1 WORKER_ONCE=1 vite-node -c worker/vite.config.ts worker/index.ts",
+    "smoke:prod": "node scripts/smoke-prod.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.8.0",
