@@ -232,7 +232,9 @@ export type BoothEnrichmentPatch = z.infer<typeof boothEnrichmentPatchSchema>;
  *  default()를 안 막아서 안 보낸 키가 빈 값으로 생긴다. {aliases: []}만 보내도
  *  description·images·tags가 지워진다(2026-10-01). 그래서 default 없는 boothFields에서. */
 export const boothPatchInputSchema = boothFields.partial().extend({
-  enrichment: boothEnrichmentAuthorInputSchema.optional(),
+  // 저작 칸도 default 없는 패치 스키마로 — author 스키마는 default("")·default([])라,
+  // 로미 한 줄만 고쳐도 요약·가치·근거·할 일이 빈 값으로 덮였다(2026-10-02, 보내기 전 발견).
+  enrichment: boothEnrichmentPatchSchema.optional(),
 });
 
 const eventFields = z.object({

@@ -36,10 +36,11 @@ export async function PATCH(req: Request, { params }: Ctx) {
       actor: await getUserId(),
     });
   }
-  const updated = await repo.updateBooth(id, boothFields, {
-    source: "admin",
-    actor: await getUserId(),
-  });
+  // 저작 정보만 고친 요청이면 부스 본체엔 쓸 게 없다 — 빈 수정을 보내면 "부스 없음"으로
+  // 돌아와 저장은 됐는데 404가 났다(2026-10-02).
+  const updated = Object.keys(boothFields).length
+    ? await repo.updateBooth(id, boothFields, { source: "admin", actor: await getUserId() })
+    : ((await repo.getBoothDetail(id))?.booth ?? null);
   if (!updated) return notFound();
   return ok({ booth: updated });
 }
