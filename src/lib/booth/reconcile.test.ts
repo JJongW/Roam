@@ -117,3 +117,17 @@ describe("reconcile", () => {
     expect(codes).toContain("A102");
   });
 });
+
+// 서울카페쇼(2026-10-02 결정): 포장기계·매장운영 같은 업계용 부스는 지도·검색엔 두고
+// 취향 피드(추천)에서만 뺀다.
+describe("recommendableBooths", () => {
+  it("편의시설과 업계용(trade) 부스를 뺀다", async () => {
+    const { recommendableBooths, TRADE_TAG } = await import("./normalize");
+    const list = [
+      { id: "1", kind: "exhibitor", tags: ["cs-coffee"] },
+      { id: "2", kind: "facility", tags: [] },
+      { id: "3", kind: "exhibitor", tags: ["cs-trade", TRADE_TAG] },
+    ] as never[];
+    expect(recommendableBooths(list).map((b: { id: string }) => b.id)).toEqual(["1"]);
+  });
+});

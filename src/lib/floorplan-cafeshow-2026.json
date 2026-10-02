@@ -1,0 +1,6021 @@
+{
+ "width": 3578,
+ "height": 8306,
+ "halls": [
+  {
+   "name": "Hall B",
+   "x": 1340,
+   "y": 240,
+   "w": 1618,
+   "h": 1776
+  },
+  {
+   "name": "Hall A",
+   "x": 80,
+   "y": 2502,
+   "w": 2878,
+   "h": 1498
+  },
+  {
+   "name": "Hall D",
+   "x": 1340,
+   "y": 4360,
+   "w": 1616,
+   "h": 1618
+  },
+  {
+   "name": "Hall C",
+   "x": 80,
+   "y": 6462,
+   "w": 2876,
+   "h": 1484
+  }
+ ],
+ "decor": [
+  {
+   "type": "header",
+   "x": 80,
+   "y": 70,
+   "w": 420,
+   "h": 110,
+   "text": "1층"
+  },
+  {
+   "type": "header",
+   "x": 80,
+   "y": 4190,
+   "w": 420,
+   "h": 110,
+   "text": "3층"
+  }
+ ],
+ "booths": [
+  {
+   "code": "B123",
+   "x": 1488,
+   "y": 288,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜대진21",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B122",
+   "x": 1548,
+   "y": 288,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "HUAILAI GOLDEN GLASS CO.,LTD.",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B121",
+   "x": 1608,
+   "y": 288,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜일신나퓨",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B120",
+   "x": 1668,
+   "y": 288,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "오월의어느날",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B119",
+   "x": 1728,
+   "y": 288,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜토스코하이본",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B117",
+   "x": 1818,
+   "y": 288,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "동남상사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B113",
+   "x": 1998,
+   "y": 288,
+   "w": 240,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜룩아워티",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B112",
+   "x": 2188,
+   "y": 288,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜딕스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B111",
+   "x": 2248,
+   "y": 288,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "메디프로텍",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B109",
+   "x": 2338,
+   "y": 288,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜아센",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B107",
+   "x": 2458,
+   "y": 288,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜인터맥",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B105",
+   "x": 2578,
+   "y": 288,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜코코윌",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B103",
+   "x": 2698,
+   "y": 288,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "디엠피북스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B101",
+   "x": 2818,
+   "y": 288,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜차모아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B124",
+   "x": 1388,
+   "y": 348,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜대신에프앤비",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B125",
+   "x": 1388,
+   "y": 408,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "천지인 주식회사 농업회사법인",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B280",
+   "x": 1508,
+   "y": 408,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "더바른차담소",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B271",
+   "x": 1568,
+   "y": 438,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "컷코코리아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B270",
+   "x": 1688,
+   "y": 408,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜글뤼바인 코리아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B261",
+   "x": 1748,
+   "y": 408,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜홍시궁",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B260",
+   "x": 1868,
+   "y": 408,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜오엠지",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B251",
+   "x": 1928,
+   "y": 408,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜구티",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B250",
+   "x": 2068,
+   "y": 408,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜바이네츄럴",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B241",
+   "x": 2128,
+   "y": 408,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜상도포장기계",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B240",
+   "x": 2248,
+   "y": 408,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "농업법인 지리산상선암차",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B231",
+   "x": 2308,
+   "y": 408,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "차합시다",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B229",
+   "x": 2428,
+   "y": 438,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "데코리아제과㈜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B221",
+   "x": 2488,
+   "y": 408,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "로전",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B219",
+   "x": 2608,
+   "y": 438,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜카야코리아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B211",
+   "x": 2668,
+   "y": 408,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "경기한방꽃차협동조합",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B210",
+   "x": 2788,
+   "y": 408,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜코레쉬텍",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B201",
+   "x": 2848,
+   "y": 408,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "루이코리아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B126",
+   "x": 1388,
+   "y": 468,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "스토리로드",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B279",
+   "x": 1508,
+   "y": 468,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "수작컴퍼니",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B269",
+   "x": 1688,
+   "y": 468,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜윤서컴퍼니",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B262",
+   "x": 1748,
+   "y": 468,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "농업회사법인 봄날 주식회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B259",
+   "x": 1868,
+   "y": 468,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜엔에이코리아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B252",
+   "x": 1928,
+   "y": 468,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Reangwa Standard Industry Co., Ltd.",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B249",
+   "x": 2068,
+   "y": 468,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜모두모",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B242",
+   "x": 2128,
+   "y": 498,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜비어테크",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B238",
+   "x": 2248,
+   "y": 498,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "WOKY WANG",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B232",
+   "x": 2308,
+   "y": 498,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "태원무역",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B222",
+   "x": 2488,
+   "y": 498,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜세미원푸드",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B212",
+   "x": 2668,
+   "y": 498,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜센비아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B209",
+   "x": 2788,
+   "y": 468,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "모던카라반",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B202",
+   "x": 2848,
+   "y": 498,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜푸드베이코리아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L119",
+   "x": 3388,
+   "y": 488,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "가배공방",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L132",
+   "x": 3168,
+   "y": 538,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "앵강마켓",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B127",
+   "x": 1388,
+   "y": 528,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "농업회사법인 푸룻나린",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B277",
+   "x": 1508,
+   "y": 558,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "세원시스첸",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B273",
+   "x": 1568,
+   "y": 588,
+   "w": 60,
+   "h": 180,
+   "color": "#dcdee3",
+   "name": "농업회사법인㈜네이처오다",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B267",
+   "x": 1688,
+   "y": 558,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜네이처엔헬스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B263",
+   "x": 1748,
+   "y": 588,
+   "w": 60,
+   "h": 180,
+   "color": "#dcdee3",
+   "name": "아띠인터내셔널",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B258",
+   "x": 1868,
+   "y": 528,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "뿌리온더플레이트",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B253",
+   "x": 1928,
+   "y": 588,
+   "w": 60,
+   "h": 180,
+   "color": "#dcdee3",
+   "name": "Cobi International Co., Ltd",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B248",
+   "x": 2068,
+   "y": 528,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "사단법인 한국초콜릿협회",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B228",
+   "x": 2428,
+   "y": 528,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜헬스베버리지",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B218",
+   "x": 2608,
+   "y": 528,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "아람드리",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B208",
+   "x": 2788,
+   "y": 528,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜스위트본본 (Sweet Bon Bon Corporation)",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L118",
+   "x": 3388,
+   "y": 548,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "베리라이스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B128",
+   "x": 1388,
+   "y": 588,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "공익재단법인 오키나와현산업진흥공사 서울사무소",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B257",
+   "x": 1868,
+   "y": 588,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "라폴리움",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B244",
+   "x": 2098,
+   "y": 618,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "케이피씨",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B234",
+   "x": 2278,
+   "y": 618,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜당도",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B227",
+   "x": 2428,
+   "y": 588,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "오롯이꽃",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B224",
+   "x": 2488,
+   "y": 618,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "우리꽃연구소 / 맘껏푸드랩",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B214",
+   "x": 2638,
+   "y": 618,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜뜨리에",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B204",
+   "x": 2818,
+   "y": 618,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜페이퍼플랜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L117",
+   "x": 3388,
+   "y": 608,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "은성교역",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L130",
+   "x": 3168,
+   "y": 658,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "피씨엠코리아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B129",
+   "x": 1388,
+   "y": 648,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "한영에프앤비",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B276",
+   "x": 1508,
+   "y": 648,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜허브월드",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B266",
+   "x": 1688,
+   "y": 648,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "연우제다",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B256",
+   "x": 1868,
+   "y": 648,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "고롱랩",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B226",
+   "x": 2428,
+   "y": 648,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "자몽나무",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L116",
+   "x": 3388,
+   "y": 668,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "ZHEJIANG ZHENJIN INDUSTRIAL AND TRADING",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B130",
+   "x": 1388,
+   "y": 738,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "은창플러스가구",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L115",
+   "x": 3388,
+   "y": 728,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "엘림씨아이",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B380",
+   "x": 1508,
+   "y": 768,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "더 더치 치즈앤네이처",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B371",
+   "x": 1568,
+   "y": 828,
+   "w": 60,
+   "h": 180,
+   "color": "#dcdee3",
+   "name": "㈜화진몰테크",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B368",
+   "x": 1688,
+   "y": 828,
+   "w": 60,
+   "h": 180,
+   "color": "#dcdee3",
+   "name": "㈜모빌리",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B361",
+   "x": 1748,
+   "y": 828,
+   "w": 60,
+   "h": 180,
+   "color": "#dcdee3",
+   "name": "하이픈",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B359",
+   "x": 1868,
+   "y": 798,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "Sweet Street",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B351",
+   "x": 1928,
+   "y": 798,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "쿠킹스토리",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B341",
+   "x": 2098,
+   "y": 798,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜라임플레이스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B331",
+   "x": 2278,
+   "y": 798,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜비엘컴퍼니",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B329",
+   "x": 2428,
+   "y": 798,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "리와인드",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B321",
+   "x": 2488,
+   "y": 768,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "유어와인즈",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B311",
+   "x": 2638,
+   "y": 888,
+   "w": 120,
+   "h": 300,
+   "color": "#dcdee3",
+   "name": "Indonesia Trade Promotion Center | 주한인도네시아 무역진흥센터",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B301",
+   "x": 2818,
+   "y": 828,
+   "w": 120,
+   "h": 180,
+   "color": "#dcdee3",
+   "name": "㈜선인",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L114",
+   "x": 3388,
+   "y": 788,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "좁은길",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B378",
+   "x": 1508,
+   "y": 858,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜우신에프에이엔티",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B322",
+   "x": 2488,
+   "y": 918,
+   "w": 60,
+   "h": 240,
+   "color": "#dcdee3",
+   "name": "㈜에이치알엘",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L112",
+   "x": 3388,
+   "y": 878,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "Beijing Dilili Biotechnology",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B358",
+   "x": 1868,
+   "y": 888,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "씨더블유소방산업 주식회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B353",
+   "x": 1928,
+   "y": 888,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "농업회사법인 보성녹차선다원",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B348",
+   "x": 2068,
+   "y": 888,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "옥선명차",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B343",
+   "x": 2128,
+   "y": 888,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "동일프라텍",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B338",
+   "x": 2248,
+   "y": 888,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "농업회사법인(주)하늘다리",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B333",
+   "x": 2308,
+   "y": 888,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "채연가",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B328",
+   "x": 2428,
+   "y": 888,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "하임트리 주식회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B132",
+   "x": 1388,
+   "y": 1038,
+   "w": 60,
+   "h": 240,
+   "color": "#dcdee3",
+   "name": "신명글로빅스㈜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B374",
+   "x": 1538,
+   "y": 978,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "WUYI TACHISO DRINKWARE CORPORATION",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B364",
+   "x": 1718,
+   "y": 978,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜투고팩",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B354",
+   "x": 1898,
+   "y": 978,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜꽃을담다",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B344",
+   "x": 2098,
+   "y": 978,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜리텍",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B334",
+   "x": 2278,
+   "y": 978,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜에이엘엘리커",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B326",
+   "x": 2428,
+   "y": 978,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "(주)와이브라더스 컴퍼니",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B304",
+   "x": 2818,
+   "y": 978,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "살바코리아 주식회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L110",
+   "x": 3388,
+   "y": 998,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "아나로기즘",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L129",
+   "x": 3168,
+   "y": 1008,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "로시퍼제스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L128",
+   "x": 3168,
+   "y": 1068,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Zhejiang Howin Houseware",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L109",
+   "x": 3388,
+   "y": 1088,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "IDOCEAN",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B443",
+   "x": 1538,
+   "y": 1128,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "오붐 주식회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B437",
+   "x": 1718,
+   "y": 1158,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "수려한 합천 농특산물 전자상거래협회(합천생약가공)",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B431",
+   "x": 1898,
+   "y": 1128,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "카프엘",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B430",
+   "x": 2068,
+   "y": 1128,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "오트로 패밀리아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B425",
+   "x": 2128,
+   "y": 1128,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜소적두",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B424",
+   "x": 2248,
+   "y": 1128,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "서바나 도나쓰",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B419",
+   "x": 2308,
+   "y": 1128,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜샐리쿡",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B413",
+   "x": 2458,
+   "y": 1188,
+   "w": 120,
+   "h": 180,
+   "color": "#dcdee3",
+   "name": "㈜아이푸드넷",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B407",
+   "x": 2638,
+   "y": 1128,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "피지에스코리아㈜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B401",
+   "x": 2818,
+   "y": 1188,
+   "w": 120,
+   "h": 180,
+   "color": "#dcdee3",
+   "name": "㈜유앤아이엔젤스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L127",
+   "x": 3168,
+   "y": 1128,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "승운무역",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L108",
+   "x": 3388,
+   "y": 1148,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "불개미커뮤케이션",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B136",
+   "x": 1388,
+   "y": 1188,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "보성원당제다원",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B444",
+   "x": 1538,
+   "y": 1218,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜아시컴퍼니",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B432",
+   "x": 1898,
+   "y": 1218,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜아로마에프아이",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B426",
+   "x": 2098,
+   "y": 1188,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "성남산업진흥원",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B420",
+   "x": 2278,
+   "y": 1188,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "성남산업진흥원",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B408",
+   "x": 2638,
+   "y": 1218,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "골든벨통상㈜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L126",
+   "x": 3168,
+   "y": 1188,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Zhejiang Latim Electric Appliance",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L107",
+   "x": 3388,
+   "y": 1208,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "흰달",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B137",
+   "x": 1388,
+   "y": 1278,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜조앤스빌",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B439",
+   "x": 1718,
+   "y": 1248,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "합천생약가공영농조합법인",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B428",
+   "x": 2068,
+   "y": 1248,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "홍식이 디저트",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B427",
+   "x": 2128,
+   "y": 1248,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "에레즈코퍼레이션",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B422",
+   "x": 2248,
+   "y": 1248,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "황초원",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B421",
+   "x": 2308,
+   "y": 1248,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜티에이블",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L125",
+   "x": 3168,
+   "y": 1248,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "동남팩",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L106",
+   "x": 3388,
+   "y": 1268,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "키움하우스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L124",
+   "x": 3168,
+   "y": 1308,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "에이엘온",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L101",
+   "x": 3388,
+   "y": 1448,
+   "w": 60,
+   "h": 300,
+   "color": "#dcdee3",
+   "name": "㈜레전드커피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B139",
+   "x": 1388,
+   "y": 1398,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "비즈니어코퍼레이션㈜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B564",
+   "x": 1508,
+   "y": 1368,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "마운티(Mountea)",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B557",
+   "x": 1568,
+   "y": 1458,
+   "w": 60,
+   "h": 240,
+   "color": "#dcdee3",
+   "name": "차원",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B555",
+   "x": 1688,
+   "y": 1398,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜한창인터내셔날",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B549",
+   "x": 1748,
+   "y": 1458,
+   "w": 60,
+   "h": 240,
+   "color": "#dcdee3",
+   "name": "매크로통상㈜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B541",
+   "x": 1898,
+   "y": 1398,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜지투에이",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B533",
+   "x": 2098,
+   "y": 1458,
+   "w": 120,
+   "h": 240,
+   "color": "#dcdee3",
+   "name": "㈜페이히어",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B525",
+   "x": 2278,
+   "y": 1368,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Sri Lanka Tea Board",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B521",
+   "x": 2428,
+   "y": 1458,
+   "w": 60,
+   "h": 240,
+   "color": "#dcdee3",
+   "name": "㈜히엘페이",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B517",
+   "x": 2488,
+   "y": 1458,
+   "w": 60,
+   "h": 240,
+   "color": "#dcdee3",
+   "name": "에스앤피인터내셔널",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B509",
+   "x": 2638,
+   "y": 1368,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "더에이치알케이㈜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B501",
+   "x": 2818,
+   "y": 1398,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "써모스코리아주식회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L120",
+   "x": 3168,
+   "y": 1458,
+   "w": 60,
+   "h": 240,
+   "color": "#dcdee3",
+   "name": "㈜디엠인터내셔널",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B561",
+   "x": 1508,
+   "y": 1488,
+   "w": 60,
+   "h": 180,
+   "color": "#dcdee3",
+   "name": "브레드가든",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B526",
+   "x": 2278,
+   "y": 1488,
+   "w": 120,
+   "h": 180,
+   "color": "#dcdee3",
+   "name": "㈜랑컴퍼니",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B510",
+   "x": 2638,
+   "y": 1488,
+   "w": 120,
+   "h": 180,
+   "color": "#dcdee3",
+   "name": "㈜나투라스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B141",
+   "x": 1388,
+   "y": 1518,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜그린베이크",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B553",
+   "x": 1688,
+   "y": 1518,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜제이앤비식품",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B546",
+   "x": 1868,
+   "y": 1488,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "슬로운",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B543",
+   "x": 1928,
+   "y": 1518,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜신키네도코리아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B503",
+   "x": 2818,
+   "y": 1518,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜티코리아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B545",
+   "x": 1868,
+   "y": 1548,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "메르시 굿즈",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B143",
+   "x": 1388,
+   "y": 1638,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "농업회사법인 ㈜청년연구소",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B671",
+   "x": 1538,
+   "y": 1698,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "사람에프앤비",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B661",
+   "x": 1718,
+   "y": 1788,
+   "w": 120,
+   "h": 300,
+   "color": "#dcdee3",
+   "name": "㈜오레팜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B651",
+   "x": 1898,
+   "y": 1728,
+   "w": 120,
+   "h": 180,
+   "color": "#dcdee3",
+   "name": "㈜올데이티",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B641",
+   "x": 2098,
+   "y": 1668,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜자연인",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B631",
+   "x": 2278,
+   "y": 1728,
+   "w": 120,
+   "h": 180,
+   "color": "#dcdee3",
+   "name": "㈜벨리푸드",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B621",
+   "x": 2458,
+   "y": 1728,
+   "w": 120,
+   "h": 180,
+   "color": "#dcdee3",
+   "name": "삼주 티앤비㈜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B611",
+   "x": 2638,
+   "y": 1788,
+   "w": 120,
+   "h": 300,
+   "color": "#dcdee3",
+   "name": "베이크플러스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B601",
+   "x": 2818,
+   "y": 1698,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜혜토",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B642",
+   "x": 2098,
+   "y": 1818,
+   "w": 120,
+   "h": 240,
+   "color": "#dcdee3",
+   "name": "녹차원㈜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B678",
+   "x": 1508,
+   "y": 1788,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "헤이즌 주식회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B673",
+   "x": 1568,
+   "y": 1788,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜하이그린",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B608",
+   "x": 2788,
+   "y": 1788,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "코너케이크스튜디오",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B603",
+   "x": 2848,
+   "y": 1788,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜씨티인더씨티",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B674",
+   "x": 1538,
+   "y": 1878,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "골든브라운(엔와이푸드)",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B637",
+   "x": 2248,
+   "y": 1848,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "티어스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B634",
+   "x": 2308,
+   "y": 1848,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "와이와이케익",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B624",
+   "x": 2458,
+   "y": 1878,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "타바론코리아 주식회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B604",
+   "x": 2818,
+   "y": 1878,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜와이케이컴퍼니",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B145",
+   "x": 1388,
+   "y": 1898,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜만월회",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B654",
+   "x": 1898,
+   "y": 1878,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "녹차원㈜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B635",
+   "x": 2278,
+   "y": 1908,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜페이앤스토어",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "S131",
+   "x": 1838,
+   "y": 2188,
+   "w": 120,
+   "h": 300,
+   "color": "#dcdee3",
+   "name": "㈜서울팩토리",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "S101",
+   "x": 2478,
+   "y": 2188,
+   "w": 120,
+   "h": 300,
+   "color": "#dcdee3",
+   "name": "타바론코리아 주식회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "S110",
+   "x": 2148,
+   "y": 2178,
+   "w": 300,
+   "h": 240,
+   "color": "#dcdee3",
+   "name": "네이버파이낸셜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A919",
+   "x": 248,
+   "y": 2638,
+   "w": 300,
+   "h": 240,
+   "color": "#dcdee3",
+   "name": "㈜터보코리아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A749",
+   "x": 578,
+   "y": 2578,
+   "w": 240,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "호시자키한국㈜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A667",
+   "x": 808,
+   "y": 2578,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "아로마라인 주식회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A661",
+   "x": 1018,
+   "y": 2578,
+   "w": 360,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "아르네코리아㈜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A440",
+   "x": 1428,
+   "y": 2578,
+   "w": 300,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "Department of Trade and Industry Philippines",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A437",
+   "x": 1668,
+   "y": 2578,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "셀플러스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A373",
+   "x": 2078,
+   "y": 2578,
+   "w": 360,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "셀플러스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A285",
+   "x": 2548,
+   "y": 2578,
+   "w": 300,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜스파코리아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A119",
+   "x": 2848,
+   "y": 2578,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "솜 인터내셔널㈜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A843",
+   "x": 298,
+   "y": 2828,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜이안스푸드글로벌",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A742",
+   "x": 648,
+   "y": 2798,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "세경냉동",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A748",
+   "x": 768,
+   "y": 2768,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Panaura Pte Ltd",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A652",
+   "x": 998,
+   "y": 2798,
+   "w": 240,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜푸른나무",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A660",
+   "x": 1148,
+   "y": 2768,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "고담촌",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A551",
+   "x": 1408,
+   "y": 2798,
+   "w": 300,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "대한제분㈜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A433",
+   "x": 1668,
+   "y": 2798,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "대한제분㈜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A431",
+   "x": 1758,
+   "y": 2798,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "스위트컵",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A361",
+   "x": 2078,
+   "y": 2798,
+   "w": 360,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "스위트컵",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A276",
+   "x": 2418,
+   "y": 2798,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "스위트컵",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A280",
+   "x": 2538,
+   "y": 2768,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "규리㈜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A282",
+   "x": 2658,
+   "y": 2768,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "칼라컵",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A271",
+   "x": 2748,
+   "y": 2798,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "솜 인터내셔널㈜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A842",
+   "x": 388,
+   "y": 2828,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "루마코리아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A841",
+   "x": 448,
+   "y": 2828,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A741",
+   "x": 768,
+   "y": 2828,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "키쿠보",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A651",
+   "x": 1148,
+   "y": 2828,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A275",
+   "x": 2508,
+   "y": 2828,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "농업회사법인 주식회사 푸드팩토리",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A274",
+   "x": 2568,
+   "y": 2828,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "컨베이(주)",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A272",
+   "x": 2658,
+   "y": 2828,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "베스트로주식회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A913",
+   "x": 128,
+   "y": 2998,
+   "w": 60,
+   "h": 360,
+   "color": "#dcdee3",
+   "name": "새남에프앤비",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A111",
+   "x": 2908,
+   "y": 3068,
+   "w": 60,
+   "h": 500,
+   "color": "#dcdee3",
+   "name": "㈜에프앤지 코리아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A837",
+   "x": 298,
+   "y": 2968,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜세림향료",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A833",
+   "x": 418,
+   "y": 2998,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜서흥피앤에프",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A733",
+   "x": 678,
+   "y": 2998,
+   "w": 240,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "한아통상㈜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A642",
+   "x": 998,
+   "y": 2998,
+   "w": 240,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "리치코리아(유)",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A641",
+   "x": 1148,
+   "y": 2998,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜엔아이에프",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A541",
+   "x": 1408,
+   "y": 2998,
+   "w": 300,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜엔아이에프",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A425",
+   "x": 1728,
+   "y": 2998,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "US Embassy",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A349",
+   "x": 2078,
+   "y": 2998,
+   "w": 360,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "미국육류수출협회",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A257",
+   "x": 2568,
+   "y": 2998,
+   "w": 420,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜미건씨스템",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A835",
+   "x": 298,
+   "y": 3028,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜두비산업",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A829",
+   "x": 358,
+   "y": 3168,
+   "w": 240,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜카이저제빙기",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A726",
+   "x": 648,
+   "y": 3198,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "베오베",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A732",
+   "x": 768,
+   "y": 3168,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Wanna Eat CO., LTD.",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A632",
+   "x": 998,
+   "y": 3198,
+   "w": 240,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "마스터 마티니 코리아 유한회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A640",
+   "x": 1148,
+   "y": 3168,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜아이버블티",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A531",
+   "x": 1408,
+   "y": 3198,
+   "w": 300,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "휴럼",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A422",
+   "x": 1728,
+   "y": 3168,
+   "w": 180,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "US Embassy",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A341",
+   "x": 1958,
+   "y": 3198,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜손스마켓메이커즈",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A345",
+   "x": 2078,
+   "y": 3168,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "US Embassy",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A337",
+   "x": 2198,
+   "y": 3198,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "코리아비지니스써비시스 ㈜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A246",
+   "x": 2478,
+   "y": 3198,
+   "w": 240,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "래미에프앤비",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A243",
+   "x": 2688,
+   "y": 3198,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜아로마상사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A911",
+   "x": 128,
+   "y": 3238,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "승화피앤피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A825",
+   "x": 358,
+   "y": 3228,
+   "w": 240,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "한미에프쓰리",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A725",
+   "x": 768,
+   "y": 3228,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "설다원",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A419",
+   "x": 1728,
+   "y": 3228,
+   "w": 180,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "티이오 (US Almond)",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A339",
+   "x": 2078,
+   "y": 3228,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "원웨이트레이딩 (CDI)",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A631",
+   "x": 1148,
+   "y": 3228,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "케이에스코퍼레이션주식회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A908",
+   "x": 128,
+   "y": 3388,
+   "w": 60,
+   "h": 180,
+   "color": "#dcdee3",
+   "name": "㈜웰파인",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A107",
+   "x": 2908,
+   "y": 3418,
+   "w": 60,
+   "h": 240,
+   "color": "#dcdee3",
+   "name": "지성비엔씨",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A817",
+   "x": 358,
+   "y": 3398,
+   "w": 240,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜아베",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A717",
+   "x": 678,
+   "y": 3398,
+   "w": 240,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "삼양사 판교",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A624",
+   "x": 938,
+   "y": 3398,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "삼양사 판교",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A621",
+   "x": 1088,
+   "y": 3398,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "다마요팩 ㈜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A524",
+   "x": 1318,
+   "y": 3398,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜정심식품",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A521",
+   "x": 1468,
+   "y": 3398,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "LF FOOD",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A413",
+   "x": 1728,
+   "y": 3398,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "LF FOOD",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A325",
+   "x": 2078,
+   "y": 3398,
+   "w": 360,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "흥국에프엔비",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A232",
+   "x": 2478,
+   "y": 3398,
+   "w": 240,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "흥국에프엔비",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A229",
+   "x": 2688,
+   "y": 3398,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜보람푸드",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A905",
+   "x": 128,
+   "y": 3568,
+   "w": 60,
+   "h": 180,
+   "color": "#dcdee3",
+   "name": "지오락",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A811",
+   "x": 298,
+   "y": 3598,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜삼경프라자",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A815",
+   "x": 388,
+   "y": 3568,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜인파이",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A816",
+   "x": 448,
+   "y": 3568,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜더자란",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A709",
+   "x": 678,
+   "y": 3598,
+   "w": 240,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "대아상교㈜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A611",
+   "x": 1028,
+   "y": 3598,
+   "w": 300,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜대흥소프트밀",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A513",
+   "x": 1348,
+   "y": 3598,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜에취알에스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A511",
+   "x": 1498,
+   "y": 3598,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜서일",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A407",
+   "x": 1728,
+   "y": 3598,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜오트리푸드",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A313",
+   "x": 2078,
+   "y": 3598,
+   "w": 360,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜올리젠",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A218",
+   "x": 2478,
+   "y": 3598,
+   "w": 240,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "태향",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A215",
+   "x": 2688,
+   "y": 3598,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜야긴F&B",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A105",
+   "x": 2908,
+   "y": 3598,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "소이프트바이옴",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A809",
+   "x": 418,
+   "y": 3628,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "엔케이주식회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A901",
+   "x": 128,
+   "y": 3778,
+   "w": 60,
+   "h": 240,
+   "color": "#dcdee3",
+   "name": "㈜광명상사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A101",
+   "x": 2908,
+   "y": 3788,
+   "w": 60,
+   "h": 260,
+   "color": "#dcdee3",
+   "name": "오크베리코리아주식회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A805",
+   "x": 298,
+   "y": 3768,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜알티스트",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A801",
+   "x": 418,
+   "y": 3798,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜커피 앤 칵테일",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A701",
+   "x": 678,
+   "y": 3798,
+   "w": 240,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜비케이엠지",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A601",
+   "x": 1028,
+   "y": 3798,
+   "w": 300,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "블루닉스㈜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A501",
+   "x": 1408,
+   "y": 3798,
+   "w": 300,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜토탈에프앤비",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A401",
+   "x": 1728,
+   "y": 3798,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "DaVinci Gourmet APMEA",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A301",
+   "x": 2078,
+   "y": 3798,
+   "w": 360,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜대호식품",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A201",
+   "x": 2568,
+   "y": 3798,
+   "w": 420,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜제원인터내쇼날",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A803",
+   "x": 298,
+   "y": 3828,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜아조아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L330",
+   "x": 3468,
+   "y": 4420,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "모모스커피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D164",
+   "x": 1948,
+   "y": 4410,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜에피랩",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D161",
+   "x": 2068,
+   "y": 4410,
+   "w": 180,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "대구커피협회",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D159",
+   "x": 2218,
+   "y": 4410,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜아이리스인터내셔날",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D158",
+   "x": 2308,
+   "y": 4410,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "휴움",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D157",
+   "x": 2368,
+   "y": 4410,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "키자미테이블",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D156",
+   "x": 2428,
+   "y": 4410,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜어콜렉티브",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D155",
+   "x": 2488,
+   "y": 4410,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "(재)아름다운커피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D154",
+   "x": 2548,
+   "y": 4410,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "몽파소",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D152",
+   "x": 2638,
+   "y": 4410,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜캅카와",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D151",
+   "x": 2748,
+   "y": 4410,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜에스락",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D150",
+   "x": 2808,
+   "y": 4410,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜어벤져스와인",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D149",
+   "x": 2868,
+   "y": 4410,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Chas Long Long Ago Limited",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L329",
+   "x": 3468,
+   "y": 4510,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "브릭커스커피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D382",
+   "x": 1948,
+   "y": 4530,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜샤인위드컴페니언",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D383",
+   "x": 2008,
+   "y": 4530,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "사일삼 프로젝트",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D384",
+   "x": 2068,
+   "y": 4530,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜담꽃",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D385",
+   "x": 2128,
+   "y": 4530,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜티티비",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D386",
+   "x": 2188,
+   "y": 4530,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜타라티피에스 그래픽스사업부문",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D387",
+   "x": 2278,
+   "y": 4530,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "바질리안",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D261",
+   "x": 2448,
+   "y": 4530,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "디제이피상사 주식회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D262",
+   "x": 2568,
+   "y": 4530,
+   "w": 180,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "헬레닉 셀러",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D146",
+   "x": 2748,
+   "y": 4530,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "굿인터내셔널",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D147",
+   "x": 2808,
+   "y": 4530,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "아일랜드와인주식회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D148",
+   "x": 2868,
+   "y": 4530,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "다원식품",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L328",
+   "x": 3468,
+   "y": 4570,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "시트리앙영농조합법인",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D381",
+   "x": 1948,
+   "y": 4590,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "스튜디오토림",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D380",
+   "x": 2008,
+   "y": 4590,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "케라피스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D379",
+   "x": 2068,
+   "y": 4590,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "유한책임회사 소망에프앤씨",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D378",
+   "x": 2128,
+   "y": 4590,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "WES Worldwide Expo Services (H.K.) Ltd.",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D377",
+   "x": 2188,
+   "y": 4590,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜에센시에르",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D375",
+   "x": 2278,
+   "y": 4590,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Fujian Tianhui Industrial Co., Ltd",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D257",
+   "x": 2538,
+   "y": 4590,
+   "w": 240,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "스밀스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D144",
+   "x": 2778,
+   "y": 4590,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜리우패밀리",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D143",
+   "x": 2868,
+   "y": 4590,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜영원코퍼레이션",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L326",
+   "x": 3468,
+   "y": 4660,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜비엠티",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D366",
+   "x": 1978,
+   "y": 4740,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "카페솔루션",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D370",
+   "x": 2098,
+   "y": 4710,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜릴팡",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D372",
+   "x": 2188,
+   "y": 4710,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "더덕몽",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D361",
+   "x": 2278,
+   "y": 4740,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜요크 (아얀투)",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D253",
+   "x": 2448,
+   "y": 4710,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜우도상역",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D254",
+   "x": 2568,
+   "y": 4710,
+   "w": 180,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Hejian Yongrun Glass(CIEC Exhibition Co.,Ltd)",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D140",
+   "x": 2748,
+   "y": 4710,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "팝로스터(POP ROASTERS)",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D137",
+   "x": 2838,
+   "y": 4740,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "구스쿠커코리아 주식회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L325",
+   "x": 3468,
+   "y": 4750,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Shenzhen Creyke Technology Co., LTD.",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D364",
+   "x": 2098,
+   "y": 4770,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜디파인드엠",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D363",
+   "x": 2188,
+   "y": 4770,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Pinecone Europe Kft",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D249",
+   "x": 2538,
+   "y": 4770,
+   "w": 240,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "유한회사 페사도코리아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D139",
+   "x": 2748,
+   "y": 4770,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "LIGRE GmbH & Co KG",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L324",
+   "x": 3468,
+   "y": 4810,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "로라하우스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L323",
+   "x": 3468,
+   "y": 4870,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Tadesse Desta Import Export",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D550",
+   "x": 1388,
+   "y": 4920,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜글로벌비엔피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D531",
+   "x": 1568,
+   "y": 4920,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "스트롱홀드로보틱스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D442",
+   "x": 1828,
+   "y": 4920,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "스트롱홀드로보틱스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D441",
+   "x": 1948,
+   "y": 4920,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "ZheJiang SEAVER Intelligent Technology CO., Ltd.",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D354",
+   "x": 2098,
+   "y": 4920,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜히든빈코리아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D358",
+   "x": 2188,
+   "y": 4890,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "SHENZHEN TENGTSING PACKAGING GROUP LIMITED",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D351",
+   "x": 2278,
+   "y": 4920,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜코아트",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D245",
+   "x": 2538,
+   "y": 4890,
+   "w": 240,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜비다스테크",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D132",
+   "x": 2778,
+   "y": 4920,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜형진정밀",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D131",
+   "x": 2868,
+   "y": 4920,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "Twenty Six Group",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L320",
+   "x": 3468,
+   "y": 4990,
+   "w": 60,
+   "h": 180,
+   "color": "#dcdee3",
+   "name": "다본아이앤이",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D353",
+   "x": 2188,
+   "y": 4950,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "네가이",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D241",
+   "x": 2538,
+   "y": 4950,
+   "w": 240,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "노부스테크",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D548",
+   "x": 1388,
+   "y": 5040,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜칼디커피랩",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D528",
+   "x": 1538,
+   "y": 5070,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Philocoffea",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D530",
+   "x": 1628,
+   "y": 5070,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "하인사이트크리에이티브코리아 주식회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D437",
+   "x": 1768,
+   "y": 5070,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "호커스포커스 로스터스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D438",
+   "x": 1828,
+   "y": 5070,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "한국커피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D433",
+   "x": 1918,
+   "y": 5100,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜성우테크",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D344",
+   "x": 2098,
+   "y": 5100,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "MH파트너스(인텔리젠시아)",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D348",
+   "x": 2188,
+   "y": 5070,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "ZHUHAI LUCKYMAN TECHNOLOGY CO LTD",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D341",
+   "x": 2278,
+   "y": 5100,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "하리오코리아주식회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D234",
+   "x": 2508,
+   "y": 5100,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜아이리스인터내셔날",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D233",
+   "x": 2628,
+   "y": 5100,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "ALCHEMIST WORKS PTE LTD",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D126",
+   "x": 2778,
+   "y": 5100,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜고메웍스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D130",
+   "x": 2868,
+   "y": 5070,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Akira International Co., Ltd.",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L318",
+   "x": 3468,
+   "y": 5140,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "SCA KOREA",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D546",
+   "x": 1388,
+   "y": 5160,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "스탠딩커피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D526",
+   "x": 1538,
+   "y": 5130,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜커피즈",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D525",
+   "x": 1628,
+   "y": 5130,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "에이치커피로스터스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D436",
+   "x": 1768,
+   "y": 5130,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "피카워크샵",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D435",
+   "x": 1828,
+   "y": 5130,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜김성민커피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D343",
+   "x": 2188,
+   "y": 5130,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Dongguan Yupu Packaging Products Co., Ltd",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D125",
+   "x": 2868,
+   "y": 5130,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "(주)이도패키지",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L315",
+   "x": 3468,
+   "y": 5290,
+   "w": 60,
+   "h": 180,
+   "color": "#dcdee3",
+   "name": "타미드",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D545",
+   "x": 1388,
+   "y": 5250,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Datum Coffee",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D522",
+   "x": 1538,
+   "y": 5250,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "비엘씨 커피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D524",
+   "x": 1628,
+   "y": 5250,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "커네스브루잉스팟",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D429",
+   "x": 1858,
+   "y": 5250,
+   "w": 240,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "넥스트바이오주식회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D334",
+   "x": 2098,
+   "y": 5280,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "소프트팩 주식회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D331",
+   "x": 2248,
+   "y": 5280,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜다인인코퍼레이션",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D226",
+   "x": 2508,
+   "y": 5280,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "씨케이코퍼레이션즈㈜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D225",
+   "x": 2628,
+   "y": 5280,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "OHKI CO.,LTD.",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D120",
+   "x": 2778,
+   "y": 5280,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜코빈즈커피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D119",
+   "x": 2868,
+   "y": 5280,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "한화비전",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D543",
+   "x": 1388,
+   "y": 5340,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "에프파이브",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D521",
+   "x": 1508,
+   "y": 5310,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜마지노",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D519",
+   "x": 1598,
+   "y": 5310,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "유한회사 커피스니퍼 (KOFFEE SNIFFER Co., Ltd)",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D425",
+   "x": 1858,
+   "y": 5310,
+   "w": 240,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜제니시스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L314",
+   "x": 3468,
+   "y": 5410,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Max (Suzhou) Intelligent Technology Co.,Ltd",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D541",
+   "x": 1388,
+   "y": 5460,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "트레이드메이커 주식회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D516",
+   "x": 1508,
+   "y": 5430,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜퀘스트빈",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D517",
+   "x": 1598,
+   "y": 5430,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "패러데이커피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D420",
+   "x": 1768,
+   "y": 5460,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "Cairo Coffee Collective",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D417",
+   "x": 1888,
+   "y": 5460,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜노블트리",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D321",
+   "x": 2188,
+   "y": 5460,
+   "w": 300,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜두리양행",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D217",
+   "x": 2538,
+   "y": 5460,
+   "w": 240,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "드롱기코리아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D113",
+   "x": 2808,
+   "y": 5460,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜커피플랜트",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L312",
+   "x": 3468,
+   "y": 5500,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "국제공정무역기구 한국사무소",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D513",
+   "x": 1568,
+   "y": 5490,
+   "w": 180,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜큐앤리브즈",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D539",
+   "x": 1388,
+   "y": 5580,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜스카이코리아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L311",
+   "x": 3468,
+   "y": 5590,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "태성무역",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D510",
+   "x": 1508,
+   "y": 5610,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "에이비비알㈜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D507",
+   "x": 1598,
+   "y": 5640,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "룰리컴퍼니 주식회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D409",
+   "x": 1858,
+   "y": 5640,
+   "w": 240,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜바이킹컴퍼니",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D311",
+   "x": 2188,
+   "y": 5640,
+   "w": 300,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜두리양행",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D209",
+   "x": 2538,
+   "y": 5640,
+   "w": 240,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "영도구청",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D107",
+   "x": 2808,
+   "y": 5640,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "부자로스터",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L310",
+   "x": 3468,
+   "y": 5650,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "람",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D509",
+   "x": 1508,
+   "y": 5670,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Swiss Water Decaffeinated Coffee Inc.",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L309",
+   "x": 3468,
+   "y": 5710,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "INOVMAKER international Co. Ltd.",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L308",
+   "x": 3468,
+   "y": 5770,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Traditional Design Inc.",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D537",
+   "x": 1388,
+   "y": 5840,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "커넥츠커피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D504",
+   "x": 1568,
+   "y": 5810,
+   "w": 180,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Asociación Nacional del Café",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D401",
+   "x": 1858,
+   "y": 5840,
+   "w": 240,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜딜리코",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D301",
+   "x": 2188,
+   "y": 5840,
+   "w": 300,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜퍼플랜드",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D201",
+   "x": 2538,
+   "y": 5840,
+   "w": 240,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜리쉬티코리아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D101",
+   "x": 2808,
+   "y": 5840,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜세웅지씨",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L307",
+   "x": 3468,
+   "y": 5830,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "넥스트솔루션",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "D501",
+   "x": 1568,
+   "y": 5870,
+   "w": 180,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Specialty Coffee Association of Panama",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L305",
+   "x": 3468,
+   "y": 5920,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "크라텍",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L301",
+   "x": 3468,
+   "y": 6100,
+   "w": 60,
+   "h": 240,
+   "color": "#dcdee3",
+   "name": "㈜엑시트코리아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "S331",
+   "x": 1838,
+   "y": 6120,
+   "w": 120,
+   "h": 240,
+   "color": "#dcdee3",
+   "name": "㈜딜리코",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "S301",
+   "x": 2478,
+   "y": 6120,
+   "w": 120,
+   "h": 240,
+   "color": "#dcdee3",
+   "name": "㈜빈스페이스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "S311",
+   "x": 2148,
+   "y": 6080,
+   "w": 300,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "로얄선스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "S321",
+   "x": 2148,
+   "y": 6200,
+   "w": 300,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜엠아이커피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "S335",
+   "x": 1838,
+   "y": 6270,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜하우스바이림(HOUSE BYLIM Inc.)",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "S305",
+   "x": 2478,
+   "y": 6270,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜안드레아플러스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C675",
+   "x": 908,
+   "y": 6540,
+   "w": 300,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "월간커피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C673",
+   "x": 1118,
+   "y": 6540,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "BRAZIL SPECIALTY COFFEE ASSOCIATION",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C455",
+   "x": 1338,
+   "y": 6540,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "32do Bali",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C449",
+   "x": 1578,
+   "y": 6540,
+   "w": 360,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "오진양행",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C373",
+   "x": 2078,
+   "y": 6540,
+   "w": 360,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜원인터시스템",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C253",
+   "x": 2448,
+   "y": 6540,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜기정인터내셔날",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C667",
+   "x": 788,
+   "y": 6710,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜케이버",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C668",
+   "x": 848,
+   "y": 6710,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "한독크린텍",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C669",
+   "x": 908,
+   "y": 6710,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜에이아이티이노",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C661",
+   "x": 1028,
+   "y": 6740,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜나이스코리아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C551",
+   "x": 1348,
+   "y": 6740,
+   "w": 300,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜억셉트커피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C441",
+   "x": 1698,
+   "y": 6740,
+   "w": 240,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜두리트레이딩",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C361",
+   "x": 2078,
+   "y": 6740,
+   "w": 360,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜두리트레이딩",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C247",
+   "x": 2448,
+   "y": 6740,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "임파트(베제라코리아)",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C664",
+   "x": 848,
+   "y": 6770,
+   "w": 180,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "NASA CORPORATION / FUSO INTERNATIONAL",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C807",
+   "x": 128,
+   "y": 6810,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "엠티팩코리아 주식회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C101",
+   "x": 2908,
+   "y": 7010,
+   "w": 60,
+   "h": 420,
+   "color": "#dcdee3",
+   "name": "다이나믹통상",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C806",
+   "x": 128,
+   "y": 6870,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "HTI Corporation",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C740",
+   "x": 298,
+   "y": 6910,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "커피마켓어스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C742",
+   "x": 388,
+   "y": 6910,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Pu'er Nostone Coffee Co.,Ltd",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C743",
+   "x": 478,
+   "y": 6910,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "도심커피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C733",
+   "x": 598,
+   "y": 6940,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "다솜 코리아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C652",
+   "x": 848,
+   "y": 6940,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜팀팩",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C658",
+   "x": 968,
+   "y": 6910,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜두두",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C649",
+   "x": 1058,
+   "y": 6940,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜더 정진",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C543",
+   "x": 1288,
+   "y": 6940,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜더 정진",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C541",
+   "x": 1438,
+   "y": 6940,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜억셉트커피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C433",
+   "x": 1698,
+   "y": 6940,
+   "w": 240,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜에이덴",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C349",
+   "x": 2078,
+   "y": 6940,
+   "w": 360,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜에이덴",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C235",
+   "x": 2508,
+   "y": 6940,
+   "w": 300,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "이지스터",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C245",
+   "x": 2718,
+   "y": 6910,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "BREW92",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C805",
+   "x": 128,
+   "y": 6930,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "헤베커피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C737",
+   "x": 328,
+   "y": 6970,
+   "w": 180,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "(주)아로마빌 커피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C735",
+   "x": 478,
+   "y": 6970,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜미엔느",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C651",
+   "x": 968,
+   "y": 6970,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "오픈커피로스터스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C233",
+   "x": 2718,
+   "y": 6970,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜써치엠",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C804",
+   "x": 128,
+   "y": 6990,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "커피앤두",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C803",
+   "x": 128,
+   "y": 7050,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "에프앤비서비스(F&B SERVICE)",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C801",
+   "x": 128,
+   "y": 7140,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "게이트비젼",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C726",
+   "x": 298,
+   "y": 7110,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜푸얼차커피글로벌파트너스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C728",
+   "x": 388,
+   "y": 7110,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "웰메이드",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C729",
+   "x": 448,
+   "y": 7110,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜커피브레이크",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C719",
+   "x": 568,
+   "y": 7110,
+   "w": 180,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜태환자동화 산업",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C641",
+   "x": 818,
+   "y": 7140,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜비섹전자",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C637",
+   "x": 998,
+   "y": 7140,
+   "w": 240,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "Wuxi Rick Automation Technology Co., Ltd",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C531",
+   "x": 1348,
+   "y": 7140,
+   "w": 300,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜밀레니엄",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C425",
+   "x": 1698,
+   "y": 7140,
+   "w": 240,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜후로웰",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C337",
+   "x": 2078,
+   "y": 7140,
+   "w": 360,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜코웍커피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C224",
+   "x": 2418,
+   "y": 7140,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜에이치앤엔코퍼레이션",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C228",
+   "x": 2508,
+   "y": 7110,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜레버스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C229",
+   "x": 2568,
+   "y": 7110,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "루비아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C230",
+   "x": 2628,
+   "y": 7110,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜조선계기사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C219",
+   "x": 2718,
+   "y": 7140,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜코디아워스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C722",
+   "x": 448,
+   "y": 7170,
+   "w": 420,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "플랜트 플랜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C222",
+   "x": 2538,
+   "y": 7170,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "벤앤클로이",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C221",
+   "x": 2628,
+   "y": 7170,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "로스트포스트",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "BA614",
+   "x": 118,
+   "y": 7270,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "쇼콜라쏭즈",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA113",
+   "x": 2918,
+   "y": 7290,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "TANAT coffee",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA514",
+   "x": 218,
+   "y": 7310,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "토성마을",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA510",
+   "x": 258,
+   "y": 7310,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Cafen Speciality Roasters Ltd",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA414",
+   "x": 358,
+   "y": 7310,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "주식회사 카페노갈레스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA410",
+   "x": 398,
+   "y": 7310,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "노브네이션(Glitch Tokyo)",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C713",
+   "x": 568,
+   "y": 7340,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "허니비",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C628",
+   "x": 848,
+   "y": 7340,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "Embassy of Colombia - Procolombia",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C625",
+   "x": 1028,
+   "y": 7340,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "한국맥널티㈜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C521",
+   "x": 1348,
+   "y": 7340,
+   "w": 300,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜따벨라",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C420",
+   "x": 1608,
+   "y": 7340,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "Imágenes y Relaciones Públicas S.A.S",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C417",
+   "x": 1728,
+   "y": 7340,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "지에스씨인터내셔날",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C325",
+   "x": 2078,
+   "y": 7340,
+   "w": 360,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜두잉인터내쇼날",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C213",
+   "x": 2448,
+   "y": 7340,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜이알코퍼레이션",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA314",
+   "x": 2638,
+   "y": 7310,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "COFFEE COUNTY",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA310",
+   "x": 2678,
+   "y": 7310,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "주식회사 스테레오스코프 커피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA214",
+   "x": 2778,
+   "y": 7310,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "One Half Coffee Roastery Sdn Bhd",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA210",
+   "x": 2818,
+   "y": 7310,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "필아웃",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "BA613",
+   "x": 118,
+   "y": 7330,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "플랜토리",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA112",
+   "x": 2918,
+   "y": 7350,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "주식회사 노스모크위드아웃파이어",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA513",
+   "x": 218,
+   "y": 7370,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "그레인스퀘어(주식회사프로젝트142)",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA509",
+   "x": 258,
+   "y": 7370,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "파이오니어커피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA413",
+   "x": 358,
+   "y": 7370,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "박스로스터리",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA409",
+   "x": 398,
+   "y": 7370,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "주식회사 클라우드핑크",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA313",
+   "x": 2638,
+   "y": 7370,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "(주)그레이그리스트밀",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA309",
+   "x": 2678,
+   "y": 7370,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "딥블루레이크 커피&로스터스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA213",
+   "x": 2778,
+   "y": 7370,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "리플렉트커피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA209",
+   "x": 2818,
+   "y": 7370,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "레이지모먼트 커피스탠드",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "BA612",
+   "x": 118,
+   "y": 7390,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "마담파이크래프트",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA111",
+   "x": 2918,
+   "y": 7410,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "(주)유로스컴퍼니",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA512",
+   "x": 218,
+   "y": 7430,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "동양가배관",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA508",
+   "x": 258,
+   "y": 7430,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "유어홈 커피로스터스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA412",
+   "x": 358,
+   "y": 7430,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "주식회사 슬로우제이",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA408",
+   "x": 398,
+   "y": 7430,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "연희 에스프레소 바",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA312",
+   "x": 2638,
+   "y": 7430,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "디 진테제(DIE SYNTHESE)",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA308",
+   "x": 2678,
+   "y": 7430,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "루베르 로스터리",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA212",
+   "x": 2778,
+   "y": 7430,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "주식회사 파스텔커피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA208",
+   "x": 2818,
+   "y": 7430,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "자이언트커피로스터스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "BA611",
+   "x": 118,
+   "y": 7450,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "오이라이프코리아주식회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA110",
+   "x": 2918,
+   "y": 7470,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "코어커피 로스터스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA511",
+   "x": 218,
+   "y": 7490,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "고로커피로스터스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA507",
+   "x": 258,
+   "y": 7490,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Mone Global Sdn Bhd",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA411",
+   "x": 358,
+   "y": 7490,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "히떼로스터리",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA407",
+   "x": 398,
+   "y": 7490,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Urban Coffee Roaster Limited",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA311",
+   "x": 2638,
+   "y": 7490,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Cypher Roastery LLC",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA307",
+   "x": 2678,
+   "y": 7490,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "펠트",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA211",
+   "x": 2778,
+   "y": 7490,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "EINS Coffee",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA207",
+   "x": 2818,
+   "y": 7490,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "아야커피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "BA610",
+   "x": 118,
+   "y": 7510,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "라이츠앤코 주식회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C707",
+   "x": 568,
+   "y": 7560,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜클러스톤",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C619",
+   "x": 788,
+   "y": 7530,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "만델링커피코리아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C620",
+   "x": 848,
+   "y": 7530,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "In Conexus",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C621",
+   "x": 908,
+   "y": 7530,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Finca Nuevo Volcan",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C613",
+   "x": 1028,
+   "y": 7530,
+   "w": 180,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "블루데이타시스템즈",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C514",
+   "x": 1258,
+   "y": 7560,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "이레플러스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C511",
+   "x": 1408,
+   "y": 7560,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜아이엠에스그룹(IMS Group Inc.）",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C409",
+   "x": 1698,
+   "y": 7560,
+   "w": 240,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜라마르조코 코리아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C313",
+   "x": 2078,
+   "y": 7560,
+   "w": 360,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜라마르조코 코리아",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C207",
+   "x": 2448,
+   "y": 7560,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "Hollander Chocolate Co.",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA109",
+   "x": 2918,
+   "y": 7530,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Terraform Coffee Roasters",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA609",
+   "x": 118,
+   "y": 7570,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Raw Sugar Roast",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C616",
+   "x": 938,
+   "y": 7590,
+   "w": 360,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Changsha Saturnbird Coffee Co.,Ltd",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA108",
+   "x": 2918,
+   "y": 7590,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "폴리 베이커리",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA506",
+   "x": 218,
+   "y": 7610,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "노리밋커피랩",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA503",
+   "x": 258,
+   "y": 7610,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Puman Coffee",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA406",
+   "x": 358,
+   "y": 7610,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "루리커피(ㄹㄹㅋㅍ)",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA403",
+   "x": 398,
+   "y": 7610,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Rise Inter Co., Ltd.",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA306",
+   "x": 2638,
+   "y": 7610,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "SEVEN MYSTERY",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA303",
+   "x": 2678,
+   "y": 7610,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "글림 로스터스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA206",
+   "x": 2778,
+   "y": 7610,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Guizhou George Weiyi Coffee Co., Ltd.",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA203",
+   "x": 2818,
+   "y": 7610,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "주식회사 베르크로스터스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA608",
+   "x": 118,
+   "y": 7630,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "뉴웨이브커피로스터스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA107",
+   "x": 2918,
+   "y": 7650,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "가치커피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA505",
+   "x": 218,
+   "y": 7670,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "쿡커피로스터즈",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA502",
+   "x": 258,
+   "y": 7670,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "(주)제이씨피인터내셔날오라운트",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA405",
+   "x": 358,
+   "y": 7670,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "보사노바 로스팅팩토리",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA402",
+   "x": 398,
+   "y": 7670,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "폰트",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA305",
+   "x": 2638,
+   "y": 7670,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "유의미커피로스터즈",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA302",
+   "x": 2678,
+   "y": 7670,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "주식회사우리인터내셔널",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA205",
+   "x": 2778,
+   "y": 7670,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "프로토콜",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA202",
+   "x": 2818,
+   "y": 7670,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "커피몽타주",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA607",
+   "x": 118,
+   "y": 7690,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "커피엠스테이블",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA106",
+   "x": 2918,
+   "y": 7710,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "상두그레이",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA504",
+   "x": 218,
+   "y": 7730,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Noto Inc. (노토)",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA501",
+   "x": 258,
+   "y": 7730,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "mazelab coffee s.r.o.",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA404",
+   "x": 358,
+   "y": 7730,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "히트커피 로스터스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA401",
+   "x": 398,
+   "y": 7730,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Archers Coffee",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C703",
+   "x": 508,
+   "y": 7760,
+   "w": 60,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "Lykke Coffee Farms",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C701",
+   "x": 598,
+   "y": 7760,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "Ethio Group Inc",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C603",
+   "x": 878,
+   "y": 7760,
+   "w": 240,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜이디엠에스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C601",
+   "x": 1058,
+   "y": 7760,
+   "w": 120,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜국제씨에스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C506",
+   "x": 1228,
+   "y": 7730,
+   "w": 60,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Café de Honduras",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C507",
+   "x": 1378,
+   "y": 7730,
+   "w": 240,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜뮤제오",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C405",
+   "x": 1698,
+   "y": 7730,
+   "w": 240,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "오멜라스커피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C301",
+   "x": 2078,
+   "y": 7760,
+   "w": 360,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "쿠쿠홈시스 주식회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C201",
+   "x": 2448,
+   "y": 7760,
+   "w": 180,
+   "h": 120,
+   "color": "#dcdee3",
+   "name": "㈜이멕스테크",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA304",
+   "x": 2638,
+   "y": 7730,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "LIGHT UP COFFEE",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA301",
+   "x": 2678,
+   "y": 7730,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "(주)와이엠커피컴퍼니",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA204",
+   "x": 2778,
+   "y": 7730,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Blue Flame Coffee",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA201",
+   "x": 2818,
+   "y": 7730,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "올웨이즈어거스트로스터스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA606",
+   "x": 118,
+   "y": 7750,
+   "w": 40,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Felix Teiretzbacher",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C504",
+   "x": 1258,
+   "y": 7790,
+   "w": 120,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "Primrose Speciality Coffee",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C501",
+   "x": 1408,
+   "y": 7790,
+   "w": 180,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "㈜인터비앤에프",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C401",
+   "x": 1698,
+   "y": 7790,
+   "w": 240,
+   "h": 60,
+   "color": "#dcdee3",
+   "name": "케이필트로 주식회사",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA605",
+   "x": 168,
+   "y": 7860,
+   "w": 60,
+   "h": 40,
+   "color": "#dcdee3",
+   "name": "메종 노트르테르",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA604",
+   "x": 228,
+   "y": 7860,
+   "w": 60,
+   "h": 40,
+   "color": "#dcdee3",
+   "name": "헥스커피로스터스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA603",
+   "x": 288,
+   "y": 7860,
+   "w": 60,
+   "h": 40,
+   "color": "#dcdee3",
+   "name": "상록수커피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA601",
+   "x": 408,
+   "y": 7860,
+   "w": 60,
+   "h": 40,
+   "color": "#dcdee3",
+   "name": "ULT Coffee",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA101",
+   "x": 2628,
+   "y": 7860,
+   "w": 60,
+   "h": 40,
+   "color": "#dcdee3",
+   "name": "커핑포스트 로스터즈(블랙로드)",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA102",
+   "x": 2688,
+   "y": 7860,
+   "w": 60,
+   "h": 40,
+   "color": "#dcdee3",
+   "name": "베터커피 베터라이프",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA103",
+   "x": 2748,
+   "y": 7860,
+   "w": 60,
+   "h": 40,
+   "color": "#dcdee3",
+   "name": "라이크댓커피",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA104",
+   "x": 2808,
+   "y": 7860,
+   "w": 60,
+   "h": 40,
+   "color": "#dcdee3",
+   "name": "커피냅로스터스",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "CA105",
+   "x": 2868,
+   "y": 7860,
+   "w": 60,
+   "h": 40,
+   "color": "#dcdee3",
+   "name": "(주)수수커피컴퍼니",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "STAGE-D",
+   "x": 1618,
+   "y": 4580,
+   "w": 520,
+   "h": 400,
+   "color": "#aeb4bf",
+   "kind": "facility"
+  },
+  {
+   "code": "CA602",
+   "x": 348,
+   "y": 7860,
+   "w": 60,
+   "h": 40,
+   "color": "#dcdee3",
+   "name": "퍼블릭",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "STAGE-C-2",
+   "x": 372,
+   "y": 6617,
+   "w": 544,
+   "h": 274,
+   "color": "#aeb4bf",
+   "kind": "facility"
+  }
+ ],
+ "source": "floorplan.exporum.com exhibitionId=19 (2026-10-02)"
+}

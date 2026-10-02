@@ -7,6 +7,7 @@
 //
 // 이 모듈은 "근거 없는 추천"을 막는 게 목적이다. 겹치는 가치가 없으면 추천이라고
 // 부르지 않는다(matched=[] → 호출부가 뱃지·근거문장을 숨긴다).
+import { TRADE_TAG } from "@/lib/booth/normalize";
 import type { UserBrain,
   BoothListItem,
 } from "@/lib/types";
@@ -30,8 +31,8 @@ export function exhibitionValueProfile(booths: BoothListItem[]): ExhibitionValue
   const acc = new Map<string, number>();
   let total = 0;
   for (const b of booths) {
-    // 편의시설(facility)은 관람 취향과 무관하니 뺀다 — 추천에서도 빠진다.
-    if (b.kind === "facility") continue;
+    // 편의시설·업계용(B2B)은 관람 취향과 무관하니 뺀다 — 추천에서도 빠진다.
+    if (b.kind === "facility" || (b.tags ?? []).includes(TRADE_TAG)) continue;
     for (const v of b.valueTags ?? []) {
       acc.set(v.slug, (acc.get(v.slug) ?? 0) + v.strength);
       total += v.strength;

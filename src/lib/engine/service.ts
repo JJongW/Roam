@@ -1,6 +1,6 @@
 import { getRepository } from "@/lib/repositories";
 import { getExhibitionCached } from "@/lib/repositories/cached";
-import { exhibitorBooths } from "@/lib/booth/normalize";
+import { recommendableBooths } from "@/lib/booth/normalize";
 import { attachDwellMinutes } from "@/lib/booth/dwell";
 import { rankBooths, type ScoreContext } from "@/lib/engine/scoring";
 import type { UserPreferenceInput } from "@/lib/schemas";
@@ -34,8 +34,9 @@ export async function rankForExhibition(
     repo.boothHeatmap(detail.exhibition.id),
   ]);
 
-  // Recommend exhibitors only — facility areas (lounge/stage) never get ranked.
-  const booths = exhibitorBooths(boothRows);
+  // Recommend exhibitors only — facility areas (lounge/stage) and trade-only
+  // (B2B: 포장기계·매장운영) booths never get ranked. 지도·검색엔 그대로 있다.
+  const booths = recommendableBooths(boothRows);
   // 부스 크기로 체류 시간 주입(시간예산·소요시간에 반영). floorplan 기하 사용.
   attachDwellMinutes(exhibitionSlug, booths);
 

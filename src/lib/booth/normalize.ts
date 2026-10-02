@@ -37,6 +37,15 @@ export function isFacility(booth: BoothListItem): boolean {
   return booth.kind === "facility";
 }
 
+/** 업계용(B2B) 부스 표시 — 지도·검색엔 두고 취향 추천에서만 뺀다(서울카페쇼 2026-10-02).
+ *  카페 창업자가 아니라 방문객에게 "너한테 맞는 곳"으로 포장기계를 권하면 안 된다. */
+export const TRADE_TAG = "trade";
+
+/** 취향 추천(랭킹·피드·전시 가치 프로필)이 다루는 부스 — 편의시설과 업계용을 뺀다. */
+export function recommendableBooths<T extends BoothListItem>(booths: T[]): T[] {
+  return booths.filter((b) => !isFacility(b) && !(b.tags ?? []).includes(TRADE_TAG));
+}
+
 /** Exhibitor booths only — the set that recommendation/discovery should act on. */
 export function exhibitorBooths<T extends BoothListItem>(booths: T[]): T[] {
   return booths.filter((b) => !isFacility(b));
