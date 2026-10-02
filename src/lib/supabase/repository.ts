@@ -67,6 +67,7 @@ import type {
   BoothAppearance,
 } from "@/lib/types";
 import type { ExhibitorPlan, Ref } from "@/lib/exhibitor/plan";
+import { exhibitionIdFor } from "@/lib/exhibition/id";
 import type {
   AnalyticsEventInput,
   BookmarkInput,
@@ -737,7 +738,7 @@ export class SupabaseRepository implements Repository {
   async createExhibition(input: ExhibitionInput): Promise<Exhibition> {
     const db = createServiceClient();
     const row = {
-      id: uid("exh"),
+      id: exhibitionIdFor(input.slug),
       created_at: now(),
       ...exhibitionToRow(input),
     };

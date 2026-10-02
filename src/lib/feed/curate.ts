@@ -10,6 +10,7 @@ import { getRepository } from "@/lib/repositories";
 import { deriveCue } from "@/lib/feed/cue";
 import { buildGrounding, type BrandHistory, type Grounding } from "@/lib/feed/grounding";
 import { flatName } from "@/lib/exhibitor/identity";
+import { recommendableBooths } from "@/lib/booth/normalize";
 import { DEFAULT_RHYTHM, RHYTHM_MIX, type Rhythm } from "@/lib/feed/rhythm";
 import { DEFAULT_LOCALE, type Locale } from "@/lib/i18n/config";
 import { emptyBrain } from "@/lib/memory/distill";
@@ -332,8 +333,6 @@ export async function curateFeedWithPool(
   const decided = userId
     ? decidedBoothIds(await repo.listNotes(userId))
     : new Set<string>();
-  const poolLeft = booths.filter(
-    (b) => b.kind !== "facility" && !decided.has(b.id),
-  ).length;
+  const poolLeft = recommendableBooths(booths).filter((b) => !decided.has(b.id)).length;
   return { items, poolLeft };
 }

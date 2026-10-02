@@ -1,3 +1,5 @@
+import { slugFromExhibitionId } from "@/lib/exhibition/id";
+
 /**
  * 부스 사진이 없을 때 대신 보여줄 전시별 그림.
  *
@@ -13,10 +15,11 @@ const BY_SLUG: Record<string, string> = {
     "/booths/magok-livingmarket-2026/livingmarket_icon.png",
   // 브랜드를 특정할 사진이 없는 부스는 행사 포스터로 메운다(사용자 결정 2026-10-02).
   "siwse-magok-2026": "/booths/siwse-magok-2026/poster.webp",
+  "cafeshow-2026": "/booths/cafeshow-2026/poster.webp",
 };
 
-/** 관리자 화면(POST /api/exhibitions)으로 만든 전시는 id가 slug에서 파생되지 않는다
- *  (무작위 id). 아래 `exh_<slug>` 되돌리기가 안 먹으므로 직접 잇는다. */
+/** 2026-10-02 이전에 관리자 화면으로 만든 전시는 id가 무작위라 되짚기가 안 먹는다.
+ *  이후로는 생성도 exhibitionIdFor(slug) 규칙을 쓴다(lib/exhibition/id.ts). */
 const ID_TO_SLUG: Record<string, string> = {
   exh_0vqhgewmmupcsmeq: "siwse-magok-2026",
 };
@@ -28,8 +31,6 @@ const ID_TO_SLUG: Record<string, string> = {
  */
 export function boothPlaceholder(key?: string | null): string | undefined {
   if (!key) return undefined;
-  const slug = ID_TO_SLUG[key] ?? (key.startsWith("exh_")
-    ? key.slice(4).replace(/_/g, "-")
-    : key);
+  const slug = ID_TO_SLUG[key] ?? slugFromExhibitionId(key) ?? key;
   return BY_SLUG[slug];
 }

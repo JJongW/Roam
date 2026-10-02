@@ -1,5 +1,6 @@
 import { uid, shortId } from "@/lib/utils";
 import type { ExhibitorPlan, Ref } from "@/lib/exhibitor/plan";
+import { exhibitionIdFor } from "@/lib/exhibition/id";
 import type { AuditContext, ChangeEntry } from "@/lib/audit/diff";
 import { diffFields } from "@/lib/audit/diff";
 import { AUDIT_SPECS } from "@/lib/audit/entities";
@@ -227,7 +228,7 @@ export class MockRepository implements Repository {
   }
 
   async createExhibition(input: ExhibitionInput): Promise<Exhibition> {
-    const ex: Exhibition = { id: uid("exh"), createdAt: now(), ...input };
+    const ex: Exhibition = { id: exhibitionIdFor(input.slug), createdAt: now(), ...input };
     store().exhibitions.push(ex);
     return ex;
   }
