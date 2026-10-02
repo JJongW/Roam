@@ -247,7 +247,9 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "Bestro Co.,Ltd"
+   "company": "Bestro Co.,Ltd",
+   "websiteUrl": "https://bestro.co.kr",
+   "instagramUrl": "https://www.instagram.com/official.bestro"
   },
   {
    "code": "A274",
@@ -270,7 +272,9 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "Agricultural Corporation Food Factory Co., Ltd."
+   "company": "Agricultural Corporation Food Factory Co., Ltd.",
+   "websiteUrl": "https://ffshop.co.kr",
+   "instagramUrl": "https://www.instagram.com/food_factory_real"
   },
   {
    "code": "A276",
@@ -366,7 +370,8 @@
    ],
    "company": "daeho",
    "longDescription": "[2025 서울카페쇼 참가 정보]\n국내 최고 카페 전문 브랜드 \"까르페데이\"\n간편하게 만들어 건강하게 즐기는 \"까르페데이\"의 다양한 제품군으로 언제 어디서든 보다 맛있게 즐기실 수 있습니다.",
-   "websiteUrl": "http://www.daehofood.co.kr"
+   "websiteUrl": "http://www.daehofood.co.kr",
+   "instagramUrl": "https://www.instagram.com/daeho_food"
   },
   {
    "code": "A313",
@@ -537,7 +542,9 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "Otree Foods Co., Ltd"
+   "company": "Otree Foods Co., Ltd",
+   "websiteUrl": "https://shop-otreefoods.com",
+   "instagramUrl": "https://www.instagram.com/otreefoods"
   },
   {
    "code": "A413",
@@ -725,7 +732,9 @@
    "kind": "exhibitor",
    "tags": [
     "cs-etc"
-   ]
+   ],
+   "websiteUrl": "https://lffood.co.kr",
+   "instagramUrl": "https://www.instagram.com/lffood_official"
   },
   {
    "code": "A524",
@@ -737,7 +746,8 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "JSM Food, INC"
+   "company": "JSM Food, INC",
+   "websiteUrl": "https://cafeestrella.kr"
   },
   {
    "code": "A531",
@@ -749,7 +759,9 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "HURUM"
+   "company": "HURUM",
+   "websiteUrl": "https://hurumcorp.com",
+   "instagramUrl": "https://www.instagram.com/hurum_official"
   },
   {
    "code": "A541",
@@ -872,7 +884,9 @@
    "kind": "exhibitor",
    "tags": [
     "cs-etc"
-   ]
+   ],
+   "websiteUrl": "https://monksu.store",
+   "instagramUrl": "https://www.instagram.com/monksu_official"
   },
   {
    "code": "A632",
@@ -957,7 +971,9 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "GODAMCHON"
+   "company": "GODAMCHON",
+   "websiteUrl": "https://godamchon.com",
+   "instagramUrl": "https://www.instagram.com/godam.maket"
   },
   {
    "code": "A661",
@@ -1089,7 +1105,8 @@
    "logoUrl": "/booths/cafeshow-2026/logo/A732.webp",
    "images": [
     "/booths/cafeshow-2026/A732_1.webp"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/wannaeathk"
   },
   {
    "code": "A733",
@@ -1102,7 +1119,8 @@
     "cs-dessert"
    ],
    "longDescription": "[2025 서울카페쇼 참가 정보]\n저희 한아통상㈜는 1972년 회사 창립 이후 현재까지 고객의 성공과 함께 성장 해 온\n프랜차이즈, 카페형 장비 및 원료를 수입하는유통 전문업체 입니다.",
-   "logoUrl": "/booths/cafeshow-2026/logo/A733.webp"
+   "logoUrl": "/booths/cafeshow-2026/logo/A733.webp",
+   "websiteUrl": "https://hanaa.co.kr"
   },
   {
    "code": "A741",
@@ -1144,7 +1162,8 @@
    "kind": "exhibitor",
    "tags": [
     "cs-etc"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/the_panaura"
   },
   {
    "code": "A749",
@@ -1176,7 +1195,8 @@
    "tags": [
     "cs-coffee"
    ],
-   "company": "CNC Inc."
+   "company": "CNC Inc.",
+   "websiteUrl": "https://moninkorea.kr"
   },
   {
    "code": "A803",
@@ -1305,7 +1325,8 @@
    ],
    "company": "HANMIF3",
    "longDescription": "[2025 서울카페쇼 참가 정보]\n시장 트렌드를 조사하고, 뒤쳐지지 않게 개발하여, 보다 우수한 품질을 자랑하며, 고객 만족을 우선하고, 각종 인증, 꼼꼼한 검수로 안정성있는 제품을 제공 합니다.",
-   "websiteUrl": "http://www.foodrella.com"
+   "websiteUrl": "http://www.foodrella.com",
+   "instagramUrl": "https://www.instagram.com/foodrella.official"
   },
   {
    "code": "A829",
@@ -1426,7 +1447,8 @@
    "images": [
     "/booths/cafeshow-2026/A901_1.webp",
     "/booths/cafeshow-2026/A901_2.webp"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/gwangmyeongsangsa"
   },
   {
    "code": "A905",
@@ -1605,7 +1627,9 @@
     "cs-etc"
    ],
    "longDescription": "[2025 서울카페쇼 참가 정보]\n㈜메디프로텍은 인류의 더 나은 삶을 위한 도전,\n더불어 함께 살아가기 위한 공존,\n더 좋은 시너지를 만들어내는 소통을 가치있게 여기는\n수출입 전문 기업 입니다.",
-   "logoUrl": "/booths/cafeshow-2026/logo/B111.webp"
+   "logoUrl": "/booths/cafeshow-2026/logo/B111.webp",
+   "websiteUrl": "https://mediprotech.com",
+   "instagramUrl": "https://www.instagram.com/medi_protech"
   },
   {
    "code": "B112",
@@ -1647,7 +1671,9 @@
    "kind": "exhibitor",
    "tags": [
     "cs-etc"
-   ]
+   ],
+   "websiteUrl": "https://dongnamfoods.co.kr",
+   "instagramUrl": "https://www.instagram.com/dongnamfnb_official"
   },
   {
    "code": "B119",
@@ -1683,7 +1709,8 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "ILSHINNAPU"
+   "company": "ILSHINNAPU",
+   "instagramUrl": "https://www.instagram.com/napucokr"
   },
   {
    "code": "B122",
@@ -1916,7 +1943,9 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "ROOI KOREA"
+   "company": "ROOI KOREA",
+   "websiteUrl": "https://rooi.co.kr",
+   "instagramUrl": "https://www.instagram.com/we.are.rooi"
   },
   {
    "code": "B202",
@@ -1972,7 +2001,8 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "Modern Caravane"
+   "company": "Modern Caravane",
+   "websiteUrl": "https://wuxinxuan.com"
   },
   {
    "code": "B210",
@@ -1992,7 +2022,8 @@
     "/booths/cafeshow-2026/B210_1.webp",
     "/booths/cafeshow-2026/B210_2.webp",
     "/booths/cafeshow-2026/B210_3.webp"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/coreshtech1"
   },
   {
    "code": "B211",
@@ -2045,7 +2076,9 @@
    "kind": "exhibitor",
    "tags": [
     "cs-etc"
-   ]
+   ],
+   "websiteUrl": "https://aramfarm.co.kr",
+   "instagramUrl": "https://www.instagram.com/aramfarm00"
   },
   {
    "code": "B219",
@@ -2068,7 +2101,8 @@
     "/booths/cafeshow-2026/B219_1.webp",
     "/booths/cafeshow-2026/B219_2.webp",
     "/booths/cafeshow-2026/B219_3.webp"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/kayakorea_official"
   },
   {
    "code": "B221",
@@ -2079,7 +2113,9 @@
    "kind": "exhibitor",
    "tags": [
     "cs-etc"
-   ]
+   ],
+   "websiteUrl": "https://rozeon.com",
+   "instagramUrl": "https://www.instagram.com/rozeon_tea"
   },
   {
    "code": "B222",
@@ -2103,7 +2139,8 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "CCONLAB / MAMKKUT"
+   "company": "CCONLAB / MAMKKUT",
+   "instagramUrl": "https://www.instagram.com/mamkkut_official"
   },
   {
    "code": "B226",
@@ -2178,7 +2215,8 @@
    "logoUrl": "/booths/cafeshow-2026/logo/B231.webp",
    "images": [
     "/booths/cafeshow-2026/B231_1.webp"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/letstea_house"
   },
   {
    "code": "B232",
@@ -2399,7 +2437,8 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "lafolium"
+   "company": "lafolium",
+   "websiteUrl": "https://lafolium.org"
   },
   {
    "code": "B258",
@@ -2476,7 +2515,9 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "ATTI INTERNATIONAL"
+   "company": "ATTI INTERNATIONAL",
+   "websiteUrl": "https://attiinternational.com",
+   "instagramUrl": "https://www.instagram.com/attiinternational"
   },
   {
    "code": "B266",
@@ -2557,7 +2598,9 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "CUTCO Korea"
+   "company": "CUTCO Korea",
+   "websiteUrl": "https://cutcokorea.co.kr",
+   "instagramUrl": "https://www.instagram.com/cutco_korea"
   },
   {
    "code": "B273",
@@ -2714,7 +2757,9 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "YOUR WINES"
+   "company": "YOUR WINES",
+   "websiteUrl": "https://bcafeshow.com",
+   "instagramUrl": "https://www.instagram.com/bcafeshow"
   },
   {
    "code": "B322",
@@ -2751,7 +2796,8 @@
    ],
    "longDescription": "[2025 서울카페쇼 참가 정보]\n하임트리는 한방 허브티 블렌딩 으로 전세계에 한방 허브티를 납품하고 있습니다.",
    "websiteUrl": "http://haimtree.com",
-   "logoUrl": "/booths/cafeshow-2026/logo/B328.webp"
+   "logoUrl": "/booths/cafeshow-2026/logo/B328.webp",
+   "instagramUrl": "https://www.instagram.com/haimtree"
   },
   {
    "code": "B329",
@@ -2763,7 +2809,9 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "REWIND"
+   "company": "REWIND",
+   "websiteUrl": "https://iamgreener.co.kr",
+   "instagramUrl": "https://www.instagram.com/iamgreener_official"
   },
   {
    "code": "B331",
@@ -2787,7 +2835,9 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "CHAEYEONGA"
+   "company": "CHAEYEONGA",
+   "websiteUrl": "https://chaeyeonga.com",
+   "instagramUrl": "https://www.instagram.com/chaeyeonga._"
   },
   {
    "code": "B334",
@@ -2874,7 +2924,9 @@
    "kind": "exhibitor",
    "tags": [
     "cs-etc"
-   ]
+   ],
+   "websiteUrl": "https://ilguda.com",
+   "instagramUrl": "https://www.instagram.com/ilguda.tea"
   },
   {
    "code": "B351",
@@ -2907,7 +2959,9 @@
    "tags": [
     "cs-tea"
    ],
-   "company": "sundawon"
+   "company": "sundawon",
+   "websiteUrl": "https://sundawon.com",
+   "instagramUrl": "https://www.instagram.com/sundawon"
   },
   {
    "code": "B354",
@@ -2919,7 +2973,8 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "kkokdam Inc."
+   "company": "kkokdam Inc.",
+   "instagramUrl": "https://www.instagram.com/kkokdam"
   },
   {
    "code": "B358",
@@ -2942,7 +2997,9 @@
    "kind": "exhibitor",
    "tags": [
     "cs-etc"
-   ]
+   ],
+   "websiteUrl": "https://sweetstreet.com",
+   "instagramUrl": "https://www.instagram.com/sweetstreetdesserts"
   },
   {
    "code": "B361",
@@ -2957,7 +3014,8 @@
    ],
    "company": "Hyphen",
    "longDescription": "[2025 서울카페쇼 참가 정보]\n하이픈은 친환경 포장재 브랜드 '스마일어스'를 필두로 각종 식품 포장재를 만들어가고 있는 회사입니다.\n당사는 '패키지도 패션이다'라는 일념으로 다양하고 신선한 구조의 포장재를 비롯하여, 높은 생산력과 단가 경쟁력을 통해 유수의 기업들과 협력하며 친환경적이면서도 멋진 포장재를 기획/생산하고 있습니다.\n하이픈(붙힘표 - )의 뜻처럼 고객과 좋은 제품을 올바르게 연결하자는 우리의 미션을 통하여 고객에게 항상 최고의 만족을 드리고자 합니다.\n히이픈은 친환경 포장재와 혁신적인 식품 포장재를 언제나 선도합니다.",
-   "logoUrl": "/booths/cafeshow-2026/logo/B361.webp"
+   "logoUrl": "/booths/cafeshow-2026/logo/B361.webp",
+   "websiteUrl": "https://hyphen.im"
   },
   {
    "code": "B364",
@@ -2973,7 +3031,8 @@
    "company": "TOGOPACK",
    "longDescription": "[2025 서울카페쇼 참가 정보]\n카페를 시작으로 요식업 전반에 들어가는 일회용품, 포장용기들을 납품하는 회사입니다. 현재 100여개 이상의 B2B 거래와 온라인을 통한 B2C 판매도 진행하고 있습니다.",
    "websiteUrl": "http://togocoffee.co.kr",
-   "logoUrl": "/booths/cafeshow-2026/logo/B364.webp"
+   "logoUrl": "/booths/cafeshow-2026/logo/B364.webp",
+   "instagramUrl": "https://www.instagram.com/togo_pack"
   },
   {
    "code": "B368",
@@ -3050,7 +3109,9 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "The Dutch cheese and Nature Corp"
+   "company": "The Dutch cheese and Nature Corp",
+   "websiteUrl": "https://thedutch.kr",
+   "instagramUrl": "https://www.instagram.com/thedutch.korea"
   },
   {
    "code": "B401",
@@ -3125,7 +3186,8 @@
    "kind": "exhibitor",
    "tags": [
     "cs-etc"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/sallycook_official"
   },
   {
    "code": "B420",
@@ -3164,7 +3226,9 @@
    "kind": "exhibitor",
    "tags": [
     "cs-etc"
-   ]
+   ],
+   "websiteUrl": "https://royalgreens.co.kr",
+   "instagramUrl": "https://www.instagram.com/hwangchowon"
   },
   {
    "code": "B424",
@@ -3175,7 +3239,8 @@
    "kind": "exhibitor",
    "tags": [
     "cs-etc"
-   ]
+   ],
+   "websiteUrl": "https://seobana.co.kr"
   },
   {
    "code": "B425",
@@ -3363,7 +3428,9 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "Thermos Korea Co., Ltd."
+   "company": "Thermos Korea Co., Ltd.",
+   "websiteUrl": "https://thermos.kr",
+   "instagramUrl": "https://www.instagram.com/thermoskorea"
   },
   {
    "code": "B503",
@@ -3441,7 +3508,8 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "Hielpay"
+   "company": "Hielpay",
+   "instagramUrl": "https://www.instagram.com/hielpay"
   },
   {
    "code": "B525",
@@ -3452,7 +3520,8 @@
    "kind": "exhibitor",
    "tags": [
     "cs-tea"
-   ]
+   ],
+   "websiteUrl": "https://srilankateaboard.lk"
   },
   {
    "code": "B526",
@@ -3560,7 +3629,9 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "Slown Inc"
+   "company": "Slown Inc",
+   "websiteUrl": "https://slow-n.com",
+   "instagramUrl": "https://www.instagram.com/slown_official"
   },
   {
    "code": "B549",
@@ -3617,7 +3688,8 @@
    "kind": "exhibitor",
    "tags": [
     "cs-etc"
-   ]
+   ],
+   "websiteUrl": "https://sachaone.com"
   },
   {
    "code": "B561",
@@ -3629,7 +3701,9 @@
    "tags": [
     "cs-bakery"
    ],
-   "company": "BREAD GARDEN"
+   "company": "BREAD GARDEN",
+   "websiteUrl": "https://bncmarket.com",
+   "instagramUrl": "https://www.instagram.com/bncmarket_official"
   },
   {
    "code": "B564",
@@ -3641,7 +3715,8 @@
    "tags": [
     "cs-tea"
    ],
-   "company": "MOUNTEA"
+   "company": "MOUNTEA",
+   "instagramUrl": "https://www.instagram.com/mountea_kr"
   },
   {
    "code": "B601",
@@ -3830,7 +3905,8 @@
    "kind": "exhibitor",
    "tags": [
     "cs-etc"
-   ]
+   ],
+   "websiteUrl": "https://isoi.co.kr"
   },
   {
    "code": "B642",
@@ -3848,7 +3924,8 @@
    "logoUrl": "/booths/cafeshow-2026/logo/B642.webp",
    "images": [
     "/booths/cafeshow-2026/B642_1.webp"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/nokchawon_official"
   },
   {
    "code": "B651",
@@ -3863,7 +3940,8 @@
    "company": "ALL DAY TEA INC.",
    "longDescription": "[2025 서울카페쇼 참가 정보]\n안녕하세요, 올데이티 입니다.\n저희는 최상의 차 원료만을 수입하여 최고의 맛과 향을 연구하고 최적의 제품을 만드는 일을 합니다.\n해외 원료생산 기업들과 직접 계약하여 고품질의 원료를 안정적으로 확보하고 '클레임제로'라는 자체 원료 전수검사 시스템을 통해\n최상의 원료를 골라 냅니다.\n최고의 맛과 향을 찾기 위해 지속적으로 연구와 개발을 하며,\n고객니즈에 맞는 원료 선정부터 블렌딩, 티백, 패키지까지 한번에 올데이티의 전문 인력들이 최적의 제품을 제안해드립니다.",
    "websiteUrl": "http://alldaytea.com/",
-   "logoUrl": "/booths/cafeshow-2026/logo/B651.webp"
+   "logoUrl": "/booths/cafeshow-2026/logo/B651.webp",
+   "instagramUrl": "https://www.instagram.com/alldaytea"
   },
   {
    "code": "B654",
@@ -3881,7 +3959,8 @@
    "logoUrl": "/booths/cafeshow-2026/logo/B654.webp",
    "images": [
     "/booths/cafeshow-2026/B654_1.webp"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/nokchawon_official"
   },
   {
    "code": "B661",
@@ -4051,7 +4130,8 @@
    "kind": "exhibitor",
    "tags": [
     "cs-dessert"
-   ]
+   ],
+   "websiteUrl": "https://madebyhollander.com"
   },
   {
    "code": "C213",
@@ -4095,7 +4175,9 @@
     "cs-trade",
     "trade"
    ],
-   "company": "RoastPost Coffee"
+   "company": "RoastPost Coffee",
+   "websiteUrl": "https://roastpost.kr",
+   "instagramUrl": "https://www.instagram.com/roastpost.official"
   },
   {
    "code": "C222",
@@ -4202,7 +4284,9 @@
    "kind": "exhibitor",
    "tags": [
     "cs-etc"
-   ]
+   ],
+   "websiteUrl": "https://brew92.com",
+   "instagramUrl": "https://www.instagram.com/brew92cafe"
   },
   {
    "code": "C247",
@@ -4256,7 +4340,8 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "La Marzocco Korea"
+   "company": "La Marzocco Korea",
+   "instagramUrl": "https://www.instagram.com/lamarzoccokorea"
   },
   {
    "code": "C325",
@@ -4363,7 +4448,8 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "K-filtro"
+   "company": "K-filtro",
+   "websiteUrl": "https://claroswiss.kr"
   },
   {
    "code": "C405",
@@ -4553,7 +4639,9 @@
    "kind": "exhibitor",
    "tags": [
     "cs-etc"
-   ]
+   ],
+   "websiteUrl": "https://ihcafe.hn",
+   "instagramUrl": "https://www.instagram.com/ihcafe"
   },
   {
    "code": "C507",
@@ -4728,7 +4816,8 @@
     "cs-trade",
     "trade"
    ],
-   "company": "BLUEDATASYSTEMS"
+   "company": "BLUEDATASYSTEMS",
+   "websiteUrl": "https://bluedatasystems.kr"
   },
   {
    "code": "C616",
@@ -4769,7 +4858,8 @@
    "kind": "exhibitor",
    "tags": [
     "cs-etc"
-   ]
+   ],
+   "websiteUrl": "https://inconexus.com"
   },
   {
    "code": "C621",
@@ -4960,7 +5050,8 @@
    "images": [
     "/booths/cafeshow-2026/C669_1.webp",
     "/booths/cafeshow-2026/C669_2.webp"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/thefoldcup"
   },
   {
    "code": "C673",
@@ -5009,7 +5100,9 @@
    "kind": "exhibitor",
    "tags": [
     "cs-coffee"
-   ]
+   ],
+   "websiteUrl": "https://lykkegardar.se",
+   "instagramUrl": "https://www.instagram.com/lykkecoffeefarms"
   },
   {
    "code": "C707",
@@ -5098,7 +5191,9 @@
    "kind": "exhibitor",
    "tags": [
     "cs-etc"
-   ]
+   ],
+   "websiteUrl": "https://sejungmall.com",
+   "instagramUrl": "https://www.instagram.com/sejung_mall"
   },
   {
    "code": "C729",
@@ -5134,7 +5229,9 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "MIENNE"
+   "company": "MIENNE",
+   "websiteUrl": "https://machinemarket.kr",
+   "instagramUrl": "https://www.instagram.com/mienne_coffee"
   },
   {
    "code": "C737",
@@ -5164,7 +5261,9 @@
    "tags": [
     "cs-coffee"
    ],
-   "company": "COFFEEMARKETUS"
+   "company": "COFFEEMARKETUS",
+   "websiteUrl": "https://cafeus.kr",
+   "instagramUrl": "https://www.instagram.com/coffeemarketus_official"
   },
   {
    "code": "C742",
@@ -5190,7 +5289,8 @@
    "tags": [
     "cs-coffee"
    ],
-   "company": "Dosim coffee"
+   "company": "Dosim coffee",
+   "instagramUrl": "https://www.instagram.com/dosimcoffee"
   },
   {
    "code": "C801",
@@ -5202,7 +5302,9 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "GATEVISION"
+   "company": "GATEVISION",
+   "websiteUrl": "https://gvcurate.com",
+   "instagramUrl": "https://www.instagram.com/gvcurate"
   },
   {
    "code": "C803",
@@ -5301,7 +5403,8 @@
     "cs-trade",
     "trade"
    ],
-   "company": "Cuppingpost"
+   "company": "Cuppingpost",
+   "instagramUrl": "https://www.instagram.com/cuppingpost"
   },
   {
    "code": "CA102",
@@ -5324,7 +5427,9 @@
    "tags": [
     "cs-coffee"
    ],
-   "company": "LIKE THAT COFFEE"
+   "company": "LIKE THAT COFFEE",
+   "websiteUrl": "https://likethatcoffee.com",
+   "instagramUrl": "https://www.instagram.com/like.that.coffee"
   },
   {
    "code": "CA104",
@@ -5336,7 +5441,9 @@
    "tags": [
     "cs-coffee"
    ],
-   "company": "COFFEE NAP ROASTERS"
+   "company": "COFFEE NAP ROASTERS",
+   "websiteUrl": "https://coffeenaproasters.com",
+   "instagramUrl": "https://www.instagram.com/coffeenap_roasters"
   },
   {
    "code": "CA105",
@@ -5375,7 +5482,9 @@
    "tags": [
     "cs-coffee"
    ],
-   "company": "Gachicoffee"
+   "company": "Gachicoffee",
+   "websiteUrl": "https://gachicoffee.com",
+   "instagramUrl": "https://www.instagram.com/gachi_coffee"
   },
   {
    "code": "CA108",
@@ -5414,7 +5523,9 @@
    "tags": [
     "cs-coffee"
    ],
-   "company": "Coeur coffee roasters"
+   "company": "Coeur coffee roasters",
+   "websiteUrl": "https://coeurcoffeeroasters.kr",
+   "instagramUrl": "https://www.instagram.com/coeurcoffee.roasters"
   },
   {
    "code": "CA111",
@@ -5426,7 +5537,9 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "Euros Company Inc."
+   "company": "Euros Company Inc.",
+   "websiteUrl": "https://euroscoffee.kr",
+   "instagramUrl": "https://www.instagram.com/euros_official"
   },
   {
    "code": "CA112",
@@ -5487,7 +5600,8 @@
    "tags": [
     "cs-coffee"
    ],
-   "company": "Coffee Montage"
+   "company": "Coffee Montage",
+   "websiteUrl": "https://coffeemontage.com"
   },
   {
    "code": "CA203",
@@ -5505,7 +5619,8 @@
    "images": [
     "/booths/cafeshow-2026/CA203_1.webp",
     "/booths/cafeshow-2026/CA203_2.webp"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/werk.roasters"
   },
   {
    "code": "CA204",
@@ -5516,7 +5631,9 @@
    "kind": "exhibitor",
    "tags": [
     "cs-coffee"
-   ]
+   ],
+   "websiteUrl": "https://blueflamecoffee.com",
+   "instagramUrl": "https://www.instagram.com/blueflamecoffee"
   },
   {
    "code": "CA205",
@@ -5576,7 +5693,9 @@
    "tags": [
     "cs-coffee"
    ],
-   "company": "GIANT COFFEE ROASTERS"
+   "company": "GIANT COFFEE ROASTERS",
+   "websiteUrl": "https://giantcoffeeroasters.com",
+   "instagramUrl": "https://www.instagram.com/giantcoffeeroasters"
   },
   {
    "code": "CA209",
@@ -5607,7 +5726,8 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "FILLOUT"
+   "company": "FILLOUT",
+   "websiteUrl": "https://filloutcoffee.co.kr"
   },
   {
    "code": "CA211",
@@ -5618,7 +5738,8 @@
    "kind": "exhibitor",
    "tags": [
     "cs-coffee"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/eins_coffee"
   },
   {
    "code": "CA212",
@@ -5630,7 +5751,8 @@
    "tags": [
     "cs-coffee"
    ],
-   "company": "PASTEL COFFEE WORKS"
+   "company": "PASTEL COFFEE WORKS",
+   "instagramUrl": "https://www.instagram.com/pastelcoffeeworks"
   },
   {
    "code": "CA213",
@@ -5642,7 +5764,9 @@
    "tags": [
     "cs-coffee"
    ],
-   "company": "reflect coffee roasters"
+   "company": "reflect coffee roasters",
+   "websiteUrl": "https://reflect-coffee.co.kr",
+   "instagramUrl": "https://www.instagram.com/reflect_coffee"
   },
   {
    "code": "CA214",
@@ -5653,7 +5777,8 @@
    "kind": "exhibitor",
    "tags": [
     "cs-coffee"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/onehalfcoffeeroastery"
   },
   {
    "code": "CA301",
@@ -5706,7 +5831,9 @@
    "kind": "exhibitor",
    "tags": [
     "cs-coffee"
-   ]
+   ],
+   "websiteUrl": "https://lightupcoffee.com",
+   "instagramUrl": "https://www.instagram.com/lightupcoffee"
   },
   {
    "code": "CA305",
@@ -5732,7 +5859,9 @@
    "kind": "exhibitor",
    "tags": [
     "cs-etc"
-   ]
+   ],
+   "websiteUrl": "https://sevenmystery.com",
+   "instagramUrl": "https://www.instagram.com/sevenmystery.toronto"
   },
   {
    "code": "CA307",
@@ -5812,7 +5941,9 @@
    "kind": "exhibitor",
    "tags": [
     "cs-coffee"
-   ]
+   ],
+   "websiteUrl": "https://bycypher.com",
+   "instagramUrl": "https://www.instagram.com/by_cypher"
   },
   {
    "code": "CA312",
@@ -5824,7 +5955,9 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "DIE SYNTHESE"
+   "company": "DIE SYNTHESE",
+   "websiteUrl": "https://diesynthese.com",
+   "instagramUrl": "https://www.instagram.com/die_synthese"
   },
   {
    "code": "CA313",
@@ -5852,7 +5985,9 @@
    "tags": [
     "cs-coffee"
    ],
-   "company": "COFFEE COUNTY Co., Ltd."
+   "company": "COFFEE COUNTY Co., Ltd.",
+   "websiteUrl": "https://typica.coffee",
+   "instagramUrl": "https://www.instagram.com/typica.jp"
   },
   {
    "code": "CA401",
@@ -5933,7 +6068,9 @@
    "tags": [
     "cs-coffee"
    ],
-   "company": "BOSSANOVA ROASTING FACTORY"
+   "company": "BOSSANOVA ROASTING FACTORY",
+   "websiteUrl": "https://bncr.co.kr",
+   "instagramUrl": "https://www.instagram.com/bossanova_coffee_roasters"
   },
   {
    "code": "CA406",
@@ -6025,7 +6162,9 @@
    "kind": "exhibitor",
    "tags": [
     "cs-etc"
-   ]
+   ],
+   "websiteUrl": "https://slowjcoffee.com",
+   "instagramUrl": "https://www.instagram.com/slowjcoffee_"
   },
   {
    "code": "CA413",
@@ -6048,7 +6187,9 @@
    "tags": [
     "cs-coffee"
    ],
-   "company": "cafe nogales"
+   "company": "cafe nogales",
+   "websiteUrl": "https://cafenogales.co.kr",
+   "instagramUrl": "https://www.instagram.com/cafenogales"
   },
   {
    "code": "CA501",
@@ -6071,7 +6212,9 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "JCPINTERNATIONAL.LTD"
+   "company": "JCPINTERNATIONAL.LTD",
+   "websiteUrl": "https://oraund.com",
+   "instagramUrl": "https://www.instagram.com/oraund_coffee"
   },
   {
    "code": "CA503",
@@ -6133,7 +6276,8 @@
    "tags": [
     "cs-coffee"
    ],
-   "company": "nolimitcoffeelab"
+   "company": "nolimitcoffeelab",
+   "instagramUrl": "https://www.instagram.com/nolimit_coffeelab"
   },
   {
    "code": "CA507",
@@ -6215,7 +6359,9 @@
    "tags": [
     "cs-coffee"
    ],
-   "company": "GABAEGWAN COFFEE ROASTERS"
+   "company": "GABAEGWAN COFFEE ROASTERS",
+   "websiteUrl": "https://gabaegwan.com",
+   "instagramUrl": "https://www.instagram.com/dongyanggabaegwan"
   },
   {
    "code": "CA513",
@@ -6261,7 +6407,9 @@
    "kind": "exhibitor",
    "tags": [
     "cs-coffee"
-   ]
+   ],
+   "websiteUrl": "https://ultcoffee.jp",
+   "instagramUrl": "https://www.instagram.com/ultcoffee.exp"
   },
   {
    "code": "CA602",
@@ -6319,7 +6467,9 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "MAISON NOTRE TERRE"
+   "company": "MAISON NOTRE TERRE",
+   "websiteUrl": "https://maison-notreterre.com",
+   "instagramUrl": "https://www.instagram.com/maison_notreterre"
   },
   {
    "code": "CA606",
@@ -6330,7 +6480,9 @@
    "kind": "exhibitor",
    "tags": [
     "cs-etc"
-   ]
+   ],
+   "websiteUrl": "https://kaffeelix.at",
+   "instagramUrl": "https://www.instagram.com/kaffeelix.roastery"
   },
   {
    "code": "CA607",
@@ -6447,7 +6599,9 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "Hawha Vision"
+   "company": "Hawha Vision",
+   "websiteUrl": "https://hanwhavision.com",
+   "instagramUrl": "https://www.instagram.com/hanwha_vision"
   },
   {
    "code": "D120",
@@ -6518,7 +6672,8 @@
    "kind": "exhibitor",
    "tags": [
     "cs-etc"
-   ]
+   ],
+   "websiteUrl": "https://twentysixgroup.com.au"
   },
   {
    "code": "D132",
@@ -6552,7 +6707,9 @@
    "kind": "exhibitor",
    "tags": [
     "cs-etc"
-   ]
+   ],
+   "websiteUrl": "https://ligre.com",
+   "instagramUrl": "https://www.instagram.com/ligre_official"
   },
   {
    "code": "D140",
@@ -6583,7 +6740,8 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "YOUNGONE CORPORATION"
+   "company": "YOUNGONE CORPORATION",
+   "websiteUrl": "https://youngonecorp.com"
   },
   {
    "code": "D144",
@@ -6644,7 +6802,9 @@
    "tags": [
     "cs-tea"
    ],
-   "company": "DAONE FOODS INC."
+   "company": "DAONE FOODS INC.",
+   "websiteUrl": "https://sbndw.com",
+   "instagramUrl": "https://www.instagram.com/da_won_food"
   },
   {
    "code": "D149",
@@ -6700,7 +6860,8 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "KAPKAWA LTD."
+   "company": "KAPKAWA LTD.",
+   "instagramUrl": "https://www.instagram.com/kapkawa_official"
   },
   {
    "code": "D154",
@@ -6758,7 +6919,9 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "HUEUM"
+   "company": "HUEUM",
+   "websiteUrl": "https://hueum.com",
+   "instagramUrl": "https://www.instagram.com/hueum_official"
   },
   {
    "code": "D159",
@@ -6770,7 +6933,8 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "IRIS International"
+   "company": "IRIS International",
+   "instagramUrl": "https://www.instagram.com/irisinternational.co.kr"
   },
   {
    "code": "D161",
@@ -7030,7 +7194,8 @@
     "/booths/cafeshow-2026/D301_1.webp",
     "/booths/cafeshow-2026/D301_2.webp",
     "/booths/cafeshow-2026/D301_3.webp"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/peopeulraendeu"
   },
   {
    "code": "D311",
@@ -7137,7 +7302,9 @@
    "tags": [
     "cs-trade",
     "trade"
-   ]
+   ],
+   "websiteUrl": "https://ypak-packaging.com",
+   "instagramUrl": "https://www.instagram.com/ypakcoffee"
   },
   {
    "code": "D344",
@@ -7172,7 +7339,8 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "COART"
+   "company": "COART",
+   "instagramUrl": "https://www.instagram.com/coart.kr"
   },
   {
    "code": "D353",
@@ -7254,7 +7422,8 @@
    "tags": [
     "cs-coffee"
    ],
-   "company": "CAFE SOLUTION"
+   "company": "CAFE SOLUTION",
+   "instagramUrl": "https://www.instagram.com/cafe_solution"
   },
   {
    "code": "D370",
@@ -7288,7 +7457,9 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "DEODEOKMONG"
+   "company": "DEODEOKMONG",
+   "websiteUrl": "https://deodeokmong.co.kr",
+   "instagramUrl": "https://www.instagram.com/deodeokmong"
   },
   {
    "code": "D375",
@@ -7299,7 +7470,9 @@
    "kind": "exhibitor",
    "tags": [
     "cs-etc"
-   ]
+   ],
+   "websiteUrl": "https://tianhui.com",
+   "instagramUrl": "https://www.instagram.com/tianhui.packaging"
   },
   {
    "code": "D377",
@@ -7453,7 +7626,8 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "Basilian"
+   "company": "Basilian",
+   "websiteUrl": "https://basilian.co.kr"
   },
   {
    "code": "D401",
@@ -7623,7 +7797,9 @@
    "tags": [
     "cs-coffee"
    ],
-   "company": "HANKOOK COFFEE"
+   "company": "HANKOOK COFFEE",
+   "websiteUrl": "https://kca-coffee.org",
+   "instagramUrl": "https://www.instagram.com/korea_coffee_association"
   },
   {
    "code": "D441",
@@ -7664,7 +7840,8 @@
    "kind": "exhibitor",
    "tags": [
     "cs-coffee"
-   ]
+   ],
+   "websiteUrl": "https://scap-panama.com"
   },
   {
    "code": "D504",
@@ -7686,7 +7863,9 @@
    "kind": "exhibitor",
    "tags": [
     "cs-etc"
-   ]
+   ],
+   "websiteUrl": "https://rullycoffee.com",
+   "instagramUrl": "https://www.instagram.com/rullycoffee"
   },
   {
    "code": "D509",
@@ -7700,7 +7879,8 @@
    ],
    "longDescription": "[2025 서울카페쇼 참가 정보]\nSwiss Water® Process는 캐나다 벤쿠버에 본사를 두고 있는 선도적인 디카페인 커피 회사입니다.  스위스 워터 프로세스는 화학 물질을 전혀 사용하지 않고, 원두 본연의 풍미와 특성을 그대로 유지하면서 부드럽게 카페인을 제거합니다. 이 과정은 유기농 인증을 받았으며, 다양한 원산지와 높은 품질의 디카페인 커피를 폭넓게 제공하고 있습니다.",
    "websiteUrl": "http://www.swisswater.com",
-   "logoUrl": "/booths/cafeshow-2026/logo/D509.webp"
+   "logoUrl": "/booths/cafeshow-2026/logo/D509.webp",
+   "instagramUrl": "https://www.instagram.com/swisswater"
   },
   {
    "code": "D510",
@@ -7744,7 +7924,8 @@
    "tags": [
     "cs-coffee"
    ],
-   "company": "QUESTBEAN"
+   "company": "QUESTBEAN",
+   "instagramUrl": "https://www.instagram.com/questbean"
   },
   {
    "code": "D517",
@@ -7774,7 +7955,8 @@
    "tags": [
     "cs-coffee"
    ],
-   "company": "Koffee Sniffer"
+   "company": "Koffee Sniffer",
+   "instagramUrl": "https://www.instagram.com/koffee.sniffer"
   },
   {
    "code": "D521",
@@ -7957,7 +8139,8 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "F-FIVE"
+   "company": "F-FIVE",
+   "websiteUrl": "https://ffive.co.kr"
   },
   {
    "code": "D545",
@@ -7969,7 +8152,9 @@
    "tags": [
     "cs-coffee"
    ],
-   "company": "Datum Coffee OG"
+   "company": "Datum Coffee OG",
+   "websiteUrl": "https://datum.coffee",
+   "instagramUrl": "https://www.instagram.com/datum.coffee"
   },
   {
    "code": "D546",
@@ -7981,7 +8166,9 @@
    "tags": [
     "cs-coffee"
    ],
-   "company": "STANDING COFFEE"
+   "company": "STANDING COFFEE",
+   "websiteUrl": "https://standingcoffee.co.kr",
+   "instagramUrl": "https://www.instagram.com/standingcoffee"
   },
   {
    "code": "D548",
@@ -8004,7 +8191,9 @@
    "kind": "exhibitor",
    "tags": [
     "cs-etc"
-   ]
+   ],
+   "websiteUrl": "https://britaprofessional.com",
+   "instagramUrl": "https://www.instagram.com/brita.professional.korea"
   },
   {
    "code": "L101",
@@ -8040,7 +8229,8 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "HEENDAAL CO.,LTD"
+   "company": "HEENDAAL CO.,LTD",
+   "websiteUrl": "https://semoshop.co.kr"
   },
   {
    "code": "L108",
@@ -8063,7 +8253,9 @@
    "kind": "exhibitor",
    "tags": [
     "cs-etc"
-   ]
+   ],
+   "websiteUrl": "https://idocean.com",
+   "instagramUrl": "https://www.instagram.com/idocean.official"
   },
   {
    "code": "L110",
@@ -8109,7 +8301,8 @@
    "kind": "exhibitor",
    "tags": [
     "cs-etc"
-   ]
+   ],
+   "websiteUrl": "https://elimci.com"
   },
   {
    "code": "L116",
@@ -8145,7 +8338,9 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "berryrice"
+   "company": "berryrice",
+   "websiteUrl": "https://berryrice.com",
+   "instagramUrl": "https://www.instagram.com/berryrice__"
   },
   {
    "code": "L119",
@@ -8191,7 +8386,8 @@
    "kind": "exhibitor",
    "tags": [
     "cs-etc"
-   ]
+   ],
+   "websiteUrl": "https://dongnampack.com"
   },
   {
    "code": "L126",
@@ -8270,7 +8466,8 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "ANGAN MARKET"
+   "company": "ANGAN MARKET",
+   "instagramUrl": "https://www.instagram.com/angan_market"
   },
   {
    "code": "L301",
@@ -8306,7 +8503,8 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "Next Solution Co., Ltd."
+   "company": "Next Solution Co., Ltd.",
+   "websiteUrl": "https://nextsolution.com"
   },
   {
    "code": "L308",
@@ -8417,7 +8615,9 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "DABONINE"
+   "company": "DABONINE",
+   "websiteUrl": "https://dabonine.co.kr",
+   "instagramUrl": "https://www.instagram.com/dabonine"
   },
   {
    "code": "L323",
@@ -8475,7 +8675,9 @@
    "tags": [
     "cs-etc"
    ],
-   "company": "CITRIAN"
+   "company": "CITRIAN",
+   "websiteUrl": "https://citrian.co.kr",
+   "instagramUrl": "https://www.instagram.com/citrian_official"
   },
   {
    "code": "L329",
@@ -8578,7 +8780,8 @@
    "logoUrl": "/booths/cafeshow-2026/logo/S301.webp",
    "images": [
     "/booths/cafeshow-2026/S301_1.webp"
-   ]
+   ],
+   "instagramUrl": "https://www.instagram.com/beanspacecoffee"
   },
   {
    "code": "S305",
