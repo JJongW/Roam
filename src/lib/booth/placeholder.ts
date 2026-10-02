@@ -16,6 +16,7 @@ const BY_SLUG: Record<string, string> = {
   // 브랜드를 특정할 사진이 없는 부스는 행사 포스터로 메운다(사용자 결정 2026-10-02).
   "siwse-magok-2026": "/booths/siwse-magok-2026/poster.webp",
   "cafeshow-2026": "/booths/cafeshow-2026/poster.webp",
+  "ddp-designfair-2026": "/booths/ddp-designfair-2026/poster.webp",
 };
 
 /** 2026-10-02 이전에 관리자 화면으로 만든 전시는 id가 무작위라 되짚기가 안 먹는다.
