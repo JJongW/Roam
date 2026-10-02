@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isEventSpecific, planCarryover, type CarryBooth } from "./carryover";
+import { isEventSpecific, planCarryover, stripEventSpecific, type CarryBooth } from "./carryover";
 
 const booth = (over: Partial<CarryBooth> & { id: string; exhibitionId: string }): CarryBooth => ({
   name: over.id,
@@ -93,7 +93,7 @@ describe("planCarryover", () => {
 
 describe("isEventSpecific", () => {
   it("행사 한정 표현을 잡는다", () => {
-    for (const s of ["선착순 50명 무료 티켓", "C-02 부스에서 만나요", "10월 3일까지 할인", "현장 추첨 이벤트"]) {
+    for (const s of ["선착순 50명 무료 티켓", "C-02 부스에서 만나요", "10월 3일까지 할인", "현장 추첨 이벤트", "맛보고 사 가는 부스라 오후엔 줄이 생겨", "오후 3시면 품절돼"]) {
       expect(isEventSpecific(s)).toBe(true);
     }
   });
@@ -101,5 +101,14 @@ describe("isEventSpecific", () => {
     for (const s of ["크림치즈 시식하기", "2016년부터 크림치즈만 만들어 왔다"]) {
       expect(isEventSpecific(s)).toBe(false);
     }
+  });
+});
+
+describe("stripEventSpecific", () => {
+  it("걸리는 문장만 빼고 나머지는 남긴다", () => {
+    expect(stripEventSpecific("디저트를 만드는 곳이야. 맛보고 사 가는 부스라 오후엔 줄이 생겨.")).toBe("디저트를 만드는 곳이야.");
+  });
+  it("전부 걸리면 비운다", () => {
+    expect(stripEventSpecific("선착순 50명 무료 티켓!")).toBeUndefined();
   });
 });

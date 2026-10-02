@@ -54,11 +54,24 @@ export interface CarryoverItem {
 }
 
 /** 행사 한정 표현 — 이번 회차에 그대로 말하면 거짓이 되는 것. */
+// 줄·품절·매진·오전/오후는 그 행사 현장의 상황이다 — 데코리아제과 이월에서 "오후엔 줄이
+// 생겨"가 넘어왔다(서울카페쇼 2026-10-02).
 const EVENT_SPECIFIC =
-  /선착순|무료\s*(티켓|입장|초대)|초대권|증정|추첨|경품|할인|이벤트|부스\b|[A-Z]-?\d{2}\s*부스|\d{1,2}\s*월\s*\d{1,2}\s*일|\d{1,2}\/\d{1,2}|오늘|이번\s*(행사|박람회|전시)|현장\s*(한정|판매)/;
+  /줄이\s*(생|서|길)|대기\s*줄|웨이팅|품절|매진|오전|오후|저녁|마감\s*전|선착순|무료\s*(티켓|입장|초대)|초대권|증정|추첨|경품|할인|이벤트|부스\b|[A-Z]-?\d{2}\s*부스|\d{1,2}\s*월\s*\d{1,2}\s*일|\d{1,2}\/\d{1,2}|오늘|이번\s*(행사|박람회|전시)|현장\s*(한정|판매)/;
 
 export function isEventSpecific(s: string): boolean {
   return EVENT_SPECIFIC.test(s);
+}
+
+/** 문장 단위로 행사 고유 표현을 걷는다. 한 문장 때문에 멀쩡한 앞 문장까지 버리지 않는다
+ *  ("디저트를 만드는 곳이야. 맛보고 사 가는 부스라 오후엔 줄이 생겨." → 앞 문장만). */
+export function stripEventSpecific(text?: string): string | undefined {
+  if (!text) return undefined;
+  const kept = text
+    .split(/(?<=[.!?。])\s+/)
+    .filter((s) => s.trim() && !isEventSpecific(s));
+  const out = kept.join(" ").trim();
+  return out || undefined;
 }
 
 export function planCarryover(input: CarryoverInput): CarryoverItem[] {
@@ -94,10 +107,11 @@ export function planCarryover(input: CarryoverInput): CarryoverItem[] {
     if (!source?.enrichment) continue;
 
     const e = source.enrichment;
-    const keep = (s?: string) => (s && !isEventSpecific(s) ? s : undefined);
     const payload: CarryoverItem["payload"] = {};
-    if (keep(e.summary)) payload.summary = e.summary;
-    if (keep(e.roamInterpretation)) payload.roamInterpretation = e.roamInterpretation;
+    const summary = stripEventSpecific(e.summary);
+    const line = stripEventSpecific(e.roamInterpretation);
+    if (summary) payload.summary = summary;
+    if (line) payload.roamInterpretation = line;
     if (e.valueTags?.length) payload.valueTags = e.valueTags;
     const reasons = Object.fromEntries(
       Object.entries(e.recommendationReasons ?? {}).filter(([, v]) => !isEventSpecific(v)),

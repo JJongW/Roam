@@ -135,3 +135,11 @@ describe("eventPatchInputSchema", () => {
     expect(eventPatchInputSchema.parse({ title: "시음회" })).toEqual({ title: "시음회" });
   });
 });
+
+describe("boothPatchInputSchema.enrichment", () => {
+  it("저작 칸 하나만 보내도 나머지를 만들지 않는다", () => {
+    expect(boothPatchInputSchema.parse({ enrichment: { roamInterpretation: "디저트를 만드는 곳이야." } })).toEqual({
+      enrichment: { roamInterpretation: "디저트를 만드는 곳이야." },
+    });
+  });
+});
