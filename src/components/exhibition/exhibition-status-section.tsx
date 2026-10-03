@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ExhibitionCard } from "@/components/exhibition/exhibition-card";
 import { useT } from "@/lib/i18n/provider";
 import type { Exhibition } from "@/lib/types";
+import type { ExhibitionStatusKind } from "@/lib/exhibition/status";
 
 const VISIBLE_CAP = 3;
 
@@ -14,6 +15,7 @@ const VISIBLE_CAP = 3;
  */
 export function ExhibitionStatusSection({
   title,
+  status,
   exhibitions,
   recommendedSlug,
   recommendedLabel,
@@ -21,6 +23,7 @@ export function ExhibitionStatusSection({
   showBadge,
 }: {
   title: string;
+  status: ExhibitionStatusKind;
   exhibitions: Exhibition[];
   recommendedSlug?: string;
   recommendedLabel?: string;
@@ -43,6 +46,7 @@ export function ExhibitionStatusSection({
           <div key={ex.id} className="space-y-1.5">
             <ExhibitionCard
               exhibition={ex}
+              status={status}
               recommended={ex.slug === recommendedSlug && !!showBadge}
               recommendedLabel={recommendedLabel}
             />

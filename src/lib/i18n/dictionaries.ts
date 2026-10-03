@@ -203,6 +203,9 @@ const ko = {
     statusUpcoming: "다가오는 전시",
     statusEnded: "지난 전시",
     showMore: "더보기 ({n})",
+    enter: "들어가기",
+    browse: "둘러보기",
+    viewRecord: "기록 보기",
     recommendedReason: "네가 고른 관람 성향을 기준으로 먼저 보여줄게.",
     singleReason:
       "지금 열 수 있는 전시는 하나야. 안에서는 네 취향에 맞춰 부스를 골라줄게.",
@@ -934,6 +937,9 @@ const en: Dict = {
     statusUpcoming: "Upcoming",
     statusEnded: "Past fairs",
     showMore: "Show {n} more",
+    enter: "Enter",
+    browse: "Take a look",
+    viewRecord: "See the record",
     recommendedReason: "Showing this first based on the taste you chose.",
     singleReason:
       "There's only one fair open right now. Inside, I'll pick booths to fit you.",

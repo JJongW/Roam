@@ -188,6 +188,7 @@ export default async function HomePage() {
           <>
             <ExhibitionStatusSection
               title={t("home.statusOngoing")}
+              status="ongoing"
               exhibitions={ongoing}
               recommendedSlug={top?.slug}
               recommendedLabel={t("home.recommended")}
@@ -196,6 +197,7 @@ export default async function HomePage() {
             />
             <ExhibitionStatusSection
               title={t("home.statusUpcoming")}
+              status="upcoming"
               exhibitions={upcoming}
               recommendedSlug={top?.slug}
               recommendedLabel={t("home.recommended")}
@@ -206,6 +208,7 @@ export default async function HomePage() {
             />
             <ExhibitionStatusSection
               title={t("home.statusEnded")}
+              status="ended"
               exhibitions={ended}
             />
           </>
