@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { MapPin, ChevronRight } from "lucide-react";
+import { CalendarDays, MapPin, ChevronRight } from "lucide-react";
 import { format } from "date-fns";
 import { CONFIDENT_THRESHOLD } from "@/lib/constants";
 import { getExhibitionCached } from "@/lib/repositories/cached";
@@ -103,10 +103,7 @@ export default async function ExhibitionDetailPage({
             here just by setting coverImageUrl — no per-fair code. In landscape
             it becomes the full-height left column. */}
         <div
-          className={cn(
-            "relative flex h-[120px] flex-col items-start justify-end gap-0.5 p-4 landscape:h-auto landscape:flex-1 landscape:p-5",
-            exhibition.coverImageUrl && "pr-28",
-          )}
+          className="relative flex h-[120px] flex-col items-start justify-end gap-0.5 p-4 landscape:h-auto landscape:flex-1 landscape:p-5"
           style={
             exhibition.coverImageUrl
               ? {
@@ -145,21 +142,24 @@ export default async function ExhibitionDetailPage({
               {exhibition.name}
             </p>
           )}
-          {/* 장소·기간은 포스터 스크림에 한 줄로 — 아래 본문에 2줄로 또 쓰면
-              포스터에 박힌 정보와 세 번 겹친다. 주목 상위 구간(상단 절반)을
-              중복에 쓰지 않는다. */}
-          <p className="relative flex min-w-0 max-w-full items-center gap-1.5 text-sm font-medium text-white drop-shadow-sm">
-            <MapPin className="size-4 shrink-0" aria-hidden />
-            <span className="truncate">{exhibition.venue}</span>
-            <span aria-hidden>·</span>
-            <span className="shrink-0 tabular">{range}</span>
-          </p>
         </div>
 
         {/* 하단 여백: 상주 컴패니언 필이 카드/버튼을 가리지 않게(globals.css 토큰). */}
         <div
           className="space-y-4 px-[var(--spacing-global-gutter)] pt-5 pb-[var(--spacing-companion-clearance)] landscape:w-[420px] landscape:shrink-0 landscape:self-stretch landscape:overflow-y-auto landscape:border-l landscape:border-border"
         >
+          {/* 장소·기간 한 줄. 원래 두 줄(space-y-1.5)이었고, 포스터 스크림으로
+              옮겨 봤지만 120px 띠에서는 포스터 보기 버튼과 폭을 다퉈 장소명이
+              7자쯤에서 잘렸다 — 실제 장소는 32~45자라 "코엑스 마곡 컨벤션센터
+              1층"이 "코엑스 마곡…"이 된다. 어느 홀·몇 층인지가 정보의 핵심이라
+              잘라선 안 된다. 두 줄을 한 줄로 합치는 것까지가 절약의 한계다. */}
+          <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
+            <MapPin className="size-4 shrink-0" aria-hidden />
+            <span className="min-w-0 flex-1">{exhibition.venue}</span>
+            <CalendarDays className="size-3.5 shrink-0" aria-hidden />
+            <span className="shrink-0 tabular">{range}</span>
+          </p>
+
           {/* 상단 고정 취향 배너는 걷어냈다 — 로미의 취향 발화는 하단 상주 컴패니언이
               휘발성으로 건넨다(맥락 인사를 화면 상단에 박아두지 않는다). 여기서는
               서버가 계산한 맥락(상위 가치·골라둔 개수)을 컴패니언에 실어줄 뿐. */}
