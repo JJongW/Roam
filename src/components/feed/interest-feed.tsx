@@ -242,7 +242,7 @@ export function InterestFeed({
                     {grounding.why && (
                       <p className="mt-1 flex items-start gap-1.5 type-body font-medium text-foreground/90">
                         <Lightbulb
-                          className="mt-0.5 size-3.5 shrink-0 text-primary"
+                          className="mt-0.5 size-4 shrink-0 text-primary"
                           aria-hidden
                         />
                         <span>{grounding.why}</span>
