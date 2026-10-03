@@ -103,7 +103,10 @@ export default async function ExhibitionDetailPage({
             here just by setting coverImageUrl — no per-fair code. In landscape
             it becomes the full-height left column. */}
         <div
-          className="relative flex h-[120px] flex-col items-start justify-end p-5 landscape:h-auto landscape:flex-1"
+          className={cn(
+            "relative flex h-[120px] flex-col items-start justify-end gap-0.5 p-4 landscape:h-auto landscape:flex-1 landscape:p-5",
+            exhibition.coverImageUrl && "pr-28",
+          )}
           style={
             exhibition.coverImageUrl
               ? {
@@ -137,25 +140,24 @@ export default async function ExhibitionDetailPage({
           {/* 이름은 위 AppBar가 이미 h1으로 말한다 — 여기 또 h1을 두면 한 페이지에
               h1이 둘이 되고, 포스터에 박힌 전시명 위에 같은 글자가 겹쳐 찍힌다.
               포스터가 있으면 포스터가 제목이고, 없으면 그라디언트 위에 이름을 쓴다. */}
-          {/* 장소·기간은 포스터 스크림에 한 줄로 — 아래 본문에 2줄로 또 쓰면
-              포스터에 박힌 정보와 세 번 겹친다. 주목 상위 구간(상단 절반)을
-              중복에 쓰지 않는다. */}
-          <p className="relative flex items-center gap-1.5 text-sm font-medium text-white drop-shadow-sm">
-            <MapPin className="size-4" aria-hidden />
-            {exhibition.venue}
-            <span aria-hidden>·</span>
-            {range}
-          </p>
           {!exhibition.coverImageUrl && (
-            <p className="relative text-2xl font-extrabold leading-tight text-white drop-shadow-sm">
+            <p className="relative line-clamp-2 text-2xl font-extrabold leading-tight text-white drop-shadow-sm">
               {exhibition.name}
             </p>
           )}
+          {/* 장소·기간은 포스터 스크림에 한 줄로 — 아래 본문에 2줄로 또 쓰면
+              포스터에 박힌 정보와 세 번 겹친다. 주목 상위 구간(상단 절반)을
+              중복에 쓰지 않는다. */}
+          <p className="relative flex min-w-0 max-w-full items-center gap-1.5 text-sm font-medium text-white drop-shadow-sm">
+            <MapPin className="size-4 shrink-0" aria-hidden />
+            <span className="truncate">{exhibition.venue}</span>
+            <span aria-hidden>·</span>
+            <span className="shrink-0 tabular">{range}</span>
+          </p>
         </div>
 
         {/* 하단 여백: 상주 컴패니언 필이 카드/버튼을 가리지 않게(globals.css 토큰). */}
         <div
-         
           className="space-y-4 px-[var(--spacing-global-gutter)] pt-5 pb-[var(--spacing-companion-clearance)] landscape:w-[420px] landscape:shrink-0 landscape:self-stretch landscape:overflow-y-auto landscape:border-l landscape:border-border"
         >
           {/* 상단 고정 취향 배너는 걷어냈다 — 로미의 취향 발화는 하단 상주 컴패니언이
