@@ -240,7 +240,7 @@ export function InterestFeed({
                     {/* grounding.why는 부스명 폴백으로 이제 항상 값이 있다 — 이 가드는
                         더는 실제로 갈리지 않는 방어 코드다(grounding.ts). */}
                     {grounding.why && (
-                      <p className="mt-1 flex items-start gap-1.5 text-sm font-medium leading-relaxed text-foreground/90">
+                      <p className="mt-1 flex items-start gap-1.5 type-body font-medium text-foreground/90">
                         <Lightbulb
                           className="mt-0.5 size-3.5 shrink-0 text-primary"
                           aria-hidden
@@ -263,7 +263,7 @@ export function InterestFeed({
                   />
                   <div className="min-w-0 flex-1">
                     {/* 부스 번호 — 현장에선 이름보다 번호로 찾는다. 지도 팝업과 같은 형태. */}
-                    <p className="truncate text-[17px] font-extrabold tracking-tight">
+                    <p className="truncate text-xl font-extrabold tracking-tight">
                       {booth.name}
                       {booth.code && (
                         <span className="ml-1.5 text-xs font-semibold text-muted-foreground">
@@ -295,7 +295,7 @@ export function InterestFeed({
                       그대로 넣으면 남이 1인칭 존댓말로 말하게 된다(booth/voice.ts). */}
                   {grounding.quote && (
                     <blockquote className="border-l-2 border-border pl-2.5">
-                      <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground">
+                      <p className="line-clamp-3 type-body text-muted-foreground">
                         {grounding.quote}
                       </p>
                       <footer className="mt-0.5 text-[11px] text-muted-foreground/70">
@@ -318,7 +318,7 @@ export function InterestFeed({
                   )}
 
                   {grounding.todo.length > 0 && (
-                    <p className="text-xs leading-relaxed text-muted-foreground">
+                    <p className="type-body text-muted-foreground">
                       {t("grounding.todo", {
                         items: grounding.todo.join(" · "),
                       })}
@@ -326,9 +326,9 @@ export function InterestFeed({
                   )}
 
                   {cue && (
-                    <p className="flex items-start gap-1.5 text-xs leading-relaxed text-muted-foreground">
+                    <p className="flex items-start gap-1.5 type-body text-muted-foreground">
                       <Clock3
-                        className="mt-0.5 size-3.5 shrink-0"
+                        className="mt-0.5 size-4 shrink-0"
                         aria-hidden
                       />
                       <span>{cue}</span>
