@@ -31,10 +31,10 @@ describe("ExhibitionCard — 상태를 형태로", () => {
     expect(screen.getByText("둘러보기")).toBeInTheDocument();
   });
 
-  it("종료는 포스터 없는 행이고 기록 보기로 간다", () => {
+  it("종료는 포스터 없는 행이고 예정과 같은 CTA를 쓴다", () => {
     render(<ExhibitionCard exhibition={ex} status="ended" />);
     expect(screen.queryByTestId("exhibition-poster")).not.toBeInTheDocument();
-    expect(screen.getByText("기록 보기")).toBeInTheDocument();
+    expect(screen.getByText("둘러보기")).toBeInTheDocument();
   });
 
   it("상태가 달라도 전시 이름은 항상 읽힌다", () => {

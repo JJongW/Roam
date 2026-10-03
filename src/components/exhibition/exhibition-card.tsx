@@ -41,14 +41,17 @@ export function ExhibitionCard({
   // TODO(별도 플랜): 끝난 전시는 목적지가 달라야 한다 — 지금은 진행 중과 같은
   // 화면으로 가서 온보딩·피드·"오늘 관람 마치기"가 그대로 뜬다. 읽기 전용
   // 기록 화면(`/exhibitions/[slug]/record`)은 이 플랜 범위 밖이라 라우트가
-  // 없다. 없는 경로로 보내면 404가 되므로 지금은 같은 경로를 쓴다.
+  // 없다. 없는 경로로 보내면 404가 되므로 지금은 같은 경로를 쓴다. 그래서 CTA 문구도
+  // 일부러 중립("둘러보기")으로 두었다 — 기록 화면이 생기면 그때 "기록 보기"로.
   const href = `/exhibitions/${exhibition.slug}`;
+  // 0곳·미상은 "없음"과 "읽기 실패"를 구별 못 한다 — 거짓 사실 대신 침묵.
+  const showSignals =
+    !!signals &&
+    (signals.boothCount > 0 ||
+      signals.daysLeft !== null ||
+      signals.groundedCount > 0);
   const cta =
-    status === "ongoing"
-      ? t("home.enter")
-      : status === "upcoming"
-        ? t("home.browse")
-        : t("home.viewRecord");
+    status === "ongoing" ? t("home.enter") : t("home.browse");
 
   // 진행 중만 꽉 찬 카드. 나머지는 행 — 결정 대상이 아니다.
   if (status !== "ongoing") {
@@ -115,14 +118,16 @@ export function ExhibitionCard({
         </h3>
       </div>
       <div className="space-y-1.5 p-4">
-        {signals && (
+        {showSignals && (
           <p className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-sm font-medium text-foreground">
-            <span className="tabular">
-              {t("home.signalBooths", { n: signals.boothCount })}
-            </span>
+            {signals.boothCount > 0 && (
+              <span className="tabular">
+                {t("home.signalBooths", { n: signals.boothCount })}
+              </span>
+            )}
             {signals.daysLeft !== null && (
               <>
-                <span aria-hidden>·</span>
+                {signals.boothCount > 0 && <span aria-hidden>·</span>}
                 <span className="font-bold text-primary">
                   {signals.daysLeft === 1
                     ? t("home.signalLastDay")
@@ -132,7 +137,9 @@ export function ExhibitionCard({
             )}
             {signals.groundedCount > 0 && (
               <>
-                <span aria-hidden>·</span>
+                {(signals.boothCount > 0 || signals.daysLeft !== null) && (
+                  <span aria-hidden>·</span>
+                )}
                 <span className="tabular text-muted-foreground">
                   {t("home.signalGrounded", { n: signals.groundedCount })}
                 </span>
@@ -148,7 +155,9 @@ export function ExhibitionCard({
           <span className="truncate">{exhibition.venue}</span>
           <span aria-hidden>·</span>
           <CalendarDays className="size-3.5" aria-hidden />
-          <span className="tabular">{range}</span>
+          {/* 날짜는 고정, 압력은 장소의 truncate가 받는다. flex-wrap을 넣지 말 것 —
+              날짜가 둘째 줄로 떨어지는 쪽이 더 나쁘다. */}
+          <span className="shrink-0 whitespace-nowrap tabular">{range}</span>
         </div>
         <p className="pt-1 text-sm font-bold text-primary">{cta}</p>
       </div>

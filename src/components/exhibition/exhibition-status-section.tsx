@@ -46,6 +46,7 @@ export function ExhibitionStatusSection({
     return (
       <button
         type="button"
+        aria-expanded={false}
         onClick={() => setOpen(true)}
         className="flex min-h-11 w-full items-center justify-between px-1 text-sm font-bold text-muted-foreground active:opacity-70"
       >
@@ -72,7 +73,7 @@ export function ExhibitionStatusSection({
               signals={signalsBySlug?.[ex.slug]}
             />
             {ex.slug === recommendedSlug && recommendedReason && (
-              <p className="px-1 text-xs leading-relaxed text-muted-foreground">
+              <p className="px-1 type-body text-muted-foreground">
                 {recommendedReason}
               </p>
             )}

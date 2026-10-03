@@ -150,13 +150,13 @@ export default async function ExhibitionDetailPage({
         >
           {/* 장소·기간 한 줄. 원래 두 줄(space-y-1.5)이었고, 포스터 스크림으로
               옮겨 봤지만 120px 띠에서는 포스터 보기 버튼과 폭을 다퉈 장소명이
-              7자쯤에서 잘렸다 — 실제 장소는 32~45자라 "코엑스 마곡 컨벤션센터
+              7자쯤에서 잘렸다 — 실제 장소는 15~29자(시각폭 161~259px)라 "코엑스 마곡 컨벤션센터
               1층"이 "코엑스 마곡…"이 된다. 어느 홀·몇 층인지가 정보의 핵심이라
               잘라선 안 된다. 두 줄을 한 줄로 합치는 것까지가 절약의 한계다. */}
-          <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
-            <MapPin className="size-4 shrink-0" aria-hidden />
+          <p className="flex items-start gap-1.5 text-sm text-muted-foreground">
+            <MapPin className="mt-0.5 size-4 shrink-0" aria-hidden />
             <span className="min-w-0 flex-1">{exhibition.venue}</span>
-            <CalendarDays className="size-3.5 shrink-0" aria-hidden />
+            <CalendarDays className="mt-0.5 size-3.5 shrink-0" aria-hidden />
             <span className="shrink-0 tabular">{range}</span>
           </p>
 
@@ -238,7 +238,7 @@ export default async function ExhibitionDetailPage({
                   }}
                 />
               </div>
-              <p className="text-xs text-muted-foreground">
+              <p aria-hidden="true" className="text-xs text-muted-foreground">
                 {t("feed.progress", {
                   judged: taste.judgedCount,
                   total: taste.judgedCount + feedItems.length,

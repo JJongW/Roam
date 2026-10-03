@@ -184,8 +184,6 @@ const ko = {
   home: {
     headingA: "어떤 전시부터",
     headingB: "둘러볼까?",
-    subtitle:
-      "너한테 의미 있을 부스를 골라 보여줄게. 관심 가는 곳부터 같이 둘러보자.",
     emptyTitle: "아직 열린 전시가 없어",
     emptyDesc: "곧 새 전시가 열리면 같이 보러 가자.",
     recommended: "로미 추천",
@@ -210,7 +208,6 @@ const ko = {
     signalLastDay: "오늘까지",
     enter: "들어가기",
     browse: "둘러보기",
-    viewRecord: "기록 보기",
     recommendedReason: "네가 고른 관람 성향을 기준으로 먼저 보여줄게.",
     singleReason:
       "지금 열 수 있는 전시는 하나야. 안에서는 네 취향에 맞춰 부스를 골라줄게.",
@@ -928,8 +925,6 @@ const en: Dict = {
   home: {
     headingA: "Which fair",
     headingB: "shall we explore?",
-    subtitle:
-      "I'll pick booths that matter to you. Let's start where your interest is.",
     emptyTitle: "No open fairs yet",
     emptyDesc: "When a new fair opens, we'll go together.",
     recommended: "Romi's pick",
@@ -949,7 +944,6 @@ const en: Dict = {
     signalLastDay: "Last day",
     enter: "Enter",
     browse: "Take a look",
-    viewRecord: "See the record",
     recommendedReason: "Showing this first based on the taste you chose.",
     singleReason:
       "There's only one fair open right now. Inside, I'll pick booths to fit you.",
