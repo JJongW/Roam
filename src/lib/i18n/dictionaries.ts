@@ -215,6 +215,7 @@ const ko = {
     heading: "내가 미리 골라뒀어",
     subFallback: "네 반응 볼수록 더 잘 맞춰줄게.",
     memoryLine: "요즘 {values}에 끌리더라 — 그쪽으로 골라왔어.",
+    progress: "취향 기록 {judged}/{total}",
     entryWithValues:
       "너는 {values} 쪽에 끌리는 편이었지. 그 기준으로 이 전시를 먼저 훑어봤어.",
     entryNoValues:
@@ -949,6 +950,7 @@ const en: Dict = {
     heading: "I picked these for you",
     subFallback: "The more you react, the better I'll fit.",
     memoryLine: "You've been drawn to {values} lately — I picked around that.",
+    progress: "Taste logged {judged}/{total}",
     entryWithValues:
       "You lean toward {values}. I skimmed this fair with that in mind first.",
     entryNoValues:

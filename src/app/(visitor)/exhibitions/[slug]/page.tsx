@@ -1,12 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import {
-  CalendarDays,
-  MapPin,
-  Map as MapIcon,
-  NotebookPen,
-  ChevronRight,
-} from "lucide-react";
+import { MapPin, ChevronRight } from "lucide-react";
 import { format } from "date-fns";
 import { CONFIDENT_THRESHOLD } from "@/lib/constants";
 import { getExhibitionCached } from "@/lib/repositories/cached";
@@ -14,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { AppBar } from "@/components/common/app-bar";
 import { AccountButton } from "@/components/auth/account-button";
 import { InterestFeed } from "@/components/feed/interest-feed";
-import { BoothSearch } from "@/components/feed/booth-search";
+import { ExhibitionUtilityBar } from "@/components/exhibition/exhibition-utility-bar";
 import { ValueOnboarding } from "@/components/onboarding/value-onboarding";
 import { FinishVisit } from "@/components/companion/finish-visit";
 import { PosterViewer } from "@/components/exhibition/poster-viewer";
@@ -26,6 +20,7 @@ import { getCurrentUser } from "@/lib/api/session";
 import { curateFeedWithPool } from "@/lib/feed/curate";
 import { readBrain } from "@/lib/memory/service";
 import { getRepository } from "@/lib/repositories";
+import { primaryAction } from "@/lib/exhibition/primary-action";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -99,6 +94,11 @@ export default async function ExhibitionDetailPage({
   const categoryById = Object.fromEntries(
     detail.categories.map((c) => [c.id, c]),
   );
+  const primary = primaryAction({
+    signedIn: !!user,
+    hasChosenValues: topValues.length > 0,
+    judgedCount: taste.judgedCount,
+  });
 
   return (
     <div className="contents landscape:fixed landscape:inset-0 landscape:z-30 landscape:flex landscape:flex-col landscape:overflow-hidden landscape:bg-background">
@@ -109,7 +109,7 @@ export default async function ExhibitionDetailPage({
             here just by setting coverImageUrl — no per-fair code. In landscape
             it becomes the full-height left column. */}
         <div
-          className="relative flex h-52 items-end p-5 landscape:h-auto landscape:flex-1"
+          className="relative flex h-[120px] flex-col items-start justify-end p-5 landscape:h-auto landscape:flex-1"
           style={
             exhibition.coverImageUrl
               ? {
@@ -143,6 +143,15 @@ export default async function ExhibitionDetailPage({
           {/* 이름은 위 AppBar가 이미 h1으로 말한다 — 여기 또 h1을 두면 한 페이지에
               h1이 둘이 되고, 포스터에 박힌 전시명 위에 같은 글자가 겹쳐 찍힌다.
               포스터가 있으면 포스터가 제목이고, 없으면 그라디언트 위에 이름을 쓴다. */}
+          {/* 장소·기간은 포스터 스크림에 한 줄로 — 아래 본문에 2줄로 또 쓰면
+              포스터에 박힌 정보와 세 번 겹친다. 주목 상위 구간(상단 절반)을
+              중복에 쓰지 않는다. */}
+          <p className="relative flex items-center gap-1.5 text-sm font-medium text-white drop-shadow-sm">
+            <MapPin className="size-4" aria-hidden />
+            {exhibition.venue}
+            <span aria-hidden>·</span>
+            {range}
+          </p>
           {!exhibition.coverImageUrl && (
             <p className="relative text-2xl font-extrabold leading-tight text-white drop-shadow-sm">
               {exhibition.name}
@@ -150,19 +159,8 @@ export default async function ExhibitionDetailPage({
           )}
         </div>
 
-        {/* pb-28: 하단 상주 컴패니언 필이 카드/버튼을 가리지 않도록 여백 확보. */}
-        <div className="space-y-4 px-[var(--spacing-global-gutter)] pt-5 pb-28 landscape:w-[420px] landscape:shrink-0 landscape:self-stretch landscape:overflow-y-auto landscape:border-l landscape:border-border">
-          <section className="space-y-1.5">
-            <div className="flex items-center gap-2 text-sm font-medium">
-              <MapPin className="size-4 text-muted-foreground" aria-hidden />
-              {exhibition.venue}
-            </div>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <CalendarDays className="size-4" aria-hidden />
-              {range}
-            </div>
-          </section>
-
+        {/* 하단 여백: 상주 컴패니언 필이 카드/버튼을 가리지 않게(globals.css 토큰). */}
+        <div className="space-y-4 px-[var(--spacing-global-gutter)] pt-5 pb-[var(--spacing-companion-clearance)] landscape:w-[420px] landscape:shrink-0 landscape:self-stretch landscape:overflow-y-auto landscape:border-l landscape:border-border">
           {/* 상단 고정 취향 배너는 걷어냈다 — 로미의 취향 발화는 하단 상주 컴패니언이
               휘발성으로 건넨다(맥락 인사를 화면 상단에 박아두지 않는다). 여기서는
               서버가 계산한 맥락(상위 가치·골라둔 개수)을 컴패니언에 실어줄 뿐. */}
@@ -176,62 +174,26 @@ export default async function ExhibitionDetailPage({
             />
           )}
 
-          <div className="space-y-2.5">
-            {/* 가치 온보딩은 결과(마인드맵)·저장 둘 다 계정에 묶여있다(브레인이
-                userId 기준) — 비로그인이면 끝나도 남는 게 없어 "약속하고 안 지킨"
-                모양이 된다. 로그인해야만 뜬다. */}
-            {user && (
-              <ValueOnboarding
-                slug={slug}
-                exhibitionName={exhibition.name}
-                hallCount={detail.halls.length}
-                themes={detail.categories
-                  .slice(0, 3)
-                  .map((c) => c.name)
-                  .join("·")}
-                hasChosenValues={topValues.length > 0}
-              />
-            )}
+          {/* 가치 온보딩은 결과(마인드맵)·저장 둘 다 계정에 묶여있다(브레인이
+              userId 기준) — primaryAction이 로그인했을 때만 "onboarding"을 준다. */}
+          {primary === "onboarding" && (
+            <ValueOnboarding
+              slug={slug}
+              exhibitionName={exhibition.name}
+              hallCount={detail.halls.length}
+              themes={detail.categories
+                .slice(0, 3)
+                .map((c) => c.name)
+                .join("·")}
+              hasChosenValues={topValues.length > 0}
+            />
+          )}
 
-            <Link
-              href={`/exhibitions/${slug}/map`}
-              className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-[var(--shadow-card)] active:scale-[0.99]"
-            >
-              <div className="flex size-11 items-center justify-center rounded-xl bg-secondary">
-                <MapIcon className="size-5 text-foreground" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="font-bold">{t("booth.mapCard")}</p>
-                <p className="text-sm text-muted-foreground">
-                  {t("booth.mapCardDesc")}
-                </p>
-              </div>
-              <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
-            </Link>
-
-            {/* 메모장 — 예전엔 지도 상단바에서 열었는데, 지도는 현장에서 방향을 잡는
-                화면이라 chrome을 걷어냈다(ux-writing §379). 진입점을 여기로 옮긴다. */}
-            {user && (
-              <Link
-                href={`/exhibitions/${slug}/notes`}
-                className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-[var(--shadow-card)] active:scale-[0.99]"
-              >
-                <div className="flex size-11 items-center justify-center rounded-xl bg-secondary">
-                  <NotebookPen className="size-5 text-foreground" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="font-bold">{t("booth.notesCard")}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {t("booth.notesCardDesc")}
-                  </p>
-                </div>
-                <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
-              </Link>
-            )}
-          </div>
-
-          {/* 피드 상단 부스 검색 — 추천 몇 개 말고 전체 부스를 이름·작가로 찾기. */}
-          {user && <BoothSearch slug={slug} categoryById={categoryById} />}
+          <ExhibitionUtilityBar
+            slug={slug}
+            showNotes={!!user}
+            categoryById={categoryById}
+          />
 
           {/* 비로그인 — 인기순 피드는 보여준다(정보 열람은 계정 벽 없이).
               취향 기록·개인화만 로그인해야 되는 거라 그 사실만 짧게 안내. */}
@@ -251,6 +213,38 @@ export default async function ExhibitionDetailPage({
               <ChevronRight className="size-5 shrink-0 text-primary" />
             </Link>
           )}
+          {user && taste.judgedCount > 0 && (
+            <div className="space-y-1">
+              <div
+                className="h-1 overflow-hidden rounded-full bg-secondary"
+                role="progressbar"
+                aria-valuenow={taste.judgedCount}
+                aria-valuemin={0}
+                aria-valuemax={taste.judgedCount + feedItems.length}
+                aria-label={t("feed.progress", {
+                  judged: taste.judgedCount,
+                  total: taste.judgedCount + feedItems.length,
+                })}
+              >
+                <div
+                  className="h-full bg-primary"
+                  style={{
+                    width: `${Math.round(
+                      (taste.judgedCount /
+                        Math.max(1, taste.judgedCount + feedItems.length)) *
+                        100,
+                    )}%`,
+                  }}
+                />
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {t("feed.progress", {
+                  judged: taste.judgedCount,
+                  total: taste.judgedCount + feedItems.length,
+                })}
+              </p>
+            </div>
+          )}
           <InterestFeed
             items={feedItems}
             categoryById={categoryById}
@@ -263,7 +257,7 @@ export default async function ExhibitionDetailPage({
           {/* 피드를 다 비워도(성실히 판단 다 함) 회고로 못 가면 안 된다 — "판단이
               하나라도 있었나"로 게이트를 바꾼다. feedItems가 남았는지는 회고와
               무관하다(로미 P0 브리프 §1). */}
-          {user && (
+          {primary === "finish" && (
             <FinishVisit slug={slug} initialJudgedCount={taste.judgedCount} />
           )}
         </div>
