@@ -6,7 +6,6 @@ import { EmptyState } from "@/components/common/states";
 import { AccountButton } from "@/components/auth/account-button";
 import { LegalLinks } from "@/components/common/legal-links";
 import { LanguageSwitch } from "@/components/i18n/language-switch";
-import { RoamMotion } from "@/components/companion/roam-motion";
 import { getI18n } from "@/lib/i18n/server";
 import { getCurrentUser } from "@/lib/api/session";
 import {
@@ -129,53 +128,20 @@ export default async function HomePage() {
         <AccountButton />
       </header>
 
-      {/* Romi 히어로 — 냅다 전시가 아니라 로미가 먼저 맞이한다.
-          미로그인일 땐 인사말 대신 **앱 이름과 목적**을 세운다: 처음 온 사람(그리고
-          Google OAuth 심사관·크롤러)에게는 "어떤 전시부터 볼까?"가 이 앱이 뭔지 알려주지
-          않는다. 로그인한 사람에겐 그 소개가 매번 소음이므로 원래 인사말을 유지한다. */}
-      <section className="flex flex-col items-center gap-4 px-6 pb-4 pt-12 text-center">
-        <span className="flex size-32 items-center justify-center overflow-hidden rounded-[2.5rem]">
-          <RoamMotion src="/headbunting.webm" />
-        </span>
-        {user ? (
-          <>
-            <h1 className="text-2xl font-extrabold leading-snug">
-              {t("home.heroGreeting")}
-            </h1>
-            <p className="max-w-[18rem] text-[15px] leading-relaxed text-muted-foreground">
-              {t("home.subtitle")}
-            </p>
-          </>
-        ) : (
-          <>
-            <h1 className="text-[2rem] font-extrabold leading-none tracking-tight">
-              Roam
-            </h1>
-            <p className="max-w-[20rem] text-[15px] leading-relaxed text-muted-foreground">
-              {t("home.tagline")}
-            </p>
-          </>
-        )}
-      </section>
-
-      {/* 미로그인 랜딩 배너 — 계정 벽이 아니라 기억 설정임을 설명 + 로그인 진입. */}
-      {!user && (
-        <div className="px-[var(--spacing-global-gutter)] pb-2">
-          <Link
-            href="/login?next=%2F"
-            className="flex items-center gap-3 rounded-2xl border border-primary/30 bg-primary/5 p-4 active:scale-[0.99]"
-          >
-            <div className="min-w-0 flex-1">
-              <p className="text-sm font-bold text-primary">
-                {t("home.loginReasonTitle")}
-              </p>
-              <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
-                {t("home.loginReasonBody")}
-              </p>
-            </div>
-            <ChevronRight className="size-5 shrink-0 text-primary" />
-          </Link>
-        </div>
+      {/* 히어로 — 주목 상위 구간은 전시가 쓴다. 마스코트 애니메이션은 뺐다.
+          미로그인일 땐 **앱 이름과 목적**을 유지한다: Google OAuth 심사가 홈의 앱 이름이
+          동의 화면과 일치하는지 직접 확인하고 크롤러도 여기서 서비스를 읽는다. 크기만 줄인다. */}
+      {user ? (
+        <section className="px-[var(--spacing-global-gutter)] pb-[var(--spacing-component-default)] pt-[var(--spacing-nav-to-title)]">
+          <h1 className="type-body-lg font-bold">{t("home.heroGreeting")}</h1>
+        </section>
+      ) : (
+        <section className="px-[var(--spacing-global-gutter)] pb-[var(--spacing-component-default)] pt-[var(--spacing-nav-to-title)]">
+          <h1 className="text-2xl font-extrabold tracking-tight">Roam</h1>
+          <p className="type-body mt-1 text-muted-foreground">
+            {t("home.tagline")}
+          </p>
+        </section>
       )}
 
       <section className="space-y-5 px-[var(--spacing-global-gutter)] pb-6 pt-2">
@@ -214,6 +180,26 @@ export default async function HomePage() {
           </>
         )}
       </section>
+
+      {/* 미로그인 랜딩 배너 — 계정 벽이 아니라 기억 설정임을 설명 + 로그인 진입. */}
+      {!user && (
+        <div className="px-[var(--spacing-global-gutter)] pb-2">
+          <Link
+            href="/login?next=%2F"
+            className="flex items-center gap-3 rounded-2xl border border-primary/30 bg-primary/5 p-4 active:scale-[0.99]"
+          >
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-bold text-primary">
+                {t("home.loginReasonTitle")}
+              </p>
+              <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
+                {t("home.loginReasonBody")}
+              </p>
+            </div>
+            <ChevronRight className="size-5 shrink-0 text-primary" />
+          </Link>
+        </div>
+      )}
 
       {/* 홈에서 개인정보처리방침·약관으로 가는 길 — Google OAuth 인증의 명시
           요구사항이다. 링크가 없으면 심사관에겐 없는 문서와 같다. 언어 전환도 여기 —
