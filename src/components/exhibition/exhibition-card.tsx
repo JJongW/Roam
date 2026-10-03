@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n/provider";
 import type { Exhibition } from "@/lib/types";
 import type { ExhibitionStatusKind } from "@/lib/exhibition/status";
+import type { ExhibitionSignals } from "@/lib/exhibition/signals";
 
 /**
  * 전시 카드 — **상태가 형태를 정한다.**
@@ -25,12 +26,15 @@ export function ExhibitionCard({
   status,
   recommended = false,
   recommendedLabel = "로미 추천",
+  signals,
 }: {
   exhibition: Exhibition;
   status: ExhibitionStatusKind;
   /** 로미 추천 전시 — 진행 중에만 유효하다. */
   recommended?: boolean;
   recommendedLabel?: string;
+  /** 결정 근거 — 진행 중 카드에서만 그린다(행에는 자리가 없다). */
+  signals?: ExhibitionSignals;
 }) {
   const t = useT();
   const range = `${format(new Date(exhibition.startDate), "M.d")} – ${format(new Date(exhibition.endDate), "M.d")}`;
@@ -111,6 +115,31 @@ export function ExhibitionCard({
         </h3>
       </div>
       <div className="space-y-1.5 p-4">
+        {signals && (
+          <p className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-sm font-medium text-foreground">
+            <span className="tabular">
+              {t("home.signalBooths", { n: signals.boothCount })}
+            </span>
+            {signals.daysLeft !== null && (
+              <>
+                <span aria-hidden>·</span>
+                <span className="font-bold text-primary">
+                  {signals.daysLeft === 1
+                    ? t("home.signalLastDay")
+                    : t("home.signalDaysLeft", { n: signals.daysLeft })}
+                </span>
+              </>
+            )}
+            {signals.groundedCount > 0 && (
+              <>
+                <span aria-hidden>·</span>
+                <span className="tabular text-muted-foreground">
+                  {t("home.signalGrounded", { n: signals.groundedCount })}
+                </span>
+              </>
+            )}
+          </p>
+        )}
         <p className="type-body line-clamp-3 text-muted-foreground">
           {exhibition.description}
         </p>

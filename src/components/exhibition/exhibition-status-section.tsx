@@ -6,6 +6,7 @@ import { ExhibitionCard } from "@/components/exhibition/exhibition-card";
 import { useT } from "@/lib/i18n/provider";
 import type { Exhibition } from "@/lib/types";
 import type { ExhibitionStatusKind } from "@/lib/exhibition/status";
+import type { ExhibitionSignals } from "@/lib/exhibition/signals";
 
 const VISIBLE_CAP = 3;
 
@@ -22,6 +23,7 @@ export function ExhibitionStatusSection({
   recommendedLabel,
   recommendedReason,
   showBadge,
+  signalsBySlug,
 }: {
   title: string;
   status: ExhibitionStatusKind;
@@ -30,6 +32,8 @@ export function ExhibitionStatusSection({
   recommendedLabel?: string;
   recommendedReason?: string | null;
   showBadge?: boolean;
+  /** slug → 결정 근거. 진행 중 카드만 쓴다. */
+  signalsBySlug?: Record<string, ExhibitionSignals>;
 }) {
   const t = useT();
   const [expanded, setExpanded] = useState(false);
@@ -65,6 +69,7 @@ export function ExhibitionStatusSection({
               status={status}
               recommended={ex.slug === recommendedSlug && !!showBadge}
               recommendedLabel={recommendedLabel}
+              signals={signalsBySlug?.[ex.slug]}
             />
             {ex.slug === recommendedSlug && recommendedReason && (
               <p className="px-1 text-xs leading-relaxed text-muted-foreground">
