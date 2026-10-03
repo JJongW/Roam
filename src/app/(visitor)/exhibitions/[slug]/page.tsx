@@ -160,7 +160,10 @@ export default async function ExhibitionDetailPage({
         </div>
 
         {/* 하단 여백: 상주 컴패니언 필이 카드/버튼을 가리지 않게(globals.css 토큰). */}
-        <div className="space-y-4 px-[var(--spacing-global-gutter)] pt-5 pb-[var(--spacing-companion-clearance)] landscape:w-[420px] landscape:shrink-0 landscape:self-stretch landscape:overflow-y-auto landscape:border-l landscape:border-border">
+        <div
+          data-primary={primary}
+          className="space-y-4 px-[var(--spacing-global-gutter)] pt-5 pb-[var(--spacing-companion-clearance)] landscape:w-[420px] landscape:shrink-0 landscape:self-stretch landscape:overflow-y-auto landscape:border-l landscape:border-border"
+        >
           {/* 상단 고정 취향 배너는 걷어냈다 — 로미의 취향 발화는 하단 상주 컴패니언이
               휘발성으로 건넨다(맥락 인사를 화면 상단에 박아두지 않는다). 여기서는
               서버가 계산한 맥락(상위 가치·골라둔 개수)을 컴패니언에 실어줄 뿐. */}
@@ -175,8 +178,10 @@ export default async function ExhibitionDetailPage({
           )}
 
           {/* 가치 온보딩은 결과(마인드맵)·저장 둘 다 계정에 묶여있다(브레인이
-              userId 기준) — primaryAction이 로그인했을 때만 "onboarding"을 준다. */}
-          {primary === "onboarding" && (
+              userId 기준) — 로그인해야만 뜬다. 보일지 말지는 컴포넌트 안쪽 게이트가
+              정한다: primaryAction은 강조용이지 마운트 조건이 아니다(바깥에 다시
+              걸면 판정 후 가치를 못 고른다). */}
+          {user && (
             <ValueOnboarding
               slug={slug}
               exhibitionName={exhibition.name}
@@ -257,7 +262,10 @@ export default async function ExhibitionDetailPage({
           {/* 피드를 다 비워도(성실히 판단 다 함) 회고로 못 가면 안 된다 — "판단이
               하나라도 있었나"로 게이트를 바꾼다. feedItems가 남았는지는 회고와
               무관하다(로미 P0 브리프 §1). */}
-          {primary === "finish" && (
+          {/* 게이트는 FinishVisit 안쪽(initialJudgedCount || 클라 tasteJudged)에 있다.
+              여기 primary로 바깥 조건을 걸면 새로고침 없이 첫 반응을 한 방문객이
+              회고로 못 간다. primaryAction은 강조용, 마운트 조건 아님. */}
+          {user && (
             <FinishVisit slug={slug} initialJudgedCount={taste.judgedCount} />
           )}
         </div>
