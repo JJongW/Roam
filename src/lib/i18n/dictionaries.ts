@@ -325,6 +325,12 @@ const ko = {
     notesCard: "내 메모장",
     notesCardDesc: "가봤거나 남겨둔 부스, 적어둔 메모를 여기서 봐",
   },
+  exhibitionUtil: {
+    label: "전시 바로가기",
+    map: "지도",
+    notes: "메모장",
+    search: "부스 찾기",
+  },
   notFound: {
     title: "찾을 수 없는 페이지야",
     desc: "부스가 삭제됐거나 링크가 잘못됐을 수 있어.",
@@ -1050,6 +1056,12 @@ const en: Dict = {
     otherExhibitions: "At other fairs too",
     notesCard: "My notes",
     notesCardDesc: "Booths you've seen or saved, and what you wrote",
+  },
+  exhibitionUtil: {
+    label: "Exhibition shortcuts",
+    map: "Map",
+    notes: "Notes",
+    search: "Find a booth",
   },
   notFound: {
     title: "Page not found",
