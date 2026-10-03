@@ -156,7 +156,10 @@ git commit -m "feat(type): 문장용 타입 유틸 .type-body — 한글 본문 
 
 **Files:**
 - Modify: `src/components/feed/interest-feed.tsx` (로미 한 줄·근거·행동 제안)
-- Modify: `src/components/exhibition/exhibition-card.tsx:65-67` (설명 `text-sm` → `.type-body`, `line-clamp` 재조정)
+
+> ⚠️ `exhibition-card.tsx`는 **건드리지 않는다.** Task 6이 그 파일을 전면
+> 재작성하면서 `.type-body` + `line-clamp-3`를 포함한다. 여기서 먼저 고치면
+> Task 6과 충돌한다.
 
 **Interfaces:**
 - Consumes: Task 1의 `.type-body`
@@ -245,15 +248,10 @@ Expected: FAIL — `expected element to have class "type-body"`
 - 신뢰 배지·출처 라벨(`grounding.quoteSource`)·부스 코드: **`text-xs` 유지** (문장이 아니다)
 - 부스명: `text-[17px]` → `text-xl`(20px, SEED t7)
 
-`src/components/exhibition/exhibition-card.tsx`:
-
-```tsx
-        <p className="type-body line-clamp-3 text-muted-foreground">
-          {exhibition.description}
-        </p>
-```
-
-(`text-sm line-clamp-2` → `.type-body line-clamp-3`. 글자가 커지면 한 줄에 들어가는 글자 수가 줄어 2줄 클램프가 정보를 더 자른다 — 줄 수를 3으로 올려 보상한다.)
+(전시 카드 설명의 `text-sm line-clamp-2` → `.type-body line-clamp-3` 전환은
+Task 6이 그 파일을 재작성할 때 함께 한다. 글자가 커지면 한 줄에 들어가는 글자
+수가 줄어 2줄 클램프가 정보를 더 자르므로 줄 수로 보상하는 것인데, 같은 파일을
+두 태스크가 고치면 충돌한다.)
 
 - [ ] **Step 4: 통과를 확인한다**
 
@@ -273,8 +271,8 @@ grep -n 'text-xs' src/components/feed/interest-feed.tsx
 ```bash
 npx tsc --noEmit
 npx vitest run
-npx eslint src/components/feed/interest-feed.tsx src/components/exhibition/exhibition-card.tsx src/components/feed/interest-feed.test.tsx
-git add src/components/feed/interest-feed.tsx src/components/exhibition/exhibition-card.tsx src/components/feed/interest-feed.test.tsx
+npx eslint src/components/feed/interest-feed.tsx src/components/feed/interest-feed.test.tsx
+git add src/components/feed/interest-feed.tsx src/components/feed/interest-feed.test.tsx
 git commit -m "fix(type): 로미 판단 근거를 12px에서 문장 크기로 — 위계 역전 교정"
 ```
 
@@ -299,6 +297,7 @@ git commit -m "fix(type): 로미 판단 근거를 12px에서 문장 크기로 �
 
 ```ts
   exhibitionUtil: {
+    label: "전시 바로가기",
     map: "지도",
     notes: "메모장",
     search: "부스 찾기",
@@ -309,11 +308,15 @@ git commit -m "fix(type): 로미 판단 근거를 12px에서 문장 크기로 �
 
 ```ts
   exhibitionUtil: {
+    label: "Exhibition shortcuts",
     map: "Map",
     notes: "Notes",
     search: "Find a booth",
   },
 ```
+
+`label`은 유틸 행 자체(`<nav>`)의 접근 이름이다. 행에 `map`을 쓰면 지도 링크와
+이름이 같아져 보조기술이 둘을 구별하지 못한다.
 
 - [ ] **Step 2: 실패하는 테스트를 쓴다**
 
@@ -433,7 +436,7 @@ export function ExhibitionUtilityRow({
   return (
     <nav
       className="flex gap-[var(--spacing-between-chips)]"
-      aria-label={t("exhibitionUtil.map")}
+      aria-label={t("exhibitionUtil.label")}
     >
       <Link href={`/exhibitions/${slug}/map`} className={cell}>
         <MapIcon className="size-[18px]" aria-hidden />
@@ -642,17 +645,11 @@ git commit -m "feat(exhibition): 상태별 유일한 primary CTA 결정 함수"
 
 - [ ] **Step 3: 카드 3장을 유틸 행으로 교체한다**
 
-`page.tsx`에서 지도 카드(196-211행 부근)·메모장 카드(213-231행 부근)·`<BoothSearch>`(234행)를 지우고, `<div className="space-y-2.5">` 묶음을 다음으로 바꾼다:
+`page.tsx`에서 지도 카드(196-211행 부근)·메모장 카드(213-231행 부근)·`<BoothSearch>`(234행)를 지우고, `<div className="space-y-2.5">` 묶음을 아래 `ExhibitionUtilityBar` 한 줄로 바꾼다.
 
-```tsx
-          <ExhibitionUtilityRow
-            slug={slug}
-            showNotes={!!user}
-            onSearch={() => setSearchOpen(true)}
-          />
-```
-
-`page.tsx`는 서버 컴포넌트라 `useState`를 쓸 수 없다. 검색 펼침 상태는 `BoothSearch`가 직접 들고 있어야 하므로, **유틸 행과 검색을 한 클라이언트 컴포넌트로 묶는다**:
+`page.tsx`는 **서버 컴포넌트라 `useState`를 쓸 수 없다.** 검색 펼침 상태를 들 곳이
+필요하므로 유틸 행과 검색을 한 클라이언트 컴포넌트로 묶는다 —
+`ExhibitionUtilityRow`를 `page.tsx`에서 직접 쓰지 않는다.
 
 `src/components/exhibition/exhibition-utility-bar.tsx` 생성:
 
@@ -951,11 +948,11 @@ export function ExhibitionCard({
 }) {
   const t = useT();
   const range = `${format(new Date(exhibition.startDate), "M.d")} – ${format(new Date(exhibition.endDate), "M.d")}`;
-  // 끝난 전시는 목적지가 다르다 — 피드·온보딩·"오늘 관람 마치기"가 뜨면 안 된다.
-  const href =
-    status === "ended"
-      ? `/exhibitions/${exhibition.slug}/record`
-      : `/exhibitions/${exhibition.slug}`;
+  // TODO(별도 플랜): 끝난 전시는 목적지가 달라야 한다 — 지금은 진행 중과 같은
+  // 화면으로 가서 온보딩·피드·"오늘 관람 마치기"가 그대로 뜬다. 읽기 전용
+  // 기록 화면(`/exhibitions/[slug]/record`)은 이 플랜 범위 밖이라 라우트가
+  // 없다. 없는 경로로 보내면 404가 되므로 지금은 같은 경로를 쓴다.
+  const href = `/exhibitions/${exhibition.slug}`;
   const cta =
     status === "ongoing"
       ? t("home.enter")
@@ -1046,8 +1043,6 @@ export function ExhibitionCard({
 ```
 
 > `useT()`를 쓰므로 이 파일 맨 위에 `"use client";`를 추가한다. (현재는 서버에서 렌더되지만 `ExhibitionStatusSection`이 이미 클라이언트 컴포넌트다.)
-
-> `/exhibitions/[slug]/record` 라우트는 이 플랜 범위 밖이다. 라우트가 없으면 404가 되므로, 이 태스크에서는 **`href`를 기존 `/exhibitions/${slug}`로 두고 TODO 주석을 남긴다.** 종료 전시 전용 화면은 별도 플랜으로 뺀다.
 
 - [ ] **Step 5: 통과를 확인한다**
 
