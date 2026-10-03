@@ -279,6 +279,20 @@
   .tabular {
     font-variant-numeric: tabular-nums;
   }
+  /* 문장용 타입 역할 — 원시 스케일(--text-*)은 SEED 공유값이고 버튼·칩 높이가
+     거기 묶여 있어 건드리지 않는다. 산문은 이 두 유틸로만 쓴다.
+     한글은 어센더·디센더로 생기는 숨 쉴 틈이 없는 정방형 글자라 같은 비율에서
+     라틴보다 빽빽하게 읽힌다 — W3C klreq가 한글 본문 행간 160%를 권하고
+     네이버·다음 뉴스 본문도 17px/1.56~1.63에 수렴한다.
+     ⚠️ 12px(text-xs)에 문장을 쓰지 않는다. 배지·출처 라벨 전용. */
+  .type-body {
+    font-size: 1rem; /* 16px */
+    line-height: 1.625rem; /* 26px = 1.625 */
+  }
+  .type-body-lg {
+    font-size: 1.0625rem; /* 17px = Apple HIG 본문 권장 최소 */
+    line-height: 1.6875rem; /* 27px = 1.588 */
+  }
   /* hide scrollbar but keep scroll (horizontal chip rows) */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
