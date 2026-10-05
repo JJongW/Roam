@@ -1,6 +1,10 @@
 {
  "width": 3841,
  "height": 2161,
+ "backdrop": {
+  "src": "/booths/ddp-designfair-2026/floorplan.webp",
+  "opacity": 0.55
+ },
  "halls": [
   {
    "name": "DDP 아트홀",
@@ -48,6 +52,17 @@
  ],
  "booths": [
   {
+   "code": "DF203",
+   "x": 1522,
+   "y": 1452,
+   "w": 77,
+   "h": 80,
+   "color": "#dcdee3",
+   "name": "빈도",
+   "kind": "exhibitor",
+   "rotate": 13.5
+  },
+  {
    "code": "DF154",
    "x": 2115,
    "y": 344,
@@ -55,7 +70,8 @@
    "h": 147,
    "color": "#aeb4bf",
    "name": "Cafe 빈브라더스",
-   "kind": "facility"
+   "kind": "facility",
+   "rotate": -7.65
   },
   {
    "code": "DF187",
@@ -65,7 +81,8 @@
    "h": 77,
    "color": "#aeb4bf",
    "name": "cafe 헤리터",
-   "kind": "facility"
+   "kind": "facility",
+   "rotate": 12.7
   },
   {
    "code": "DF136",
@@ -115,7 +132,19 @@
    "h": 75,
    "color": "#dcdee3",
    "name": "고프",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 5.84
+  },
+  {
+   "code": "DF200",
+   "x": 1624,
+   "y": 1622,
+   "w": 161,
+   "h": 79,
+   "color": "#dcdee3",
+   "name": "Kn0t",
+   "kind": "exhibitor",
+   "rotate": 17.4
   },
   {
    "code": "DF170",
@@ -125,7 +154,8 @@
    "h": 78,
    "color": "#dcdee3",
    "name": "넛츠앤버터",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": -14.19
   },
   {
    "code": "DF122",
@@ -145,7 +175,19 @@
    "h": 150,
    "color": "#dcdee3",
    "name": "노엘라이즈브레이브",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 16.99
+  },
+  {
+   "code": "DF198",
+   "x": 1632,
+   "y": 1481,
+   "w": 156,
+   "h": 80,
+   "color": "#dcdee3",
+   "name": "E.O.D (Eye Of Diversity)",
+   "kind": "exhibitor",
+   "rotate": 15.58
   },
   {
    "code": "DF159",
@@ -155,7 +197,19 @@
    "h": 220,
    "color": "#dcdee3",
    "name": "다이노탱",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 6.39
+  },
+  {
+   "code": "DF195",
+   "x": 1840,
+   "y": 1691,
+   "w": 153,
+   "h": 73,
+   "color": "#dcdee3",
+   "name": "Red Flight",
+   "kind": "exhibitor",
+   "rotate": 17.31
   },
   {
    "code": "DF181",
@@ -165,7 +219,8 @@
    "h": 69,
    "color": "#dcdee3",
    "name": "드뮤레",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 6.55
   },
   {
    "code": "DF109",
@@ -185,7 +240,8 @@
    "h": 84,
    "color": "#dcdee3",
    "name": "땡스소윤",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 6.74
   },
   {
    "code": "DF117",
@@ -235,7 +291,19 @@
    "h": 78,
    "color": "#dcdee3",
    "name": "레베베",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 7.04
+  },
+  {
+   "code": "DF196",
+   "x": 1735,
+   "y": 1657,
+   "w": 74,
+   "h": 81,
+   "color": "#dcdee3",
+   "name": "와이낫",
+   "kind": "exhibitor",
+   "rotate": 17.19
   },
   {
    "code": "DF137",
@@ -265,7 +333,19 @@
    "h": 154,
    "color": "#dcdee3",
    "name": "리빙크리에이터",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 6.79
+  },
+  {
+   "code": "DF189",
+   "x": 973,
+   "y": 1425,
+   "w": 153,
+   "h": 81,
+   "color": "#dcdee3",
+   "name": "오프셋",
+   "kind": "exhibitor",
+   "rotate": 16.33
   },
   {
    "code": "DF127",
@@ -285,7 +365,8 @@
    "h": 78,
    "color": "#dcdee3",
    "name": "매거진C",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": -7.02
   },
   {
    "code": "DF125",
@@ -298,6 +379,17 @@
    "kind": "exhibitor"
   },
   {
+   "code": "DF193",
+   "x": 2416,
+   "y": 1865,
+   "w": 158,
+   "h": 78,
+   "color": "#dcdee3",
+   "name": "에프에프디랩",
+   "kind": "exhibitor",
+   "rotate": 17.36
+  },
+  {
    "code": "DF172",
    "x": 924,
    "y": 534,
@@ -305,7 +397,8 @@
    "h": 155,
    "color": "#dcdee3",
    "name": "무자기",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 10
   },
   {
    "code": "DF119",
@@ -325,7 +418,8 @@
    "h": 150,
    "color": "#dcdee3",
    "name": "바잇미",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 6.8
   },
   {
    "code": "DF178",
@@ -335,7 +429,8 @@
    "h": 150,
    "color": "#dcdee3",
    "name": "밧드야",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 5
   },
   {
    "code": "DF138",
@@ -355,7 +450,8 @@
    "h": 82,
    "color": "#dcdee3",
    "name": "보름스튜디오",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": -12.25
   },
   {
    "code": "DF110",
@@ -375,7 +471,8 @@
    "h": 83,
    "color": "#dcdee3",
    "name": "봄마음",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 6.08
   },
   {
    "code": "DF116",
@@ -385,7 +482,8 @@
    "h": 291,
    "color": "#dcdee3",
    "name": "브랜든",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": -6.85
   },
   {
    "code": "DF169",
@@ -395,7 +493,19 @@
    "h": 69,
    "color": "#dcdee3",
    "name": "블랭크소일",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 7.32
+  },
+  {
+   "code": "DF201",
+   "x": 1946,
+   "y": 1723,
+   "w": 76,
+   "h": 75,
+   "color": "#dcdee3",
+   "name": "슴슴",
+   "kind": "exhibitor",
+   "rotate": 18.04
   },
   {
    "code": "DF144",
@@ -415,7 +525,8 @@
    "h": 74,
    "color": "#dcdee3",
    "name": "비키즈",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 12.63
   },
   {
    "code": "DF167",
@@ -425,7 +536,8 @@
    "h": 73,
    "color": "#dcdee3",
    "name": "샐마",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 15.36
   },
   {
    "code": "DF185",
@@ -435,7 +547,8 @@
    "h": 69,
    "color": "#dcdee3",
    "name": "세실앤세드릭",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 15.31
   },
   {
    "code": "DF161",
@@ -445,7 +558,8 @@
    "h": 80,
    "color": "#dcdee3",
    "name": "세이펫",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 6.35
   },
   {
    "code": "DF176",
@@ -455,7 +569,19 @@
    "h": 80,
    "color": "#dcdee3",
    "name": "센느파리",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 6.94
+  },
+  {
+   "code": "DF204",
+   "x": 1479,
+   "y": 1579,
+   "w": 156,
+   "h": 79,
+   "color": "#dcdee3",
+   "name": "브이에프디",
+   "kind": "exhibitor",
+   "rotate": 16.78
   },
   {
    "code": "DF153",
@@ -468,6 +594,17 @@
    "kind": "exhibitor"
   },
   {
+   "code": "DF194",
+   "x": 2271,
+   "y": 1820,
+   "w": 157,
+   "h": 79,
+   "color": "#dcdee3",
+   "name": "future form finding lab.",
+   "kind": "exhibitor",
+   "rotate": 17.18
+  },
+  {
    "code": "DF184",
    "x": 744,
    "y": 770,
@@ -475,7 +612,8 @@
    "h": 75,
    "color": "#dcdee3",
    "name": "아담",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 5
   },
   {
    "code": "DF111",
@@ -538,6 +676,39 @@
    "kind": "exhibitor"
   },
   {
+   "code": "DF207",
+   "x": 1922,
+   "y": 1559,
+   "w": 157,
+   "h": 80,
+   "color": "#dcdee3",
+   "name": "체크",
+   "kind": "exhibitor",
+   "rotate": 14.87
+  },
+  {
+   "code": "DF206",
+   "x": 1814,
+   "y": 1530,
+   "w": 76,
+   "h": 79,
+   "color": "#dcdee3",
+   "name": "엑스비욘드",
+   "kind": "exhibitor",
+   "rotate": 14.04
+  },
+  {
+   "code": "DF202",
+   "x": 2162,
+   "y": 1789,
+   "w": 74,
+   "h": 73,
+   "color": "#dcdee3",
+   "name": "Clay(X)",
+   "kind": "exhibitor",
+   "rotate": 15.95
+  },
+  {
    "code": "DF132",
    "x": 2569,
    "y": 278,
@@ -565,7 +736,8 @@
    "h": 147,
    "color": "#dcdee3",
    "name": "이도도자기",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 10
   },
   {
    "code": "DF134",
@@ -585,7 +757,8 @@
    "h": 144,
    "color": "#dcdee3",
    "name": "이야이야앤프렌즈",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 6.95
   },
   {
    "code": "DF121",
@@ -595,7 +768,19 @@
    "h": 157,
    "color": "#dcdee3",
    "name": "이오테",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 16.19
+  },
+  {
+   "code": "DF197",
+   "x": 1373,
+   "y": 1542,
+   "w": 76,
+   "h": 77,
+   "color": "#dcdee3",
+   "name": "에이치엑스아이 디자인랩",
+   "kind": "exhibitor",
+   "rotate": 16.86
   },
   {
    "code": "DF183",
@@ -605,7 +790,8 @@
    "h": 148,
    "color": "#dcdee3",
    "name": "인소일",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 6.41
   },
   {
    "code": "DF179",
@@ -615,7 +801,8 @@
    "h": 82,
    "color": "#dcdee3",
    "name": "장조림포터리",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": -11.72
   },
   {
    "code": "DF160",
@@ -625,7 +812,8 @@
    "h": 80,
    "color": "#dcdee3",
    "name": "잼먹",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 7.37
   },
   {
    "code": "DF152",
@@ -635,7 +823,8 @@
    "h": 222,
    "color": "#dcdee3",
    "name": "지노키오",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": -7.59
   },
   {
    "code": "DF156",
@@ -645,7 +834,8 @@
    "h": 73,
    "color": "#dcdee3",
    "name": "집에가야돼",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 6.56
   },
   {
    "code": "DF140",
@@ -675,7 +865,8 @@
    "h": 232,
    "color": "#dcdee3",
    "name": "코코라커",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 7.66
   },
   {
    "code": "DF135",
@@ -685,7 +876,8 @@
    "h": 229,
    "color": "#dcdee3",
    "name": "코콘",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 16.96
   },
   {
    "code": "DF162",
@@ -695,7 +887,8 @@
    "h": 151,
    "color": "#dcdee3",
    "name": "쿠모",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 7.34
   },
   {
    "code": "DF171",
@@ -705,7 +898,8 @@
    "h": 84,
    "color": "#dcdee3",
    "name": "쿡에버",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 8.81
   },
   {
    "code": "DF168",
@@ -715,7 +909,8 @@
    "h": 73,
    "color": "#dcdee3",
    "name": "퀘스처너스",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 6.28
   },
   {
    "code": "DF182",
@@ -725,7 +920,8 @@
    "h": 79,
    "color": "#dcdee3",
    "name": "클레이샵",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 7.65
   },
   {
    "code": "DF118",
@@ -768,6 +964,17 @@
    "kind": "exhibitor"
   },
   {
+   "code": "DF190",
+   "x": 826,
+   "y": 1381,
+   "w": 157,
+   "h": 86,
+   "color": "#dcdee3",
+   "name": "프랜드",
+   "kind": "exhibitor",
+   "rotate": 16.27
+  },
+  {
    "code": "DF148",
    "x": 2530,
    "y": 500,
@@ -785,7 +992,8 @@
    "h": 76,
    "color": "#dcdee3",
    "name": "피그랩",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": -7.44
   },
   {
    "code": "DF174",
@@ -795,7 +1003,8 @@
    "h": 197,
    "color": "#dcdee3",
    "name": "피아바",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 10
   },
   {
    "code": "DF165",
@@ -805,7 +1014,8 @@
    "h": 77,
    "color": "#dcdee3",
    "name": "핀일로",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 5
   },
   {
    "code": "DF115",
@@ -816,6 +1026,17 @@
    "color": "#dcdee3",
    "name": "핀카",
    "kind": "exhibitor"
+  },
+  {
+   "code": "DF205",
+   "x": 2057,
+   "y": 1757,
+   "w": 160,
+   "h": 73,
+   "color": "#dcdee3",
+   "name": "코멘트",
+   "kind": "exhibitor",
+   "rotate": 16.79
   },
   {
    "code": "DF124",
@@ -845,7 +1066,19 @@
    "h": 151,
    "color": "#dcdee3",
    "name": "헤리터",
-   "kind": "exhibitor"
+   "kind": "exhibitor",
+   "rotate": 7.45
+  },
+  {
+   "code": "DF188",
+   "x": 1263,
+   "y": 1515,
+   "w": 153,
+   "h": 72,
+   "color": "#dcdee3",
+   "name": "IGNITE TEAM",
+   "kind": "exhibitor",
+   "rotate": 17.28
   },
   {
    "code": "DF147",
@@ -856,7 +1089,18 @@
    "color": "#dcdee3",
    "name": "호텔파리칠",
    "kind": "exhibitor"
+  },
+  {
+   "code": "DF199",
+   "x": 1118,
+   "y": 1468,
+   "w": 160,
+   "h": 79,
+   "color": "#dcdee3",
+   "name": "오브",
+   "kind": "exhibitor",
+   "rotate": 18.04
   }
  ],
- "source": "https://www.seoul-designweek.or.kr/designfair2026/floorplan/ (2026-10-02) · 배경 /assets/images/2026/floorPlan_pc.png"
+ "source": "https://www.seoul-designweek.or.kr/designfair2026/floorplan/ (2026-10-05) · 배경 /assets/images/2026/floorPlan_pc.png"
 }

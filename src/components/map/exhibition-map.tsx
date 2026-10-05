@@ -139,6 +139,7 @@ interface Rect {
   w: number;
   h: number;
   color?: string;
+  rotate?: number;
 }
 
 export function ExhibitionMap({
@@ -353,7 +354,7 @@ export function ExhibitionMap({
   );
   const geomOf = (b: BoothListItem): Rect => {
     const fb = b.code ? rectByCode.get(b.code) : undefined;
-    if (fb) return { x: fb.x, y: fb.y, w: fb.w, h: fb.h, color: fb.color };
+    if (fb) return { x: fb.x, y: fb.y, w: fb.w, h: fb.h, color: fb.color, rotate: fb.rotate };
     return { x: b.x, y: b.y, w: BOOTH_W, h: BOOTH_H };
   };
 
@@ -1025,6 +1026,18 @@ export function ExhibitionMap({
             </g>
           ))}
 
+          {floorplan?.backdrop && (
+            <image
+              href={floorplan.backdrop.src}
+              x={0}
+              y={0}
+              width={width}
+              height={height}
+              opacity={floorplan.backdrop.opacity ?? 0.55}
+              preserveAspectRatio="none"
+            />
+          )}
+
           {/* crowd heat: busy corridors (drawn under booths, in the aisles) */}
           {heatCorridors.map((c, i) => (
             <path
@@ -1327,7 +1340,7 @@ export function ExhibitionMap({
             return (
               <g
                 key={b.id}
-                transform={`translate(${g.x} ${g.y})`}
+                transform={`translate(${g.x} ${g.y})${g.rotate ? ` rotate(${g.rotate})` : ""}`}
                 className="cursor-pointer"
                 role="button"
                 aria-label={`${b.name}${b.code ? ` (${b.code})` : ""}`}
