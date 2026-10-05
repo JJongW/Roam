@@ -5,11 +5,14 @@
 // DDP디자인페어 공식 사이트(seoul-designweek.or.kr/designfair<year>/floorplan/)는 도면
 // 이미지 위에 부스 버튼을 % 좌표로 얹는다(top·left·width·height·rotate). 그 좌표를
 // 원본 이미지 픽셀로 환산한다 — 손으로 따지 않는다.
-// 회전(DDP 아트홀은 곡선이라 ±7° 안팎)은 Roam 도면이 축정렬 사각형만 그려서 버린다.
+// 회전(DDP 아트홀은 곡선이라 부스가 최대 17°까지 기운다)도 그대로 옮긴다 — 펴면
+// 비스듬한 줄이 계단처럼 끊기고 이웃끼리 겹쳤다(2026-10-05 비교).
+// 원본 그림은 public/booths/<slug>/floorplan.webp로 떠서 지도 바닥(backdrop)에 깐다.
 // 버튼 하나 = 부스 하나, code는 사이트의 브랜드 번호(data-no)에 "DF"를 붙인 것 —
 // 공식 부스 번호가 없어서 지어내지 않고 출처 번호를 쓴다.
 // 결과: src/lib/floorplan-<slug>.json
-import { writeFileSync } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
+import sharp from "sharp";
 
 const [year, slug] = process.argv.slice(2);
 if (!year || !slug) {
@@ -26,11 +29,11 @@ const buf = Buffer.from(await (await fetch(BASE + img)).arrayBuffer());
 // PNG IHDR: 너비·높이는 16바이트부터.
 const W = buf.readUInt32BE(16), H = buf.readUInt32BE(20);
 
-const re = /data-no="(\d+)"\s*style="top:([\d.]+)%;left:([\d.]+)%;width:([\d.]+)%;height:([\d.]+)%;[^"]*"\s*aria-label="([^"]+)"/g;
+const re = /data-no="(\d+)"\s*style="top:([\d.]+)%;left:([\d.]+)%;width:([\d.]+)%;height:([\d.]+)%;transform:rotate\(([-\d.]+)deg\)"\s*aria-label="([^"]+)"/g;
 const seen = new Set();
 const booths = [];
 for (const m of desktop.matchAll(re)) {
-  const [, no, top, left, w, h, name] = m;
+  const [, no, top, left, w, h, deg, name] = m;
   if (seen.has(no)) continue;
   seen.add(no);
   const bw = (+w / 100) * W, bh = (+h / 100) * H;
@@ -44,6 +47,7 @@ for (const m of desktop.matchAll(re)) {
     color: cafe ? "#aeb4bf" : "#dcdee3",
     name: name.trim(),
     kind: cafe ? "facility" : "exhibitor",
+    ...(+deg ? { rotate: +deg } : {}),
   });
 }
 // 입구·출구·화장실은 버튼이 아니라 배경 그림에만 있다 — 그림의 표시 위치(%)를 옮겨 적는다.
@@ -53,9 +57,12 @@ const MARKS = {
 };
 const mk = MARKS[year];
 const pt = ([px, py]) => ({ x: Math.round((px / 100) * W), y: Math.round((py / 100) * H) });
+mkdirSync(`public/booths/${slug}`, { recursive: true });
+await sharp(buf).webp({ quality: 80 }).toFile(`public/booths/${slug}/floorplan.webp`);
 const out = {
   width: W,
   height: H,
+  backdrop: { src: `/booths/${slug}/floorplan.webp`, opacity: 0.55 },
   halls: [{ name: "DDP 아트홀", x: 0, y: 0, w: W, h: H }],
   decor: mk ? mk.wc.map((p) => ({ type: "wc", ...pt(p) })) : [],
   ...(mk && {

@@ -29,6 +29,9 @@ export interface FloorplanBooth {
   w: number;
   h: number;
   color?: string;
+  /** 시계방향 회전(도). 곡선 홀(DDP 아트홀)은 부스가 비스듬히 선다 — 축정렬로 펴면
+   *  비스듬한 줄이 계단처럼 끊기고 이웃끼리 겹친다. 중심(x, y) 기준. */
+  rotate?: number;
 }
 
 export interface FloorplanHall {
@@ -88,6 +91,10 @@ export interface Floorplan {
   gates?: FloorplanGate[];
   width: number;
   height: number;
+  /** 주최 도면 그림을 바닥에 깐다(0,0 ~ width,height). 곡선 외곽·특별관 띠처럼
+   *  부스가 아닌 공간을 지어 그리지 않고 원본 그대로 보여준다 — 부스 사각형이
+   *  그림 속 부스 위에 정확히 겹쳐야 한다(좌표를 같은 그림에서 뽑은 도면만). */
+  backdrop?: { src: string; opacity?: number };
   halls: FloorplanHall[];
   decor: FloorplanDecor[];
   booths: FloorplanBooth[];
