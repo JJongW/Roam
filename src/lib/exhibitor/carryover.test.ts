@@ -93,7 +93,7 @@ describe("planCarryover", () => {
 
 describe("isEventSpecific", () => {
   it("행사 한정 표현을 잡는다", () => {
-    for (const s of ["선착순 50명 무료 티켓", "C-02 부스에서 만나요", "10월 3일까지 할인", "현장 추첨 이벤트", "맛보고 사 가는 부스라 오후엔 줄이 생겨", "오후 3시면 품절돼"]) {
+    for (const s of ["선착순 50명 무료 티켓", "C-02 부스에서 만나요", "10월 3일까지 할인", "현장 추첨 이벤트", "맛보고 사 가는 부스라 오후엔 줄이 생겨", "오후 3시면 품절돼", "커스템 부스(B-03)에도 같은 에디션이 있어", "F-14에서 만나"]) {
       expect(isEventSpecific(s)).toBe(true);
     }
   });
@@ -107,6 +107,11 @@ describe("isEventSpecific", () => {
 describe("stripEventSpecific", () => {
   it("걸리는 문장만 빼고 나머지는 남긴다", () => {
     expect(stripEventSpecific("디저트를 만드는 곳이야. 맛보고 사 가는 부스라 오후엔 줄이 생겨.")).toBe("디저트를 만드는 곳이야.");
+  });
+  it("다른 행사의 부스 번호를 말하는 문장을 뺀다(와이낫 ← 레어로우, 2026-10-05)", () => {
+    expect(
+      stripEventSpecific("선반을 필요한 만큼 짜 맞추는 모듈 시스템을 만드는 곳이야. 커스템 부스(B-03)에도 같은 에디션이 있어."),
+    ).toBe("선반을 필요한 만큼 짜 맞추는 모듈 시스템을 만드는 곳이야.");
   });
   it("전부 걸리면 비운다", () => {
     expect(stripEventSpecific("선착순 50명 무료 티켓!")).toBeUndefined();
