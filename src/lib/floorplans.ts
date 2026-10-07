@@ -13,6 +13,7 @@ import siwse from "@/lib/floorplan-siwse-magok.json";
 // 한 지도에 세로로 쌓았고 venue 합성을 거치지 않는다 — API 좌표가 곧 도면이다.
 import cafeshow from "@/lib/floorplan-cafeshow-2026.json";
 import ddpDesignfair from "@/lib/floorplan-ddp-designfair-2026.json";
+import seoulFurnitureShow from "@/lib/floorplan-seoul-furniture-show-2026.json";
 import coexHallC from "@/lib/venues/coex-hall-c.json";
 import coexPlatz from "@/lib/venues/coex-platz.json";
 import coexHallA from "@/lib/venues/coex-hall-a.json";
@@ -361,4 +362,5 @@ export const FLOORPLANS: Record<string, Floorplan> = {
   "siwse-magok-2026": compose(siwse),
   "cafeshow-2026": cafeshow as unknown as Floorplan,
   "ddp-designfair-2026": ddpDesignfair as unknown as Floorplan,
+  "seoul-furniture-show-2026": seoulFurnitureShow as unknown as Floorplan,
 };
