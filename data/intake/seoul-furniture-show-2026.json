@@ -1,0 +1,907 @@
+{
+ "version": 1,
+ "exhibitionSlug": "seoul-furniture-show-2026",
+ "booths": [
+  {
+   "code": "A210",
+   "name": "에프엠퍼니쳐",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A200",
+   "name": "베네쎄레",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A190",
+   "name": "뷰티슬립",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://beautysleep.co.kr"
+  },
+  {
+   "code": "A180",
+   "name": "엠폴리",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A90",
+   "name": "써더랜드 침대",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A50",
+   "name": "엘리스소파",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A10",
+   "name": "소낭구",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://sonangu.com",
+   "instagramUrl": "https://www.instagram.com/sonangu_official"
+  },
+  {
+   "code": "A130",
+   "name": "엠디바노",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A220",
+   "name": "아델라소파",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A140",
+   "name": "그랜드침대",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://grandbed.com",
+   "instagramUrl": "https://www.instagram.com/grandbed_official"
+  },
+  {
+   "code": "A230",
+   "name": "던에드가",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://dawnedgar.com",
+   "instagramUrl": "https://www.instagram.com/dawn_edgar_official"
+  },
+  {
+   "code": "A60",
+   "name": "편백드림",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://care-well.co.kr"
+  },
+  {
+   "code": "A100",
+   "name": "이원재가구갤러리",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A20",
+   "name": "금성침대",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://bedrewomb.co.kr",
+   "instagramUrl": "https://www.instagram.com/bedrewomb_officials"
+  },
+  {
+   "code": "A240",
+   "name": "라파엘리",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A150",
+   "name": "벨로침대",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://verlo.co.kr"
+  },
+  {
+   "code": "A250",
+   "name": "쏘랩소파",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://solab.kr",
+   "instagramUrl": "https://www.instagram.com/solab_official"
+  },
+  {
+   "code": "A160",
+   "name": "클린까사",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A110",
+   "name": "우드와나",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A70",
+   "name": "자쿠르",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://zacur.co.kr",
+   "instagramUrl": "https://www.instagram.com/zacur_official"
+  },
+  {
+   "code": "A30",
+   "name": "퍼니프랜드",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A120",
+   "name": "스프링에어",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://springair.kr",
+   "instagramUrl": "https://www.instagram.com/springairkorea"
+  },
+  {
+   "code": "A260",
+   "name": "사운드슬립",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A80",
+   "name": "노바앤슬립",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A40",
+   "name": "까사디바인",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A170",
+   "name": "에드가",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://dawnedgar.com",
+   "instagramUrl": "https://www.instagram.com/dawn_edgar_official"
+  },
+  {
+   "code": "A270",
+   "name": "코럼소파",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A280",
+   "name": "누안소파",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://nuan.co.kr",
+   "instagramUrl": "https://www.instagram.com/nuan_furniture"
+  },
+  {
+   "code": "A290",
+   "name": "신미디자인",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "A300",
+   "name": "플랭크체스트",
+   "hall": "A-1홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L05",
+   "name": "선아트갤러리",
+   "hall": "B-2홀 로비",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L30",
+   "name": "리더스디자인",
+   "hall": "B-2홀 로비",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://leadersdesign.co.kr",
+   "instagramUrl": "https://www.instagram.com/leadersdesign_"
+  },
+  {
+   "code": "B09",
+   "name": "블랙큐브쿡셀",
+   "hall": "B-2홀",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B07",
+   "name": "이지솔트 좌훈기",
+   "hall": "B-2홀",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B06",
+   "name": "척추건강 전문베개 온:잠",
+   "hall": "B-2홀",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B05",
+   "name": "에코싱",
+   "hall": "B-2홀",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B04",
+   "name": "리썸",
+   "hall": "B-2홀",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B03",
+   "name": "페브릭데코",
+   "hall": "B-2홀",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B02",
+   "name": "포세이돈",
+   "hall": "B-2홀",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B01",
+   "name": "사계절",
+   "hall": "B-2홀",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L10",
+   "name": "알카나인",
+   "hall": "B-2홀 로비",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B10",
+   "name": "코웨이",
+   "hall": "B-2홀",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor",
+   "websiteUrl": "https://coway.com",
+   "instagramUrl": "https://www.instagram.com/coway.kr"
+  },
+  {
+   "code": "B80",
+   "name": "루메다",
+   "hall": "B-2홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B60",
+   "name": "토토디자인",
+   "hall": "B-2홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://totodesign.kr"
+  },
+  {
+   "code": "B50",
+   "name": "지아띠",
+   "hall": "B-2홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://ziatti.co.kr",
+   "instagramUrl": "https://www.instagram.com/ziatti_official"
+  },
+  {
+   "code": "L10-2",
+   "name": "쏠라링크",
+   "hall": "B-2홀 로비",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B11",
+   "name": "킹스행거",
+   "hall": "B-2홀",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor",
+   "websiteUrl": "https://kingshanger.com",
+   "instagramUrl": "https://www.instagram.com/kings_hanger"
+  },
+  {
+   "code": "L10-3",
+   "name": "리가디자인",
+   "hall": "B-2홀 로비",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B13",
+   "name": "비과세저축",
+   "hall": "B-2홀",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B70",
+   "name": "템퍼",
+   "hall": "B-2홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B90",
+   "name": "바라스튜디오",
+   "hall": "B-2홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://babarastudio.com",
+   "instagramUrl": "https://www.instagram.com/babarastudio"
+  },
+  {
+   "code": "B15",
+   "name": "HEART FOOT 하트풋",
+   "hall": "B-2홀",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B120",
+   "name": "삼익가구",
+   "hall": "B-2홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://samickmall.com",
+   "instagramUrl": "https://www.instagram.com/studiosamick_official"
+  },
+  {
+   "code": "B110",
+   "name": "보루네오",
+   "hall": "B-2홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://bifinc.com"
+  },
+  {
+   "code": "B100",
+   "name": "에몬스가구",
+   "hall": "B-2홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://emons.co.kr",
+   "instagramUrl": "https://www.instagram.com/emons_furniture"
+  },
+  {
+   "code": "B17",
+   "name": "유니크몰",
+   "hall": "B-2홀",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor",
+   "websiteUrl": "https://euniquemall.com"
+  },
+  {
+   "code": "L80",
+   "name": "아니메이드",
+   "hall": "B-2홀 로비",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor",
+   "websiteUrl": "https://ani-made.com"
+  },
+  {
+   "code": "B18",
+   "name": "유니크몰",
+   "hall": "B-2홀",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor",
+   "websiteUrl": "https://euniquemall.com"
+  },
+  {
+   "code": "L40",
+   "name": "다채움",
+   "hall": "B-2홀 로비",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L85",
+   "name": "아니메이드",
+   "hall": "B-2홀 로비",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor",
+   "websiteUrl": "https://ani-made.com"
+  },
+  {
+   "code": "B19",
+   "name": "닥터케겔",
+   "hall": "B-2홀",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B33",
+   "name": "RV",
+   "hall": "B-2홀",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B32",
+   "name": "에센시에르",
+   "hall": "B-2홀",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor",
+   "websiteUrl": "https://essencher.com"
+  },
+  {
+   "code": "B33-2",
+   "name": "또아리커튼",
+   "hall": "B-2홀",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor",
+   "websiteUrl": "https://ddoari.com",
+   "instagramUrl": "https://www.instagram.com/w23.ddoari_songdo"
+  },
+  {
+   "code": "B20",
+   "name": "티제이아상회",
+   "hall": "B-2홀",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L70",
+   "name": "허리펴자 허리체어",
+   "hall": "B-2홀 로비",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B22",
+   "name": "TGGS 음식물분쇄기",
+   "hall": "B-2홀",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B23",
+   "name": "진도구기자",
+   "hall": "B-2홀",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor",
+   "websiteUrl": "https://jindoshop.net"
+  },
+  {
+   "code": "B24",
+   "name": "월딘",
+   "hall": "B-2홀",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor",
+   "websiteUrl": "https://wordin.com"
+  },
+  {
+   "code": "B25",
+   "name": "씽크이",
+   "hall": "B-2홀",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B26",
+   "name": "친자연주의",
+   "hall": "B-2홀",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor",
+   "websiteUrl": "https://ab21.co.kr"
+  },
+  {
+   "code": "B28",
+   "name": "제닉스(프랑스그룹)",
+   "hall": "B-2홀",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "B29",
+   "name": "오레코코",
+   "hall": "B-2홀",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor",
+   "websiteUrl": "https://orekoko.kr"
+  },
+  {
+   "code": "B30",
+   "name": "태강(엘리루카클리너)",
+   "hall": "B-2홀",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "L60",
+   "name": "블랑드누아",
+   "hall": "B-2홀 로비",
+   "category": "리빙·생활",
+   "categorySlug": "sfs-living",
+   "kind": "exhibitor",
+   "websiteUrl": "https://blancdenoirs.com",
+   "instagramUrl": "https://www.instagram.com/blancdenoirs_official"
+  },
+  {
+   "code": "C180",
+   "name": "비고르플렉스",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://vigorflex.co.kr"
+  },
+  {
+   "code": "C200",
+   "name": "라우프바움",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://laubbaum.kr"
+  },
+  {
+   "code": "C210",
+   "name": "페라소",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C220",
+   "name": "쏘포유",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://ssoforyousofa.co.kr",
+   "instagramUrl": "https://www.instagram.com/ssoforyou_official"
+  },
+  {
+   "code": "C130",
+   "name": "공간디자인가구",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://gongdi.co.kr"
+  },
+  {
+   "code": "C90",
+   "name": "캄레스트",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://calmrest.co.kr"
+  },
+  {
+   "code": "C50",
+   "name": "토퍼침대",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C10",
+   "name": "바로크가구",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C140",
+   "name": "버즈가구",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C230",
+   "name": "밀리침대",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://mlilykorea.co.kr"
+  },
+  {
+   "code": "C100",
+   "name": "시몬스(N32)",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C60",
+   "name": "클리오네",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://clione.co.kr"
+  },
+  {
+   "code": "C20",
+   "name": "장인가구",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://janginshop.com"
+  },
+  {
+   "code": "C150",
+   "name": "알마슬립",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C240",
+   "name": "막시밀라노",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://maxximilano.com"
+  },
+  {
+   "code": "C250",
+   "name": "모비디자인가구",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C160",
+   "name": "코모도소파",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://comodo.furniture"
+  },
+  {
+   "code": "C110",
+   "name": "LG전자 BEST SHOP",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C70",
+   "name": "씰리침대",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://sealy.co.kr",
+   "instagramUrl": "https://www.instagram.com/sealyKR"
+  },
+  {
+   "code": "C30",
+   "name": "제니아소파",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://jeniasofa.com"
+  },
+  {
+   "code": "C120",
+   "name": "코모도홈",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://comodohome.co.kr"
+  },
+  {
+   "code": "C170",
+   "name": "홍나지음",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C40",
+   "name": "힐커",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://hilker.co.kr"
+  },
+  {
+   "code": "C260",
+   "name": "스파지오",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://spazio.kr"
+  },
+  {
+   "code": "C80",
+   "name": "더디자인",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C270",
+   "name": "슬립웨이",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://sleepway.co.kr"
+  },
+  {
+   "code": "C280",
+   "name": "마조드까사",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  },
+  {
+   "code": "C290",
+   "name": "나이트앤모어",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor",
+   "websiteUrl": "https://nightandmore.co.kr"
+  },
+  {
+   "code": "C300",
+   "name": "나무이즈",
+   "hall": "C-3홀",
+   "category": "가구·침구",
+   "categorySlug": "sfs-furniture",
+   "kind": "exhibitor"
+  }
+ ]
+}
