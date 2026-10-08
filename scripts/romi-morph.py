@@ -238,19 +238,31 @@ def main():
     ap.add_argument("--hold", type=float, default=0.0,
                     help="마지막 전환 직전에 멈추는 시간(초)")
     ap.add_argument("--fps", type=int, default=24)
+    ap.add_argument("--breathe", type=float, default=1.0, metavar="SY",
+                    help="세로로 부풀었다 돌아온다 (예: 1.045). 발은 땅에 붙은 채 위로만 "
+                         "커진다. 숨쉬기는 자세를 오가는 게 아니라 몸이 부푸는 것이라 "
+                         "자세 혼합으로는 표현되지 않는다")
     ap.add_argument("--scale", type=float, default=2.5,
                     help="출력 배율. 거리장을 확대해 렌더하므로 선이 뭉개지지 않는다 (기본 2.5)")
     ap.add_argument("--encode", metavar="NAME")
     args = ap.parse_args()
 
-    keys = [(p, float(t)) for p, t in args.key]
+    # 키는 "자세" 또는 "자세:정도". 정도는 기준 자세(첫 키)에서 그 자세로 가는 비율이다.
+    # 약한 반응(nod_soft 는 nod_keep 의 절반)을 따로 그리지 않고 만들 수 있다.
+    keys = []
+    for p_, t in args.key:
+        name, _, amt = p_.partition(":")
+        keys.append((name, float(amt) if amt else 1.0, float(t)))
+    base = keys[0][0]
+    # 기준 자세는 기준에서 0만큼 떨어져 있다 — 정도를 1.0으로 두면 세그먼트 해석이 깨진다
+    keys = [(n, 0.0 if n == base else a, t) for n, a, t in keys]
     if len(keys) < 2:
         sys.exit("--key 는 최소 둘")
-    if any(keys[i][1] >= keys[i + 1][1] for i in range(len(keys) - 1)):
+    if any(keys[i][2] >= keys[i + 1][2] for i in range(len(keys) - 1)):
         sys.exit("--key 시각은 오름차순")
 
     poses, size = {}, None
-    for name, _ in keys:
+    for name, _a, _t in keys:
         if name in poses:
             continue
         p = os.path.join(args.poses, f"romi-{name}.png")
@@ -268,7 +280,7 @@ def main():
         if f.endswith(".png"):
             os.remove(os.path.join(args.out, f))
 
-    total = keys[-1][1] + args.hold
+    total = keys[-1][2] + args.hold
     n = max(2, int(round(total * args.fps)))
     target_ground = max(poses[k]["ground"] for k in poses)
     outw = int(round(w * args.scale)); outh = int(round(h * args.scale))
@@ -276,21 +288,33 @@ def main():
 
     for i in range(n):
         t = i / args.fps
-        if args.hold and keys[-2][1] <= t < keys[-2][1] + args.hold:
-            tt = keys[-2][1]
-        elif args.hold and t >= keys[-2][1] + args.hold:
+        if args.hold and keys[-2][2] <= t < keys[-2][2] + args.hold:
+            tt = keys[-2][2]
+        elif args.hold and t >= keys[-2][2] + args.hold:
             tt = t - args.hold
         else:
             tt = t
-        tt = min(tt, keys[-1][1])
+        tt = min(tt, keys[-1][2])
 
         seg = 0
-        while seg < len(keys) - 2 and tt >= keys[seg + 1][1]:
+        while seg < len(keys) - 2 and tt >= keys[seg + 1][2]:
             seg += 1
-        an, at = keys[seg]
-        bn, bt = keys[seg + 1]
-        u = 0.0 if bt <= at else ease(clamp01((tt - at) / (bt - at)))
-        A, B = poses[an], poses[bn]
+        an, aa, at = keys[seg]
+        bn, ba, bt = keys[seg + 1]
+        raw = 0.0 if bt <= at else ease(clamp01((tt - at) / (bt - at)))
+
+        # 세그먼트를 (기준 자세 → 목표 자세, 섞는 정도)로 환원한다.
+        if an == bn:
+            tgt, u = an, aa + (ba - aa) * raw
+        elif aa == 0.0:
+            tgt, u = bn, ba * raw
+        elif ba == 0.0:
+            tgt, u = an, aa * (1 - raw)
+        else:
+            sys.exit(f"{an}:{aa} → {bn}:{ba} — 서로 다른 자세를 둘 다 부분 혼합할 수는 없다")
+        A, B = poses[base], poses[tgt]
+        if tgt == base:
+            u = 0.0
 
         # 앵커(O 중심)를 맞춰 섞는다. 정수로 반올림하면 발이 두 겹으로 갈라진다 —
         # 소수 오프셋 + 이중선형 샘플링으로 처리한다.
@@ -303,6 +327,13 @@ def main():
         ty = target_ground - (ga * (1 - u) + gb * u)
         oax, oay = tx - ax, ty - ay
         obx, oby = tx - bxa, ty - bya
+
+        # 숨: 바닥선을 고정한 채 세로로만 늘렸다 줄인다. 한 주기가 클립 전체다.
+        if args.breathe != 1.0:
+            ph = math.sin(math.pi * (i / max(1, n - 1)) * 2 - math.pi / 2) * 0.5 + 0.5
+            sy = 1.0 + (args.breathe - 1.0) * ph
+        else:
+            sy = 1.0
 
         def samp(f, x, y):
             """소수 좌표에서 거리장을 이중선형으로 읽는다. 바깥은 '한참 밖'."""
@@ -321,7 +352,9 @@ def main():
             out = []
             for y in range(h):
                 row = []
-                ya, yb = y - oay, y - oby
+                # 세로 스케일은 바닥선을 중심으로 — 발이 뜨지 않는다
+                ys = target_ground + (y - target_ground) / sy if sy != 1.0 else y
+                ya, yb = ys - oay, ys - oby
                 for x in range(w):
                     sa = samp(fa, x - oax, ya)
                     sb = samp(fb, x - obx, yb)
@@ -340,6 +373,13 @@ def main():
             hole = tuple(ha[j] * (1 - u) + hb[j] * u for j in range(4))
         else:
             hole = ha or hb
+        # 머리와 구멍도 같이 올라가야 한다. 몸만 늘리면 전체 높이가 그대로라
+        # 숨 쉬는 게 아니라 몸통만 부푸는 걸로 보인다(실제로 그랬다).
+        if sy != 1.0:
+            dot = (dot[0], target_ground + (dot[1] - target_ground) * sy, dot[2])
+            if hole:
+                hole = (hole[0], target_ground + (hole[1] - target_ground) * sy,
+                        hole[2], hole[3] * sy)
         fld, W, H = upscale(blend("rest"), w, h, args.scale)
         hole_s = tuple(v * args.scale for v in hole) if hole else None
         dot_s = tuple(v * args.scale for v in dot)
