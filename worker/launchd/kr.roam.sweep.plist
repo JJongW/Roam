@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  검수 적체 점검 — 하루 한 번. 상시 워커(kr.roam.worker)와 별도 프로세스다.
+  설치: worker/launchd/install.sh
+  로그: ~/Library/Logs/roam-sweep.log
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key><string>kr.roam.sweep</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/zsh</string>
+    <string>__WORKTREE__/worker/launchd/sweep.sh</string>
+  </array>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <!-- launchd의 PATH는 비어 있다. nvm 경로라 node 버전을 바꾸면 install.sh를 다시 돌린다. -->
+    <key>PATH</key><string>__NODE_BIN__:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+    <key>SWEEP_STALE_DAYS</key><string>3</string>
+  </dict>
+  <!-- 맥미니가 이 시간에 꺼져 있었으면 깨어날 때 한 번 돌려준다. -->
+  <key>StartCalendarInterval</key>
+  <dict><key>Hour</key><integer>9</integer><key>Minute</key><integer>30</integer></dict>
+  <!-- RunAtLoad를 켜지 않는다: 재부팅마다 오면 신호가 아니라 소음이 된다. -->
+  <key>StandardOutPath</key><string>__HOME__/Library/Logs/roam-sweep.log</string>
+  <key>StandardErrorPath</key><string>__HOME__/Library/Logs/roam-sweep.log</string>
+</dict>
+</plist>

@@ -12,6 +12,7 @@
     "test:watch": "vitest",
     "worker": "ROAM_WORKER=1 vite-node -c worker/vite.config.ts worker/index.ts",
     "worker:once": "ROAM_WORKER=1 WORKER_ONCE=1 vite-node -c worker/vite.config.ts worker/index.ts",
+    "sweep": "ROAM_WORKER=1 vite-node -c worker/vite.config.ts worker/sweep.ts",
     "smoke:prod": "node scripts/smoke-prod.mjs"
   },
   "dependencies": {
