@@ -28,7 +28,9 @@ async function main() {
   const backlog = await collectBacklog(repo, { staleDays: STALE_DAYS });
   log("점검 완료", { ...backlog });
 
-  const text = formatBacklog(backlog, process.env.NEXT_PUBLIC_APP_URL ?? "");
+  // 슬랙은 폰에서 연다 — 링크는 운영 주소여야 한다. NEXT_PUBLIC_APP_URL은 맥미니에선
+  // 로컬 개발 주소(localhost:3000)라 그대로 쓰면 눌러도 안 열렸다(2026-10-09).
+  const text = formatBacklog(backlog, process.env.SLACK_LINK_BASE_URL ?? "https://roam.ai.kr");
   if (!text) {
     log("적체 없음 — 보내지 않음");
     return;

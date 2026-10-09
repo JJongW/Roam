@@ -420,8 +420,8 @@
    "code": "B13",
    "name": "비과세저축",
    "hall": "B-2홀",
-   "category": "리빙·생활",
-   "categorySlug": "sfs-living",
+   "category": "기타",
+   "categorySlug": "sfs-etc",
    "kind": "exhibitor"
   },
   {

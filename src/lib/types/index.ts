@@ -445,7 +445,8 @@ export interface Job {
   id: string;
   type: string;
   payload: Record<string, unknown>;
-  status: "queued" | "running" | "done" | "failed";
+  /** cancelled — 사람이 중단시킨 잡. 실패가 아니라 적체 알림에서 세지 않는다(2026-10-09). */
+  status: "queued" | "running" | "done" | "failed" | "cancelled";
   runAfter: string;
   attempts: number;
   maxAttempts: number;
