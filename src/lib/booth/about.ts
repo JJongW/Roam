@@ -14,7 +14,9 @@ import type { BoothListItem } from "@/lib/types";
 export interface BoothAbout {
   /** 로미가 이 부스를 한 줄로 소개하는 말(반말). 재료가 없으면 undefined. */
   romi?: string;
-  /** 작가 본인이 쓴 소개 — 그대로 인용한다(존댓말이어도 고치지 않는다). */
+  /** 저작 요약(enrichment.summary) — 그대로 보여준다(존댓말이어도 고치지 않는다).
+   *  SIF 땐 작가 원문이었지만 지금은 대부분 주최 소개·공식 사이트를 정리한 초안이라,
+   *  "작가가 직접 쓴"이라고 붙이면 거짓이다(2026-10-09, aboutQuoteBy 문구 변경). */
   quote?: string;
   /** 파생할 재료가 아무것도 없을 때 쓰는 원문 폴백. */
   fallback?: string;
