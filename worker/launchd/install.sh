@@ -19,3 +19,12 @@ sed -e "s|__WORKTREE__|$WT|g" -e "s|__NODE_BIN__|${$(command -v node):h}|g" -e "
 launchctl bootout "gui/$(id -u)/$LABEL" 2>/dev/null || true
 launchctl bootstrap "gui/$(id -u)" "$PLIST"
 echo "등록됨: $LABEL → $WT  (로그: ~/Library/Logs/roam-worker.log)"
+
+# 적체 점검(하루 한 번) — 상시 워커와 같은 worktree에서 별도 프로세스로 돈다.
+SWEEP=kr.roam.sweep
+SWEEP_PLIST="$HOME/Library/LaunchAgents/$SWEEP.plist"
+sed -e "s|__WORKTREE__|$WT|g" -e "s|__NODE_BIN__|${$(command -v node):h}|g" -e "s|__HOME__|$HOME|g" \
+  "$REPO/worker/launchd/$SWEEP.plist" > "$SWEEP_PLIST"
+launchctl bootout "gui/$(id -u)/$SWEEP" 2>/dev/null || true
+launchctl bootstrap "gui/$(id -u)" "$SWEEP_PLIST"
+echo "등록됨: $SWEEP  (매일 09:30, 로그: ~/Library/Logs/roam-sweep.log)"
