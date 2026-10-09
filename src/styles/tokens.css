@@ -5,11 +5,13 @@
   --card: #ffffff;
   --popover: #ffffff;
   --primary: #4f46e5;
+  --primary-pressed: #463eca;
   --secondary: #f2f4f6;
   --muted: #f2f4f6;
-  --muted-foreground: #6b7684;
+  --muted-foreground: #646e7c;
   --accent: #eef2ff;
   --destructive: #f04452;
+  --destructive-pressed: #d33c48;
   --success: #15c47e;
   --warning: #ffb020;
   --border: #e5e8eb;
@@ -20,6 +22,7 @@
   --chart-3: #ffb020;
   --chart-4: #06b6d4;
   --chart-5: #f04452;
+  --gradient-shimmer: linear-gradient(105deg, #f2f4f6 0%, #ffffff 50%, #f2f4f6 100%);
   --judge-must: #4f46e5;
   --judge-curious: #8b88ee;
   --judge-good: #15c47e;
@@ -38,12 +41,15 @@
   --motion-ease-exit: cubic-bezier(0.35, 0, 1, 1);
   --motion-ease-enter-expressive: cubic-bezier(0.03, 0.4, 0.1, 1);
   --motion-ease-exit-expressive: cubic-bezier(0.35, 0, 0.95, 0.55);
+  --motion-ease-pressed-scale: cubic-bezier(0, 0, 0.15, 1);
   --spacing-global-gutter: 16px;
   --spacing-component-default: 12px;
+  --spacing-section-gap: 24px;
   --spacing-nav-to-title: 20px;
   --spacing-screen-bottom: 56px;
   --spacing-between-text: 6px;
   --spacing-between-chips: 8px;
+  --spacing-between-cards: 10px;
 }
 
 .dark {
@@ -52,11 +58,13 @@
   --card: #16191d;
   --popover: #16191d;
   --primary: #818cf8;
+  --primary-pressed: #909af9;
   --secondary: #1c2024;
   --muted: #1c2024;
   --muted-foreground: #8b95a1;
   --accent: #20204a;
   --destructive: #ff6471;
+  --destructive-pressed: #ff7782;
   --success: #2ad48f;
   --warning: #ffc24b;
   --border: #2a2f36;
@@ -67,6 +75,7 @@
   --chart-3: #ffc24b;
   --chart-4: #22d3ee;
   --chart-5: #ff6471;
+  --gradient-shimmer: linear-gradient(105deg, #1c2024 0%, #2a2f36 50%, #1c2024 100%);
   --judge-must: #818cf8;
   --judge-curious: #a5a2f0;
   --judge-good: #2ad48f;
