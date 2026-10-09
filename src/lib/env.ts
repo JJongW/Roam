@@ -96,7 +96,14 @@ export const hasCloudinary = Boolean(
  *  이 상태로 배포하면 쿠키 서명이 공개된 값으로 되어 위조 방지 효과가 없다. */
 export const sessionSecret =
   env.SESSION_SECRET ?? "roam-dev-only-insecure-secret";
-if (!env.SESSION_SECRET && process.env.NODE_ENV === "production") {
+// 서버에서만 검사한다 — 로그인 화면(클라이언트)이 이 모듈을 함께 불러가서, 브라우저에선
+// 비밀값이 늘 비어 보여 콘솔에 오탐 경고가 찍혔다. 2026-10-09엔 운영에 키가 정말 없었는데
+// 브라우저 경고가 늘 뜨던 탓에 진짜 경고와 구별되지 않았다.
+if (
+  typeof window === "undefined" &&
+  !env.SESSION_SECRET &&
+  process.env.NODE_ENV === "production"
+) {
   console.error(
     "[env] SESSION_SECRET 미설정 — roam_user 쿠키가 위조 가능한 상태로 배포되었습니다.",
   );
