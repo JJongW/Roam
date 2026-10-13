@@ -149,9 +149,10 @@ export function AppOnboardingGate() {
       <div
         role="region"
         aria-label={t("onboardingQ.introTitle")}
-        // AppBar(sticky, h-14 + pt-safe)와 겹치지 않게 그 바로 아래에 고정한다 —
-        // 안 그러면 뒤로가기·타이틀을 가려 "콘텐츠는 바로 보인다"는 취지가 깨진다.
-        className="fixed inset-x-0 top-[calc(3.5rem+env(safe-area-inset-top))] z-40 flex items-center gap-3 border-b bg-background/95 px-4 py-2.5 backdrop-blur-sm"
+        // Toolbar의 내비 줄(--toolbar-height)과 겹치지 않게 그 바로 아래에
+        // 고정한다 — 안 그러면 뒤로가기를 가려 "콘텐츠는 바로 보인다"는 취지가
+        // 깨진다.
+        className="fixed inset-x-0 top-[var(--toolbar-height)] z-40 flex items-center gap-3 border-b bg-background/95 px-4 py-2.5 backdrop-blur-sm"
       >
         <span className="flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-xl">
           <RoamMotion src="/walk_think.webm" />
@@ -329,7 +330,7 @@ function GuideSlide({
         <button
           type="button"
           onClick={onNext}
-          className="w-full rounded-2xl bg-primary px-5 py-4 text-center font-bold text-primary-foreground active:scale-[0.99]"
+          className="w-full rounded-2xl bg-primary px-5 py-4 text-center font-bold text-primary-foreground press active:bg-primary-pressed"
         >
           {isLast ? t("onboardingQ.guideDone") : t("onboardingQ.guideNext")}
         </button>

@@ -2,6 +2,12 @@
 
 import { ErrorState } from "@/components/common/error-state";
 
-export default function Error({ reset }: { error: Error; reset: () => void }) {
-  return <ErrorState reset={reset} />;
+export default function Error({
+  error,
+  reset,
+}: {
+  error: Error;
+  reset: () => void;
+}) {
+  return <ErrorState error={error} reset={reset} />;
 }

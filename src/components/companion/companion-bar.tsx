@@ -88,7 +88,7 @@ export function CompanionBar() {
           // 발화 텍스트가 빠져 접근 가능한 이름이 없어졌다 — 로미 아바타는
           // aria-hidden 이미지라 라벨을 대신 못 준다.
           aria-label={t("companion.ask")}
-          className="pointer-events-auto flex max-w-full items-center gap-2 rounded-full border border-border bg-background/90 p-2 shadow-[var(--shadow-card)] backdrop-blur-xl active:scale-[0.98]"
+          className="pointer-events-auto flex max-w-full items-center gap-2 rounded-full border border-border bg-background/90 p-2 shadow-[var(--shadow-card)] backdrop-blur-xl press"
         >
           <RoamAvatar />
           {isExhibitionHome && home && tastePct !== null && (

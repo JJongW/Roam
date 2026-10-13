@@ -1,6 +1,6 @@
 "use client";
 
-import { cloneElement, isValidElement, useId, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Plus, Trash2, Loader2, CalendarClock } from "lucide-react";
 import { format } from "date-fns";
@@ -11,7 +11,12 @@ import { shakeElement } from "@/lib/dom/shake";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Field } from "@/components/ui/field";
+import {
+  fieldErrorsOf,
+  zodFieldErrors,
+  type FieldErrors,
+} from "@/lib/api/field-errors";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Sheet,
@@ -61,6 +66,7 @@ export function EventManager({
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState<Draft>({});
   const [busy, setBusy] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const sheetRef = useRef<HTMLDivElement>(null);
   const boothName = (id: string) => booths.find((b) => b.id === id)?.name ?? id;
 
@@ -70,6 +76,9 @@ export function EventManager({
   }
 
   async function submit() {
+    // 재진입 가드 — disabled는 리렌더 뒤에야 걸린다. 빠른 두 번 탭이 같은 요청을
+    // 두 번 보내면 서버에서 409가 나거나(중복) 같은 글이 두 번 올라간다.
+    if (busy) return;
     const payload = {
       boothId: draft.boothId ?? booths[0]?.id ?? "",
       title: draft.title ?? "",
@@ -80,10 +89,13 @@ export function EventManager({
     };
     const parsed = eventInputSchema.safeParse(payload);
     if (!parsed.success) {
-      toast.error(parsed.error.issues[0]?.message ?? "입력을 확인해 주세요");
+      // 틀린 칸마다 메시지를 붙인다 — 첫 오류 하나만 토스트로 띄우면 두 칸이
+      // 틀렸을 때 저장을 두 번 눌러야 알 수 있다.
+      setFieldErrors(zodFieldErrors(parsed.error));
       shakeElement(sheetRef.current);
       return;
     }
+    setFieldErrors({});
     setBusy(true);
     try {
       await api.post("/api/events", parsed.data);
@@ -91,7 +103,10 @@ export function EventManager({
       setOpen(false);
       router.refresh();
     } catch (e) {
-      toast.error(e instanceof ApiClientError ? e.error.message : "저장 실패");
+      const fromServer = fieldErrorsOf(e);
+      if (Object.keys(fromServer).length) setFieldErrors(fromServer);
+      else
+        toast.error(e instanceof ApiClientError ? e.error.message : "저장 실패");
       shakeElement(sheetRef.current);
     } finally {
       setBusy(false);
@@ -178,7 +193,7 @@ export function EventManager({
             <SheetTitle>새 이벤트</SheetTitle>
           </SheetHeader>
           <div className="space-y-3 px-5 py-3">
-            <Field label="부스">
+            <Field label="부스" error={fieldErrors.boothId}>
               <Select
                 value={draft.boothId}
                 onValueChange={(v) => setDraft({ ...draft, boothId: v })}
@@ -195,13 +210,13 @@ export function EventManager({
                 </SelectContent>
               </Select>
             </Field>
-            <Field label="제목">
+            <Field label="제목" error={fieldErrors.title}>
               <Input
                 value={draft.title ?? ""}
                 onChange={(e) => setDraft({ ...draft, title: e.target.value })}
               />
             </Field>
-            <Field label="설명">
+            <Field label="설명" error={fieldErrors.description}>
               <Textarea
                 value={draft.description ?? ""}
                 onChange={(e) =>
@@ -210,7 +225,7 @@ export function EventManager({
               />
             </Field>
             <div className="grid grid-cols-2 gap-3">
-              <Field label="시작">
+              <Field label="시작" error={fieldErrors.startTime}>
                 <Input
                   type="datetime-local"
                   value={draft.startTime ?? ""}
@@ -219,7 +234,7 @@ export function EventManager({
                   }
                 />
               </Field>
-              <Field label="종료">
+              <Field label="종료" error={fieldErrors.endTime}>
                 <Input
                   type="datetime-local"
                   value={draft.endTime ?? ""}
@@ -229,7 +244,7 @@ export function EventManager({
                 />
               </Field>
             </div>
-            <Field label="보상 정보 (선택)">
+            <Field label="보상 정보 (선택)" error={fieldErrors.rewardInfo}>
               <Input
                 value={draft.rewardInfo ?? ""}
                 onChange={(e) =>
@@ -246,25 +261,5 @@ export function EventManager({
         </SheetContent>
       </Sheet>
     </>
-  );
-}
-
-function Field({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
-  const id = useId();
-  return (
-    <div className="space-y-1.5">
-      <Label htmlFor={id} className="text-xs">
-        {label}
-      </Label>
-      {isValidElement(children)
-        ? cloneElement(children as React.ReactElement<{ id?: string }>, { id })
-        : children}
-    </div>
   );
 }

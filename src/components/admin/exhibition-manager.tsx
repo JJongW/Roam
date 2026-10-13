@@ -1,6 +1,6 @@
 "use client";
 
-import { cloneElement, isValidElement, useId, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Plus, Pencil, Loader2, MapPin } from "lucide-react";
 import { format } from "date-fns";
@@ -11,7 +11,12 @@ import { shakeElement } from "@/lib/dom/shake";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Field } from "@/components/ui/field";
+import {
+  fieldErrorsOf,
+  zodFieldErrors,
+  type FieldErrors,
+} from "@/lib/api/field-errors";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Sheet,
@@ -34,6 +39,7 @@ export function ExhibitionManager({
   const [editing, setEditing] = useState<Exhibition | null>(null);
   const [draft, setDraft] = useState<Draft>({});
   const [busy, setBusy] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const sheetRef = useRef<HTMLDivElement>(null);
 
   function startCreate() {
@@ -48,6 +54,9 @@ export function ExhibitionManager({
   }
 
   async function submit() {
+    // 재진입 가드 — disabled는 리렌더 뒤에야 걸린다. 빠른 두 번 탭이 같은 요청을
+    // 두 번 보내면 서버에서 409가 나거나(중복) 같은 글이 두 번 올라간다.
+    if (busy) return;
     const payload = {
       slug:
         draft.slug ??
@@ -67,10 +76,13 @@ export function ExhibitionManager({
     };
     const parsed = exhibitionInputSchema.safeParse(payload);
     if (!parsed.success) {
-      toast.error(parsed.error.issues[0]?.message ?? "입력을 확인해 주세요");
+      // 어느 칸이 틀렸는지 칸마다 붙인다 — 예전엔 첫 오류 하나만 토스트로 떠서
+      // 두 칸이 틀렸으면 두 번 저장을 눌러야 알 수 있었다.
+      setFieldErrors(zodFieldErrors(parsed.error));
       shakeElement(sheetRef.current);
       return;
     }
+    setFieldErrors({});
     setBusy(true);
     try {
       if (editing)
@@ -80,7 +92,10 @@ export function ExhibitionManager({
       setOpen(false);
       router.refresh();
     } catch (e) {
-      toast.error(e instanceof ApiClientError ? e.error.message : "저장 실패");
+      const fromServer = fieldErrorsOf(e);
+      if (Object.keys(fromServer).length) setFieldErrors(fromServer);
+      else
+        toast.error(e instanceof ApiClientError ? e.error.message : "저장 실패");
       shakeElement(sheetRef.current);
     } finally {
       setBusy(false);
@@ -133,19 +148,19 @@ export function ExhibitionManager({
             <SheetTitle>{editing ? "전시 수정" : "새 전시"}</SheetTitle>
           </SheetHeader>
           <div className="space-y-3 px-5 py-3">
-            <Field label="이름">
+            <Field label="이름" error={fieldErrors.name}>
               <Input
                 value={draft.name ?? ""}
                 onChange={(e) => setDraft({ ...draft, name: e.target.value })}
               />
             </Field>
-            <Field label="장소">
+            <Field label="장소" error={fieldErrors.venue}>
               <Input
                 value={draft.venue ?? ""}
                 onChange={(e) => setDraft({ ...draft, venue: e.target.value })}
               />
             </Field>
-            <Field label="설명">
+            <Field label="설명" error={fieldErrors.description}>
               <Textarea
                 value={draft.description ?? ""}
                 onChange={(e) =>
@@ -154,7 +169,7 @@ export function ExhibitionManager({
               />
             </Field>
             <div className="grid grid-cols-2 gap-3">
-              <Field label="시작일">
+              <Field label="시작일" error={fieldErrors.startDate}>
                 <Input
                   type="date"
                   value={draft.startDate ?? ""}
@@ -163,7 +178,7 @@ export function ExhibitionManager({
                   }
                 />
               </Field>
-              <Field label="종료일">
+              <Field label="종료일" error={fieldErrors.endDate}>
                 <Input
                   type="date"
                   value={draft.endDate ?? ""}
@@ -182,25 +197,5 @@ export function ExhibitionManager({
         </SheetContent>
       </Sheet>
     </>
-  );
-}
-
-function Field({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
-  const id = useId();
-  return (
-    <div className="space-y-1.5">
-      <Label htmlFor={id} className="text-xs">
-        {label}
-      </Label>
-      {isValidElement(children)
-        ? cloneElement(children as React.ReactElement<{ id?: string }>, { id })
-        : children}
-    </div>
   );
 }

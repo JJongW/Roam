@@ -114,7 +114,7 @@ export default async function AdminOverviewPage() {
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         {stats.map((s) => {
           const card = (
-            <Card className="p-4 transition-transform active:scale-[0.99]">
+            <Card className="p-4 press active:bg-card-pressed">
               <s.icon className="mb-3 size-6 text-primary" />
               <p className="text-2xl font-extrabold tabular">{s.value}</p>
               <p className="text-sm text-muted-foreground">{s.label}</p>
@@ -193,7 +193,7 @@ export default async function AdminOverviewPage() {
 
       <div className="grid grid-cols-2 gap-3">
         <Link href="/admin/errors">
-          <Card className="flex items-center gap-3 p-4 transition-transform active:scale-[0.99]">
+          <Card className="flex items-center gap-3 p-4 press active:bg-card-pressed">
             <Bug
               className={
                 issueCount > 0
@@ -210,7 +210,7 @@ export default async function AdminOverviewPage() {
           </Card>
         </Link>
         <Link href="/admin/errors">
-          <Card className="flex items-center gap-3 p-4 transition-transform active:scale-[0.99]">
+          <Card className="flex items-center gap-3 p-4 press active:bg-card-pressed">
             <AlertTriangle
               className={
                 dataIssueCount > 0
@@ -233,7 +233,7 @@ export default async function AdminOverviewPage() {
       </div>
 
       <Link href="/admin/analytics">
-        <Card className="flex items-center gap-4 p-5 transition-transform active:scale-[0.99]">
+        <Card className="flex items-center gap-4 p-5 press active:bg-card-pressed">
           <div className="flex size-12 items-center justify-center rounded-xl bg-primary/10">
             <BarChart3 className="size-6 text-primary" />
           </div>

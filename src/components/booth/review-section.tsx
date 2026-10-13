@@ -10,7 +10,12 @@ import { EmptyState } from "@/components/common/states";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Field } from "@/components/ui/field";
+import {
+  fieldErrorsOf,
+  zodFieldErrors,
+  type FieldErrors,
+} from "@/lib/api/field-errors";
 import { useT } from "@/lib/i18n/provider";
 import type { Review } from "@/lib/types";
 
@@ -34,16 +39,23 @@ export function ReviewSection({
   const [comment, setComment] = useState("");
   const [author, setAuthor] = useState("");
   const [busy, setBusy] = useState(false);
+  // 어느 칸이 틀렸는지는 그 칸 아래에서 말한다 — 토스트는 화면 끝에 떠서
+  // 어떤 입력을 고쳐야 하는지 알려주지 못했다.
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
 
   async function submit() {
+    // 재진입 가드 — disabled는 리렌더 뒤에야 걸린다. 빠른 두 번 탭이 같은 요청을
+    // 두 번 보내면 서버에서 409가 나거나(중복) 같은 글이 두 번 올라간다.
+    if (busy) return;
     const parsed = reviewInputSchema.safeParse({
       comment,
       authorName: author || t("review.anon"),
     });
     if (!parsed.success) {
-      toast.error(parsed.error.issues[0]?.message ?? t("review.checkInput"));
+      setFieldErrors(zodFieldErrors(parsed.error));
       return;
     }
+    setFieldErrors({});
     setBusy(true);
     try {
       const { review } = await api.post<{ review: Review }>(
@@ -58,9 +70,13 @@ export function ReviewSection({
       setOpen(false);
       toast.success(t("review.posted"));
     } catch (e) {
-      toast.error(
-        e instanceof ApiClientError ? e.error.message : t("review.failed"),
-      );
+      // 서버가 칸별 메시지를 줬으면 칸에 붙인다(토스트 생략 — 중복으로 말하지 않는다).
+      const fromServer = fieldErrorsOf(e);
+      if (Object.keys(fromServer).length) setFieldErrors(fromServer);
+      else
+        toast.error(
+          e instanceof ApiClientError ? e.error.message : t("review.failed"),
+        );
     } finally {
       setBusy(false);
     }
@@ -84,26 +100,22 @@ export function ReviewSection({
         </Button>
       ) : (
         <div className="space-y-3 rounded-2xl border border-border bg-card p-4">
-          <div className="space-y-1.5">
-            <Label htmlFor="rv-comment">{t("review.content")}</Label>
+          <Field label={t("review.content")} error={fieldErrors.comment}>
             <Textarea
-              id="rv-comment"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               placeholder={t("review.prompt")}
               maxLength={500}
             />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="rv-author">{t("review.nick")}</Label>
+          </Field>
+          <Field label={t("review.nick")} error={fieldErrors.authorName}>
             <Input
-              id="rv-author"
               value={author}
               onChange={(e) => setAuthor(e.target.value)}
               placeholder={t("review.anon")}
               maxLength={30}
             />
-          </div>
+          </Field>
           <div className="flex gap-2">
             <Button
               variant="ghost"

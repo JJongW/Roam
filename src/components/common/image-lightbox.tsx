@@ -46,7 +46,7 @@ export function ImageLightbox({
         type="button"
         onClick={onClose}
         aria-label={t("common.close")}
-        className="absolute right-4 top-[calc(env(safe-area-inset-top)+1rem)] flex size-10 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur active:scale-95"
+        className="absolute right-4 top-[calc(env(safe-area-inset-top)+1rem)] flex size-10 items-center justify-center rounded-full bg-white/15 text-white backdrop-blur press"
       >
         <X className="size-5" />
       </button>

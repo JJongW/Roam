@@ -72,8 +72,14 @@ async function syncPendingValues(): Promise<boolean> {
 /** 비로그인 동안 로컬(zustand)에만 남아 있던 부스 반응을 로그인 시 서버에 소급
  *  반영한다. 반환값: 실제로 반영을 시도했는지(하나라도 실패해 남아있던 게 있었는지 —
  *  visit.ts의 hasPendingSync가 근거라, 이미 다 동기화된 상태에서 매번 재시도하지
- *  않는다). */
-async function syncPendingReactions(): Promise<boolean> {
+ *  않는다).
+ *
+ *  로그인 중에 네트워크가 끊겨도 같은 상태가 된다 — 그때 pushNote가 실패하며
+ *  hasPendingSync를 켜는데, 예전엔 **다시 로그인할 때만** 이걸 재시도했다. 이미
+ *  로그인한 사람은 다시 로그인할 일이 없으니, 끊긴 동안 누른 반응이 그 기기의
+ *  localStorage에만 영원히 남았다. 그래서 연결이 돌아올 때도 부른다
+ *  (connection-banner.tsx). */
+export async function syncPendingReactions(): Promise<boolean> {
   if (!useVisitStore.getState().hasPendingSync) return false;
   const boothIds = Object.keys(useVisitStore.getState().records);
   if (boothIds.length === 0) {
@@ -185,8 +191,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
  * silently failing or jumping straight into the login sheet, surface a toast
  * that explains why and offers a one-tap path to the login screen.
  */
-export function promptLogin(message = "로그인이 필요해요") {
+export function promptLogin(message = "로그인이 필요해요", description?: string) {
   toast(message, {
+    description,
     action: {
       label: "로그인",
       onClick: () => useAuthStore.getState().openLogin(),

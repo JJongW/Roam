@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { ImagePlus, Loader2, X } from "lucide-react";
 import { toast } from "sonner";
+import { errorKindOf } from "@/components/common/api-error";
 import { cn } from "@/lib/utils";
 import { useT } from "@/lib/i18n/provider";
 import { useVisitStore, pushNote } from "@/lib/stores/visit";
@@ -42,6 +43,7 @@ export function NotePhotos({
   const full = photos.length >= NOTE_PHOTO_MAX_COUNT;
 
   async function onPick(e: React.ChangeEvent<HTMLInputElement>) {
+    if (busy) return; // 올리는 중에 또 고르면 개수 제한 계산이 어긋난다
     const files = Array.from(e.target.files ?? []);
     e.target.value = "";
     if (files.length === 0) return;
@@ -54,24 +56,43 @@ export function NotePhotos({
     setBusy(true);
     try {
       const urls: string[] = [];
+      // 한 장이 실패해도 **올라간 장은 살린다**. 예전엔 for 루프 안에서 throw가
+      // 나면 이미 끝난 업로드까지 통째로 버려서, 세 장을 기다린 사람이 아무것도
+      // 못 건졌다. 현장 네트워크에서 가장 흔한 실패가 이 모양이다.
+      let failed = 0;
+      let offline = false;
       for (const file of picked) {
         if (file.size > NOTE_PHOTO_MAX_MB * 1024 * 1024) {
           toast.error(t("notes.photoMaxSize", { mb: NOTE_PHOTO_MAX_MB }));
           continue;
         }
-        urls.push(await uploadNotePhoto(file));
+        try {
+          urls.push(await uploadNotePhoto(file));
+        } catch (e) {
+          failed += 1;
+          if (errorKindOf(e) === "OFFLINE") offline = true;
+        }
       }
-      if (urls.length === 0) return;
-      const next = [...photos, ...urls].slice(0, NOTE_PHOTO_MAX_COUNT);
-      setPhotos(boothId, next);
-      if (user) void pushNote(boothId, {}); // 사진만 바뀜 — interest·verdict는 안 건드린다
-      toast.success(
-        urls.length > 1
-          ? t("notes.photoAttachedN", { n: urls.length })
-          : t("notes.photoAttached"),
-      );
-    } catch {
-      toast.error(t("notes.photoFailed"));
+      if (urls.length > 0) {
+        const next = [...photos, ...urls].slice(0, NOTE_PHOTO_MAX_COUNT);
+        setPhotos(boothId, next);
+        if (user) void pushNote(boothId, {}); // 사진만 바뀜 — interest·verdict는 안 건드린다
+        toast.success(
+          urls.length > 1
+            ? t("notes.photoAttachedN", { n: urls.length })
+            : t("notes.photoAttached"),
+        );
+      }
+      if (failed > 0) {
+        // 연결이 끊긴 거라면 그렇게 말한다 — 다시 눌러도 같은 결과다.
+        toast.error(
+          offline && urls.length === 0
+            ? t("notes.photoFailedOffline")
+            : urls.length > 0
+              ? t("notes.photoFailedSome", { n: failed })
+              : t("notes.photoFailed"),
+        );
+      }
     } finally {
       setBusy(false);
     }
