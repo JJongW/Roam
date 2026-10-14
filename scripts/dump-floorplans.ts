@@ -36,6 +36,12 @@ for (const [slug, plan] of Object.entries(FLOORPLANS)) {
       width: number; height: number;
       halls?: unknown[]; decor?: unknown[]; booths: unknown[]; gates?: Gate[];
     };
+  // **`backdrop` 은 보내지 않는다.** 주최 측이 스캔한 도면 그림을 바닥에 까는 건
+  // 전시마다 남의 그림을 쓰는 것이고, "틀 하나에 전시 데이터를 부어 찍어낸다"는
+  // 이 제품의 구조가 거기서 깨진다. 우리 도면은 좌표·홀·출입구에서 **우리가** 그린다.
+  //
+  // `interior` 도 뺀다 — 웹에서도 그리는 데가 아니라 길찾기에 쓰는 벽 영역이고,
+  // iOS 엔 길찾기가 없다.
   writeFileSync(
     join(outDir, `floorplan-${slug}.json`),
     JSON.stringify({ width, height, halls, decor, booths, gates }) + "\n",
