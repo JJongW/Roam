@@ -29,6 +29,16 @@ const schema = z.object({
   CLOUDINARY_API_KEY: z.string().min(1).optional(),
   CLOUDINARY_API_SECRET: z.string().min(1).optional(),
   NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: z.string().min(1).optional(),
+  /** Meta 앱 시크릿 — 인스타 웹훅 서명(X-Hub-Signature-256) 검증용. */
+  IG_APP_SECRET: z.string().min(1).optional(),
+  /** 웹훅 등록 시 Meta가 GET으로 보내는 확인 토큰. 대시보드에 넣은 값과 같아야 한다. */
+  IG_WEBHOOK_VERIFY_TOKEN: z.string().min(1).optional(),
+  /** Instagram 로그인 장기 액세스 토큰. 60일마다 갱신해야 한다. */
+  IG_ACCESS_TOKEN: z.string().min(1).optional(),
+  /** 우리 인스타 계정 ID(IG user id). 자기 댓글 거르기와 DM 발송 경로에 쓴다. */
+  IG_USER_ID: z.string().min(1).optional(),
+  /** Graph API 버전(선택). 비우면 v23.0. */
+  IG_GRAPH_VERSION: z.string().min(1).optional(),
 });
 
 // 빈 문자열("")을 undefined로 본다. 빈 env 변수(예: 로컬에서 Supabase를 끄려고
@@ -59,6 +69,11 @@ const parsed = schema.safeParse({
     process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ??
       process.env.CLOUDINARY_CLOUD_NAME,
   ),
+  IG_APP_SECRET: e(process.env.IG_APP_SECRET),
+  IG_WEBHOOK_VERIFY_TOKEN: e(process.env.IG_WEBHOOK_VERIFY_TOKEN),
+  IG_ACCESS_TOKEN: e(process.env.IG_ACCESS_TOKEN),
+  IG_USER_ID: e(process.env.IG_USER_ID),
+  IG_GRAPH_VERSION: e(process.env.IG_GRAPH_VERSION),
 });
 
 export const env = parsed.success
@@ -90,6 +105,11 @@ export const hasCloudinary = Boolean(
   env.CLOUDINARY_CLOUD_NAME &&
   env.CLOUDINARY_API_KEY &&
   env.CLOUDINARY_API_SECRET,
+);
+
+/** 인스타 댓글 → 자동 DM 웹훅이 켜졌는가. 셋 중 하나라도 없으면 웹훅은 503. */
+export const hasInstagramDm = Boolean(
+  env.IG_APP_SECRET && env.IG_ACCESS_TOKEN && env.IG_USER_ID,
 );
 
 /** roam_user 쿠키 서명 비밀키. 미설정 시 로컬 mock 개발 전용 고정값 — 프로덕션에
