@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { countHashtags, isJpeg, publishCarousel, validateCarousel } from "./publish";
+import { countHashtags, isJpeg, prepareCarousel, publishCarousel, validateCarousel } from "./publish";
 import { runPublishCli, toSlug, type CliDeps } from "./publish-cli";
 
 const JPEG = new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 1, 2, 3]);
@@ -81,6 +81,13 @@ describe("publishCarousel", () => {
     await expect(publishCarousel({ imageUrls: ["u1", "u2"], caption: "" }, cfg(f as unknown as typeof fetch))).rejects.toThrow("Instagram API 403: 권한 없음 (code 10)");
   });
 
+  it("prepareCarousel은 FINISHED까지만 가고 게시하지 않는다", async () => {
+    const { calls, fetchMock } = graph(["IN_PROGRESS", "FINISHED"]);
+    const res = await prepareCarousel({ imageUrls: ["u1", "u2"], caption: "캡션" }, cfg(fetchMock as unknown as typeof fetch));
+    expect(res).toEqual({ creationId: "CAROUSEL1", itemCount: 2 });
+    expect(calls.some((c) => c.path.endsWith("media_publish"))).toBe(false);
+  });
+
   it("검사에 걸리면 API를 부르지 않는다", async () => {
     const { fetchMock } = graph();
     await expect(publishCarousel({ imageUrls: ["u1"], caption: "" }, cfg(fetchMock as unknown as typeof fetch))).rejects.toThrow();
@@ -96,6 +103,7 @@ function cliDeps(files: Record<string, Uint8Array>, over: Partial<CliDeps> = {})
     readText: vi.fn(async () => "캡션 #DDP\n"),
     upload: vi.fn(async (key: string) => `https://cdn/${key}`),
     publish: vi.fn(async () => ({ mediaId: "M", permalink: "https://www.instagram.com/p/x/" })),
+    prepare: vi.fn(async () => ({ creationId: "C1", itemCount: 2 })),
     confirm: vi.fn(async () => true),
     out: (l: string) => lines.push(l),
     today: () => "2026-10-14",
@@ -143,6 +151,22 @@ describe("runPublishCli", () => {
       caption: "캡션 #DDP",
       locationId: undefined,
     });
+  });
+
+  it("--check는 확인 없이 올리고 준비까지만 한다 — 게시하지 않는다", async () => {
+    const { deps, lines } = cliDeps(two);
+    expect(await runPublishCli(["--dir", "d", "--caption", "c", "--check"], deps)).toBe(0);
+    expect(deps.confirm).not.toHaveBeenCalled();
+    expect(deps.upload).toHaveBeenCalledTimes(2);
+    expect(deps.prepare).toHaveBeenCalledOnce();
+    expect(deps.publish).not.toHaveBeenCalled();
+    expect(lines.at(-1)).toContain("게시하지 않았고");
+  });
+
+  it("--check와 --publish를 같이 주면 아무것도 하지 않는다", async () => {
+    const { deps } = cliDeps(two);
+    expect(await runPublishCli(["--dir", "d", "--caption", "c", "--check", "--publish", "--yes"], deps)).toBe(1);
+    expect(deps.upload).not.toHaveBeenCalled();
   });
 
   it("슬러그는 영문·숫자만 남긴다", () => {

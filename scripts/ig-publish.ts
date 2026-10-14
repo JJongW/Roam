@@ -1,7 +1,8 @@
 /**
  * 인스타 캐러셀 게시 CLI — `npm run ig:publish -- --dir <폴더> --caption <캡션.txt> [--publish]`.
  *
- * 기본은 드라이런(이미지·캡션 검사만). `--publish`를 붙여야 Supabase Storage 공개 버킷
+ * 기본은 드라이런(이미지·캡션 검사만). `--check`는 업로드와 캐러셀 준비(FINISHED)까지만
+ * 실제로 하고 게시하지 않는다. `--publish`를 붙여야 Supabase Storage 공개 버킷
  * `ig-publish`에 올리고 Graph API로 게시한다. 결정 근거:
  * docs/decisions/2026-10-14_instagram-auto-publish.md
  *
@@ -10,7 +11,7 @@
 import { readdir, readFile } from "node:fs/promises";
 import { createInterface } from "node:readline/promises";
 import { createClient } from "@supabase/supabase-js";
-import { publishCarousel } from "@/lib/instagram/publish";
+import { prepareCarousel, publishCarousel, type PublishConfig } from "@/lib/instagram/publish";
 import { runPublishCli } from "@/lib/instagram/publish-cli";
 
 // Next 밖이라 .env를 직접 읽는다(없으면 조용히 넘어간다 — 드라이런은 env가 필요 없다).
@@ -45,18 +46,22 @@ async function upload(key: string, bytes: Uint8Array): Promise<string> {
   return supabase.storage.from(BUCKET).getPublicUrl(key).data.publicUrl;
 }
 
+function graphConfig(): PublishConfig {
+  return {
+    token: need("IG_ACCESS_TOKEN", process.env.IG_ACCESS_TOKEN ?? process.env.META_TOKEN),
+    igUserId: need("IG_USER_ID", process.env.IG_USER_ID),
+    version: process.env.IG_GRAPH_VERSION,
+    log: (l) => console.log(`  ${l}`),
+  };
+}
+
 const code = await runPublishCli(process.argv.slice(2), {
   listDir: (dir) => readdir(dir),
   readFile: async (p) => new Uint8Array(await readFile(p)),
   readText: (p) => readFile(p, "utf8"),
   upload,
-  publish: (input) =>
-    publishCarousel(input, {
-      token: need("IG_ACCESS_TOKEN", process.env.IG_ACCESS_TOKEN ?? process.env.META_TOKEN),
-      igUserId: need("IG_USER_ID", process.env.IG_USER_ID),
-      version: process.env.IG_GRAPH_VERSION,
-      log: (l) => console.log(`  ${l}`),
-    }),
+  publish: (input) => publishCarousel(input, graphConfig()),
+  prepare: (input) => prepareCarousel(input, graphConfig()),
   confirm: async (q) => {
     const rl = createInterface({ input: process.stdin, output: process.stdout });
     const answer = await rl.question(q);

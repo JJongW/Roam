@@ -97,11 +97,18 @@ function client(cfg: PublishConfig) {
   return { call };
 }
 
+export interface PrepareResult {
+  /** 게시할 수 있는 상태(FINISHED)가 된 캐러셀 컨테이너 ID. */
+  creationId: string;
+  itemCount: number;
+}
+
 /**
- * 캐러셀을 만들고 게시한다. 컨테이너만 만들고 게시 전에 실패하면 인스타에는 아무것도
- * 올라가지 않는다(컨테이너는 24시간 뒤 만료) — 그래서 중간 실패는 그냥 다시 돌리면 된다.
+ * 게시 직전까지 — 장별 컨테이너와 캐러셀 컨테이너를 만들고 FINISHED까지 기다린다.
+ * 여기까지는 인스타에 아무것도 공개되지 않는다(컨테이너는 24시간 뒤 만료). 그래서
+ * `--check`가 이것만 불러 토큰·권한·공개 URL·이미지 처리를 실제 API로 확인한다.
  */
-export async function publishCarousel(input: PublishInput, cfg: PublishConfig): Promise<PublishResult> {
+export async function prepareCarousel(input: PublishInput, cfg: PublishConfig): Promise<PrepareResult> {
   const errors = validateCarousel({ imageCount: input.imageUrls.length, caption: input.caption });
   if (errors.length) throw new Error(errors.join("\n"));
 
@@ -138,6 +145,18 @@ export async function publishCarousel(input: PublishInput, cfg: PublishConfig): 
     if (waited >= timeout) throw new Error(`캐러셀 준비가 ${timeout / 1000}초 안에 끝나지 않았습니다 (상태 ${status || "없음"})`);
     await sleep(interval);
   }
+  log("캐러셀 준비 완료(FINISHED)");
+  return { creationId, itemCount: children.length };
+}
+
+/**
+ * 캐러셀을 만들고 게시한다. 게시 전에 실패하면 인스타에는 아무것도 올라가지 않는다
+ * (컨테이너는 24시간 뒤 만료) — 그래서 중간 실패는 그냥 다시 돌리면 된다.
+ */
+export async function publishCarousel(input: PublishInput, cfg: PublishConfig): Promise<PublishResult> {
+  const { creationId } = await prepareCarousel(input, cfg);
+  const { call } = client(cfg);
+  const log = cfg.log ?? (() => {});
 
   const published = await call("POST", `${cfg.igUserId}/media_publish`, { creation_id: creationId });
   const mediaId = String(published.id);

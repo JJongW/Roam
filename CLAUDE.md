@@ -65,8 +65,8 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
 - **인스타 댓글 자동 DM**: `/api/instagram/webhook`(서명 검증 → 키워드 매칭 → Private Reply). 규칙은
   코드 `src/lib/instagram/rules.ts`(문구 해요체), 웹훅 재전송 중복 방지는 `ig_comment_dm`(0058)에
   댓글 ID로 선점 — 실패는 재시도 안 함. 설정·Meta 제약 `docs/decisions/2026-10-14_instagram-comment-auto-dm.md`.
-- **인스타 카드뉴스 자동 게시**: `npm run ig:publish -- --dir <JPG 폴더> --caption <캡션.txt> [--publish]`
-  — 기본 드라이런, `--publish`면 Supabase 공개 버킷 `ig-publish`에 올리고 Graph API 캐러셀 게시
+- **인스타 카드뉴스 자동 게시**: `npm run ig:publish -- --dir <JPG 폴더> --caption <캡션.txt> [--check | --publish]`
+  — 기본 드라이런, `--check`는 게시 직전(캐러셀 FINISHED)까지만 실제 API로 확인, `--publish`면 Supabase 공개 버킷 `ig-publish`에 올리고 Graph API 캐러셀 게시
   (`src/lib/instagram/publish.ts`). `instagram_business_content_publish` 권한 필요.
   `docs/decisions/2026-10-14_instagram-auto-publish.md`.
 - **소유자 키**: 노트·브레인·신호·북마크·리뷰·커뮤니티 포스트 전부 `app_user.id`
