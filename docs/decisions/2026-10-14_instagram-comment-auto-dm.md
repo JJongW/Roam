@@ -87,11 +87,34 @@ POST/GET /api/instagram/webhook   (route.ts)
 
 ## 운영 주의
 
-- **토큰은 60일 뒤 만료된다.** 갱신 자동화는 아직 없다 — 후속 과제. 만료되면 발송이 전부
-  `failed`로 쌓인다.
+- **토큰은 60일 뒤 만료된다 → 자동 갱신.** Vercel cron `/api/cron/ig-token-refresh`(매일
+  04:00 UTC)가 마지막 갱신에서 7일이 지났으면 갱신해 `ig_token`(0059)에 둔다. 웹훅·게시 CLI는
+  `ig_token` > env 순으로 읽는다(`src/lib/instagram/token.ts`). env(Vercel)는 코드가 못 고치니
+  첫 토큰만 대 준다. 갱신 실패는 cron 500(Vercel 로그) — 만료까지 매일 다시 시도한다.
+  토큰을 새로 발급해 env를 바꿨으면 `delete from ig_token;`.
 - 규칙 문구는 **해요체, 과장 금지**(화자는 Roam 계정 — Roam-design 카드뉴스 규칙
   `docs/content/card-news/README.md`). 앱 안 로미의 반말과 다르다.
 - `publicReply`에는 **어떤 규칙의 키워드도 넣지 않는다.** 자기 댓글은 handle.ts가 거르지만,
   공개 답글이 다시 규칙에 걸리지 않게 하는 이중 안전장치다.
 - 실패한 댓글은 재시도하지 않는다. 확인은 `select * from ig_comment_dm where status = 'failed'`.
   필요하면 사람이 직접 DM한다.
+
+## 앱 심사(일반 사용자 댓글에 반응하려면)
+
+개발 모드에선 앱 역할이 있는 계정에만 동작한다(2026-10-14 테스터 계정으로 `sent` 확인).
+라이브 전환 전에 고급 액세스 심사를 받는다.
+
+- 기본 설정: 개인정보처리방침 `https://roam.ai.kr/privacy`, 약관 `https://roam.ai.kr/terms`,
+  데이터 삭제 안내 `https://roam.ai.kr/privacy#instagram-data`, 아이콘 1024×1024(`src/app/icon.svg`를 모서리 없이 렌더).
+- 고급 액세스 요청: `instagram_business_basic` · `instagram_business_manage_comments` ·
+  `instagram_business_manage_messages`. (`content_publish`는 우리 계정에만 쓰니 대상 아님.)
+- 권한별 사용 설명(영문으로 제출):
+  - **manage_comments** — "Roam is an exhibition guide. When a user comments a keyword (e.g. '지도', meaning
+    'map') on a post by our own Instagram account, our webhook reads that comment to check the keyword
+    and posts one public reply telling them a DM was sent. We only read comments on our own account's media."
+  - **manage_messages** — "We send exactly one Private Reply to the commenter containing the link they asked for
+    (the exhibition map). Messages are only sent in response to a user's comment, never unsolicited."
+  - **basic** — "Used to identify our own account so our webhook ignores comments made by ourselves."
+- 영상: 테스터 계정으로 댓글 "지도" → DM 도착 → 공개 답글까지 한 번에 녹화.
+- 심사자 안내: "Comment 지도 on any post by @withromi2026; you will receive a DM with the map link."
+- 승인 후 앱 모드를 라이브로.

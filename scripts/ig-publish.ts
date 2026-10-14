@@ -13,6 +13,7 @@ import { createInterface } from "node:readline/promises";
 import { createClient } from "@supabase/supabase-js";
 import { prepareCarousel, publishCarousel, type PublishConfig } from "@/lib/instagram/publish";
 import { runPublishCli } from "@/lib/instagram/publish-cli";
+import { createTokenStore, loadIgToken } from "@/lib/instagram/token";
 
 // Next 밖이라 .env를 직접 읽는다(없으면 조용히 넘어간다 — 드라이런은 env가 필요 없다).
 try {
@@ -46,9 +47,13 @@ async function upload(key: string, bytes: Uint8Array): Promise<string> {
   return supabase.storage.from(BUCKET).getPublicUrl(key).data.publicUrl;
 }
 
-function graphConfig(): PublishConfig {
+// 갱신된 토큰(ig_token, 0059)이 있으면 그걸 쓴다 — env 토큰은 첫 발급본이라 60일 뒤 죽는다.
+async function graphConfig(): Promise<PublishConfig> {
+  const envToken = process.env.IG_ACCESS_TOKEN ?? process.env.META_TOKEN;
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL, key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const store = url && key ? createTokenStore(createClient(url, key)) : null;
   return {
-    token: need("IG_ACCESS_TOKEN", process.env.IG_ACCESS_TOKEN ?? process.env.META_TOKEN),
+    token: need("IG_ACCESS_TOKEN", await loadIgToken(store, envToken)),
     igUserId: need("IG_USER_ID", process.env.IG_USER_ID),
     version: process.env.IG_GRAPH_VERSION,
     log: (l) => console.log(`  ${l}`),
@@ -60,8 +65,8 @@ const code = await runPublishCli(process.argv.slice(2), {
   readFile: async (p) => new Uint8Array(await readFile(p)),
   readText: (p) => readFile(p, "utf8"),
   upload,
-  publish: (input) => publishCarousel(input, graphConfig()),
-  prepare: (input) => prepareCarousel(input, graphConfig()),
+  publish: async (input) => publishCarousel(input, await graphConfig()),
+  prepare: async (input) => prepareCarousel(input, await graphConfig()),
   confirm: async (q) => {
     const rl = createInterface({ input: process.stdin, output: process.stdout });
     const answer = await rl.question(q);

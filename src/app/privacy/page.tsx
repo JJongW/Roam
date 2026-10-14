@@ -21,8 +21,8 @@ import {
  * 한국어를 먼저 두고 영어 전문을 아래 붙인다 — 심사관이 한국어를 못 읽는 경우를 위해서다.
  */
 
-const EFFECTIVE_DATE = "2026년 8월 10일";
-const EFFECTIVE_DATE_EN = "August 10, 2026";
+const EFFECTIVE_DATE = "2026년 10월 14일";
+const EFFECTIVE_DATE_EN = "October 14, 2026";
 const CONTACT_EMAIL = "roam.ai.kr@gmail.com";
 const GOOGLE_POLICY_URL =
   "https://developers.google.com/terms/api-services-user-data-policy";
@@ -140,6 +140,28 @@ export default function PrivacyPage() {
                 기기·브라우저 정보)
               </li>
             </ul>
+
+            <p className="pt-2 font-semibold text-foreground">
+              라. Roam 인스타그램 게시물에 댓글을 남길 때
+            </p>
+            <p>
+              Roam 인스타그램 계정(@withromi2026) 게시물에 안내된 키워드(예:
+              &ldquo;지도&rdquo;)로 댓글을 남기면, 요청한 안내 링크를 인스타그램
+              메시지로 한 번 보내 드립니다. 이를 위해 Meta(Instagram API)로부터
+              아래 항목을 전달받습니다.
+            </p>
+            <Table
+              head={["항목", "용도", "저장 여부"]}
+              rows={[
+                ["댓글 ID·게시물 ID", "같은 댓글에 메시지가 두 번 가지 않게 확인", "저장"],
+                ["인스타그램 사용자 ID·사용자 이름", "메시지 수신자 확인", "저장"],
+                ["댓글 내용", "키워드 일치 여부 확인", "저장하지 않음"],
+              ]}
+            />
+            <p>
+              이 정보는 Roam 계정과 연결하지 않으며, 메시지 발송 외의 목적(광고,
+              프로필 분석 등)으로 쓰지 않습니다.
+            </p>
           </Section>
 
           <Section no="3" title="수집하지 않는 정보">
@@ -236,6 +258,11 @@ export default function PrivacyPage() {
                   "푸시 알림 발송(이용자가 동의한 경우)",
                   "기기 푸시 토큰",
                 ],
+                [
+                  "Meta (Instagram API)",
+                  "인스타그램 댓글 확인 및 안내 메시지 발송",
+                  "댓글 ID, 인스타그램 사용자 ID·이름",
+                ],
               ]}
             />
             <p>
@@ -287,6 +314,13 @@ export default function PrivacyPage() {
               </li>
             </ul>
             <p>계정 삭제는 {CONTACT_EMAIL} 으로 요청하실 수 있습니다.</p>
+            <p id="instagram-data" className="scroll-mt-8">
+              <span className="font-semibold text-foreground">
+                인스타그램 댓글 관련 정보 삭제:
+              </span>{" "}
+              {CONTACT_EMAIL} 또는 @withromi2026 인스타그램 메시지로 사용자 이름을
+              알려 주시면 30일 이내에 해당 기록을 삭제합니다.
+            </p>
           </Section>
 
           <Section no="9" title="보안">
@@ -447,6 +481,30 @@ export default function PrivacyPage() {
                 viewed, coarse device and browser information)
               </li>
             </ul>
+
+            <p className="pt-2 font-semibold text-foreground">
+              d. When you comment on Roam&rsquo;s Instagram posts
+            </p>
+            <p>
+              If you comment on a post by Roam&rsquo;s Instagram account
+              (@withromi2026) with the keyword shown in the post (e.g.
+              &ldquo;지도&rdquo;), we send you the requested link
+              once as an Instagram message. To do this we receive the following
+              from Meta (Instagram API).
+            </p>
+            <Table
+              head={["Item", "Purpose", "Stored"]}
+              rows={[
+                ["Comment ID, post ID", "Making sure one comment gets at most one message", "Yes"],
+                ["Instagram user ID and username", "Identifying the message recipient", "Yes"],
+                ["Comment text", "Checking whether it contains the keyword", "No"],
+              ]}
+            />
+            <p>
+              This information is not linked to a Roam account and is not used
+              for anything other than sending that message (no advertising or
+              profiling).
+            </p>
           </Section>
 
           <Section no="3" title="Information We Do Not Collect">
@@ -556,6 +614,11 @@ export default function PrivacyPage() {
                   "Sending push notifications where you have opted in",
                   "Device push token",
                 ],
+                [
+                  "Meta (Instagram API)",
+                  "Reading Instagram comments and sending the requested message",
+                  "Comment ID, Instagram user ID and username",
+                ],
               ]}
             />
             <p>
@@ -620,6 +683,14 @@ export default function PrivacyPage() {
               </li>
             </ul>
             <p>To delete your account, contact us at {CONTACT_EMAIL}.</p>
+            <p id="instagram-data-en" className="scroll-mt-8">
+              <span className="font-semibold text-foreground">
+                Deleting Instagram comment data:
+              </span>{" "}
+              Send your Instagram username to {CONTACT_EMAIL} or as an Instagram
+              message to @withromi2026, and we will delete the related records
+              within 30 days.
+            </p>
           </Section>
 
           <Section no="9" title="Security">

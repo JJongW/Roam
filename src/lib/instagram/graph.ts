@@ -1,4 +1,6 @@
-import { env } from "@/lib/env";
+import { env, hasSupabase } from "@/lib/env";
+import { createServiceClient } from "@/lib/supabase/server";
+import { createTokenStore, loadIgToken } from "./token";
 
 /**
  * Instagram API(Instagram 로그인) 호출. 호스트는 graph.instagram.com —
@@ -12,12 +14,18 @@ interface GraphError {
   error?: { message?: string; code?: number };
 }
 
+/** 갱신된 토큰(ig_token) > env 토큰 — token.ts. */
+function accessToken(): Promise<string | undefined> {
+  return loadIgToken(hasSupabase ? createTokenStore(createServiceClient()) : null, env.IG_ACCESS_TOKEN);
+}
+
 async function post(path: string, body: unknown): Promise<unknown> {
+  const token = await accessToken();
   const res = await fetch(`${baseUrl()}/${path}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${env.IG_ACCESS_TOKEN}`,
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(body),
   });
