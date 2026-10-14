@@ -65,6 +65,12 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
 - **인스타 댓글 자동 DM**: `/api/instagram/webhook`(서명 검증 → 키워드 매칭 → Private Reply). 규칙은
   코드 `src/lib/instagram/rules.ts`(문구 해요체), 웹훅 재전송 중복 방지는 `ig_comment_dm`(0058)에
   댓글 ID로 선점 — 실패는 재시도 안 함. 설정·Meta 제약 `docs/decisions/2026-10-14_instagram-comment-auto-dm.md`.
+  토큰(60일)은 cron `/api/cron/ig-token-refresh`가 7일마다 갱신해 `ig_token`(0059)에 두고, 웹훅·게시 CLI는
+  `ig_token` > env 순으로 읽는다(`lib/instagram/token.ts`).
+- **인스타 카드뉴스 자동 게시**: `npm run ig:publish -- --dir <JPG 폴더> --caption <캡션.txt> [--check | --publish]`
+  — 기본 드라이런, `--check`는 게시 직전(캐러셀 FINISHED)까지만 실제 API로 확인, `--publish`면 Supabase 공개 버킷 `ig-publish`에 올리고 Graph API 캐러셀 게시
+  (`src/lib/instagram/publish.ts`). `instagram_business_content_publish` 권한 필요.
+  `docs/decisions/2026-10-14_instagram-auto-publish.md`.
 - **소유자 키**: 노트·브레인·신호·북마크·리뷰·커뮤니티 포스트 전부 `app_user.id`
   (리뷰·포스트는 2026-10-01 `0056`으로 전환, 감사 P1-2 종결).
 - **로그인(부분 게이트)**: `app_user`(닉네임=공개키) 단일 계정 테이블. 닉네임 무비번 + **Google OAuth**(Supabase Auth). 신원은 앱 자체 쿠키 `roam_user`로 통일 — OAuth 콜백(`/auth/callback`)은 Supabase 세션으로 identity만 읽고 `signOut`, `app_user` upsert 후 `roam_user` 발급. mock 모드(Supabase 키 없음)엔 Google 버튼 숨김(닉네임만). **게이트** `src/proxy.ts`(Next 16 proxy 컨벤션): `roam_user` 없으면 `/login?next=`로 307. 공개=`/`·`/privacy`·`/terms`(구글 OAuth 심사가 직접 연다 — 막으면 심사 탈락)와 정확 패턴 `/exhibitions/[slug]`·`/exhibitions/[slug]/map`·`/booths/[id]`. 하위 경로는 패턴에 안 걸려 자동으로 로그인 필수. 예외 프리픽스=`/login`·`/auth`·`/admin`(자체 코드 게이트)·`/api`·정적. 로미의 개인화는 라우트가 아니라 **컴포넌트 레벨**에서 막는다. 로그인 화면 `src/app/login/`. 외부 설정·설계: `docs/decisions/2026-07-07_google-oauth-login.md`.
