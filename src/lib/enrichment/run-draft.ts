@@ -7,7 +7,7 @@ import {
 } from "@/lib/enrichment/draft-prompt";
 import { gradeCandidate } from "@/lib/enrichment/quality-gate";
 import { exhibitionLessons, rejectionsByBooth } from "@/lib/enrichment/lessons";
-import { reviewPolicy } from "@/lib/enrichment/review-policy";
+import { reviewPolicy, exhibitionTrust } from "@/lib/enrichment/review-policy";
 import type { Repository } from "@/lib/repositories/types";
 import type { BoothEnrichmentPatch } from "@/lib/schemas";
 
@@ -216,7 +216,12 @@ export async function autoPassPending(
   repo: Repository,
   exhibitionId: string,
   opts: { boothIds?: Set<string>; actor: string | null },
-): Promise<{ autoPassed: number; failures: { code: string; message: string }[] }> {
+): Promise<{
+  autoPassed: number;
+  /** 이 전시를 믿기로 했는지. 화면이 "표본 N/25" 로 보여준다. */
+  trust: ReturnType<typeof exhibitionTrust>;
+  failures: { code: string; message: string }[];
+}> {
   let autoPassed = 0;
   const failures: { code: string; message: string }[] = [];
   const fresh = await repo.listEnrichmentCandidates({
@@ -224,9 +229,15 @@ export async function autoPassPending(
     status: "pending",
     limit: 1000,
   });
+  // 이 전시를 믿을지부터 정한다. 아직 표본이 덜 찼거나 표본 승인률이 낮으면
+  // 엄격한 문턱을 쓴다 — 위험은 고르게 퍼져 있지 않고 전시 하나에 몰려 있었다.
+  const trust = exhibitionTrust(
+    await repo.listEnrichmentCandidates({ exhibitionId, limit: 5000 }),
+  );
+
   for (const c of fresh) {
     if (opts.boothIds && !opts.boothIds.has(c.boothId)) continue;
-    const policy = reviewPolicy(c.confidence, c.issues);
+    const policy = reviewPolicy(c.confidence, c.issues, trust.policy);
     if (policy.decision !== "auto_pass") continue;
     try {
       await repo.upsertBoothEnrichment(
@@ -235,7 +246,7 @@ export async function autoPassPending(
         {
           source: "drafter",
           actor: opts.actor,
-          reason: `자동 통과(신뢰도 ${c.confidence.toFixed(2)}, 근거 ${c.sources.length}건)`,
+          reason: `자동 통과(신뢰도 ${c.confidence.toFixed(2)}, 근거 ${c.sources.length}건) — ${trust.reason}`,
         },
       );
       await repo.setCandidateStatus(c.id, "approved", null, "자동 통과");
@@ -247,5 +258,5 @@ export async function autoPassPending(
       });
     }
   }
-  return { autoPassed, failures };
+  return { autoPassed, trust, failures };
 }

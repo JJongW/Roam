@@ -214,7 +214,12 @@ describe("근거 없는 부스에서 드러난 실패 — 마곡 50부스", () =
     expect(reviewPolicy(r.confidence, r.issues).decision).not.toBe("auto_pass");
   });
 
-  it("확인된 주소가 아예 없으면 신원을 맞댈 수 없어 자동 통과하지 않는다", () => {
+  it("확인된 주소가 아예 없으면 신원을 맞댈 수 없다고 적는다", () => {
+    // 2026-10-16: 이 지적은 그대로 붙되, **자동 통과를 혼자 막지는 않는다.**
+    // 사람 판단 787건에서 unanchored 274건의 승인률이 73%였고, 그걸 전량 사람에게
+    // 보내던 게 검수 적체의 최대 원인이었다. 아리아(미국 에어프라이어를 한국 부스로
+    // 쓴 만점 초안) 같은 사고는 이제 전시별 표본(`exhibitionTrust`)이 잡는다 —
+    // 위험은 고르게 퍼져 있지 않고 전시 하나에 몰려 있었다(마곡리빙마켓 9.9%).
     const r = gradeCandidate({
       ...base,
       booth: { name: "일동공예", company: "Hobby & Play / Kitchen & Tableware" },
@@ -227,7 +232,7 @@ describe("근거 없는 부스에서 드러난 실패 — 마곡 50부스", () =
       },
     });
     expect(r.issues.map((i) => i.code)).toContain("unanchored");
-    expect(reviewPolicy(r.confidence, r.issues).decision).toBe("review");
+    expect(reviewPolicy(r.confidence, r.issues).decision).toBe("auto_pass");
   });
 
   it("추측으로 쓴 문장은 자동 통과할 수 없다", () => {

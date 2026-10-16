@@ -6,7 +6,7 @@ import { ADMIN_EXHIBITION_COOKIE } from "@/lib/constants";
 import { CandidateQueue } from "@/components/admin/candidate-queue";
 import { CalibrationCard } from "@/components/admin/calibration-card";
 import { calibration } from "@/lib/enrichment/calibration";
-import { reviewPolicy } from "@/lib/enrichment/review-policy";
+import { reviewPolicy, exhibitionTrust } from "@/lib/enrichment/review-policy";
 
 /** 검수 큐. 초안은 여기서 승인해야 booth_enrichment로 간다. */
 export default async function AdminEnrichmentPage() {
@@ -30,17 +30,20 @@ export default async function AdminEnrichmentPage() {
       })
     : [];
   const cal = calibration(reviewed);
+  // 이 전시를 믿기로 했나. 아직이면 엄격한 문턱으로 판정해 큐를 보여준다 —
+  // 화면과 실제 반영이 다른 문턱을 쓰면 "눌러도 안 줄어드는" 버튼이 또 생긴다.
+  const trust = exhibitionTrust(reviewed);
   // 0.60 아래는 사람 큐에 올리지 않는다 — 근거를 못 찾은 글은 검수자가 봐도
   // 할 게 없다. 기계가 세 각도로 다시 찾고도 못 찾았다는 뜻이라, 사람이
   // **직접 조사할 목록**으로 따로 보여준다.
   const forHuman = candidates.filter(
-    (c) => reviewPolicy(c.confidence, c.issues).decision !== "redraft",
+    (c) => reviewPolicy(c.confidence, c.issues, trust.policy).decision !== "redraft",
   );
   const notFound = candidates.filter(
-    (c) => reviewPolicy(c.confidence, c.issues).decision === "redraft",
+    (c) => reviewPolicy(c.confidence, c.issues, trust.policy).decision === "redraft",
   );
   const autoPassCount = forHuman.filter(
-    (c) => reviewPolicy(c.confidence, c.issues).wouldAutoPass,
+    (c) => reviewPolicy(c.confidence, c.issues, trust.policy).wouldAutoPass,
   ).length;
 
   // 진행률은 **전 필드를 가져오는 조회**로 센다 — listBoothsByExhibitionId는
@@ -114,6 +117,7 @@ export default async function AdminEnrichmentPage() {
         boothNames={boothNames}
         slug={exhibition?.slug ?? ""}
         autoPassCount={autoPassCount}
+        policy={trust.policy}
       />
     </div>
   );
