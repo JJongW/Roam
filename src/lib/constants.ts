@@ -13,6 +13,9 @@ type DimWeights = {
 
 export const SESSION_COOKIE = "roam_session";
 export const USER_COOKIE = "roam_user";
+/** 공개 설문(`/survey`) 응답자 쿠키. 로그인·방문 세션(`roam_session`)과 묶지 않는다 —
+ *  방문 세션은 전시에 매여 있고(visitor_session.exhibition_id FK), 설문은 전시 밖이다. */
+export const SURVEY_COOKIE = "roam_survey";
 export const ADMIN_COOKIE = "roam_admin";
 export const ADMIN_EXHIBITION_COOKIE = "admin_exhibition_id";
 

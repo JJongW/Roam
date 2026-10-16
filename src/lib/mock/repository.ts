@@ -32,6 +32,7 @@ import type { ListBoothQuery, Repository } from "@/lib/repositories/types";
 import type {
   AiQueryLog,
   AnalyticsEvent,
+  SurveyResponse,
   Booth,
   BoothListItem,
   BoothDetail,
@@ -101,6 +102,7 @@ interface Store {
   users: (User & { providerAccountId?: string })[];
   notes: BoothNote[];
   analytics: AnalyticsEvent[];
+  surveyResponses: SurveyResponse[];
   aiQueries: AiQueryLog[];
   userSignals: UserSignal[];
   changes: ChangeRecord[];
@@ -157,6 +159,7 @@ function buildStore(): Store {
     users: [s.seedUser],
     notes: [],
     analytics: [],
+    surveyResponses: [],
     aiQueries: [],
     userSignals: [],
     changes: [],
@@ -1394,6 +1397,36 @@ export class MockRepository implements Repository {
     return store()
       .notes.filter((n) => n.memo?.trim() && boothIds.has(n.boothId))
       .map((n) => ({ boothId: n.boothId, memo: n.memo! }));
+  }
+
+  async upsertSurveyResponse(input: {
+    surveyId: string;
+    respondentId: string;
+    answers: Record<string, string | string[]>;
+    comment?: string | null;
+    durationMs?: number | null;
+  }): Promise<SurveyResponse> {
+    const rows = store().surveyResponses;
+    const at = now();
+    const i = rows.findIndex(
+      (r) => r.surveyId === input.surveyId && r.respondentId === input.respondentId,
+    );
+    const row: SurveyResponse = {
+      surveyId: input.surveyId,
+      respondentId: input.respondentId,
+      answers: input.answers,
+      comment: input.comment ?? null,
+      durationMs: input.durationMs ?? null,
+      createdAt: i >= 0 ? rows[i].createdAt : at,
+      updatedAt: at,
+    };
+    if (i >= 0) rows[i] = row;
+    else rows.push(row);
+    return row;
+  }
+
+  async listSurveyResponses(surveyId: string): Promise<SurveyResponse[]> {
+    return store().surveyResponses.filter((r) => r.surveyId === surveyId);
   }
 
   async recordAnalytics(

@@ -36,7 +36,7 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
   신원은 앱 쿠키 `roam_user` — OAuth 콜백(`/auth/callback`)은 Supabase 세션으로 identity만 읽고 `signOut`한다.
   mock 모드엔 Google 버튼 숨김. 설계: `docs/decisions/2026-07-07_google-oauth-login.md`.
 - 게이트 `src/proxy.ts`: `roam_user` 없으면 `/login?next=`로 307.
-  공개 = `/`·`/privacy`·`/terms` + 정확 패턴 `/exhibitions/[slug]`·`/exhibitions/[slug]/map`·`/booths/[id]`.
+  공개 = `/`·`/privacy`·`/terms`·`/survey`(공개 설문, `docs/decisions/2026-10-16_공개-설문-페이지.md`) + 정확 패턴 `/exhibitions/[slug]`·`/exhibitions/[slug]/map`·`/booths/[id]`.
   ⚠️ `/privacy`·`/terms`는 구글 OAuth 심사가 직접 연다 — 막으면 심사 탈락.
   하위 경로는 패턴에 안 걸려 자동으로 로그인 필수. 예외 프리픽스 = `/login`·`/auth`·`/admin`(자체 게이트)·`/api`·정적.
   로미 개인화는 라우트가 아니라 **컴포넌트 레벨**에서 막는다.

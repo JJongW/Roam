@@ -34,8 +34,10 @@ const EXEMPT_PREFIXES = ["/login", "/auth", "/admin"];
  * `/privacy` and `/terms` must stay public: Google's OAuth verification reviewers
  * open those URLs directly, without an account. If the gate bounces them to
  * /login, verification is rejected on the spot.
+ *
+ * `/survey`는 공개 설문이다 — 링크를 받은 사람이 계정을 만들 이유가 없다.
  */
-export const PUBLIC_PATHS = ["/", "/privacy", "/terms"];
+export const PUBLIC_PATHS = ["/", "/privacy", "/terms", "/survey"];
 /** 정확한 패턴 매치 — 하위 경로(메모장·커뮤니티 등)는 자동으로 안 걸린다. */
 export const PUBLIC_PATH_PATTERNS = [
   /^\/exhibitions\/[^/]+$/,
