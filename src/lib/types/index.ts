@@ -357,6 +357,19 @@ export interface Bookmark {
   createdAt: string;
 }
 
+/** 공개 설문 `/survey` 응답 한 건. 한 사람(설문 쿠키) 한 행 — 다시 보내면 덮어쓴다. */
+export interface SurveyResponse {
+  surveyId: string;
+  respondentId: string;
+  /** 질문 key → 고른 값(여러 개 고르는 질문은 배열). 질문 정의는 `lib/survey/questions.ts`. */
+  answers: Record<string, string | string[]>;
+  comment?: string | null;
+  /** 페이지를 연 뒤 제출까지 걸린 시간(ms). 브라우저가 재서 보낸다. */
+  durationMs?: number | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface AnalyticsEvent {
   id: string;
   sessionId: string;
