@@ -245,3 +245,52 @@ export function exhibitionTrust(candidates: TrustSample[]): ExhibitionTrust {
     reason: `표본 승인률이 ${Math.round(rate * 100)}%다 — 이 전시 초안은 사람이 본다`,
   };
 }
+
+// ── 몇 번까지 다시 쓰게 할 것인가 ──────────────────────────────────────────
+
+/**
+ * 기계가 같은 부스를 다시 쓰는 횟수의 상한.
+ *
+ * 재초안은 공짜가 아니다 — 초안 한 번이 검색 각도 3개 × 재시도 2번이라 Gemini
+ * 호출이 최대 6회다. 그런데 **다시 물어봐도 웹에 없는 정보는 여전히 없다.**
+ * 두 번 해서 안 되면 그건 모델이 운이 나빴던 게 아니라 근거가 없는 것이고,
+ * 그때부터는 사람이 인스타를 뒤지는 게 유일한 길이다.
+ *
+ * 2회로 잡은 근거: 초안기는 한 번 돌 때 이미 세 각도를 시도하고 가장 좋은 것만
+ * 남긴다. 그러니 2회면 실제로는 여섯 각도를 본 것이다.
+ */
+export const MAX_DRAFT_ROUNDS = 2;
+
+/** 이 부스에 몇 번째 초안까지 나갔나. `superseded`도 한 번 쓴 것이라 센다. */
+export function draftRounds(candidates: { boothId: string }[]): Map<string, number> {
+  const rounds = new Map<string, number>();
+  for (const c of candidates) rounds.set(c.boothId, (rounds.get(c.boothId) ?? 0) + 1);
+  return rounds;
+}
+
+/**
+ * **더 돌려도 소용없는 부스.** 상한만큼 썼는데 아직 재초안 판정이면 기계는 손을
+ * 뗀다 — 여기부터는 사람이 직접 찾을 목록이다(화면의 "기계가 못 찾은 곳").
+ *
+ * 상한을 안 두면 같은 부스를 매 배치마다 다시 쓰면서 요금만 쌓인다. 실제로
+ * `needsDraft`가 "저작 필드가 비었나"만 보기 때문에, 반려되거나 재초안으로
+ * 빠진 부스는 다음 배치에서 **자동으로 다시 대상이 된다.**
+ */
+export function exhaustedBooths(
+  candidates: { boothId: string; confidence: number; issues: QualityIssue[]; createdAt: string }[],
+  max: number = MAX_DRAFT_ROUNDS,
+): Set<string> {
+  const rounds = draftRounds(candidates);
+  const latest = new Map<string, (typeof candidates)[number]>();
+  for (const c of [...candidates].sort((a, b) =>
+    String(a.createdAt).localeCompare(String(b.createdAt)),
+  )) {
+    latest.set(c.boothId, c);
+  }
+  const out = new Set<string>();
+  for (const [boothId, c] of latest) {
+    if ((rounds.get(boothId) ?? 0) < max) continue;
+    if (reviewPolicy(c.confidence, c.issues).decision === "redraft") out.add(boothId);
+  }
+  return out;
+}

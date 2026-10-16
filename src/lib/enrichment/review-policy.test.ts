@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   reviewPolicy,
   exhibitionTrust,
+  exhaustedBooths,
   DEFAULT_POLICY,
   STRICT_POLICY,
   type TrustSample,
@@ -158,5 +159,32 @@ describe("exhibitionTrust — 전시마다 믿을지 정한다", () => {
     const t = exhibitionTrust([...Array(30)].map((_, i) => row(i, "approved", [], 1)));
     expect(t.sampled).toBe(0);
     expect(t.phase).toBe("sampling");
+  });
+});
+
+describe("exhaustedBooths — 기계가 손을 떼는 지점", () => {
+  const draft = (
+    boothId: string,
+    i: number,
+    issues: QualityIssue[] = [issue("no_sources")],
+  ) => ({ boothId, confidence: 0.4, issues, createdAt: `2026-10-${String(i + 1).padStart(2, "0")}` });
+
+  it("한 번만 썼으면 더 돌린다", () => {
+    expect(exhaustedBooths([draft("b1", 0)]).has("b1")).toBe(false);
+  });
+
+  it("상한까지 썼는데 아직 근거가 없으면 손을 뗀다", () => {
+    expect(exhaustedBooths([draft("b1", 0), draft("b1", 1)]).has("b1")).toBe(true);
+  });
+
+  it("마지막 초안이 쓸 만해졌으면 손을 떼지 않는다", () => {
+    // 두 번째에 근거를 찾았다면 그건 재초안이 아니라 검수 대상이다.
+    const rows = [draft("b1", 0), draft("b1", 1, [issue("unanchored")])];
+    expect(exhaustedBooths(rows).has("b1")).toBe(false);
+  });
+
+  it("부스마다 따로 센다", () => {
+    const out = exhaustedBooths([draft("b1", 0), draft("b1", 1), draft("b2", 2)]);
+    expect([...out]).toEqual(["b1"]);
   });
 });

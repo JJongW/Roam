@@ -6,7 +6,12 @@ import { ADMIN_EXHIBITION_COOKIE } from "@/lib/constants";
 import { CandidateQueue } from "@/components/admin/candidate-queue";
 import { CalibrationCard } from "@/components/admin/calibration-card";
 import { calibration } from "@/lib/enrichment/calibration";
-import { reviewPolicy, exhibitionTrust } from "@/lib/enrichment/review-policy";
+import {
+  reviewPolicy,
+  exhibitionTrust,
+  exhaustedBooths,
+  MAX_DRAFT_ROUNDS,
+} from "@/lib/enrichment/review-policy";
 
 /** 검수 큐. 초안은 여기서 승인해야 booth_enrichment로 간다. */
 export default async function AdminEnrichmentPage() {
@@ -33,6 +38,8 @@ export default async function AdminEnrichmentPage() {
   // 이 전시를 믿기로 했나. 아직이면 엄격한 문턱으로 판정해 큐를 보여준다 —
   // 화면과 실제 반영이 다른 문턱을 쓰면 "눌러도 안 줄어드는" 버튼이 또 생긴다.
   const trust = exhibitionTrust(reviewed);
+  // 상한까지 썼는데 근거를 못 찾은 부스 — 기계는 손을 뗐고 사람이 직접 찾을 목록이다.
+  const giveUp = exhaustedBooths(reviewed);
   // 0.60 아래는 사람 큐에 올리지 않는다 — 근거를 못 찾은 글은 검수자가 봐도
   // 할 게 없다. 기계가 세 각도로 다시 찾고도 못 찾았다는 뜻이라, 사람이
   // **직접 조사할 목록**으로 따로 보여준다.
@@ -100,9 +107,11 @@ export default async function AdminEnrichmentPage() {
             기계가 못 찾은 곳 {notFound.length}곳
           </p>
           <p className="mt-1 text-xs text-muted-foreground">
-            세 각도로 다시 검색해도 신뢰도가 0.60을 넘지 못했습니다. 웹에 근거가
-            없다는 뜻이라 검수 큐에 올리지 않았습니다 — 인스타·브랜드 사이트를
-            직접 찾아 <code>data/verified/</code>에 적으면 대조 검수로 들어옵니다.
+            기계가 {MAX_DRAFT_ROUNDS}번(각 세 각도) 다시 찾아도 근거를 못 댄 곳입니다.
+            다시 돌려도 웹에 없는 정보는 여전히 없어서 더 시도하지 않습니다 —
+            인스타·브랜드 사이트를 직접 찾아 <code>data/verified/</code>에 적으면
+            대조 검수로 들어옵니다.
+            {giveUp.size > 0 && ` 그중 ${giveUp.size}곳은 기계가 손을 뗐습니다.`}
           </p>
           <p className="mt-2 text-sm">
             {notFound
