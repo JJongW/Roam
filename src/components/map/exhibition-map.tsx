@@ -21,6 +21,12 @@ import {
   layoutBoothLabel,
   NAME_LINE_HEIGHT,
 } from "./booth-label";
+import {
+  BOTTOM_RESERVE_RATIO,
+  clampAxis,
+  entryPoint,
+  readableScale,
+} from "./map-entry";
 
 // Fallback booth box when no floorplan geometry is supplied.
 const BOOTH_W = 72;
@@ -390,9 +396,24 @@ export function ExhibitionMap({
           } => r !== null,
         );
 
+  // 들어올 때의 배율 — 보통 부스의 코드가 11px로 보이는 배율(`map-entry.ts`).
+  // 도면이 없으면(부스 좌표만 있는 전시) 예전처럼 맞춤으로 들어온다.
+  const entryScaleBase = useMemo(
+    () => (floorplan ? readableScale(floorplan.booths, 0) : null),
+    [floorplan],
+  );
+  // 확대 상한 — 진입 배율보다 더 들여다볼 여지를 남긴다(iOS: 진입 × 4, 최소 12배.
+  // 웹은 도면 1단위 = 1px 기준이라 4가 기본).
+  const maxScale = useCallback(
+    () => Math.max(4, (entryScaleBase ?? 0) * 3),
+    [entryScaleBase],
+  );
+
   // Fit map to container. Guards against 0-size (layout not ready).
+  // `whole`: "전체 보기"·회전 — 도면 전체를 맞춘다. 아니면(처음 들어올 때) 도면이
+  // 있는 전시는 입구를 보며 이름이 읽히는 배율로 들어온다.
   const fit = useCallback(
-    (animate = false) => {
+    (animate = false, whole = false) => {
       const el = containerRef.current;
       if (!el) return;
       const cw = el.clientWidth;
@@ -414,6 +435,24 @@ export function ExhibitionMap({
         return;
       }
       const contain = Math.min(cw / fw, ch / fh) * 0.96;
+      if (!whole && !focus && floorplan && entryScaleBase != null) {
+        const fill = fillHeight ? Math.max(contain, (ch / fh) * 0.92) : contain;
+        const s = Math.max(entryScaleBase, fill);
+        const p = toContent(entryPoint(floorplan));
+        // 입구는 크롬과 하단 띠(카드·칩) 사이 가운데에 둔다. 가장자리 입구가
+        // 하단 띠 밑에 깔리지 않게, 그 띠만큼은 도면 끝이 화면 안으로 들어와도 된다.
+        const reserve = ch * BOTTOM_RESERVE_RATIO;
+        view.current = {
+          scale: s,
+          offset: {
+            x: clampAxis(cw / 2 - p.x * s, cw, fw * s),
+            y: clampAxis((ch - reserve) / 2 - p.y * s, ch, fh * s, reserve),
+          },
+        };
+        applyView(animate);
+        persistView();
+        return;
+      }
       // fillHeight: zoom so the map fills the viewport vertically (pan horizontally),
       // but never below the contain scale.
       const s = fillHeight ? Math.max(contain, (ch / fh) * 0.92) : contain;
@@ -453,6 +492,9 @@ export function ExhibitionMap({
       fillHeight,
       focus?.x,
       focus?.y,
+      floorplan,
+      entryScaleBase,
+      toContent,
       applyView,
       footprint,
       persistView,
@@ -470,7 +512,7 @@ export function ExhibitionMap({
       setRotation(upright);
     }
     userAdjusted.current = false;
-    fit(true);
+    fit(true, true);
   }, [fit]);
 
   // Rotate the whole map a quarter-turn. Re-fit afterwards so the rotated map is
@@ -480,7 +522,7 @@ export function ExhibitionMap({
     rotationRef.current += 90;
     setRotation(rotationRef.current);
     userAdjusted.current = false;
-    fit(true);
+    fit(true, true);
   }, [fit]);
 
   // Re-fit whenever the container is (re)sized — handles late layout, rotation, etc.
@@ -583,7 +625,7 @@ export function ExhibitionMap({
       const fx = focal?.x ?? el.clientWidth / 2;
       const fy = focal?.y ?? el.clientHeight / 2;
       const prev = view.current.scale;
-      const next = clamp(prev * factor, minScale(), 4);
+      const next = clamp(prev * factor, minScale(), maxScale());
       const o = view.current.offset;
       view.current = {
         scale: next,
@@ -599,7 +641,7 @@ export function ExhibitionMap({
       applyView(animate);
       persistView();
     },
-    [clampOffset, applyView, minScale, persistView],
+    [clampOffset, applyView, minScale, maxScale, persistView],
   );
 
   function localPoint(e: { clientX: number; clientY: number }): Point {
@@ -664,7 +706,7 @@ export function ExhibitionMap({
       const [a, b] = pts;
       const dist = Math.hypot(a.x - b.x, a.y - b.y) || 1;
       const mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
-      const next = clamp((g.startScale * dist) / g.startDist, minScale(), 4);
+      const next = clamp((g.startScale * dist) / g.startDist, minScale(), maxScale());
       beginMove();
       view.current = {
         scale: next,
