@@ -15,6 +15,12 @@ import type { Category, Hall, Point, BoothListItem } from "@/lib/types";
 import type { Floorplan } from "@/lib/floorplans";
 import { aisleRoute } from "@/lib/aisle-route";
 import { trackUiClick, type UiControl } from "@/lib/analytics/ui-controls";
+import {
+  CODE_LINE_HEIGHT,
+  CODE_RATIO,
+  layoutBoothLabel,
+  NAME_LINE_HEIGHT,
+} from "./booth-label";
 
 // Fallback booth box when no floorplan geometry is supplied.
 const BOOTH_W = 72;
@@ -37,37 +43,6 @@ export const HEAT_TIERS = [
     opacity: 0.85,
   },
 ] as const;
-
-/** Wrap a label into up to `maxLines` lines of ~`perLine` chars (word-first,
- *  hard-break long words). Used for facility booths that show their full name. */
-function wrapLabel(text: string, perLine: number, maxLines: number): string[] {
-  const lines: string[] = [];
-  let cur = "";
-  for (const word of text.split(/\s+/).filter(Boolean)) {
-    let w = word;
-    while (w.length > perLine) {
-      if (cur) {
-        lines.push(cur);
-        cur = "";
-      }
-      lines.push(w.slice(0, perLine));
-      w = w.slice(perLine);
-    }
-    if (!cur) cur = w;
-    else if (cur.length + 1 + w.length <= perLine) cur += " " + w;
-    else {
-      lines.push(cur);
-      cur = w;
-    }
-  }
-  if (cur) lines.push(cur);
-  if (lines.length > maxLines) {
-    const kept = lines.slice(0, maxLines);
-    kept[maxLines - 1] = kept[maxLines - 1].slice(0, perLine - 1) + "…";
-    return kept;
-  }
-  return lines;
-}
 
 /** Unit vector from a toward b. */
 function unit(a: { x: number; y: number }, b: { x: number; y: number }) {
@@ -1407,28 +1382,26 @@ export function ExhibitionMap({
                       />
                       {(() => {
                         // 모든 부스에 코드 + 이름을 함께 표시한다. 글자 크기는
-                        // 부스 크기에 비례(작은 부스 작게, 큰 부스 크게).
-                        // 폭에 맞춰 줄바꿈하고, 높이가 모자라면 줄 수를 줄여
-                        // …로 잘라 박스를 넘치지 않게 한다.
+                        // 부스 크기에 비례(작은 부스 작게, 큰 부스 크게). 이름은
+                        // **어절 단위로** 줄을 바꾸고(`layoutBoothLabel`), 어절이
+                        // 한 줄에 안 들어갈 때만 글자를 절반까지 줄인다.
                         const minDim = Math.min(g.w, g.h);
-                        const fs = Math.round(clamp(minDim / 5.5, 7, 26));
-                        const codeFs = Math.round(clamp(fs * 0.8, 6, 17));
+                        const base = clamp(minDim / 5.5, 7, 26);
                         const pad = BOOTH_GAP + 3;
                         const innerW = Math.max(8, g.w - pad * 2);
-                        const codeLH = b.code ? codeFs * 1.3 : 0;
-                        const nameLH = fs * 1.16;
                         // 한글 글자폭 ≈ 1em. 옆으로 넘치지 않게 92%만 사용.
-                        const perLine = Math.max(
-                          3,
-                          Math.floor((innerW * 0.92) / fs),
+                        const label = layoutBoothLabel(
+                          b.name,
+                          base,
+                          innerW * 0.92,
+                          Math.max(0, g.h - pad * 2),
+                          Boolean(b.code),
                         );
-                        // 코드 줄을 뺀 높이에 이름 몇 줄이 들어가는지(최대 3줄).
-                        const availH = Math.max(0, g.h - pad * 2 - codeLH);
-                        const maxNameLines = Math.max(
-                          1,
-                          Math.min(3, Math.floor(availH / nameLH)),
-                        );
-                        const lines = wrapLabel(b.name, perLine, maxNameLines);
+                        const lines = label.lines;
+                        const fs = label.fontSize;
+                        const codeFs = fs * CODE_RATIO;
+                        const codeLH = b.code ? codeFs * CODE_LINE_HEIGHT : 0;
+                        const nameLH = fs * NAME_LINE_HEIGHT;
                         // 코드 + 이름 블록을 세로 중앙 정렬(central 베이스라인).
                         const blockH = codeLH + lines.length * nameLH;
                         let cy = -blockH / 2;
