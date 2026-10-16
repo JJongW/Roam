@@ -29,6 +29,16 @@ const schema = z.object({
   CLOUDINARY_API_KEY: z.string().min(1).optional(),
   CLOUDINARY_API_SECRET: z.string().min(1).optional(),
   NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: z.string().min(1).optional(),
+  /** Meta 앱 시크릿 — 인스타 웹훅 서명(X-Hub-Signature-256) 검증용. */
+  IG_APP_SECRET: z.string().min(1).optional(),
+  /** 웹훅 등록 시 Meta가 GET으로 보내는 확인 토큰. 대시보드에 넣은 값과 같아야 한다. */
+  IG_WEBHOOK_VERIFY_TOKEN: z.string().min(1).optional(),
+  /** Instagram 로그인 장기 액세스 토큰. 60일마다 갱신해야 한다. */
+  IG_ACCESS_TOKEN: z.string().min(1).optional(),
+  /** 우리 인스타 계정 ID(IG user id). 자기 댓글 거르기와 DM 발송 경로에 쓴다. */
+  IG_USER_ID: z.string().min(1).optional(),
+  /** Graph API 버전(선택). 비우면 v23.0. */
+  IG_GRAPH_VERSION: z.string().min(1).optional(),
 });
 
 // 빈 문자열("")을 undefined로 본다. 빈 env 변수(예: 로컬에서 Supabase를 끄려고
@@ -59,6 +69,11 @@ const parsed = schema.safeParse({
     process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ??
       process.env.CLOUDINARY_CLOUD_NAME,
   ),
+  IG_APP_SECRET: e(process.env.IG_APP_SECRET),
+  IG_WEBHOOK_VERIFY_TOKEN: e(process.env.IG_WEBHOOK_VERIFY_TOKEN),
+  IG_ACCESS_TOKEN: e(process.env.IG_ACCESS_TOKEN),
+  IG_USER_ID: e(process.env.IG_USER_ID),
+  IG_GRAPH_VERSION: e(process.env.IG_GRAPH_VERSION),
 });
 
 export const env = parsed.success
@@ -92,11 +107,23 @@ export const hasCloudinary = Boolean(
   env.CLOUDINARY_API_SECRET,
 );
 
+/** 인스타 댓글 → 자동 DM 웹훅이 켜졌는가. 셋 중 하나라도 없으면 웹훅은 503. */
+export const hasInstagramDm = Boolean(
+  env.IG_APP_SECRET && env.IG_ACCESS_TOKEN && env.IG_USER_ID,
+);
+
 /** roam_user 쿠키 서명 비밀키. 미설정 시 로컬 mock 개발 전용 고정값 — 프로덕션에
  *  이 상태로 배포하면 쿠키 서명이 공개된 값으로 되어 위조 방지 효과가 없다. */
 export const sessionSecret =
   env.SESSION_SECRET ?? "roam-dev-only-insecure-secret";
-if (!env.SESSION_SECRET && process.env.NODE_ENV === "production") {
+// 서버에서만 검사한다 — 로그인 화면(클라이언트)이 이 모듈을 함께 불러가서, 브라우저에선
+// 비밀값이 늘 비어 보여 콘솔에 오탐 경고가 찍혔다. 2026-10-09엔 운영에 키가 정말 없었는데
+// 브라우저 경고가 늘 뜨던 탓에 진짜 경고와 구별되지 않았다.
+if (
+  typeof window === "undefined" &&
+  !env.SESSION_SECRET &&
+  process.env.NODE_ENV === "production"
+) {
   console.error(
     "[env] SESSION_SECRET 미설정 — roam_user 쿠키가 위조 가능한 상태로 배포되었습니다.",
   );
