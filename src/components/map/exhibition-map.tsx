@@ -15,6 +15,18 @@ import type { Category, Hall, Point, BoothListItem } from "@/lib/types";
 import type { Floorplan } from "@/lib/floorplans";
 import { aisleRoute } from "@/lib/aisle-route";
 import { trackUiClick, type UiControl } from "@/lib/analytics/ui-controls";
+import {
+  CODE_LINE_HEIGHT,
+  CODE_RATIO,
+  layoutBoothLabel,
+  NAME_LINE_HEIGHT,
+} from "./booth-label";
+import {
+  BOTTOM_RESERVE_RATIO,
+  clampAxis,
+  entryPoint,
+  readableScale,
+} from "./map-entry";
 
 // Fallback booth box when no floorplan geometry is supplied.
 const BOOTH_W = 72;
@@ -37,37 +49,6 @@ export const HEAT_TIERS = [
     opacity: 0.85,
   },
 ] as const;
-
-/** Wrap a label into up to `maxLines` lines of ~`perLine` chars (word-first,
- *  hard-break long words). Used for facility booths that show their full name. */
-function wrapLabel(text: string, perLine: number, maxLines: number): string[] {
-  const lines: string[] = [];
-  let cur = "";
-  for (const word of text.split(/\s+/).filter(Boolean)) {
-    let w = word;
-    while (w.length > perLine) {
-      if (cur) {
-        lines.push(cur);
-        cur = "";
-      }
-      lines.push(w.slice(0, perLine));
-      w = w.slice(perLine);
-    }
-    if (!cur) cur = w;
-    else if (cur.length + 1 + w.length <= perLine) cur += " " + w;
-    else {
-      lines.push(cur);
-      cur = w;
-    }
-  }
-  if (cur) lines.push(cur);
-  if (lines.length > maxLines) {
-    const kept = lines.slice(0, maxLines);
-    kept[maxLines - 1] = kept[maxLines - 1].slice(0, perLine - 1) + "…";
-    return kept;
-  }
-  return lines;
-}
 
 /** Unit vector from a toward b. */
 function unit(a: { x: number; y: number }, b: { x: number; y: number }) {
@@ -415,9 +396,24 @@ export function ExhibitionMap({
           } => r !== null,
         );
 
+  // 들어올 때의 배율 — 보통 부스의 코드가 11px로 보이는 배율(`map-entry.ts`).
+  // 도면이 없으면(부스 좌표만 있는 전시) 예전처럼 맞춤으로 들어온다.
+  const entryScaleBase = useMemo(
+    () => (floorplan ? readableScale(floorplan.booths, 0) : null),
+    [floorplan],
+  );
+  // 확대 상한 — 진입 배율보다 더 들여다볼 여지를 남긴다(iOS: 진입 × 4, 최소 12배.
+  // 웹은 도면 1단위 = 1px 기준이라 4가 기본).
+  const maxScale = useCallback(
+    () => Math.max(4, (entryScaleBase ?? 0) * 3),
+    [entryScaleBase],
+  );
+
   // Fit map to container. Guards against 0-size (layout not ready).
+  // `whole`: "전체 보기"·회전 — 도면 전체를 맞춘다. 아니면(처음 들어올 때) 도면이
+  // 있는 전시는 입구를 보며 이름이 읽히는 배율로 들어온다.
   const fit = useCallback(
-    (animate = false) => {
+    (animate = false, whole = false) => {
       const el = containerRef.current;
       if (!el) return;
       const cw = el.clientWidth;
@@ -439,6 +435,24 @@ export function ExhibitionMap({
         return;
       }
       const contain = Math.min(cw / fw, ch / fh) * 0.96;
+      if (!whole && !focus && floorplan && entryScaleBase != null) {
+        const fill = fillHeight ? Math.max(contain, (ch / fh) * 0.92) : contain;
+        const s = Math.max(entryScaleBase, fill);
+        const p = toContent(entryPoint(floorplan));
+        // 입구는 크롬과 하단 띠(카드·칩) 사이 가운데에 둔다. 가장자리 입구가
+        // 하단 띠 밑에 깔리지 않게, 그 띠만큼은 도면 끝이 화면 안으로 들어와도 된다.
+        const reserve = ch * BOTTOM_RESERVE_RATIO;
+        view.current = {
+          scale: s,
+          offset: {
+            x: clampAxis(cw / 2 - p.x * s, cw, fw * s),
+            y: clampAxis((ch - reserve) / 2 - p.y * s, ch, fh * s, reserve),
+          },
+        };
+        applyView(animate);
+        persistView();
+        return;
+      }
       // fillHeight: zoom so the map fills the viewport vertically (pan horizontally),
       // but never below the contain scale.
       const s = fillHeight ? Math.max(contain, (ch / fh) * 0.92) : contain;
@@ -478,6 +492,9 @@ export function ExhibitionMap({
       fillHeight,
       focus?.x,
       focus?.y,
+      floorplan,
+      entryScaleBase,
+      toContent,
       applyView,
       footprint,
       persistView,
@@ -495,7 +512,7 @@ export function ExhibitionMap({
       setRotation(upright);
     }
     userAdjusted.current = false;
-    fit(true);
+    fit(true, true);
   }, [fit]);
 
   // Rotate the whole map a quarter-turn. Re-fit afterwards so the rotated map is
@@ -505,7 +522,7 @@ export function ExhibitionMap({
     rotationRef.current += 90;
     setRotation(rotationRef.current);
     userAdjusted.current = false;
-    fit(true);
+    fit(true, true);
   }, [fit]);
 
   // Re-fit whenever the container is (re)sized — handles late layout, rotation, etc.
@@ -608,7 +625,7 @@ export function ExhibitionMap({
       const fx = focal?.x ?? el.clientWidth / 2;
       const fy = focal?.y ?? el.clientHeight / 2;
       const prev = view.current.scale;
-      const next = clamp(prev * factor, minScale(), 4);
+      const next = clamp(prev * factor, minScale(), maxScale());
       const o = view.current.offset;
       view.current = {
         scale: next,
@@ -624,7 +641,7 @@ export function ExhibitionMap({
       applyView(animate);
       persistView();
     },
-    [clampOffset, applyView, minScale, persistView],
+    [clampOffset, applyView, minScale, maxScale, persistView],
   );
 
   function localPoint(e: { clientX: number; clientY: number }): Point {
@@ -689,7 +706,7 @@ export function ExhibitionMap({
       const [a, b] = pts;
       const dist = Math.hypot(a.x - b.x, a.y - b.y) || 1;
       const mid = { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
-      const next = clamp((g.startScale * dist) / g.startDist, minScale(), 4);
+      const next = clamp((g.startScale * dist) / g.startDist, minScale(), maxScale());
       beginMove();
       view.current = {
         scale: next,
@@ -1407,28 +1424,26 @@ export function ExhibitionMap({
                       />
                       {(() => {
                         // 모든 부스에 코드 + 이름을 함께 표시한다. 글자 크기는
-                        // 부스 크기에 비례(작은 부스 작게, 큰 부스 크게).
-                        // 폭에 맞춰 줄바꿈하고, 높이가 모자라면 줄 수를 줄여
-                        // …로 잘라 박스를 넘치지 않게 한다.
+                        // 부스 크기에 비례(작은 부스 작게, 큰 부스 크게). 이름은
+                        // **어절 단위로** 줄을 바꾸고(`layoutBoothLabel`), 어절이
+                        // 한 줄에 안 들어갈 때만 글자를 절반까지 줄인다.
                         const minDim = Math.min(g.w, g.h);
-                        const fs = Math.round(clamp(minDim / 5.5, 7, 26));
-                        const codeFs = Math.round(clamp(fs * 0.8, 6, 17));
+                        const base = clamp(minDim / 5.5, 7, 26);
                         const pad = BOOTH_GAP + 3;
                         const innerW = Math.max(8, g.w - pad * 2);
-                        const codeLH = b.code ? codeFs * 1.3 : 0;
-                        const nameLH = fs * 1.16;
                         // 한글 글자폭 ≈ 1em. 옆으로 넘치지 않게 92%만 사용.
-                        const perLine = Math.max(
-                          3,
-                          Math.floor((innerW * 0.92) / fs),
+                        const label = layoutBoothLabel(
+                          b.name,
+                          base,
+                          innerW * 0.92,
+                          Math.max(0, g.h - pad * 2),
+                          Boolean(b.code),
                         );
-                        // 코드 줄을 뺀 높이에 이름 몇 줄이 들어가는지(최대 3줄).
-                        const availH = Math.max(0, g.h - pad * 2 - codeLH);
-                        const maxNameLines = Math.max(
-                          1,
-                          Math.min(3, Math.floor(availH / nameLH)),
-                        );
-                        const lines = wrapLabel(b.name, perLine, maxNameLines);
+                        const lines = label.lines;
+                        const fs = label.fontSize;
+                        const codeFs = fs * CODE_RATIO;
+                        const codeLH = b.code ? codeFs * CODE_LINE_HEIGHT : 0;
+                        const nameLH = fs * NAME_LINE_HEIGHT;
                         // 코드 + 이름 블록을 세로 중앙 정렬(central 베이스라인).
                         const blockH = codeLH + lines.length * nameLH;
                         let cy = -blockH / 2;
