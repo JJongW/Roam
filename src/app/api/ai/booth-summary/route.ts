@@ -8,6 +8,7 @@ import {
   withErrorBoundary,
 } from "@/lib/api/http";
 import { hasGemini, generateJSON, generateText } from "@/lib/ai/gemini";
+import { hasRealBlurb } from "@/lib/booth/blurb";
 
 const bodySchema = z.object({ boothId: z.string().min(1) });
 
@@ -50,8 +51,13 @@ export async function POST(req: Request) {
 
     // 소개가 없으면 부르지 않는다 — 이름과 분야만 주면 모델이 그럴듯한 한 줄을
     // 지어낸다. 정보가 없는 부스는 화면이 "자료를 못 찾았다"고 말한다(2026-10-02).
+    //
+    // 비어 있지 않아도 **시드가 합성한 소개**면 같다(`booth/blurb.ts`). 측정하니
+    // 소개가 있는 1,812곳 중 1,285곳(71%)이 그랬다 — SIF 914곳과 SIBF 255곳은
+    // "〈이름〉의 부스입니다. 부스 번호 〈코드〉. … 참가 〈분류〉입니다."가 전부다.
+    // 그걸 모델에 주면 이름을 40자로 바꿔 쓴 한 줄에 돈을 내게 된다.
     const blurb = (booth.longDescription || booth.description || "").trim();
-    if (!blurb) {
+    if (!hasRealBlurb(blurb, { name: booth.name, code: booth.code, company: booth.company })) {
       const empty: Extract = { summary: "", newReleases: [], goods: [] };
       cache.set(boothId, { data: empty, at: Date.now() });
       return ok(empty);
