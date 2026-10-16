@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "exhibitionSlug": "seoul-furniture-show-2026",
+  "booths": [
+    {
+      "code": "A160",
+      "websiteUrl": "https://clean-casa.com/"
+    },
+    {
+      "code": "A40",
+      "websiteUrl": "https://casadivinegagu.imweb.me/"
+    },
+    {
+      "code": "C10",
+      "websiteUrl": "https://baroquestudio.co.kr"
+    },
+    {
+      "code": "C300",
+      "websiteUrl": "https://namuis.com/"
+    }
+  ]
+}
