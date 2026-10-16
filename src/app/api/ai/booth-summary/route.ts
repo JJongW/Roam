@@ -9,6 +9,7 @@ import {
 } from "@/lib/api/http";
 import { hasGemini, generateJSON, generateText } from "@/lib/ai/gemini";
 import { hasRealBlurb } from "@/lib/booth/blurb";
+import { prebuiltSummary, type BoothExtract } from "@/lib/booth/summary-cache";
 
 const bodySchema = z.object({ boothId: z.string().min(1) });
 
@@ -17,7 +18,7 @@ const extractSchema = z.object({
   newReleases: z.array(z.string()).max(6).default([]),
   goods: z.array(z.string()).max(6).default([]),
 });
-type Extract = z.infer<typeof extractSchema>;
+type Extract = BoothExtract;
 
 /**
  * Per-booth AI extract cache (요약 + 신간 + 굿즈). A booth's facts are fixed for
@@ -35,7 +36,6 @@ const TTL_MS = 60 * 60 * 1000;
  */
 export async function POST(req: Request) {
   return withErrorBoundary(req, async () => {
-    if (!hasGemini) return fail("INTERNAL", "AI가 설정되지 않았어요");
     const parsed = await parseBody(req, bodySchema);
     if (!parsed.ok) return parsed.res;
     const { boothId } = parsed.data;
@@ -62,6 +62,19 @@ export async function POST(req: Request) {
       cache.set(boothId, { data: empty, at: Date.now() });
       return ok(empty);
     }
+
+    // 미리 만들어 둔 요약이 있으면 그걸 쓴다(`booth/summaries.json`). 요약은
+    // 보는 사람과 무관하게 소개글만으로 정해지므로, 조회할 때마다 다시 만들
+    // 이유가 없다. 지금 들어 있는 전시는 전부 채워져 있어서 런타임 호출이 0이다.
+    // 새 전시를 붙이면 그 부스만 아래 경로로 내려가고, 배치를 한 번 돌리면
+    // 다시 0이 된다(`scripts/booth-summary-dump.ts`).
+    const prebuilt = prebuiltSummary(booth.name, blurb);
+    if (prebuilt) {
+      cache.set(boothId, { data: prebuilt, at: Date.now() });
+      return ok(prebuilt);
+    }
+
+    if (!hasGemini) return fail("INTERNAL", "AI가 설정되지 않았어요");
 
     try {
       const data = await generateJSON<Extract>({
