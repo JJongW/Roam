@@ -8,10 +8,13 @@
 // 회전(DDP 아트홀은 곡선이라 부스가 최대 17°까지 기운다)도 그대로 옮긴다 — 펴면
 // 비스듬한 줄이 계단처럼 끊기고 이웃끼리 겹쳤다(2026-10-05 비교).
 // 원본 그림은 public/booths/<slug>/floorplan.webp로 떠서 지도 바닥(backdrop)에 깐다.
-// 버튼 하나 = 부스 하나, code는 사이트의 브랜드 번호(data-no)에 "DF"를 붙인 것 —
-// 공식 부스 번호가 없어서 지어내지 않고 출처 번호를 쓴다.
+// 버튼 하나 = 부스 하나. 사이트엔 부스 번호가 없고 내부 번호(data-no)뿐이라, 현장
+// 안내판의 번호(A1·B18…)를 scripts/sdw-booth-numbers-<year>.json에 옮겨 적어 쓴다
+// (방문객이 현장에서 보는 번호여야 한다 — DF203 같은 내부 번호는 현장에 없다, 2026-10-18).
+// 그 표가 없는 해엔 "DF"+data-no로 둔다.
+// 색은 넣지 않는다 — 지도가 분야(category.color) 색을 옅게 깐다. 회색을 박아 두면 칩과 지도가 따로 논다.
 // 결과: src/lib/floorplan-<slug>.json
-import { mkdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import sharp from "sharp";
 
 const [year, slug] = process.argv.slice(2);
@@ -30,6 +33,8 @@ const buf = Buffer.from(await (await fetch(BASE + img)).arrayBuffer());
 const W = buf.readUInt32BE(16), H = buf.readUInt32BE(20);
 
 const re = /data-no="(\d+)"\s*style="top:([\d.]+)%;left:([\d.]+)%;width:([\d.]+)%;height:([\d.]+)%;transform:rotate\(([-\d.]+)deg\)"\s*aria-label="([^"]+)"/g;
+const numFile = `scripts/sdw-booth-numbers-${year}.json`;
+const numbers = existsSync(numFile) ? JSON.parse(readFileSync(numFile, "utf8")) : {};
 const seen = new Set();
 const booths = [];
 for (const m of desktop.matchAll(re)) {
@@ -39,12 +44,11 @@ for (const m of desktop.matchAll(re)) {
   const bw = (+w / 100) * W, bh = (+h / 100) * H;
   const cafe = /^cafe\b/i.test(name);
   booths.push({
-    code: `DF${no}`,
+    code: numbers[no] ?? `DF${no}`,
     x: Math.round((+left / 100) * W + bw / 2),
     y: Math.round((+top / 100) * H + bh / 2),
     w: Math.round(bw),
     h: Math.round(bh),
-    color: cafe ? "#aeb4bf" : "#dcdee3",
     name: name.trim(),
     kind: cafe ? "facility" : "exhibitor",
     ...(+deg ? { rotate: +deg } : {}),

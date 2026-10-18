@@ -57,7 +57,7 @@ export interface IntakePlan {
   conflicts: PlannedConflict[];
   errors: PlanError[];
   newHalls: string[];
-  newCategories: { slug: string; name: string }[];
+  newCategories: { slug: string; name: string; color?: string }[];
   warnings: string[];
   /** 파일에 있지만 바뀔 게 없는 부스 수. */
   unchanged: number;
@@ -210,7 +210,11 @@ function planCreate(
       });
       return;
     }
-    plan.newCategories.push({ slug: row.categorySlug, name: categoryName });
+    plan.newCategories.push({
+      slug: row.categorySlug,
+      name: categoryName,
+      ...(row.categoryColor ? { color: row.categoryColor } : {}),
+    });
   }
 
   const geo = geoByCode.get(row.code);
