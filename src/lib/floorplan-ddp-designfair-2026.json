@@ -57,6 +57,7 @@
    "y": 1452,
    "w": 77,
    "h": 80,
+   "color": "#dcdee3",
    "name": "빈도",
    "kind": "exhibitor",
    "rotate": 13.5
@@ -67,6 +68,7 @@
    "y": 344,
    "w": 153,
    "h": 147,
+   "color": "#aeb4bf",
    "name": "Cafe 빈브라더스",
    "kind": "facility",
    "rotate": -7.65
@@ -77,6 +79,7 @@
    "y": 1244,
    "w": 149,
    "h": 77,
+   "color": "#aeb4bf",
    "name": "cafe 헤리터",
    "kind": "facility",
    "rotate": 12.7
@@ -87,6 +90,7 @@
    "y": 685,
    "w": 146,
    "h": 140,
+   "color": "#dcdee3",
    "name": "GBH",
    "kind": "exhibitor"
   },
@@ -96,6 +100,7 @@
    "y": 868,
    "w": 73,
    "h": 69,
+   "color": "#dcdee3",
    "name": "MNO",
    "kind": "exhibitor"
   },
@@ -105,6 +110,7 @@
    "y": 427,
    "w": 77,
    "h": 71,
+   "color": "#dcdee3",
    "name": "고리스튜디오",
    "kind": "exhibitor"
   },
@@ -114,6 +120,7 @@
    "y": 463,
    "w": 144,
    "h": 140,
+   "color": "#dcdee3",
    "name": "고유",
    "kind": "exhibitor"
   },
@@ -123,6 +130,7 @@
    "y": 836,
    "w": 69,
    "h": 75,
+   "color": "#dcdee3",
    "name": "고프",
    "kind": "exhibitor",
    "rotate": 5.84
@@ -133,6 +141,7 @@
    "y": 1622,
    "w": 161,
    "h": 79,
+   "color": "#dcdee3",
    "name": "Kn0t",
    "kind": "exhibitor",
    "rotate": 17.4
@@ -143,6 +152,7 @@
    "y": 297,
    "w": 122,
    "h": 78,
+   "color": "#dcdee3",
    "name": "넛츠앤버터",
    "kind": "exhibitor",
    "rotate": -14.19
@@ -153,6 +163,7 @@
    "y": 1090,
    "w": 142,
    "h": 67,
+   "color": "#dcdee3",
    "name": "노미아",
    "kind": "exhibitor"
   },
@@ -162,6 +173,7 @@
    "y": 695,
    "w": 79,
    "h": 150,
+   "color": "#dcdee3",
    "name": "노엘라이즈브레이브",
    "kind": "exhibitor",
    "rotate": 16.99
@@ -172,6 +184,7 @@
    "y": 1481,
    "w": 156,
    "h": 80,
+   "color": "#dcdee3",
    "name": "E.O.D (Eye Of Diversity)",
    "kind": "exhibitor",
    "rotate": 15.58
@@ -182,6 +195,7 @@
    "y": 1173,
    "w": 138,
    "h": 220,
+   "color": "#dcdee3",
    "name": "다이노탱",
    "kind": "exhibitor",
    "rotate": 6.39
@@ -192,6 +206,7 @@
    "y": 1691,
    "w": 153,
    "h": 73,
+   "color": "#dcdee3",
    "name": "Red Flight",
    "kind": "exhibitor",
    "rotate": 17.31
@@ -202,6 +217,7 @@
    "y": 591,
    "w": 69,
    "h": 69,
+   "color": "#dcdee3",
    "name": "드뮤레",
    "kind": "exhibitor",
    "rotate": 6.55
@@ -212,6 +228,7 @@
    "y": 1090,
    "w": 149,
    "h": 75,
+   "color": "#dcdee3",
    "name": "디어리얼",
    "kind": "exhibitor"
   },
@@ -221,6 +238,7 @@
    "y": 928,
    "w": 71,
    "h": 84,
+   "color": "#dcdee3",
    "name": "땡스소윤",
    "kind": "exhibitor",
    "rotate": 6.74
@@ -231,6 +249,7 @@
    "y": 1054,
    "w": 214,
    "h": 143,
+   "color": "#dcdee3",
    "name": "뚜누",
    "kind": "exhibitor"
   },
@@ -240,6 +259,7 @@
    "y": 279,
    "w": 65,
    "h": 63,
+   "color": "#dcdee3",
    "name": "럭럭",
    "kind": "exhibitor"
   },
@@ -249,6 +269,7 @@
    "y": 279,
    "w": 75,
    "h": 75,
+   "color": "#dcdee3",
    "name": "레떼드폴린",
    "kind": "exhibitor"
   },
@@ -258,6 +279,7 @@
    "y": 866,
    "w": 69,
    "h": 71,
+   "color": "#dcdee3",
    "name": "레미제이",
    "kind": "exhibitor"
   },
@@ -267,6 +289,7 @@
    "y": 950,
    "w": 151,
    "h": 78,
+   "color": "#dcdee3",
    "name": "레베베",
    "kind": "exhibitor",
    "rotate": 7.04
@@ -277,6 +300,7 @@
    "y": 1657,
    "w": 74,
    "h": 81,
+   "color": "#dcdee3",
    "name": "와이낫",
    "kind": "exhibitor",
    "rotate": 17.19
@@ -287,6 +311,7 @@
    "y": 463,
    "w": 144,
    "h": 144,
+   "color": "#dcdee3",
    "name": "로파서울",
    "kind": "exhibitor"
   },
@@ -296,6 +321,7 @@
    "y": 1272,
    "w": 144,
    "h": 144,
+   "color": "#dcdee3",
    "name": "롬버스랩",
    "kind": "exhibitor"
   },
@@ -305,6 +331,7 @@
    "y": 515,
    "w": 139,
    "h": 154,
+   "color": "#dcdee3",
    "name": "리빙크리에이터",
    "kind": "exhibitor",
    "rotate": 6.79
@@ -315,6 +342,7 @@
    "y": 1425,
    "w": 153,
    "h": 81,
+   "color": "#dcdee3",
    "name": "오프셋",
    "kind": "exhibitor",
    "rotate": 16.33
@@ -325,6 +353,7 @@
    "y": 868,
    "w": 71,
    "h": 65,
+   "color": "#dcdee3",
    "name": "리핏",
    "kind": "exhibitor"
   },
@@ -334,6 +363,7 @@
    "y": 1069,
    "w": 74,
    "h": 78,
+   "color": "#dcdee3",
    "name": "매거진C",
    "kind": "exhibitor",
    "rotate": -7.02
@@ -344,6 +374,7 @@
    "y": 1016,
    "w": 71,
    "h": 69,
+   "color": "#dcdee3",
    "name": "모서리",
    "kind": "exhibitor"
   },
@@ -353,6 +384,7 @@
    "y": 1865,
    "w": 158,
    "h": 78,
+   "color": "#dcdee3",
    "name": "에프에프디랩",
    "kind": "exhibitor",
    "rotate": 17.36
@@ -363,6 +395,7 @@
    "y": 534,
    "w": 144,
    "h": 155,
+   "color": "#dcdee3",
    "name": "무자기",
    "kind": "exhibitor",
    "rotate": 10
@@ -373,6 +406,7 @@
    "y": 1017,
    "w": 71,
    "h": 67,
+   "color": "#dcdee3",
    "name": "미소랑",
    "kind": "exhibitor"
   },
@@ -382,6 +416,7 @@
    "y": 1049,
    "w": 88,
    "h": 150,
+   "color": "#dcdee3",
    "name": "바잇미",
    "kind": "exhibitor",
    "rotate": 6.8
@@ -392,6 +427,7 @@
    "y": 750,
    "w": 141,
    "h": 150,
+   "color": "#dcdee3",
    "name": "밧드야",
    "kind": "exhibitor",
    "rotate": 5
@@ -402,6 +438,7 @@
    "y": 500,
    "w": 73,
    "h": 71,
+   "color": "#dcdee3",
    "name": "베르헤",
    "kind": "exhibitor"
   },
@@ -411,6 +448,7 @@
    "y": 321,
    "w": 86,
    "h": 82,
+   "color": "#dcdee3",
    "name": "보름스튜디오",
    "kind": "exhibitor",
    "rotate": -12.25
@@ -421,6 +459,7 @@
    "y": 1016,
    "w": 144,
    "h": 69,
+   "color": "#dcdee3",
    "name": "보웰",
    "kind": "exhibitor"
   },
@@ -430,6 +469,7 @@
    "y": 940,
    "w": 65,
    "h": 83,
+   "color": "#dcdee3",
    "name": "봄마음",
    "kind": "exhibitor",
    "rotate": 6.08
@@ -440,6 +480,7 @@
    "y": 1252,
    "w": 78,
    "h": 291,
+   "color": "#dcdee3",
    "name": "브랜든",
    "kind": "exhibitor",
    "rotate": -6.85
@@ -450,6 +491,7 @@
    "y": 520,
    "w": 77,
    "h": 69,
+   "color": "#dcdee3",
    "name": "블랭크소일",
    "kind": "exhibitor",
    "rotate": 7.32
@@ -460,6 +502,7 @@
    "y": 1723,
    "w": 76,
    "h": 75,
+   "color": "#dcdee3",
    "name": "슴슴",
    "kind": "exhibitor",
    "rotate": 18.04
@@ -470,6 +513,7 @@
    "y": 867,
    "w": 69,
    "h": 65,
+   "color": "#dcdee3",
    "name": "비주얼스토리텔러",
    "kind": "exhibitor"
   },
@@ -479,6 +523,7 @@
    "y": 1210,
    "w": 78,
    "h": 74,
+   "color": "#dcdee3",
    "name": "비키즈",
    "kind": "exhibitor",
    "rotate": 12.63
@@ -489,6 +534,7 @@
    "y": 1026,
    "w": 152,
    "h": 73,
+   "color": "#dcdee3",
    "name": "샐마",
    "kind": "exhibitor",
    "rotate": 15.36
@@ -499,6 +545,7 @@
    "y": 981,
    "w": 159,
    "h": 69,
+   "color": "#dcdee3",
    "name": "세실앤세드릭",
    "kind": "exhibitor",
    "rotate": 15.31
@@ -509,6 +556,7 @@
    "y": 826,
    "w": 65,
    "h": 80,
+   "color": "#dcdee3",
    "name": "세이펫",
    "kind": "exhibitor",
    "rotate": 6.35
@@ -519,6 +567,7 @@
    "y": 918,
    "w": 73,
    "h": 80,
+   "color": "#dcdee3",
    "name": "센느파리",
    "kind": "exhibitor",
    "rotate": 6.94
@@ -529,6 +578,7 @@
    "y": 1579,
    "w": 156,
    "h": 79,
+   "color": "#dcdee3",
    "name": "브이에프디",
    "kind": "exhibitor",
    "rotate": 16.78
@@ -539,6 +589,7 @@
    "y": 426,
    "w": 71,
    "h": 77,
+   "color": "#dcdee3",
    "name": "스튜디오 일상이상",
    "kind": "exhibitor"
   },
@@ -548,6 +599,7 @@
    "y": 1820,
    "w": 157,
    "h": 79,
+   "color": "#dcdee3",
    "name": "future form finding lab.",
    "kind": "exhibitor",
    "rotate": 17.18
@@ -558,6 +610,7 @@
    "y": 770,
    "w": 155,
    "h": 75,
+   "color": "#dcdee3",
    "name": "아담",
    "kind": "exhibitor",
    "rotate": 5
@@ -568,6 +621,7 @@
    "y": 1053,
    "w": 71,
    "h": 144,
+   "color": "#dcdee3",
    "name": "아이디어숍",
    "kind": "exhibitor"
   },
@@ -577,6 +631,7 @@
    "y": 463,
    "w": 138,
    "h": 144,
+   "color": "#dcdee3",
    "name": "알로소",
    "kind": "exhibitor"
   },
@@ -586,6 +641,7 @@
    "y": 1176,
    "w": 120,
    "h": 114,
+   "color": "#dcdee3",
    "name": "일레브",
    "kind": "exhibitor"
   },
@@ -595,6 +651,7 @@
    "y": 684,
    "w": 211,
    "h": 142,
+   "color": "#dcdee3",
    "name": "오끼뜨",
    "kind": "exhibitor"
   },
@@ -604,6 +661,7 @@
    "y": 684,
    "w": 67,
    "h": 138,
+   "color": "#dcdee3",
    "name": "오르디",
    "kind": "exhibitor"
   },
@@ -613,6 +671,7 @@
    "y": 867,
    "w": 144,
    "h": 67,
+   "color": "#dcdee3",
    "name": "오센티코",
    "kind": "exhibitor"
   },
@@ -622,6 +681,7 @@
    "y": 1559,
    "w": 157,
    "h": 80,
+   "color": "#dcdee3",
    "name": "체크",
    "kind": "exhibitor",
    "rotate": 14.87
@@ -632,6 +692,7 @@
    "y": 1530,
    "w": 76,
    "h": 79,
+   "color": "#dcdee3",
    "name": "엑스비욘드",
    "kind": "exhibitor",
    "rotate": 14.04
@@ -642,6 +703,7 @@
    "y": 1789,
    "w": 74,
    "h": 73,
+   "color": "#dcdee3",
    "name": "Clay(X)",
    "kind": "exhibitor",
    "rotate": 15.95
@@ -652,6 +714,7 @@
    "y": 278,
    "w": 153,
    "h": 65,
+   "color": "#dcdee3",
    "name": "웨이베러시스",
    "kind": "exhibitor"
   },
@@ -661,6 +724,7 @@
    "y": 1269,
    "w": 142,
    "h": 146,
+   "color": "#dcdee3",
    "name": "위글위글",
    "kind": "exhibitor"
   },
@@ -670,6 +734,7 @@
    "y": 600,
    "w": 133,
    "h": 147,
+   "color": "#dcdee3",
    "name": "이도도자기",
    "kind": "exhibitor",
    "rotate": 10
@@ -680,6 +745,7 @@
    "y": 465,
    "w": 146,
    "h": 140,
+   "color": "#dcdee3",
    "name": "이씨라메종",
    "kind": "exhibitor"
   },
@@ -689,6 +755,7 @@
    "y": 780,
    "w": 213,
    "h": 144,
+   "color": "#dcdee3",
    "name": "이야이야앤프렌즈",
    "kind": "exhibitor",
    "rotate": 6.95
@@ -699,6 +766,7 @@
    "y": 1115,
    "w": 71,
    "h": 157,
+   "color": "#dcdee3",
    "name": "이오테",
    "kind": "exhibitor",
    "rotate": 16.19
@@ -709,6 +777,7 @@
    "y": 1542,
    "w": 76,
    "h": 77,
+   "color": "#dcdee3",
    "name": "에이치엑스아이 디자인랩",
    "kind": "exhibitor",
    "rotate": 16.86
@@ -719,6 +788,7 @@
    "y": 613,
    "w": 77,
    "h": 148,
+   "color": "#dcdee3",
    "name": "인소일",
    "kind": "exhibitor",
    "rotate": 6.41
@@ -729,6 +799,7 @@
    "y": 355,
    "w": 92,
    "h": 82,
+   "color": "#dcdee3",
    "name": "장조림포터리",
    "kind": "exhibitor",
    "rotate": -11.72
@@ -739,6 +810,7 @@
    "y": 1368,
    "w": 226,
    "h": 80,
+   "color": "#dcdee3",
    "name": "잼먹",
    "kind": "exhibitor",
    "rotate": 7.37
@@ -749,6 +821,7 @@
    "y": 606,
    "w": 78,
    "h": 222,
+   "color": "#dcdee3",
    "name": "지노키오",
    "kind": "exhibitor",
    "rotate": -7.59
@@ -759,6 +832,7 @@
    "y": 648,
    "w": 156,
    "h": 73,
+   "color": "#dcdee3",
    "name": "집에가야돼",
    "kind": "exhibitor",
    "rotate": 6.56
@@ -769,6 +843,7 @@
    "y": 282,
    "w": 73,
    "h": 69,
+   "color": "#dcdee3",
    "name": "칸드",
    "kind": "exhibitor"
   },
@@ -778,6 +853,7 @@
    "y": 280,
    "w": 151,
    "h": 65,
+   "color": "#dcdee3",
    "name": "코이세이오 하우스",
    "kind": "exhibitor"
   },
@@ -787,6 +863,7 @@
    "y": 879,
    "w": 69,
    "h": 232,
+   "color": "#dcdee3",
    "name": "코코라커",
    "kind": "exhibitor",
    "rotate": 7.66
@@ -797,6 +874,7 @@
    "y": 515,
    "w": 78,
    "h": 229,
+   "color": "#dcdee3",
    "name": "코콘",
    "kind": "exhibitor",
    "rotate": 16.96
@@ -807,6 +885,7 @@
    "y": 1266,
    "w": 69,
    "h": 151,
+   "color": "#dcdee3",
    "name": "쿠모",
    "kind": "exhibitor",
    "rotate": 7.34
@@ -817,6 +896,7 @@
    "y": 907,
    "w": 71,
    "h": 84,
+   "color": "#dcdee3",
    "name": "쿡에버",
    "kind": "exhibitor",
    "rotate": 8.81
@@ -827,6 +907,7 @@
    "y": 429,
    "w": 82,
    "h": 73,
+   "color": "#dcdee3",
    "name": "퀘스처너스",
    "kind": "exhibitor",
    "rotate": 6.28
@@ -837,6 +918,7 @@
    "y": 499,
    "w": 79,
    "h": 79,
+   "color": "#dcdee3",
    "name": "클레이샵",
    "kind": "exhibitor",
    "rotate": 7.65
@@ -847,6 +929,7 @@
    "y": 869,
    "w": 67,
    "h": 67,
+   "color": "#dcdee3",
    "name": "키오스크키오스크",
    "kind": "exhibitor"
   },
@@ -856,6 +939,7 @@
    "y": 867,
    "w": 213,
    "h": 67,
+   "color": "#dcdee3",
    "name": "타월로지스트",
    "kind": "exhibitor"
   },
@@ -865,6 +949,7 @@
    "y": 280,
    "w": 65,
    "h": 65,
+   "color": "#dcdee3",
    "name": "풀밭",
    "kind": "exhibitor"
   },
@@ -874,6 +959,7 @@
    "y": 279,
    "w": 144,
    "h": 63,
+   "color": "#dcdee3",
    "name": "프람",
    "kind": "exhibitor"
   },
@@ -883,6 +969,7 @@
    "y": 1381,
    "w": 157,
    "h": 86,
+   "color": "#dcdee3",
    "name": "프랜드",
    "kind": "exhibitor",
    "rotate": 16.27
@@ -893,6 +980,7 @@
    "y": 500,
    "w": 73,
    "h": 73,
+   "color": "#dcdee3",
    "name": "플랫츠",
    "kind": "exhibitor"
   },
@@ -902,6 +990,7 @@
    "y": 995,
    "w": 77,
    "h": 76,
+   "color": "#dcdee3",
    "name": "피그랩",
    "kind": "exhibitor",
    "rotate": -7.44
@@ -912,6 +1001,7 @@
    "y": 785,
    "w": 164,
    "h": 197,
+   "color": "#dcdee3",
    "name": "피아바",
    "kind": "exhibitor",
    "rotate": 10
@@ -922,6 +1012,7 @@
    "y": 697,
    "w": 157,
    "h": 77,
+   "color": "#dcdee3",
    "name": "핀일로",
    "kind": "exhibitor",
    "rotate": 5
@@ -932,6 +1023,7 @@
    "y": 1273,
    "w": 218,
    "h": 146,
+   "color": "#dcdee3",
    "name": "핀카",
    "kind": "exhibitor"
   },
@@ -941,6 +1033,7 @@
    "y": 1757,
    "w": 160,
    "h": 73,
+   "color": "#dcdee3",
    "name": "코멘트",
    "kind": "exhibitor",
    "rotate": 16.79
@@ -951,6 +1044,7 @@
    "y": 867,
    "w": 67,
    "h": 67,
+   "color": "#dcdee3",
    "name": "해피문데이",
    "kind": "exhibitor"
   },
@@ -960,6 +1054,7 @@
    "y": 1272,
    "w": 69,
    "h": 144,
+   "color": "#dcdee3",
    "name": "핸드투홈 서울",
    "kind": "exhibitor"
   },
@@ -969,6 +1064,7 @@
    "y": 570,
    "w": 133,
    "h": 151,
+   "color": "#dcdee3",
    "name": "헤리터",
    "kind": "exhibitor",
    "rotate": 7.45
@@ -979,6 +1075,7 @@
    "y": 1515,
    "w": 153,
    "h": 72,
+   "color": "#dcdee3",
    "name": "IGNITE TEAM",
    "kind": "exhibitor",
    "rotate": 17.28
@@ -989,6 +1086,7 @@
    "y": 684,
    "w": 218,
    "h": 134,
+   "color": "#dcdee3",
    "name": "호텔파리칠",
    "kind": "exhibitor"
   },
@@ -998,6 +1096,7 @@
    "y": 1468,
    "w": 160,
    "h": 79,
+   "color": "#dcdee3",
    "name": "오브",
    "kind": "exhibitor",
    "rotate": 18.04
