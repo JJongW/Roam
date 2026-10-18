@@ -12,7 +12,7 @@
 // 안내판의 번호(A1·B18…)를 scripts/sdw-booth-numbers-<year>.json에 옮겨 적어 쓴다
 // (방문객이 현장에서 보는 번호여야 한다 — DF203 같은 내부 번호는 현장에 없다, 2026-10-18).
 // 그 표가 없는 해엔 "DF"+data-no로 둔다.
-// 색은 넣지 않는다 — 지도가 분야(category.color) 색을 옅게 깐다. 회색을 박아 두면 칩과 지도가 따로 논다.
+// 지도 부스는 회색이다 — 지도는 관람 상태 색만 쓰고 분야 색은 칩·상세에만 쓴다.
 // 결과: src/lib/floorplan-<slug>.json
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import sharp from "sharp";
@@ -49,6 +49,7 @@ for (const m of desktop.matchAll(re)) {
     y: Math.round((+top / 100) * H + bh / 2),
     w: Math.round(bw),
     h: Math.round(bh),
+    color: cafe ? "#aeb4bf" : "#dcdee3",
     name: name.trim(),
     kind: cafe ? "facility" : "exhibitor",
     ...(+deg ? { rotate: +deg } : {}),
@@ -62,7 +63,21 @@ const MARKS = {
 const mk = MARKS[year];
 const pt = ([px, py]) => ({ x: Math.round((px / 100) * W), y: Math.round((py / 100) * H) });
 mkdirSync(`public/booths/${slug}`, { recursive: true });
-await sharp(buf).webp({ quality: 80 }).toFile(`public/booths/${slug}/floorplan.webp`);
+// 바닥엔 공식 도면을 깔되 **부스 자리만 흰색으로 지운다.** 그대로 깔면 원본 부스·글자가
+// 우리 부스 밑에서 비쳐 이름이 두 겹으로 읽혔다(2026-10-18). 입구·출구·비상구·화장실·
+// 범례는 원본 그대로 남긴다. 부스 버튼 좌표(회전 포함)를 PAD만큼 키워 덮는다 —
+// 원본 부스 테두리가 버튼보다 살짝 커서 딱 맞게 덮으면 가장자리가 남는다.
+const PAD = 12;
+const mask = booths
+  .map((b) => {
+    const w = b.w + PAD * 2, h = b.h + PAD * 2;
+    return `<rect x="${-w / 2}" y="${-h / 2}" width="${w}" height="${h}" fill="#fff" transform="translate(${b.x} ${b.y}) rotate(${b.rotate ?? 0})"/>`;
+  })
+  .join("");
+await sharp(buf)
+  .composite([{ input: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">${mask}</svg>`) }])
+  .webp({ quality: 80 })
+  .toFile(`public/booths/${slug}/floorplan.webp`);
 const out = {
   width: W,
   height: H,
