@@ -83,6 +83,13 @@ describe("planIntake — 신규", () => {
     expect(plan.newCategories).toEqual([{ slug: "new-field", name: "새분야" }]);
   });
 
+  it("categoryColor를 적으면 새 카테고리를 그 색으로 만든다", () => {
+    const plan = run(
+      file([{ code: "H01", name: "누키트", hall: "별관", category: "새분야", categorySlug: "new-field", categoryColor: "#CE8EFF" }]),
+    );
+    expect(plan.newCategories).toEqual([{ slug: "new-field", name: "새분야", color: "#CE8EFF" }]);
+  });
+
   it("새 카테고리인데 categorySlug가 없으면 에러 — 한글 이름에서 파생하지 않는다", () => {
     const plan = run(file([{ code: "H01", name: "누키트", category: "새분야" }]));
     expect(plan.creates).toHaveLength(0);
