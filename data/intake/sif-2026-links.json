@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "exhibitionSlug": "sif-2026",
+  "booths": [
+    {
+      "code": "B33",
+      "websiteUrl": "http://www.uoozoogayo.com"
+    },
+    {
+      "code": "S12",
+      "websiteUrl": "http://www.designbook.co.kr/"
+    },
+    {
+      "code": "S11",
+      "websiteUrl": "http://www.copyright.or.kr/"
+    },
+    {
+      "code": "T31",
+      "websiteUrl": "http://www.dreamsky33.com/"
+    },
+    {
+      "code": "U25",
+      "websiteUrl": "http://www.seoheung.co.kr/"
+    },
+    {
+      "code": "V54",
+      "websiteUrl": "http://www.bookmarc.co.kr"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "exhibitionSlug": "magok-livingmarket-2026",
+  "booths": [
+    {
+      "code": "L-15",
+      "websiteUrl": "http://www.designbook.co.kr/"
+    },
+    {
+      "code": "P-16",
+      "websiteUrl": "https://kcapsule.creatorlink.net/"
+    },
+    {
+      "code": "P-15",
+      "websiteUrl": "https://www.rescue.or.kr"
+    },
+    {
+      "code": "Q-04",
+      "websiteUrl": "http://99dorage.com/"
+    }
+  ]
+}

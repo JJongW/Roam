@@ -28,54 +28,65 @@ import type { QualityIssue } from "./quality-gate";
 
 export type ReviewDecision = "auto_pass" | "review" | "redraft";
 
-/** 글 자체가 실패한 것 — 다시 물어보면 달라질 수 있다. */
-const DEFECT = new Set([
-  "duplicate_line", // 다른 부스와 같은 문장 = 템플릿 되풀이
-  "name_only", // 부스명만 되풀이 = 정보 없음
-  "not_roam_voice", // 존댓말·자기소개 어투 = 화자가 뒤집힘
-  "value_word_in_voice", // 분류를 되읽어줌
-  "generic_action", // 다른 부스에도 그대로 쓰이는 행동
-]);
-
-/** 스키마가 어긋난 것 — 역시 다시 물어보면 고쳐진다. */
-const SCHEMA = new Set([
+/**
+ * **사람이 반려하는 것들.** 사람 판단 787건으로 코드별 승인률을 세 보니 점수보다
+ * 코드가 훨씬 잘 맞혔다 — 그래서 정책을 점수 우선에서 코드 우선으로 뒤집었다.
+ *
+ * ```
+ * no_value_tags  0%   speculation 7%   no_interpretation 19%   not_found 22%
+ * weak_sources  29%   no_sources 35%   generic_action 0%(n=2)
+ * ```
+ *
+ * 이것들은 **사람에게 보내도 할 게 없다.** 근거가 없거나 글이 실패한 것이라
+ * 검수자가 봐도 "다시 찾아"라고 적을 뿐이다. 기계가 다시 쓴다.
+ */
+const REDRAFT = new Set([
+  // 글 자체가 실패 — 다시 물어보면 달라진다
+  "duplicate_line",
+  "name_only",
+  "not_roam_voice",
+  "generic_action",
+  // 스키마가 어긋남 — 역시 다시 물어보면 고쳐진다
   "unknown_value_slug",
   "strength_out_of_range",
   "reason_without_tag",
   "too_many_value_tags",
+  // 근거가 없음 — 사람이 봐도 웹에 없는 건 없다
+  "no_sources",
+  "weak_sources",
+  "no_interpretation",
+  "no_value_tags",
+  "speculation",
+  // 초안이 스스로 못 찾았다고 적음(2026-10-16 신설)
+  "not_found",
 ]);
 
 /**
- * 근거를 못 찾았다는 뜻이지 글이 나쁘다는 뜻이 아니다. 다시 물어봐도 웹에 없는
- * 정보는 여전히 없다 — 재조사가 아니라 사람에게 보낸다.
- */
-const UNVERIFIABLE = new Set(["no_sources", "no_interpretation", "no_value_tags"]);
-
-/**
- * 출처가 없으면 **점수가 아무리 높아도 자동 통과시키지 않는다.**
+ * **확인 불가지 품질 불량이 아니다.** 작은 한국 브랜드는 웹에 근거가 없는 게
+ * 정상이라, 이 코드들이 붙은 초안도 사람은 대부분 승인했다.
  *
- * 게이트는 글의 형식을 보지 사실 여부를 못 본다 — 웹에 없는 걸 검증할 방법이
- * 없기 때문이다. 실제로 검수자가 `B06 위니빌리지`(0.85)를 반려하며 이렇게 적었다:
- * *"다시 잘 찾아볼 것, 거짓정보만큼 위험한 게 없음."*
+ * ```
+ * value_word_in_voice 100%(n=2)   category_readback 90%   filler 89%
+ * single_source 83%               unanchored 73%
+ * ```
  *
- * 지어낸 사실은 나중에 되돌려도 이미 사용자가 읽은 뒤다. 확인된 근거가 있는 글만
- * 사람 없이 내보낸다.
+ * 예전엔 `unanchored`·`no_sources`를 점수와 무관하게 전부 사람에게 보냈는데,
+ * `unanchored` 274건 중 4분의 3을 사람이 그대로 승인했다. 그게 사람 몫 62%의
+ * 최대 원인이었다. 이제 이것들만 붙었으면 바닥 점수 위에서 자동으로 보낸다 —
+ * 대신 빈말 가중치를 제대로 매겨(0.06→0.25) 신원이 안 맞대진 것과 겹치면
+ * 바닥 아래로 떨어지게 했다.
  */
-/**
- * `unanchored`가 여기 있는 이유(2026-09-08): 점수는 형식을 본다. 브랜드가 통째로
- * 바뀌어도 형식은 완벽할 수 있다 — homedepot·ebay의 미국 에어프라이어 "Aria"를
- * 한국 부스 '아리아'로 쓴 초안이 1.00을 받고 운영에 반영됐다. 임계를 0.95에서
- * 더 올려도 이건 못 막는다. **확인된 주소에 근거가 닿은 것만** 사람 없이 내보낸다.
- */
-const NEVER_AUTO = new Set(["no_sources", "unanchored"]);
+const UNVERIFIABLE = new Set([
+  "filler",
+  "single_source",
+  "unanchored",
+  "category_readback",
+  "value_word_in_voice",
+]);
 
 export interface PolicyConfig {
   /** 이 이상이면 자동 통과 후보. 운영 실측 근거는 위 표. */
   autoPassAt: number;
-  /** 이 아래면 **사람에게 안 보낸다** — 초안기가 다시 찾는다.
-   *  낮은 점수를 사람 큐에 쌓으면 검수자가 "근거가 없다"는 사실만 반복해서
-   *  확인하게 된다. 다시 찾는 건 기계가 할 일이다. */
-  redraftBelow: number;
   /** 그림자 모드 — 자동 통과를 **표시만** 하고 실제로는 반영하지 않는다. */
   shadow: boolean;
 }
@@ -89,10 +100,16 @@ export interface PolicyConfig {
  * "자동 통과"로 남아 있어 찾아서 되돌릴 수 있다.
  */
 export const DEFAULT_POLICY: PolicyConfig = {
-  autoPassAt: 0.95,
-  redraftBelow: 0.6,
+  autoPassAt: 0.6,
   shadow: false,
 };
+
+/**
+ * 아직 믿을지 정하지 않은 전시에 쓰는 문턱. 초안 품질은 전시마다 다르다 —
+ * 자동 승인분의 새어나감이 마곡리빙마켓은 9.9%인데 DDP·SIF·가구쇼는 0%였다.
+ * 그래서 전시마다 앞부분을 사람이 보고, 그 결과로 문턱을 정한다(`exhibitionTrust`).
+ */
+export const STRICT_POLICY: PolicyConfig = { ...DEFAULT_POLICY, autoPassAt: 0.95 };
 
 export interface PolicyResult {
   decision: ReviewDecision;
@@ -108,27 +125,20 @@ export function reviewPolicy(
   config: PolicyConfig = DEFAULT_POLICY,
 ): PolicyResult {
   const codes = new Set(issues.map((i) => i.code));
-  const defects = [...codes].filter((c) => DEFECT.has(c) || SCHEMA.has(c));
 
-  if (defects.length > 0) {
+  // 1. 코드가 먼저다. 사람이 봐도 "다시 찾아"라고 쓸 것들은 기계에게 돌려보낸다.
+  const redraft = [...codes].filter((c) => REDRAFT.has(c));
+  if (redraft.length > 0) {
     return {
       decision: "redraft",
-      reason: `다시 물어보면 고쳐질 문제다(${defects.join("·")})`,
+      reason: `사람이 봐도 할 게 없다 — 기계가 다시 쓴다(${redraft.join("·")})`,
       wouldAutoPass: false,
     };
   }
 
-  const blocked = [...codes].filter((c) => NEVER_AUTO.has(c));
-  if (blocked.length > 0) {
-    return {
-      decision: "review",
-      reason: `근거가 확인되지 않았다 — 점수와 무관하게 사람이 본다(${blocked.join("·")})`,
-      wouldAutoPass: false,
-    };
-  }
-
-  const passes = confidence >= config.autoPassAt;
-  if (passes) {
+  // 2. 남은 지적은 "확인 불가"뿐이다. 점수는 그 겹침의 정도를 재는 눈금으로만 쓴다.
+  //    빈말 하나(0.75)는 통과하고, 빈말 + 신원 안 맞댐(0.65)은 못 넘는다.
+  if (confidence >= config.autoPassAt) {
     return {
       decision: config.shadow ? "review" : "auto_pass",
       reason: config.shadow
@@ -138,22 +148,149 @@ export function reviewPolicy(
     };
   }
 
-  // 0.60 아래는 사람에게 올리지 않는다. 근거를 못 찾은 글을 검수자가 봐도
-  // 할 수 있는 게 없다 — 다시 찾아오는 게 맞다.
-  if (confidence < config.redraftBelow) {
-    return {
-      decision: "redraft",
-      reason: `신뢰도 ${confidence.toFixed(2)} — 사람에게 올리기 전에 다시 찾는다`,
-      wouldAutoPass: false,
-    };
-  }
-
   const unverifiable = [...codes].filter((c) => UNVERIFIABLE.has(c));
   return {
     decision: "review",
     reason: unverifiable.length
-      ? `근거를 못 찾았을 뿐 글이 나쁘다는 뜻은 아니다(${unverifiable.join("·")}) — 사람이 본다`
+      ? `확인 불가가 겹쳤다(${unverifiable.join("·")}) — 신뢰도 ${confidence.toFixed(2)}, 사람이 본다`
       : `신뢰도 ${confidence.toFixed(2)} — 사람이 본다`,
     wouldAutoPass: false,
   };
+}
+
+// ── 전시마다 믿을지 정한다 ─────────────────────────────────────────────────
+
+/** 보정에 필요한 최소한만 받는다 — 저장소 타입을 끌어오지 않으려고. */
+export interface TrustSample {
+  confidence: number;
+  issues: QualityIssue[];
+  status: "pending" | "approved" | "rejected" | "superseded";
+  /** 일괄 승인처럼 **사람이 안 본 것**은 보정 근거가 아니다. */
+  reviewNote?: string | null;
+  createdAt: string;
+}
+
+export interface ExhibitionTrust {
+  phase: "sampling" | "trusted" | "strict";
+  /** 표본 중 사람이 판단한 수. */
+  sampled: number;
+  approved: number;
+  /** 이 전시에 쓸 설정. */
+  policy: PolicyConfig;
+  reason: string;
+}
+
+/** 이만큼은 사람이 봐야 그 전시를 믿을지 정한다. 590건짜리 전시에선 4%다. */
+export const TRUST_SAMPLE = 25;
+/** 표본 승인률이 이 아래면 그 전시는 계속 엄격하게 본다. */
+export const TRUST_GATE = 0.9;
+
+/**
+ * **초안 품질은 전시마다 다르다.** 자동 승인분 중 사람이 반려했을 글의 비율이
+ * 마곡리빙마켓은 9.9%인데 DDP·SIF·가구쇼·하우스아카이브는 0%였다 — 위험의 71%가
+ * 전시 하나에 몰려 있었다. 전체를 조여서 풀 문제가 아니라 **그 전시를 알아보는**
+ * 문제다.
+ *
+ * 그래서 전시마다 앞 `TRUST_SAMPLE`건을 사람이 보고 그 결과로 문턱을 정한다.
+ * 표본은 **느슨한 정책에서 새로 자동 통과하게 된 것들**(0.70~0.95)이다 — 거기가
+ * 위험이 사는 구간이라서다. 지적 없는 1.00짜리 228건은 전부 승인이었으니 표본에
+ * 넣어 사람 시간을 쓸 이유가 없다.
+ *
+ * 상태를 따로 저장하지 않는다. `enrichment_candidate` 행에 이미 다 있다 —
+ * 테이블을 더 만들면 그 테이블이 틀어졌을 때 아무도 모른다.
+ */
+export function exhibitionTrust(candidates: TrustSample[]): ExhibitionTrust {
+  // 느슨한 정책에서만 자동 통과하는 것 = 이번에 새로 믿기로 한 구간.
+  const risky = candidates
+    .filter(
+      (c) =>
+        reviewPolicy(c.confidence, c.issues, DEFAULT_POLICY).decision === "auto_pass" &&
+        reviewPolicy(c.confidence, c.issues, STRICT_POLICY).decision !== "auto_pass",
+    )
+    .sort((a, b) => String(a.createdAt).localeCompare(String(b.createdAt)));
+
+  const judged = risky.filter(
+    (c) =>
+      (c.status === "approved" || c.status === "rejected") &&
+      !(c.reviewNote ?? "").startsWith("일괄 승인"),
+  );
+  const sample = judged.slice(0, TRUST_SAMPLE);
+  const approved = sample.filter((c) => c.status === "approved").length;
+
+  if (sample.length < TRUST_SAMPLE) {
+    return {
+      phase: "sampling",
+      sampled: sample.length,
+      approved,
+      policy: STRICT_POLICY,
+      reason: `아직 ${sample.length}/${TRUST_SAMPLE}건만 봤다 — 이 전시를 믿을지 정하는 중이다`,
+    };
+  }
+
+  const rate = approved / sample.length;
+  if (rate >= TRUST_GATE) {
+    return {
+      phase: "trusted",
+      sampled: sample.length,
+      approved,
+      policy: DEFAULT_POLICY,
+      reason: `표본 ${sample.length}건 중 ${approved}건 승인(${Math.round(rate * 100)}%) — 나머지는 자동으로 보낸다`,
+    };
+  }
+  return {
+    phase: "strict",
+    sampled: sample.length,
+    approved,
+    policy: STRICT_POLICY,
+    reason: `표본 승인률이 ${Math.round(rate * 100)}%다 — 이 전시 초안은 사람이 본다`,
+  };
+}
+
+// ── 몇 번까지 다시 쓰게 할 것인가 ──────────────────────────────────────────
+
+/**
+ * 기계가 같은 부스를 다시 쓰는 횟수의 상한.
+ *
+ * 재초안은 공짜가 아니다 — 초안 한 번이 검색 각도 3개 × 재시도 2번이라 Gemini
+ * 호출이 최대 6회다. 그런데 **다시 물어봐도 웹에 없는 정보는 여전히 없다.**
+ * 두 번 해서 안 되면 그건 모델이 운이 나빴던 게 아니라 근거가 없는 것이고,
+ * 그때부터는 사람이 인스타를 뒤지는 게 유일한 길이다.
+ *
+ * 2회로 잡은 근거: 초안기는 한 번 돌 때 이미 세 각도를 시도하고 가장 좋은 것만
+ * 남긴다. 그러니 2회면 실제로는 여섯 각도를 본 것이다.
+ */
+export const MAX_DRAFT_ROUNDS = 2;
+
+/** 이 부스에 몇 번째 초안까지 나갔나. `superseded`도 한 번 쓴 것이라 센다. */
+export function draftRounds(candidates: { boothId: string }[]): Map<string, number> {
+  const rounds = new Map<string, number>();
+  for (const c of candidates) rounds.set(c.boothId, (rounds.get(c.boothId) ?? 0) + 1);
+  return rounds;
+}
+
+/**
+ * **더 돌려도 소용없는 부스.** 상한만큼 썼는데 아직 재초안 판정이면 기계는 손을
+ * 뗀다 — 여기부터는 사람이 직접 찾을 목록이다(화면의 "기계가 못 찾은 곳").
+ *
+ * 상한을 안 두면 같은 부스를 매 배치마다 다시 쓰면서 요금만 쌓인다. 실제로
+ * `needsDraft`가 "저작 필드가 비었나"만 보기 때문에, 반려되거나 재초안으로
+ * 빠진 부스는 다음 배치에서 **자동으로 다시 대상이 된다.**
+ */
+export function exhaustedBooths(
+  candidates: { boothId: string; confidence: number; issues: QualityIssue[]; createdAt: string }[],
+  max: number = MAX_DRAFT_ROUNDS,
+): Set<string> {
+  const rounds = draftRounds(candidates);
+  const latest = new Map<string, (typeof candidates)[number]>();
+  for (const c of [...candidates].sort((a, b) =>
+    String(a.createdAt).localeCompare(String(b.createdAt)),
+  )) {
+    latest.set(c.boothId, c);
+  }
+  const out = new Set<string>();
+  for (const [boothId, c] of latest) {
+    if ((rounds.get(boothId) ?? 0) < max) continue;
+    if (reviewPolicy(c.confidence, c.issues).decision === "redraft") out.add(boothId);
+  }
+  return out;
 }
