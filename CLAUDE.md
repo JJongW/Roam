@@ -120,6 +120,15 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
 호출부 0: `ai/booth-recommender.ts` · `onboarding/onboarding-{flow,inference,types}.ts` · `stores/onboarding.ts` ·
 repo의 `logAiQuery`/`topQueryKeywords`(+ `ai_query_log` 테이블).
 
+**한 번도 안 쓴 UI 모듈**(참조 0): `ui/{slider,separator,progress}.tsx` · `common/rating.tsx`.
+(쓰는 건 `progress-circle.tsx`뿐. `menu.tsx`의 `MenuSeparator`는 Radix를 직접 그린 별개다.)
+**안 쓰는 하위 export**(모듈은 살아 있음): `states.tsx`의 `Spinner` · `card.tsx`의
+`Card{Header,Title,Description,Content,Footer}`(호출부는 `<Card className=…>`) ·
+`MenuGroup`/`MenuGroupLabel` · `SelectGroup` · `SheetTrigger`/`SheetClose`.
+⚠️ **이것들은 디자인 시스템에도 넣지 않는다.** 코드에 없는 걸 Figma에 만들면 디자이너가
+그걸 쓰고, 그때 가서 컴포넌트를 거꾸로 만들게 된다. Figma에 넣을 땐 **호출부가 1곳이라도
+있는지 먼저 센다.**
+
 ## ⚠️ "없음"과 "비어 있음"을 구별하지 않는 경로들
 이 뿌리로 운영 데이터를 실제로 지운 적이 있다.
 
