@@ -247,7 +247,7 @@ export function MapView({
         className={cn(
           "absolute right-3 top-3 z-30 mt-safe inline-flex items-center gap-1 rounded-full border px-3 py-2 text-sm font-semibold shadow-[var(--shadow-card)]",
           heatOn
-            ? "border-[#f97316] bg-[#f97316]/12 text-[#c2410c]"
+            ? "border-[var(--heatmap-fill-busy)] bg-[var(--heatmap-fill-busy)]/12 text-[var(--heat-accent)]"
             : "border-border bg-card text-foreground",
         )}
       >
