@@ -73,6 +73,11 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
   새로 고르기는 **목록 맨 아래 버튼으로만** — 읽는 중에 화면이 다시 그려지면 안 된다.
   새 카드는 '여기부터 새로 골랐어' 아래에만 붙는다.
 - Gemini 호출처는 3곳뿐: `/api/ai/booth-summary` · `/api/ai/community-summary` · `/api/exhibitions/[slug]/keywords`.
+- **부스 요약은 런타임 호출이 0이다.** 요약은 보는 사람과 무관하게 소개글만으로 정해지므로 미리 만들어
+  `booth/summaries.json`에 담았다. 시드가 합성한 소개는 애초에 부르지 않고(`booth/blurb.ts`), 나머지는
+  파일에서 찾는다(`booth/summary-cache.ts`, 열쇠 = 소개글 해시 → 소개가 바뀌면 낡은 요약이 안 남는다).
+  **새 전시를 붙이면 그 부스만 Gemini로 내려간다** — `scripts/booth-summary-dump.ts`로 입력을 뽑아
+  `summaries.json`을 채우면 다시 0이 된다.
 - **thinking off 필수**: 모든 호출에 `thinkingConfig.thinkingBudget=0`(gemini.ts). 빼면 8~15초+로 느려져
   타임아웃 → 전부 결정론 폴백된다.
 - 래퍼 `src/lib/ai/gemini.ts`: `generateJSON`/`generateText`/`generateGrounded`(JSON 강제 불가 → `extractJSON`) ·

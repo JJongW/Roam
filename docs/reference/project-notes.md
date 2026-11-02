@@ -21,6 +21,13 @@
 - 저작 예시 부스: `A1001`·`A1101`.
 - 동기화: `0023_booth_enrichment_sync.sql`이 mock JSON 전체(97행)를 멱등 UPSERT(재생성 시 갱신). seed.sql의 enrichment 블록은 구 6컬럼·구 데이터라 stale.
 
+## 부스 요약 호출 수 (2026-10-16 측정)
+- 소개가 있는 부스 1,812곳 → 그중 1,285곳(71%)은 시드가 합성한 "〈이름〉의 부스입니다…" 한 줄이라
+  애초에 모델을 부르지 않는다(`booth/blurb.ts`).
+- 남은 527곳은 소개글이 511개로 중복된다(카페쇼가 같은 회사를 여러 부스에 올린다) → 511건을 미리 만들어
+  `booth/summaries.json`에 담았다. 그중 2건은 소개가 회사·제품명뿐이라 요약을 **비워 뒀다**(지어내지 않는다).
+- 재측정: `scripts/booth-summary-dump.ts` → "요약 필요 527곳 · 아직 없음 0곳".
+
 ## 하우스 아카이브 enrichment 파이프라인
 `enrichment-house-archive-2026.json`(총 104부스 중 99곳에 항목, 그 99곳은 `summary`·`sourceUrl`·`roamInterpretation`·`image` 전부 채워짐).
 원본은 주최 측 브랜드 디렉터리 CSV + 인스타 이미지(`public/house_archive_br/`, gitignore) →
