@@ -2,6 +2,7 @@ import type { ChangeEntry, AuditContext } from "@/lib/audit/diff";
 import type { CurveInput } from "@/lib/memory/learning-curve";
 import type {
   AnalyticsEvent,
+  SurveyResponse,
   Booth,
   BoothListItem,
   BoothDetail,
@@ -433,6 +434,18 @@ export interface Repository {
     sessionId: string,
     reason?: string,
   ): Promise<ReportResult>;
+
+  // public survey (/survey)
+  /** 한 사람 한 행 — 같은 (surveyId, respondentId)면 덮어쓴다. */
+  upsertSurveyResponse(input: {
+    surveyId: string;
+    respondentId: string;
+    answers: Record<string, string | string[]>;
+    comment?: string | null;
+    durationMs?: number | null;
+  }): Promise<SurveyResponse>;
+  /** 관리자 집계용 전체 응답. 실패는 던진다(빈 배열로 위장하지 않는다). */
+  listSurveyResponses(surveyId: string): Promise<SurveyResponse[]>;
 
   // analytics
   /** `userId`는 로그인 사용자 id. 취향 세그먼트 × 행동 교차 분석의 조인 키이므로

@@ -10,6 +10,10 @@ import {
   ROUTE_STATUSES,
   VISIT_PURPOSES,
 } from "@/lib/types";
+import {
+  SURVEY_COMMENT_MAX,
+  SURVEY_QUESTIONS,
+} from "@/lib/survey/questions";
 
 export const visitPurposeSchema = z.enum(VISIT_PURPOSES);
 export const movementSchema = z.enum(MOVEMENT_PREFERENCES);
@@ -343,3 +347,36 @@ export const errorReportSchema = z.object({
     }),
 });
 export type ErrorReportInput = z.infer<typeof errorReportSchema>;
+
+/**
+ * 공개 설문 응답. 질문·보기는 `SURVEY_QUESTIONS`가 정한다 — 모르는 질문 key, 보기에
+ * 없는 값, 한도를 넘는 다중 선택은 400. 질문은 전부 필수, 자유 의견만 선택이다.
+ */
+export const surveyResponseInputSchema = z
+  .object({
+    answers: z.record(z.string(), z.union([z.string(), z.array(z.string())])),
+    comment: z.string().trim().max(SURVEY_COMMENT_MAX).optional(),
+    /** 페이지를 연 뒤 제출까지(ms). 탭을 열어 두고 하루 뒤에 낸 것까지 받되, 그 위는 버린다. */
+    durationMs: z.number().int().min(0).max(24 * 60 * 60 * 1000).optional(),
+  })
+  .superRefine((input, ctx) => {
+    const known = new Set(SURVEY_QUESTIONS.map((q) => q.key));
+    for (const key of Object.keys(input.answers)) {
+      if (!known.has(key))
+        ctx.addIssue({ code: "custom", path: ["answers", key], message: "없는 질문이에요" });
+    }
+    for (const q of SURVEY_QUESTIONS) {
+      const v = input.answers[q.key];
+      const allowed = new Set(q.options.map((o) => o.value));
+      const picked = Array.isArray(v) ? v : v == null ? [] : [v];
+      if (picked.length === 0 || (!q.multi && Array.isArray(v))) {
+        ctx.addIssue({ code: "custom", path: ["answers", q.key], message: "답을 골라 주세요" });
+        continue;
+      }
+      if (q.max && picked.length > q.max)
+        ctx.addIssue({ code: "custom", path: ["answers", q.key], message: `${q.max}개까지 고를 수 있어요` });
+      if (new Set(picked).size !== picked.length || picked.some((p) => !allowed.has(p)))
+        ctx.addIssue({ code: "custom", path: ["answers", q.key], message: "보기에 없는 값이에요" });
+    }
+  });
+export type SurveyResponseInput = z.infer<typeof surveyResponseInputSchema>;

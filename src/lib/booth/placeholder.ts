@@ -17,6 +17,7 @@ const BY_SLUG: Record<string, string> = {
   "siwse-magok-2026": "/booths/siwse-magok-2026/poster.webp",
   "cafeshow-2026": "/booths/cafeshow-2026/poster.webp",
   "ddp-designfair-2026": "/booths/ddp-designfair-2026/poster.webp",
+  "seoul-furniture-show-2026": "/booths/seoul-furniture-show-2026/poster.webp",
 };
 
 /** 2026-10-02 이전에 관리자 화면으로 만든 전시는 id가 무작위라 되짚기가 안 먹는다.

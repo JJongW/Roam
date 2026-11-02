@@ -7,6 +7,10 @@
     {
       "path": "/api/cron/requeue-stale",
       "schedule": "0 3 * * *"
+    },
+    {
+      "path": "/api/cron/ig-token-refresh",
+      "schedule": "0 4 * * *"
     }
   ]
 }

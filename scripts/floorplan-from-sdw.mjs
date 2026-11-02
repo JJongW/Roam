@@ -5,11 +5,17 @@
 // DDP디자인페어 공식 사이트(seoul-designweek.or.kr/designfair<year>/floorplan/)는 도면
 // 이미지 위에 부스 버튼을 % 좌표로 얹는다(top·left·width·height·rotate). 그 좌표를
 // 원본 이미지 픽셀로 환산한다 — 손으로 따지 않는다.
-// 회전(DDP 아트홀은 곡선이라 ±7° 안팎)은 Roam 도면이 축정렬 사각형만 그려서 버린다.
-// 버튼 하나 = 부스 하나, code는 사이트의 브랜드 번호(data-no)에 "DF"를 붙인 것 —
-// 공식 부스 번호가 없어서 지어내지 않고 출처 번호를 쓴다.
+// 회전(DDP 아트홀은 곡선이라 부스가 최대 17°까지 기운다)도 그대로 옮긴다 — 펴면
+// 비스듬한 줄이 계단처럼 끊기고 이웃끼리 겹쳤다(2026-10-05 비교).
+// 원본 그림은 public/booths/<slug>/floorplan.webp로 떠서 지도 바닥(backdrop)에 깐다.
+// 버튼 하나 = 부스 하나. 사이트엔 부스 번호가 없고 내부 번호(data-no)뿐이라, 현장
+// 안내판의 번호(A1·B18…)를 scripts/sdw-booth-numbers-<year>.json에 옮겨 적어 쓴다
+// (방문객이 현장에서 보는 번호여야 한다 — DF203 같은 내부 번호는 현장에 없다, 2026-10-18).
+// 그 표가 없는 해엔 "DF"+data-no로 둔다.
+// 지도 부스는 회색이다 — 지도는 관람 상태 색만 쓰고 분야 색은 칩·상세에만 쓴다.
 // 결과: src/lib/floorplan-<slug>.json
-import { writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import sharp from "sharp";
 
 const [year, slug] = process.argv.slice(2);
 if (!year || !slug) {
@@ -26,17 +32,19 @@ const buf = Buffer.from(await (await fetch(BASE + img)).arrayBuffer());
 // PNG IHDR: 너비·높이는 16바이트부터.
 const W = buf.readUInt32BE(16), H = buf.readUInt32BE(20);
 
-const re = /data-no="(\d+)"\s*style="top:([\d.]+)%;left:([\d.]+)%;width:([\d.]+)%;height:([\d.]+)%;[^"]*"\s*aria-label="([^"]+)"/g;
+const re = /data-no="(\d+)"\s*style="top:([\d.]+)%;left:([\d.]+)%;width:([\d.]+)%;height:([\d.]+)%;transform:rotate\(([-\d.]+)deg\)"\s*aria-label="([^"]+)"/g;
+const numFile = `scripts/sdw-booth-numbers-${year}.json`;
+const numbers = existsSync(numFile) ? JSON.parse(readFileSync(numFile, "utf8")) : {};
 const seen = new Set();
 const booths = [];
 for (const m of desktop.matchAll(re)) {
-  const [, no, top, left, w, h, name] = m;
+  const [, no, top, left, w, h, deg, name] = m;
   if (seen.has(no)) continue;
   seen.add(no);
   const bw = (+w / 100) * W, bh = (+h / 100) * H;
   const cafe = /^cafe\b/i.test(name);
   booths.push({
-    code: `DF${no}`,
+    code: numbers[no] ?? `DF${no}`,
     x: Math.round((+left / 100) * W + bw / 2),
     y: Math.round((+top / 100) * H + bh / 2),
     w: Math.round(bw),
@@ -44,6 +52,7 @@ for (const m of desktop.matchAll(re)) {
     color: cafe ? "#aeb4bf" : "#dcdee3",
     name: name.trim(),
     kind: cafe ? "facility" : "exhibitor",
+    ...(+deg ? { rotate: +deg } : {}),
   });
 }
 // 입구·출구·화장실은 버튼이 아니라 배경 그림에만 있다 — 그림의 표시 위치(%)를 옮겨 적는다.
@@ -53,9 +62,26 @@ const MARKS = {
 };
 const mk = MARKS[year];
 const pt = ([px, py]) => ({ x: Math.round((px / 100) * W), y: Math.round((py / 100) * H) });
+mkdirSync(`public/booths/${slug}`, { recursive: true });
+// 바닥엔 공식 도면을 깔되 **부스 자리만 흰색으로 지운다.** 그대로 깔면 원본 부스·글자가
+// 우리 부스 밑에서 비쳐 이름이 두 겹으로 읽혔다(2026-10-18). 입구·출구·비상구·화장실·
+// 범례는 원본 그대로 남긴다. 부스 버튼 좌표(회전 포함)를 PAD만큼 키워 덮는다 —
+// 원본 부스 테두리가 버튼보다 살짝 커서 딱 맞게 덮으면 가장자리가 남는다.
+const PAD = 12;
+const mask = booths
+  .map((b) => {
+    const w = b.w + PAD * 2, h = b.h + PAD * 2;
+    return `<rect x="${-w / 2}" y="${-h / 2}" width="${w}" height="${h}" fill="#fff" transform="translate(${b.x} ${b.y}) rotate(${b.rotate ?? 0})"/>`;
+  })
+  .join("");
+await sharp(buf)
+  .composite([{ input: Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}">${mask}</svg>`) }])
+  .webp({ quality: 80 })
+  .toFile(`public/booths/${slug}/floorplan.webp`);
 const out = {
   width: W,
   height: H,
+  backdrop: { src: `/booths/${slug}/floorplan.webp`, opacity: 0.55 },
   halls: [{ name: "DDP 아트홀", x: 0, y: 0, w: W, h: H }],
   decor: mk ? mk.wc.map((p) => ({ type: "wc", ...pt(p) })) : [],
   ...(mk && {
@@ -72,3 +98,10 @@ const out = {
 const file = `src/lib/floorplan-${slug}.json`;
 writeFileSync(file, JSON.stringify(out, null, 1));
 console.log(`${file}: 부스 ${booths.length} · ${W}×${H}`);
+// 공식 사이트의 % 좌표를 그대로 옮기면 부스가 서로 겹친다(2026-10-18 재생성에서 23쌍).
+// 사이트는 버튼을 손가락으로 누르기 좋게 키워 놓은 것이고, 우리 지도는 그걸 전시장
+// 평면으로 읽는다 — 그래서 여기서 끝내면 안 된다. 잊어도 `floorplans.test.ts`의
+// 겹침 0 검사가 막지만, 그때 되돌아올 길을 여기 적어 둔다.
+console.log(
+  `다음: npx vite-node -c worker/vite.config.ts scripts/deoverlap-floorplan.ts ${file}`,
+);

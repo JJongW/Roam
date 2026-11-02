@@ -7,7 +7,13 @@ import {
 } from "@/lib/enrichment/draft-prompt";
 import { gradeCandidate } from "@/lib/enrichment/quality-gate";
 import { exhibitionLessons, rejectionsByBooth } from "@/lib/enrichment/lessons";
-import { reviewPolicy } from "@/lib/enrichment/review-policy";
+import {
+  reviewPolicy,
+  exhibitionTrust,
+  exhaustedBooths,
+  draftRounds,
+  MAX_DRAFT_ROUNDS,
+} from "@/lib/enrichment/review-policy";
 import type { Repository } from "@/lib/repositories/types";
 import type { BoothEnrichmentPatch } from "@/lib/schemas";
 
@@ -27,6 +33,8 @@ export interface DraftRunResult {
   autoPassed: number;
   /** 사람이 봐야 하는 수. drafted - autoPassed. */
   needsReview: number;
+  /** 상한까지 썼는데 근거를 못 찾아 기계가 손을 뗀 부스. 사람이 직접 찾을 목록이다. */
+  exhausted: number;
   failures: { code: string; message: string }[];
   learnedFrom: { exhibitionLessons: string[]; boothsWithPriorRejections: number };
   byConfidence: { high: number; mid: number; low: number };
@@ -50,12 +58,22 @@ export async function runDraftBatch(
     repo.listCategories(exhibitionId),
   ]);
   const categoryName = new Map(categories.map((c) => [c.id, c.name]));
+
+  // `needsDraft`는 "저작 필드가 비었나"만 본다. 그래서 재초안으로 빠진 부스는
+  // 다음 배치에서 **자동으로 다시 대상이 된다** — 그게 재시도 고리다. 다만
+  // 상한이 없으면 근거가 아예 없는 부스를 영원히 다시 쓰며 요금만 쌓는다.
+  const everyCandidate = await repo.listEnrichmentCandidates({ exhibitionId, limit: 5000 });
+  const exhausted = exhaustedBooths(everyCandidate);
+  const rounds = draftRounds(everyCandidate);
+
   const wanted = input.codes?.length
     ? booths.filter((b) => b.code && input.codes!.includes(b.code))
     : booths
         // 시설(라운지·센터)은 참가사가 아니라 초안 대상이 아니다.
         .filter((b) => b.kind !== "facility")
-        .filter((b) => needsDraft(b.enrichment));
+        .filter((b) => needsDraft(b.enrichment))
+        // 두 번 썼는데 아직 근거를 못 찾았으면 기계는 손을 뗀다 — 사람 몫이다.
+        .filter((b) => !exhausted.has(b.id));
   const targets = wanted.slice(0, input.limit);
 
   // 루프 A — 지난 반려 사유를 읽어 이번 초안에 넣는다.
@@ -177,8 +195,8 @@ export async function runDraftBatch(
   await repo.createEnrichmentCandidates(rows);
 
   // ── 자동 통과 ─────────────────────────────────────────────────────────────
-  // 검수 77건 실측에서 0.95 이상 + 근거 있음은 41/41 승인이었다. 그 조건만
-  // 사람 없이 내보낸다. 반영은 개별 승인과 **같은 경로**(upsertBoothEnrichment)를
+  // 코드로 먼저 가르고(`reviewPolicy`), 그 전시를 믿기로 했을 때만 내보낸다
+  // (`exhibitionTrust`). 반영은 개별 승인과 **같은 경로**(upsertBoothEnrichment)를
   // 타므로 change_log에 남고, "자동 통과"라는 이유가 붙어 나중에 골라낼 수 있다.
   const auto = await autoPassPending(repo, exhibitionId, {
     boothIds: new Set(rows.map((r) => r.boothId)),
@@ -187,11 +205,25 @@ export async function runDraftBatch(
   const autoPassed = auto.autoPassed;
   failures.push(...auto.failures);
 
+  // 이번 배치로 상한을 채운 부스까지 더해 센다 — 사람 목록이 얼마나 늘었는지가
+  // 이 실행의 결과다.
+  const nowExhausted = new Set([
+    ...exhausted,
+    ...rows
+      .filter(
+        (r) =>
+          (rounds.get(r.boothId) ?? 0) + 1 >= MAX_DRAFT_ROUNDS &&
+          reviewPolicy(r.confidence, r.issues).decision === "redraft",
+      )
+      .map((r) => r.boothId),
+  ]);
+
   return {
     requested: targets.length,
     drafted: rows.length,
     autoPassed,
     needsReview: rows.length - autoPassed,
+    exhausted: nowExhausted.size,
     failures,
     learnedFrom: {
       exhibitionLessons: lessons,
@@ -216,7 +248,12 @@ export async function autoPassPending(
   repo: Repository,
   exhibitionId: string,
   opts: { boothIds?: Set<string>; actor: string | null },
-): Promise<{ autoPassed: number; failures: { code: string; message: string }[] }> {
+): Promise<{
+  autoPassed: number;
+  /** 이 전시를 믿기로 했는지. 화면이 "표본 N/25" 로 보여준다. */
+  trust: ReturnType<typeof exhibitionTrust>;
+  failures: { code: string; message: string }[];
+}> {
   let autoPassed = 0;
   const failures: { code: string; message: string }[] = [];
   const fresh = await repo.listEnrichmentCandidates({
@@ -224,9 +261,15 @@ export async function autoPassPending(
     status: "pending",
     limit: 1000,
   });
+  // 이 전시를 믿을지부터 정한다. 아직 표본이 덜 찼거나 표본 승인률이 낮으면
+  // 엄격한 문턱을 쓴다 — 위험은 고르게 퍼져 있지 않고 전시 하나에 몰려 있었다.
+  const trust = exhibitionTrust(
+    await repo.listEnrichmentCandidates({ exhibitionId, limit: 5000 }),
+  );
+
   for (const c of fresh) {
     if (opts.boothIds && !opts.boothIds.has(c.boothId)) continue;
-    const policy = reviewPolicy(c.confidence, c.issues);
+    const policy = reviewPolicy(c.confidence, c.issues, trust.policy);
     if (policy.decision !== "auto_pass") continue;
     try {
       await repo.upsertBoothEnrichment(
@@ -235,7 +278,7 @@ export async function autoPassPending(
         {
           source: "drafter",
           actor: opts.actor,
-          reason: `자동 통과(신뢰도 ${c.confidence.toFixed(2)}, 근거 ${c.sources.length}건)`,
+          reason: `자동 통과(신뢰도 ${c.confidence.toFixed(2)}, 근거 ${c.sources.length}건) — ${trust.reason}`,
         },
       );
       await repo.setCandidateStatus(c.id, "approved", null, "자동 통과");
@@ -247,5 +290,5 @@ export async function autoPassPending(
       });
     }
   }
-  return { autoPassed, failures };
+  return { autoPassed, trust, failures };
 }

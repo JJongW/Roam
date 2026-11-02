@@ -21,6 +21,10 @@ export const intakeBoothSchema = z.object({
    *  booth.tags에 그대로 들어가 추천 스코어링이 읽는 값이라, 한글 이름에서
    *  파생하지 않고 명시로 받는다. 이미 있는 카테고리면 없어도 된다. */
   categorySlug: z.string().min(1).max(40).regex(/^[a-z0-9-]+$/).optional(),
+  /** 카테고리를 새로 만들 때 쓸 색(#RRGGBB). 칩·지도·부스 상세가 이 색을 읽는다.
+   *  없으면 회색으로 만들어져 분야 구분이 사라진다(마곡 0054, DDP 2026-10-18) —
+   *  주최 도면·현장 안내판의 색을 그대로 적는다. */
+  categoryColor: z.string().regex(/^#[0-9a-fA-F]{6}$/).optional(),
   kind: z.enum(["exhibitor", "facility"]).optional(),
   description: z.string().max(300).optional(),
   longDescription: z.string().max(4000).optional(),

@@ -84,7 +84,7 @@ export function ExhibitionCard({
     <Link
       href={href}
       className={cn(
-        "group block overflow-hidden rounded-2xl border bg-card shadow-[var(--shadow-card)] transition-transform active:scale-[0.99]",
+        "group block overflow-hidden rounded-2xl border bg-card shadow-[var(--shadow-card)] press active:bg-card-pressed",
         recommended ? "border-primary ring-2 ring-primary/30" : "border-border",
       )}
     >

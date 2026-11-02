@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Field } from "@/components/ui/field";
 import { LegalLinks } from "@/components/common/legal-links";
 import type { UserBrain } from "@/lib/types";
 
@@ -173,7 +174,10 @@ export function BrainSheet({
         {user && (
           <div className="mt-1 flex items-center justify-center gap-1.5">
             {editingNickname ? (
-              <div className="flex w-full max-w-[16rem] flex-col items-center gap-1.5">
+              <Field
+                error={nicknameError}
+                className="flex w-full max-w-[16rem] flex-col items-center gap-1.5 space-y-0"
+              >
                 <div className="flex w-full items-center gap-1.5">
                   <Input
                     autoFocus
@@ -211,10 +215,7 @@ export function BrainSheet({
                     <X className="size-4" />
                   </Button>
                 </div>
-                {nicknameError && (
-                  <p className="text-xs text-destructive">{nicknameError}</p>
-                )}
-              </div>
+              </Field>
             ) : (
               <button
                 type="button"

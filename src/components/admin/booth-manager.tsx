@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  cloneElement,
-  isValidElement,
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import NextImage from "next/image";
 import {
@@ -43,6 +35,7 @@ import { VALUE_TAGS } from "@/lib/values";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Field } from "@/components/ui/field";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -195,6 +188,9 @@ export function BoothManager({
   }
 
   async function submit() {
+    // 재진입 가드 — disabled는 리렌더 뒤에야 걸린다. 빠른 두 번 탭이 같은 요청을
+    // 두 번 보내면 서버에서 409가 나거나(중복) 같은 글이 두 번 올라간다.
+    if (busy) return;
     const category = categories.find((c) => c.id === draft.categoryId);
     const tags = tagsText
       .split(",")
@@ -819,31 +815,6 @@ export function BoothManager({
         </SheetContent>
       </Sheet>
     </>
-  );
-}
-
-function Field({
-  label,
-  badge,
-  children,
-}: {
-  label: string;
-  badge?: React.ReactNode;
-  children: React.ReactNode;
-}) {
-  const id = useId();
-  return (
-    <div className="space-y-1.5">
-      <div className="flex items-center gap-1.5">
-        <Label htmlFor={id} className="text-xs">
-          {label}
-        </Label>
-        {badge}
-      </div>
-      {isValidElement(children)
-        ? cloneElement(children as React.ReactElement<{ id?: string }>, { id })
-        : children}
-    </div>
   );
 }
 

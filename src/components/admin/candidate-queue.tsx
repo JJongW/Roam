@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/ui/chip";
 import { Textarea } from "@/components/ui/textarea";
 import { VALUE_TAGS } from "@/lib/values";
-import { reviewPolicy } from "@/lib/enrichment/review-policy";
+import { reviewPolicy, DEFAULT_POLICY, type PolicyConfig } from "@/lib/enrichment/review-policy";
 import type { EnrichmentCandidate } from "@/lib/types";
 
 /** 라우트의 REJECT_REASONS와 짝이다 — 코드가 바뀌면 여기도 바꾼다. */
@@ -108,12 +108,15 @@ export function CandidateQueue({
   boothNames,
   slug,
   autoPassCount,
+  policy = DEFAULT_POLICY,
 }: {
   candidates: EnrichmentCandidate[];
   boothNames: Record<string, string>;
   slug: string;
   /** 정책상 자동 통과 대상인 건수. 900부스에서 실제로 일을 줄이는 건 이 묶음이다. */
   autoPassCount: number;
+  /** 이 전시에 적용 중인 문턱. 카드의 판정 이유가 실제 반영과 같아야 한다. */
+  policy?: PolicyConfig;
 }) {
   const router = useRouter();
   const [busy, setBusy] = useState<string | null>(null);
@@ -225,7 +228,7 @@ export function CandidateQueue({
                 {c.source}
               </span>
               {(() => {
-                const p = reviewPolicy(c.confidence, c.issues);
+                const p = reviewPolicy(c.confidence, c.issues, policy);
                 return (
                   <span
                     className="w-full text-xs text-muted-foreground"

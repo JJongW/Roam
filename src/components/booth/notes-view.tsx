@@ -11,8 +11,10 @@ import {
   ThumbsDown,
   ThumbsUp,
   X,
+  ImageOff,
 } from "lucide-react";
-import { AppBar } from "@/components/common/app-bar";
+import { Toolbar } from "@/components/common/toolbar";
+import { ImageOrFallback } from "@/components/common/image-or-fallback";
 import { EmptyState } from "@/components/common/states";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -83,10 +85,10 @@ export function NotesView({
           : "flex flex-1 flex-col pb-safe"
       }
     >
-      {/* onClose 없으면(독립 페이지 모드) AppBar 기본 동작(router.back())에 맡긴다 —
+      {/* onClose 없으면(독립 페이지 모드) Toolbar 기본 동작(router.back())에 맡긴다 —
           메모장 유일한 진입점이 전시 홈 카드라 back()이 항상 그리로 돌아간다. 예전엔
           지도로 하드코딩돼 있어서, 전시 홈에서 들어와도 뒤로가면 지도로 튀었다. */}
-      <AppBar title={t("notes.title")} onBack={onClose} />
+      <Toolbar title={t("notes.title")} onBack={onClose} />
 
       {!hydrated ? (
         <div className="space-y-3 p-4">
@@ -156,13 +158,18 @@ export function NotesView({
                   {r?.photos && r.photos.length > 0 && (
                     <div className="grid grid-cols-3 gap-2">
                       {r.photos.map((src) => (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
+                        // 내가 찍어 올린 사진이라 "없는 것"으로 넘길 수 없다 —
+                        // 못 불러오면 그 자리에 빈 칸이 아니라 표시를 남긴다.
+                        <ImageOrFallback
                           key={src}
                           src={src}
                           alt={t("notes.photoAlt", { name: b.name })}
-                          loading="lazy"
                           className="aspect-square w-full rounded-lg object-cover"
+                          fallback={
+                            <span className="flex aspect-square w-full items-center justify-center rounded-lg border border-dashed border-border text-muted-foreground">
+                              <ImageOff className="size-5" aria-hidden />
+                            </span>
+                          }
                         />
                       ))}
                     </div>

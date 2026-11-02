@@ -5,6 +5,8 @@ import { BookOpen, Gift } from "lucide-react";
 import { api } from "@/lib/api/client";
 import { LOADING_MESSAGES } from "@/lib/loading-messages";
 import { useRotatingMessage } from "@/lib/hooks/use-rotating-message";
+import { useSlowWait } from "@/lib/hooks/use-slow-wait";
+import { useT } from "@/lib/i18n/provider";
 import { RoamMotion, THINKING_POOL } from "@/components/companion/roam-motion";
 import { Chip } from "@/components/ui/chip";
 
@@ -27,6 +29,10 @@ export function BoothHighlights({
   const [data, setData] = useState<Extract | null>(null);
   const [loading, setLoading] = useState(true);
   const goodsMsg = useRotatingMessage(LOADING_MESSAGES.goods, loading);
+  // 회전 문구는 영원히 "진행 중인 척"할 수 있다 — 평소보다 길어지면 그 사실을
+  // 말한다. 그래야 기다릴지 말지 사용자가 고를 수 있다.
+  const slow = useSlowWait(loading);
+  const t = useT();
 
   // Reset to the loading state when the booth changes, during render (not in an
   // effect) to avoid a cascading setState-in-effect. The effect below only kicks
@@ -69,7 +75,7 @@ export function BoothHighlights({
           <span className="flex size-7 shrink-0 items-center justify-center overflow-hidden">
             <RoamMotion pool={THINKING_POOL} />
           </span>
-          {goodsMsg}…
+          {slow ? t("loading.longWait") : `${goodsMsg}…`}
         </p>
         <div className="flex flex-wrap gap-1.5" aria-hidden>
           {[64, 88, 52, 72, 60].map((w, i) => (

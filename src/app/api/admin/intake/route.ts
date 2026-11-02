@@ -107,9 +107,9 @@ async function applyPlan(
       result.failures.push({ code: `hall:${name}`, message: msg(e) });
     }
   }
-  for (const { slug, name } of plan.newCategories) {
+  for (const { slug, name, color } of plan.newCategories) {
     try {
-      const category = await repo.createCategory({ slug, name });
+      const category = await repo.createCategory({ slug, name, color });
       categoryIdByName.set(name, category.id);
       result.createdCategories += 1;
     } catch (e) {

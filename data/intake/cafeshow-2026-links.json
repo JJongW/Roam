@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "exhibitionSlug": "cafeshow-2026",
+  "booths": [
+    {
+      "code": "A257",
+      "websiteUrl": "http://mikun.co.kr"
+    },
+    {
+      "code": "A341",
+      "websiteUrl": "http://www.sohnmm.com/"
+    },
+    {
+      "code": "D548",
+      "websiteUrl": "https://homecaffe.net/"
+    },
+    {
+      "code": "A908",
+      "websiteUrl": "http://www.wellfine.co.kr/"
+    },
+    {
+      "code": "B222",
+      "websiteUrl": "http://www.semiwon.co.kr/"
+    },
+    {
+      "code": "B139",
+      "websiteUrl": "http://www.bizneer.com/"
+    },
+    {
+      "code": "B214",
+      "websiteUrl": "http://triecompany.com/"
+    },
+    {
+      "code": "B204",
+      "websiteUrl": "http://www.paperplan.kr"
+    },
+    {
+      "code": "B341",
+      "websiteUrl": "https://www.limeplace.co.kr/"
+    },
+    {
+      "code": "B331",
+      "websiteUrl": "https://blcompany.ai.kr/"
+    },
+    {
+      "code": "B635",
+      "websiteUrl": "https://www.paynpos.co.kr/"
+    },
+    {
+      "code": "B661",
+      "websiteUrl": "http://www.orefarm.com/"
+    },
+    {
+      "code": "C228",
+      "websiteUrl": "http://www.lebus.co.kr"
+    },
+    {
+      "code": "C409",
+      "websiteUrl": "http://lamarzoccokorea.co.kr/"
+    },
+    {
+      "code": "D125",
+      "websiteUrl": "http://www.verrapack.com"
+    },
+    {
+      "code": "C337",
+      "websiteUrl": "https://www.cw.coffee/"
+    },
+    {
+      "code": "C649",
+      "websiteUrl": "http://www.jungjin.com"
+    },
+    {
+      "code": "C543",
+      "websiteUrl": "http://www.jungjin.com"
+    },
+    {
+      "code": "D234",
+      "websiteUrl": "https://iriskor.com/"
+    },
+    {
+      "code": "D226",
+      "websiteUrl": "http://www.ckcorporations.co.kr/"
+    },
+    {
+      "code": "D364",
+      "websiteUrl": "http://definedm.co.kr"
+    },
+    {
+      "code": "D377",
+      "websiteUrl": "http://www.essencher.com"
+    },
+    {
+      "code": "D209",
+      "websiteUrl": "http://www.yeongdo.go.kr/"
+    },
+    {
+      "code": "D217",
+      "websiteUrl": "http://www.delonghi.com"
+    }
+  ]
+}

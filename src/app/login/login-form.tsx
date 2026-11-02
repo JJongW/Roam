@@ -10,6 +10,7 @@ import { useAuthStore } from "@/lib/stores/auth";
 import { GoogleIcon } from "@/components/auth/google-icon";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Field } from "@/components/ui/field";
 import { useT } from "@/lib/i18n/provider";
 
 /** Only same-origin relative paths are honored as the post-login destination. */
@@ -54,6 +55,9 @@ export function LoginForm() {
   }
 
   async function submit() {
+    // 재진입 가드 — disabled는 리렌더 뒤에야 걸린다. 빠른 두 번 탭이 같은 요청을
+    // 두 번 보내면 서버에서 409가 나거나(중복) 같은 글이 두 번 올라간다.
+    if (busy) return;
     const name = nickname.trim();
     if (name.length < 2 || busy) return;
     setBusy(true);
@@ -102,25 +106,23 @@ export function LoginForm() {
         </Button>
       ) : (
         <div className="space-y-3">
-          <Input
-            value={nickname}
-            onChange={(e) => {
-              setNickname(e.target.value);
-              setError(null);
-            }}
-            placeholder={t("login.placeholder")}
-            maxLength={20}
-            autoFocus
-            aria-label={t("login.placeholder")}
-            aria-invalid={Boolean(error)}
-            onKeyDown={(e) => {
-              if (e.nativeEvent.isComposing) return;
-              if (e.key === "Enter") submit();
-            }}
-          />
-          {error && (
-            <p className="text-sm font-medium text-destructive">{error}</p>
-          )}
+          <Field error={error}>
+            <Input
+              value={nickname}
+              onChange={(e) => {
+                setNickname(e.target.value);
+                setError(null);
+              }}
+              placeholder={t("login.placeholder")}
+              maxLength={20}
+              autoFocus
+              aria-label={t("login.placeholder")}
+              onKeyDown={(e) => {
+                if (e.nativeEvent.isComposing) return;
+                if (e.key === "Enter") submit();
+              }}
+            />
+          </Field>
           <Button
             size="lg"
             className="w-full"

@@ -38,7 +38,7 @@ export function BoothTabs({
     <div>
       <div
         role="tablist"
-        className="sticky top-14 z-30 -mx-[var(--spacing-global-gutter)] flex gap-1 border-b border-border bg-background/90 px-[var(--spacing-global-gutter)] backdrop-blur-xl landscape:top-0"
+        className="sticky top-[var(--toolbar-height)] z-30 -mx-[var(--spacing-global-gutter)] flex gap-1 border-b border-border bg-background/90 px-[var(--spacing-global-gutter)] backdrop-blur-xl landscape:top-0"
       >
         {TAB_KEYS.map((tk) => (
           <button

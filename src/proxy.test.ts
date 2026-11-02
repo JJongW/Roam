@@ -87,5 +87,7 @@ describe("proxy() 게이트", () => {
   it("개인정보처리방침·약관은 위조 쿠키 검사 전에 통과한다", () => {
     expect(proxy(req("/privacy")).status).toBe(200);
     expect(proxy(req("/terms")).status).toBe(200);
+    // 공개 설문 — 링크를 받은 사람이 로그인 없이 답한다.
+    expect(proxy(req("/survey")).status).toBe(200);
   });
 });

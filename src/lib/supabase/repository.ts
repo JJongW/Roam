@@ -21,6 +21,7 @@ import type {
 } from "@/lib/repositories/types";
 import type {
   AnalyticsEvent,
+  SurveyResponse,
   AnalyticsType,
   Booth,
   BoothListItem,
@@ -168,6 +169,18 @@ async function readAll<T>(
     out.push(...(data ?? []));
     if (!data || data.length < PAGE) return out;
   }
+}
+
+function toSurveyResponse(r: Row): SurveyResponse {
+  return {
+    surveyId: r.survey_id as string,
+    respondentId: r.respondent_id as string,
+    answers: (r.answers ?? {}) as Record<string, string | string[]>,
+    comment: (r.comment as string | null) ?? null,
+    durationMs: (r.duration_ms as number | null) ?? null,
+    createdAt: r.created_at as string,
+    updatedAt: r.updated_at as string,
+  };
 }
 
 /** 큰 배열을 나눠 넣는다(요청 본문 크기). */
@@ -2626,6 +2639,49 @@ export class SupabaseRepository implements Repository {
   }
 
   // --- analytics -----------------------------------------------------------
+
+  // 설문은 방문객 키(anon)로 읽고 쓸 수 없다(0060 RLS) — 라우트가 입력을 검증한 뒤
+  // 서비스 롤로만 쓴다. 응답 목록은 관리자 화면만 읽는다.
+  async upsertSurveyResponse(input: {
+    surveyId: string;
+    respondentId: string;
+    answers: Record<string, string | string[]>;
+    comment?: string | null;
+    durationMs?: number | null;
+  }): Promise<SurveyResponse> {
+    const db = await this.db(true);
+    const res = await db
+      .from("survey_response")
+      .upsert(
+        {
+          survey_id: input.surveyId,
+          respondent_id: input.respondentId,
+          answers: input.answers,
+          comment: input.comment ?? null,
+          duration_ms: input.durationMs ?? null,
+          updated_at: now(),
+        },
+        { onConflict: "survey_id,respondent_id" },
+      )
+      .select()
+      .single();
+    return toSurveyResponse(wrote(res, "설문 응답 저장") as Row);
+  }
+
+  async listSurveyResponses(surveyId: string): Promise<SurveyResponse[]> {
+    const db = await this.db(true);
+    const rows = await readAll<Row>(
+      (from, to) =>
+        db
+          .from("survey_response")
+          .select("*")
+          .eq("survey_id", surveyId)
+          .order("updated_at", { ascending: false })
+          .range(from, to),
+      "설문 응답",
+    );
+    return rows.map(toSurveyResponse);
+  }
 
   async recordAnalytics(
     sessionId: string,

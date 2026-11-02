@@ -134,7 +134,7 @@ export function Conversation({
             key={o.key}
             type="button"
             onClick={() => pick(o.key)}
-            className="rounded-2xl border border-border bg-card px-5 py-4 text-left text-[15px] font-medium active:scale-[0.99] active:bg-accent/40"
+            className="rounded-2xl border border-border bg-card px-5 py-4 text-left text-[15px] font-medium press active:bg-accent/40"
           >
             {t(`onboardingQ.${q.id}.${o.key}`)}
           </button>

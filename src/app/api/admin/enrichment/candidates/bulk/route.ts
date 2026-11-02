@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { getUserId, ok, parseBody, requireAdmin } from "@/lib/api/http";
 import { getRepository } from "@/lib/repositories";
-import { reviewPolicy } from "@/lib/enrichment/review-policy";
+import { reviewPolicy, exhibitionTrust } from "@/lib/enrichment/review-policy";
 import type { BoothEnrichmentPatch } from "@/lib/schemas";
 
 const bodySchema = z.object({
@@ -32,8 +32,12 @@ export async function POST(req: Request) {
     status: "pending",
     limit: 1000,
   });
+  // 화면이 쓰는 것과 **같은 전시별 문턱**으로 다시 센다. 다르면 "눌러도 0건"이 된다.
+  const trust = exhibitionTrust(
+    await repo.listEnrichmentCandidates({ exhibitionId, limit: 5000 }),
+  );
   const targets = pending.filter(
-    (c) => reviewPolicy(c.confidence, c.issues).wouldAutoPass,
+    (c) => reviewPolicy(c.confidence, c.issues, trust.policy).wouldAutoPass,
   );
   if (targets.length !== parsed.data.expected) {
     return ok({

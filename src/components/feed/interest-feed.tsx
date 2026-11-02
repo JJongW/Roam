@@ -3,6 +3,7 @@
 import { boothPlaceholder } from "@/lib/booth/placeholder";
 import { useEffect, useRef, useState, useTransition } from "react";
 import Image from "next/image";
+import { ImageOrFallback } from "@/components/common/image-or-fallback";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCompanionStore } from "@/lib/stores/companion";
@@ -454,22 +455,19 @@ function BoothThumb({
         backgroundColor: category ? `${category.color}1a` : "var(--secondary)",
       }}
     >
-      {thumb ? (
-        // eslint-disable-next-line @next/next/no-img-element -- 외부 CDN 이미지
-        <img
-          src={thumb}
-          alt=""
-          loading="lazy"
-          className="size-full object-cover"
-        />
-      ) : (
-        <span
-          className="text-base font-bold"
-          style={{ color: category?.color }}
-        >
-          {booth.name.slice(0, 1)}
-        </span>
-      )}
+      <ImageOrFallback
+        src={thumb}
+        alt=""
+        className="size-full object-cover"
+        fallback={
+          <span
+            className="text-base font-bold"
+            style={{ color: category?.color }}
+          >
+            {booth.name.slice(0, 1)}
+          </span>
+        }
+      />
     </span>
   );
 }

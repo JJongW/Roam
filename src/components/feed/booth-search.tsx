@@ -3,8 +3,19 @@
 import { boothPlaceholder } from "@/lib/booth/placeholder";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Search, X, Loader2, ChevronRight } from "lucide-react";
+import {
+  Search,
+  X,
+  Loader2,
+  ChevronRight,
+  RotateCw,
+  MapPin,
+} from "lucide-react";
 import { api } from "@/lib/api/client";
+import { errorCopyKey } from "@/lib/api/error-kind";
+import { errorKindOf } from "@/components/common/api-error";
+import { Button } from "@/components/ui/button";
+import { ImageOrFallback } from "@/components/common/image-or-fallback";
 import { CategoryChip } from "@/components/booth/category-chip";
 import { useT } from "@/lib/i18n/provider";
 import { cn } from "@/lib/utils";
@@ -31,6 +42,11 @@ export function BoothSearch({
   const t = useT();
   const [q, setQ] = useState("");
   const [results, setResults] = useState<BoothListItem[] | null>(null);
+  // 검색이 **실패한** 것과 **결과가 없는** 것은 다른 일이다. 예전엔 실패해도
+  // setResults([])로 떨어져 "'{q}' 검색 결과가 없어"라고 말했다 — 있는 부스를
+  // 없다고 한 셈이고, 사용자는 다른 이름을 계속 넣어보게 됐다.
+  const [failure, setFailure] = useState<unknown>(null);
+  const [retryKey, setRetryKey] = useState(0);
   const [loading, setLoading] = useState(false);
   const seq = useRef(0);
   const say = useCompanionStore((s) => s.saySpontaneous);
@@ -41,6 +57,7 @@ export function BoothSearch({
     const query = q.trim();
     if (query.length < 1) {
       setResults(null);
+      setFailure(null);
       setLoading(false);
       return;
     }
@@ -53,6 +70,7 @@ export function BoothSearch({
         )
         .then((page) => {
           if (id !== seq.current) return; // 최신 입력만 반영
+          setFailure(null);
           setResults(page.data);
           // 검색 첫 결과 = T6 트리거. 결과 목록 전체가 아니라 최상단 하나만
           // 대상으로 한다 — 검색 결과 개수만큼 발화하면 그게 더 잔소리다.
@@ -83,12 +101,16 @@ export function BoothSearch({
             if (line) say("searchHit", line, Date.now());
           }
         })
-        .catch(() => id === seq.current && setResults([]))
+        .catch((e: unknown) => {
+          if (id !== seq.current) return;
+          setResults(null);
+          setFailure(e);
+        })
         .finally(() => id === seq.current && setLoading(false));
     }, 280);
     return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [q, slug]);
+  }, [q, slug, retryKey]);
 
   const active = q.trim().length > 0;
 
@@ -127,12 +149,40 @@ export function BoothSearch({
         )}
       </div>
 
-      {active && results && (
+      {active && failure != null && (
+        <div className="space-y-2 rounded-2xl border border-border bg-card px-4 py-5 text-center shadow-[var(--shadow-card)]">
+          <p className="text-sm font-semibold">
+            {t(errorCopyKey(errorKindOf(failure), "title"))}
+          </p>
+          <p className="text-sm text-muted-foreground">
+            {t(errorCopyKey(errorKindOf(failure), "desc"))}
+          </p>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setRetryKey((n) => n + 1)}
+          >
+            <RotateCw className="size-4" />
+            {t("feed.searchFailedRetry")}
+          </Button>
+        </div>
+      )}
+
+      {active && failure == null && results && (
         <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-card)]">
           {results.length === 0 ? (
-            <p className="px-4 py-5 text-center text-sm text-muted-foreground">
-              {t("feed.searchEmpty", { q: q.trim() })}
-            </p>
+            // 막다른 길을 만들지 않는다 — 우리가 못 찾은 부스는 도면 번호로 찾을 수 있다.
+            <div className="space-y-2.5 px-4 py-5 text-center">
+              <p className="text-sm text-muted-foreground">
+                {t("feed.searchEmpty", { q: q.trim() })}
+              </p>
+              <Button variant="outline" size="sm" asChild>
+                <Link href={`/exhibitions/${slug}/map`}>
+                  <MapPin className="size-4" />
+                  {t("feed.searchEmptyAction")}
+                </Link>
+              </Button>
+            </div>
           ) : (
             results.map((b, i) => {
               const cat = categoryById[b.categoryId];
@@ -158,22 +208,19 @@ export function BoothSearch({
                         : "var(--secondary)",
                     }}
                   >
-                    {thumb ? (
-                      // eslint-disable-next-line @next/next/no-img-element -- 외부 CDN
-                      <img
-                        src={thumb}
-                        alt=""
-                        loading="lazy"
-                        className="size-full object-cover"
-                      />
-                    ) : (
-                      <span
-                        className="text-sm font-bold"
-                        style={{ color: cat?.color }}
-                      >
-                        {b.name.slice(0, 1)}
-                      </span>
-                    )}
+                    <ImageOrFallback
+                      src={thumb}
+                      alt=""
+                      className="size-full object-cover"
+                      fallback={
+                        <span
+                          className="text-sm font-bold"
+                          style={{ color: cat?.color }}
+                        >
+                          {b.name.slice(0, 1)}
+                        </span>
+                      }
+                    />
                   </span>
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-bold">{b.name}</p>

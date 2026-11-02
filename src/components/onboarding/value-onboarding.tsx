@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useCompanionStore } from "@/lib/stores/companion";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, CloudOff } from "lucide-react";
 import { api } from "@/lib/api/client";
 import { useT } from "@/lib/i18n/provider";
 import { RoamMotion, THINKING_POOL } from "@/components/companion/roam-motion";
@@ -22,7 +22,7 @@ import { RHYTHMS, DEFAULT_RHYTHM, type Rhythm } from "@/lib/feed/rhythm";
 import { cn } from "@/lib/utils";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 
-type Phase = "intro" | "quiz" | "rhythm" | "saving" | "result";
+type Phase = "intro" | "quiz" | "rhythm" | "saving" | "saveFailed" | "result";
 
 /**
  * 전시별 관람 가치 온보딩 — Romi 중앙 대화형(고정 4문항, n/N 진행바). 질문 전에 왜 묻는지
@@ -119,7 +119,11 @@ export function ValueOnboarding({
       // 비로그인 저장 경로는 없다.
       await api.post("/api/me/values", { exhibitionSlug: slug, values });
     } catch {
-      // 실패해도 결과로 진행.
+      // 예전엔 실패해도 그냥 결과 화면으로 넘어갔다 — 네 질문에 답하고 축하 화면까지
+      // 본 사람의 답이 아무 데도 안 남았고, 본인은 끝난 줄 알았다. 저장이 안 됐으면
+      // 안 됐다고 말하고 다시 보낼 길을 준다(답은 sessionStorage에 그대로 있다).
+      setPhase("saveFailed");
+      return;
     }
     setCompletedThisSession(true);
     setPhase("result");
@@ -149,7 +153,7 @@ export function ValueOnboarding({
         <button
           type="button"
           onClick={start}
-          className="flex w-full items-center gap-3 rounded-2xl bg-gradient-to-br from-primary to-[#4338ca] p-4 text-left text-primary-foreground shadow-[var(--shadow-pop)] active:scale-[0.99]"
+          className="flex w-full items-center gap-3 rounded-2xl bg-gradient-to-br from-primary to-[#4338ca] p-4 text-left text-primary-foreground shadow-[var(--shadow-pop)] press"
         >
           <span className="flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white/15 ring-1 ring-white/25">
             <RoamMotion src="/walk_think.webm" />
@@ -195,7 +199,7 @@ export function ValueOnboarding({
               <button
                 type="button"
                 onClick={() => setPhase("quiz")}
-                className="w-full rounded-2xl bg-primary px-5 py-4 text-center font-bold text-primary-foreground active:scale-[0.99]"
+                className="w-full rounded-2xl bg-primary px-5 py-4 text-center font-bold text-primary-foreground press active:bg-primary-pressed"
               >
                 {t("valueOnboarding.youOk")}
               </button>
@@ -228,7 +232,7 @@ export function ValueOnboarding({
                       type="button"
                       onClick={() => complete(r.key)}
                       className={cn(
-                        "flex items-center gap-3 rounded-2xl border border-border bg-card px-5 py-4 text-left active:scale-[0.99]",
+                        "flex items-center gap-3 rounded-2xl border border-border bg-card px-5 py-4 text-left press active:bg-card-pressed",
                       )}
                     >
                       <div className="min-w-0 flex-1">
@@ -241,6 +245,37 @@ export function ValueOnboarding({
                     </button>
                   ))}
                 </div>
+              </div>
+            </div>
+          )}
+          {phase === "saveFailed" && (
+            <div className="flex flex-1 flex-col px-6 pb-8 pt-safe">
+              <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
+                <CloudOff className="size-10 text-muted-foreground" aria-hidden />
+                <h2 className="text-xl font-extrabold leading-snug">
+                  {t("valueOnboarding.saveFailed")}
+                </h2>
+                <p className="max-w-[20rem] text-[15px] leading-relaxed text-muted-foreground">
+                  {t("valueOnboarding.saveFailedDesc")}
+                </p>
+              </div>
+              <div className="flex flex-col gap-2">
+                <button
+                  type="button"
+                  onClick={() => void complete(rhythm)}
+                  className="w-full rounded-2xl bg-primary px-5 py-4 text-center font-bold text-primary-foreground press active:bg-primary-pressed"
+                >
+                  {t("valueOnboarding.saveRetry")}
+                </button>
+                {/* 닫아도 진입 카드가 그대로 남는다(completedThisSession를 안 켠다) —
+                    나중에 다시 열면 고른 답이 이어진다. */}
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  className="w-full rounded-2xl px-5 py-3.5 text-center font-semibold text-muted-foreground press active:bg-secondary"
+                >
+                  {t("valueOnboarding.saveLater")}
+                </button>
               </div>
             </div>
           )}

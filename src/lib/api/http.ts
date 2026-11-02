@@ -7,7 +7,8 @@ import {
   verifyAdminEmail,
   verifySignedUserId,
 } from "@/lib/auth/user-cookie";
-import { ZodError, type ZodType } from "zod";
+import { type ZodType } from "zod";
+import { flattenZod } from "@/lib/api/field-errors";
 import { SESSION_COOKIE, USER_COOKIE, ADMIN_COOKIE } from "@/lib/constants";
 import { adminEmailAllowlist, adminEmailGateActive } from "@/lib/env";
 import type { ApiError, ApiErrorCode } from "@/lib/types";
@@ -72,15 +73,6 @@ export async function parseBody<T>(
     };
   }
   return { ok: true, data: result.data };
-}
-
-export function flattenZod(error: ZodError): Record<string, string[]> {
-  const fields: Record<string, string[]> = {};
-  for (const issue of error.issues) {
-    const key = issue.path.join(".") || "_";
-    (fields[key] ??= []).push(issue.message);
-  }
-  return fields;
 }
 
 /** Read the anonymous session id from the cookie (or null). */

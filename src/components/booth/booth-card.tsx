@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ImageOrFallback } from "@/components/common/image-or-fallback";
 import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Icon } from "@/components/common/icon";
@@ -79,20 +80,22 @@ export function BoothCard({
             : "var(--secondary)",
         }}
       >
-        {thumb ? (
-          // 작품/로고 썸네일(있으면) — 일러스트·창작 부스는 이미지가 첫인상.
-          // eslint-disable-next-line @next/next/no-img-element -- 외부 CDN 이미지
-          <img
-            src={thumb}
-            alt=""
-            loading="lazy"
-            className="size-full object-cover"
-          />
-        ) : category ? (
-          <Icon name={category.icon} className="size-5" />
-        ) : (
-          <span className="text-base font-bold">{booth.name.slice(0, 1)}</span>
-        )}
+        {/* 작품/로고 썸네일(있으면) — 일러스트·창작 부스는 이미지가 첫인상.
+            못 불러오면 아래 대체 표시로 돌아간다. */}
+        <ImageOrFallback
+          src={thumb}
+          alt=""
+          className="size-full object-cover"
+          fallback={
+            category ? (
+              <Icon name={category.icon} className="size-5" />
+            ) : (
+              <span className="text-base font-bold">
+                {booth.name.slice(0, 1)}
+              </span>
+            )
+          }
+        />
         {order != null && (
           <span className="absolute -left-1.5 -top-1.5 flex size-5 items-center justify-center rounded-full bg-primary text-[11px] font-bold text-primary-foreground">
             {order}

@@ -49,3 +49,16 @@ export function pickSeriesRepresentative(
     return [...group].sort((a, b) => a.startDate.localeCompare(b.startDate))[0];
   });
 }
+
+/**
+ * 오늘부터 전시 시작까지 남은 날 수. 이미 시작했으면 0.
+ *
+ * 날짜 문자열(YYYY-MM-DD)만 쓴다 — `exhibitionStatus`와 같은 기준이어야
+ * "D-1인데 아직 안 열렸다"와 "오늘 열렸다"가 어긋나지 않는다. 시간대·시각은
+ * 보지 않는다(전시는 날짜 단위로 열고 닫는다).
+ */
+export function daysUntilStart(startDate: string, todayISO: string): number {
+  if (todayISO >= startDate) return 0;
+  const ms = Date.parse(`${startDate}T00:00:00Z`) - Date.parse(`${todayISO}T00:00:00Z`);
+  return Math.max(0, Math.round(ms / 86_400_000));
+}
