@@ -227,8 +227,6 @@ const ko = {
   home: {
     headingA: "어떤 전시부터",
     headingB: "둘러볼까?",
-    subtitle:
-      "너한테 의미 있을 부스를 골라 보여줄게. 관심 가는 곳부터 같이 둘러보자.",
     emptyTitle: "아직 열린 전시가 없어",
     emptyDesc: "곧 새 전시가 열리면 같이 보러 가자.",
     recommended: "로미 추천",
@@ -246,6 +244,13 @@ const ko = {
     statusUpcoming: "다가오는 전시",
     statusEnded: "지난 전시",
     showMore: "더보기 ({n})",
+    endedCount: "지난 전시 {n}개",
+    signalBooths: "부스 {n}곳",
+    signalGrounded: "로미가 아는 곳 {n}",
+    signalDaysLeft: "{n}일 남음",
+    signalLastDay: "오늘까지",
+    enter: "들어가기",
+    browse: "둘러보기",
     recommendedReason: "네가 고른 관람 성향을 기준으로 먼저 보여줄게.",
     singleReason:
       "지금 열 수 있는 전시는 하나야. 안에서는 네 취향에 맞춰 부스를 골라줄게.",
@@ -258,6 +263,7 @@ const ko = {
     heading: "내가 미리 골라뒀어",
     subFallback: "네 반응 볼수록 더 잘 맞춰줄게.",
     memoryLine: "요즘 {values}에 끌리더라 — 그쪽으로 골라왔어.",
+    progress: "취향 기록 {judged}/{total}",
     entryWithValues:
       "너는 {values} 쪽에 끌리는 편이었지. 그 기준으로 이 전시를 먼저 훑어봤어.",
     entryNoValues:
@@ -366,13 +372,15 @@ const ko = {
     tabReviews: "리뷰",
     recordHeading: "나의 기록",
     postsHeading: "방문자 정보",
-    mapCard: "관심 밀도 지도",
-    mapCardDesc: "전시장을 직접 둘러보고 끌리는 부스에 반응해봐",
     aboutQuoteBy: "공개 자료로 정리한 소개",
     aboutEmpty: "아직 이 부스를 소개할 자료를 찾지 못했어. 주최 측 목록엔 이름과 위치만 있어.",
     otherExhibitions: "다른 행사에서도",
-    notesCard: "내 메모장",
-    notesCardDesc: "가봤거나 남겨둔 부스, 적어둔 메모를 여기서 봐",
+  },
+  exhibitionUtil: {
+    label: "전시 바로가기",
+    map: "지도",
+    notes: "메모장",
+    search: "부스 찾기",
   },
   notFound: {
     title: "찾을 수 없는 페이지야",
@@ -1009,8 +1017,6 @@ const en: Dict = {
   home: {
     headingA: "Which fair",
     headingB: "shall we explore?",
-    subtitle:
-      "I'll pick booths that matter to you. Let's start where your interest is.",
     emptyTitle: "No open fairs yet",
     emptyDesc: "When a new fair opens, we'll go together.",
     recommended: "Romi's pick",
@@ -1023,6 +1029,13 @@ const en: Dict = {
     statusUpcoming: "Upcoming",
     statusEnded: "Past fairs",
     showMore: "Show {n} more",
+    endedCount: "{n} past exhibitions",
+    signalBooths: "{n} booths",
+    signalGrounded: "{n} Romi knows",
+    signalDaysLeft: "{n} days left",
+    signalLastDay: "Last day",
+    enter: "Enter",
+    browse: "Take a look",
     recommendedReason: "Showing this first based on the taste you chose.",
     singleReason:
       "There's only one fair open right now. Inside, I'll pick booths to fit you.",
@@ -1035,6 +1048,7 @@ const en: Dict = {
     heading: "I picked these for you",
     subFallback: "The more you react, the better I'll fit.",
     memoryLine: "You've been drawn to {values} lately — I picked around that.",
+    progress: "Taste logged {judged}/{total}",
     entryWithValues:
       "You lean toward {values}. I skimmed this fair with that in mind first.",
     entryNoValues:
@@ -1141,13 +1155,15 @@ const en: Dict = {
     tabReviews: "Reviews",
     recordHeading: "My notes",
     postsHeading: "Visitor posts",
-    mapCard: "Interest-density map",
-    mapCardDesc: "Explore the venue and react to booths that draw you",
     aboutQuoteBy: "Summarised from public sources",
     aboutEmpty: "We couldn\u2019t find anything about this booth yet \u2014 the organizer\u2019s list only has its name and location.",
     otherExhibitions: "At other fairs too",
-    notesCard: "My notes",
-    notesCardDesc: "Booths you've seen or saved, and what you wrote",
+  },
+  exhibitionUtil: {
+    label: "Exhibition shortcuts",
+    map: "Map",
+    notes: "Notes",
+    search: "Find a booth",
   },
   notFound: {
     title: "Page not found",

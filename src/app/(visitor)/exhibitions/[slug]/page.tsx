@@ -1,12 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import {
-  CalendarDays,
-  MapPin,
-  Map as MapIcon,
-  NotebookPen,
-  ChevronRight,
-} from "lucide-react";
+import { CalendarDays, MapPin, ChevronRight } from "lucide-react";
 import { format } from "date-fns";
 import { CONFIDENT_THRESHOLD } from "@/lib/constants";
 import { getExhibitionCached } from "@/lib/repositories/cached";
@@ -14,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { Toolbar } from "@/components/common/toolbar";
 import { AccountButton } from "@/components/auth/account-button";
 import { InterestFeed } from "@/components/feed/interest-feed";
-import { BoothSearch } from "@/components/feed/booth-search";
+import { ExhibitionUtilityBar } from "@/components/exhibition/exhibition-utility-bar";
 import { ValueOnboarding } from "@/components/onboarding/value-onboarding";
 import { FinishVisit } from "@/components/companion/finish-visit";
 import { ExhibitionStatusNotice } from "@/components/exhibition/exhibition-status-notice";
@@ -115,7 +109,7 @@ export default async function ExhibitionDetailPage({
             here just by setting coverImageUrl — no per-fair code. In landscape
             it becomes the full-height left column. */}
         <div
-          className="relative flex h-52 items-end p-5 landscape:h-auto landscape:flex-1"
+          className="relative flex h-[120px] flex-col items-start justify-end gap-0.5 p-4 landscape:h-auto landscape:flex-1 landscape:p-5"
           style={
             exhibition.coverImageUrl
               ? {
@@ -150,14 +144,16 @@ export default async function ExhibitionDetailPage({
               h1이 둘이 되고, 포스터에 박힌 전시명 위에 같은 글자가 겹쳐 찍힌다.
               포스터가 있으면 포스터가 제목이고, 없으면 그라디언트 위에 이름을 쓴다. */}
           {!exhibition.coverImageUrl && (
-            <p className="relative text-2xl font-extrabold leading-tight text-white drop-shadow-sm">
+            <p className="relative line-clamp-2 text-2xl font-extrabold leading-tight text-white drop-shadow-sm">
               {exhibition.name}
             </p>
           )}
         </div>
 
-        {/* pb-28: 하단 상주 컴패니언 필이 카드/버튼을 가리지 않도록 여백 확보. */}
-        <div className="space-y-4 px-[var(--spacing-global-gutter)] pt-5 pb-28 landscape:w-[420px] landscape:shrink-0 landscape:self-stretch landscape:overflow-y-auto landscape:border-l landscape:border-border">
+        {/* 하단 여백: 상주 컴패니언 필이 카드/버튼을 가리지 않게(globals.css 토큰). */}
+        <div
+          className="space-y-4 px-[var(--spacing-global-gutter)] pt-5 pb-[var(--spacing-companion-clearance)] landscape:w-[420px] landscape:shrink-0 landscape:self-stretch landscape:overflow-y-auto landscape:border-l landscape:border-border"
+        >
           <ExhibitionStatusNotice
             status={status}
             startDate={exhibition.startDate}
@@ -165,16 +161,17 @@ export default async function ExhibitionDetailPage({
             todayISO={today}
           />
 
-          <section className="space-y-1.5">
-            <div className="flex items-center gap-2 text-sm font-medium">
-              <MapPin className="size-4 text-muted-foreground" aria-hidden />
-              {exhibition.venue}
-            </div>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <CalendarDays className="size-4" aria-hidden />
-              {range}
-            </div>
-          </section>
+          {/* 장소·기간 한 줄. 원래 두 줄(space-y-1.5)이었고, 포스터 스크림으로
+              옮겨 봤지만 120px 띠에서는 포스터 보기 버튼과 폭을 다퉈 장소명이
+              7자쯤에서 잘렸다 — 실제 장소는 15~29자(시각폭 161~259px)라 "코엑스 마곡 컨벤션센터
+              1층"이 "코엑스 마곡…"이 된다. 어느 홀·몇 층인지가 정보의 핵심이라
+              잘라선 안 된다. 두 줄을 한 줄로 합치는 것까지가 절약의 한계다. */}
+          <p className="flex items-start gap-1.5 text-sm text-muted-foreground">
+            <MapPin className="mt-0.5 size-4 shrink-0" aria-hidden />
+            <span className="min-w-0 flex-1">{exhibition.venue}</span>
+            <CalendarDays className="mt-0.5 size-3.5 shrink-0" aria-hidden />
+            <span className="shrink-0 tabular">{range}</span>
+          </p>
 
           {/* 상단 고정 취향 배너는 걷어냈다 — 로미의 취향 발화는 하단 상주 컴패니언이
               휘발성으로 건넨다(맥락 인사를 화면 상단에 박아두지 않는다). 여기서는
@@ -189,62 +186,28 @@ export default async function ExhibitionDetailPage({
             />
           )}
 
-          <div className="space-y-2.5">
-            {/* 가치 온보딩은 결과(마인드맵)·저장 둘 다 계정에 묶여있다(브레인이
-                userId 기준) — 비로그인이면 끝나도 남는 게 없어 "약속하고 안 지킨"
-                모양이 된다. 로그인해야만 뜬다. */}
-            {user && (
-              <ValueOnboarding
-                slug={slug}
-                exhibitionName={exhibition.name}
-                hallCount={detail.halls.length}
-                themes={detail.categories
-                  .slice(0, 3)
-                  .map((c) => c.name)
-                  .join("·")}
-                hasChosenValues={topValues.length > 0}
-              />
-            )}
+          {/* 가치 온보딩은 결과(마인드맵)·저장 둘 다 계정에 묶여있다(브레인이
+              userId 기준) — 로그인해야만 뜬다. 보일지 말지는 컴포넌트 안쪽 게이트가
+              정한다: 바깥에 마운트 조건을 따로 두지 않는다(다시
+              걸면 판정 후 가치를 못 고른다). */}
+          {user && (
+            <ValueOnboarding
+              slug={slug}
+              exhibitionName={exhibition.name}
+              hallCount={detail.halls.length}
+              themes={detail.categories
+                .slice(0, 3)
+                .map((c) => c.name)
+                .join("·")}
+              hasChosenValues={topValues.length > 0}
+            />
+          )}
 
-            <Link
-              href={`/exhibitions/${slug}/map`}
-              className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-[var(--shadow-card)] press active:bg-card-pressed"
-            >
-              <div className="flex size-11 items-center justify-center rounded-xl bg-secondary">
-                <MapIcon className="size-5 text-foreground" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="font-bold">{t("booth.mapCard")}</p>
-                <p className="text-sm text-muted-foreground">
-                  {t("booth.mapCardDesc")}
-                </p>
-              </div>
-              <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
-            </Link>
-
-            {/* 메모장 — 예전엔 지도 상단바에서 열었는데, 지도는 현장에서 방향을 잡는
-                화면이라 chrome을 걷어냈다(ux-writing §379). 진입점을 여기로 옮긴다. */}
-            {user && (
-              <Link
-                href={`/exhibitions/${slug}/notes`}
-                className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-[var(--shadow-card)] press active:bg-card-pressed"
-              >
-                <div className="flex size-11 items-center justify-center rounded-xl bg-secondary">
-                  <NotebookPen className="size-5 text-foreground" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="font-bold">{t("booth.notesCard")}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {t("booth.notesCardDesc")}
-                  </p>
-                </div>
-                <ChevronRight className="size-5 shrink-0 text-muted-foreground" />
-              </Link>
-            )}
-          </div>
-
-          {/* 피드 상단 부스 검색 — 추천 몇 개 말고 전체 부스를 이름·작가로 찾기. */}
-          {user && <BoothSearch slug={slug} categoryById={categoryById} />}
+          <ExhibitionUtilityBar
+            slug={slug}
+            showNotes={!!user}
+            categoryById={categoryById}
+          />
 
           {/* 비로그인 — 인기순 피드는 보여준다(정보 열람은 계정 벽 없이).
               취향 기록·개인화만 로그인해야 되는 거라 그 사실만 짧게 안내. */}
@@ -264,6 +227,38 @@ export default async function ExhibitionDetailPage({
               <ChevronRight className="size-5 shrink-0 text-primary" />
             </Link>
           )}
+          {user && taste.judgedCount > 0 && (
+            <div className="space-y-1">
+              <div
+                className="h-1 overflow-hidden rounded-full bg-secondary"
+                role="progressbar"
+                aria-valuenow={taste.judgedCount}
+                aria-valuemin={0}
+                aria-valuemax={taste.judgedCount + feedItems.length}
+                aria-label={t("feed.progress", {
+                  judged: taste.judgedCount,
+                  total: taste.judgedCount + feedItems.length,
+                })}
+              >
+                <div
+                  className="h-full bg-primary"
+                  style={{
+                    width: `${Math.round(
+                      (taste.judgedCount /
+                        Math.max(1, taste.judgedCount + feedItems.length)) *
+                        100,
+                    )}%`,
+                  }}
+                />
+              </div>
+              <p aria-hidden="true" className="text-xs text-muted-foreground">
+                {t("feed.progress", {
+                  judged: taste.judgedCount,
+                  total: taste.judgedCount + feedItems.length,
+                })}
+              </p>
+            </div>
+          )}
           <InterestFeed
             items={feedItems}
             categoryById={categoryById}
@@ -276,6 +271,9 @@ export default async function ExhibitionDetailPage({
           {/* 피드를 다 비워도(성실히 판단 다 함) 회고로 못 가면 안 된다 — "판단이
               하나라도 있었나"로 게이트를 바꾼다. feedItems가 남았는지는 회고와
               무관하다(로미 P0 브리프 §1). */}
+          {/* 게이트는 FinishVisit 안쪽(initialJudgedCount || 클라 tasteJudged)에 있다.
+              여기 바깥 조건을 걸면 새로고침 없이 첫 반응을 한 방문객이
+              회고로 못 간다. */}
           {/* 아직 안 열린 전시에는 마칠 관람이 없다. 끝난 전시에는 남는다 —
               현장에서 회고를 못 하고 돌아온 사람의 기록이 사라지면 안 된다. */}
           {user && status !== "upcoming" && (

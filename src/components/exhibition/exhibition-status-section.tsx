@@ -1,9 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { ChevronDown } from "lucide-react";
 import { ExhibitionCard } from "@/components/exhibition/exhibition-card";
 import { useT } from "@/lib/i18n/provider";
 import type { Exhibition } from "@/lib/types";
+import type { ExhibitionStatusKind } from "@/lib/exhibition/status";
+import type { ExhibitionSignals } from "@/lib/exhibition/signals";
 
 const VISIBLE_CAP = 3;
 
@@ -14,23 +17,44 @@ const VISIBLE_CAP = 3;
  */
 export function ExhibitionStatusSection({
   title,
+  status,
   exhibitions,
   recommendedSlug,
   recommendedLabel,
   recommendedReason,
   showBadge,
+  signalsBySlug,
 }: {
   title: string;
+  status: ExhibitionStatusKind;
   exhibitions: Exhibition[];
   recommendedSlug?: string;
   recommendedLabel?: string;
   recommendedReason?: string | null;
   showBadge?: boolean;
+  /** slug → 결정 근거. 진행 중 카드만 쓴다. */
+  signalsBySlug?: Record<string, ExhibitionSignals>;
 }) {
   const t = useT();
   const [expanded, setExpanded] = useState(false);
+  // 지난 전시는 결정 대상이 아니라 기본 접힘. 펼친 뒤엔 기존 VISIBLE_CAP이 그대로 돈다.
+  const [open, setOpen] = useState(status !== "ended");
 
   if (exhibitions.length === 0) return null;
+
+  if (!open) {
+    return (
+      <button
+        type="button"
+        aria-expanded={false}
+        onClick={() => setOpen(true)}
+        className="flex min-h-11 w-full items-center justify-between px-1 text-sm font-bold text-muted-foreground active:opacity-70"
+      >
+        {t("home.endedCount", { n: exhibitions.length })}
+        <ChevronDown className="size-4" aria-hidden />
+      </button>
+    );
+  }
 
   const visible = expanded ? exhibitions : exhibitions.slice(0, VISIBLE_CAP);
   const hiddenCount = exhibitions.length - visible.length;
@@ -43,11 +67,13 @@ export function ExhibitionStatusSection({
           <div key={ex.id} className="space-y-1.5">
             <ExhibitionCard
               exhibition={ex}
+              status={status}
               recommended={ex.slug === recommendedSlug && !!showBadge}
               recommendedLabel={recommendedLabel}
+              signals={signalsBySlug?.[ex.slug]}
             />
             {ex.slug === recommendedSlug && recommendedReason && (
-              <p className="px-1 text-xs leading-relaxed text-muted-foreground">
+              <p className="px-1 type-body text-muted-foreground">
                 {recommendedReason}
               </p>
             )}

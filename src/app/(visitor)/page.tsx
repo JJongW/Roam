@@ -6,7 +6,6 @@ import { EmptyState } from "@/components/common/states";
 import { AccountButton } from "@/components/auth/account-button";
 import { LegalLinks } from "@/components/common/legal-links";
 import { LanguageSwitch } from "@/components/i18n/language-switch";
-import { RoamMotion } from "@/components/companion/roam-motion";
 import { getI18n } from "@/lib/i18n/server";
 import { getCurrentUser } from "@/lib/api/session";
 import {
@@ -16,6 +15,7 @@ import {
   matchReason,
   type ExhibitionMatch,
 } from "@/lib/feed/exhibition-match";
+import { exhibitionSignals, type ExhibitionSignals } from "@/lib/exhibition/signals";
 import { todayISO } from "@/lib/exhibition/current";
 import {
   exhibitionStatus,
@@ -41,24 +41,40 @@ export default async function HomePage() {
   // "네가 고른 관람 성향을 기준으로" 라는 문장을 붙였다. 정렬에 취향이 안 들어갔으므로
   // 거짓이었다. 이제 실제로 겹치는 가치가 있을 때만 추천이라 부른다.
   //
-  // 부스를 읽어야 전시의 가치 프로필이 나오는데(카테고리엔 전시 링크가 없다),
-  // 그 비용은 값어치가 있을 때만 낸다 — 로그인 + 브레인 관심이 있을 때만.
+  // 부스를 읽어야 전시의 가치 프로필·신호(부스 수·로미 준비도)가 나오는데(카테고리엔
+  // 전시 링크가 없다), 그 비용은 값어치가 있을 때만 낸다 — 두 단계:
+  //  · 진행 중: 항상 읽는다. 신호는 취향 없는 첫 방문객의 결정 근거다.
+  //  · 예정: 로그인 + 브레인 관심이 있을 때만, 매치(추천·정렬)용으로만. 행이라 신호는 없다.
+  //  · 종료: 읽지 않는다. 행으로만 그려지고 추천에서도 빠진다.
+  // 전시당 읽기는 최대 한 번 — 같은 배열로 매치와 신호를 둘 다 낸다.
   const brain = user ? await repo.getUserBrain(user.id) : null;
   const hasInterest = (brain?.interests.length ?? 0) > 0;
 
-  let exhibitions = byStartDate(rawExhibitions);
-  let matchBySlug = new Map<string, ExhibitionMatch>();
-  if (hasInterest) {
-    const matches = await Promise.all(
-      rawExhibitions.map(async (ex) => {
-        const booths = await repo.listBoothsByExhibitionId(ex.id);
-        return [
+  const today = todayISO();
+  // 상태 판정은 목록 순서와 무관하니 정렬 전에 묶어도 안전하다.
+  const statusOf = (ex: (typeof rawExhibitions)[number]) =>
+    exhibitionStatus(ex, today);
+  const matchBySlug = new Map<string, ExhibitionMatch>();
+  const signalsBySlug: Record<string, ExhibitionSignals> = {};
+  await Promise.all(
+    rawExhibitions.map(async (ex) => {
+      const status = statusOf(ex);
+      if (status === "ended" || (status === "upcoming" && !hasInterest)) return;
+      const booths = await repo.listBoothsByExhibitionId(ex.id);
+      if (hasInterest) {
+        matchBySlug.set(
           ex.slug,
           matchExhibition(brain, exhibitionValueProfile(booths)),
-        ] as const;
-      }),
-    );
-    matchBySlug = new Map(matches);
+        );
+      }
+      if (status === "ongoing") {
+        signalsBySlug[ex.slug] = exhibitionSignals(ex, booths, today);
+      }
+    }),
+  );
+
+  let exhibitions = byStartDate(rawExhibitions);
+  if (hasInterest) {
     // 겹침이 있는 전시를 점수 순으로 앞에, 나머지는 개막 임박 순으로 뒤에.
     const scored = (ex: (typeof rawExhibitions)[number]) =>
       matchBySlug.get(ex.slug)?.score ?? 0;
@@ -66,9 +82,8 @@ export default async function HomePage() {
       (a, b) => scored(b) - scored(a) || a.startDate.localeCompare(b.startDate),
     );
   }
-  const today = todayISO();
   const byStatus = (status: "upcoming" | "ongoing" | "ended") =>
-    exhibitions.filter((ex) => exhibitionStatus(ex, today) === status);
+    exhibitions.filter((ex) => statusOf(ex) === status);
 
   const ongoing = pickSeriesRepresentative(byStatus("ongoing"), "ongoing");
   const upcoming = pickSeriesRepresentative(byStatus("upcoming"), "upcoming");
@@ -129,31 +144,56 @@ export default async function HomePage() {
         <AccountButton />
       </header>
 
-      {/* Romi 히어로 — 냅다 전시가 아니라 로미가 먼저 맞이한다.
-          미로그인일 땐 인사말 대신 **앱 이름과 목적**을 세운다: 처음 온 사람(그리고
-          Google OAuth 심사관·크롤러)에게는 "어떤 전시부터 볼까?"가 이 앱이 뭔지 알려주지
-          않는다. 로그인한 사람에겐 그 소개가 매번 소음이므로 원래 인사말을 유지한다. */}
-      <section className="flex flex-col items-center gap-4 px-6 pb-4 pt-12 text-center">
-        <span className="flex size-32 items-center justify-center overflow-hidden rounded-[2.5rem]">
-          <RoamMotion src="/headbunting.webm" />
-        </span>
-        {user ? (
-          <>
-            <h1 className="text-2xl font-extrabold leading-snug">
-              {t("home.heroGreeting")}
-            </h1>
-            <p className="max-w-[18rem] text-[15px] leading-relaxed text-muted-foreground">
-              {t("home.subtitle")}
-            </p>
-          </>
+      {/* 히어로 — 주목 상위 구간은 전시가 쓴다. 마스코트 애니메이션은 뺐다.
+          미로그인일 땐 **앱 이름과 목적**을 유지한다: Google OAuth 심사가 홈의 앱 이름이
+          동의 화면과 일치하는지 직접 확인하고 크롤러도 여기서 서비스를 읽는다. 크기만 줄인다. */}
+      {user ? (
+        <section className="px-[var(--spacing-global-gutter)] pb-[var(--spacing-component-default)] pt-[var(--spacing-nav-to-title)]">
+          <h1 className="type-body-lg font-bold">{t("home.heroGreeting")}</h1>
+        </section>
+      ) : (
+        <section className="px-[var(--spacing-global-gutter)] pb-[var(--spacing-component-default)] pt-[var(--spacing-nav-to-title)]">
+          <h1 className="text-2xl font-extrabold tracking-tight">Roam</h1>
+          <p className="type-body mt-1 text-muted-foreground">
+            {t("home.tagline")}
+          </p>
+        </section>
+      )}
+
+      <section className="space-y-5 px-[var(--spacing-global-gutter)] pb-6 pt-2">
+        {exhibitions.length === 0 ? (
+          <EmptyState
+            title={t("home.emptyTitle")}
+            description={t("home.emptyDesc")}
+          />
         ) : (
           <>
-            <h1 className="text-[2rem] font-extrabold leading-none tracking-tight">
-              Roam
-            </h1>
-            <p className="max-w-[20rem] text-[15px] leading-relaxed text-muted-foreground">
-              {t("home.tagline")}
-            </p>
+            <ExhibitionStatusSection
+              title={t("home.statusOngoing")}
+              status="ongoing"
+              exhibitions={ongoing}
+              recommendedSlug={top?.slug}
+              recommendedLabel={t("home.recommended")}
+              showBadge={topReason !== null}
+              recommendedReason={topStatus === "ongoing" ? topReasonText : null}
+              signalsBySlug={signalsBySlug}
+            />
+            <ExhibitionStatusSection
+              title={t("home.statusUpcoming")}
+              status="upcoming"
+              exhibitions={upcoming}
+              recommendedSlug={top?.slug}
+              recommendedLabel={t("home.recommended")}
+              showBadge={topReason !== null}
+              recommendedReason={
+                topStatus === "upcoming" ? topReasonText : null
+              }
+            />
+            <ExhibitionStatusSection
+              title={t("home.statusEnded")}
+              status="ended"
+              exhibitions={ended}
+            />
           </>
         )}
       </section>
@@ -177,40 +217,6 @@ export default async function HomePage() {
           </Link>
         </div>
       )}
-
-      <section className="space-y-5 px-[var(--spacing-global-gutter)] pb-6 pt-2">
-        {exhibitions.length === 0 ? (
-          <EmptyState
-            title={t("home.emptyTitle")}
-            description={t("home.emptyDesc")}
-          />
-        ) : (
-          <>
-            <ExhibitionStatusSection
-              title={t("home.statusOngoing")}
-              exhibitions={ongoing}
-              recommendedSlug={top?.slug}
-              recommendedLabel={t("home.recommended")}
-              showBadge={topReason !== null}
-              recommendedReason={topStatus === "ongoing" ? topReasonText : null}
-            />
-            <ExhibitionStatusSection
-              title={t("home.statusUpcoming")}
-              exhibitions={upcoming}
-              recommendedSlug={top?.slug}
-              recommendedLabel={t("home.recommended")}
-              showBadge={topReason !== null}
-              recommendedReason={
-                topStatus === "upcoming" ? topReasonText : null
-              }
-            />
-            <ExhibitionStatusSection
-              title={t("home.statusEnded")}
-              exhibitions={ended}
-            />
-          </>
-        )}
-      </section>
 
       {/* 홈에서 개인정보처리방침·약관으로 가는 길 — Google OAuth 인증의 명시
           요구사항이다. 링크가 없으면 심사관에겐 없는 문서와 같다. 언어 전환도 여기 —
