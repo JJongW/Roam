@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation";
+import { ImageOrFallback } from "@/components/common/image-or-fallback";
 import { Ticket, ExternalLink, Globe } from "lucide-react";
 import { getBoothDetailCached } from "@/lib/repositories/cached";
 import { getRepository } from "@/lib/repositories";
 import Link from "next/link";
-import { AppBar } from "@/components/common/app-bar";
+import { Toolbar } from "@/components/common/toolbar";
 import { BookmarkButton } from "@/components/booth/bookmark-button";
 import { BoothAiSummary } from "@/components/booth/booth-ai-summary";
 import { boothAbout } from "@/lib/booth/about";
@@ -58,7 +59,7 @@ export default async function BoothDetailPage({ params }: Props) {
       {/* URL에 전시 slug가 없는 화면이라, 컴패니언 바 클릭 계측이 전시를 알 수 있게
           이 화면이 아는 exhibitionId를 스토어로 흘려보낸다. */}
       <BoothExhibitionContextBridge exhibitionId={booth.exhibitionId} />
-      <AppBar
+      <Toolbar
         title={booth.name}
         right={<BookmarkButton targetType="booth" targetId={booth.id} />}
       />
@@ -72,27 +73,27 @@ export default async function BoothDetailPage({ params }: Props) {
               background: `linear-gradient(135deg, ${category.color}22, transparent)`,
             }}
           >
-            {booth.logoUrl ? (
-              // 참가자 로고(있으면) — 카테고리 아이콘 대신 정체성이 바로 보인다.
-              // eslint-disable-next-line @next/next/no-img-element -- 외부 CDN 로고
-              <img
-                src={booth.logoUrl}
-                alt={booth.name}
-                className="size-16 shrink-0 rounded-2xl border border-border object-cover"
-              />
-            ) : (
-              <div
-                className="flex size-16 items-center justify-center rounded-2xl"
-                style={{
-                  backgroundColor: `${category.color}26`,
-                  color: category.color,
-                }}
-              >
-                <Icon name={category.icon} className="size-8" />
-              </div>
-            )}
+            {/* 참가자 로고(있으면) — 카테고리 아이콘 대신 정체성이 바로 보인다.
+                못 불러오면 아이콘으로 돌아간다. */}
+            <ImageOrFallback
+              src={booth.logoUrl}
+              alt={booth.name}
+              className="size-16 shrink-0 rounded-2xl border border-border object-cover"
+              fallback={
+                <div
+                  className="flex size-16 items-center justify-center rounded-2xl"
+                  style={{
+                    backgroundColor: `${category.color}26`,
+                    color: category.color,
+                  }}
+                >
+                  <Icon name={category.icon} className="size-8" />
+                </div>
+              }
+            />
             <div className="min-w-0">
-              <h1 className="truncate text-xl font-extrabold">{booth.name}</h1>
+              {/* 이름은 위 Toolbar의 큰 제목이 h1으로 말한다 — 여기 또 쓰면 한
+                  화면에 같은 이름이 두 번, h1도 둘이 된다. */}
               <p className="truncate text-sm text-muted-foreground">
                 {booth.company}
               </p>
@@ -305,7 +306,7 @@ export default async function BoothDetailPage({ params }: Props) {
                           href={booth.instagramUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-2 text-sm font-semibold active:scale-[0.98]"
+                          className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-2 text-sm font-semibold press active:bg-card-pressed"
                         >
                           <ExternalLink className="size-4 text-[#e1306c]" />{" "}
                           인스타그램
@@ -316,7 +317,7 @@ export default async function BoothDetailPage({ params }: Props) {
                           href={booth.websiteUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-2 text-sm font-semibold active:scale-[0.98]"
+                          className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-2 text-sm font-semibold press active:bg-card-pressed"
                         >
                           <Globe className="size-4 text-muted-foreground" />{" "}
                           웹사이트

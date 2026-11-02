@@ -217,7 +217,7 @@ export function JudgmentBar({
                   : undefined
               }
               onAnimationEnd={() => setJustSelected(null)}
-              className={`flex-1 scale-100 rounded-lg border py-1.5 text-xs font-semibold transition-all duration-200 active:scale-95 ${
+              className={`press flex-1 rounded-lg border py-1.5 text-xs font-semibold ${
                 active
                   ? btn.key === justSelected
                     ? "animate-in zoom-in-95 duration-300"

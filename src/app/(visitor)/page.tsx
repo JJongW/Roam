@@ -163,7 +163,7 @@ export default async function HomePage() {
         <div className="px-[var(--spacing-global-gutter)] pb-2">
           <Link
             href="/login?next=%2F"
-            className="flex items-center gap-3 rounded-2xl border border-primary/30 bg-primary/5 p-4 active:scale-[0.99]"
+            className="flex items-center gap-3 rounded-2xl border border-primary/30 bg-primary/5 p-4 press active:bg-accent"
           >
             <div className="min-w-0 flex-1">
               <p className="text-sm font-bold text-primary">

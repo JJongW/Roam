@@ -50,7 +50,7 @@ export function VisitOutcomeCards({ cards }: { cards: OutcomeCard[] }) {
       <button
         type="button"
         onClick={() => (isLast ? setDismissed(true) : setStep(step + 1))}
-        className="mt-3 w-full rounded-xl bg-primary py-2.5 text-center text-sm font-bold text-primary-foreground active:scale-[0.99]"
+        className="mt-3 w-full rounded-xl bg-primary py-2.5 text-center text-sm font-bold text-primary-foreground press active:bg-primary-pressed"
       >
         {isLast ? t("recap.outcomeDone") : t("recap.outcomeNext")}
       </button>

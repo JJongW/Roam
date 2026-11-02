@@ -22,7 +22,7 @@ export function PosterViewer({ src, name }: { src: string; name: string }) {
         aria-label={t("common.viewPoster")}
         // 아래쪽 — 위에 두면 포스터의 주최·후원 크레딧(보통 상단)을 가린다.
         // 히어로 하단은 스크림이 가장 진하고, 전시명 h1을 걷어내 비어 있다.
-        className="pointer-events-auto absolute bottom-3 right-3 z-10 flex items-center gap-1.5 rounded-full bg-black/45 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur active:scale-95"
+        className="pointer-events-auto absolute bottom-3 right-3 z-10 flex items-center gap-1.5 rounded-full bg-black/45 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur press"
       >
         <Expand className="size-3.5" />
         {t("common.viewPoster")}

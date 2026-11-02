@@ -11,12 +11,15 @@ import { format } from "date-fns";
 import { CONFIDENT_THRESHOLD } from "@/lib/constants";
 import { getExhibitionCached } from "@/lib/repositories/cached";
 import { cn } from "@/lib/utils";
-import { AppBar } from "@/components/common/app-bar";
+import { Toolbar } from "@/components/common/toolbar";
 import { AccountButton } from "@/components/auth/account-button";
 import { InterestFeed } from "@/components/feed/interest-feed";
 import { BoothSearch } from "@/components/feed/booth-search";
 import { ValueOnboarding } from "@/components/onboarding/value-onboarding";
 import { FinishVisit } from "@/components/companion/finish-visit";
+import { ExhibitionStatusNotice } from "@/components/exhibition/exhibition-status-notice";
+import { exhibitionStatus } from "@/lib/exhibition/status";
+import { todayISO } from "@/lib/exhibition/current";
 import { PosterViewer } from "@/components/exhibition/poster-viewer";
 import { HomeCompanionContextBridge } from "@/components/companion/home-companion-context";
 import { DEFAULT_RHYTHM, isRhythm } from "@/lib/feed/rhythm";
@@ -62,6 +65,9 @@ export default async function ExhibitionDetailPage({
   if (!detail) notFound();
 
   const { exhibition } = detail;
+  // 전시가 열려 있는지 — 아래 몇 가지가 "현장에서만" 뜻이 있다.
+  const today = todayISO();
+  const status = exhibitionStatus(exhibition, today);
   const range = `${format(new Date(exhibition.startDate), "yyyy.M.d")} – ${format(new Date(exhibition.endDate), "M.d")}`;
 
   // 브레인은 한 번만 읽고 피드 큐레이션에 그대로 넘긴다(예전엔 여기서 한 번, curateFeed
@@ -102,7 +108,7 @@ export default async function ExhibitionDetailPage({
 
   return (
     <div className="contents landscape:fixed landscape:inset-0 landscape:z-30 landscape:flex landscape:flex-col landscape:overflow-hidden landscape:bg-background">
-      <AppBar title={exhibition.name} right={<AccountButton />} />
+      <Toolbar title={exhibition.name} right={<AccountButton />} />
       <main className="flex-1 pb-8 landscape:flex landscape:min-h-0 landscape:flex-1 landscape:flex-row landscape:pb-0">
         {/* Hero = the fair's own poster when set (cover_image_url), else the
             brand gradient. Data-driven, so any added exhibition gets its poster
@@ -140,7 +146,7 @@ export default async function ExhibitionDetailPage({
               name={exhibition.name}
             />
           )}
-          {/* 이름은 위 AppBar가 이미 h1으로 말한다 — 여기 또 h1을 두면 한 페이지에
+          {/* 이름은 위 Toolbar가 이미 h1으로 말한다 — 여기 또 h1을 두면 한 페이지에
               h1이 둘이 되고, 포스터에 박힌 전시명 위에 같은 글자가 겹쳐 찍힌다.
               포스터가 있으면 포스터가 제목이고, 없으면 그라디언트 위에 이름을 쓴다. */}
           {!exhibition.coverImageUrl && (
@@ -152,6 +158,13 @@ export default async function ExhibitionDetailPage({
 
         {/* pb-28: 하단 상주 컴패니언 필이 카드/버튼을 가리지 않도록 여백 확보. */}
         <div className="space-y-4 px-[var(--spacing-global-gutter)] pt-5 pb-28 landscape:w-[420px] landscape:shrink-0 landscape:self-stretch landscape:overflow-y-auto landscape:border-l landscape:border-border">
+          <ExhibitionStatusNotice
+            status={status}
+            startDate={exhibition.startDate}
+            endDate={exhibition.endDate}
+            todayISO={today}
+          />
+
           <section className="space-y-1.5">
             <div className="flex items-center gap-2 text-sm font-medium">
               <MapPin className="size-4 text-muted-foreground" aria-hidden />
@@ -195,7 +208,7 @@ export default async function ExhibitionDetailPage({
 
             <Link
               href={`/exhibitions/${slug}/map`}
-              className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-[var(--shadow-card)] active:scale-[0.99]"
+              className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-[var(--shadow-card)] press active:bg-card-pressed"
             >
               <div className="flex size-11 items-center justify-center rounded-xl bg-secondary">
                 <MapIcon className="size-5 text-foreground" />
@@ -214,7 +227,7 @@ export default async function ExhibitionDetailPage({
             {user && (
               <Link
                 href={`/exhibitions/${slug}/notes`}
-                className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-[var(--shadow-card)] active:scale-[0.99]"
+                className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-[var(--shadow-card)] press active:bg-card-pressed"
               >
                 <div className="flex size-11 items-center justify-center rounded-xl bg-secondary">
                   <NotebookPen className="size-5 text-foreground" />
@@ -238,7 +251,7 @@ export default async function ExhibitionDetailPage({
           {!user && (
             <Link
               href={`/login?next=${encodeURIComponent(`/exhibitions/${slug}`)}`}
-              className="flex items-center gap-3 rounded-2xl border border-primary/30 bg-primary/5 p-4 active:scale-[0.99]"
+              className="flex items-center gap-3 rounded-2xl border border-primary/30 bg-primary/5 p-4 press active:bg-accent"
             >
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-bold text-primary">
@@ -263,7 +276,9 @@ export default async function ExhibitionDetailPage({
           {/* 피드를 다 비워도(성실히 판단 다 함) 회고로 못 가면 안 된다 — "판단이
               하나라도 있었나"로 게이트를 바꾼다. feedItems가 남았는지는 회고와
               무관하다(로미 P0 브리프 §1). */}
-          {user && (
+          {/* 아직 안 열린 전시에는 마칠 관람이 없다. 끝난 전시에는 남는다 —
+              현장에서 회고를 못 하고 돌아온 사람의 기록이 사라지면 안 된다. */}
+          {user && status !== "upcoming" && (
             <FinishVisit slug={slug} initialJudgedCount={taste.judgedCount} />
           )}
         </div>
