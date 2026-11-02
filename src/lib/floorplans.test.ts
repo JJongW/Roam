@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { FLOORPLANS } from "./floorplans";
+import { findBoothOverlaps } from "./floorplan/overlap";
 import { aisleRoute } from "./aisle-route";
 import { booths } from "./mock/seed";
 import sibf from "./floorplan-sibf.json";
@@ -231,5 +232,77 @@ describe("HOUSE ARCHIVE floorplan", () => {
         if (ox > 2 && oy > 2) bad.push(`${a.code}×${b.code}`);
       }
     expect(bad).toEqual([]);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// 등록된 **모든** 도면에 거는 불변식.
+//
+// 예전엔 이 검사가 전시 이름이 박힌 describe 안에만 있었다. 그래서 SIBF·SIF는
+// 깨끗한데 DDP가 23쌍, 카페쇼가 1쌍 겹친 채로 나갔다 — 전시를 추가하는 건 데이터
+// 한 줄인데 검사는 전시마다 손으로 써야 해서, 새 전시가 아무 검사도 안 받고 들어왔다.
+// 틀에서 찍어내는 구조면 검사도 틀에 걸어야 한다.
+// ---------------------------------------------------------------------------
+describe("회전을 보는 겹침 판정", () => {
+  const box = (code: string, x: number, y: number, rotate = 0) => ({
+    code,
+    x,
+    y,
+    w: 100,
+    h: 20,
+    rotate,
+  });
+
+  it("축정렬 상자로는 겹쳐 보이는 비스듬한 이웃을 안 겹쳤다고 본다", () => {
+    // 둘 다 45°로 기운 100×20 부스. B는 A의 **짧은 축 방향으로 40** 떨어져 있어
+    // 실제로는 안 겹친다(20 폭 두 개가 40 간격). 그런데 기운 상자의 축정렬 bbox는
+    // 한 변이 85라 둘이 크게 겹쳐 보인다 — 축정렬로만 재면 거짓 양성이다.
+    // DDP 아트홀(부스가 최대 17° 기움)에서 이 오판으로 60개가 잡혔다.
+    const d = 40 / Math.SQRT2;
+    expect(findBoothOverlaps([box("A", 0, 0, 45), box("B", -d, d, 45)])).toEqual([]);
+  });
+
+  it("정말 겹친 쌍은 깊이와 함께 잡는다", () => {
+    const ov = findBoothOverlaps([box("A", 0, 0), box("B", 0, 10)]);
+    expect(ov).toHaveLength(1);
+    expect(ov[0].depth).toBeCloseTo(10, 1);
+  });
+
+  it("맞붙은 것은 겹친 게 아니다", () => {
+    expect(findBoothOverlaps([box("A", 0, 0), box("B", 0, 20)])).toEqual([]);
+  });
+});
+
+/**
+ * 겹침이 **주최 원본의 사실**인 쌍 — 우리가 옮기다 만든 오차가 아니라서 고치지 않는다.
+ *
+ * 카페쇼 도면은 손으로 딴 게 아니라 exporum 배치도 API에서 그대로 변환한 것이다.
+ * 그러니 1m 겹침은 주최가 그렇게 들고 있는 값이고, 우리가 부스를 줄이면 지도가
+ * 원본과 달라지기만 한다(`floorplan-cafeshow.test.ts`가 이 쌍을 따로 못박아 둔다).
+ * 여기 적지 않은 겹침은 전부 오차로 본다 — 예외는 이름을 대야 한다.
+ */
+const KNOWN_OVERLAPS: Record<string, string[]> = {
+  "cafeshow-2026": ["A107×A111"],
+};
+
+describe.each(Object.keys(FLOORPLANS))("%s 도면", (slug) => {
+  const fp = FLOORPLANS[slug];
+
+  it("부스가 서로 겹치지 않는다", () => {
+    // 손으로 딴 도면에는 겹치는 부스가 없다 — 한 칸을 두 곳에 팔 수는 없으니까.
+    // 그러니 겹침이 보이면 전시의 사실이 아니라 우리가 옮기다 만든 오차다.
+    // 도면을 다시 생성해 겹침이 되살아나면 이 검사가 알린다
+    // (`scripts/deoverlap-floorplan.ts`를 다시 돌려야 한다).
+    const pairs = findBoothOverlaps(fp.booths)
+      .map((o) => [o.a, o.b].sort().join("×"))
+      .filter((p) => !(KNOWN_OVERLAPS[slug] ?? []).includes(p))
+      .sort();
+    expect(pairs, `${slug}: 설명 안 되는 겹침 ${pairs.length}쌍`).toEqual([]);
+  });
+
+  it("부스 코드가 중복되지 않는다", () => {
+    const seen = new Set<string>();
+    const dup = fp.booths.filter((b) => (seen.has(b.code) ? true : (seen.add(b.code), false)));
+    expect(dup.map((b) => b.code)).toEqual([]);
   });
 });

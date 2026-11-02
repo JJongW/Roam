@@ -98,3 +98,10 @@ const out = {
 const file = `src/lib/floorplan-${slug}.json`;
 writeFileSync(file, JSON.stringify(out, null, 1));
 console.log(`${file}: 부스 ${booths.length} · ${W}×${H}`);
+// 공식 사이트의 % 좌표를 그대로 옮기면 부스가 서로 겹친다(2026-10-18 재생성에서 23쌍).
+// 사이트는 버튼을 손가락으로 누르기 좋게 키워 놓은 것이고, 우리 지도는 그걸 전시장
+// 평면으로 읽는다 — 그래서 여기서 끝내면 안 된다. 잊어도 `floorplans.test.ts`의
+// 겹침 0 검사가 막지만, 그때 되돌아올 길을 여기 적어 둔다.
+console.log(
+  `다음: npx vite-node -c worker/vite.config.ts scripts/deoverlap-floorplan.ts ${file}`,
+);
