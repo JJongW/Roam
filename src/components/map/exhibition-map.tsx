@@ -23,18 +23,24 @@ const BOOTH_H = 62;
 // the traced coordinates pack booths edge-to-edge.
 const BOOTH_GAP = 3;
 
+/** 도면 데이터가 "색 없음"을 나타낼 때 쓰는 값. 디자인 색이 아니라 **데이터 센티넬**이라
+ *  토큰으로 올리지 않는다 — 이 값이 보이면 존 색 대신 테두리 색으로 떨어뜨린다. */
+const FLOORPLAN_NO_COLOR = "#d8dade";
+
 /** Crowd heat steps, quiet → very busy. Distinct hues (yellow→red), not just one
  *  orange at varying opacity, so the four levels read apart at a glance. Drawn
  *  with mix-blend multiply so a booth's name still shows through the tint. */
+// 색과 겹침 강도는 토큰이 준다(`heatmap.json`) — iOS `RoamHeatmap`과 같은 값이다.
+// 예전엔 여기 hex를 박아 뒀고 iOS가 따로 들고 있어서, 한쪽만 고치면 조용히 갈렸다.
 export const HEAT_TIERS = [
-  { key: "여유", i18nKey: "crowdQuiet", fill: "#facc15", opacity: 0.55 },
-  { key: "보통", i18nKey: "crowdModerate", fill: "#fb923c", opacity: 0.62 },
-  { key: "혼잡", i18nKey: "crowdBusy", fill: "#f97316", opacity: 0.74 },
+  { key: "여유", i18nKey: "crowdQuiet", fill: "var(--heatmap-fill-quiet)", opacity: "var(--heatmap-opacity-quiet)" },
+  { key: "보통", i18nKey: "crowdModerate", fill: "var(--heatmap-fill-moderate)", opacity: "var(--heatmap-opacity-moderate)" },
+  { key: "혼잡", i18nKey: "crowdBusy", fill: "var(--heatmap-fill-busy)", opacity: "var(--heatmap-opacity-busy)" },
   {
     key: "매우 혼잡",
     i18nKey: "crowdVeryBusy",
-    fill: "#dc2626",
-    opacity: 0.85,
+    fill: "var(--heatmap-fill-crowded)",
+    opacity: "var(--heatmap-opacity-crowded)",
   },
 ] as const;
 
@@ -1044,7 +1050,7 @@ export function ExhibitionMap({
               key={`heat-${i}`}
               d={c.d}
               fill="none"
-              stroke="#f97316"
+              stroke="var(--heatmap-fill-busy)"
               strokeWidth={6 + c.t * 18}
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -1063,7 +1069,7 @@ export function ExhibitionMap({
                     width={d.w}
                     height={d.h}
                     rx={4}
-                    fill="#2b2e35"
+                    fill="var(--floorplan-header)"
                   />
                   <text
                     x={d.x + d.w / 2}
@@ -1087,7 +1093,7 @@ export function ExhibitionMap({
                     width={140}
                     height={52}
                     rx={26}
-                    fill="#ff8a3d"
+                    fill="var(--floorplan-entrance)"
                   />
                   <text
                     x={d.x}
@@ -1285,7 +1291,7 @@ export function ExhibitionMap({
                     width={52}
                     height={18}
                     rx={9}
-                    fill="#ff8a3d"
+                    fill="var(--floorplan-entrance)"
                   />
                   <text
                     x={cx}
@@ -1369,7 +1375,14 @@ export function ExhibitionMap({
                   // (~2.2:1, 필요한 4.5:1에 한참 못 미침) 뺐다 — 어두운 글씨 쪽으로 떨어진다
                   // (judgment-vocabulary 최종 리뷰 Fix 10). 변수명은 lightText — "이 면엔
                   // 밝은(흰) 글씨가 필요하다"는 뜻이다(과거 darkText는 뜻이 반대로 읽혔다).
-                  const lightText = isMust || isBad || fill === "#3a3d44";
+                  //
+                  // 예전엔 `|| fill === "#3a3d44"` 가 붙어 있었는데 **걸릴 수 없는
+                  // 조건이었다**: fill 은 judge 토큰 아니면 zone 이고, zone 은 도면
+                  // 데이터의 색이거나 `색+"26"` 이다. 그 hex 를 쓰는 도면 데이터는
+                  // 0건이고 알파를 붙인 쪽은 애초에 문자열이 다르다. 토큰으로 옮기면
+                  // `fill === "var(--booth-label)"` 가 되는데, 데이터에서 온 hex 가
+                  // 그 문자열일 수는 없으니 더 확실히 죽는다 — 그래서 지웠다.
+                  const lightText = isMust || isBad;
                   const stroke = isSel
                     ? "var(--primary)"
                     : isGood
@@ -1384,10 +1397,10 @@ export function ExhibitionMap({
                               ? "var(--judge-curious)"
                               : isPass
                                 ? "var(--judge-pass)"
-                                : g.color && g.color !== "#d8dade"
+                                : g.color && g.color !== FLOORPLAN_NO_COLOR
                                   ? g.color
                                   : "var(--border)";
-                  const codeColor = lightText ? "white" : "#3a3d44";
+                  const codeColor = lightText ? "white" : "var(--booth-label)";
                   const name =
                     b.name.length > 9 ? `${b.name.slice(0, 9)}…` : b.name;
                   return (
