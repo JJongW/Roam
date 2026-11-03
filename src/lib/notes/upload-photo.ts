@@ -43,7 +43,7 @@ export async function uploadNotePhoto(file: File): Promise<string> {
     );
   } catch {
     throw new ApiClientError(
-      { code: "INTERNAL", message: "네트워크에 연결되지 않았어" },
+      { code: "INTERNAL", message: "네트워크에 연결되지 않았어요" },
       0,
       "OFFLINE",
     );

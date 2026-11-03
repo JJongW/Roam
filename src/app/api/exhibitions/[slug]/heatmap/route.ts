@@ -13,7 +13,7 @@ export async function GET(_req: Request, { params }: Ctx) {
   const { slug } = await params;
   const repo = await getRepository();
   const detail = await repo.getExhibition(slug);
-  if (!detail) return notFound("전시를 찾을 수 없습니다");
+  if (!detail) return notFound("행사를 찾을 수 없어요");
   const data = await repo.boothHeatmap(detail.exhibition.id);
   return ok(data);
 }

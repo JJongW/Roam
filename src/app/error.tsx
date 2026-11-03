@@ -40,10 +40,10 @@ export default function Error({
         <RotateCcw className="size-7 text-destructive" />
       </div>
       <div className="space-y-1">
-        <h1 className="text-xl font-extrabold">문제가 생겼어</h1>
-        <p className="text-sm text-muted-foreground">잠깐 뒤에 다시 해보자.</p>
+        <h1 className="text-xl font-extrabold">문제가 생겼어요</h1>
+        <p className="text-sm text-muted-foreground">잠시 뒤에 다시 해 주세요.</p>
       </div>
-      <Button onClick={reset}>다시 해보기</Button>
+      <Button onClick={reset}>다시 해 보기</Button>
     </div>
   );
 }

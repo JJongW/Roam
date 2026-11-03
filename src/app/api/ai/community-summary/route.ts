@@ -47,7 +47,7 @@ export async function POST(req: Request) {
 
     const repo = await getRepository();
     const detail = await repo.getExhibition(parsed.data.exhibitionSlug);
-    if (!detail) return notFound("전시를 찾을 수 없습니다");
+    if (!detail) return notFound("행사를 찾을 수 없어요");
 
     const exId = detail.exhibition.id;
     const page = await repo.listPosts(exId, { limit: 40 });
@@ -81,10 +81,10 @@ export async function POST(req: Request) {
     }));
 
     const prompt = [
-      "아래는 전시 방문자들이 남긴 '제보' 글이야(공식 정보 아님, 부정확 가능).",
+      "아래는 박람회 방문자들이 남긴 '제보' 글이야(공식 정보 아님, 부정확 가능).",
       "현장 상황 핵심을 3~5개 한국어 불릿으로 요약해줘.",
       "- 각 불릿 30자 이내, 가능하면 부스명 포함.",
-      "- 단정 금지: '~라는 제보', '~다는 후기'처럼 전언체로.",
+      "- 단정 금지: '~라는 제보가 있어요', '~다는 후기가 있어요'처럼 해요체 전언으로. 반말과 합니다체 금지.",
       "- 굿즈/대기/이벤트/꿀팁 등 행동에 도움되는 정보 우선.",
       "{ summary: string[] } JSON만 출력.",
       "",

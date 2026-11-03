@@ -69,7 +69,7 @@ export function BoothHighlights({
     return (
       <section className="space-y-2" role="status" aria-live="polite">
         <h2 className="flex items-center gap-1.5 text-base font-bold">
-          <Gift className="size-4 text-primary" aria-hidden /> 신간·굿즈
+          <Gift className="size-4 text-primary" aria-hidden /> 신간과 굿즈
         </h2>
         <p className="flex items-center gap-2 text-sm text-muted-foreground">
           <span className="flex size-7 shrink-0 items-center justify-center overflow-hidden">
@@ -97,7 +97,7 @@ export function BoothHighlights({
       {newReleases.length > 0 && (
         <section className="space-y-2">
           <h2 className="flex items-center gap-1.5 text-base font-bold">
-            <BookOpen className="size-4 text-primary" aria-hidden /> 신간·전시
+            <BookOpen className="size-4 text-primary" aria-hidden /> 신간과 주요 도서
           </h2>
           <div className="flex flex-wrap gap-1.5">
             {newReleases.map((k) => (

@@ -46,7 +46,7 @@ export function fail(
   );
 }
 
-export function notFound(message = "찾을 수 없습니다") {
+export function notFound(message = "찾을 수 없어요") {
   return fail("NOT_FOUND", message);
 }
 
@@ -59,7 +59,7 @@ export async function parseBody<T>(
   try {
     raw = await req.json();
   } catch {
-    return { ok: false, res: fail("VALIDATION", "잘못된 요청 본문입니다") };
+    return { ok: false, res: fail("VALIDATION", "요청 형식이 맞지 않아요") };
   }
   const result = schema.safeParse(raw);
   if (!result.success) {
@@ -157,7 +157,7 @@ export async function isAdminAuthed(): Promise<boolean> {
  */
 export async function requireAdmin(): Promise<NextResponse | null> {
   if (await isAdminAuthed()) return null;
-  return fail("UNAUTHORIZED", "운영자 인증이 필요합니다");
+  return fail("UNAUTHORIZED", "운영자 인증이 필요해요");
 }
 
 /** 운영자 기록의 "누가" — 관리자 쿠키의 Google 이메일, 없으면 로그인 사용자 id.
@@ -214,6 +214,6 @@ export function withErrorBoundary(
     } catch (logErr) {
       console.error("[api] issue capture 실패:", logErr);
     }
-    return fail("INTERNAL", "서버 오류가 발생했습니다");
+    return fail("INTERNAL", "서버 오류가 생겼어요");
   });
 }

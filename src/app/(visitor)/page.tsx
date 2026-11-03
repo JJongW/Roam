@@ -25,7 +25,7 @@ import { ExhibitionStatusSection } from "@/components/exhibition/exhibition-stat
 
 export const metadata = {
   // 홈 title은 동의 화면 앱 이름("Roam")과 정확히 일치해야 한다(Google OAuth 브랜딩
-  // 인증). absolute로 "%s · Roam" 템플릿을 우회해 "Roam"만 노출한다.
+  // 인증). absolute로 "%s | Roam" 템플릿을 우회해 "Roam"만 노출한다.
   title: { absolute: "Roam" },
 };
 

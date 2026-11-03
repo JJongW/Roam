@@ -21,7 +21,7 @@ export async function POST(req: Request, { params }: Ctx) {
   const parsed = await parseBody(req, reviewInputSchema);
   if (!parsed.ok) return parsed.res;
   const user = await getCurrentUser();
-  if (!user) return fail("UNAUTHORIZED", "로그인이 필요합니다");
+  if (!user) return fail("UNAUTHORIZED", "로그인이 필요해요");
   const repo = await getRepository();
   const review = await repo.createReview(id, user.id, parsed.data);
   return created({ review });

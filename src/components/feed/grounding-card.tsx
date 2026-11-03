@@ -47,7 +47,7 @@ export function GroundingCard({ grounding }: { grounding: Grounding }) {
 
       {todo.length > 0 && (
         <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-          {t("grounding.todo", { items: todo.join(" · ") })}
+          {t("grounding.todo", { items: todo.join(", ") })}
         </p>
       )}
 

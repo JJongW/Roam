@@ -39,7 +39,7 @@ const ORDER: PreferenceKey[] = [
 // PreferenceKey로 못 박는다 — 키를 추가하고 질문을 안 쓰면 빌드가 막힌다.
 const QUESTIONS: Record<PreferenceKey, Omit<ReflectQuestion, "key">> = {
   depthVsBreadth: {
-    prompt: "오늘 같은 관람, 다음에도 이런 식이 좋아?",
+    prompt: "오늘 같은 관람, 다음에도 이런 식이 좋으세요?",
     options: [
       { label: "몇 곳만 깊게", value: 0 },
       { label: "많이 둘러보기", value: 1 },
@@ -47,15 +47,15 @@ const QUESTIONS: Record<PreferenceKey, Omit<ReflectQuestion, "key">> = {
     ],
   },
   crowdTolerance: {
-    prompt: "사람 많은 구역은 어땠어?",
+    prompt: "사람 많은 구역은 어땠어요?",
     options: [
-      { label: "붐비면 지쳐", value: 0.2 },
-      { label: "괜찮았어", value: 0.8 },
+      { label: "붐비면 지쳐요", value: 0.2 },
+      { label: "괜찮았어요", value: 0.8 },
       { label: "그럭저럭", value: 0.5 },
     ],
   },
   companion: {
-    prompt: "오늘은 어떻게 봤어?",
+    prompt: "오늘은 어떻게 보셨어요?",
     options: [
       { label: "혼자", value: "alone" },
       { label: "친구랑", value: "friend" },
@@ -63,18 +63,18 @@ const QUESTIONS: Record<PreferenceKey, Omit<ReflectQuestion, "key">> = {
     ],
   },
   movement: {
-    prompt: "다음엔 어떻게 움직이는 게 편할까?",
+    prompt: "다음엔 어떻게 움직이는 게 편할까요?",
     options: [
       { label: "적게 걷기", value: "minimal" },
-      { label: "많이 봐도 괜찮아", value: "active" },
+      { label: "많이 봐도 괜찮아요", value: "active" },
       { label: "적당히", value: "balanced" },
     ],
   },
   waitTolerance: {
-    prompt: "줄 서는 건 어때?",
+    prompt: "줄 서는 건 어떠세요?",
     options: [
-      { label: "줄은 피하고 싶어", value: 0.2 },
-      { label: "기다릴 수 있어", value: 0.8 },
+      { label: "줄은 피하고 싶어요", value: 0.2 },
+      { label: "기다릴 수 있어요", value: 0.8 },
       { label: "상황 봐서", value: 0.5 },
     ],
   },
@@ -127,11 +127,11 @@ export function closingLine(
 ): string | null {
   const parts: string[] = [];
   if (topThemeLabels.length > 0) {
-    parts.push(`오늘은 ${topThemeLabels.slice(0, 2).join("·")} 쪽에 가장 많이 반응했어`);
+    parts.push(`오늘은 ${topThemeLabels.slice(0, 2).join(", ")} 쪽에 가장 많이 반응하셨어요`);
   }
   if (answered && answerLabel) {
-    parts.push(`'${answerLabel}'도 기억해둘게`);
+    parts.push(`'${answerLabel}'도 기억해 둘게요`);
   }
   if (parts.length === 0) return null;
-  return `${parts.join(". ")}. 다음 전시는 여기서부터 골라줄게.`;
+  return `${parts.join(". ")}. 다음 박람회는 여기서부터 골라 드릴게요.`;
 }

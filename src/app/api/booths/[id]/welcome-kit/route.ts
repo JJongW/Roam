@@ -8,7 +8,7 @@ export async function GET(_req: Request, { params }: Ctx) {
   const { id } = await params;
   const repo = await getRepository();
   const welcomeKit = await repo.getWelcomeKit(id);
-  if (!welcomeKit) return notFound("웰컴키트 정보가 없습니다");
+  if (!welcomeKit) return notFound("웰컴 키트 정보가 없어요");
   return ok({ welcomeKit });
 }
 

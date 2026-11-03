@@ -19,7 +19,7 @@ export async function POST(req: Request) {
   if (!parsed.ok) return parsed.res;
 
   const values = parsed.data.values.filter((v) => isValueSlug(v));
-  if (values.length === 0) return fail("VALIDATION", "가치를 하나 이상 골라줘");
+  if (values.length === 0) return fail("VALIDATION", "가치를 하나 이상 골라 주세요");
 
   const repo = await getRepository();
   let exhibitionId: string | undefined;
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     const { data } = await repo.listExhibitions({ limit: 1 });
     exhibitionId = data[0]?.id;
   }
-  if (!exhibitionId) return fail("NOT_FOUND", "전시를 찾을 수 없어요");
+  if (!exhibitionId) return fail("NOT_FOUND", "행사를 찾을 수 없어요");
 
   // 고른 가치의 뮤트를 먼저 푼다 — 안 그러면 바로 뒤 재증류가 방금 남긴 신호를
   // 도로 걸러내서(distill.ts의 mutedSlugs 필터) 예전에 끈 적 있는 가치는 다시

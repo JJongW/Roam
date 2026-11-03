@@ -8,11 +8,16 @@
 // 왜 인용을 분리하는가: 로미는 반말인데 작가 소개문의 13%가 존댓말(`~입니다`)이다.
 // 그 글은 **작가 본인이 쓴 것**이라 반말로 고치면 남의 말을 바꾸는 것이고, 그대로 쓰면
 // 로미 목소리가 깨진다. 출처를 밝혀 인용하면 둘 다 지켜진다.
-import { primaryThemeFromTags, themeLabel } from "@/lib/booth/themes";
+import {
+  displayThemeTag,
+  primaryThemeFromTags,
+  themeLabel,
+  themeRawLabel,
+} from "@/lib/booth/themes";
 import type { BoothListItem } from "@/lib/types";
 
 export interface BoothAbout {
-  /** 로미가 이 부스를 한 줄로 소개하는 말(반말). 재료가 없으면 undefined. */
+  /** 로미가 이 부스를 한 줄로 소개하는 말(해요체). 재료가 없으면 undefined. */
   romi?: string;
   /** 저작 요약(enrichment.summary) — 그대로 보여준다(존댓말이어도 고치지 않는다).
    *  SIF 땐 작가 원문이었지만 지금은 대부분 주최 소개·공식 사이트를 정리한 초안이라,
@@ -45,9 +50,9 @@ function meaningfulQuote(raw?: string): string | undefined {
 
 /** 굿즈 개수를 사람 말로. 정확한 수를 알 때만 말한다. */
 function goodsClause(count: number): string | null {
-  if (count >= 8) return `굿즈 종류가 ${count}가지로 많아`;
-  if (count >= 3) return `굿즈는 ${count}가지 정도 준비했어`;
-  if (count > 0) return "굿즈도 조금 있어";
+  if (count >= 8) return `굿즈 종류가 ${count}가지로 많아요`;
+  if (count >= 3) return `굿즈는 ${count}가지 정도 준비했어요`;
+  if (count > 0) return "굿즈도 조금 있어요";
   return null;
 }
 
@@ -66,16 +71,19 @@ export function boothAbout(
 
   const parts: string[] = [];
   if (themeKey) {
-    // 소분류가 있으면 더 구체적으로: "동물 — 고양이·반려동물 쪽이야"
-    // 대분류와 같은 말인 소분류는 뺀다 — "문구·다꾸 중에서도 문구·다꾸 쪽이야"처럼
-    // 같은 단어를 두 번 말하는 문장이 나온다.
+    // 소분류가 있으면 더 구체적으로: "동물 중에서도 고양이, 반려동물 쪽이에요"
+    // 대분류와 같은 말인 소분류는 뺀다 — "문구와 다꾸 중에서도 문구와 다꾸 쪽이에요"처럼
+    // 같은 단어를 두 번 말하는 문장이 나온다. 비교는 원본 라벨(데이터 키)끼리 하고,
+    // 보여 줄 때만 가운뎃점 없는 꼴로 바꾼다(themes.ts displayThemeTag).
     const label = themeLabel(themeKey);
+    const raw = themeRawLabel(themeKey);
     const detail = fine
-      .filter((f) => f !== label)
+      .filter((f) => f !== raw)
       .slice(0, 2)
-      .join("·");
+      .map(displayThemeTag)
+      .join(", ");
     parts.push(
-      detail ? `${label} 중에서도 ${detail} 쪽이야` : `${label} 쪽 부스야`,
+      detail ? `${label} 중에서도 ${detail} 쪽이에요` : `${label} 쪽 부스예요`,
     );
   }
   const g = goodsClause(goods.length);

@@ -23,7 +23,7 @@ export async function GET(req: Request) {
 
   const repo = await getRepository();
   const detail = await repo.getExhibition(parsed.data.exhibitionSlug);
-  if (!detail) return fail("NOT_FOUND", "전시를 찾을 수 없어요");
+  if (!detail) return fail("NOT_FOUND", "행사를 찾을 수 없어요");
 
   const pending = await repo.listPendingRetro(
     user.id,
