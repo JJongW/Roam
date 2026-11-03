@@ -72,4 +72,10 @@ export const AUDIT_SPECS: Record<AuditEntity, EntitySpec> = {
     fields: ["title", "description", "startTime", "endTime", "rewardInfo"],
     emptyFor: emptyByShape,
   },
+  // 브랜드 프로필 칸(0061). 칸 하나가 한 엔티티라 value·status·sources만 본다.
+  // AI 초안을 사람이 고치거나 승인한 기록이 다음 초안의 재료가 된다(lib/brands/lessons.ts).
+  brand_profile_field: {
+    fields: ["value", "status", "sources"],
+    emptyFor: (field) => (field === "sources" ? [] : ""),
+  },
 };

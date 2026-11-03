@@ -160,6 +160,14 @@ export async function requireAdmin(): Promise<NextResponse | null> {
   return fail("UNAUTHORIZED", "운영자 인증이 필요합니다");
 }
 
+/** 운영자 기록의 "누가" — 관리자 쿠키의 Google 이메일, 없으면 로그인 사용자 id.
+ *  게이트가 꺼진 로컬 개발에선 둘 다 없을 수 있다(null). */
+export async function getAdminActor(): Promise<string | null> {
+  const raw = (await cookies()).get(ADMIN_COOKIE)?.value;
+  const email = raw ? verifyAdminEmail(raw) : null;
+  return email ?? (await getUserId());
+}
+
 /** 허용목록 검증을 마친 Google 이메일로만 부른다(/auth/callback). */
 export async function setAdminCookie(email: string) {
   const store = await cookies();

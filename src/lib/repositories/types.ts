@@ -35,6 +35,11 @@ import type {
   ExhibitorLinkCandidate,
   BoothBrandMemory,
   BoothAppearance,
+  BrandContact,
+  BrandContactLog,
+  ProfileField,
+  ProfileFieldStatus,
+  ProfileSubject,
 } from "@/lib/types";
 import type { TasteAccuracy } from "@/lib/memory/taste";
 import type { ExhibitorPlan } from "@/lib/exhibitor/plan";
@@ -44,6 +49,8 @@ import type {
   BoothEnrichmentPatch,
   BoothInput,
   BoothNoteInput,
+  BrandContactLogInput,
+  BrandContactPatch,
   CommunityPostInput,
   EventInput,
   ExhibitionInput,
@@ -131,12 +138,52 @@ export interface Repository {
   /** 이 부스와 같은 브랜드의 다른 회차 부스들(최근 회차 먼저). */
   boothAppearances(boothId: string): Promise<BoothAppearance[]>;
   /** 승인 = 그 부스의 참가사를 대상 참가사에 **통째로 합친다**(모든 회차의 참가 사실).
-   *  반려 = 따로 둔다. */
+   *  프로필 칸(0061)도 옮긴다 — 대상에 없는 칸만, 겹치면 대상 것을 지킨다(planFieldMerge).
+   *  반려 = 따로 둔다. 반려한 짝은 다음 백필이 다시 내지 않는다(decidedCandidates). */
   decideExhibitorLinkCandidate(
     id: string,
     decision: "approved" | "rejected",
     actor: string | null,
   ): Promise<ExhibitorLinkCandidate | null>;
+
+  // 브랜드 컨택(0061) — 운영자 전용. 읽기도 서비스 롤(정책 없음 = anon 차단).
+  /** 컨택 행 목록. 행이 없는 부스는 안 나온다 — "미연락"은 호출부가 채운다. */
+  listBrandContacts(opts?: { exhibitionId?: string }): Promise<BrandContact[]>;
+  getBrandContact(boothId: string): Promise<BrandContact | null>;
+  /** 보낸 키만 바꾼다. 행이 없으면 만든다. 부스가 없으면 null.
+   *  체크리스트는 토글을 기존 완료 시각에 합친다(`applyChecklist`). */
+  upsertBrandContact(
+    boothId: string,
+    patch: BrandContactPatch,
+    actor: string | null,
+  ): Promise<BrandContact | null>;
+  /** 최근 것 먼저(occurredAt 내림차순). */
+  listBrandContactLogs(boothId: string): Promise<BrandContactLog[]>;
+  /** VOC 한 줄 추가. 컨택 행이 없으면 빈 행을 먼저 만든다. 부스가 없으면 null. */
+  addBrandContactLog(
+    boothId: string,
+    input: BrandContactLogInput,
+    actor: string | null,
+  ): Promise<BrandContactLog | null>;
+
+  // 브랜드 프로필 칸(0061 brand_profile_field) — 운영자와 워커 전용, 서비스 롤.
+  /** 인자 없으면 전부. exhibitorIds와 participantIds를 같이 주면 합집합. */
+  listProfileFields(q?: { exhibitorIds?: string[]; participantIds?: string[] }): Promise<ProfileField[]>;
+  /** 칸 하나를 통째로 쓴다(값, 출처, 상태). 값 검사는 호출부가 parseFieldValue로 먼저 한다.
+   *  브랜드나 출전이 없으면 null. */
+  upsertProfileField(input: {
+    subject: ProfileSubject;
+    field: string;
+    value: unknown;
+    sources: string[];
+    status: ProfileFieldStatus;
+    actor: string | null;
+  }): Promise<ProfileField | null>;
+  /** 칸을 비운다. 지운 행이 있었으면 true. */
+  deleteProfileField(subject: ProfileSubject, field: string): Promise<boolean>;
+  /** 이 부스(대표 배정)의 브랜드 공식 소개 칸. 방문객 화면이 부르므로 서비스 롤로 읽고,
+   *  앱에 보일지(publicValue)는 호출부가 brandIntroFromField로 거른다. 없으면 null. */
+  getBrandIntroFieldForBooth(boothId: string): Promise<ProfileField | null>;
 
   listEnrichmentCandidates(opts?: {
     exhibitionId?: string;

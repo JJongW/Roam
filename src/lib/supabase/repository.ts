@@ -66,13 +66,22 @@ import type {
   ExhibitorLinkCandidate,
   BoothBrandMemory,
   BoothAppearance,
+  BrandContact,
+  BrandContactLog,
+  ProfileField,
+  ProfileFieldStatus,
+  ProfileSubject,
 } from "@/lib/types";
+import { profileFieldId } from "@/lib/brands/profile";
 import type { ExhibitorPlan, Ref } from "@/lib/exhibitor/plan";
 import { exhibitionIdFor } from "@/lib/exhibition/id";
+import { emptyContact, mergeContactPatch } from "@/lib/brands/contact";
 import type {
   AnalyticsEventInput,
   BookmarkInput,
   BoothEnrichmentPatch,
+  BrandContactLogInput,
+  BrandContactPatch,
   BoothInput,
   BoothNoteInput,
   CommunityPostInput,
@@ -1258,6 +1267,88 @@ export class SupabaseRepository implements Repository {
     return mapLinkCandidate(wrote(res, "연결 후보 판단") as Row);
   }
 
+  // --- 브랜드 컨택(0061) ---------------------------------------------------
+  // 운영자 화면만 읽고 쓴다. 정책이 없어 anon으로는 0행이니 전부 서비스 롤.
+
+  async listBrandContacts(opts?: { exhibitionId?: string }): Promise<BrandContact[]> {
+    const db = createServiceClient();
+    const rows = await readAll<Row>((a, b) => {
+      let q = db.from("brand_contact").select("*");
+      if (opts?.exhibitionId) q = q.eq("exhibition_id", opts.exhibitionId);
+      return q.order("booth_id").range(a, b);
+    }, "브랜드 컨택");
+    return rows.map(mapBrandContact);
+  }
+
+  async getBrandContact(boothId: string): Promise<BrandContact | null> {
+    const db = createServiceClient();
+    const { data, error } = await db.from("brand_contact").select("*").eq("booth_id", boothId).maybeSingle();
+    if (error) throw new Error(`브랜드 컨택 조회 실패: ${error.message}`);
+    return data ? mapBrandContact(data as Row) : null;
+  }
+
+  async upsertBrandContact(
+    boothId: string,
+    patch: BrandContactPatch,
+    actor: string | null,
+  ): Promise<BrandContact | null> {
+    const db = createServiceClient();
+    const { data: booth, error } = await db.from("booth").select("id,exhibition_id").eq("id", boothId).maybeSingle();
+    if (error) throw new Error(`부스 조회 실패: ${error.message}`);
+    if (!booth) return null;
+    const at = now();
+    // 체크리스트는 기존 완료 시각과 합쳐야 해서 읽고 쓴다. 운영자 한두 명이 쓰는
+    // 화면이라 경합은 감수한다(마지막 저장이 이긴다).
+    const prev = (await this.getBrandContact(boothId)) ?? emptyContact(boothId, str((booth as Row).exhibition_id), at);
+    const next = mergeContactPatch(prev, patch, actor, at);
+    const res = await db
+      .from("brand_contact")
+      .upsert(brandContactRow(next), { onConflict: "booth_id" })
+      .select("*")
+      .single();
+    return mapBrandContact(wrote(res, "브랜드 컨택 저장") as Row);
+  }
+
+  async listBrandContactLogs(boothId: string): Promise<BrandContactLog[]> {
+    const db = createServiceClient();
+    const rows = await readAll<Row>(
+      (a, b) =>
+        db.from("brand_contact_log").select("*").eq("booth_id", boothId).order("occurred_at", { ascending: false }).range(a, b),
+      "브랜드 컨택 로그",
+    );
+    return rows.map(mapBrandContactLog);
+  }
+
+  async addBrandContactLog(
+    boothId: string,
+    input: BrandContactLogInput,
+    actor: string | null,
+  ): Promise<BrandContactLog | null> {
+    const db = createServiceClient();
+    // 로그는 brand_contact(booth_id)를 FK로 가리킨다 — 행이 없으면 빈 행을 먼저 둔다.
+    if (!(await this.getBrandContact(boothId))) {
+      const made = await this.upsertBrandContact(boothId, {}, actor);
+      if (!made) return null;
+    }
+    const at = now();
+    const res = await db
+      .from("brand_contact_log")
+      .insert({
+        id: uid("bcl"),
+        booth_id: boothId,
+        direction: input.direction,
+        kind: input.kind,
+        channel: input.channel ?? null,
+        summary: input.summary,
+        actor,
+        occurred_at: input.occurredAt ?? at,
+        created_at: at,
+      })
+      .select("*")
+      .single();
+    return mapBrandContactLog(wrote(res, "브랜드 컨택 로그 저장") as Row);
+  }
+
   /** from 참가사를 to에 합친다. 같은 회차에 to의 참가 사실이 이미 있으면 부스 배정을
    *  그쪽으로 옮기고 from의 참가 사실은 지운다. 없으면 참가 사실의 주인을 바꾼다. */
   private async mergeExhibitor(from: string, to: string): Promise<void> {
@@ -1273,6 +1364,8 @@ export class SupabaseRepository implements Repository {
           await db.from("booth_participant").update({ participant_id: str((same as Row).id) }).eq("participant_id", str(p.id)).select("booth_id"),
           "부스 배정 이동",
         );
+        // 출전 칸(0061)도 옮긴다 — 참가 사실을 지우면 cascade로 사라진다.
+        await this.moveProfileFields({ participantId: str(p.id) }, { participantId: str((same as Row).id) });
         maybeWrote(await db.from("exhibition_participant").delete().eq("id", str(p.id)).select("id"), "참가 사실 정리");
       } else {
         wrote(
@@ -1286,7 +1379,117 @@ export class SupabaseRepository implements Repository {
       await db.from("exhibitor_link_candidate").update({ status: "superseded", reviewed_at: now() }).eq("exhibitor_id", from).eq("status", "pending").select("id"),
       "연결 후보 정리",
     );
+    // 브랜드 칸(0061)을 옮긴 뒤에 지운다 — 먼저 지우면 cascade로 사라진다.
+    await this.moveProfileFields({ exhibitorId: from }, { exhibitorId: to });
     maybeWrote(await db.from("exhibitor").delete().eq("id", from).select("id"), "참가사 정리");
+  }
+
+  /**
+   * 합칠 때 칸 옮기기 — SQL 함수 move_brand_profile_fields(0061) 한 번으로 한 트랜잭션에
+   * 묶는다. 대상에 없는 칸만 새 id로 넣고 from 칸은 전부 지운다(planFieldMerge와 같은 규칙,
+   * mock은 그 함수로 같은 일을 한다). 예전처럼 넣기와 지우기를 따로 부르면 중간에 실패할 때
+   * 칸이 일부만 옮겨진다.
+   */
+  private async moveProfileFields(from: ProfileSubject, to: ProfileSubject): Promise<void> {
+    const kind = "exhibitorId" in from ? "ex" : "pt";
+    const fromId = "exhibitorId" in from ? from.exhibitorId : from.participantId;
+    const toId = "exhibitorId" in to ? to.exhibitorId : to.participantId;
+    const db = createServiceClient();
+    const { error } = await db.rpc("move_brand_profile_fields", { p_kind: kind, p_from: fromId, p_to: toId });
+    if (error) throw new Error(`프로필 칸 이동 실패: ${error.message}`);
+  }
+
+  // --- 브랜드 프로필 칸(0061) ----------------------------------------------
+
+  async listProfileFields(q?: { exhibitorIds?: string[]; participantIds?: string[] }): Promise<ProfileField[]> {
+    const db = createServiceClient();
+    if (!q) {
+      const rows = await readAll<Row>(
+        (a, b) => db.from("brand_profile_field").select("*").order("id").range(a, b),
+        "프로필 칸",
+      );
+      return rows.map(mapProfileField);
+    }
+    const [ex, pt] = await Promise.all([
+      inChunks<Row>(q.exhibitorIds ?? [], "브랜드 칸", (slice) =>
+        db.from("brand_profile_field").select("*").in("exhibitor_id", slice),
+      ),
+      inChunks<Row>(q.participantIds ?? [], "출전 칸", (slice) =>
+        db.from("brand_profile_field").select("*").in("participant_id", slice),
+      ),
+    ]);
+    return [...ex, ...pt].map(mapProfileField);
+  }
+
+  async upsertProfileField(input: {
+    subject: ProfileSubject;
+    field: string;
+    value: unknown;
+    sources: string[];
+    status: ProfileFieldStatus;
+    actor: string | null;
+  }): Promise<ProfileField | null> {
+    const db = createServiceClient();
+    const s = input.subject;
+    const { data: owner, error } =
+      "exhibitorId" in s
+        ? await db.from("exhibitor").select("id").eq("id", s.exhibitorId).maybeSingle()
+        : await db.from("exhibition_participant").select("id").eq("id", s.participantId).maybeSingle();
+    if (error) throw new Error(`프로필 대상 조회 실패: ${error.message}`);
+    if (!owner) return null;
+    const at = now();
+    const res = await db
+      .from("brand_profile_field")
+      .upsert(
+        {
+          ...profileFieldRow(
+            {
+              id: profileFieldId(s, input.field),
+              field: input.field,
+              value: input.value,
+              sources: input.sources,
+              status: input.status,
+              verifiedAt: at,
+              actor: input.actor,
+            },
+            s,
+          ),
+          updated_at: at,
+        },
+        { onConflict: "id" },
+      )
+      .select("*")
+      .single();
+    return mapProfileField(wrote(res, "프로필 칸 저장") as Row);
+  }
+
+  async getBrandIntroFieldForBooth(boothId: string): Promise<ProfileField | null> {
+    const db = createServiceClient();
+    const { data: asg, error } = await db
+      .from("booth_participant")
+      .select("participant:participant_id(exhibitor_id)")
+      .eq("booth_id", boothId)
+      .eq("role", "primary")
+      .maybeSingle();
+    if (error) throw new Error(`부스 배정 조회 실패: ${error.message}`);
+    const exhibitorId = optStr((((asg as Row | null)?.participant ?? null) as Row | null)?.exhibitor_id);
+    if (!exhibitorId) return null;
+    const { data, error: e2 } = await db
+      .from("brand_profile_field")
+      .select("*")
+      .eq("id", profileFieldId({ exhibitorId }, "intro"))
+      .maybeSingle();
+    if (e2) throw new Error(`브랜드 소개 조회 실패: ${e2.message}`);
+    return data ? mapProfileField(data as Row) : null;
+  }
+
+  async deleteProfileField(subject: ProfileSubject, field: string): Promise<boolean> {
+    const db = createServiceClient();
+    const rows = maybeWrote(
+      await db.from("brand_profile_field").delete().eq("id", profileFieldId(subject, field)).select("id"),
+      "프로필 칸 비우기",
+    );
+    return (rows?.length ?? 0) > 0;
   }
 
   async createEnrichmentCandidates(
@@ -3019,6 +3222,97 @@ export class SupabaseRepository implements Repository {
     const reflected = await this.listReflectedUserIds(exhibitionId);
     return computeJourneyFunnel(signals, new Set(reflected));
   }
+}
+
+/** created_at은 넣지 않는다 — upsert가 기존 행의 생성 시각을 덮지 않게(새 행이면 DB 기본값). */
+function profileFieldRow(
+  f: Pick<ProfileField, "id" | "field" | "value" | "sources" | "status" | "verifiedAt" | "actor">,
+  subject: ProfileSubject,
+): Row {
+  return {
+    id: f.id,
+    exhibitor_id: "exhibitorId" in subject ? subject.exhibitorId : null,
+    participant_id: "participantId" in subject ? subject.participantId : null,
+    field: f.field,
+    value: f.value,
+    sources: f.sources,
+    status: f.status,
+    verified_at: f.verifiedAt,
+    actor: f.actor,
+  };
+}
+
+function mapProfileField(r: Row): ProfileField {
+  return {
+    id: str(r.id),
+    exhibitorId: optStr(r.exhibitor_id) ?? null,
+    participantId: optStr(r.participant_id) ?? null,
+    field: str(r.field),
+    value: r.value,
+    sources: Array.isArray(r.sources) ? (r.sources as unknown[]).map(String) : [],
+    status: str(r.status) as ProfileField["status"],
+    verifiedAt: str(r.verified_at),
+    actor: optStr(r.actor) ?? null,
+    createdAt: str(r.created_at),
+    updatedAt: str(r.updated_at),
+  };
+}
+
+function brandContactRow(c: BrandContact): Row {
+  return {
+    booth_id: c.boothId,
+    exhibition_id: c.exhibitionId,
+    status: c.status,
+    channel: c.channel,
+    handle: c.handle,
+    sent_at: c.sentAt,
+    reply: c.reply,
+    allowed_use: c.allowedUse,
+    photo_source: c.photoSource,
+    text_source: c.textSource,
+    notes: c.notes,
+    checklist: c.checklist,
+    updated_by: c.updatedBy,
+    created_at: c.createdAt,
+    updated_at: c.updatedAt,
+  };
+}
+
+function mapBrandContact(r: Row): BrandContact {
+  return {
+    boothId: str(r.booth_id),
+    exhibitionId: str(r.exhibition_id),
+    status: str(r.status) as BrandContact["status"],
+    channel: (optStr(r.channel) ?? null) as BrandContact["channel"],
+    handle: optStr(r.handle) ?? null,
+    sentAt: optStr(r.sent_at) ?? null,
+    reply: optStr(r.reply) ?? null,
+    allowedUse: Array.isArray(r.allowed_use) ? (r.allowed_use as unknown[]).map(String) : [],
+    photoSource: optStr(r.photo_source) ?? null,
+    textSource: optStr(r.text_source) ?? null,
+    notes: optStr(r.notes) ?? null,
+    checklist:
+      r.checklist && typeof r.checklist === "object" && !Array.isArray(r.checklist)
+        ? (r.checklist as Record<string, string>)
+        : {},
+    updatedBy: optStr(r.updated_by) ?? null,
+    createdAt: str(r.created_at),
+    updatedAt: str(r.updated_at),
+  };
+}
+
+function mapBrandContactLog(r: Row): BrandContactLog {
+  return {
+    id: str(r.id),
+    boothId: str(r.booth_id),
+    direction: str(r.direction) as BrandContactLog["direction"],
+    kind: str(r.kind) as BrandContactLog["kind"],
+    channel: (optStr(r.channel) ?? null) as BrandContactLog["channel"],
+    summary: str(r.summary),
+    actor: optStr(r.actor) ?? null,
+    occurredAt: str(r.occurred_at),
+    createdAt: str(r.created_at),
+  };
 }
 
 function mapLinkCandidate(r: Row): ExhibitorLinkCandidate {

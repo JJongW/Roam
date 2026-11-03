@@ -22,7 +22,8 @@ export type AuditEntity =
   | "booth"
   | "exhibition"
   | "event"
-  | "enrichment_candidate";
+  | "enrichment_candidate"
+  | "brand_profile_field";
 
 /** 변경을 일으킨 경로. **열린 집합이다** — drafter·참가사 폼 같은 새 입력구가
  *  생겨도 마이그레이션 없이 값만 늘어난다(DB도 enum이 아니라 text). */

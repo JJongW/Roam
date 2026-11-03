@@ -503,6 +503,113 @@ export interface BoothAppearance {
   boothCode?: string;
 }
 
+/**
+ * 브랜드 컨택(0061) — 카드뉴스 등에 사진과 글을 쓰려고 브랜드에 연락한 기록.
+ * 한 행 = 한 부스(= 그 브랜드의 그 박람회 회차). 같은 브랜드도 박람회마다 따로 묻기
+ * 때문에 참가사(exhibitor)가 아니라 부스에 붙인다. 상태값은 Roam-design
+ * `docs/content/engine/runs/moongu-2026-winter/permissions.csv`의 dmStatus와 같다
+ * (`replied`만 이쪽에서 더했다). 표시 이름은 `lib/brands/contact.ts`.
+ */
+export const BRAND_CONTACT_STATUSES = [
+  "not-sent",
+  "sent",
+  "read",
+  "replied",
+  "granted",
+  "partial",
+  "declined",
+  "no-reply",
+  "withdrawn",
+] as const;
+export type BrandContactStatus = (typeof BRAND_CONTACT_STATUSES)[number];
+
+export const BRAND_CONTACT_CHANNELS = ["instagram", "x", "email", "other"] as const;
+export type BrandContactChannel = (typeof BRAND_CONTACT_CHANNELS)[number];
+
+export interface BrandContact {
+  boothId: string;
+  exhibitionId: string;
+  status: BrandContactStatus;
+  channel: BrandContactChannel | null;
+  /** 연락한 계정이나 주소(@계정, 메일). */
+  handle: string | null;
+  /** 처음 보낸 날짜 `YYYY-MM-DD`(csv dmSentAt). */
+  sentAt: string | null;
+  /** 답 요약 한 줄(csv reply). */
+  reply: string | null;
+  /** 허락 범위 토큰(csv allowedUse를 `;`로 쪼갠 것). */
+  allowedUse: string[];
+  /** 받은 사진이 있는 곳(경로나 링크, csv photoSource). */
+  photoSource: string | null;
+  /** 받은 글(작품 소개)이 있는 곳. */
+  textSource: string | null;
+  notes: string | null;
+  /** 체크리스트 항목 key → 완료 시각(ISO). 없는 key = 아직 안 함. */
+  checklist: Record<string, string>;
+  updatedBy: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export const BRAND_CONTACT_LOG_DIRECTIONS = ["outbound", "inbound", "internal"] as const;
+export type BrandContactLogDirection = (typeof BRAND_CONTACT_LOG_DIRECTIONS)[number];
+export const BRAND_CONTACT_LOG_KINDS = [
+  "message",
+  "permission",
+  "edit-request",
+  "takedown-request",
+  "thanks",
+  "other",
+] as const;
+export type BrandContactLogKind = (typeof BRAND_CONTACT_LOG_KINDS)[number];
+
+/** 컨택 로그(VOC) 한 줄. 지우거나 고치지 않고 쌓는다. */
+export interface BrandContactLog {
+  id: string;
+  boothId: string;
+  direction: BrandContactLogDirection;
+  kind: BrandContactLogKind;
+  channel: BrandContactChannel | null;
+  summary: string;
+  actor: string | null;
+  occurredAt: string;
+  createdAt: string;
+}
+
+/**
+ * 브랜드 프로필 칸(0061 brand_profile_field). 기준 문서: Roam-design
+ * `docs/content/engine/brand-profile-spec.md` 3~5장. 한 행 = 한 브랜드(exhibitor)나
+ * 한 출전(exhibition_participant)의 한 칸. 칸마다 출처, 확인 상태, 갱신일, 누가를 같이 둔다.
+ * 칸 정의(라벨, 값 모양)는 `lib/brands/profile.ts`.
+ */
+export const PROFILE_FIELD_STATUSES = [
+  "collected",
+  "ai_draft",
+  "reviewed",
+  "artist_confirmed",
+  "stale",
+] as const;
+export type ProfileFieldStatus = (typeof PROFILE_FIELD_STATUSES)[number];
+
+export type ProfileSubject = { exhibitorId: string } | { participantId: string };
+
+export interface ProfileField {
+  /** `ex:<exhibitorId>:<field>` 또는 `pt:<participantId>:<field>` — 결정적이라 upsert 키가 된다. */
+  id: string;
+  exhibitorId: string | null;
+  participantId: string | null;
+  field: string;
+  value: unknown;
+  /** URL 목록. 작가 답이면 `contact-log:<id>`, 부스 정보에서 가져왔으면 `roam:booth/<id>`. */
+  sources: string[];
+  status: ProfileFieldStatus;
+  /** 마지막으로 확인한 시각. */
+  verifiedAt: string;
+  actor: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
 /** "같은 브랜드인가요?" — 이름만 같아서 사람이 판단해야 하는 연결(0057). */
 export interface ExhibitorLinkCandidate {
   id: string;
