@@ -138,7 +138,7 @@ export function IssueLogList({ groups }: { groups: IssueGroup[] }) {
                     <p>
                       {[g.sample.device, g.sample.country, g.sample.city]
                         .filter(Boolean)
-                        .join(" · ")}
+                        .join(", ")}
                     </p>
                   )}
                   {g.sample.userId && (

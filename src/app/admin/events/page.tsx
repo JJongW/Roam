@@ -12,7 +12,7 @@ export default async function AdminEventsPage() {
   const { data: exhibitions } = await listExhibitionsCached();
   const cookieId = (await cookies()).get(ADMIN_EXHIBITION_COOKIE)?.value;
   const exhibition = resolveAdminExhibition(exhibitions, cookieId, todayISO());
-  if (!exhibition) return <p className="text-muted-foreground">전시가 없습니다.</p>;
+  if (!exhibition) return <p className="text-muted-foreground">행사가 없어요.</p>;
 
   const booths = await repo.listBoothsByExhibitionId(exhibition.id);
   const events = await repo.listEvents(exhibition.slug);

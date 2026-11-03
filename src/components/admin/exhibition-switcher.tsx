@@ -42,7 +42,7 @@ export function ExhibitionSwitcher({
       await api.post("/api/admin/exhibition-selection", { exhibitionId });
       window.location.reload();
     } catch (e) {
-      toast.error(e instanceof ApiClientError ? e.error.message : "전시 전환 실패");
+      toast.error(e instanceof ApiClientError ? e.error.message : "행사 전환 실패");
     } finally {
       setPending(false);
     }
@@ -51,7 +51,7 @@ export function ExhibitionSwitcher({
   return (
     <Select value={selectedId} onValueChange={onChange} disabled={pending}>
       <SelectTrigger className="mb-5 w-full max-w-xs">
-        <SelectValue placeholder="전시 선택" />
+        <SelectValue placeholder="행사 선택" />
       </SelectTrigger>
       <SelectContent>
         {sorted.map((e) => (

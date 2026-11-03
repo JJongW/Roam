@@ -87,7 +87,7 @@ const SHADOW_STEPS = [
     varName: "--shadow-sheet",
     label: "바텀시트, 위 방향 (SEED s2 세기)",
   },
-  { name: "pop", varName: "--shadow-pop", label: "팝오버·강조 (SEED s3)" },
+  { name: "pop", varName: "--shadow-pop", label: "팝오버, 강조 (SEED s3)" },
 ] as const;
 
 export default function DesignSystemPage() {
@@ -97,7 +97,7 @@ export default function DesignSystemPage() {
         <h1 className="text-2xl font-extrabold">디자인 시스템</h1>
         <p className="text-sm text-muted-foreground">
           Roam이 쓰는 모든 디자인 토큰 — 색은 자체 팔레트,
-          나머지(간격·radius·그림자· 모션·타이포)는 SEED 디자인 시스템 값
+          나머지(간격, radius, 그림자, 모션, 타이포)는 SEED 디자인 시스템 값
         </p>
       </header>
 
@@ -123,7 +123,7 @@ export default function DesignSystemPage() {
 
       <AdminSection
         title="타이포(Typography)"
-        description="Pretendard · 400/500/600/700/800 실사용 · SEED t-scale 위계"
+        description="Pretendard / 400, 500, 600, 700, 800 실사용 / SEED t-scale 위계"
       >
         <div className="space-y-4">
           {TYPE_STEPS.map((t) => (
@@ -229,7 +229,7 @@ export default function DesignSystemPage() {
 
       <AdminSection
         title="Progress Circle"
-        description="size 24/40 · determinate/indeterminate · neutral/brand"
+        description="size 24/40, determinate/indeterminate, neutral/brand"
       >
         <ProgressCircleDemo />
       </AdminSection>

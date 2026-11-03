@@ -25,7 +25,7 @@ import { ThemeToggle } from "@/components/common/theme-toggle";
 
 const ITEMS = [
   { href: "/admin", label: "개요", icon: LayoutDashboard, exact: true },
-  { href: "/admin/exhibitions", label: "전시", icon: Building2 },
+  { href: "/admin/exhibitions", label: "행사", icon: Building2 },
   { href: "/admin/booths", label: "부스", icon: Store },
   // 모든 박람회의 브랜드 프로필 + 연결 확인 목록(예전 "브랜드 연결"을 합쳤다, 2026-11-03).
   { href: "/admin/brands", label: "브랜드", icon: Tags },

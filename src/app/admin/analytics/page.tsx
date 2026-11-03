@@ -24,7 +24,7 @@ export default async function AnalyticsPage() {
   const exhibition = resolveAdminExhibition(exhibitions, cookieId, todayISO());
 
   if (!exhibition) {
-    return <p className="text-muted-foreground">전시가 없습니다.</p>;
+    return <p className="text-muted-foreground">행사가 없어요.</p>;
   }
 
   const [
@@ -60,7 +60,7 @@ export default async function AnalyticsPage() {
 
       <AdminSection
         title="방문 밀집도 히트맵"
-        description="부스별 방문·체류 밀집도"
+        description="부스별 방문, 체류 밀집도"
       >
         <Heatmap
           width={exhibition.mapWidth}
@@ -71,7 +71,7 @@ export default async function AnalyticsPage() {
 
       <AdminSection
         title="취향 × 행동"
-        description="가치별로, 그 취향 사용자가 실제로 많이 본 부스 — '태그 없음'은 그 가치 태그가 없는데도 끌린 곳이다"
+        description="가치별로, 그 취향 사용자가 실제로 많이 본 부스 — '태그 없음'은 그 가치 태그가 없는데도 끌린 곳이에요"
       >
         <TasteBehaviorCross result={tasteBehavior} boothNames={names} />
       </AdminSection>
@@ -97,14 +97,14 @@ export default async function AnalyticsPage() {
 
       <AdminSection
         title="온보딩에서 고른 가치"
-        description="문항별 클릭이 아니라 온보딩을 마칠 때 확정한 가치 기준 — 앱 최초진입·전시별 온보딩 합산"
+        description="문항별 클릭이 아니라 온보딩을 마칠 때 확정한 가치 기준 — 앱 최초진입과 행사별 온보딩 합산"
       >
         <OnboardingValueChart data={onboardingValues} />
       </AdminSection>
 
       <AdminSection
         title="버튼 인기도"
-        description="지도 컨트롤·피드 CTA·컴패니언 바 등 전체 클릭 집계"
+        description="지도 컨트롤, 피드 CTA, 컴패니언 바 등 전체 클릭 집계"
       >
         <UiClickChart data={uiClicks} />
       </AdminSection>

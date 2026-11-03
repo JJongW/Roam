@@ -149,18 +149,18 @@ function computeMovers(slices: DriftSlice[]): ValueMove[] {
 
 function noteFor(cohort: number, slices: DriftSlice[]): string | null {
   if (slices.length < 2) {
-    return "두 전시 모두에 신호를 남긴 사용자가 없어 이동을 볼 수 없다.";
+    return "두 행사 모두에 신호를 남긴 사용자가 없어 이동을 볼 수 없어요.";
   }
   if (cohort < MIN_COHORT) {
-    return `재방문자가 ${cohort}명뿐이라 이동은 개인차에 가깝다 — ${MIN_COHORT}명은 모여야 경향으로 읽는다.`;
+    return `재방문자가 ${cohort}명뿐이라 이동은 개인차에 가까워요. ${MIN_COHORT}명은 모여야 경향으로 읽어요.`;
   }
   const thin = slices.filter((s) => s.signals < MIN_SIGNALS);
   if (thin.length > 0) {
-    return `${thin.map((s) => s.exhibitionName).join("·")}의 신호가 ${MIN_SIGNALS}건 미만이라 그 지점은 흔들린다.`;
+    return `${thin.map((s) => s.exhibitionName).join(", ")}의 신호가 ${MIN_SIGNALS}건 미만이라 그 지점은 흔들려요.`;
   }
   const raw = slices.filter((s) => s.unadjusted);
   if (raw.length > 0) {
-    return `${raw.map((s) => s.exhibitionName).join("·")}은 부스 가치 태그가 없어 전시 성격을 못 나눴다 — 그 지점의 이동엔 전시 차이가 섞여 있다.`;
+    return `${raw.map((s) => s.exhibitionName).join(", ")}은 부스 가치 태그가 없어 행사 성격을 못 나눴어요. 그 지점의 이동엔 행사 차이가 섞여 있어요.`;
   }
   return null;
 }

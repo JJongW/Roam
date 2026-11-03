@@ -26,7 +26,7 @@ export function OnboardingValueChart({
   if (data.length === 0) {
     return (
       <p className="py-8 text-center text-sm text-muted-foreground">
-        아직 온보딩을 마친 사람이 없습니다.
+        아직 온보딩을 마친 사람이 없어요.
       </p>
     );
   }

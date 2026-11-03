@@ -8,7 +8,7 @@ const COMPONENT_RULES: [RegExp, string][] = [
   [/^\/(login|auth|api\/auth)/, "로그인"],
   [/^\/exhibitions\/[^/]+\/map/, "지도"],
   [/^\/(booths|api\/booths)/, "부스 상세"],
-  [/^\/(exhibitions|api\/exhibitions)/, "피드/전시홈"],
+  [/^\/(exhibitions|api\/exhibitions)/, "피드/행사 홈"],
   [/^\/api\/me/, "컴패니언"],
   [/^\/api\/(ai|community|cloudinary)/, "AI/미디어"],
 ];

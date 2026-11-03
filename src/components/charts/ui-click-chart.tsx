@@ -25,7 +25,7 @@ export function UiClickChart({ data }: { data: UiClickCount[] }) {
   if (data.length === 0) {
     return (
       <p className="py-8 text-center text-sm text-muted-foreground">
-        아직 집계된 클릭이 없습니다.
+        아직 집계된 클릭이 없어요.
       </p>
     );
   }

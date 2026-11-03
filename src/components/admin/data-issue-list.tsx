@@ -54,7 +54,7 @@ export function DataIssueList({
               >
                 <p className="font-medium">{REASON_LABEL[n.reason]}</p>
                 <p className="mt-0.5 text-xs text-muted-foreground">
-                  user: {n.userId} · booth: {n.boothId}
+                  user: {n.userId}, booth: {n.boothId}
                 </p>
               </li>
             ))}

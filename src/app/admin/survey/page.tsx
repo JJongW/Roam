@@ -39,7 +39,7 @@ export default async function SurveyResultsPage() {
         <div>
           <h1 className="text-xl font-bold">설문 결과</h1>
           <p className="text-sm text-muted-foreground">
-            <a href="/survey" target="_blank" rel="noreferrer" className="underline">/survey</a> 응답 · 30초마다 새로 셉니다
+            <a href="/survey" target="_blank" rel="noreferrer" className="underline">/survey</a> 응답, 30초마다 새로 세요
           </p>
         </div>
         <AutoRefresh seconds={30} />
@@ -60,7 +60,7 @@ export default async function SurveyResultsPage() {
 
       <AdminSection
         title="답하는 데 걸린 시간"
-        description={`페이지를 연 뒤 "답변 보내기"까지 · ${s.duration.measured}명 측정`}
+        description={`페이지를 연 뒤 "답변 보내기"까지, ${s.duration.measured}명 측정`}
       >
         {s.duration.measured === 0 ? (
           <p className="text-sm text-muted-foreground">아직 없어요.</p>
@@ -85,7 +85,7 @@ export default async function SurveyResultsPage() {
                     <span className="h-2 overflow-hidden rounded-full bg-muted">
                       <span className="block h-full bg-primary/60" style={{ width: `${pct}%` }} />
                     </span>
-                    <span className="text-right tabular-nums text-muted-foreground">{b.count} · {pct}%</span>
+                    <span className="text-right tabular-nums text-muted-foreground">{b.count}, {pct}%</span>
                   </li>
                 );
               })}
@@ -101,7 +101,7 @@ export default async function SurveyResultsPage() {
             <AdminSection
               key={question.key}
               title={question.short}
-              description={`${answered}명 답함${question.multi ? " · 여러 개 선택" : ""}`}
+              description={`${answered}명 답함${question.multi ? ", 여러 개 선택" : ""}`}
             >
               <ul className="space-y-2">
                 {options.map((o) => (
@@ -114,7 +114,7 @@ export default async function SurveyResultsPage() {
                       />
                     </span>
                     <span className="text-right tabular-nums text-muted-foreground">
-                      {o.count} · {o.pct}%
+                      {o.count}, {o.pct}%
                     </span>
                   </li>
                 ))}
@@ -124,7 +124,7 @@ export default async function SurveyResultsPage() {
         })}
       </div>
 
-      <AdminSection title="불편했던 점·바라는 점" description={`${s.comments.length}개 · 최근 순`}>
+      <AdminSection title="불편했던 점과 바라는 점" description={`${s.comments.length}개, 최근 순`}>
         {s.comments.length === 0 ? (
           <p className="text-sm text-muted-foreground">아직 없어요.</p>
         ) : (

@@ -88,7 +88,7 @@ export function ExhibitionManager({
       if (editing)
         await api.patch(`/api/exhibitions/${editing.id}`, parsed.data);
       else await api.post("/api/exhibitions", parsed.data);
-      toast.success(editing ? "전시를 수정했어요" : "전시를 추가했어요");
+      toast.success(editing ? "행사를 수정했어요" : "행사를 추가했어요");
       setOpen(false);
       router.refresh();
     } catch (e) {
@@ -106,10 +106,10 @@ export function ExhibitionManager({
     <>
       <div className="flex items-center justify-between">
         <p className="text-sm text-muted-foreground">
-          {exhibitions.length}개 전시
+          {exhibitions.length}개 행사
         </p>
         <Button size="sm" onClick={startCreate}>
-          <Plus className="size-4" /> 새 전시
+          <Plus className="size-4" /> 새 행사
         </Button>
       </div>
 
@@ -145,7 +145,7 @@ export function ExhibitionManager({
           className="max-h-[90dvh] overflow-y-auto"
         >
           <SheetHeader>
-            <SheetTitle>{editing ? "전시 수정" : "새 전시"}</SheetTitle>
+            <SheetTitle>{editing ? "행사 수정" : "새 행사"}</SheetTitle>
           </SheetHeader>
           <div className="space-y-3 px-5 py-3">
             <Field label="이름" error={fieldErrors.name}>

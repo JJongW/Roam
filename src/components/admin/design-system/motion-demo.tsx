@@ -53,7 +53,7 @@ export function MotionDemo() {
                 : "border-border text-muted-foreground",
             )}
           >
-            {d.key} · {d.ms}ms
+            {d.key}, {d.ms}ms
           </button>
         ))}
       </div>

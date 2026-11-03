@@ -68,7 +68,7 @@ function render(v: unknown): string {
           ? `${(x as { slug: string }).slug} ${(x as { strength: number }).strength}`
           : String(x),
       )
-      .join(" · ");
+      .join(", ");
   if (typeof v === "object")
     return Object.entries(v as Record<string, string>)
       .map(([k, t]) => `${k}: ${t}`)
@@ -91,11 +91,11 @@ export function VerifyQueue({ rows }: { rows: VerifyRow[] }) {
       });
       setDone((d) => ({ ...d, [r.boothId]: choice }));
       toast.success(
-        choice === "verified" ? "확인한 값으로 교체했습니다" : "운영 값을 유지합니다",
+        choice === "verified" ? "확인한 값으로 교체했어요" : "운영 값을 유지해요",
       );
       if (choice === "verified") router.refresh();
     } catch (e) {
-      toast.error(e instanceof ApiClientError ? e.message : "실패했습니다");
+      toast.error(e instanceof ApiClientError ? e.message : "실패했어요");
     } finally {
       setBusy(null);
     }
@@ -104,7 +104,7 @@ export function VerifyQueue({ rows }: { rows: VerifyRow[] }) {
   if (rows.length === 0) {
     return (
       <Card className="p-6 text-center text-sm text-muted-foreground">
-        대조할 것이 없습니다.
+        대조할 것이 없어요.
       </Card>
     );
   }
@@ -173,8 +173,8 @@ export function VerifyQueue({ rows }: { rows: VerifyRow[] }) {
                   <span className="font-semibold">주최 브랜드 디렉터리</span>
                   <span className="text-muted-foreground">
                     {dir.nameKor}
-                    {dir.nameEng ? ` · ${dir.nameEng}` : ""}
-                    {dir.category ? ` · ${dir.category}` : ""}
+                    {dir.nameEng ? `, ${dir.nameEng}` : ""}
+                    {dir.category ? `, ${dir.category}` : ""}
                   </span>
                   <a
                     href={dir.source}
@@ -275,8 +275,8 @@ export function VerifyQueue({ rows }: { rows: VerifyRow[] }) {
             </div>
 
             <p className="text-xs text-muted-foreground">
-              교체하면 <b>확인한 값이 있는 필드만</b> 바뀝니다 — 비어 있는 필드는
-              운영 값을 그대로 둡니다.
+              교체하면 <b>확인한 값이 있는 필드만</b> 바뀌어요. 비어 있는 필드는
+              운영 값을 그대로 둬요.
             </p>
 
             <div className="flex flex-wrap gap-2">

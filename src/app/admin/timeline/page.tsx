@@ -70,7 +70,7 @@ export default function AdminTimelinePage() {
         <div>
           <h1 className="text-2xl font-extrabold">타임라인</h1>
           <p className="text-sm text-muted-foreground">
-            부스 반응·페이지 조회 원시 이벤트(최신순)
+            부스 반응과 페이지 조회 원시 이벤트(최신순)
           </p>
         </div>
         <Button variant="outline" size="sm" onClick={() => void load()}>
@@ -95,7 +95,7 @@ export default function AdminTimelinePage() {
       ) : error ? (
         <ErrorState onRetry={() => void load()} />
       ) : !exhibitionId ? (
-        <EmptyState title="전시가 없어요" />
+        <EmptyState title="행사가 없어요" />
       ) : filtered.length === 0 ? (
         <EmptyState title="이벤트가 없어요" />
       ) : (

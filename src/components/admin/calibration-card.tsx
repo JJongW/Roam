@@ -10,7 +10,7 @@ export function CalibrationCard({ cal }: { cal: Calibration }) {
         <p className="text-sm font-bold">신뢰도별 승인률</p>
         <p className="text-xs text-muted-foreground">
           사람이 판단한 {cal.reviewed}건 기준. 자동 통과 임계값은 이 표를 보고
-          정합니다.
+          정해요.
         </p>
       </div>
       <ul className="space-y-1.5">
@@ -32,7 +32,7 @@ export function CalibrationCard({ cal }: { cal: Calibration }) {
                   "판단 없음"
                 ) : (
                   <>
-                    <b className="text-sm text-foreground">{b.approvalPct}%</b> ·{" "}
+                    <b className="text-sm text-foreground">{b.approvalPct}%</b>,{" "}
                     {b.approved}/{n}
                   </>
                 )}

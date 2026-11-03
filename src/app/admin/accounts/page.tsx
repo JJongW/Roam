@@ -104,7 +104,7 @@ export default function AdminAccountsPage() {
                   {u.nickname}
                 </Link>
                 <p className="text-xs text-muted-foreground">
-                  {u.provider ? providerLabel(u.provider) : "닉네임"} ·{" "}
+                  {u.provider ? providerLabel(u.provider) : "닉네임"},{" "}
                   {format(new Date(u.createdAt), "yyyy.M.d")} 가입
                 </p>
               </div>

@@ -35,7 +35,7 @@ export function IntakeUploader() {
     try {
       parsed = JSON.parse(await file.text());
     } catch {
-      toast.error("JSON으로 읽을 수 없는 파일입니다");
+      toast.error("JSON으로 읽을 수 없는 파일이에요");
       return;
     }
     // 서버에 보내기 전에 여기서 한 번 거른다 — 형식이 틀린 걸 왕복시킬 이유가 없다.
@@ -62,14 +62,14 @@ export function IntakeUploader() {
       if (apply) {
         const a = res.applied!;
         toast.success(
-          `신규 ${a.createdBooths} · 채움 ${a.filledBooths}${
-            a.failures.length ? ` · 실패 ${a.failures.length}` : ""
+          `신규 ${a.createdBooths}, 채움 ${a.filledBooths}${
+            a.failures.length ? `, 실패 ${a.failures.length}` : ""
           }`,
         );
       }
     } catch (e) {
       toast.error(
-        e instanceof ApiClientError ? e.message : "인입에 실패했습니다",
+        e instanceof ApiClientError ? e.message : "인입에 실패했어요",
       );
     } finally {
       setBusy(false);
@@ -107,8 +107,8 @@ export function IntakeUploader() {
           )}
         </div>
         <p className="text-sm text-muted-foreground">
-          좌표는 파일이 아니라 도면(FLOORPLANS)에서 부스 코드로 가져옵니다. 고르면
-          바로 미리보기만 계산하고, 아무것도 쓰지 않습니다.
+          좌표는 파일이 아니라 도면(FLOORPLANS)에서 부스 코드로 가져와요. 고르면
+          바로 미리보기만 계산하고, 아무것도 쓰지 않아요.
         </p>
       </Card>
 
@@ -133,26 +133,26 @@ export function IntakeUploader() {
             <Card className="flex flex-wrap items-center gap-2 p-4">
               <span className="text-sm font-bold">새로 만들 것</span>
               {plan.newHalls.map((h) => (
-                <Chip key={h}>홀 · {h}</Chip>
+                <Chip key={h}>홀: {h}</Chip>
               ))}
               {plan.newCategories.map((c) => (
                 <Chip key={c.slug}>
-                  분야 · {c.name} ({c.slug})
+                  분야: {c.name} ({c.slug})
                 </Chip>
               ))}
             </Card>
           )}
 
           <IssueList
-            title={`오류 ${plan.errors.length}건 — 이 부스는 건너뜁니다`}
+            title={`오류 ${plan.errors.length}건 — 이 부스는 건너뛰어요`}
             rows={plan.errors.map((e) => ({ key: e.code, text: e.message }))}
             tone="bad"
           />
           <IssueList
-            title={`충돌 ${plan.conflicts.length}건 — 기본은 쓰지 않습니다`}
+            title={`충돌 ${plan.conflicts.length}건 — 기본은 쓰지 않아요`}
             rows={plan.conflicts.map((c, i) => ({
               key: `${c.code}-${c.field}-${i}`,
-              text: `${c.code} · ${c.field}`,
+              text: `${c.code} / ${c.field}`,
               detail: `현재 ${JSON.stringify(c.current)} → 파일 ${JSON.stringify(
                 c.incoming,
               )}`,
@@ -176,7 +176,7 @@ export function IntakeUploader() {
                 }}
                 className="size-4 accent-[var(--primary)]"
               />
-              충돌도 덮어쓰기 — 사람이 쓴 값이 파일 값으로 바뀝니다
+              충돌도 덮어쓰기 — 사람이 쓴 값이 파일 값으로 바뀌어요
             </label>
             <div className="flex flex-wrap items-center gap-3">
               <Button
@@ -202,8 +202,8 @@ export function IntakeUploader() {
           {applied && (
             <Card className="flex flex-col gap-2 p-5">
               <p className="font-bold">
-                적용됨 — 부스 신규 {applied.createdBooths} · 채움{" "}
-                {applied.filledBooths} · 홀 {applied.createdHalls} · 분야{" "}
+                적용됨 — 부스 신규 {applied.createdBooths}, 채움{" "}
+                {applied.filledBooths}, 홀 {applied.createdHalls}, 분야{" "}
                 {applied.createdCategories}
               </p>
               {applied.failures.length > 0 && (

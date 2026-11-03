@@ -130,7 +130,7 @@ export default function AdminAccountDrilldownPage() {
             {bookmarks.map((b) => (
               <li key={b.id} className="flex items-center justify-between gap-2">
                 <span className="min-w-0 flex-1 truncate">
-                  {b.targetType} · {b.targetId}
+                  {b.targetType}, {b.targetId}
                   <span className="ml-2 text-xs text-muted-foreground">
                     {new Date(b.createdAt).toLocaleDateString("ko-KR")}
                   </span>
