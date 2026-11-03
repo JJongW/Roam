@@ -25,6 +25,8 @@ export function ExhibitionSwitcher({
   if (
     pathname.startsWith("/admin/accounts") ||
     pathname.startsWith("/admin/design-system") ||
+    // 브랜드는 모든 박람회를 한 화면에서 보고 자체 박람회 필터가 있다.
+    pathname.startsWith("/admin/brands") ||
     pathname.startsWith("/admin/exhibitions")
   )
     return null;
