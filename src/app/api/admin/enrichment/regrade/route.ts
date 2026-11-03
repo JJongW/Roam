@@ -23,7 +23,7 @@ export async function POST(req: Request) {
 
   const repo = await getRepository();
   const exhibitionId = await repo.getExhibitionIdBySlug(parsed.data.exhibitionSlug);
-  if (!exhibitionId) return notFound("전시를 찾을 수 없습니다");
+  if (!exhibitionId) return notFound("행사를 찾을 수 없어요");
 
   const [pending, booths, categories] = await Promise.all([
     repo.listEnrichmentCandidates({ exhibitionId, status: "pending", limit: 1000 }),

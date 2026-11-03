@@ -7,11 +7,11 @@ type Ctx = { params: Promise<{ id: string }> };
 
 /** 자주 쓰는 반려 사유. 자유 텍스트만 두면 아무도 안 적고, 안 적히면 학습이 없다. */
 export const REJECT_REASONS = {
-  wrong_fact: "사실이 틀렸다",
-  no_evidence: "근거 없이 지어냈다",
-  voice: "로미 말투가 아니다",
-  vague: "두루뭉술하다 — 이 부스 얘기가 아니다",
-  duplicate: "다른 부스와 같은 말이다",
+  wrong_fact: "사실이 틀렸어요",
+  no_evidence: "근거 없이 지어냈어요",
+  voice: "로미 말투가 아니에요",
+  vague: "두루뭉술해요 — 이 부스 얘기가 아니에요",
+  duplicate: "다른 부스와 같은 말이에요",
 } as const;
 
 const bodySchema = z.object({
@@ -40,9 +40,9 @@ export async function POST(req: Request, { params }: Ctx) {
 
   const repo = await getRepository();
   const candidate = await repo.getEnrichmentCandidate(id);
-  if (!candidate) return notFound("초안을 찾을 수 없습니다");
+  if (!candidate) return notFound("초안을 찾을 수 없어요");
   if (candidate.status !== "pending") {
-    return ok({ candidate, applied: false, note: "이미 처리된 초안입니다" });
+    return ok({ candidate, applied: false, note: "이미 처리된 초안이에요" });
   }
 
   const actor = await getUserId();

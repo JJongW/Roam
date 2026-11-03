@@ -25,7 +25,7 @@ export async function POST(req: Request) {
 
   const repo = await getRepository();
   const exhibitionId = await repo.getExhibitionIdBySlug(parsed.data.exhibitionSlug);
-  if (!exhibitionId) return ok({ applied: 0, note: "전시를 찾을 수 없습니다" });
+  if (!exhibitionId) return ok({ applied: 0, note: "행사를 찾을 수 없어요" });
 
   const pending = await repo.listEnrichmentCandidates({
     exhibitionId,
@@ -42,7 +42,7 @@ export async function POST(req: Request) {
   if (targets.length !== parsed.data.expected) {
     return ok({
       applied: 0,
-      note: `화면은 ${parsed.data.expected}건인데 지금은 ${targets.length}건입니다 — 새로고침 후 다시 확인해주세요.`,
+      note: `화면은 ${parsed.data.expected}건인데 지금은 ${targets.length}건이에요. 새로고침 후 다시 확인해 주세요.`,
     });
   }
 

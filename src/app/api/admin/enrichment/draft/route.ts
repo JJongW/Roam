@@ -36,7 +36,7 @@ export async function POST(req: Request) {
 
   const repo = await getRepository();
   const exhibitionId = await repo.getExhibitionIdBySlug(exhibitionSlug);
-  if (!exhibitionId) return notFound(`전시를 찾을 수 없습니다: ${exhibitionSlug}`);
+  if (!exhibitionId) return notFound(`행사를 찾을 수 없어요: ${exhibitionSlug}`);
 
   const viaQueue = parsed.data.queue || limit > INLINE_MAX;
   if (viaQueue) {
@@ -47,12 +47,12 @@ export async function POST(req: Request) {
     return ok({
       queued: true,
       jobId: job.id,
-      note: `${limit}부스는 워커가 처리합니다 — 라우트에서 바로 돌리기엔 깁니다(실측 10부스 ≈ 49초).`,
+      note: `${limit}부스는 워커가 처리해요. 라우트에서 바로 돌리기엔 길어요(실측 10부스 ≈ 49초).`,
     });
   }
 
   if (!hasGemini) {
-    return fail("UNPROCESSABLE", "GEMINI_API_KEY가 없어 초안을 만들 수 없습니다");
+    return fail("UNPROCESSABLE", "GEMINI_API_KEY가 없어 초안을 만들 수 없어요");
   }
   const result = await runDraftBatch(repo, {
     exhibitionSlug,

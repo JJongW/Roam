@@ -50,7 +50,7 @@ export async function runDraftBatch(
 ): Promise<DraftRunResult | { error: string }> {
   const exhibitionId = await repo.getExhibitionIdBySlug(input.exhibitionSlug);
   if (!exhibitionId) {
-    return { error: `전시를 찾을 수 없습니다: ${input.exhibitionSlug}` };
+    return { error: `행사를 찾을 수 없어요: ${input.exhibitionSlug}` };
   }
 
   const [booths, categories] = await Promise.all([
@@ -112,7 +112,7 @@ export async function runDraftBatch(
       const ANGLES = [
         "",
         "\n\n브랜드의 **공식 웹사이트와 자사 소개**를 먼저 찾아 읽어라. 쇼핑몰 상품 페이지나 다른 박람회 참가사 목록은 근거로 쓰지 마라.",
-        `\n\n"${booth.name}"과 이름이 비슷한 다른 브랜드와 헷갈리지 마라. 이 전시(${input.exhibitionSlug})에 참가하는 그 브랜드인지 확인되는 근거만 써라. 확인이 안 되면 그 필드를 비워라.`,
+        `\n\n"${booth.name}"과 이름이 비슷한 다른 브랜드와 헷갈리지 마라. 이 행사(${input.exhibitionSlug})에 참가하는 그 브랜드인지 확인되는 근거만 써라. 확인이 안 되면 그 필드를 비워라.`,
       ];
       let best: {
         payload: BoothEnrichmentPatch;
@@ -158,7 +158,7 @@ export async function runDraftBatch(
         // 사람에게 보낼 만한 점수가 나왔으면 더 안 찾는다 — 요금이 든다.
         if (reviewPolicy(report.confidence, report.issues).decision !== "redraft") break;
       }
-      if (!best) throw new Error("JSON을 못 얻었다(재시도 후에도)");
+      if (!best) throw new Error("JSON을 못 얻었어요(재시도 후에도)");
 
       const kept = best.payload;
       const sources = best.sources;

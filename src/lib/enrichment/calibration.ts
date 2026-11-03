@@ -65,17 +65,17 @@ function noteFor(bands: CalibrationBand[]): string | null {
   const top = bands[0];
   const n = top.approved + top.rejected;
   if (n === 0) {
-    return "아직 판단된 초안이 없다 — 자동 통과는 근거가 생긴 뒤에 켠다.";
+    return "아직 판단된 초안이 없어요. 자동 통과는 근거가 생긴 뒤에 켜요.";
   }
   if (n < MIN_BAND_SAMPLE) {
-    return `≥0.80 밴드의 표본이 ${n}건뿐이다 — ${MIN_BAND_SAMPLE}건은 모여야 임계값의 근거로 쓴다.`;
+    return `≥0.80 밴드의 표본이 ${n}건뿐이에요. ${MIN_BAND_SAMPLE}건은 모여야 임계값의 근거로 써요.`;
   }
   if ((top.approvalPct ?? 0) < 90) {
-    return `≥0.80인데 승인률이 ${top.approvalPct}%다 — 자동 통과를 켜면 그만큼이 검수 없이 나간다.`;
+    return `≥0.80인데 승인률이 ${top.approvalPct}%예요. 자동 통과를 켜면 그만큼이 검수 없이 나가요.`;
   }
   const low = bands[2];
   if (low.approvalPct !== null && low.approvalPct >= 60) {
-    return `참고: <0.60도 ${low.approvalPct}% 승인됐다. 낮은 점수가 "품질 나쁨"이 아니라 "확인 불가"인 경우가 많다 — 재조사로 돌리면 쓸 만한 초안을 버린다.`;
+    return `참고: <0.60도 ${low.approvalPct}% 승인됐어요. 낮은 점수가 "품질 나쁨"이 아니라 "확인 불가"인 경우가 많아요. 재조사로 돌리면 쓸 만한 초안을 버려요.`;
   }
   return null;
 }
