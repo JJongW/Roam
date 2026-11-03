@@ -636,26 +636,26 @@ const ko = {
     // 확신이 높아도 "확실한 취향"처럼 단정하지 않는다(02_voice-tone.md §3-2).
     reactMustTentative: [
       "‘{booth}’도 그렇고, 요즘 ‘{theme}’ 쪽에 자꾸 손이 가시네요.",
-      "‘{booth}’, ‘{theme}’ 쪽을 원래 좋아하셨어요?",
+      "‘{booth}’, ‘{theme}’ 쪽에 원래 관심 있으셨어요?",
       "‘{booth}’도 그렇네요. ‘{theme}’ 결이 익숙해지시는 중인가 봐요.",
       "‘{booth}’, ‘{theme}’ 쪽이 요즘 자주 보이네요.",
     ],
     reactMustTentativePlain: [
       "요즘 ‘{theme}’ 쪽에 자꾸 손이 가시네요.",
-      "‘{theme}’ 쪽을 원래 좋아하셨어요?",
+      "‘{theme}’ 쪽에 원래 관심 있으셨어요?",
       "‘{theme}’ 결이 익숙해지시는 중인가 봐요.",
       "‘{theme}’ 쪽이 요즘 자주 보이네요.",
     ],
     reactMustConfident: [
-      "‘{booth}’도 그렇고, ‘{theme}’ 쪽을 정말 좋아하시나 봐요.",
-      "‘{booth}’, ‘{theme}’ 쪽은 매번 챙기시네요.",
-      "‘{booth}’도 그렇네요. ‘{theme}’ 쪽을 좋아하시는 것 같아요.",
+      "‘{booth}’도 그렇고, ‘{theme}’ 쪽에 관심이 자주 가시나 봐요.",
+      "‘{booth}’, ‘{theme}’ 쪽은 자주 고르시네요.",
+      "‘{booth}’도 그렇네요. ‘{theme}’ 쪽에 자주 끌리시나 봐요.",
       "‘{booth}’, ‘{theme}’ 쪽 취향이 이제 조금 보여요.",
     ],
     reactMustConfidentPlain: [
-      "‘{theme}’ 쪽을 정말 좋아하시나 봐요.",
-      "‘{theme}’ 쪽은 매번 챙기시네요.",
-      "‘{theme}’ 쪽을 좋아하시는 것 같아요.",
+      "‘{theme}’ 쪽에 관심이 자주 가시나 봐요.",
+      "‘{theme}’ 쪽은 자주 고르시네요.",
+      "‘{theme}’ 쪽에 자주 끌리시나 봐요.",
       "‘{theme}’ 쪽 취향이 이제 조금 보여요.",
     ],
     reactCuriousTentative: [
@@ -673,13 +673,13 @@ const ko = {
     reactCuriousConfident: [
       "‘{booth}’도 그렇고, ‘{theme}’ 쪽엔 늘 눈이 가시나 봐요.",
       "‘{booth}’, ‘{theme}’ 쪽 취향이 이제 보이는 것 같아요.",
-      "‘{booth}’도 그렇네요. ‘{theme}’ 쪽에 매번 끌리시는군요.",
+      "‘{booth}’도 그렇네요. ‘{theme}’ 쪽에 자주 끌리시는군요.",
       "‘{booth}’, ‘{theme}’ 쪽은 정말 꾸준하시네요.",
     ],
     reactCuriousConfidentPlain: [
       "‘{theme}’ 쪽엔 늘 눈이 가시나 봐요.",
       "‘{theme}’ 쪽 취향이 이제 보이는 것 같아요.",
-      "‘{theme}’ 쪽에 매번 끌리시는군요.",
+      "‘{theme}’ 쪽에 자주 끌리시는군요.",
       "‘{theme}’ 쪽은 정말 꾸준하시네요.",
     ],
     reactPassConfident: [
