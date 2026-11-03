@@ -8,7 +8,7 @@ function ex(n: number): Exhibition {
   return {
     id: `e${n}`,
     slug: `ex-${n}`,
-    name: `전시 ${n}`,
+    name: `행사 ${n}`,
     venue: "COEX",
     description: "설명",
     startDate: "2026-01-0" + ((n % 9) + 1),
@@ -29,35 +29,35 @@ describe("ExhibitionStatusSection", () => {
         exhibitions={[ex(1), ex(2)]}
       />,
     );
-    expect(screen.getByText("전시 1")).toBeInTheDocument();
-    expect(screen.getByText("전시 2")).toBeInTheDocument();
+    expect(screen.getByText("행사 1")).toBeInTheDocument();
+    expect(screen.getByText("행사 2")).toBeInTheDocument();
   });
 
-  it("지난 전시 섹션은 접힌 상태로 시작한다 — 결정 대상이 아니다", () => {
+  it("지난 행사 섹션은 접힌 상태로 시작한다 — 결정 대상이 아니다", () => {
     render(
       <ExhibitionStatusSection
-        title="지난 전시"
+        title="지난 행사"
         status="ended"
         exhibitions={[ex(1), ex(2)]}
       />,
     );
-    expect(screen.queryByText("전시 1")).not.toBeInTheDocument();
-    expect(screen.getByText(/지난 전시/)).toBeInTheDocument();
+    expect(screen.queryByText("행사 1")).not.toBeInTheDocument();
+    expect(screen.getByText(/지난 행사/)).toBeInTheDocument();
   });
 
-  it("지난 전시 제목을 누르면 펼쳐진다", async () => {
+  it("지난 행사 제목을 누르면 펼쳐진다", async () => {
     render(
       <ExhibitionStatusSection
-        title="지난 전시"
+        title="지난 행사"
         status="ended"
         exhibitions={[ex(1), ex(2)]}
       />,
     );
-    await userEvent.click(screen.getByRole("button", { name: /지난 전시/ }));
-    expect(screen.getByText("전시 1")).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: /지난 행사/ }));
+    expect(screen.getByText("행사 1")).toBeInTheDocument();
   });
 
-  it("전시가 없으면 아무것도 그리지 않는다", () => {
+  it("행사가 없으면 아무것도 그리지 않는다", () => {
     const { container } = render(
       <ExhibitionStatusSection title="예정" status="upcoming" exhibitions={[]} />,
     );

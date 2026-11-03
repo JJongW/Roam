@@ -33,8 +33,8 @@ describe("componentOf", () => {
   });
 
   it("/exhibitions(map 제외), /api/exhibitions → 피드/전시홈", () => {
-    expect(componentOf("/exhibitions/sibf-2026")).toBe("피드/전시홈");
-    expect(componentOf("/api/exhibitions/sibf-2026")).toBe("피드/전시홈");
+    expect(componentOf("/exhibitions/sibf-2026")).toBe("피드/행사 홈");
+    expect(componentOf("/api/exhibitions/sibf-2026")).toBe("피드/행사 홈");
   });
 
   it("/api/me/* → 컴패니언", () => {

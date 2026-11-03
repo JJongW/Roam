@@ -12,7 +12,10 @@ describe("draftSystemPrompt", () => {
     // 게이트가 사후에 잡는 것과 프롬프트가 사전에 막는 것이 같아야, 걸리는 초안이
     // 줄어든다. 둘이 어긋나면 계속 감점만 나고 이유를 모른다.
     const p = draftSystemPrompt();
-    expect(p).toContain("반말");
+    expect(p).toContain("해요체 존댓말");
+    expect(p).toContain("가운뎃점");
+    expect(p).toContain("'전시'");
+    expect(p).toContain("'제가'");
     expect(p).toContain("가치 이름");
     expect(p).toContain("지어내지 않는다");
     expect(p).toContain("상투어");

@@ -17,10 +17,10 @@ beforeEach(() => {
 });
 
 describe("JudgmentBar mode=interest", () => {
-  it("3칸을 렌더한다: 꼭 갈래·끌려·패스", () => {
+  it("3칸을 렌더한다: 꼭 갈래요, 끌려요, 패스", () => {
     render(<JudgmentBar {...props} mode="interest" />);
-    expect(screen.getByRole("button", { name: /꼭 갈래/ })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /끌려/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /꼭 갈래요/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /끌려요/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /패스/ })).toBeInTheDocument();
   });
 
@@ -42,11 +42,11 @@ describe("JudgmentBar mode=interest", () => {
 });
 
 describe("JudgmentBar mode=verdict", () => {
-  it("3칸을 렌더한다: 좋았어·그냥그랬어·아니었어", () => {
+  it("3칸을 렌더한다: 좋았어요, 그저 그랬어요, 아니었어요", () => {
     render(<JudgmentBar {...props} mode="verdict" />);
-    expect(screen.getByRole("button", { name: /좋았어/ })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /그냥그랬어/ })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /아니었어/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /좋았어요/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /그저 그랬어요/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /아니었어요/ })).toBeInTheDocument();
   });
 
   it("좋았어를 누르면 스토어에 verdict='good'이 반영된다", async () => {
@@ -60,14 +60,14 @@ describe("JudgmentBar mode=verdict", () => {
 describe("JudgmentBar mode=adaptive", () => {
   it("interest·verdict 둘 다 없으면 interest 3칸 + '다녀왔어' 링크", () => {
     render(<JudgmentBar {...props} mode="adaptive" />);
-    expect(screen.getByRole("button", { name: /꼭 갈래/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /꼭 갈래요/ })).toBeInTheDocument();
     expect(screen.getByText(/다녀왔어/)).toBeInTheDocument();
   });
 
   it("interest는 있고 verdict 없으면 verdict 3칸 + '관심 바꾸기' 링크", () => {
     useVisitStore.setState({ records: { b1: { interest: "must" } }, hasPendingSync: false });
     render(<JudgmentBar {...props} mode="adaptive" />);
-    expect(screen.getByRole("button", { name: /좋았어/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /좋았어요/ })).toBeInTheDocument();
     expect(screen.getByText(/관심 바꾸기/)).toBeInTheDocument();
   });
 
@@ -86,7 +86,7 @@ describe("JudgmentBar mode=adaptive", () => {
     const user = userEvent.setup();
     render(<JudgmentBar {...props} mode="adaptive" />);
     await user.click(screen.getByText(/다녀왔어/));
-    expect(screen.getByRole("button", { name: /좋았어/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /좋았어요/ })).toBeInTheDocument();
   });
 
   it("'관심 바꾸기' 링크를 누르면 interest 3칸으로 돌아간다", async () => {
@@ -94,6 +94,6 @@ describe("JudgmentBar mode=adaptive", () => {
     const user = userEvent.setup();
     render(<JudgmentBar {...props} mode="adaptive" />);
     await user.click(screen.getByText(/관심 바꾸기/));
-    expect(screen.getByRole("button", { name: /꼭 갈래/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /꼭 갈래요/ })).toBeInTheDocument();
   });
 });

@@ -74,7 +74,7 @@ describe("learningCurve — 곡선", () => {
       ...batch("u1", "e2", "2026-02-01", 6, true),
     ]);
     expect(c.points[1].thin).toBe(true);
-    expect(c.blocker).toContain("아직 추세가 아니다");
+    expect(c.blocker).toContain("아직 추세가 아니에요");
     expect(c.blocker).toContain("저작 데이터 품질");
   });
 });
@@ -82,7 +82,7 @@ describe("learningCurve — 곡선", () => {
 describe("learningCurve — 공백을 설명한다", () => {
   it("2회차 방문자가 없으면 그렇게 말한다", () => {
     const c = learningCurve(batch("u1", "e1", "2026-01-01", 5, true));
-    expect(c.blocker).toContain("두 번째 전시에 반응한 사용자가 아직 없다");
+    expect(c.blocker).toContain("두 번째 행사에 반응한 사용자가 아직 없어요");
   });
 
   it("2회차에 반응은 있는데 판정이 없으면 그걸 짚는다", () => {

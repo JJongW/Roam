@@ -125,7 +125,8 @@ describe("matchExhibition", () => {
 describe("matchReason", () => {
   it("names the overlapping values", () => {
     const r = matchReason(["goods", "social"]);
-    expect(r).toContain("겹치는 부스가 많아");
+    expect(r).toContain("맞는 부스가 많아요");
+    expect(r).not.toMatch(/네가|·/);
     expect(r).not.toContain("undefined");
   });
 
@@ -135,7 +136,7 @@ describe("matchReason", () => {
 
   it("keeps the sentence short by capping the values it names", () => {
     const r = matchReason(["goods", "social", "rest", "discovery"])!;
-    expect(r.split("·").length).toBeLessThanOrEqual(2);
+    expect(r.split(", ").length).toBeLessThanOrEqual(2);
   });
 });
 

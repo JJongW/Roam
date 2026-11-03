@@ -184,7 +184,7 @@ describe("buildGrounding", () => {
       goodsKeywords: [],
       themeTags: [],
       summary: "1874년 설립된 조명 브랜드입니다.",
-      roamInterpretation: "1874년부터 이어온 덴마크 조명 브랜드야.",
+      roamInterpretation: "1874년부터 이어온 덴마크 조명 브랜드예요.",
     });
     expect(buildGrounding(onlyInterpretation, []).confidence).toBe("medium");
 
@@ -207,10 +207,10 @@ describe("buildGrounding", () => {
       goodsKeywords: [],
       themeTags: [],
       summary: "덴마크 디자인 전통을 계승한 조명 제품을 선보입니다.",
-      roamInterpretation: "1874년부터 이어온 덴마크 조명 브랜드야.",
+      roamInterpretation: "1874년부터 이어온 덴마크 조명 브랜드예요.",
     });
     const g = buildGrounding(b, []);
-    expect(g.why).toBe("1874년부터 이어온 덴마크 조명 브랜드야.");
+    expect(g.why).toBe("1874년부터 이어온 덴마크 조명 브랜드예요.");
     expect(g.quote).toBeNull();
   });
 });

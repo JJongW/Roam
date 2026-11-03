@@ -16,10 +16,10 @@ function good(over: Partial<GradeInput["payload"]> = {}): GradeInput {
     booth,
     sources,
     payload: {
-      summary: "1874년 설립된 덴마크 조명 브랜드입니다.",
-      roamInterpretation: "약통을 재사용한 드롭 램프가 시그니처야.",
+      summary: "1874년 설립된 덴마크 조명 브랜드예요.",
+      roamInterpretation: "약통을 재사용한 드롭 램프가 시그니처예요.",
       valueTags: [{ slug: "goods", strength: 0.8 }],
-      recommendationReasons: { goods: "PH 시리즈 실물을 볼 수 있어." },
+      recommendationReasons: { goods: "PH 시리즈 실물을 볼 수 있어요." },
       thingsToDo: ["조명 아래 앉아보기"],
       ...over,
     },
@@ -37,10 +37,10 @@ describe("gradeCandidate — 통과", () => {
 describe("gradeCandidate — CLAUDE.md 규약의 기계적 표현", () => {
   it("분류를 되읽어주면 감점한다", () => {
     for (const line of [
-      "발견 쪽 부스야.",
-      "네 관심 가치랑 겹쳐.",
-      "이 부스의 가치는 굿즈야.",
-      "goods 성향이 강한 곳이야.",
+      "발견 쪽 부스예요.",
+      "관심 가치랑 겹쳐요.",
+      "이 부스의 가치는 굿즈예요.",
+      "goods 성향이 강한 곳이에요.",
     ]) {
       const r = gradeCandidate(good({ roamInterpretation: line }));
       expect(r.issues.map((i) => i.code), line).toContain("value_word_in_voice");
@@ -51,10 +51,10 @@ describe("gradeCandidate — CLAUDE.md 규약의 기계적 표현", () => {
     // SIF 50건에서 8건이 이걸로 오탐이었다 — "굿즈"는 그냥 물건을 가리키는 말이지
     // 분류가 아니다. 그대로 뒀으면 47건 중 8건이 불필요하게 재조사로 갔다.
     for (const line of [
-      "감자숭이 캐릭터 굿즈를 만날 수 있는 부스야.",
-      "고양이 핸드메이드 굿즈를 만날 수 있어.",
-      "직접 만져보는 체험을 할 수 있어.",
-      "작가한테 제작 과정을 학습할 수 있어.",
+      "감자숭이 캐릭터 굿즈를 만날 수 있는 부스예요.",
+      "고양이 핸드메이드 굿즈를 만날 수 있어요.",
+      "직접 만져보는 체험을 할 수 있어요.",
+      "작가한테 제작 과정을 학습할 수 있어요.",
     ]) {
       const r = gradeCandidate(good({ roamInterpretation: line }));
       expect(r.issues.map((i) => i.code), line).not.toContain(
@@ -64,15 +64,37 @@ describe("gradeCandidate — CLAUDE.md 규약의 기계적 표현", () => {
   });
 
   it("부스명만 되풀이하면 감점한다", () => {
-    const r = gradeCandidate(good({ roamInterpretation: "루이스폴센 부스야" }));
+    const r = gradeCandidate(good({ roamInterpretation: "루이스폴센 부스예요" }));
     expect(r.issues.map((i) => i.code)).toContain("name_only");
   });
 
-  it("존댓말이면 로미의 말이 아니다 — voice.ts 판정을 빌려 쓴다", () => {
+  it("합니다체나 자기소개면 로미의 말이 아니다 — voice.ts 판정을 빌려 쓴다", () => {
     const r = gradeCandidate(
       good({ roamInterpretation: "안녕하세요, 조명을 만드는 브랜드입니다." }),
     );
     expect(r.issues.map((i) => i.code)).toContain("not_roam_voice");
+  });
+
+  it("반말이면 로미의 말이 아니다 — 로미는 해요체다(2026-11-02)", () => {
+    for (const line of [
+      "약통을 재사용한 드롭 램프가 시그니처야.",
+      "PH 시리즈를 직접 볼 수 있어",
+      "1874년부터 이어온 덴마크 조명 브랜드",
+    ]) {
+      const r = gradeCandidate(good({ roamInterpretation: line }));
+      expect(r.issues.map((i) => i.code), line).toContain("not_roam_voice");
+    }
+  });
+
+  it("해요체 문장은 통과시킨다", () => {
+    for (const line of [
+      "약통을 재사용한 드롭 램프가 시그니처예요.",
+      "PH 시리즈를 직접 볼 수 있어요!",
+      "‘PH5’ 실물을 볼 수 있어요. 앉아서 빛을 볼 자리도 있죠.",
+    ]) {
+      const r = gradeCandidate(good({ roamInterpretation: line }));
+      expect(r.issues.map((i) => i.code), line).not.toContain("not_roam_voice");
+    }
   });
 
   it("로미 한 줄이 없으면 감점한다", () => {
@@ -91,7 +113,7 @@ describe("gradeCandidate — 스키마·정합성", () => {
 
   it("태그 없는 가치의 근거만 있으면 잡는다", () => {
     const r = gradeCandidate(
-      good({ recommendationReasons: { rest: "앉을 데가 있어." } }),
+      good({ recommendationReasons: { rest: "앉을 데가 있어요." } }),
     );
     expect(r.issues.map((i) => i.code)).toContain("reason_without_tag");
   });
@@ -157,7 +179,7 @@ describe("gradeCandidate — LLM의 대표 실패", () => {
   });
 
   it("같은 배치에서 문장이 반복되면 크게 깎는다", () => {
-    const line = "약통을 재사용한 드롭 램프가 시그니처야.";
+    const line = "약통을 재사용한 드롭 램프가 시그니처예요.";
     const r = gradeCandidate({
       ...good(),
       seenPhrases: new Set([line]),
@@ -204,9 +226,9 @@ describe("근거 없는 부스에서 드러난 실패 — 마곡 50부스", () =
       ],
       payload: {
         summary: "일동공예는 16쿼트 에어프라이어 오븐을 판매하는 브랜드다.",
-        roamInterpretation: "에어프라이어로 요리를 해볼 수 있어.",
+        roamInterpretation: "에어프라이어로 요리를 해볼 수 있어요.",
         valueTags: [{ slug: "goods", strength: 0.8 }],
-        recommendationReasons: { goods: "제품을 직접 볼 수 있어." },
+        recommendationReasons: { goods: "제품을 직접 볼 수 있어요." },
         thingsToDo: ["작동 시연 보기"],
       },
     });
@@ -225,9 +247,9 @@ describe("근거 없는 부스에서 드러난 실패 — 마곡 50부스", () =
       booth: { name: "일동공예", company: "Hobby & Play / Kitchen & Tableware" },
       payload: {
         summary: "일동공예는 손으로 깎은 목기를 선보인다.",
-        roamInterpretation: "결이 살아 있는 목기를 볼 수 있어.",
+        roamInterpretation: "결이 살아 있는 목기를 볼 수 있어요.",
         valueTags: [{ slug: "goods", strength: 0.7 }],
-        recommendationReasons: { goods: "결을 직접 보고 고를 수 있어." },
+        recommendationReasons: { goods: "결을 직접 보고 고를 수 있어요." },
         thingsToDo: ["결을 만져보기"],
       },
     });
@@ -240,9 +262,9 @@ describe("근거 없는 부스에서 드러난 실패 — 마곡 50부스", () =
       ...base,
       payload: {
         summary: "일동공예는 아이들을 위한 소꿉놀이 주방용품을 판매할 것으로 보인다.",
-        roamInterpretation: "미니어처 주방용품을 만날 수 있어.",
+        roamInterpretation: "미니어처 주방용품을 만날 수 있어요.",
         valueTags: [{ slug: "goods", strength: 0.7 }],
-        recommendationReasons: { goods: "소품을 고르는 재미가 있어." },
+        recommendationReasons: { goods: "소품을 고르는 재미가 있어요." },
       },
     });
     expect(r.issues.map((i) => i.code)).toContain("speculation");
@@ -311,9 +333,9 @@ describe("근거 없는 부스에서 드러난 실패 — 마곡 50부스", () =
       sources: [{ uri: "https://kakao.com/x", title: "kakao.com" }],
       payload: {
         summary: "일동공예는 손으로 깎은 목기를 만든다.",
-        roamInterpretation: "손으로 깎은 목기를 볼 수 있어.",
+        roamInterpretation: "손으로 깎은 목기를 볼 수 있어요.",
         valueTags: [{ slug: "goods", strength: 0.7 }],
-        recommendationReasons: { goods: "결이 살아 있는 그릇을 고를 수 있어." },
+        recommendationReasons: { goods: "결이 살아 있는 그릇을 고를 수 있어요." },
         thingsToDo: ["결을 직접 만져보기"],
       },
     });
@@ -348,9 +370,9 @@ describe("근거 없는 부스에서 드러난 실패 — 마곡 50부스", () =
 describe("신원 앵커 — 같은 회사의 다른 도메인, 플랫폼 계정", () => {
   const payload = {
     summary: "여주 쌀로 빚는 전통주 양조장이다.",
-    roamInterpretation: "여주 쌀 막걸리를 맛볼 수 있어.",
+    roamInterpretation: "여주 쌀 막걸리를 맛볼 수 있어요.",
     valueTags: [{ slug: "experience", strength: 0.8 }],
-    recommendationReasons: { experience: "여주 쌀 막걸리를 시음할 수 있어." },
+    recommendationReasons: { experience: "여주 쌀 막걸리를 시음할 수 있어요." },
     thingsToDo: ["여주 쌀 막걸리 시음하기"],
   };
   const codes = (input: GradeInput) => gradeCandidate(input).issues.map((i) => i.code);
@@ -410,9 +432,9 @@ describe("신원 앵커 — 같은 회사의 다른 도메인, 플랫폼 계정"
 describe("주최 소개 = 신뢰 근거", () => {
   const payload = {
     summary: "평택 쌀과 자가 누룩으로 빚는 전통주 양조장이다.",
-    roamInterpretation: "다섯 번 빚은 천비향 약주를 맛볼 수 있어.",
+    roamInterpretation: "다섯 번 빚은 천비향 약주를 맛볼 수 있어요.",
     valueTags: [{ slug: "experience", strength: 0.8 }],
-    recommendationReasons: { experience: "천비향 약주를 시음할 수 있어." },
+    recommendationReasons: { experience: "천비향 약주를 시음할 수 있어요." },
     thingsToDo: ["천비향 약주 시음하기"],
   };
   const codes = (input: GradeInput) => gradeCandidate(input).issues.map((i) => i.code);

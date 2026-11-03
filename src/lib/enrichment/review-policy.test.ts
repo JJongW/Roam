@@ -52,7 +52,7 @@ describe("reviewPolicy — 재조사는 고쳐질 것에만", () => {
     // 0.25+0.10=0.35 → 0.65. 사람이 반려한 자동 승인분이 몰려 있던 조합이다.
     const r = reviewPolicy(0.55, [issue("filler"), issue("unanchored"), issue("single_source")], live);
     expect(r.decision).toBe("review");
-    expect(r.reason).toContain("확인 불가가 겹쳤다");
+    expect(r.reason).toContain("확인 불가가 겹쳤어요");
   });
 });
 

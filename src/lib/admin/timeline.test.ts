@@ -40,7 +40,7 @@ describe("buildTimeline", () => {
     expect(result[0].userLabel).toBe("익명 세션");
     expect(result[0].boothLabel).toBe("부스B");
     expect(result[1].id).toBe("s1");
-    expect(result[1].label).toBe("꼭 갈래");
+    expect(result[1].label).toBe("꼭 갈래요");
     expect(result[1].userLabel).toBe("닉네임1");
     expect(result[1].boothLabel).toBe("부스A");
   });

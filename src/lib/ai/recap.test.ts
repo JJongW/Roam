@@ -16,10 +16,10 @@ const digest = (p: Partial<VisitDigest> = {}): VisitDigest => ({
 describe("fallbackNarrative", () => {
   it("summary(라벨) 기반 + 충분히 즐겼다 감각, raw slug 노출 안 함", () => {
     const t = fallbackNarrative(
-      digest({ summary: "3개 부스 관람 · 주로 문학" }),
+      digest({ summary: "3개 부스 관람, 주로 문학" }),
     );
-    expect(t).toContain("3개 부스 관람 · 주로 문학");
-    expect(t).toContain("충분히 즐긴");
+    expect(t).toContain("3개 부스 관람, 주로 문학");
+    expect(t).toContain("충분히 즐기신");
     expect(t).not.toContain("lit"); // slug 미노출
   });
 });
@@ -27,7 +27,7 @@ describe("fallbackNarrative", () => {
 describe("buildRecapPrompt", () => {
   it("숫자 자랑 금지 규칙 + 테마·부스수 포함", () => {
     const p = buildRecapPrompt(digest(), "2026 서울국제도서전");
-    expect(p).toContain("성취·숫자 자랑 금지");
+    expect(p).toContain("성취와 숫자 자랑 금지");
     expect(p).toContain("lit, art");
     expect(p).toContain("방문 부스 수: 3");
     expect(p).toContain("2026 서울국제도서전");

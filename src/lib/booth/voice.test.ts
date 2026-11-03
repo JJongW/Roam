@@ -33,6 +33,13 @@ describe("isSomeoneElsesVoice", () => {
     expect(isSomeoneElsesVoice("손으로 엮은 책만 만드는 작은 출판사")).toBe(false);
   });
 
+  it("로미의 해요체는 남의 목소리가 아니다 — 1인칭 '저희'는 여전히 남의 말이다", () => {
+    expect(isSomeoneElsesVoice("손으로 엮은 책만 만드는 작은 출판사예요")).toBe(false);
+    expect(isSomeoneElsesVoice("저희는 손으로 책을 엮어요")).toBe(true);
+    // 로미의 1인칭 "제가"는 로미 자신의 말이다.
+    expect(isSomeoneElsesVoice("제가 미리 둘러보고 골라 둔 곳이에요")).toBe(false);
+  });
+
   it("빈 값은 남의 목소리가 아니다", () => {
     expect(isSomeoneElsesVoice(undefined)).toBe(false);
     expect(isSomeoneElsesVoice(null)).toBe(false);

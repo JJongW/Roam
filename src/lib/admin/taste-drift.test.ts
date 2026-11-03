@@ -115,7 +115,7 @@ describe("tasteDrift — 과대 해석 방지", () => {
       { exhibition: ex("e1", "2026-01-01"), signals: repeat("u1", "e1", ["goods"], 30) },
       { exhibition: ex("e2", "2026-02-01"), signals: repeat("u1", "e2", ["discovery"], 30) },
     ]);
-    expect(d.note).toContain("개인차에 가깝다");
+    expect(d.note).toContain("개인차에 가까워요");
   });
 
   it("두 전시에 걸친 사용자가 없으면 그렇게 말한다", () => {
@@ -124,6 +124,6 @@ describe("tasteDrift — 과대 해석 방지", () => {
       { exhibition: ex("e2", "2026-02-01"), signals: repeat("u2", "e2", ["goods"], 5) },
     ]);
     expect(d.cohort).toBe(0);
-    expect(d.note).toContain("이동을 볼 수 없다");
+    expect(d.note).toContain("이동을 볼 수 없어요");
   });
 });
