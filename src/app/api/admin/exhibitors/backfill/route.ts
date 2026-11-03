@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { ok, parseBody, requireAdmin } from "@/lib/api/http";
+import { getAdminActor, ok, parseBody, requireAdmin } from "@/lib/api/http";
+import { applyLinkPlan } from "@/lib/brands/jobs";
 import { getRepository } from "@/lib/repositories";
 import { planFromRepository } from "@/lib/exhibitor/service";
 
@@ -36,5 +37,8 @@ export async function POST(req: Request) {
     sampleCandidates: plan.candidates.slice(0, 30).map((c) => ({ booth: name.get(c.boothId), reason: c.reason })),
   };
   if (!parsed.data.apply) return ok({ summary, applied: null });
-  return ok({ summary, applied: await repo.applyExhibitorPlan(plan) });
+  // 새 출전에 따른 stale까지. 백필은 모든 박람회라 초안 잡은 넣지 않는다(박람회 단위로만,
+  // lib/brands/jobs.ts).
+  const { applied, ...brandFollowups } = await applyLinkPlan(repo, plan, { actor: await getAdminActor() });
+  return ok({ summary, applied, brandFollowups });
 }
