@@ -57,7 +57,7 @@ export default function PrivacyPage() {
             개인정보처리방침
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            시행일 · 최종 수정일: {EFFECTIVE_DATE}
+            시행일, 최종 수정일: {EFFECTIVE_DATE}
           </p>
           <p className="mt-4 text-sm text-muted-foreground">
             <a
@@ -73,15 +73,15 @@ export default function PrivacyPage() {
         <div className="space-y-10">
           <Section no="1" title="서비스 소개">
             <p>
-              Roam(이하 &ldquo;서비스&rdquo;)은 전시·박람회 방문객을 위한 모바일
-              관람 안내 서비스입니다. 이용자가 관심 있는 부스를 발견하고, 전시장
+              Roam(이하 &ldquo;서비스&rdquo;)은 박람회와 페어 방문객을 위한 모바일
+              관람 안내 서비스입니다. 이용자가 관심 있는 부스를 발견하고, 행사장
               지도에서 위치를 확인하고, 자신의 관람 기록을 남길 수 있도록
               돕습니다.
             </p>
             <p>
               서비스는 Google 계정을 이용한 로그인(Google OAuth)을 지원합니다.
               본 방침은 서비스가 이용자의 개인정보를 어떻게
-              수집·이용·보관·파기하는지 설명합니다.
+              수집, 이용, 보관, 파기하는지 설명합니다.
             </p>
           </Section>
 
@@ -121,7 +121,7 @@ export default function PrivacyPage() {
             </p>
             <ul className="list-disc space-y-1 pl-5">
               <li>닉네임</li>
-              <li>부스에 남긴 반응·메모·사진, 북마크</li>
+              <li>부스에 남긴 반응, 메모, 사진, 북마크</li>
               <li>리뷰, 커뮤니티 게시글 및 첨부 이미지</li>
               <li>
                 관심 분야 선택값 및 이용 기록에서 파생된 취향 정보(추천 개인화에
@@ -137,7 +137,7 @@ export default function PrivacyPage() {
               <li>로그인 상태 유지를 위한 세션 쿠키</li>
               <li>
                 서비스 개선을 위한 이용 기록(접속 시각, 조회한 화면, 대략적인
-                기기·브라우저 정보)
+                기기, 브라우저 정보)
               </li>
             </ul>
 
@@ -153,8 +153,8 @@ export default function PrivacyPage() {
             <Table
               head={["항목", "용도", "저장 여부"]}
               rows={[
-                ["댓글 ID·게시물 ID", "같은 댓글에 메시지가 두 번 가지 않게 확인", "저장"],
-                ["인스타그램 사용자 ID·사용자 이름", "메시지 수신자 확인", "저장"],
+                ["댓글 ID, 게시물 ID", "같은 댓글에 메시지가 두 번 가지 않게 확인", "저장"],
+                ["인스타그램 사용자 ID, 사용자 이름", "메시지 수신자 확인", "저장"],
                 ["댓글 내용", "키워드 일치 여부 확인", "저장하지 않음"],
               ]}
             />
@@ -180,12 +180,12 @@ export default function PrivacyPage() {
                 서비스는 비밀번호를 받지 않습니다.
               </li>
               <li>
-                Google 액세스 토큰·리프레시 토큰 — 로그인 직후 신원 확인에만
+                Google 액세스 토큰, 리프레시 토큰 — 로그인 직후 신원 확인에만
                 사용하고 즉시 폐기하며, 서버에 보관하지 않습니다.
               </li>
               <li>결제 정보, 주민등록번호 등 고유식별정보</li>
               <li>
-                정밀 위치정보(GPS) — 전시장 지도는 도면 좌표만 사용합니다.
+                정밀 위치정보(GPS) — 행사장 지도는 도면 좌표만 사용합니다.
               </li>
             </ul>
           </Section>
@@ -194,7 +194,7 @@ export default function PrivacyPage() {
             <ul className="list-disc space-y-1 pl-5">
               <li>회원 식별 및 로그인 상태 유지</li>
               <li>관심 있을 만한 부스 추천 및 개인화</li>
-              <li>이용자가 남긴 반응·메모·사진의 저장과 재열람</li>
+              <li>이용자가 남긴 반응, 메모, 사진의 저장과 재열람</li>
               <li>관람 기록 요약 및 회고 제공</li>
               <li>서비스 품질 개선 및 오류 대응</li>
               <li>법령상 의무 이행</li>
@@ -209,7 +209,7 @@ export default function PrivacyPage() {
             <p className="font-semibold text-foreground">저장되는 데이터</p>
             <ul className="list-disc space-y-1 pl-5">
               <li>계정 정보(이메일, 닉네임, 프로필 이미지 URL, 계정 식별자)</li>
-              <li>부스 반응·메모·북마크·리뷰·커뮤니티 게시글</li>
+              <li>부스 반응, 메모, 북마크, 리뷰, 커뮤니티 게시글</li>
               <li>업로드한 이미지</li>
               <li>취향 정보 및 이용 기록</li>
             </ul>
@@ -250,8 +250,8 @@ export default function PrivacyPage() {
                 ],
                 [
                   "Google (Gemini API)",
-                  "부스·커뮤니티 요약문 생성",
-                  "전시·부스 정보 및 관련 텍스트",
+                  "부스, 커뮤니티 요약문 생성",
+                  "행사와 부스 정보 및 관련 텍스트",
                 ],
                 [
                   "Google (Firebase Cloud Messaging)",
@@ -261,7 +261,7 @@ export default function PrivacyPage() {
                 [
                   "Meta (Instagram API)",
                   "인스타그램 댓글 확인 및 안내 메시지 발송",
-                  "댓글 ID, 인스타그램 사용자 ID·이름",
+                  "댓글 ID, 인스타그램 사용자 ID, 이름",
                 ],
               ]}
             />
@@ -335,7 +335,7 @@ export default function PrivacyPage() {
                 운영에 필요한 최소 범위로 제한합니다.
               </li>
               <li>
-                Google 액세스·리프레시 토큰을 보관하지 않으므로, 유출 시
+                Google 액세스 토큰과 리프레시 토큰을 보관하지 않으므로, 유출 시
                 이용자의 Google 계정이 노출될 위험을 구조적으로 차단합니다.
               </li>
             </ul>
@@ -379,7 +379,7 @@ export default function PrivacyPage() {
 
           <Section no="13" title="문의">
             <p>
-              개인정보 처리에 관한 문의·불만·피해 구제는 아래로 연락해 주시기
+              개인정보 처리에 관한 문의, 불만, 피해 구제는 아래로 연락해 주시기
               바랍니다.
             </p>
             <p className="font-semibold text-foreground">

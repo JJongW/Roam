@@ -66,7 +66,7 @@ export function SurveyForm() {
   if (state === "done") {
     return (
       <section className="rounded-2xl border border-border bg-card px-5 py-10 text-center" role="status">
-        <p className="text-xl font-bold">답변 고맙습니다!</p>
+        <p className="text-xl font-bold">답해 주셔서 고마워요!</p>
         <p className="mt-2 text-muted-foreground">지도 만드는 데 잘 쓸게요.</p>
       </section>
     );
@@ -125,7 +125,7 @@ export function SurveyForm() {
 
       <div className="flex flex-col gap-3 rounded-2xl border border-border bg-card p-4">
         <label htmlFor="survey-comment" className="text-[16px] font-bold leading-snug">
-          {SURVEY_QUESTIONS.length + 1}. 전시장에서 불편했던 점이나 바라는 점을 적어주세요{" "}
+          {SURVEY_QUESTIONS.length + 1}. 행사장에서 불편했던 점이나 바라는 점을 적어주세요{" "}
           <span className="font-normal text-muted-foreground">(선택)</span>
         </label>
         <Textarea

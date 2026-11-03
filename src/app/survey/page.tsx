@@ -7,7 +7,7 @@ import { SurveyForm } from "@/components/survey/survey-form";
  * 결정: docs/decisions/2026-10-16_공개-설문-페이지.md
  */
 const TITLE = "박람회에서 부스 못 찾고 헤맨 적 있으세요?";
-const DESCRIPTION = "코엑스·세텍 박람회에서 쓸 부스 지도 앱을 만들고 있는데, 1분만 도와주세요!";
+const DESCRIPTION = "코엑스, 세텍 박람회에서 쓸 부스 지도 앱을 만들고 있는데, 1분만 도와주세요!";
 
 export const metadata: Metadata = {
   title: TITLE,
