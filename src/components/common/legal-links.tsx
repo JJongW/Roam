@@ -33,7 +33,7 @@ export function LegalLinks({ className = "" }: { className?: string }) {
     >
       {link(LEGAL_LINKS.privacy, t("legal.privacy"))}
       <span aria-hidden className="text-border">
-        ·
+        |
       </span>
       {link(LEGAL_LINKS.terms, t("legal.terms"))}
     </p>

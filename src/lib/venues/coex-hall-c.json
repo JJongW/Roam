@@ -15,28 +15,28 @@
   "gates": [
     {
       "id": "c34-in",
-      "label": "C3·C4 주출입구",
+      "label": "C3, C4 주출입구",
       "kind": "in",
       "x": 36,
       "y": 72
     },
     {
       "id": "c34-out",
-      "label": "C3·C4 주출입구",
+      "label": "C3, C4 주출입구",
       "kind": "out",
       "x": 36,
       "y": 72
     },
     {
       "id": "c12-in",
-      "label": "C1·C2 주출입구",
+      "label": "C1, C2 주출입구",
       "kind": "in",
       "x": 108,
       "y": 72
     },
     {
       "id": "c12-out",
-      "label": "C1·C2 주출입구",
+      "label": "C1, C2 주출입구",
       "kind": "out",
       "x": 108,
       "y": 72
@@ -47,14 +47,14 @@
       "type": "entrance",
       "x": 36,
       "y": 72,
-      "text": "C3·C4 주출입구",
+      "text": "C3, C4 주출입구",
       "dir": "up"
     },
     {
       "type": "entrance",
       "x": 108,
       "y": 72,
-      "text": "C1·C2 주출입구",
+      "text": "C1, C2 주출입구",
       "dir": "up"
     }
   ],

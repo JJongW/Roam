@@ -765,7 +765,7 @@ export class SupabaseRepository implements Repository {
       ...exhibitionToRow(input),
     };
     const res = await db.from("exhibition").insert(row).select("*").single();
-    return mapExhibition(wrote(res, "전시 생성") as Row);
+    return mapExhibition(wrote(res, "행사 생성") as Row);
   }
 
   async updateExhibition(
@@ -779,7 +779,7 @@ export class SupabaseRepository implements Repository {
       .eq("id", id)
       .select("*")
       .maybeSingle();
-    const data = maybeWrote(res, "전시 수정");
+    const data = maybeWrote(res, "행사 수정");
     return data ? mapExhibition(data as Row) : null;
   }
 
@@ -1123,7 +1123,7 @@ export class SupabaseRepository implements Repository {
   async exhibitorHistory(exhibitionId: string, userId: string | null): Promise<Record<string, BoothBrandMemory>> {
     const db = createServiceClient();
     const { data: cur, error: e0 } = await db.from("exhibition").select("start_date").eq("id", exhibitionId).maybeSingle();
-    if (e0) throw new Error(`전시 조회 실패: ${e0.message}`);
+    if (e0) throw new Error(`행사 조회 실패: ${e0.message}`);
     const curStart = str((cur as Row | null)?.start_date);
     const mineParts = await readAll<Row>(
       (a, b) => db.from("exhibition_participant").select("id,exhibitor_id,display_name").eq("exhibition_id", exhibitionId).order("id").range(a, b),
@@ -2664,7 +2664,7 @@ export class SupabaseRepository implements Repository {
       .eq("exhibition_id", exhibitionId);
     const ids = (booths ?? []).map((b) => str((b as Row).id));
     if (ids.length === 0) return [];
-    const data = await inChunks<Row>(ids, "전시 메모", (slice) =>
+    const data = await inChunks<Row>(ids, "행사 메모", (slice) =>
       db
         .from("booth_note")
         .select("booth_id, memo")

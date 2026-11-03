@@ -140,7 +140,7 @@ export async function prepareCarousel(input: PublishInput, cfg: PublishConfig): 
     const status = String(s.status_code ?? "");
     if (status === "FINISHED") break;
     if (status === "ERROR" || status === "EXPIRED") {
-      throw new Error(`캐러셀 컨테이너 상태가 ${status}입니다 — 이미지가 JPEG·공개 URL인지 확인하세요`);
+      throw new Error(`캐러셀 컨테이너 상태가 ${status}입니다 — 이미지가 JPEG이고 공개 URL인지 확인하세요`);
     }
     if (waited >= timeout) throw new Error(`캐러셀 준비가 ${timeout / 1000}초 안에 끝나지 않았습니다 (상태 ${status || "없음"})`);
     await sleep(interval);

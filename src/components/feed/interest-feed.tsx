@@ -234,8 +234,11 @@ export function InterestFeed({
                       <span className="text-xs font-semibold text-muted-foreground">
                         {t("romi.name")}
                       </span>
+                      <span aria-hidden className="text-xs text-border">
+                        |
+                      </span>
                       <span className="text-xs text-muted-foreground">
-                        · {t(PICK_KEY[pick])}
+                        {t(PICK_KEY[pick])}
                       </span>
                     </div>
                     {/* grounding.why는 부스명 폴백으로 이제 항상 값이 있다 — 이 가드는
@@ -321,7 +324,7 @@ export function InterestFeed({
                   {grounding.todo.length > 0 && (
                     <p className="type-body text-muted-foreground">
                       {t("grounding.todo", {
-                        items: grounding.todo.join(" · "),
+                        items: grounding.todo.join(", "),
                       })}
                     </p>
                   )}

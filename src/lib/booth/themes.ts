@@ -94,9 +94,37 @@ export type ThemeKey = keyof typeof BOOTH_THEMES;
 
 export const THEME_KEYS = Object.keys(BOOTH_THEMES) as ThemeKey[];
 
-/** 대분류 키 → 표시 라벨. 모르는 키는 그대로 돌려준다(데이터가 앞서갈 수 있다). */
-export function themeLabel(key: string): string {
+/** 대분류 키 → 원본 라벨("일상·감성"). 소분류와 같은 말인지 비교할 때 쓴다. */
+export function themeRawLabel(key: string): string {
   return (BOOTH_THEMES as Record<string, ThemeGroup>)[key]?.label ?? key;
+}
+
+/** 받침이 있는 음절인가 — "과/와" 고르기용. 한글이 아니면 받침 없음으로 본다. */
+function hasFinalConsonant(ch: string): boolean {
+  const code = ch.charCodeAt(0) - 0xac00;
+  return code >= 0 && code < 11172 && code % 28 !== 0;
+}
+
+/**
+ * 테마 라벨을 사용자에게 보이는 꼴로 바꾼다. 브랜드 규칙상 가운뎃점(·)을 쓰지 않으므로
+ * "위로·감성" → "위로와 감성", "환상·설화" → "환상과 설화".
+ *
+ * 원본 라벨은 **바꾸지 않는다** — 소분류 라벨은 enrichment.themeTags에 그대로 저장된
+ * 데이터 키라, 고치면 기존 데이터와 비교가 깨진다. 표시할 때만 이 함수를 거친다.
+ */
+export function displayThemeTag(raw: string): string {
+  return raw
+    .split("·")
+    .reduce((acc, part, i) => {
+      if (i === 0) return part;
+      const last = acc.at(-1) ?? "";
+      return `${acc}${hasFinalConsonant(last) ? "과" : "와"} ${part}`;
+    }, "");
+}
+
+/** 대분류 키 → 표시 라벨(가운뎃점 없음). 모르는 키는 그대로 돌려준다(데이터가 앞서갈 수 있다). */
+export function themeLabel(key: string): string {
+  return displayThemeTag(themeRawLabel(key));
 }
 
 /** 부스 이름·소개·굿즈에서 페어 일정·부스코드 같은 상투구를 걷어낸다. */

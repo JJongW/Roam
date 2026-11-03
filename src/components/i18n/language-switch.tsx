@@ -34,7 +34,7 @@ export function LanguageSwitch({ className = "" }: { className?: string }) {
         <span key={l} className="flex items-center gap-2">
           {i > 0 && (
             <span aria-hidden className="text-border">
-              ·
+              |
             </span>
           )}
           <button
