@@ -138,7 +138,7 @@ export function NotesView({
                     <div className="min-w-0 flex-1">
                       <h2 className="font-bold leading-snug">{b.name}</h2>
                       <p className="text-xs text-muted-foreground">
-                        {b.code ? `${b.code} · ` : ""}
+                        {b.code ? `${b.code} | ` : ""}
                         {cat?.name ?? ""}
                       </p>
                     </div>

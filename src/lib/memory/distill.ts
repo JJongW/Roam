@@ -151,7 +151,7 @@ export function buildVisitDigest(input: {
   const topLabel = top ? (labels[top] ?? top) : null;
   const n = input.boothCodes.length;
   const summary = topLabel
-    ? `${n}개 부스 관람 · 주로 ${topLabel}`
+    ? `${n}개 부스 관람, 주로 ${topLabel}`
     : `${n}개 부스 관람`;
 
   return {

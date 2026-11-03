@@ -980,7 +980,7 @@ export function ExhibitionMap({
         }}
         onWheel={onWheel}
         role="application"
-        aria-label="전시장 지도"
+        aria-label="행사장 지도"
       >
         <svg
           ref={svgRef}

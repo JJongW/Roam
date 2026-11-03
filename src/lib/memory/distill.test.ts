@@ -171,7 +171,7 @@ describe("buildVisitDigest", () => {
     });
     expect(d.themesEngaged).toEqual(["lit", "art"]); // lit 2회 > art 1회
     expect(d.boothsVisited).toEqual(["A1", "A2"]);
-    expect(d.summary).toBe("2개 부스 관람 · 주로 문학");
+    expect(d.summary).toBe("2개 부스 관람, 주로 문학");
   });
 });
 

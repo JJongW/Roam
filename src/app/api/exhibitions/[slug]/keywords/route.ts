@@ -129,7 +129,7 @@ export async function GET(
   const { slug } = await params;
   const repo = await getRepository();
   const detail = await repo.getExhibition(slug);
-  if (!detail) return notFound("전시를 찾을 수 없습니다");
+  if (!detail) return notFound("행사를 찾을 수 없어요");
 
   const hit = cache.get(detail.exhibition.id);
   if (hit && Date.now() - hit.at < TTL_MS)
@@ -179,7 +179,7 @@ export async function GET(
 
     const data = await generateJSON<Record<string, string[]>>({
       system:
-        "너는 도서전 분야별 핵심 키워드 추출기야. 각 분야의 부스 정보를 보고, 방문객이 흥미를 느낄 만한 구체 키워드(작가명·도서명·브랜드·테마·굿즈 종류)를 분야당 6~8개 한국어로 뽑아 JSON으로만 답해. 일반어(책, 출판사 등) 말고 구체적인 것 위주로.",
+        "너는 박람회 분야별 핵심 키워드 추출기야. 각 분야의 부스 정보를 보고, 방문객이 흥미를 느낄 만한 구체 키워드(작가명, 도서명, 브랜드, 테마, 굿즈 종류)를 분야당 6~8개 한국어로 뽑아 JSON으로만 답해. 일반어(책, 출판사 등) 말고 구체적인 것 위주로. 키워드에 가운뎃점(·)을 넣지 않는다.",
       prompt: perCat,
       schema,
     });

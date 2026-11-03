@@ -80,9 +80,9 @@ describe("closingLine", () => {
   it("오늘 반응과 답변을 함께 되짚는다", () => {
     const q = nextReflectQuestion(brain())!;
     const line = closingLine(["동물", "일상·감성"], q, "몇 곳만 깊게");
-    expect(line).toContain("동물·일상·감성");
+    expect(line).toContain("동물, 일상·감성");
     expect(line).toContain("몇 곳만 깊게");
-    expect(line).toContain("다음 전시");
+    expect(line).toContain("다음 박람회");
   });
 
   it("테마만 있어도 말이 된다", () => {

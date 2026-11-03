@@ -24,7 +24,7 @@ const signalSchema = z.object({
 
 export async function POST(req: Request) {
   const user = await getCurrentUser();
-  if (!user) return fail("UNAUTHORIZED", "로그인해야 해");
+  if (!user) return fail("UNAUTHORIZED", "로그인해야 해요");
   const parsed = await parseBody(req, signalSchema);
   if (!parsed.ok) return parsed.res;
   await recordSignal(user.id, {

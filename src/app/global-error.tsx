@@ -44,7 +44,7 @@ export default function GlobalError({
         }}
       >
         <div style={{ textAlign: "center", padding: 24 }}>
-          <h1 style={{ fontSize: 20, fontWeight: 800 }}>큰 오류가 생겼어</h1>
+          <h1 style={{ fontSize: 20, fontWeight: 800 }}>큰 오류가 생겼어요</h1>
           <p style={{ color: "#6b7684", marginTop: 8 }}>
             {error.digest ?? "Unexpected error"}
           </p>
@@ -59,7 +59,7 @@ export default function GlobalError({
               border: 0,
             }}
           >
-            다시 해보기
+            다시 해 보기
           </button>
         </div>
       </body>

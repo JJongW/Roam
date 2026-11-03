@@ -3,8 +3,8 @@ import { LoginForm } from "./login-form";
 import { LegalLinks } from "@/components/common/legal-links";
 
 export const metadata = {
-  // 루트 레이아웃 템플릿이 "%s · Roam"이라 여기에 " · Roam"을 또 붙이면
-  // "로그인 · Roam · Roam"이 된다.
+  // 루트 레이아웃 템플릿이 "%s | Roam"이라 여기에 " | Roam"을 또 붙이면
+  // "로그인 | Roam | Roam"이 된다.
   title: "로그인",
 };
 

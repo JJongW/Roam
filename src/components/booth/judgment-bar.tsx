@@ -169,7 +169,7 @@ export function JudgmentBar({
           <div className="flex items-center justify-between text-xs text-muted-foreground">
             <span>
               {record?.interest && t(`judge.${record.interest}`)}
-              {record?.interest && record?.verdict && " · "}
+              {record?.interest && record?.verdict && ", "}
               {record?.verdict ? t("judge.visited") : ""}
             </span>
             <button

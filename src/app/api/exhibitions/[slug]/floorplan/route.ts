@@ -14,7 +14,7 @@ type Ctx = { params: Promise<{ slug: string }> };
 export async function GET(_req: Request, { params }: Ctx) {
   const { slug } = await params;
   const floorplan = FLOORPLANS[slug];
-  if (!floorplan) return notFound(`도면이 없는 전시입니다: ${slug}`);
+  if (!floorplan) return notFound(`도면이 없는 행사예요: ${slug}`);
   const venue = VENUE_OF[slug];
   return ok({
     floorplan,

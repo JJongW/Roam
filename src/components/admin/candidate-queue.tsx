@@ -15,11 +15,11 @@ import type { EnrichmentCandidate } from "@/lib/types";
 
 /** 라우트의 REJECT_REASONS와 짝이다 — 코드가 바뀌면 여기도 바꾼다. */
 const REJECT_REASONS: Record<string, string> = {
-  wrong_fact: "사실이 틀렸다",
-  no_evidence: "근거 없이 지어냈다",
-  voice: "말투가 아니다",
-  vague: "두루뭉술하다",
-  duplicate: "다른 부스와 같다",
+  wrong_fact: "사실이 틀렸어요",
+  no_evidence: "근거 없이 지어냈어요",
+  voice: "말투가 아니에요",
+  vague: "두루뭉술해요",
+  duplicate: "다른 부스와 같아요",
 };
 
 const VALUE_LABEL: Record<string, string> = Object.fromEntries(
@@ -129,7 +129,7 @@ export function CandidateQueue({
 
   async function act(c: EnrichmentCandidate, action: "approve" | "reject") {
     if (action === "reject" && !reason[c.id] && !note[c.id]?.trim()) {
-      toast.error("반려 사유를 골라주세요 — 사유가 없으면 다음 초안이 같은 걸 또 만듭니다");
+      toast.error("반려 사유를 골라 주세요. 사유가 없으면 다음 초안이 같은 걸 또 만들어요");
       return;
     }
     setBusy(c.id);
@@ -144,15 +144,15 @@ export function CandidateQueue({
           ? { reasonCode: reason[c.id] || undefined, note: note[c.id] }
           : {}),
       });
-      toast.success(action === "approve" ? "반영했습니다" : "반려했습니다");
+      toast.success(action === "approve" ? "반영했어요" : "반려했어요");
       router.refresh();
     } catch (e) {
       toast.error(
         e instanceof SyntaxError
-          ? "고친 내용이 JSON 형식이 아닙니다"
+          ? "고친 내용이 JSON 형식이 아니에요"
           : e instanceof ApiClientError
             ? e.message
-            : "처리에 실패했습니다",
+            : "처리에 실패했어요",
       );
     } finally {
       setBusy(null);
@@ -167,7 +167,7 @@ export function CandidateQueue({
         { exhibitionSlug: slug, expected: autoPassCount },
       );
       if (res.note) toast.error(res.note);
-      else toast.success(`${res.applied}건 반영했습니다`);
+      else toast.success(`${res.applied}건 반영했어요`);
       router.refresh();
     } catch (e) {
       toast.error(e instanceof ApiClientError ? e.message : "일괄 반영 실패");
@@ -179,7 +179,7 @@ export function CandidateQueue({
   if (candidates.length === 0) {
     return (
       <Card className="p-8 text-center text-sm text-muted-foreground">
-        검수할 초안이 없습니다.
+        검수할 초안이 없어요.
       </Card>
     );
   }
@@ -191,8 +191,8 @@ export function CandidateQueue({
           <div className="min-w-0 flex-1">
             <p className="font-bold">자동 통과 대상 {autoPassCount}건</p>
             <p className="text-xs text-muted-foreground">
-              신뢰도가 임계 이상이고 게이트가 결함을 못 찾은 것들입니다. 부스가 많은
-              전시에서 전수 검수는 불가능하니, 위 승인률 표를 보고 한 번에 반영합니다.
+              신뢰도가 임계 이상이고 게이트가 결함을 못 찾은 것들이에요. 부스가 많은
+              행사에서 전수 검수는 어려우니, 위 승인률 표를 보고 한 번에 반영해요.
             </p>
           </div>
           <Button onClick={() => void bulkApprove()} disabled={busy === "bulk"}>
@@ -222,7 +222,7 @@ export function CandidateQueue({
               </Chip>
               <Chip color={STATUS[c.status].color}>{STATUS[c.status].label}</Chip>
               <Chip color={chip.color}>
-                신뢰도 {chip.label} · {Math.round(c.confidence * 100)}
+                신뢰도 {chip.label}, {Math.round(c.confidence * 100)}
               </Chip>
               <span className="ml-auto text-xs text-muted-foreground">
                 {c.source}
@@ -298,7 +298,7 @@ export function CandidateQueue({
             </details>
 
             <div className="space-y-2 rounded-lg bg-secondary p-3">
-              <p className="text-xs font-medium">반려한다면, 왜?</p>
+              <p className="text-xs font-medium">반려한다면 이유는요?</p>
               <div className="flex flex-wrap gap-1.5">
                 {Object.entries(REJECT_REASONS).map(([code, label]) => (
                   <button
@@ -322,7 +322,7 @@ export function CandidateQueue({
               </div>
               <Textarea
                 rows={2}
-                placeholder="구체적으로 무엇이 틀렸는지 (다음 초안 프롬프트에 그대로 들어갑니다)"
+                placeholder="구체적으로 무엇이 틀렸는지 (다음 초안 프롬프트에 그대로 들어가요)"
                 className="text-sm"
                 onChange={(e) =>
                   setNote((p) => ({ ...p, [c.id]: e.target.value }))

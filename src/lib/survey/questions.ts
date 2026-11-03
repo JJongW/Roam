@@ -30,7 +30,7 @@ export interface SurveyQuestion {
 export const SURVEY_QUESTIONS: SurveyQuestion[] = [
   {
     key: "freq",
-    title: "전시·박람회에 얼마나 자주 가세요?",
+    title: "박람회와 페어에 얼마나 자주 가세요?",
     short: "방문 빈도",
     options: [
       { value: "month", label: "한 달에 한 번 이상" },
@@ -41,21 +41,21 @@ export const SURVEY_QUESTIONS: SurveyQuestion[] = [
   },
   {
     key: "kinds",
-    title: "주로 어떤 전시에 가세요?",
-    short: "주로 가는 전시",
+    title: "주로 어떤 박람회에 가세요?",
+    short: "주로 가는 박람회",
     multi: true,
     options: [
-      { value: "living", label: "가구·리빙·인테리어" },
-      { value: "food", label: "카페·음식·주류" },
-      { value: "design", label: "디자인·아트페어" },
-      { value: "book", label: "책·출판·독립서점" },
-      { value: "craft", label: "공예·핸드메이드 마켓" },
-      { value: "biz", label: "일 때문에 가는 산업 전시" },
+      { value: "living", label: "가구, 리빙, 인테리어" },
+      { value: "food", label: "카페, 음식, 주류" },
+      { value: "design", label: "디자인, 아트페어" },
+      { value: "book", label: "책, 출판, 독립서점" },
+      { value: "craft", label: "공예, 핸드메이드 마켓" },
+      { value: "biz", label: "일 때문에 가는 산업 박람회" },
     ],
   },
   {
     key: "pain",
-    title: "전시장에서 가장 힘든 건 뭐예요?",
+    title: "행사장에서 가장 힘든 건 뭐예요?",
     short: "가장 힘든 것",
     hint: "두 개까지 골라 주세요.",
     multi: true,
@@ -75,7 +75,7 @@ export const SURVEY_QUESTIONS: SurveyQuestion[] = [
     short: "부스 찾는 단서",
     options: [
       { value: "code", label: "부스 번호(A101 같은)" },
-      { value: "name", label: "브랜드·부스 이름" },
+      { value: "name", label: "브랜드, 부스 이름" },
       { value: "zone", label: "분야나 구역" },
       { value: "walk", label: "그냥 걸어 다니며 눈에 띄는 곳" },
     ],
@@ -96,7 +96,7 @@ export const SURVEY_QUESTIONS: SurveyQuestion[] = [
     short: "처음 열 때",
     visual: "entry",
     options: [
-      { value: "whole", label: "전시장 전체", sub: "한눈에 보이지만 이름은 작아요" },
+      { value: "whole", label: "행사장 전체", sub: "한눈에 보이지만 이름은 작아요" },
       { value: "entrance", label: "입구 근처를 크게", sub: "이름은 읽히고, 넓게 보려면 줄여요" },
     ],
   },
@@ -112,8 +112,8 @@ export const SURVEY_QUESTIONS: SurveyQuestion[] = [
   },
   {
     key: "judge",
-    title: "부스에 “좋았어 · 별로” 같은 평가와 메모를 어디서 남기고 싶으세요?",
-    short: "평가·메모 자리",
+    title: "부스에 “좋았어, 별로” 같은 평가와 메모를 어디서 남기고 싶으세요?",
+    short: "평가, 메모 자리",
     options: [
       { value: "map-card", label: "지도에서 부스를 눌렀을 때 뜨는 카드에서", sub: "상세 화면에 들어가지 않고" },
       { value: "intro-tab", label: "부스 소개 화면에서", sub: "설명을 읽다가 그 자리에서" },

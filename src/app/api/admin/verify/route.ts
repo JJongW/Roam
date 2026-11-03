@@ -26,7 +26,7 @@ export async function POST(req: Request) {
 
   if (choice === "keep") return ok({ applied: false });
   if (!patch || Object.keys(patch).length === 0) {
-    return fail("VALIDATION", "교체할 값이 없습니다");
+    return fail("VALIDATION", "교체할 값이 없어요");
   }
 
   const repo = await getRepository();

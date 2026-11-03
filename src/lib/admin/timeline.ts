@@ -24,12 +24,12 @@ const SIGNAL_LABELS: Record<SignalKind, string> = {
   booth_bookmarked: "북마크",
   route_saved: "동선 저장",
   feed_click: "피드 클릭",
-  reaction_must: "꼭 갈래",
-  reaction_curious: "끌려",
+  reaction_must: "꼭 갈래요",
+  reaction_curious: "끌려요",
   reaction_pass: "패스",
-  verdict_good: "좋았어",
-  verdict_ok: "그냥그랬어",
-  verdict_bad: "아니었어",
+  verdict_good: "좋았어요",
+  verdict_ok: "그저 그랬어요",
+  verdict_bad: "아니었어요",
   search_query: "검색",
 };
 

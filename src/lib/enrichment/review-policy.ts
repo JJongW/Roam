@@ -131,7 +131,7 @@ export function reviewPolicy(
   if (redraft.length > 0) {
     return {
       decision: "redraft",
-      reason: `사람이 봐도 할 게 없다 — 기계가 다시 쓴다(${redraft.join("·")})`,
+      reason: `사람이 봐도 할 게 없어요. 기계가 다시 써요(${redraft.join(", ")})`,
       wouldAutoPass: false,
     };
   }
@@ -142,7 +142,7 @@ export function reviewPolicy(
     return {
       decision: config.shadow ? "review" : "auto_pass",
       reason: config.shadow
-        ? `자동 통과 대상(신뢰도 ${confidence.toFixed(2)}) — 그림자 모드라 사람이 본다`
+        ? `자동 통과 대상(신뢰도 ${confidence.toFixed(2)}) — 그림자 모드라 사람이 봐요`
         : `신뢰도 ${confidence.toFixed(2)} — 자동 통과`,
       wouldAutoPass: true,
     };
@@ -152,8 +152,8 @@ export function reviewPolicy(
   return {
     decision: "review",
     reason: unverifiable.length
-      ? `확인 불가가 겹쳤다(${unverifiable.join("·")}) — 신뢰도 ${confidence.toFixed(2)}, 사람이 본다`
-      : `신뢰도 ${confidence.toFixed(2)} — 사람이 본다`,
+      ? `확인 불가가 겹쳤어요(${unverifiable.join(", ")}) — 신뢰도 ${confidence.toFixed(2)}, 사람이 봐요`
+      : `신뢰도 ${confidence.toFixed(2)} — 사람이 봐요`,
     wouldAutoPass: false,
   };
 }
@@ -223,7 +223,7 @@ export function exhibitionTrust(candidates: TrustSample[]): ExhibitionTrust {
       sampled: sample.length,
       approved,
       policy: STRICT_POLICY,
-      reason: `아직 ${sample.length}/${TRUST_SAMPLE}건만 봤다 — 이 전시를 믿을지 정하는 중이다`,
+      reason: `아직 ${sample.length}/${TRUST_SAMPLE}건만 봤어요. 이 행사를 믿을지 정하는 중이에요`,
     };
   }
 
@@ -234,7 +234,7 @@ export function exhibitionTrust(candidates: TrustSample[]): ExhibitionTrust {
       sampled: sample.length,
       approved,
       policy: DEFAULT_POLICY,
-      reason: `표본 ${sample.length}건 중 ${approved}건 승인(${Math.round(rate * 100)}%) — 나머지는 자동으로 보낸다`,
+      reason: `표본 ${sample.length}건 중 ${approved}건 승인(${Math.round(rate * 100)}%) — 나머지는 자동으로 보내요`,
     };
   }
   return {
@@ -242,7 +242,7 @@ export function exhibitionTrust(candidates: TrustSample[]): ExhibitionTrust {
     sampled: sample.length,
     approved,
     policy: STRICT_POLICY,
-    reason: `표본 승인률이 ${Math.round(rate * 100)}%다 — 이 전시 초안은 사람이 본다`,
+    reason: `표본 승인률이 ${Math.round(rate * 100)}%예요. 이 행사 초안은 사람이 봐요`,
   };
 }
 

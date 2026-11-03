@@ -39,7 +39,7 @@ async function request<T>(input: string, init?: RequestInit): Promise<T> {
     // 호출부의 catch에 생 TypeError로 떨어졌고, 사용자는 서버 오류와 똑같은 화면을
     // 봤다 — 연결을 확인하면 될 일인데 "다시 해보기"만 반복해서 눌렀다.
     throw new ApiClientError(
-      { code: "INTERNAL", message: "네트워크에 연결되지 않았어" },
+      { code: "INTERNAL", message: "네트워크에 연결되지 않았어요" },
       NO_RESPONSE,
       "OFFLINE",
     );

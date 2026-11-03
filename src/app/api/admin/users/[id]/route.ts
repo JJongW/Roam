@@ -15,7 +15,7 @@ export async function GET(_req: Request, { params }: Ctx) {
   // 에러 없이 전부 0행이 온다(계정이 사라진 것처럼 보인다).
   const admin = { asAdmin: true } as const;
   const user = await repo.getUser(id, admin);
-  if (!user) return notFound("계정을 찾을 수 없습니다");
+  if (!user) return notFound("계정을 찾을 수 없어요");
   const [signals, bookmarks, brain] = await Promise.all([
     repo.listUserSignals(id, admin),
     repo.listBookmarks(id, admin),
@@ -37,6 +37,6 @@ export async function DELETE(_req: Request, { params }: Ctx) {
   const { id } = await params;
   const repo = await getRepository();
   const deleted = await repo.deleteUser(id);
-  if (!deleted) return notFound("계정을 찾을 수 없습니다");
+  if (!deleted) return notFound("계정을 찾을 수 없어요");
   return noContent();
 }

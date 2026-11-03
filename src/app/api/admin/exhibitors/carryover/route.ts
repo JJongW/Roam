@@ -13,7 +13,7 @@ export async function POST(req: Request) {
   if (!parsed.ok) return parsed.res;
   const repo = await getRepository();
   const exhibitionId = await repo.getExhibitionIdBySlug(parsed.data.exhibitionSlug);
-  if (!exhibitionId) return notFound("전시를 찾을 수 없습니다");
+  if (!exhibitionId) return notFound("행사를 찾을 수 없어요");
   const { items, autoPassed } = await runCarryover(repo, exhibitionId, {
     apply: parsed.data.apply,
     actor: await getUserId(),

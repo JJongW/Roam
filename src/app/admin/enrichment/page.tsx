@@ -67,8 +67,8 @@ export default async function AdminEnrichmentPage() {
       <header>
         <h1 className="text-2xl font-extrabold">초안 검수</h1>
         <p className="text-sm text-muted-foreground">
-          자동 초안은 여기서 승인해야 부스에 반영됩니다. 고친 내용은 변경 이력에
-          남아 다음 초안을 더 좋게 만듭니다.
+          자동 초안은 여기서 승인해야 부스에 반영돼요. 고친 내용은 변경 이력에
+          남아 다음 초안을 더 좋게 만들어요.
         </p>
       </header>
       {exhibition && (
@@ -93,9 +93,9 @@ export default async function AdminEnrichmentPage() {
             />
           </div>
           <p className="mt-2 text-xs text-muted-foreground">
-            시설 {booths.length - exhibitors.length}곳은 참가사가 아니라 셈에서 뺐습니다 ·
-            남은 {exhibitors.length - filled}곳 · 검수 대기 {forHuman.length}건
-            {notFound.length > 0 && ` · 못 찾음 ${notFound.length}건`}
+            시설 {booths.length - exhibitors.length}곳은 참가사가 아니라 셈에서 뺐어요.
+            남은 {exhibitors.length - filled}곳, 검수 대기 {forHuman.length}건
+            {notFound.length > 0 && `, 못 찾음 ${notFound.length}건`}
           </p>
         </div>
       )}
@@ -107,16 +107,16 @@ export default async function AdminEnrichmentPage() {
             기계가 못 찾은 곳 {notFound.length}곳
           </p>
           <p className="mt-1 text-xs text-muted-foreground">
-            기계가 {MAX_DRAFT_ROUNDS}번(각 세 각도) 다시 찾아도 근거를 못 댄 곳입니다.
-            다시 돌려도 웹에 없는 정보는 여전히 없어서 더 시도하지 않습니다 —
-            인스타·브랜드 사이트를 직접 찾아 <code>data/verified/</code>에 적으면
-            대조 검수로 들어옵니다.
-            {giveUp.size > 0 && ` 그중 ${giveUp.size}곳은 기계가 손을 뗐습니다.`}
+            기계가 {MAX_DRAFT_ROUNDS}번(각 세 각도) 다시 찾아도 근거를 못 댄 곳이에요.
+            다시 돌려도 웹에 없는 정보는 여전히 없어서 더 시도하지 않아요.
+            인스타나 브랜드 사이트를 직접 찾아 <code>data/verified/</code>에 적으면
+            대조 검수로 들어와요.
+            {giveUp.size > 0 && ` 그중 ${giveUp.size}곳은 기계가 손을 뗐어요.`}
           </p>
           <p className="mt-2 text-sm">
             {notFound
               .map((c) => boothNames[c.boothId] ?? c.boothId)
-              .join(" · ")}
+              .join(", ")}
           </p>
         </div>
       )}

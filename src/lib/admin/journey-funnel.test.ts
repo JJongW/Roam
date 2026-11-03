@@ -51,13 +51,13 @@ describe("computeJourneyFunnel", () => {
     expect(result.find((s) => s.stage === "관람 마치기")!.count).toBe(1);
   });
 
-  it("첫 단계(전시 진입)는 신호 종류 무관하게 모든 distinct 사용자", () => {
+  it("첫 단계(행사 진입)는 신호 종류 무관하게 모든 distinct 사용자", () => {
     const signals: UserSignal[] = [
       sig({ userId: "u1", kind: "search_query" }),
       sig({ userId: "u2", kind: "booth_bookmarked" }),
     ];
     const result = computeJourneyFunnel(signals, new Set());
-    expect(result.find((s) => s.stage === "전시 진입")!.count).toBe(2);
+    expect(result.find((s) => s.stage === "행사 진입")!.count).toBe(2);
   });
 
   it("전환율은 직전 단계 대비다 — 1단계 대비가 아니다", () => {

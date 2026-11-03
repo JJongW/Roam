@@ -31,7 +31,7 @@ describe("withErrorBoundary", () => {
     expect(res.status).toBe(500);
     const body = await res.json();
     expect(body.error.code).toBe("INTERNAL");
-    expect(body.error.message).toBe("서버 오류가 발생했습니다");
+    expect(body.error.message).toBe("서버 오류가 생겼어요");
 
     const issues = await repo.listIssues();
     expect(issues.length).toBe(1);

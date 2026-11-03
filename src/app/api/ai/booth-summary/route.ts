@@ -46,7 +46,7 @@ export async function POST(req: Request) {
 
     const repo = await getRepository();
     const detail = await repo.getBoothDetail(boothId);
-    if (!detail) return notFound("부스를 찾을 수 없습니다");
+    if (!detail) return notFound("부스를 찾을 수 없어요");
     const { booth, category } = detail;
 
     // 소개가 없으면 부르지 않는다 — 이름과 분야만 주면 모델이 그럴듯한 한 줄을
@@ -79,7 +79,7 @@ export async function POST(req: Request) {
     try {
       const data = await generateJSON<Extract>({
         system:
-          "너는 전시·박람회 부스 정보를 정리하는 도우미야. 부스 소개를 보고 아래 JSON으로만 답해. summary: 무엇을 보여주는 곳인지 한국어 한 문장(40자 내외, 과장·이모지·따옴표 없이). newReleases: 소개에 등장하는 신간/전시 도서·작가명(없으면 빈 배열). goods: 굿즈·기념품 종류(없으면 빈 배열). 추측해서 지어내지 말고, 소개에 근거가 있을 때만 넣어. 소개로 무엇을 하는 곳인지 알 수 없으면 summary는 빈 문자열.",
+          "너는 박람회와 페어의 부스 정보를 정리하는 도우미야. 부스 소개를 보고 아래 JSON으로만 답해. summary: 무엇을 보여주는 곳인지 한국어 해요체 한 문장(40자 내외, 예: '~를 빚는 양조장이에요'). 합니다체와 반말, 과장, 이모지, 따옴표, 가운뎃점(·)을 쓰지 말고 '전시'라는 말도 쓰지 마(행사명 같은 고유명사는 그대로). newReleases: 소개에 등장하는 신간이나 소개 도서, 작가명(없으면 빈 배열). goods: 굿즈나 기념품 종류(없으면 빈 배열). 추측해서 지어내지 말고, 소개에 근거가 있을 때만 넣어. 소개로 무엇을 하는 곳인지 알 수 없으면 summary는 빈 문자열.",
         prompt: [
           `부스명: ${booth.name}`,
           `출판사/브랜드: ${booth.company}`,
@@ -106,7 +106,7 @@ export async function POST(req: Request) {
         const summary = (
           await generateText({
             system:
-              "너는 도서전 부스를 한 문장으로 요약하는 도우미야. 이 부스가 무엇을 보여주는 곳인지 한국어 한 문장(40자 내외)으로만 답해. 과장·이모지·따옴표 없이 담백하게.",
+              "너는 박람회 부스를 한 문장으로 요약하는 도우미야. 이 부스가 무엇을 보여주는 곳인지 한국어 해요체 한 문장(40자 내외)으로만 답해. 합니다체와 반말, 과장, 이모지, 따옴표, 가운뎃점(·), '전시'라는 말 없이 담백하게.",
             prompt: [
               `부스명: ${booth.name}`,
               `출판사/브랜드: ${booth.company}`,

@@ -146,7 +146,7 @@ export function planIntake(input: PlanInput): IntakePlan {
   const seen = new Set<string>();
   for (const row of file.booths) {
     if (seen.has(row.code)) {
-      plan.errors.push({ code: row.code, message: "파일 안에서 code가 중복됩니다" });
+      plan.errors.push({ code: row.code, message: "파일 안에서 code가 중복돼요" });
       continue;
     }
     seen.add(row.code);
@@ -169,7 +169,7 @@ function planCreate(
   if (!row.name) {
     plan.errors.push({
       code: row.code,
-      message: "새 부스인데 name이 없습니다 — 이름 없이는 만들 수 없습니다",
+      message: "새 부스인데 name이 없어요. 이름 없이는 만들 수 없어요",
     });
     return;
   }
@@ -180,11 +180,11 @@ function planCreate(
   const categoryName =
     row.category ?? (categoryNames.size === 1 ? [...categoryNames][0] : undefined);
   if (!hallName) {
-    plan.errors.push({ code: row.code, message: "hall을 적어야 합니다" });
+    plan.errors.push({ code: row.code, message: "hall을 적어야 해요" });
     return;
   }
   if (!categoryName) {
-    plan.errors.push({ code: row.code, message: "category를 적어야 합니다" });
+    plan.errors.push({ code: row.code, message: "category를 적어야 해요" });
     return;
   }
   if (!hallNames.has(hallName) && !plan.newHalls.includes(hallName)) {
@@ -199,14 +199,14 @@ function planCreate(
     if (!row.categorySlug) {
       plan.errors.push({
         code: row.code,
-        message: `새 카테고리 "${categoryName}"에 categorySlug가 없습니다`,
+        message: `새 카테고리 "${categoryName}"에 categorySlug가 없어요`,
       });
       return;
     }
     if (categorySlugs.has(row.categorySlug)) {
       plan.errors.push({
         code: row.code,
-        message: `categorySlug "${row.categorySlug}"는 다른 카테고리가 이미 씁니다`,
+        message: `categorySlug "${row.categorySlug}"는 다른 카테고리가 이미 써요`,
       });
       return;
     }
@@ -220,7 +220,7 @@ function planCreate(
   const geo = geoByCode.get(row.code);
   if (!geo) {
     plan.warnings.push(
-      `${row.code}: 도면(FLOORPLANS)에 없는 코드 — 좌표 0,0으로 만듭니다`,
+      `${row.code}: 도면(FLOORPLANS)에 없는 코드예요. 좌표 0,0으로 만들어요`,
     );
   }
 

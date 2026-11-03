@@ -8,7 +8,7 @@ export const RHYTHMS: {
   label: string;
   hint: string;
 }[] = [
-  { key: "focus", label: "집중", hint: "확실한 곳 깊게" },
+  { key: "focus", label: "집중", hint: "끌리는 곳 깊게" },
   { key: "light", label: "가볍게", hint: "골고루 발견" },
   { key: "rest", label: "쉬면서", hint: "적게, 여유롭게" },
 ];

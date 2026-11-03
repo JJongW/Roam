@@ -13,14 +13,14 @@ export function LearningCurveCard({ curve }: { curve: LearningCurve }) {
       <div>
         <h2 className="text-base font-bold">로미 학습 곡선</h2>
         <p className="text-sm text-muted-foreground">
-          N회차 방문자의 추천 정확도. 회차가 늘수록 올라가야 로미가 전시를 넘어
-          학습하는 것입니다.
+          N회차 방문자의 추천 정확도. 회차가 늘수록 올라가야 로미가 행사를 넘어
+          학습하는 거예요.
         </p>
       </div>
       <Card className="space-y-4 p-4">
         {curve.points.length === 0 ? (
           <p className="py-6 text-center text-sm text-muted-foreground">
-            아직 판정이 없습니다.
+            아직 판정이 없어요.
           </p>
         ) : (
           <ul className="space-y-3">
@@ -51,8 +51,8 @@ export function LearningCurveCard({ curve }: { curve: LearningCurve }) {
                   ) : (
                     "표본 부족"
                   )}
-                  {" · "}
-                  {p.users}명 · 판정 {p.judgedCount}
+                  {", "}
+                  {p.users}명, 판정 {p.judgedCount}
                 </span>
               </li>
             ))}

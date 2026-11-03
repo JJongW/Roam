@@ -296,7 +296,7 @@ export function BoothManager({
       {booths.length > 0 && (
         <div className="flex flex-wrap items-center gap-2">
           <Input
-            placeholder="이름·회사·코드 검색"
+            placeholder="이름, 회사, 코드 검색"
             aria-label="부스 검색"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -663,7 +663,7 @@ export function BoothManager({
                       return (
                         <Field key={slug} label={`${def?.label ?? slug} 근거`}>
                           <Input
-                            placeholder="예: 몰랐던 브랜드를 발견하기 좋아"
+                            placeholder="예: 몰랐던 브랜드를 발견하기 좋아요"
                             value={enrichmentDraft.reasons[slug] ?? ""}
                             onChange={(e) =>
                               setEnrichmentDraft({
@@ -849,7 +849,7 @@ function BoothImageGallery({
       const urls: string[] = [];
       for (const file of picked) {
         if (file.size > BOOTH_IMAGE_MAX_MB * 1024 * 1024) {
-          toast.error(`${BOOTH_IMAGE_MAX_MB}MB보다 작은 이미지로 올려주세요`);
+          toast.error(`${BOOTH_IMAGE_MAX_MB}MB보다 작은 이미지로 올려 주세요`);
           continue;
         }
         urls.push(await uploadBoothImage(file));

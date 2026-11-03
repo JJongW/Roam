@@ -59,19 +59,19 @@ export default async function AdminVerifyPage() {
         </p>
         <p className="text-sm text-muted-foreground">
           자동 초안이 쓴 글과 사람이 직접 확인한 글이 다를 때, 무엇이 맞는지
-          고릅니다. 인스타가 늘 옳은 것도 아니라 한 건씩 봅니다.
+          골라요. 인스타가 늘 옳은 것도 아니라 한 건씩 봐요.
         </p>
       </header>
 
       <div className="rounded-2xl border border-border bg-card p-4 text-sm">
         <p>
-          확인한 사실 <b>{Object.keys(verified).length}</b>곳 · 다른 것{" "}
-          <b className="text-warning">{rows.length}</b>곳 · 같거나 이미 반영{" "}
+          확인한 사실 <b>{Object.keys(verified).length}</b>곳, 다른 것{" "}
+          <b className="text-warning">{rows.length}</b>곳, 같거나 이미 반영{" "}
           <b>{same}</b>곳
         </p>
         <p className="mt-1 text-xs text-muted-foreground">
-          &lsquo;본인 확인&rsquo;은 브랜드가 자기 계정에서 이 전시 참여를 직접
-          밝힌 경우입니다 — 참여 여부만큼은 100%입니다.
+          &lsquo;본인 확인&rsquo;은 브랜드가 자기 계정에서 이 행사 참여를 직접
+          밝힌 경우예요. 참여 여부만큼은 100%예요.
         </p>
       </div>
 

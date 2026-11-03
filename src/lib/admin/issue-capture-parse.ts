@@ -25,7 +25,7 @@ export function parseUserAgent(ua?: string): string | undefined {
   const os = OS_PATTERNS.find(([re]) => re.test(ua))?.[1];
   const browser = BROWSER_PATTERNS.find(([re]) => re.test(ua))?.[1];
   if (!os && !browser) return undefined;
-  return [os, browser].filter(Boolean).join(" · ");
+  return [os, browser].filter(Boolean).join(", ");
 }
 
 /** Vercel이 모든 요청에 붙이는 지오 헤더를 읽는다. IP는 어디에도 담지 않는다.

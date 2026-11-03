@@ -381,13 +381,13 @@ function GuidePreviewCard({
     // STEP 1: 취향 질문 카드 — Conversation의 답변 카드와 같은 모양.
     return (
       <div className="pointer-events-none w-full rounded-xl bg-card px-4 py-3.5 text-left">
-        <div className="mb-2.5 text-[13px] font-bold">오늘은 뭐가 끌려?</div>
+        <div className="mb-2.5 text-[13px] font-bold">오늘은 뭐가 끌리세요?</div>
         <div className="space-y-1.5">
           <div className="rounded-xl border border-border px-3 py-2 text-xs">
-            직접 만져보고 사는 게 좋아
+            직접 만져 보고 사는 게 좋아요
           </div>
           <div className="rounded-xl border border-primary px-3 py-2 text-xs font-semibold text-primary">
-            몰랐던 걸 발견하고 싶어
+            몰랐던 걸 발견하고 싶어요
           </div>
         </div>
       </div>

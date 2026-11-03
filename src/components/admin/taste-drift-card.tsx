@@ -12,15 +12,15 @@ export function TasteDriftCard({ drift }: { drift: TasteDrift }) {
       <div>
         <h2 className="text-base font-bold">취향 이동</h2>
         <p className="text-sm text-muted-foreground">
-          두 전시 이상에 반응한 {drift.cohort}명의 <b>선호 편향</b> 변화 — 전시가
-          제공한 만큼 대비 얼마나 골랐는지입니다. 한 번만 온 사람을 빼서 관객 구성
-          변화를, 제공 비중으로 나눠서 전시 성격 차이를 걸러냅니다.
+          두 행사 이상에 반응한 {drift.cohort}명의 <b>선호 편향</b> 변화예요. 행사가
+          제공한 만큼 대비 얼마나 골랐는지 봐요. 한 번만 온 사람을 빼서 관객 구성
+          변화를, 제공 비중으로 나눠서 행사 성격 차이를 걸러내요.
         </p>
       </div>
       <Card className="space-y-4 p-4">
         {drift.movers.length === 0 ? (
           <p className="py-4 text-center text-sm text-muted-foreground">
-            아직 이동이 없습니다.
+            아직 이동이 없어요.
           </p>
         ) : (
           <ul className="space-y-2.5">
@@ -68,8 +68,8 @@ export function TasteDriftCard({ drift }: { drift: TasteDrift }) {
           <ol className="flex flex-wrap gap-x-3 gap-y-1 border-t border-border pt-3 text-xs text-muted-foreground">
             {drift.slices.map((s, i) => (
               <li key={s.exhibitionId} className="tabular">
-                {i + 1}. {s.exhibitionName} · 신호 {s.signals}
-                {s.unadjusted && " · 보정 못함"}
+                {i + 1}. {s.exhibitionName}, 신호 {s.signals}
+                {s.unadjusted && ", 보정 못함"}
               </li>
             ))}
           </ol>

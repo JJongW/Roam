@@ -107,20 +107,20 @@ function findBlocker(points: CurvePoint[]): string | null {
     if (thin.length > 0) {
       // 곡선이 그려지긴 하는데 결론으로 읽으면 안 되는 상태. 이걸 말 안 하면
       // "1회차 54% → 2회차 70%, 로미가 학습한다"로 읽힌다.
-      return `${thin.map((p) => `${p.ordinal}회차`).join("·")} 표본이 ${THIN_SAMPLE}건 미만이라 몇 건만 바뀌어도 크게 흔들린다 — 아직 추세가 아니다. 전시마다 저작 데이터 품질이 달라서 회차 차이가 학습이 아닐 수도 있다.`;
+      return `${thin.map((p) => `${p.ordinal}회차`).join(", ")} 표본이 ${THIN_SAMPLE}건 미만이라 몇 건만 바뀌어도 크게 흔들려요. 아직 추세가 아니에요. 행사마다 저작 데이터 품질이 달라서 회차 차이가 학습이 아닐 수도 있어요.`;
     }
     return null;
   }
 
   const second = points.find((p) => p.ordinal === 2);
   if (!second) {
-    return "두 번째 전시에 반응한 사용자가 아직 없다 — 회차 비교 자체가 성립하지 않는다.";
+    return "두 번째 행사에 반응한 사용자가 아직 없어요. 회차 비교 자체가 성립하지 않아요.";
   }
   if (second.judgedCount === 0) {
-    return `2회차 방문자 ${second.users}명이 반응은 남겼지만 판정(좋았어/아니었어)이 0건이다 — 관람을 마치지 않으면 채점할 게 없다.`;
+    return `2회차 방문자 ${second.users}명이 반응은 남겼지만 판정(좋았어요/아니었어요)이 0건이에요. 관람을 마치지 않으면 채점할 게 없어요.`;
   }
   if (second.judgedCount < INSIGHT_THRESHOLD) {
-    return `2회차 판정이 ${second.judgedCount}건뿐이다 — ${INSIGHT_THRESHOLD}건은 모여야 정확도를 말할 수 있다.`;
+    return `2회차 판정이 ${second.judgedCount}건뿐이에요. ${INSIGHT_THRESHOLD}건은 모여야 정확도를 말할 수 있어요.`;
   }
-  return "1회차 표본이 부족하다 — 비교 기준이 없다.";
+  return "1회차 표본이 부족해요. 비교 기준이 없어요.";
 }

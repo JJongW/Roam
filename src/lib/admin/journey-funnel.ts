@@ -93,7 +93,7 @@ export function computeJourneyFunnel(
     reflectedUserIds.size,
   ];
   const labels = [
-    "전시 진입",
+    "행사 진입",
     "가치 온보딩 완료",
     "피드 반응",
     "현장 판정",

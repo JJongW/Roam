@@ -104,7 +104,7 @@ async function syncAndAnnounce() {
     syncPendingReactions(),
   ]);
   if (syncedValues || syncedReactions) {
-    toast("아까 둘러본 것도 다 반영했어. 이제부터 제대로 골라줄게.");
+    toast("아까 남기신 반응도 반영했어요. 이제 박람회를 옮겨도 이어서 골라 드릴게요.");
   }
 }
 
@@ -210,6 +210,6 @@ export function promptLoginOncePerExhibition(exhibitionSlug: string) {
   if (sessionStorage.getItem(key)) return;
   sessionStorage.setItem(key, "1");
   promptLogin(
-    "지금 누른 건 로미가 기억 못 해 — 로그인하면 이제부터 다 기억할게",
+    "누르신 반응은 지금 이 기기에 남아 있어요. 로그인하면 다른 박람회에서도 이어서 기억할게요",
   );
 }

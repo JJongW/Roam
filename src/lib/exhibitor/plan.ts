@@ -156,7 +156,7 @@ export function planExhibitorLinks(input: PlanInput): ExhibitorPlan {
         if (emitted.has(pair)) continue;
         if ("existing" in other && decided.has(`${m.id}|${other.existing}`)) continue;
         emitted.add(pair);
-        plan.candidates.push({ boothId: m.id, target: other, reason: `이름이 같다: "${m.name}"` });
+        plan.candidates.push({ boothId: m.id, target: other, reason: `이름이 같아요: "${m.name}"` });
       }
     }
   }

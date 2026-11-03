@@ -18,7 +18,7 @@ export function TasteBehaviorCross({
   if (rows.length === 0) {
     return (
       <p className="py-8 text-center text-sm text-muted-foreground">
-        아직 취향이 쌓인 사용자가 없습니다.
+        아직 취향이 쌓인 사용자가 없어요.
       </p>
     );
   }
@@ -29,9 +29,9 @@ export function TasteBehaviorCross({
     <div className="space-y-4">
       {!active && (
         <p className="rounded-lg bg-secondary px-3 py-2 text-sm text-muted-foreground">
-          취향은 쌓였지만 사용자에 귀속된 행동 기록이 아직 없습니다. 분석
+          취향은 쌓였지만 사용자에 귀속된 행동 기록이 아직 없어요. 분석
           이벤트에 사용자를 적기 시작한 건 최근이라, 그 전에 쌓인 기록은 여기에
-          잡히지 않습니다.
+          잡히지 않아요.
         </p>
       )}
 
@@ -48,7 +48,7 @@ export function TasteBehaviorCross({
                   {valueLabel(row.slug)}
                 </span>
                 <span className="text-xs text-muted-foreground">
-                  취향 {row.tasteUsers}명 · 행동 {row.activeUsers}명
+                  취향 {row.tasteUsers}명, 행동 {row.activeUsers}명
                 </span>
               </div>
 
@@ -72,7 +72,7 @@ export function TasteBehaviorCross({
                         )}
                       </span>
                       <span className="shrink-0 tabular-nums text-xs text-muted-foreground">
-                        {b.events}회 · {b.users}명
+                        {b.events}회, {b.users}명
                       </span>
                     </li>
                   ))}
@@ -85,7 +85,7 @@ export function TasteBehaviorCross({
 
       {unattributed > 0 && (
         <p className="text-xs text-muted-foreground">
-          사용자에 귀속되지 않은 이벤트 {unattributed}건은 제외했습니다(비로그인
+          사용자에 귀속되지 않은 이벤트 {unattributed}건은 제외했어요(비로그인
           이거나 사용자 기록 도입 전).
         </p>
       )}

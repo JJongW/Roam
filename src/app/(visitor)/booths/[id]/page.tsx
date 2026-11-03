@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props) {
   const detail = await getBoothDetailCached(id);
   if (!detail) return { title: "부스" };
   return {
-    title: `${detail.booth.name} · ${detail.booth.company}`,
+    title: `${detail.booth.name} | ${detail.booth.company}`,
     description: detail.booth.description,
   };
 }
@@ -256,7 +256,7 @@ export default async function BoothDetailPage({ params }: Props) {
                         {appearances.map((a) => (
                           <li key={a.boothId}>
                             <Link href={`/booths/${a.boothId}`} className="text-[15px] text-foreground/90 underline-offset-4 hover:underline">
-                              {a.exhibitionName} · ‘{a.displayName}’{a.boothCode ? ` · ${t("booth.code", { code: a.boothCode })}` : ""}
+                              {a.exhibitionName}, ‘{a.displayName}’{a.boothCode ? `, ${t("booth.code", { code: a.boothCode })}` : ""}
                             </Link>
                           </li>
                         ))}

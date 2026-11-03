@@ -24,7 +24,7 @@ export function TimelineRow({ event }: { event: TimelineEvent }) {
           <span className="text-muted-foreground">{event.userLabel}</span>
         )}
         {event.boothLabel && (
-          <span className="text-muted-foreground"> · {event.boothLabel}</span>
+          <span className="text-muted-foreground">, {event.boothLabel}</span>
         )}
       </span>
     </div>

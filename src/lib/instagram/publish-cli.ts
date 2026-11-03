@@ -77,7 +77,7 @@ export async function runPublishCli(argv: string[], deps: CliDeps): Promise<numb
 
   out(`이미지 ${files.length}장`);
   for (const [i, f] of files.entries()) out(`  ${String(i + 1).padStart(2, "0")}  ${f.name}  ${(f.bytes.length / 1024).toFixed(0)}KB${isJpeg(f.bytes) ? "" : "  ← JPEG 아님"}`);
-  out(`캡션 ${[...caption].length}/${IG_LIMITS.captionChars}자 · 해시태그 ${countHashtags(caption)}/${IG_LIMITS.hashtags}개`);
+  out(`캡션 ${[...caption].length}/${IG_LIMITS.captionChars}자, 해시태그 ${countHashtags(caption)}/${IG_LIMITS.hashtags}개`);
   out("---");
   out(caption);
   out("---");

@@ -79,12 +79,12 @@ export function matchExhibition(
 
 /**
  * 겹친 가치로 근거 한 줄을 만든다. 겹침이 없으면 null — 그때는 아무 말도 하지 않는다.
- * 예: "네가 고른 발견·영감과 겹치는 부스가 많아."
+ * 예: "고르신 발견, 영감에 맞는 부스가 많아요."
  */
 export function matchReason(matched: string[]): string | null {
   if (matched.length === 0) return null;
   const labels = matched.slice(0, MAX_REASON_VALUES).map(valueLabel);
-  return `네가 고른 ${labels.join("·")}과 겹치는 부스가 많아.`;
+  return `고르신 ${labels.join(", ")}에 맞는 부스가 많아요.`;
 }
 
 /**

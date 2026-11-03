@@ -127,7 +127,7 @@ export function ExhibitionCard({
             )}
             {signals.daysLeft !== null && (
               <>
-                {signals.boothCount > 0 && <span aria-hidden>·</span>}
+                {signals.boothCount > 0 && <span aria-hidden className="text-border">|</span>}
                 <span className="font-bold text-primary">
                   {signals.daysLeft === 1
                     ? t("home.signalLastDay")
@@ -138,7 +138,7 @@ export function ExhibitionCard({
             {signals.groundedCount > 0 && (
               <>
                 {(signals.boothCount > 0 || signals.daysLeft !== null) && (
-                  <span aria-hidden>·</span>
+                  <span aria-hidden className="text-border">|</span>
                 )}
                 <span className="tabular text-muted-foreground">
                   {t("home.signalGrounded", { n: signals.groundedCount })}
@@ -153,7 +153,7 @@ export function ExhibitionCard({
         <div className="flex items-center gap-1 pt-1 text-sm font-medium text-foreground">
           <MapPin className="size-4 text-muted-foreground" aria-hidden />
           <span className="truncate">{exhibition.venue}</span>
-          <span aria-hidden>·</span>
+          <span aria-hidden className="text-border">|</span>
           <CalendarDays className="size-3.5" aria-hidden />
           {/* 날짜는 고정, 압력은 장소의 truncate가 받는다. flex-wrap을 넣지 말 것 —
               날짜가 둘째 줄로 떨어지는 쪽이 더 나쁘다. */}

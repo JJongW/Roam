@@ -14,7 +14,7 @@ export async function POST(req: Request, { params }: Ctx) {
 
     const repo = await getRepository();
     const post = await repo.getPost(postId);
-    if (!post) return notFound("글을 찾을 수 없습니다");
+    if (!post) return notFound("글을 찾을 수 없어요");
 
     // Tie any freshly created session to the post's exhibition (a bare
     // ensureSession() would use an invalid placeholder exhibition id).
@@ -24,7 +24,7 @@ export async function POST(req: Request, { params }: Ctx) {
       session.id,
       parsed.data.reason,
     );
-    if (!result.ok) return notFound("글을 찾을 수 없습니다");
+    if (!result.ok) return notFound("글을 찾을 수 없어요");
     return ok({ already: result.already });
   });
 }

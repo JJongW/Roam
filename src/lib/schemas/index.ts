@@ -130,7 +130,7 @@ const exhibitionFields = z.object({
   slug: z
     .string()
     .min(2)
-    .regex(/^[a-z0-9-]+$/, "소문자·숫자·하이픈만"),
+    .regex(/^[a-z0-9-]+$/, "소문자, 숫자, 하이픈만 쓸 수 있어요"),
   name: z.string().min(2).max(120),
   venue: z.string().min(1).max(120),
   description: z.string().max(2000),
@@ -349,7 +349,7 @@ export const errorReportSchema = z.object({
     .record(z.string(), z.unknown())
     .optional()
     .refine((v) => !v || JSON.stringify(v).length <= 4000, {
-      message: "context가 너무 큽니다",
+      message: "context가 너무 커요",
     }),
 });
 export type ErrorReportInput = z.infer<typeof errorReportSchema>;

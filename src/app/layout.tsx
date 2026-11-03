@@ -22,19 +22,19 @@ export const metadata: Metadata = {
   // 폐기됐다(동선·내비 프레이밍 부활 + 이름 이중화). docs/brand/04_naming-messaging.md §1.
   title: {
     default: "Roam",
-    template: "%s · Roam",
+    template: "%s | Roam",
   },
   // 앱 목적을 그대로 적는다 — Google OAuth 심사가 홈페이지 설명을 확인하는 자리이고,
   // 예전 문구("no account needed")는 로그인 필수로 바뀐 뒤로 사실이 아니었다. 크롤러
   // 대상 설명은 한국어 사용자가 절대다수라 한국어로 남긴다(2026-08-13).
   description:
-    "Roam은 전시·박람회 모바일 가이드입니다. 볼 만한 부스를 발견하고, 혼잡을 피하고, 관람한 것을 기록하세요.",
+    "Roam은 박람회와 페어의 부스 탐색 서비스예요. 관심 가는 부스를 발견하고, 행사장에서 찾아가고, 다녀온 곳을 기록할 수 있어요.",
   applicationName: "Roam",
   openGraph: {
     siteName: "Roam",
     title: "Roam",
     description:
-      "Roam은 전시·박람회 모바일 가이드입니다. 볼 만한 부스를 발견하고, 혼잡을 피하고, 관람한 것을 기록하세요.",
+      "Roam은 박람회와 페어의 부스 탐색 서비스예요. 관심 가는 부스를 발견하고, 행사장에서 찾아가고, 다녀온 곳을 기록할 수 있어요.",
     type: "website",
   },
 };

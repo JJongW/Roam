@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   // 페이지 본문과 같은 요청 캐시를 타서 전시 조회가 한 번만 나간다.
   const detail = await getExhibitionCached(slug);
-  if (!detail) return { title: "전시" };
+  if (!detail) return { title: "행사" };
   return {
     title: detail.exhibition.name,
     description: detail.exhibition.description,
@@ -86,7 +86,7 @@ export default async function ExhibitionDetailPage({
     .slice(0, 2)
     .map((n) => (isValueSlug(n.key) ? t(`values.${n.key}`) : n.label));
   const memoryLine = topValues.length
-    ? t("feed.memoryLine", { values: topValues.join("·") })
+    ? t("feed.memoryLine", { values: topValues.join(", ") })
     : undefined;
   // 취향 정확도 — 브레인 파생이 아니라 booth_note 직접 집계(브레인이 아니라
   // "반응이 로미의 예측을 맞혔는가"로 잰다). 예전 tasteProgress(접촉량 기반)는
@@ -198,7 +198,7 @@ export default async function ExhibitionDetailPage({
               themes={detail.categories
                 .slice(0, 3)
                 .map((c) => c.name)
-                .join("·")}
+                .join(", ")}
               hasChosenValues={topValues.length > 0}
             />
           )}

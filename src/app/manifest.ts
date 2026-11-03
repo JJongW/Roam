@@ -9,7 +9,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Roam",
     short_name: "Roam",
     description:
-      "지금까지 파악한 네 취향으로 부스를 골라 제안하고, 네 반응에 따라 맞춰가는 관람 동행자.",
+      "박람회와 페어에서 관심 가는 부스를 발견하고 찾아가도록 돕는 부스 탐색 서비스예요.",
     start_url: "/",
     display: "standalone",
     background_color: "#ffffff",

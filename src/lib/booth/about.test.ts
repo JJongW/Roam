@@ -33,7 +33,7 @@ const enrich = (over: Record<string, unknown> = {}) => ({
 describe("boothAbout — 로미 발화", () => {
   it("테마 대분류만 있으면 그것만 말한다", () => {
     const a = boothAbout(booth({ tags: ["kr-artist", "animal"] }));
-    expect(a.romi).toBe("동물 쪽 부스야.");
+    expect(a.romi).toBe("동물 쪽 부스예요.");
   });
 
   it("소분류가 있으면 더 구체적으로 말한다", () => {
@@ -43,7 +43,18 @@ describe("boothAbout — 로미 발화", () => {
         enrichment: enrich({ themeTags: ["고양이", "반려동물"] }) as never,
       }),
     );
-    expect(a.romi).toContain("고양이·반려동물");
+    expect(a.romi).toContain("고양이, 반려동물");
+  });
+
+  it("테마 라벨의 가운뎃점은 표시할 때 '와/과'로 바뀐다 — 데이터 키는 그대로", () => {
+    const a = boothAbout(
+      booth({
+        tags: ["kr-artist", "stationery"],
+        // "문구·다꾸"는 대분류 원본 라벨과 같은 소분류라 빠진다.
+        enrichment: enrich({ themeTags: ["문구·다꾸", "리빙·실용"] }) as never,
+      }),
+    );
+    expect(a.romi).toBe("문구와 다꾸 중에서도 리빙과 실용 쪽이에요.");
   });
 
   it("굿즈 개수에 따라 표현이 달라진다", () => {

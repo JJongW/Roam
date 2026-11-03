@@ -78,7 +78,7 @@ export default async function AdminOverviewPage() {
   const today = todayISO();
   const stats = [
     {
-      label: "전시",
+      label: "행사",
       value: `${exhibitions.length}`,
       icon: Building2,
       href: "/admin/exhibitions",
@@ -96,7 +96,7 @@ export default async function AdminOverviewPage() {
       href: "/admin/accounts",
     },
     {
-      label: "멀티 전시",
+      label: "여러 행사",
       value: `${Math.round(overview.multiExhibitionRatio * 100)}%`,
       icon: Repeat,
     },
@@ -107,7 +107,7 @@ export default async function AdminOverviewPage() {
       <header>
         <h1 className="text-2xl font-extrabold">전체</h1>
         <p className="text-sm text-muted-foreground">
-          Roam 서비스 전체 — 전시를 고르지 않아도 뜹니다
+          Roam 서비스 전체 — 행사를 고르지 않아도 떠요
         </p>
       </header>
 
@@ -135,7 +135,7 @@ export default async function AdminOverviewPage() {
 
       <AdminSection
         title="취향 지형"
-        description={`온보딩에서 확정한 가치, 전 전시 합산 · 멀티 전시 방문 ${overview.multiExhibitionUsers}/${overview.activeUsers}명`}
+        description={`온보딩에서 확정한 가치, 전체 행사 합산, 여러 행사 방문 ${overview.multiExhibitionUsers}/${overview.activeUsers}명`}
       >
         <OnboardingValueChart data={overview.values} />
       </AdminSection>
@@ -144,12 +144,12 @@ export default async function AdminOverviewPage() {
       <TasteDriftCard drift={drift} />
 
       <AdminSection
-        title="전시 포트폴리오"
-        description="전시 전환은 상단 선택기에서"
+        title="행사 포트폴리오"
+        description="행사 전환은 상단 선택기에서"
       >
         {overview.portfolio.length === 0 ? (
           <p className="py-8 text-center text-sm text-muted-foreground">
-            아직 전시가 없습니다.
+            아직 행사가 없어요.
           </p>
         ) : (
           <ul className="divide-y divide-border">
@@ -225,7 +225,7 @@ export default async function AdminOverviewPage() {
                   : "데이터 이슈 없음"}
               </p>
               <p className="text-xs text-muted-foreground">
-                전 전시 · 부스 필수 필드 결측
+                전체 행사, 부스 필수 필드 결측
               </p>
             </div>
           </Card>
@@ -238,9 +238,9 @@ export default async function AdminOverviewPage() {
             <BarChart3 className="size-6 text-primary" />
           </div>
           <div className="flex-1">
-            <p className="font-bold">전시별 분석</p>
+            <p className="font-bold">행사별 분석</p>
             <p className="text-sm text-muted-foreground">
-              히트맵 · 인기 부스 · 방문 흐름 · 전환율
+              히트맵, 인기 부스, 방문 흐름, 전환율
             </p>
           </div>
           <ArrowRight className="size-5 text-muted-foreground" />

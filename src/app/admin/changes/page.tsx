@@ -12,7 +12,7 @@ const SOURCE_LABEL: Record<string, string> = {
 const ENTITY_LABEL: Record<string, string> = {
   booth_enrichment: "부스 저작 정보",
   booth: "부스",
-  exhibition: "전시",
+  exhibition: "행사",
   event: "이벤트",
 };
 
@@ -32,14 +32,14 @@ export default async function AdminChangesPage() {
       <header>
         <h1 className="text-2xl font-extrabold">변경 이력</h1>
         <p className="text-sm text-muted-foreground">
-          누가 어디서 무엇을 무엇으로 바꿨는지. 인입·직접 편집·자동 초안이 모두 같은
-          원장에 쌓입니다.
+          누가 어디서 무엇을 무엇으로 바꿨는지. 인입, 직접 편집, 자동 초안이 모두 같은
+          원장에 쌓여요.
         </p>
       </header>
 
       {changes.length === 0 ? (
         <Card className="p-8 text-center text-sm text-muted-foreground">
-          아직 기록된 변경이 없습니다.
+          아직 기록된 변경이 없어요.
         </Card>
       ) : (
         <ul className="space-y-3">

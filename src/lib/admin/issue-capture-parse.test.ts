@@ -10,19 +10,19 @@ describe("parseUserAgent", () => {
   it("iPhone Safari를 인식한다", () => {
     const ua =
       "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1";
-    expect(parseUserAgent(ua)).toBe("iPhone · Safari");
+    expect(parseUserAgent(ua)).toBe("iPhone, Safari");
   });
 
   it("Windows Chrome을 인식한다", () => {
     const ua =
       "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
-    expect(parseUserAgent(ua)).toBe("Windows · Chrome");
+    expect(parseUserAgent(ua)).toBe("Windows, Chrome");
   });
 
   it("Android Chrome을 인식한다", () => {
     const ua =
       "Mozilla/5.0 (Linux; Android 14; SM-S911N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36";
-    expect(parseUserAgent(ua)).toBe("Android · Chrome");
+    expect(parseUserAgent(ua)).toBe("Android, Chrome");
   });
 
   it("빈 값이면 undefined", () => {

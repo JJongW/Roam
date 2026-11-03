@@ -10,7 +10,7 @@ export async function GET(_req: Request, { params }: Ctx) {
   const { id } = await params;
   const repo = await getRepository();
   const booth = await repo.getBoothDetail(id);
-  if (!booth) return notFound("부스를 찾을 수 없습니다");
+  if (!booth) return notFound("부스를 찾을 수 없어요");
   const all = await repo.listPosts(booth.booth.exhibitionId, { limit: 200 });
   const data = all.data.filter((p) => p.boothId === id);
   return ok({ data });
@@ -22,9 +22,9 @@ export async function POST(req: Request, { params }: Ctx) {
   if (!parsed.ok) return parsed.res;
   const repo = await getRepository();
   const booth = await repo.getBoothDetail(id);
-  if (!booth) return notFound("부스를 찾을 수 없습니다");
+  if (!booth) return notFound("부스를 찾을 수 없어요");
   const user = await getCurrentUser();
-  if (!user) return fail("UNAUTHORIZED", "로그인이 필요합니다");
+  if (!user) return fail("UNAUTHORIZED", "로그인이 필요해요");
   const post = await repo.createPost(user.id, booth.booth.exhibitionId, {
     ...parsed.data,
     boothId: id,

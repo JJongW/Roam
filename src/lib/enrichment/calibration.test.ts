@@ -50,7 +50,7 @@ describe("calibration", () => {
       ...many(15, 0.9, "approved"),
       ...many(10, 0.9, "rejected"),
     ]);
-    expect(cal.note).toContain("검수 없이 나간다");
+    expect(cal.note).toContain("검수 없이 나가요");
   });
 
   it("하단도 많이 승인되면 재조사로 돌리지 말라고 짚는다", () => {
@@ -62,7 +62,7 @@ describe("calibration", () => {
       cand(0.4, "rejected"),
     ]);
     expect(cal.note).toContain("확인 불가");
-    expect(cal.note).toContain("쓸 만한 초안을 버린다");
+    expect(cal.note).toContain("쓸 만한 초안을 버려요");
   });
 
   it("판단된 게 없으면 자동 통과를 켜지 말라고 한다", () => {

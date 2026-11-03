@@ -42,9 +42,9 @@ export async function POST(req: Request) {
   const { slug, code, dataUrl } = parsed.data;
 
   const m = dataUrl.match(/^data:image\/(webp|jpeg|png);base64,(.+)$/);
-  if (!m) return fail("VALIDATION", "이미지 데이터가 아닙니다");
+  if (!m) return fail("VALIDATION", "이미지 데이터가 아니에요");
   const buf = Buffer.from(m[2], "base64");
-  if (buf.length < 1500) return fail("VALIDATION", "이미지가 너무 작습니다");
+  if (buf.length < 1500) return fail("VALIDATION", "이미지가 너무 작아요");
 
   const dir = join(process.cwd(), "public/booths", slug);
   await mkdir(dir, { recursive: true });

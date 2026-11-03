@@ -70,11 +70,11 @@ export function LoginSheet() {
     setError(null);
     try {
       await login(name);
-      toast.success(`${name} 왔구나, 반가워!`);
+      toast.success(`${name}님, 반가워요!`);
       setNickname("");
     } catch (e) {
       const msg =
-        e instanceof ApiClientError ? e.error.message : "로그인 못 했어";
+        e instanceof ApiClientError ? e.error.message : "로그인하지 못했어요";
       setError(msg);
     } finally {
       setBusy(false);
@@ -137,7 +137,7 @@ export function LoginSheet() {
               {busy ? t("login.checking") : t("login.sheetTitle")}
             </Button>
             <p className="text-center text-xs text-muted-foreground">
-              이미 쓰는 닉네임은 못 골라.
+              이미 쓰는 닉네임은 고를 수 없어요.
             </p>
           </div>
         )}
@@ -151,11 +151,11 @@ export function LoginSheet() {
  * 원인마다 다음 행동이 다르므로 한 문장으로 뭉뚱그리지 않는다.
  */
 const LOGIN_ERROR_MESSAGE: Record<string, string> = {
-  denied: "Google 로그인을 취소했어. 다시 해볼까?",
-  unavailable: "지금은 Google 로그인을 쓸 수 없어. 닉네임으로 시작해도 돼.",
-  exchange: "로그인 확인에 실패했어. 브라우저를 새로 열고 다시 해줄래?",
-  no_code: "로그인 정보가 오다가 끊겼어. 다시 해줘.",
-  no_user: "계정 정보를 못 받았어. 다시 해줘.",
+  denied: "Google 로그인을 취소했어요. 다시 해 볼까요?",
+  unavailable: "지금은 Google 로그인을 쓸 수 없어요. 닉네임으로 시작해도 돼요.",
+  exchange: "로그인 확인에 실패했어요. 브라우저를 새로 열고 다시 해 주시겠어요?",
+  no_code: "로그인 정보가 오다가 끊겼어요. 다시 해 주세요.",
+  no_user: "계정 정보를 받지 못했어요. 다시 해 주세요.",
 };
 
 /** Mounts once near the app root: runs the initial session check. */
@@ -174,7 +174,7 @@ export function AuthBootstrap() {
         reason,
         detail: params.get("login_detail"),
       });
-      toast.error(LOGIN_ERROR_MESSAGE[reason] ?? "로그인 못 했어. 다시 해줘.");
+      toast.error(LOGIN_ERROR_MESSAGE[reason] ?? "로그인하지 못했어요. 다시 해 주세요.");
       params.delete("login_error");
       params.delete("login_detail");
       const qs = params.toString();

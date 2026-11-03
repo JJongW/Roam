@@ -27,12 +27,12 @@ export const DM_RULES: DmRule[] = [
     keywords: ["지도"],
     message: [
       "안녕하세요, Roam이에요 🗺️",
-      "DDP디자인페어 부스와 아트홀 입구·출구 위치는 여기서 볼 수 있어요.",
+      "DDP디자인페어 부스와 아트홀 입구와 출구 위치는 여기서 볼 수 있어요.",
       "https://roam.ai.kr/exhibitions/ddp-designfair-2026/map",
       "",
       "로그인 없이도 둘러볼 수 있어요.",
     ].join("\n"),
-    publicReply: "DM으로 보내드렸어요! 안 보이면 메시지 요청함을 확인해 주세요.",
+    publicReply: "DM으로 보내드렸어요. 안 보이면 메시지 요청함을 확인해 주세요.",
   },
 ];
 

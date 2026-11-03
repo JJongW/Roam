@@ -91,6 +91,8 @@ const SPECULATION = [
   /듯하다/,
   /(?<!선)보인다\./,
   /추정된다/,
+  /듯해요/,
+  /추정돼요/,
 ];
 
 /** 근거로 세면 안 되는 출처. 잡화 마켓플레이스·영상·백과·다른 박람회 디렉터리는
@@ -134,6 +136,19 @@ export const NOT_FOUND_TELLS = [
   "알 수 없",
 ];
 
+/**
+ * 문장마다 해요체로 끝나는가. 로미 한 줄은 존댓말이어야 한다 — "~야"·"~해"로 끝나면
+ * 반말이고, 명사로 끝나도 로미가 하는 말이 아니다. 문장 끝의 따옴표·괄호·이모지는 본다
+ * 전에 걷어낸다. 한글로 끝나지 않는 문장(영문 제품명 등)은 판단하지 않는다.
+ */
+export function endsInHaeyo(text: string): boolean {
+  const sentences = text
+    .split(/[.!?…]+/)
+    .map((s) => s.replace(/[\s"'“”‘’)\]」』>]+$/u, "").trim())
+    .filter(Boolean);
+  return sentences.every((s) => !/[가-힣]$/.test(s) || /(요|죠)$/.test(s));
+}
+
 function norm(s: string): string {
   return s.replace(/\s+/g, " ").trim();
 }
@@ -164,8 +179,8 @@ export function gradeCandidate(input: GradeInput): QualityReport {
     add({
       code: "no_sources",
       message: input.hadMaterial
-        ? "검색 출처가 없다 — 주최 측 소개만 보고 쓴 글이다"
-        : "출처가 없다 — 근거 없이 쓴 글이다",
+        ? "검색 출처가 없어요. 주최 측 소개만 보고 쓴 글이에요"
+        : "출처가 없어요. 근거 없이 쓴 글이에요",
       // 재료가 있었으면 그걸 옮긴 것이라 지어냈다고 보긴 어렵다. 없었는데도
       // 문장이 나왔다면 그건 어디서 온 것인지 아무도 모른다.
       weight: input.hadMaterial ? 0.12 : 0.35,
@@ -177,11 +192,11 @@ export function gradeCandidate(input: GradeInput): QualityReport {
   if (sources.length > 0 && sources.every((s) => WEAK_SOURCE.test(s.title ?? s.uri))) {
     add({
       code: "weak_sources",
-      message: `출처가 전부 잡화몰·영상·박람회 디렉터리다(${sources
+      message: `출처가 전부 잡화몰, 영상, 박람회 디렉터리예요(${sources
         .map((s) => s.title ?? "")
         .filter(Boolean)
         .slice(0, 3)
-        .join(", ")}) — 이 브랜드를 말해주는 근거가 없다`,
+        .join(", ")}). 이 브랜드를 말해 주는 근거가 없어요`,
       weight: 0.3,
     });
   }
@@ -205,8 +220,8 @@ export function gradeCandidate(input: GradeInput): QualityReport {
     add({
       code: "unanchored",
       message: known.length
-        ? `근거가 이 부스의 확인된 주소(${known.map((k) => k.label).join(", ")})에 닿지 않는다 — 다른 브랜드 얘기일 수 있다`
-        : "이 부스의 확인된 주소가 없어 신원을 맞대볼 수 없다",
+        ? `근거가 이 부스의 확인된 주소(${known.map((k) => k.label).join(", ")})에 닿지 않아요. 다른 브랜드 얘기일 수 있어요`
+        : "이 부스의 확인된 주소가 없어 신원을 맞대 볼 수 없어요",
       // 점수를 크게 깎지는 않는다. 사람이 볼 때는 여전히 쓸모 있는 초안이다.
       // 다만 **자동 통과는 막는다**(review-policy의 NEVER_AUTO).
       weight: 0.1,
@@ -219,7 +234,7 @@ export function gradeCandidate(input: GradeInput): QualityReport {
   if (sources.length === 1 && !trusted) {
     add({
       code: "single_source",
-      message: `출처가 ${sources[0].title ?? "1건"} 하나뿐이다 — 맞대볼 근거가 없다`,
+      message: `출처가 ${sources[0].title ?? "1건"} 하나뿐이에요. 맞대 볼 근거가 없어요`,
       weight: 0.15,
     });
   }
@@ -232,7 +247,7 @@ export function gradeCandidate(input: GradeInput): QualityReport {
     add({
       code: "speculation",
       field: "summary",
-      message: "추측으로 쓴 문장이다(예상돼·것으로 보인다·확인되지 않는다) — 사실이 아니다",
+      message: "추측으로 쓴 문장이에요(예상돼, 것으로 보인다, 확인되지 않는다). 사실이 아니에요",
       weight: 0.35,
     });
   }
@@ -256,7 +271,7 @@ export function gradeCandidate(input: GradeInput): QualityReport {
     add({
       code: "category_readback",
       field: "summary",
-      message: "부스 이름 대신 분류 이름을 주어로 썼다 — 분류를 되읽은 것이지 이 부스 설명이 아니다",
+      message: "부스 이름 대신 분류 이름을 주어로 썼어요. 분류를 되읽은 것이지 이 부스 설명이 아니에요",
       weight: 0.3,
     });
   }
@@ -269,7 +284,7 @@ export function gradeCandidate(input: GradeInput): QualityReport {
       add({
         code: "unknown_value_slug",
         field: "valueTags",
-        message: `가치 slug "${t.slug}"는 캐논에 없다`,
+        message: `가치 slug "${t.slug}"는 캐논에 없어요`,
         weight: 0.3,
       });
     }
@@ -277,7 +292,7 @@ export function gradeCandidate(input: GradeInput): QualityReport {
       add({
         code: "strength_out_of_range",
         field: "valueTags",
-        message: `강도 ${t.strength}가 0..1 밖이다`,
+        message: `강도 ${t.strength}가 0..1 밖이에요`,
         weight: 0.15,
       });
     }
@@ -286,7 +301,7 @@ export function gradeCandidate(input: GradeInput): QualityReport {
     add({
       code: "no_value_tags",
       field: "valueTags",
-      message: "가치 태그가 없다 — 스코어링에 아무것도 못 준다",
+      message: "가치 태그가 없어요. 스코어링에 아무것도 못 줘요",
       weight: 0.2,
     });
   }
@@ -294,7 +309,7 @@ export function gradeCandidate(input: GradeInput): QualityReport {
     add({
       code: "too_many_value_tags",
       field: "valueTags",
-      message: `가치 ${tags.length}개 — 다 붙이면 아무것도 안 고른 것과 같다`,
+      message: `가치가 ${tags.length}개예요. 다 붙이면 아무것도 안 고른 것과 같아요`,
       weight: 0.15,
     });
   }
@@ -305,7 +320,7 @@ export function gradeCandidate(input: GradeInput): QualityReport {
       add({
         code: "reason_without_tag",
         field: "recommendationReasons",
-        message: `"${slug}" 근거만 있고 그 가치 태그가 없다`,
+        message: `"${slug}" 근거만 있고 그 가치 태그가 없어요`,
         weight: 0.2,
       });
     }
@@ -317,7 +332,7 @@ export function gradeCandidate(input: GradeInput): QualityReport {
     add({
       code: "no_interpretation",
       field: "roamInterpretation",
-      message: "로미 한 줄이 없다 — 근거 카드의 사실 절이 부스명 폴백으로 떨어진다",
+      message: "로미 한 줄이 없어요. 근거 카드의 사실 절이 부스명 폴백으로 떨어져요",
       weight: 0.25,
     });
   } else {
@@ -326,26 +341,31 @@ export function gradeCandidate(input: GradeInput): QualityReport {
       add({
         code: "value_word_in_voice",
         field: "roamInterpretation",
-        message: `분류를 되읽어주는 말투다(${readback.what}) — 현장에서 그건 정보가 아니다`,
+        message: `분류를 되읽어 주는 말투예요(${readback.what}). 현장에서 그건 정보가 아니에요`,
         weight: 0.3,
       });
     }
-    // 로미는 반말이고 1인칭이다. 존댓말·자기소개 어투가 섞이면 화자가 뒤집힌다 —
-    // 그 판정은 booth/voice.ts가 이미 갖고 있으므로 규칙을 두 벌 쓰지 않고 빌려 쓴다.
-    if (isSomeoneElsesVoice(line)) {
+    // 로미는 해요체 존댓말이다(브랜드 규칙 §5, 2026-11-02). 반말로 끝나거나,
+    // 합니다체·자기소개·판매 어투(부스 당사자의 목소리)가 섞이면 화자가 어긋난다.
+    // 남의 목소리 판정은 booth/voice.ts가 이미 갖고 있으므로 빌려 쓴다.
+    if (!endsInHaeyo(line) || isSomeoneElsesVoice(line)) {
       add({
         code: "not_roam_voice",
         field: "roamInterpretation",
-        message: "로미의 말투가 아니다(존댓말·자기소개 어투) — 화자가 뒤집힌다",
+        message: "로미의 말투가 아니에요(반말, 합니다체, 자기소개 어투). 로미 한 줄은 해요체로 써요",
         weight: 0.3,
       });
     }
     const bare = line.replace(/[""'']/g, "");
-    if (bare === booth.name || bare === `${booth.name} 부스야`) {
+    if (
+      bare === booth.name ||
+      bare === `${booth.name} 부스야` ||
+      bare === `${booth.name} 부스예요`
+    ) {
       add({
         code: "name_only",
         field: "roamInterpretation",
-        message: "부스명만 되풀이한다 — 정보가 없다",
+        message: "부스명만 되풀이해요. 정보가 없어요",
         weight: 0.3,
       });
     }
@@ -357,7 +377,7 @@ export function gradeCandidate(input: GradeInput): QualityReport {
   if (fillers.length > 0) {
     add({
       code: "filler",
-      message: `상투어(${fillers.join("·")}) — 정보 없이 길이만 채웠다`,
+      message: `상투어(${fillers.join(", ")})를 썼어요. 정보 없이 길이만 채웠어요`,
       // 0.06 → 0.12. 사람이 반려한 자동 승인분 13건 중 7건이 `0.94 + filler 하나`라
       // 0.06은 확실히 낮았다. 다만 빈말 **자체**는 승인률 89%로 전체 평균(88%)과
       // 같다 — 혼자서는 신호가 아니다. 0.25까지 올려 봤더니 분포 전체가 내려가
@@ -372,7 +392,7 @@ export function gradeCandidate(input: GradeInput): QualityReport {
   if (tells.length > 0) {
     add({
       code: "not_found",
-      message: `초안이 스스로 못 찾았다고 적었다(${tells.join("·")}) — 근거가 아니라 변명이다`,
+      message: `초안이 스스로 못 찾았다고 적었어요(${tells.join(", ")}). 근거가 아니라 변명이에요`,
       // 이게 붙으면 다른 지적이 없어도 0.65라 자동 통과에서 빠진다. 승인률 22%는
       // no_sources(35%)보다도 낮아 사람보다 기계가 다시 찾는 게 맞다.
       weight: 0.35,
@@ -386,7 +406,7 @@ export function gradeCandidate(input: GradeInput): QualityReport {
     add({
       code: "generic_action",
       field: "thingsToDo",
-      message: `다른 부스에도 그대로 쓰인 행동(${reused.join("·")}) — 그 부스 얘기가 아니다`,
+      message: `다른 부스에도 그대로 쓰인 행동(${reused.join(", ")})이에요. 그 부스 얘기가 아니에요`,
       weight: 0.15 * reused.length,
     });
   }
@@ -396,7 +416,7 @@ export function gradeCandidate(input: GradeInput): QualityReport {
     add({
       code: "duplicate_line",
       field: "roamInterpretation",
-      message: "다른 부스 초안과 같은 문장이다 — 템플릿을 되풀이했다",
+      message: "다른 부스 초안과 같은 문장이에요. 템플릿을 되풀이했어요",
       weight: 0.4,
     });
   }

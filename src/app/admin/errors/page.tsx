@@ -51,7 +51,7 @@ export default async function AdminErrorsPage() {
         <TabsContent value="logs">
           <AdminSection
             title="오류 로그"
-            description={`묶어서 ${groups.length}건 · 최근 30일`}
+            description={`묶어서 ${groups.length}건, 최근 30일`}
           >
             <IssueLogList groups={groups} />
           </AdminSection>

@@ -11,19 +11,19 @@ export function ProgressCircleDemo() {
       <div className="flex flex-wrap items-center gap-8">
         <div className="flex flex-col items-center gap-2">
           <ProgressCircle size={40} value={value} tone="brand" />
-          <p className="text-xs text-muted-foreground">size 40 · determinate</p>
+          <p className="text-xs text-muted-foreground">size 40, determinate</p>
         </div>
         <div className="flex flex-col items-center gap-2">
           <ProgressCircle size={24} value={value} tone="neutral" />
-          <p className="text-xs text-muted-foreground">size 24 · determinate</p>
+          <p className="text-xs text-muted-foreground">size 24, determinate</p>
         </div>
         <div className="flex flex-col items-center gap-2">
           <ProgressCircle size={40} indeterminate tone="brand" />
-          <p className="text-xs text-muted-foreground">size 40 · indeterminate</p>
+          <p className="text-xs text-muted-foreground">size 40, indeterminate</p>
         </div>
         <div className="flex flex-col items-center gap-2">
           <ProgressCircle size={24} indeterminate tone="neutral" />
-          <p className="text-xs text-muted-foreground">size 24 · indeterminate</p>
+          <p className="text-xs text-muted-foreground">size 24, indeterminate</p>
         </div>
       </div>
       <label className="flex items-center gap-3 text-sm">

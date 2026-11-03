@@ -25,7 +25,7 @@ export async function POST(req: Request) {
   const repo = await getRepository();
   const exhibitionId = await repo.getExhibitionIdBySlug(file.exhibitionSlug);
   if (!exhibitionId) {
-    return notFound(`전시를 찾을 수 없습니다: ${file.exhibitionSlug}`);
+    return notFound(`행사를 찾을 수 없어요: ${file.exhibitionSlug}`);
   }
 
   const [booths, halls, categories] = await Promise.all([
@@ -126,7 +126,7 @@ async function applyPlan(
     if (!hallId || !categoryId) {
       result.failures.push({
         code: c.code,
-        message: `홀·카테고리가 준비되지 않았습니다 (${c.hallName} / ${c.categoryName})`,
+        message: `홀과 카테고리가 준비되지 않았어요 (${c.hallName} / ${c.categoryName})`,
       });
       continue;
     }
