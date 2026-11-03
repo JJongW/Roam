@@ -66,13 +66,22 @@ import type {
   ExhibitorLinkCandidate,
   BoothBrandMemory,
   BoothAppearance,
+  BrandContact,
+  BrandContactLog,
+  ProfileField,
+  ProfileFieldStatus,
+  ProfileSubject,
 } from "@/lib/types";
+import { emptyContact, mergeContactPatch } from "@/lib/brands/contact";
+import { planFieldMerge, profileFieldId } from "@/lib/brands/profile";
 import type {
   AnalyticsEventInput,
   BookmarkInput,
   BoothEnrichmentPatch,
   BoothInput,
   BoothNoteInput,
+  BrandContactLogInput,
+  BrandContactPatch,
   CommunityPostInput,
   EventInput,
   ExhibitionInput,
@@ -113,6 +122,10 @@ interface Store {
   /** 0040 + 0057 — 참가사 그래프. */
   exhibitorGraph: ExhibitorGraph;
   linkCandidates: ExhibitorLinkCandidate[];
+  /** 0061 — 브랜드 컨택과 VOC 로그. */
+  brandContacts: BrandContact[];
+  brandContactLogs: BrandContactLog[];
+  profileFields: ProfileField[];
 }
 
 // Persist across HMR / route invocations in a single Node process.
@@ -169,6 +182,9 @@ function buildStore(): Store {
     issueLogs: [],
     exhibitorGraph: { exhibitors: [], participants: [], assignments: [], candidates: [] },
     linkCandidates: [],
+    brandContacts: [],
+    brandContactLogs: [],
+    profileFields: [],
   };
 }
 
@@ -464,9 +480,11 @@ export class MockRepository implements Repository {
           const same = gph.participants.find((x) => x.exhibitorId === to && x.exhibitionId === p.exhibitionId);
           if (same) {
             for (const a of gph.assignments) if (a.participantId === p.id) a.participantId = same.id;
+            this.moveProfileFields({ participantId: p.id }, { participantId: same.id });
             gph.participants = gph.participants.filter((x) => x.id !== p.id);
           } else p.exhibitorId = to;
         }
+        this.moveProfileFields({ exhibitorId: from }, { exhibitorId: to });
         for (const o of store().linkCandidates)
           if (o.exhibitorId === from && o.status === "pending") o.status = "superseded";
         gph.exhibitors = gph.exhibitors.filter((e) => e.id !== from);
@@ -488,6 +506,155 @@ export class MockRepository implements Repository {
       });
     }
     return rows.length;
+  }
+
+  // --- 브랜드 프로필 칸(0061) ----------------------------------------------
+  async listProfileFields(q?: { exhibitorIds?: string[]; participantIds?: string[] }): Promise<ProfileField[]> {
+    const rows = store().profileFields;
+    if (!q) return rows.map((r) => structuredClone(r));
+    const ex = new Set(q.exhibitorIds ?? []);
+    const pt = new Set(q.participantIds ?? []);
+    return rows
+      .filter((r) => (r.exhibitorId && ex.has(r.exhibitorId)) || (r.participantId && pt.has(r.participantId)))
+      .map((r) => structuredClone(r));
+  }
+
+  async upsertProfileField(input: {
+    subject: ProfileSubject;
+    field: string;
+    value: unknown;
+    sources: string[];
+    status: ProfileFieldStatus;
+    actor: string | null;
+  }): Promise<ProfileField | null> {
+    const st = store();
+    const gph = st.exhibitorGraph;
+    const s = input.subject;
+    const exists =
+      "exhibitorId" in s
+        ? gph.exhibitors.some((e) => e.id === s.exhibitorId)
+        : gph.participants.some((p) => p.id === s.participantId);
+    if (!exists) return null;
+    const id = profileFieldId(s, input.field);
+    const at = now();
+    const i = st.profileFields.findIndex((r) => r.id === id);
+    const row: ProfileField = {
+      id,
+      exhibitorId: "exhibitorId" in s ? s.exhibitorId : null,
+      participantId: "participantId" in s ? s.participantId : null,
+      field: input.field,
+      value: structuredClone(input.value),
+      sources: [...input.sources],
+      status: input.status,
+      verifiedAt: at,
+      actor: input.actor,
+      createdAt: i >= 0 ? st.profileFields[i].createdAt : at,
+      updatedAt: at,
+    };
+    if (i >= 0) st.profileFields[i] = row;
+    else st.profileFields.push(row);
+    return structuredClone(row);
+  }
+
+  async deleteProfileField(subject: ProfileSubject, field: string): Promise<boolean> {
+    const st = store();
+    const id = profileFieldId(subject, field);
+    const before = st.profileFields.length;
+    st.profileFields = st.profileFields.filter((r) => r.id !== id);
+    return st.profileFields.length < before;
+  }
+
+  async getBrandIntroFieldForBooth(boothId: string): Promise<ProfileField | null> {
+    const gph = store().exhibitorGraph;
+    const a = gph.assignments.find((x) => x.boothId === boothId && x.role === "primary");
+    const p = a && gph.participants.find((x) => x.id === a.participantId);
+    if (!p) return null;
+    const f = store().profileFields.find((r) => r.id === profileFieldId({ exhibitorId: p.exhibitorId }, "intro"));
+    return f ? structuredClone(f) : null;
+  }
+
+  /** 브랜드나 출전을 합칠 때 칸을 옮긴다. supabase의 mergeExhibitor와 같은 규칙(planFieldMerge). */
+  private moveProfileFields(from: ProfileSubject, to: ProfileSubject) {
+    const st = store();
+    const own = (s: ProfileSubject) => (r: ProfileField) =>
+      "exhibitorId" in s ? r.exhibitorId === s.exhibitorId : r.participantId === s.participantId;
+    const fromRows = st.profileFields.filter(own(from));
+    if (fromRows.length === 0) return;
+    const { move } = planFieldMerge(fromRows, st.profileFields.filter(own(to)));
+    const moving = new Set(move);
+    st.profileFields = st.profileFields.filter((r) => !own(from)(r));
+    for (const r of fromRows)
+      if (moving.has(r.field))
+        st.profileFields.push({
+          ...r,
+          id: profileFieldId(to, r.field),
+          exhibitorId: "exhibitorId" in to ? to.exhibitorId : null,
+          participantId: "participantId" in to ? to.participantId : null,
+          updatedAt: now(),
+        });
+  }
+
+  // --- 브랜드 컨택(0061) ---------------------------------------------------
+  async listBrandContacts(opts?: { exhibitionId?: string }): Promise<BrandContact[]> {
+    return store()
+      .brandContacts.filter((c) => !opts?.exhibitionId || c.exhibitionId === opts.exhibitionId)
+      .map((c) => structuredClone(c));
+  }
+
+  async getBrandContact(boothId: string): Promise<BrandContact | null> {
+    const c = store().brandContacts.find((x) => x.boothId === boothId);
+    return c ? structuredClone(c) : null;
+  }
+
+  async upsertBrandContact(
+    boothId: string,
+    patch: BrandContactPatch,
+    actor: string | null,
+  ): Promise<BrandContact | null> {
+    const st = store();
+    const booth = st.booths.find((b) => b.id === boothId);
+    if (!booth) return null;
+    const at = now();
+    const i = st.brandContacts.findIndex((c) => c.boothId === boothId);
+    const prev = i >= 0 ? st.brandContacts[i] : emptyContact(boothId, booth.exhibitionId, at);
+    const next = mergeContactPatch(prev, patch, actor, at);
+    if (i >= 0) st.brandContacts[i] = next;
+    else st.brandContacts.push(next);
+    return structuredClone(next);
+  }
+
+  async listBrandContactLogs(boothId: string): Promise<BrandContactLog[]> {
+    return store()
+      .brandContactLogs.filter((l) => l.boothId === boothId)
+      .sort((a, b) => b.occurredAt.localeCompare(a.occurredAt))
+      .map((l) => ({ ...l }));
+  }
+
+  async addBrandContactLog(
+    boothId: string,
+    input: BrandContactLogInput,
+    actor: string | null,
+  ): Promise<BrandContactLog | null> {
+    const st = store();
+    const booth = st.booths.find((b) => b.id === boothId);
+    if (!booth) return null;
+    const at = now();
+    // supabase는 brand_contact를 FK로 가리킨다 — 같은 순서(행 먼저)를 mock도 지킨다.
+    if (!st.brandContacts.some((c) => c.boothId === boothId))
+      st.brandContacts.push(emptyContact(boothId, booth.exhibitionId, at));
+    const log: BrandContactLog = {
+      id: uid("bcl"),
+      boothId,
+      direction: input.direction,
+      kind: input.kind,
+      channel: input.channel ?? null,
+      summary: input.summary,
+      actor,
+      occurredAt: input.occurredAt ? new Date(input.occurredAt).toISOString() : at,
+      createdAt: at,
+    };
+    st.brandContactLogs.push(log);
+    return { ...log };
   }
 
   async listEnrichmentCandidates(opts?: {

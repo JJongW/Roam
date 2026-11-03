@@ -17,8 +17,8 @@ import {
   GitCompare,
   Sparkles,
   ScanSearch,
-  Link2,
   ClipboardList,
+  Tags,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/common/theme-toggle";
@@ -27,10 +27,11 @@ const ITEMS = [
   { href: "/admin", label: "개요", icon: LayoutDashboard, exact: true },
   { href: "/admin/exhibitions", label: "전시", icon: Building2 },
   { href: "/admin/booths", label: "부스", icon: Store },
+  // 모든 박람회의 브랜드 프로필 + 연결 확인 목록(예전 "브랜드 연결"을 합쳤다, 2026-11-03).
+  { href: "/admin/brands", label: "브랜드", icon: Tags },
   { href: "/admin/intake", label: "인입", icon: Upload },
   { href: "/admin/enrichment", label: "초안 검수", icon: Sparkles },
   { href: "/admin/verify", label: "대조 검수", icon: ScanSearch, exact: true },
-  { href: "/admin/verify/brands", label: "브랜드 연결", icon: Link2 },
   { href: "/admin/changes", label: "변경 이력", icon: GitCompare },
   { href: "/admin/events", label: "이벤트", icon: CalendarClock },
   { href: "/admin/analytics", label: "분석", icon: BarChart3 },

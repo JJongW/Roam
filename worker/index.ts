@@ -18,6 +18,9 @@ loadEnv();
 process.env.ROAM_WORKER = "1";
 import { getRepository } from "@/lib/repositories";
 import { runDraftBatch } from "@/lib/enrichment/run-draft";
+import { runBrandProfileDraft } from "@/lib/brands/draft";
+import { brandDraftDeps } from "@/lib/brands/draft-llm";
+import { BRAND_DRAFT_CHUNK, BRAND_DRAFT_JOB } from "@/lib/brands/jobs";
 import type { Job } from "@/lib/types";
 
 const WORKER = `${os.hostname()}:${process.pid}`;
@@ -50,6 +53,26 @@ const HANDLERS: Record<string, Handler> = {
     });
     if ("error" in result) throw new Error(result.error);
     return result as unknown as Record<string, unknown>;
+  },
+  // 브랜드 프로필 초안(0061). 잡 하나에 브랜드 최대 20곳. 한 곳이 실패해도 나머지는
+  // 계속하고, 전부 실패했을 때만 잡을 실패로 남겨 재시도하게 한다.
+  async [BRAND_DRAFT_JOB](job, { repo }) {
+    const ids = ((job.payload as { exhibitorIds?: string[] }).exhibitorIds ?? []).slice(0, BRAND_DRAFT_CHUNK);
+    const deps = brandDraftDeps();
+    const done: unknown[] = [];
+    const failures: { exhibitorId: string; message: string }[] = [];
+    for (const [i, id] of ids.entries()) {
+      try {
+        const r = await runBrandProfileDraft(repo, id, deps);
+        if ("error" in r) failures.push({ exhibitorId: id, message: r.error });
+        else done.push(r);
+      } catch (e) {
+        failures.push({ exhibitorId: id, message: e instanceof Error ? e.message : String(e) });
+      }
+      await repo.updateJobProgress(job.id, { done: i + 1, total: ids.length });
+    }
+    if (ids.length > 0 && done.length === 0) throw new Error(`브랜드 ${ids.length}곳 모두 실패: ${failures[0]?.message}`);
+    return { drafted: done.length, failures, results: done };
   },
 };
 

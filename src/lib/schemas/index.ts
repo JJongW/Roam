@@ -3,6 +3,10 @@ import {
   AGE_GROUPS,
   ANALYTICS_TYPES,
   BOOKMARK_TARGETS,
+  BRAND_CONTACT_CHANNELS,
+  BRAND_CONTACT_LOG_DIRECTIONS,
+  BRAND_CONTACT_LOG_KINDS,
+  BRAND_CONTACT_STATUSES,
   BOOTH_INTERESTS,
   BOOTH_VERDICTS,
   COMPANION_TYPES,
@@ -14,6 +18,8 @@ import {
   SURVEY_COMMENT_MAX,
   SURVEY_QUESTIONS,
 } from "@/lib/survey/questions";
+import { CONTACT_CHECKLIST_KEYS } from "@/lib/brands/contact";
+import { ADMIN_SETTABLE_STATUSES } from "@/lib/brands/profile";
 
 export const visitPurposeSchema = z.enum(VISIT_PURPOSES);
 export const movementSchema = z.enum(MOVEMENT_PREFERENCES);
@@ -380,3 +386,79 @@ export const surveyResponseInputSchema = z
     }
   });
 export type SurveyResponseInput = z.infer<typeof surveyResponseInputSchema>;
+
+// --- 브랜드 컨택(0061) -------------------------------------------------------
+// ⚠️ 부분 수정이라 default()를 쓰지 않는다 — `.partial()`이 default를 못 막아 안 보낸
+// 키가 빈 값으로 생긴다(CLAUDE.md "없음과 비어 있음"). 보낸 키만 바뀐다.
+const nullableText = (max: number) =>
+  z
+    .string()
+    .trim()
+    .max(max)
+    .nullable()
+    .transform((v) => (v ? v : null));
+
+export const brandContactPatchSchema = z
+  .object({
+    status: z.enum(BRAND_CONTACT_STATUSES),
+    channel: z.enum(BRAND_CONTACT_CHANNELS).nullable(),
+    handle: nullableText(200),
+    sentAt: z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/, "YYYY-MM-DD로 적어 주세요")
+      .nullable(),
+    reply: nullableText(1000),
+    allowedUse: z
+      .array(
+        z
+          .string()
+          .trim()
+          .regex(/^[a-z0-9-]{1,40}$/, "영문 소문자, 숫자, -만 써요"),
+      )
+      .max(20),
+    photoSource: nullableText(1000),
+    textSource: nullableText(1000),
+    notes: nullableText(4000),
+    /** 켜고 끌 항목만 보낸다. 완료 시각은 서버가 찍는다. */
+    checklist: z.partialRecord(z.enum(CONTACT_CHECKLIST_KEYS), z.boolean()),
+  })
+  .partial()
+  .strict();
+export type BrandContactPatch = z.infer<typeof brandContactPatchSchema>;
+
+export const brandContactLogInputSchema = z
+  .object({
+    direction: z.enum(BRAND_CONTACT_LOG_DIRECTIONS),
+    kind: z.enum(BRAND_CONTACT_LOG_KINDS),
+    channel: z.enum(BRAND_CONTACT_CHANNELS).nullable().optional(),
+    summary: z.string().trim().min(1, "내용을 적어 주세요").max(2000),
+    /** 실제로 연락이 오간 시각. 없으면 기록한 시각. */
+    occurredAt: z.iso.datetime({ offset: true }).optional(),
+  })
+  .strict();
+export type BrandContactLogInput = z.infer<typeof brandContactLogInputSchema>;
+
+// --- 브랜드 프로필 칸(0061) ---------------------------------------------------
+// 값 모양은 칸마다 달라서 여기선 unknown으로 받고, 라우트가 parseFieldValue로 검사한다.
+export const profileFieldPatchSchema = z
+  .object({
+    subject: z.union([
+      z.object({ exhibitorId: z.string().min(1) }).strict(),
+      z.object({ participantId: z.string().min(1) }).strict(),
+    ]),
+    field: z.string().min(1).max(40),
+    /** null이면 칸을 비운다. */
+    value: z.unknown(),
+    sources: z.array(z.string().trim().min(1).max(1000)).max(20).optional(),
+    status: z.enum(ADMIN_SETTABLE_STATUSES).optional(),
+  })
+  .strict();
+export type ProfileFieldPatch = z.infer<typeof profileFieldPatchSchema>;
+
+/** 연결 확인 목록 일괄 처리. */
+export const linkDecisionBatchSchema = z
+  .object({
+    ids: z.array(z.string().min(1)).min(1).max(200),
+    decision: z.enum(["approved", "rejected"]),
+  })
+  .strict();

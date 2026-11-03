@@ -4,6 +4,7 @@ import { FLOORPLANS } from "@/lib/floorplans";
 import { intakeRequestSchema } from "@/lib/intake/schema";
 import { planIntake } from "@/lib/intake/plan";
 import { planFromRepository, runCarryover } from "@/lib/exhibitor/service";
+import { applyLinkPlan } from "@/lib/brands/jobs";
 import type { IntakePlan } from "@/lib/intake/plan";
 import type { AuditContext } from "@/lib/audit/diff";
 
@@ -55,9 +56,11 @@ export async function POST(req: Request) {
   let exhibitors: unknown = null;
   try {
     const { plan: linkPlan } = await planFromRepository(repo);
-    const linked = await repo.applyExhibitorPlan(linkPlan);
+    // 브랜드 칸 stale, 그리고 이 박람회에 새 출전이 이어진 기존 브랜드만 초안 잡(lib/brands/jobs.ts).
+    // 새 브랜드는 관리자가 브랜드 화면에서 이 박람회를 골라 "초안 만들기"로 넣는다.
+    const { applied: linked, ...brandFollowups } = await applyLinkPlan(repo, linkPlan, { actor: audit.actor, exhibitionId });
     const carry = await runCarryover(repo, exhibitionId, { apply: true, actor: audit.actor });
-    exhibitors = { linked, carryover: carry.items.length, carryoverAutoPassed: carry.autoPassed };
+    exhibitors = { linked, brandFollowups, carryover: carry.items.length, carryoverAutoPassed: carry.autoPassed };
   } catch (e) {
     exhibitors = { error: e instanceof Error ? e.message : String(e) };
   }

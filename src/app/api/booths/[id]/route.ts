@@ -8,6 +8,7 @@ import {
   requireAdmin,
 } from "@/lib/api/http";
 import { boothPatchInputSchema } from "@/lib/schemas";
+import { brandIntroForBooth } from "@/lib/brands/intro";
 
 type Ctx = { params: Promise<{ id: string }> };
 
@@ -16,7 +17,9 @@ export async function GET(_req: Request, { params }: Ctx) {
   const repo = await getRepository();
   const detail = await repo.getBoothDetail(id);
   if (!detail) return notFound("부스를 찾을 수 없습니다");
-  return ok(detail);
+  // 브랜드 공식 소개(말투 게이트 통과본, 없으면 null). 키를 더하기만 해서 iOS의 기존
+  // 디코딩은 그대로다. 있으면 앱은 부스 요약과 원문 대신 이걸 보여 준다(lib/brands/intro.ts).
+  return ok({ ...detail, brandIntro: await brandIntroForBooth(repo, id) });
 }
 
 // PATCH·DELETE는 관리자 콘솔(booth-manager.tsx)만 부른다 — 서버측 인가가 아예
