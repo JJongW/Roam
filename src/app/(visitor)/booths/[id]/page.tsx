@@ -19,6 +19,7 @@ import { AnalyticsTracker } from "@/components/common/analytics-tracker";
 import { BoothExhibitionContextBridge } from "@/components/companion/booth-exhibition-context-bridge";
 import { Icon } from "@/components/common/icon";
 import { getI18n } from "@/lib/i18n/server";
+import { brandIntroForBooth } from "@/lib/brands/intro";
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -42,11 +43,21 @@ export default async function BoothDetailPage({ params }: Props) {
   const { booth, category, welcomeKit, events, reviews, reviewSummary } =
     detail;
   // 같은 브랜드의 다른 행사 출전(참가사 연결, 설계 2026-10-02 §6). 실패해도 페이지는 뜬다.
-  const appearances = await (await getRepository())
-    .boothAppearances(booth.id)
-    .catch(() => []);
+  const repo = await getRepository();
+  // 브랜드 공식 소개(브랜드에 하나, 어느 박람회 부스에서도 같은 소개). 실패하면 null.
+  const [appearances, brandIntro] = await Promise.all([
+    repo.boothAppearances(booth.id).catch(() => []),
+    brandIntroForBooth(repo, booth.id),
+  ]);
   const { t } = await getI18n();
   const about = boothAbout(booth);
+  // 우선순위: 브랜드 공식 소개(Roam 말투, 게이트 통과) > 부스 저작 요약(quote) > 부스 원문(fallback).
+  // 브랜드 소개가 있으면 같은 종류의 원문 말투 글(quote, fallback)을 대신한다. 근거는 lib/brands/intro.ts.
+  const showBrandIntro = !!brandIntro;
+  if (showBrandIntro) {
+    about.quote = undefined;
+    about.fallback = undefined;
+  }
 
   return (
     <div className="contents landscape:fixed landscape:inset-0 landscape:z-30 landscape:flex landscape:flex-col landscape:overflow-hidden landscape:bg-background">
@@ -172,7 +183,7 @@ export default async function BoothDetailPage({ params }: Props) {
                   {/* 소개 — longDescription은 seed 템플릿이라 914개가 같은 문장이었다.
                       로미 발화는 테마·굿즈에서 파생하고(부스마다 다름), 작가 본인이 쓴
                       글은 인용으로 분리한다(존댓말이어도 남의 말이라 고치지 않는다). */}
-                  {(about.romi || about.quote || about.fallback) && (
+                  {(about.romi || about.quote || about.fallback || showBrandIntro) && (
                     <section className="space-y-2">
                       <h2 className="text-base font-bold">
                         {t("booth.about")}
@@ -189,6 +200,22 @@ export default async function BoothDetailPage({ params }: Props) {
                           </blockquote>
                           <figcaption className="text-xs text-muted-foreground">
                             {t("booth.aboutQuoteBy")}
+                          </figcaption>
+                        </figure>
+                      )}
+                      {showBrandIntro && brandIntro && (
+                        <figure className="space-y-1">
+                          <div className="space-y-1.5 text-[15px] leading-relaxed text-foreground/90">
+                            {brandIntro.text
+                              .split(/(?<=[.!?])\s+/)
+                              .map((s) => s.trim())
+                              .filter(Boolean)
+                              .map((s, i) => (
+                                <p key={i}>{s}</p>
+                              ))}
+                          </div>
+                          <figcaption className="text-xs text-muted-foreground">
+                            {t("booth.aboutBrandIntro")}
                           </figcaption>
                         </figure>
                       )}
@@ -210,6 +237,7 @@ export default async function BoothDetailPage({ params }: Props) {
                   {!about.romi &&
                     !about.quote &&
                     !about.fallback &&
+                    !showBrandIntro &&
                     !booth.enrichment?.summary?.trim() &&
                     !booth.enrichment?.roamInterpretation?.trim() && (
                       <section className="space-y-2">
