@@ -1029,8 +1029,8 @@ export class SupabaseRepository implements Repository {
   async loadExhibitorGraph(): Promise<ExhibitorGraph> {
     const db = createServiceClient();
     const [ex, pa, bp, lc] = await Promise.all([
-      readAll<Row>((a, b) => db.from("exhibitor").select("id,canonical_name,instagram_url,website_url").order("id").range(a, b), "참가사"),
-      readAll<Row>((a, b) => db.from("exhibition_participant").select("id,exhibitor_id,exhibition_id,display_name").order("id").range(a, b), "참가 사실"),
+      readAll<Row>((a, b) => db.from("exhibitor").select("id,canonical_name,instagram_url,website_url,aliases,metadata").order("id").range(a, b), "참가사"),
+      readAll<Row>((a, b) => db.from("exhibition_participant").select("id,exhibitor_id,exhibition_id,display_name,aliases").order("id").range(a, b), "참가 사실"),
       readAll<Row>((a, b) => db.from("booth_participant").select("booth_id,participant_id,role").order("booth_id").range(a, b), "부스 배정"),
       readAll<Row>((a, b) => db.from("exhibitor_link_candidate").select("booth_id,exhibitor_id,status").order("id").range(a, b), "연결 후보"),
     ]);
@@ -1040,12 +1040,15 @@ export class SupabaseRepository implements Repository {
         canonicalName: str(r.canonical_name),
         instagramUrl: optStr(r.instagram_url),
         websiteUrl: optStr(r.website_url),
+        aliases: strArr(r.aliases),
+        brandKeys: strArr(((r.metadata ?? {}) as Row).brandKeys),
       })),
       participants: pa.map((r) => ({
         id: str(r.id),
         exhibitorId: str(r.exhibitor_id),
         exhibitionId: str(r.exhibition_id),
         displayName: str(r.display_name),
+        aliases: strArr(r.aliases),
       })),
       assignments: bp.map((r) => ({
         boothId: str(r.booth_id),
@@ -1071,6 +1074,10 @@ export class SupabaseRepository implements Repository {
         canonical_name: e.canonicalName,
         instagram_url: e.instagramUrl ?? null,
         website_url: e.websiteUrl ?? null,
+        // 아래 셋은 브랜드 먼저 인입만 준다. 안 주면 컬럼 기본값('[]', '{}', null)에 맡긴다.
+        ...(e.legalName ? { legal_name: e.legalName } : {}),
+        ...(e.aliases?.length ? { aliases: e.aliases } : {}),
+        ...(e.metadata ? { metadata: e.metadata } : {}),
         created_at: t,
         updated_at: t,
       })),
@@ -1083,6 +1090,9 @@ export class SupabaseRepository implements Repository {
         exhibition_id: p.exhibitionId,
         exhibitor_id: resolveEx(p.exhibitorRef),
         display_name: p.displayName,
+        ...(p.aliases?.length ? { aliases: p.aliases } : {}),
+        ...(p.sourceUrls?.length ? { source_urls: p.sourceUrls } : {}),
+        ...(p.metadata ? { metadata: p.metadata } : {}),
         created_at: t,
         updated_at: t,
       })),
@@ -1117,7 +1127,13 @@ export class SupabaseRepository implements Repository {
         .select("id");
       candidates += (maybeWrote(res, "연결 후보") ?? []).length;
     }
-    return { exhibitors, participants, assignments, candidates };
+    return {
+      exhibitors,
+      participants,
+      assignments,
+      candidates,
+      ids: { exhibitors: Object.fromEntries(exId), participants: Object.fromEntries(ptId) },
+    };
   }
 
   async exhibitorHistory(exhibitionId: string, userId: string | null): Promise<Record<string, BoothBrandMemory>> {

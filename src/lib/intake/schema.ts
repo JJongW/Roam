@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { boothEnrichmentAuthorInputSchema } from "@/lib/schemas";
+import { brandsFileSchema } from "./brands-schema";
 
 /**
  * 전시 인입 정규형 v1 — 주최 측 CSV든 우리가 손으로 쓴 것이든 참가사 폼이든,
@@ -55,3 +56,15 @@ export const intakeRequestSchema = z.object({
   overwrite: z.boolean().default(false),
 });
 export type IntakeRequest = z.infer<typeof intakeRequestSchema>;
+
+/**
+ * `/admin/intake`가 받는 요청. 파일 `version`으로 가른다 — 1이면 부스(intake.v1),
+ * "brands.v1"이면 브랜드 먼저 인입(brands-schema.ts). 경로는 하나다(CLAUDE.md 데이터 주입).
+ */
+export const intakeAnyRequestSchema = z.object({
+  file: z.union([intakeFileSchema, brandsFileSchema]),
+  apply: z.boolean().default(false),
+  /** intake.v1에만 쓴다. brands.v1은 빈 칸만 채우고 덮어쓰지 않는다. */
+  overwrite: z.boolean().default(false),
+});
+export type IntakeAnyRequest = z.infer<typeof intakeAnyRequestSchema>;

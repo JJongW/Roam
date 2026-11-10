@@ -111,3 +111,87 @@ describe("planExhibitorLinks — 재실행·인입", () => {
     ).toEqual([]);
   });
 });
+
+describe("planExhibitorLinks — 브랜드 먼저 들어온 참가 사실에 부스 잇기", () => {
+  const open = (
+    over: Partial<{ id: string; exhibitorId: string; exhibitionId: string; displayName: string; aliases: string[]; hasBooth: boolean }> = {},
+  ) => ({ id: "pt1", exhibitorId: "exA", exhibitionId: "ny", displayName: "하치공방", hasBooth: false, ...over });
+  const exA = { id: "exA", keys: [], names: ["하치공방"] };
+
+  it("같은 행사에 부스 없는 참가 사실과 이름이 같으면 그 참가 사실에 배정한다", () => {
+    const plan = planExhibitorLinks({
+      booths: [b({ id: "b1", exhibitionId: "ny", name: "하치공방" })],
+      exhibitors: [exA],
+      participants: [open()],
+    });
+    expect(plan.exhibitors).toEqual([]);
+    expect(plan.participants).toEqual([]);
+    expect(plan.assignments).toEqual([{ boothId: "b1", participantRef: { existing: "pt1" }, role: "primary" }]);
+    expect(plan.candidates).toEqual([]);
+  });
+
+  it("띄어쓰기와 법인 표기만 다른 이름, 다른 이름(aliases)도 맞춘다", () => {
+    const plan = planExhibitorLinks({
+      booths: [
+        b({ id: "b1", exhibitionId: "ny", name: "(주)하치 스튜디오" }),
+        b({ id: "b2", exhibitionId: "ny", name: "HACHI" }),
+      ],
+      exhibitors: [exA],
+      participants: [open({ displayName: "하치스튜디오", aliases: ["HACHI"] })],
+    });
+    expect(plan.exhibitors).toEqual([]);
+    expect(plan.assignments.map((a) => a.participantRef)).toEqual([{ existing: "pt1" }, { existing: "pt1" }]);
+  });
+
+  it("이미 부스가 있는 참가 사실에는 이름으로 잇지 않는다", () => {
+    const plan = planExhibitorLinks({
+      booths: [b({ id: "b1", exhibitionId: "ny", name: "하치공방" })],
+      exhibitors: [exA],
+      participants: [open({ hasBooth: true })],
+    });
+    expect(plan.exhibitors).toHaveLength(1);
+    expect(plan.candidates).toHaveLength(1); // 이름만 같은 기존 참가사 → 사람이 본다
+  });
+
+  it("다른 행사의 참가 사실과 이름만 같으면 지금처럼 후보로만 남긴다", () => {
+    const plan = planExhibitorLinks({
+      booths: [b({ id: "b1", exhibitionId: "moongu", name: "하치공방" })],
+      exhibitors: [exA],
+      participants: [open()],
+    });
+    expect(plan.exhibitors).toHaveLength(1);
+    expect(plan.assignments[0].participantRef).toEqual({ new: expect.any(String) });
+    expect(plan.candidates).toEqual([{ boothId: "b1", target: { existing: "exA" }, reason: '이름이 같아요: "하치공방"' }]);
+  });
+
+  it("같은 행사에 같은 이름의 부스 없는 브랜드가 둘이면 고르지 않는다", () => {
+    const plan = planExhibitorLinks({
+      booths: [b({ id: "b1", exhibitionId: "ny", name: "하치공방" })],
+      exhibitors: [exA, { id: "exB", keys: [], names: ["하치공방"] }],
+      participants: [open(), open({ id: "pt2", exhibitorId: "exB" })],
+    });
+    expect(plan.exhibitors).toHaveLength(1);
+    expect(plan.candidates.length).toBeGreaterThan(0);
+  });
+
+  it("이름으로 이은 뒤에도 다른 행사의 동명 참가사는 후보로 낸다", () => {
+    const plan = planExhibitorLinks({
+      booths: [b({ id: "b1", exhibitionId: "ny", name: "하치공방" })],
+      exhibitors: [exA, { id: "exOld", keys: [], names: ["하치공방"] }],
+      participants: [open(), { id: "ptOld", exhibitorId: "exOld", exhibitionId: "moongu", displayName: "하치공방", hasBooth: true }],
+    });
+    expect(plan.assignments).toEqual([{ boothId: "b1", participantRef: { existing: "pt1" }, role: "primary" }]);
+    expect(plan.candidates).toEqual([{ boothId: "b1", target: { existing: "exOld" }, reason: '이름이 같아요: "하치공방"' }]);
+  });
+
+  it("인스타가 맞으면 이름보다 인스타가 먼저다", () => {
+    const plan = planExhibitorLinks({
+      booths: [b({ id: "b1", exhibitionId: "ny", name: "하치공방", instagramUrl: "https://instagram.com/other" })],
+      exhibitors: [exA, { id: "exB", keys: ["instagram.com/other"], names: ["다른 곳"] }],
+      participants: [open()],
+    });
+    expect(plan.participants).toEqual([
+      { key: "ex:exB|ny", exhibitorRef: { existing: "exB" }, exhibitionId: "ny", displayName: "하치공방" },
+    ]);
+  });
+});

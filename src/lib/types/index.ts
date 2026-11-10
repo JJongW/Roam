@@ -479,8 +479,25 @@ export interface Job {
  * 회차별 표기 이름(displayName)을 쓴다(설계 2026-10-02 §3).
  */
 export interface ExhibitorGraph {
-  exhibitors: { id: string; canonicalName: string; instagramUrl?: string; websiteUrl?: string }[];
-  participants: { id: string; exhibitorId: string; exhibitionId: string; displayName: string }[];
+  exhibitors: {
+    id: string;
+    canonicalName: string;
+    instagramUrl?: string;
+    websiteUrl?: string;
+    /** exhibitor.aliases — 이름만 같은 기존 브랜드를 찾을 때만 쓴다. */
+    aliases?: string[];
+    /** exhibitor.metadata.brandKeys — 브랜드 먼저 인입(brands.v1)이 만든 브랜드의 파일 키.
+     *  인스타도 도메인도 없는 브랜드를 다시 돌려도 중복으로 만들지 않게 하는 열쇠다. */
+    brandKeys?: string[];
+  }[];
+  participants: {
+    id: string;
+    exhibitorId: string;
+    exhibitionId: string;
+    displayName: string;
+    /** exhibition_participant.aliases — 같은 행사 부스 이름 맞추기에 쓴다. */
+    aliases?: string[];
+  }[];
   assignments: { boothId: string; participantId: string; role: "primary" | "co_exhibitor" }[];
   candidates: { boothId: string; exhibitorId: string; status: string }[];
 }

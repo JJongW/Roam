@@ -49,6 +49,7 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
 - **부스/이벤트**: `Booth`(code 자연키, kind exhibitor|facility, tags=카테고리 slug, aliases 공동입점), `BoothEvent`.
 - **참가사(행사를 넘는 브랜드)**: `exhibitor` ← `exhibition_participant`(회차별 표기 이름) ← `booth_participant`.
   인스타·웹 도메인이 겹치면 자동 연결, **이름만 같으면 사람이 확인**(`/admin/verify/brands`).
+  예외 하나: 같은 행사에 부스 없는 참가 사실(브랜드 먼저 인입)과 표기 이름이 같으면 그 참가 사실에 배정한다.
   판정은 `lib/exhibitor/identity.ts` 하나뿐(품질 게이트의 신원 앵커와 공유).
   소개·사진은 참가사에 복사하지 않는다 — 가장 최근 승인 부스가 원천.
   로미 근거 우선순위: 내 지난 반응(긍정만) > 이번 행사의 내 반응 > 브랜드의 지난 출전(피드당 2번) > 저작 근거.
@@ -110,6 +111,7 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
   ② `data/intake/<slug>.json`을 `/admin/intake`에 업로드. 코드 변경 없이 데이터로 된다.
 - **인입 틀 `intake.v1`이 유일한 경로다.** 전시별 JSON·전용 스크립트·손 UPSERT 마이그레이션은 더 만들지 않는다.
   계약 `src/lib/intake/schema.ts`, 계획 `src/lib/intake/plan.ts`(순수), 설계 `docs/superpowers/specs/2026-09-06-exhibition-intake-design.md`.
+  - **부스 번호 전엔 `brands.v1`**(같은 `/admin/intake`, 파일 `version`으로 가름): 브랜드와 참가 사실, 빈 프로필 칸(intro, links, photos)만 넣고, 부스가 들어오면 인스타·도메인 또는 같은 행사 표기 이름으로 그 브랜드에 잇는다. `src/lib/intake/brands-{schema,plan,apply}.ts`, `docs/decisions/2026-11-10_브랜드-먼저-인입.md`.
   - 좌표는 계약에 없다 — `FLOORPLANS[slug]`가 `code`로 댄다.
   - **빈 칸만 채운다.** 양쪽 값이 다르면 `conflicts`로 빠진다(사람이 "충돌도 덮어쓰기"를 켜야 덮인다). 배열은 합집합 안 만든다.
   - `categorySlug`는 명시로만 받는다 — `booth.tags`로 들어가 스코어링이 읽으므로 한글 이름에서 파생 금지.

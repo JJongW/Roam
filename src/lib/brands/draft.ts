@@ -31,6 +31,7 @@ import {
   IDENTITY_BASIS_FIELDS,
   ITEM_OPTIONS,
   TEXTURE_OPTIONS,
+  introNeedsTone,
   parseFieldValue,
   workerMayWrite,
 } from "@/lib/brands/profile";
@@ -224,7 +225,17 @@ export async function runBrandProfileDraft(
     ...ITEM_OPTIONS,
     ...booths.flatMap((b) => b.enrichment?.goodsKeywords ?? []),
   ];
-  if (intro && guard("intro")) {
+  const curIntro = cur("intro");
+  if (introNeedsTone(curIntro) && deps.convertTone) {
+    // 원문만 모아 둔 공식 소개(브랜드 먼저 인입, 또는 LLM 없이 돈 워커) — 원문과 출처는 그대로 두고
+    // 말투만 바꾼다. 없으면 이 칸은 앱에 영영 안 보인다(publicValue는 display만 보여 준다).
+    const original = (curIntro!.value as { original: string }).original;
+    result.usedLlm = true;
+    const display = (await deps.convertTone({ original, protectedTerms })).trim();
+    const gate = checkToneConversion({ original, display, protectedTerms });
+    result.gate = gate;
+    await write("intro", { original, display, gate }, curIntro!.sources, gate.ok ? "collected" : "ai_draft");
+  } else if (intro && guard("intro")) {
     if (deps.convertTone) {
       result.usedLlm = true;
       const display = (await deps.convertTone({ original: intro.text, protectedTerms })).trim();
