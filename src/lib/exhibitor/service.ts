@@ -1,6 +1,6 @@
 import type { Repository } from "@/lib/repositories/types";
 import type { Booth, ExhibitorGraph } from "@/lib/types";
-import { identityKeys } from "./identity";
+import { brandKeyIdentity, identityKeys } from "./identity";
 import { planExhibitorLinks, type ExhibitorPlan, type ExistingExhibitor } from "./plan";
 import { planCarryover, type CarryoverItem } from "./carryover";
 import { autoPassPending } from "@/lib/enrichment/run-draft";
@@ -20,27 +20,8 @@ export async function planFromRepository(
     ...exhibitions.data.map((e) => repo.listBoothsFull(e.id)),
   ]);
   const booths = perExhibition.flat();
-  const boothById = new Map(booths.map((b) => [b.id, b]));
-  const exhibitorOfParticipant = new Map(graph.participants.map((p) => [p.id, p.exhibitorId]));
-
-  // 기존 참가사의 신원 키 = 참가사 자체 링크 + 그 참가사에 배정된 모든 부스의 링크.
-  const keys = new Map<string, Set<string>>();
-  const names = new Map<string, Set<string>>();
-  for (const e of graph.exhibitors) {
-    keys.set(e.id, new Set(identityKeys(e)));
-    names.set(e.id, new Set([e.canonicalName]));
-  }
-  for (const p of graph.participants) names.get(p.exhibitorId)?.add(p.displayName);
-  for (const a of graph.assignments) {
-    const ex = exhibitorOfParticipant.get(a.participantId);
-    const b = boothById.get(a.boothId);
-    if (ex && b) for (const k of identityKeys(b)) keys.get(ex)?.add(k);
-  }
-  const exhibitors: ExistingExhibitor[] = graph.exhibitors.map((e) => ({
-    id: e.id,
-    keys: [...(keys.get(e.id) ?? [])],
-    names: [...(names.get(e.id) ?? [])],
-  }));
+  const exhibitors = existingExhibitors(graph, booths);
+  const withBooth = new Set(graph.assignments.filter((a) => a.role === "primary").map((a) => a.participantId));
 
   const plan = planExhibitorLinks({
     booths: booths.map((b) => ({
@@ -52,12 +33,44 @@ export async function planFromRepository(
       websiteUrl: b.websiteUrl,
     })),
     exhibitors,
-    participants: graph.participants,
+    participants: graph.participants.map((p) => ({ ...p, hasBooth: withBooth.has(p.id) })),
     assignedBoothIds: new Set(graph.assignments.map((a) => a.boothId)),
     // 판단했든 대기 중이든 이미 낸 후보는 다시 내지 않는다.
     decidedCandidates: new Set(graph.candidates.map((c) => `${c.boothId}|${c.exhibitorId}`)),
   });
   return { plan, graph, booths };
+}
+
+/**
+ * 기존 참가사의 신원 키와 이름들. 키 = 참가사 자체 링크 + 그 참가사에 배정된 모든 부스의 링크
+ * + 브랜드 먼저 인입의 파일 키(brandKeys). 이름 = 대표 이름 + 회차별 표기 + 다른 이름.
+ * 부스 연결과 브랜드 먼저 인입이 같은 판정을 쓰도록 한 곳에 둔다.
+ */
+export function existingExhibitors(graph: ExhibitorGraph, booths: Booth[]): ExistingExhibitor[] {
+  const boothById = new Map(booths.map((b) => [b.id, b]));
+  const exhibitorOfParticipant = new Map(graph.participants.map((p) => [p.id, p.exhibitorId]));
+  const keys = new Map<string, Set<string>>();
+  const names = new Map<string, Set<string>>();
+  for (const e of graph.exhibitors) {
+    keys.set(e.id, new Set([...identityKeys(e), ...(e.brandKeys ?? []).map(brandKeyIdentity)]));
+    names.set(e.id, new Set([e.canonicalName, ...(e.aliases ?? [])]));
+  }
+  for (const p of graph.participants) {
+    const n = names.get(p.exhibitorId);
+    if (!n) continue;
+    n.add(p.displayName);
+    for (const a of p.aliases ?? []) n.add(a);
+  }
+  for (const a of graph.assignments) {
+    const ex = exhibitorOfParticipant.get(a.participantId);
+    const b = boothById.get(a.boothId);
+    if (ex && b) for (const k of identityKeys(b)) keys.get(ex)?.add(k);
+  }
+  return graph.exhibitors.map((e) => ({
+    id: e.id,
+    keys: [...(keys.get(e.id) ?? [])],
+    names: [...(names.get(e.id) ?? [])],
+  }));
 }
 
 /**

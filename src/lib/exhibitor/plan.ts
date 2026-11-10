@@ -29,11 +29,22 @@ export interface ExistingExhibitor {
 
 export type Ref = { existing: string } | { new: string };
 
+export interface PlanParticipant {
+  id: string;
+  exhibitorId: string;
+  exhibitionId: string;
+  /** 회차별 표기 이름. 부스가 아직 없는 참가 사실(브랜드 먼저 인입)에 부스를 이름으로 잇는다. */
+  displayName?: string;
+  aliases?: string[];
+  /** 이미 대표 부스가 배정된 참가 사실이면 true — 이름 맞추기 대상이 아니다. */
+  hasBooth?: boolean;
+}
+
 export interface PlanInput {
   booths: PlanBooth[];
   exhibitors?: ExistingExhibitor[];
   /** 기존 참가 사실 — 같은 참가사·같은 회차면 새로 만들지 않고 쓴다. */
-  participants?: { id: string; exhibitorId: string; exhibitionId: string }[];
+  participants?: PlanParticipant[];
   /** 이미 참가 사실에 배정된 부스. 다시 건드리지 않는다(멱등). */
   assignedBoothIds?: Set<string>;
   /** 이미 판단한 후보 `${boothId}|${exhibitorId}` — 다시 내지 않는다. */
@@ -41,8 +52,25 @@ export interface PlanInput {
 }
 
 export interface ExhibitorPlan {
-  exhibitors: { key: string; canonicalName: string; instagramUrl?: string; websiteUrl?: string }[];
-  participants: { key: string; exhibitorRef: Ref; exhibitionId: string; displayName: string }[];
+  exhibitors: {
+    key: string;
+    canonicalName: string;
+    instagramUrl?: string;
+    websiteUrl?: string;
+    /** 아래 셋은 브랜드 먼저 인입(brands.v1)만 채운다. 부스 연결은 안 쓴다. */
+    legalName?: string;
+    aliases?: string[];
+    metadata?: Record<string, unknown>;
+  }[];
+  participants: {
+    key: string;
+    exhibitorRef: Ref;
+    exhibitionId: string;
+    displayName: string;
+    aliases?: string[];
+    sourceUrls?: string[];
+    metadata?: Record<string, unknown>;
+  }[];
   assignments: { boothId: string; participantRef: Ref; role: "primary" }[];
   candidates: { boothId: string; target: Ref; reason: string }[];
 }
@@ -94,10 +122,47 @@ export function planExhibitorLinks(input: PlanInput): ExhibitorPlan {
   }
   const refOfGroup = new Map<string, Ref>();
 
+  // ── 같은 행사의 부스 없는 참가 사실에 이름으로 잇는다 ─────────────────────
+  // 브랜드 먼저 인입(brands.v1)이 부스 번호보다 먼저 참가 사실을 만든다. 같은 행사 안에서
+  // 표기 이름이 정확히 같으면 같은 브랜드로 본다 — 주최 명단 한 장에서 온 이름끼리라
+  // 다른 행사 사이의 동명이인과 다르다. 다른 행사 이름 일치는 아래처럼 후보로만 남긴다.
+  const openByName = new Map<string, Set<string>>(); // `${exhibitionId}|${이름}` → exhibitorIds
+  const nameForms = (name: string): string[] => {
+    const t = name.trim();
+    const k = nameKey(t);
+    return [`=${t}`, ...(k ? [`~${k}`] : [])];
+  };
+  for (const p of input.participants ?? []) {
+    if (p.hasBooth || !p.displayName) continue;
+    for (const n of [p.displayName, ...(p.aliases ?? [])])
+      for (const f of nameForms(n)) {
+        const k = `${p.exhibitionId}|${f}`;
+        if (!openByName.has(k)) openByName.set(k, new Set());
+        openByName.get(k)!.add(p.exhibitorId);
+      }
+  }
+  const sameFairMatch = (members: PlanBooth[]): string | null => {
+    const hits = new Set<string>();
+    for (const m of members) {
+      const mine = new Set<string>();
+      for (const f of nameForms(m.name)) for (const id of openByName.get(`${m.exhibitionId}|${f}`) ?? []) mine.add(id);
+      // 한 부스 이름이 두 브랜드에 맞으면 고르지 않는다.
+      if (mine.size > 1) return null;
+      for (const id of mine) hits.add(id);
+    }
+    // 한 묶음(인스타로 묶인 여러 회차 부스)이 서로 다른 브랜드에 맞아도 고르지 않는다.
+    return hits.size === 1 ? [...hits][0] : null;
+  };
+
+  const namedRoots = new Set<string>();
   for (const [root, members] of groups) {
     let ref: Ref;
+    const named = root.startsWith("ex:") ? null : sameFairMatch(members);
+    if (named) namedRoots.add(root);
     if (root.startsWith("ex:")) {
       ref = { existing: root.slice(3) };
+    } else if (named) {
+      ref = { existing: named };
     } else {
       const key = `new:${root}`;
       ref = { new: key };
@@ -144,7 +209,10 @@ export function planExhibitorLinks(input: PlanInput): ExhibitorPlan {
   const emitted = new Set<string>();
   for (const [root, members] of groups) {
     const mine = refOfGroup.get(root)!;
-    if ("existing" in mine) continue; // 기존 참가사에 확정으로 붙은 묶음은 더 볼 게 없다
+    // 인스타·도메인으로 기존 참가사에 붙은 묶음은 더 볼 게 없다. 같은 행사 이름으로 붙은 묶음은
+    // 다른 행사의 동명 참가사를 계속 후보로 낸다 — 브랜드 먼저 인입이 만든 브랜드가 사실은
+    // 지난 회차의 그 브랜드일 수 있고, 후보 승인이 둘을 합친다.
+    if ("existing" in mine && !namedRoots.has(root)) continue;
     for (const m of members) {
       const k = nameKey(m.name);
       if (!k) continue;

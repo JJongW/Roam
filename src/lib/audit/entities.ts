@@ -78,4 +78,14 @@ export const AUDIT_SPECS: Record<AuditEntity, EntitySpec> = {
     fields: ["value", "status", "sources"],
     emptyFor: (field) => (field === "sources" ? [] : ""),
   },
+  // 브랜드 먼저 인입(brands.v1)이 만든 브랜드와 참가 사실. 부스 연결(applyExhibitorPlan)이
+  // 만드는 행은 지금처럼 이력을 남기지 않는다 — 그쪽은 부스 이력이 원천이다.
+  exhibitor: {
+    fields: ["canonicalName", "legalName", "aliases", "instagramUrl", "websiteUrl", "metadata"],
+    emptyFor: (field) => (field === "aliases" ? [] : field === "metadata" ? {} : ""),
+  },
+  exhibition_participant: {
+    fields: ["exhibitorId", "exhibitionId", "displayName", "aliases", "sourceUrls", "metadata"],
+    emptyFor: (field) => (field === "aliases" || field === "sourceUrls" ? [] : field === "metadata" ? {} : ""),
+  },
 };

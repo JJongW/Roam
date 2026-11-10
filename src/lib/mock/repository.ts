@@ -379,9 +379,23 @@ export class MockRepository implements Repository {
     const ex = (r: Ref) => ("existing" in r ? r.existing : exId.get(r.new)!);
     const pt = (r: Ref) => ("existing" in r ? r.existing : ptId.get(r.new)!);
     for (const e of plan.exhibitors)
-      gph.exhibitors.push({ id: exId.get(e.key)!, canonicalName: e.canonicalName, instagramUrl: e.instagramUrl, websiteUrl: e.websiteUrl });
-    for (const p of plan.participants)
-      gph.participants.push({ id: ptId.get(p.key)!, exhibitorId: ex(p.exhibitorRef), exhibitionId: p.exhibitionId, displayName: p.displayName });
+      gph.exhibitors.push({
+        id: exId.get(e.key)!,
+        canonicalName: e.canonicalName,
+        instagramUrl: e.instagramUrl,
+        websiteUrl: e.websiteUrl,
+        ...(e.aliases?.length ? { aliases: [...e.aliases] } : {}),
+        ...(Array.isArray(e.metadata?.brandKeys) ? { brandKeys: [...(e.metadata.brandKeys as string[])] } : {}),
+      });
+    for (const p of plan.participants) {
+      gph.participants.push({
+        id: ptId.get(p.key)!,
+        exhibitorId: ex(p.exhibitorRef),
+        exhibitionId: p.exhibitionId,
+        displayName: p.displayName,
+        ...(p.aliases?.length ? { aliases: [...p.aliases] } : {}),
+      });
+    }
     for (const a of plan.assignments) gph.assignments.push({ boothId: a.boothId, participantId: pt(a.participantRef), role: a.role });
     let candidates = 0;
     for (const c of plan.candidates) {
@@ -390,7 +404,13 @@ export class MockRepository implements Repository {
       store().linkCandidates.push({ id: uid("xlc"), boothId: c.boothId, exhibitorId, reason: c.reason, status: "pending", createdAt: now() });
       candidates++;
     }
-    return { exhibitors: plan.exhibitors.length, participants: plan.participants.length, assignments: plan.assignments.length, candidates };
+    return {
+      exhibitors: plan.exhibitors.length,
+      participants: plan.participants.length,
+      assignments: plan.assignments.length,
+      candidates,
+      ids: { exhibitors: Object.fromEntries(exId), participants: Object.fromEntries(ptId) },
+    };
   }
 
   async exhibitorHistory(exhibitionId: string, userId: string | null): Promise<Record<string, BoothBrandMemory>> {

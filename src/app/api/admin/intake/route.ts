@@ -1,7 +1,8 @@
 import { getRepository } from "@/lib/repositories";
 import { getUserId, notFound, ok, parseBody, requireAdmin } from "@/lib/api/http";
 import { FLOORPLANS } from "@/lib/floorplans";
-import { intakeRequestSchema } from "@/lib/intake/schema";
+import { intakeAnyRequestSchema } from "@/lib/intake/schema";
+import { applyBrandsPlan, planBrandsFromRepository } from "@/lib/intake/brands-apply";
 import { planIntake } from "@/lib/intake/plan";
 import { planFromRepository, runCarryover } from "@/lib/exhibitor/service";
 import { applyLinkPlan } from "@/lib/brands/jobs";
@@ -13,16 +14,32 @@ import type { AuditContext } from "@/lib/audit/diff";
  *
  * apply=false(기본)면 계획만 돌려준다. 미리보기가 이걸 그린다. 좌표는 파일이
  * 아니라 FLOORPLANS에서 code로 가져온다(docs/.../2026-09-06-exhibition-intake-design.md).
+ *
+ * 파일 version이 "brands.v1"이면 브랜드 먼저 인입이다 — 부스 없이 브랜드와 참가 사실,
+ * 비어 있는 프로필 칸만 넣는다(lib/intake/brands-plan.ts, docs/decisions/2026-11-10_브랜드-먼저-인입.md).
  */
 export async function POST(req: Request) {
   const denied = await requireAdmin();
   if (denied) return denied;
 
-  const parsed = await parseBody(req, intakeRequestSchema);
+  const parsed = await parseBody(req, intakeAnyRequestSchema);
   if (!parsed.ok) return parsed.res;
-  const { file, apply, overwrite } = parsed.data;
+  const { file: anyFile, apply, overwrite } = parsed.data;
 
   const repo = await getRepository();
+  if (anyFile.version === "brands.v1") {
+    const planned = await planBrandsFromRepository(repo, anyFile);
+    if (!planned.ok) return notFound(planned.message);
+    if (!apply) return ok({ kind: "brands", plan: planned.plan, applied: null });
+    const applied = await applyBrandsPlan(repo, planned.plan, {
+      source: "intake",
+      actor: await getUserId(),
+      reason: `브랜드 인입 ${anyFile.exhibitionSlug ?? anyFile.source.url}`,
+    });
+    return ok({ kind: "brands", plan: planned.plan, applied });
+  }
+  const file = anyFile;
+
   const exhibitionId = await repo.getExhibitionIdBySlug(file.exhibitionSlug);
   if (!exhibitionId) {
     return notFound(`행사를 찾을 수 없어요: ${file.exhibitionSlug}`);
@@ -43,7 +60,7 @@ export async function POST(req: Request) {
     overwrite,
   });
 
-  if (!apply) return ok({ plan, applied: null });
+  if (!apply) return ok({ kind: "booths", plan, applied: null });
   const audit = {
     source: "intake" as const,
     actor: await getUserId(),
@@ -64,7 +81,7 @@ export async function POST(req: Request) {
   } catch (e) {
     exhibitors = { error: e instanceof Error ? e.message : String(e) };
   }
-  return ok({ plan, applied, exhibitors });
+  return ok({ kind: "booths", plan, applied, exhibitors });
 }
 
 interface ApplyResult {

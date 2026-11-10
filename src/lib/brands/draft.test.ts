@@ -66,6 +66,29 @@ describe("runBrandProfileDraft", () => {
     expect((f.value as { gate: { issues: string[] } }).gate.issues).toContain("원문에 없는 과장이나 단정이 생겼어요: 최고");
   });
 
+  it("원문만 모아 둔 공식 소개(브랜드 먼저 인입)는 원문과 출처를 그대로 두고 말투만 채운다", async () => {
+    const { repo, real, exhibitorOf } = await setup();
+    const x = exhibitorOf(real[0].id);
+    await repo.upsertProfileField({
+      subject: { exhibitorId: x },
+      field: "intro",
+      value: { original: "손으로 그릇을 빚습니다." },
+      sources: ["https://fair.example/x"],
+      status: "collected",
+      actor: "system:brands-intake",
+    });
+    const r = await runBrandProfileDraft(repo, x, { convertTone: async ({ original }) => fakeTone(original) });
+    if ("error" in r) throw new Error(r.error);
+    const f = (await repo.listProfileFields({ exhibitorIds: [x] })).find((y) => y.field === "intro")!;
+    expect(f).toMatchObject({ status: "collected", sources: ["https://fair.example/x"] });
+    expect(f.value).toMatchObject({ original: "손으로 그릇을 빚습니다.", display: "손으로 그릇을 빚어요.", gate: { ok: true } });
+
+    // 작가 확인 소개는 사람 몫이라 건드리지 않는다.
+    await repo.upsertProfileField({ subject: { exhibitorId: x }, field: "intro", value: { original: "작가 원문입니다." }, sources: ["contact-log:1"], status: "artist_confirmed", actor: "ted" });
+    await runBrandProfileDraft(repo, x, { convertTone: async ({ original }) => fakeTone(original) });
+    expect((await repo.listProfileFields({ exhibitorIds: [x] })).find((y) => y.field === "intro")!.value).toEqual({ original: "작가 원문입니다." });
+  });
+
   it("AI 초안 칸: 출처 필수, 목록 밖 품목은 버리고, 사람이 확인한 칸은 덮지 않는다", async () => {
     const { repo, real, exhibitorOf } = await setup();
     const x = exhibitorOf(real[0].id);

@@ -9,7 +9,7 @@
 import type { Repository } from "@/lib/repositories/types";
 import type { ExhibitorGraph } from "@/lib/types";
 import type { ExhibitorPlan } from "@/lib/exhibitor/plan";
-import { AI_DRAFT_FIELDS, staleOnNewAppearance, workerMayWrite } from "@/lib/brands/profile";
+import { AI_DRAFT_FIELDS, introNeedsTone, staleOnNewAppearance, workerMayWrite } from "@/lib/brands/profile";
 
 /** 워커가 채우는 칸 — 하나라도 쓸 수 있으면 초안이 필요한 브랜드다. */
 const DRAFTABLE_FIELDS = ["links", "aliases", "intro", ...AI_DRAFT_FIELDS] as const;
@@ -122,8 +122,10 @@ export async function enqueueExhibitionDrafts(
   let targets = ids;
   if (opts.onlyNeeded !== false && ids.length) {
     const fields = await repo.listProfileFields({ exhibitorIds: ids });
-    targets = ids.filter((id) =>
-      DRAFTABLE_FIELDS.some((k) => workerMayWrite(fields.find((f) => f.exhibitorId === id && f.field === k))),
+    targets = ids.filter(
+      (id) =>
+        DRAFTABLE_FIELDS.some((k) => workerMayWrite(fields.find((f) => f.exhibitorId === id && f.field === k))) ||
+        introNeedsTone(fields.find((f) => f.exhibitorId === id && f.field === "intro")),
     );
   }
   const r = await enqueueBrandDrafts(repo, targets, { actor: opts.actor, reason: `박람회 ${exhibitionId} 브랜드 초안` });

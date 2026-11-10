@@ -238,6 +238,17 @@ export function workerMayWrite(existing: Pick<ProfileField, "status"> | undefine
   return !existing || existing.status === "stale" || existing.status === "ai_draft";
 }
 
+/**
+ * 원문만 있고 말투 변환본이 없는 공식 소개(collected). 워커가 원문과 출처를 그대로 둔 채
+ * display만 채워도 되는 유일한 예외다 — 브랜드 먼저 인입(brands.v1)과 LLM 없이 돈 워커가
+ * 이렇게 남긴다. 사람 확인 상태(reviewed, artist_confirmed)는 사람이 고친다.
+ */
+export function introNeedsTone(existing: Pick<ProfileField, "status" | "value"> | undefined): boolean {
+  if (!existing || existing.status !== "collected") return false;
+  const v = existing.value as { original?: unknown; display?: unknown } | null;
+  return !!v && typeof v.original === "string" && !v.display;
+}
+
 /** 새 출전이 이어졌을 때 stale로 돌릴 칸. 이미 stale이거나 빈 칸은 뺀다. */
 export function staleOnNewAppearance(fields: Pick<ProfileField, "field" | "status">[]): string[] {
   const keys = new Set<string>(STALE_ON_NEW_APPEARANCE);

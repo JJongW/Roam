@@ -90,3 +90,9 @@ export function nameKey(name: string): string | null {
   const k = flatName(name);
   return k.length >= 3 ? k : null;
 }
+
+/** 브랜드 먼저 인입(brands.v1)의 파일 키를 신원 키 공간에 넣을 때의 모양.
+ *  URL에서 나온 키와 겹칠 수 없게 접두어를 붙인다. 같은 파일을 다시 돌려도 같은 브랜드를 찾는 열쇠다. */
+export function brandKeyIdentity(scopeKey: string): string {
+  return `brandkey:${scopeKey}`;
+}

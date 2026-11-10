@@ -4,13 +4,23 @@ import { useRef, useState } from "react";
 import { Upload, Loader2, AlertTriangle, Check } from "lucide-react";
 import { toast } from "sonner";
 import { api, ApiClientError } from "@/lib/api/client";
-import { intakeFileSchema } from "@/lib/intake/schema";
+import { intakeAnyRequestSchema } from "@/lib/intake/schema";
 import type { IntakePlan } from "@/lib/intake/plan";
+import type { BrandsPlan } from "@/lib/intake/brands-plan";
+import type { BrandsApplyResult } from "@/lib/intake/brands-apply";
+import { BrandsIntakePreview } from "@/components/admin/brands-intake-preview";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/ui/chip";
 
+interface BrandsResponse {
+  kind: "brands";
+  plan: BrandsPlan;
+  applied: BrandsApplyResult | null;
+}
+
 interface IntakeResponse {
+  kind: "booths";
   plan: IntakePlan;
   applied: {
     createdBooths: number;
@@ -25,7 +35,7 @@ export function IntakeUploader() {
   const fileRef = useRef<HTMLInputElement>(null);
   const [raw, setRaw] = useState<unknown>(null);
   const [fileName, setFileName] = useState("");
-  const [result, setResult] = useState<IntakeResponse | null>(null);
+  const [result, setResult] = useState<IntakeResponse | BrandsResponse | null>(null);
   const [overwrite, setOverwrite] = useState(false);
   const [busy, setBusy] = useState(false);
 
@@ -39,10 +49,11 @@ export function IntakeUploader() {
       return;
     }
     // 서버에 보내기 전에 여기서 한 번 거른다 — 형식이 틀린 걸 왕복시킬 이유가 없다.
-    const check = intakeFileSchema.safeParse(parsed);
+    // version이 1이면 부스(intake.v1), "brands.v1"이면 브랜드 먼저 인입이다.
+    const check = intakeAnyRequestSchema.shape.file.safeParse(parsed);
     if (!check.success) {
       const first = check.error.issues[0];
-      toast.error(`형식 오류: ${first.path.join(".")} — ${first.message}`);
+      toast.error(`형식 오류: ${first.path.join(".")}, ${first.message}`);
       return;
     }
     setRaw(check.data);
@@ -53,13 +64,20 @@ export function IntakeUploader() {
   async function send(file: unknown, apply: boolean, ow: boolean) {
     setBusy(true);
     try {
-      const res = await api.post<IntakeResponse>("/api/admin/intake", {
+      const res = await api.post<IntakeResponse | BrandsResponse>("/api/admin/intake", {
         file,
         apply,
         overwrite: ow,
       });
       setResult(res);
-      if (apply) {
+      if (apply && res.kind === "brands") {
+        const a = res.applied!;
+        toast.success(
+          `새 브랜드 ${a.createdBrands}, 참가 사실 ${a.createdParticipants}, 채운 칸 ${a.filledFields}${
+            a.failures.length ? `, 실패 ${a.failures.length}` : ""
+          }`,
+        );
+      } else if (apply && res.kind === "booths") {
         const a = res.applied!;
         toast.success(
           `신규 ${a.createdBooths}, 채움 ${a.filledBooths}${
@@ -76,8 +94,8 @@ export function IntakeUploader() {
     }
   }
 
-  const plan = result?.plan;
-  const applied = result?.applied;
+  const plan = result?.kind === "booths" ? result.plan : undefined;
+  const applied = result?.kind === "booths" ? result.applied : undefined;
 
   return (
     <div className="space-y-5">
@@ -110,7 +128,20 @@ export function IntakeUploader() {
           좌표는 파일이 아니라 도면(FLOORPLANS)에서 부스 코드로 가져와요. 고르면
           바로 미리보기만 계산하고, 아무것도 쓰지 않아요.
         </p>
+        <p className="text-sm text-muted-foreground">
+          부스 번호가 나오기 전이면 브랜드 파일(brands.v1)부터 올려요. 브랜드와 참가 사실만
+          만들고, 부스가 들어오면 그 브랜드에 이어져요.
+        </p>
       </Card>
+
+      {result?.kind === "brands" && (
+        <BrandsIntakePreview
+          plan={result.plan}
+          applied={result.applied}
+          busy={busy}
+          onApply={() => raw && void send(raw, true, false)}
+        />
+      )}
 
       {plan && (
         <>

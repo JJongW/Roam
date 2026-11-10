@@ -127,10 +127,15 @@ export interface Repository {
   /** 그래프 전체. 1천 행을 넘는다 — 구현은 끝까지 페이지를 넘겨 읽고, 실패하면 던진다
    *  (잘린 채 돌려주면 "배정된 부스"를 놓쳐 중복 참가사가 생긴다). */
   loadExhibitorGraph(): Promise<ExhibitorGraph>;
-  /** 계획을 그대로 쓴다. 새 참가사 → 참가 사실 → 배정 → 후보 순. */
-  applyExhibitorPlan(
-    plan: ExhibitorPlan,
-  ): Promise<{ exhibitors: number; participants: number; assignments: number; candidates: number }>;
+  /** 계획을 그대로 쓴다. 새 참가사 → 참가 사실 → 배정 → 후보 순.
+   *  `ids`는 계획의 새 키(`new:`) → 만든 행 id. 뒤따르는 쓰기(프로필 칸)가 이걸로 행을 찾는다. */
+  applyExhibitorPlan(plan: ExhibitorPlan): Promise<{
+    exhibitors: number;
+    participants: number;
+    assignments: number;
+    candidates: number;
+    ids: { exhibitors: Record<string, string>; participants: Record<string, string> };
+  }>;
   listExhibitorLinkCandidates(status?: string): Promise<ExhibitorLinkCandidate[]>;
   /** 이 행사 부스마다 같은 브랜드의 **이전** 회차 출전과, userId가 있으면 그 사용자의
    *  긍정 반응(user_exhibitor_judgment_history). key = boothId. */
