@@ -1074,10 +1074,11 @@ export class SupabaseRepository implements Repository {
         canonical_name: e.canonicalName,
         instagram_url: e.instagramUrl ?? null,
         website_url: e.websiteUrl ?? null,
-        // 아래 셋은 브랜드 먼저 인입만 준다. 안 주면 컬럼 기본값('[]', '{}', null)에 맡긴다.
-        ...(e.legalName ? { legal_name: e.legalName } : {}),
-        ...(e.aliases?.length ? { aliases: e.aliases } : {}),
-        ...(e.metadata ? { metadata: e.metadata } : {}),
+        // 아래 셋은 늘 값을 준다. 여러 줄을 한 번에 넣을 때 PostgREST는 어느 한 줄에라도 있는 칸을
+        // 모든 줄에 채우고, 빠진 줄은 기본값이 아니라 null로 넣는다(not null 위반, 2026-11-10 운영에서 남).
+        legal_name: e.legalName ?? null,
+        aliases: e.aliases ?? [],
+        metadata: e.metadata ?? {},
         created_at: t,
         updated_at: t,
       })),
@@ -1090,9 +1091,10 @@ export class SupabaseRepository implements Repository {
         exhibition_id: p.exhibitionId,
         exhibitor_id: resolveEx(p.exhibitorRef),
         display_name: p.displayName,
-        ...(p.aliases?.length ? { aliases: p.aliases } : {}),
-        ...(p.sourceUrls?.length ? { source_urls: p.sourceUrls } : {}),
-        ...(p.metadata ? { metadata: p.metadata } : {}),
+        // 위와 같은 이유로 늘 값을 준다.
+        aliases: p.aliases ?? [],
+        source_urls: p.sourceUrls ?? [],
+        metadata: p.metadata ?? {},
         created_at: t,
         updated_at: t,
       })),
