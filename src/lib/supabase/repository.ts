@@ -1660,6 +1660,50 @@ export class SupabaseRepository implements Repository {
     return mapProfileField(wrote(res, "프로필 칸 저장") as Row);
   }
 
+  async upsertProfileFieldIfUnchanged(
+    input: {
+      subject: ProfileSubject;
+      field: string;
+      value: unknown;
+      sources: string[];
+      status: ProfileFieldStatus;
+      actor: string | null;
+    },
+    expected: Pick<ProfileField, "status" | "updatedAt"> | null,
+  ): Promise<{ ok: true; field: ProfileField } | { ok: false; reason: "changed" | "no-subject" }> {
+    const db = createServiceClient();
+    const s = input.subject;
+    const { data: owner, error } =
+      "exhibitorId" in s
+        ? await db.from("exhibitor").select("id").eq("id", s.exhibitorId).maybeSingle()
+        : await db.from("exhibition_participant").select("id").eq("id", s.participantId).maybeSingle();
+    if (error) throw new Error(`프로필 대상 조회 실패: ${error.message}`);
+    if (!owner) return { ok: false, reason: "no-subject" };
+    const at = now();
+    const id = profileFieldId(s, input.field);
+    const row = {
+      ...profileFieldRow(
+        { id, field: input.field, value: input.value, sources: input.sources, status: input.status, verifiedAt: at, actor: input.actor },
+        s,
+      ),
+      updated_at: at,
+    };
+    // 조건은 DB가 한 문장 안에서 본다 — 읽기와 쓰기 사이에 사람이 고친 칸은 0행으로 끝난다.
+    // - 행이 없었으면: insert ... on conflict do nothing(ignoreDuplicates). 그사이 누가 만들었으면 0행.
+    // - 있었으면: update ... where id = ? and status = <읽은 상태> and updated_at = <읽은 시각>.
+    const res = expected
+      ? await db
+          .from("brand_profile_field")
+          .update(row)
+          .eq("id", id)
+          .eq("status", expected.status)
+          .eq("updated_at", expected.updatedAt)
+          .select("*")
+      : await db.from("brand_profile_field").upsert(row, { onConflict: "id", ignoreDuplicates: true }).select("*");
+    const rows = (maybeWrote(res, "프로필 칸 조건부 저장") as Row[] | null) ?? [];
+    return rows.length ? { ok: true, field: mapProfileField(rows[0]) } : { ok: false, reason: "changed" };
+  }
+
   async getBrandIntroFieldForBooth(boothId: string): Promise<ProfileField | null> {
     const db = createServiceClient();
     const { data: asg, error } = await db

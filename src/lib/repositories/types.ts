@@ -214,6 +214,23 @@ export interface Repository {
     status: ProfileFieldStatus;
     actor: string | null;
   }): Promise<ProfileField | null>;
+  /**
+   * 조건부 쓰기(compare-and-set). 워커처럼 읽고 → 오래 걸리는 일(LLM) → 쓰는 쪽이 쓴다.
+   * `expected`는 읽을 때 본 그 칸의 상태와 updated_at이다(행이 없었으면 null).
+   * DB에서 그 칸이 그대로일 때만 쓰고, 그사이 사람이 확인하거나 고쳤으면 아무것도 쓰지 않고
+   * `changed`를 돌려준다. 브랜드나 출전이 없으면 `no-subject`.
+   */
+  upsertProfileFieldIfUnchanged(
+    input: {
+      subject: ProfileSubject;
+      field: string;
+      value: unknown;
+      sources: string[];
+      status: ProfileFieldStatus;
+      actor: string | null;
+    },
+    expected: Pick<ProfileField, "status" | "updatedAt"> | null,
+  ): Promise<{ ok: true; field: ProfileField } | { ok: false; reason: "changed" | "no-subject" }>;
   /** 칸을 비운다. 지운 행이 있었으면 true. */
   deleteProfileField(subject: ProfileSubject, field: string): Promise<boolean>;
   /** 이 부스(대표 배정)의 브랜드 공식 소개 칸. 방문객 화면이 부르므로 서비스 롤로 읽고,

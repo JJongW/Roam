@@ -561,6 +561,25 @@ export class MockRepository implements Repository {
       .map((r) => structuredClone(r));
   }
 
+  async upsertProfileFieldIfUnchanged(
+    input: {
+      subject: ProfileSubject;
+      field: string;
+      value: unknown;
+      sources: string[];
+      status: ProfileFieldStatus;
+      actor: string | null;
+    },
+    expected: Pick<ProfileField, "status" | "updatedAt"> | null,
+  ): Promise<{ ok: true; field: ProfileField } | { ok: false; reason: "changed" | "no-subject" }> {
+    const id = profileFieldId(input.subject, input.field);
+    const cur = store().profileFields.find((r) => r.id === id);
+    const same = expected ? !!cur && cur.status === expected.status && cur.updatedAt === expected.updatedAt : !cur;
+    if (!same) return { ok: false, reason: "changed" };
+    const field = await this.upsertProfileField(input);
+    return field ? { ok: true, field } : { ok: false, reason: "no-subject" };
+  }
+
   async upsertProfileField(input: {
     subject: ProfileSubject;
     field: string;

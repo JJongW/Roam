@@ -152,6 +152,9 @@ export function pickIntro(booths: Booth[]): { text: string; source: string } | n
   return null;
 }
 
+/** 읽고 쓰는 사이에 그 칸이 바뀌어서 쓰지 않았을 때. */
+export const CHANGED_REASON = "초안을 쓰는 사이에 칸이 바뀌어서 건드리지 않았어요";
+
 export async function runBrandProfileDraft(
   repo: Repository,
   exhibitorId: string,
@@ -183,7 +186,23 @@ export async function runBrandProfileDraft(
       result.skipped.push({ field, reason: checked.message });
       return false;
     }
-    await repo.upsertProfileField({ subject, field, value: checked.value, sources, status, actor: DRAFT_ACTOR });
+    // 읽은 뒤 LLM을 부르는 사이에 사람이 칸을 확인하거나 고쳤으면 덮지 않는다(조건부 쓰기, DB에서 판단).
+    const before = cur(field);
+    const r = await repo.upsertProfileFieldIfUnchanged(
+      { subject, field, value: checked.value, sources, status, actor: DRAFT_ACTOR },
+      before ? { status: before.status, updatedAt: before.updatedAt } : null,
+    );
+    if (!r.ok) {
+      result.skipped.push({
+        field,
+        reason: r.reason === "changed" ? CHANGED_REASON : "브랜드를 찾을 수 없어요",
+      });
+      return false;
+    }
+    // 같은 실행에서 같은 칸을 다시 쓸 때 방금 쓴 행을 기준으로 삼는다.
+    const i = existing.findIndex((f) => f.field === field);
+    if (i >= 0) existing[i] = r.field;
+    else existing.push(r.field);
     result.written.push({ field, status });
     return true;
   };
