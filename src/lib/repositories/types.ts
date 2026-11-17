@@ -430,8 +430,12 @@ export interface Repository {
   createUser(nickname: string): Promise<User>;
   /** 계정 목록(관리자용, 최신 가입순). */
   listUsers(opts?: { limit?: number; offset?: number }): Promise<User[]>;
-  /** 계정 삭제(관리자용). 존재 안 하면 false. */
+  /** 계정 삭제(관리자, 그리고 본인 DELETE /api/me). 존재 안 하면 false.
+   *  노트, 신호, 브레인, 동선, 브랜드 하트, 기기 토큰을 지우고 오류 로그와 이벤트의
+   *  계정 연결을 끊는다. auth.users는 지우지 않는다(라우트가 한다). */
   deleteUser(id: string): Promise<boolean>;
+  /** 이 계정과 같은 사람인 Supabase auth 사용자 id들(uuid 모양만). 없으면 빈 배열. */
+  getAuthUserIds(id: string): Promise<string[]>;
   getUser(id: string, opts?: AdminRead): Promise<User | null>;
   getUserByNickname(nickname: string): Promise<User | null>;
   /** 닉네임 변경(로그인 후 언제든) — 다른 계정이 이미 쓰는 닉네임이면 null.

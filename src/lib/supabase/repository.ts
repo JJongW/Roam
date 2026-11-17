@@ -259,6 +259,10 @@ function isMissingTable(error: { code?: string } | null | undefined): boolean {
   return error?.code === "42P01" || error?.code === "PGRST205";
 }
 
+function isUuid(v: string): boolean {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v);
+}
+
 function optStr(v: unknown): string | undefined {
   return v == null || v === "" ? undefined : String(v);
 }
@@ -2612,11 +2616,37 @@ export class SupabaseRepository implements Repository {
       await db.from("user_signal_log").delete().eq("user_id", id),
       "계정 삭제(신호 로그 정리)",
     );
+    // 0067, 0068은 cascade지만 적용 전이어도 삭제가 막히지 않게 표가 없으면 건너뛴다.
+    for (const table of ["brand_heart", "push_device"] as const) {
+      const res = await db.from(table).delete().eq("user_id", id);
+      if (!isMissingTable(res.error)) loggedWrite(res, `계정 삭제(${table} 정리)`);
+    }
+    // FK 없는 text 참조 — 오류 로그는 남기되 누구 것인지는 끊는다. 이벤트는 FK가
+    // set null이라 app_user를 지우면 같이 끊긴다(0042).
+    loggedWrite(
+      await db.from("issue_log").update({ user_id: null }).eq("user_id", id),
+      "계정 삭제(오류 로그 연결 끊기)",
+    );
     const { error, count } = await db
       .from("app_user")
       .delete({ count: "exact" })
       .eq("id", id);
     return !error && (count ?? 0) > 0;
+  }
+
+  async getAuthUserIds(id: string): Promise<string[]> {
+    const db = createServiceClient();
+    const { data, error } = await db
+      .from("app_user")
+      .select("id, provider_account_id")
+      .eq("id", id)
+      .maybeSingle();
+    if (error) throw new Error(`계정 조회 실패: ${error.message}`);
+    if (!data) return [];
+    // iOS Apple은 app_user.id가 곧 auth uid, 웹 Google은 provider_account_id가 auth uid다.
+    // iOS Google(google_native)의 provider_account_id는 Google sub(숫자)라 걸러진다.
+    const r = data as Row;
+    return [...new Set([str(r.id), optStr(r.provider_account_id) ?? ""])].filter(isUuid);
   }
 
   async getUser(id: string, opts?: AdminRead): Promise<User | null> {

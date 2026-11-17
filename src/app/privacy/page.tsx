@@ -139,6 +139,11 @@ export default function PrivacyPage() {
                 서비스 개선을 위한 이용 기록(접속 시각, 조회한 화면, 대략적인
                 기기, 브라우저 정보)
               </li>
+              <li>
+                앱 설치마다 만드는 무작위 식별자(광고 식별자가 아니며, 이용
+                기록을 묶는 데만 사용)
+              </li>
+              <li>알림을 허용한 경우 알림 발송용 기기 토큰</li>
             </ul>
 
             <p className="pt-2 font-semibold text-foreground">
@@ -259,6 +264,11 @@ export default function PrivacyPage() {
                   "기기 푸시 토큰",
                 ],
                 [
+                  "Apple (Apple Push Notification service)",
+                  "iOS 앱 푸시 알림 발송(이용자가 동의한 경우)",
+                  "기기 푸시 토큰",
+                ],
+                [
                   "Meta (Instagram API)",
                   "인스타그램 댓글 확인 및 안내 메시지 발송",
                   "댓글 ID, 인스타그램 사용자 ID, 이름",
@@ -298,22 +308,27 @@ export default function PrivacyPage() {
           <Section no="8" title="보관 기간 및 파기">
             <ul className="list-disc space-y-1 pl-5">
               <li>
-                개인정보는 회원 탈퇴 시까지 보관하며, 탈퇴 요청 시{" "}
+                개인정보는 회원 탈퇴 시까지 보관합니다. 앱의 설정에서 계정을
+                삭제하면{" "}
                 <span className="font-semibold text-foreground">
-                  30일 이내에 계정 정보와 이용자가 생성한 데이터를 삭제
+                  계정 정보와 이용자가 생성한 데이터(부스와 브랜드에 남긴 하트,
+                  다녀온 기록, 평가, 메모, 사진, 알림용 기기 토큰)를 바로 삭제
                 </span>
                 합니다.
               </li>
               <li>
-                이용 기록 등 통계 목적의 정보는 개인을 식별할 수 없도록 처리한
-                뒤에만 보관합니다.
+                이용 기록 등 통계 목적의 정보는 계정과의 연결을 끊어 개인을
+                식별할 수 없도록 처리한 뒤에만 보관합니다.
               </li>
               <li>
                 법령에서 일정 기간 보존을 요구하는 정보는 해당 기간 동안 별도로
                 분리 보관한 후 파기합니다.
               </li>
             </ul>
-            <p>계정 삭제는 {CONTACT_EMAIL} 으로 요청하실 수 있습니다.</p>
+            <p>
+              앱에서 직접 삭제하기 어려우면 {CONTACT_EMAIL} 으로 요청하실 수
+              있습니다. 메일로 요청하신 경우 본인 확인 후 지체 없이 삭제합니다.
+            </p>
             <p id="instagram-data" className="scroll-mt-8">
               <span className="font-semibold text-foreground">
                 인스타그램 댓글 관련 정보 삭제:
@@ -480,6 +495,13 @@ export default function PrivacyPage() {
                 Usage records for service improvement (access time, screens
                 viewed, coarse device and browser information)
               </li>
+              <li>
+                A random identifier created for each app install (not an
+                advertising identifier; used only to group usage records)
+              </li>
+              <li>
+                A device push token, if you allow notifications
+              </li>
             </ul>
 
             <p className="pt-2 font-semibold text-foreground">
@@ -615,6 +637,11 @@ export default function PrivacyPage() {
                   "Device push token",
                 ],
                 [
+                  "Apple (Apple Push Notification service)",
+                  "Sending iOS app push notifications where you have opted in",
+                  "Device push token",
+                ],
+                [
                   "Meta (Instagram API)",
                   "Reading Instagram comments and sending the requested message",
                   "Comment ID, Instagram user ID and username",
@@ -664,17 +691,18 @@ export default function PrivacyPage() {
           <Section no="8" title="Retention and Deletion">
             <ul className="list-disc space-y-1 pl-5">
               <li>
-                We retain personal information until you delete your account. On
-                request, we{" "}
+                We retain personal information until you delete your account.
+                When you delete your account in the app&rsquo;s settings, we{" "}
                 <span className="font-semibold text-foreground">
-                  delete your account information and the data you created
-                  within 30 days
+                  immediately delete your account information and the data you
+                  created (hearts on booths and brands, visit records, ratings,
+                  notes, photos, and device push tokens)
                 </span>
                 .
               </li>
               <li>
                 Usage records kept for statistical purposes are retained only
-                after being de-identified.
+                after being unlinked from your account and de-identified.
               </li>
               <li>
                 Where law requires retention for a fixed period, we store that
@@ -682,7 +710,11 @@ export default function PrivacyPage() {
                 it.
               </li>
             </ul>
-            <p>To delete your account, contact us at {CONTACT_EMAIL}.</p>
+            <p>
+              If you cannot delete your account in the app, contact us at{" "}
+              {CONTACT_EMAIL}. We will verify the request and delete your data
+              without delay.
+            </p>
             <p id="instagram-data-en" className="scroll-mt-8">
               <span className="font-semibold text-foreground">
                 Deleting Instagram comment data:

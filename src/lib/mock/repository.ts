@@ -1555,7 +1555,19 @@ export class MockRepository implements Repository {
     const i = s.users.findIndex((u) => u.id === id);
     if (i < 0) return false;
     s.users.splice(i, 1);
+    // supabase의 cascade와 직접 정리를 흉내낸다.
+    s.notes = s.notes.filter((n) => n.userId !== id);
+    s.userSignals = s.userSignals.filter((x) => x.userId !== id);
+    s.userBrains.delete(id);
+    s.bookmarks = s.bookmarks.filter((b) => b.userId !== id);
+    s.brandHearts = s.brandHearts.filter((h) => h.userId !== id);
+    s.pushDevices = s.pushDevices.filter((d) => d.userId !== id);
+    for (const a of s.analytics) if (a.userId === id) a.userId = null;
     return true;
+  }
+
+  async getAuthUserIds(): Promise<string[]> {
+    return [];
   }
 
   async getUser(id: string): Promise<User | null> {
