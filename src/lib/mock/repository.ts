@@ -515,15 +515,18 @@ export class MockRepository implements Repository {
       const from = gph.participants.find((p) => p.id === asg.participantId)!.exhibitorId;
       const to = c.exhibitorId;
       if (from !== to) {
+        const outreach = await this.hasParticipantOutreach();
         for (const p of gph.participants.filter((x) => x.exhibitorId === from)) {
           const same = gph.participants.find((x) => x.exhibitorId === to && x.exhibitionId === p.exhibitionId);
           if (same) {
             for (const a of gph.assignments) if (a.participantId === p.id) a.participantId = same.id;
             this.moveProfileFields({ participantId: p.id }, { participantId: same.id });
+            if (outreach) this.moveParticipantPermission(p.id, same.id);
             gph.participants = gph.participants.filter((x) => x.id !== p.id);
           } else p.exhibitorId = to;
         }
         this.moveProfileFields({ exhibitorId: from }, { exhibitorId: to });
+        if (outreach) this.moveBrandOutreach(from, to);
         for (const o of store().linkCandidates)
           if (o.exhibitorId === from && o.status === "pending") o.status = "superseded";
         gph.exhibitors = gph.exhibitors.filter((e) => e.id !== from);
@@ -631,6 +634,48 @@ export class MockRepository implements Repository {
           participantId: "participantId" in to ? to.participantId : null,
           updatedAt: now(),
         });
+  }
+
+  /** SQL move_participant_permission(0062)과 같은 규칙: 대상이 없거나 아직 안 보냄이면 from 허락을 쓰고,
+   *  대상에 진행된 허락이 있으면 대상 것을 지킨다. from 행은 지우고 VOC의 출전도 대상으로. */
+  private moveParticipantPermission(from: string, to: string) {
+    const st = store();
+    const f = st.participantPermissions.find((r) => r.participantId === from);
+    if (f) {
+      const i = st.participantPermissions.findIndex((r) => r.participantId === to);
+      const at = now();
+      if (i < 0) st.participantPermissions.push({ ...f, participantId: to, updatedAt: at });
+      else if (st.participantPermissions[i].status === "not-sent") {
+        const t = st.participantPermissions[i];
+        st.participantPermissions[i] = { ...f, participantId: to, exhibitionId: t.exhibitionId, createdAt: t.createdAt, updatedAt: at };
+      }
+      st.participantPermissions = st.participantPermissions.filter((r) => r.participantId !== from);
+    }
+    for (const l of st.brandOutreachLogs) if (l.participantId === from) l.participantId = to;
+  }
+
+  /** SQL move_brand_outreach(0062)과 같은 규칙: 대상 값이 먼저(빈 칸만 from으로), 연락 금지는 둘 중 하나라도. */
+  private moveBrandOutreach(from: string, to: string) {
+    const st = store();
+    const f = st.brandOutreach.find((r) => r.exhibitorId === from);
+    if (f) {
+      const i = st.brandOutreach.findIndex((r) => r.exhibitorId === to);
+      const at = now();
+      if (i < 0) st.brandOutreach.push({ ...f, exhibitorId: to, updatedAt: at });
+      else {
+        const t = st.brandOutreach[i];
+        st.brandOutreach[i] = {
+          ...t,
+          channel: t.channel ?? f.channel,
+          handle: t.handle ?? f.handle,
+          notes: t.notes ?? f.notes,
+          doNotContact: t.doNotContact || f.doNotContact,
+          updatedAt: at,
+        };
+      }
+      st.brandOutreach = st.brandOutreach.filter((r) => r.exhibitorId !== from);
+    }
+    for (const l of st.brandOutreachLogs) if (l.exhibitorId === from) l.exhibitorId = to;
   }
 
   // --- 브랜드 컨택(0061) ---------------------------------------------------

@@ -1540,6 +1540,8 @@ export class SupabaseRepository implements Repository {
    *  그쪽으로 옮기고 from의 참가 사실은 지운다. 없으면 참가 사실의 주인을 바꾼다. */
   private async mergeExhibitor(from: string, to: string): Promise<void> {
     const db = createServiceClient();
+    // 연락 테이블(0062)은 on delete restrict다 — 지우기 전에 옮긴다. 테이블이 없으면(STEP 1 전) 건너뛴다.
+    const outreach = await this.hasParticipantOutreach();
     const { data: fromPs, error } = await db.from("exhibition_participant").select("id,exhibition_id").eq("exhibitor_id", from);
     if (error) throw new Error(`참가 사실 조회 실패: ${error.message}`);
     for (const p of (fromPs ?? []) as Row[]) {
@@ -1553,6 +1555,7 @@ export class SupabaseRepository implements Repository {
         );
         // 출전 칸(0061)도 옮긴다 — 참가 사실을 지우면 cascade로 사라진다.
         await this.moveProfileFields({ participantId: str(p.id) }, { participantId: str((same as Row).id) });
+        if (outreach) await this.moveOutreach("move_participant_permission", str(p.id), str((same as Row).id));
         maybeWrote(await db.from("exhibition_participant").delete().eq("id", str(p.id)).select("id"), "참가 사실 정리");
       } else {
         wrote(
@@ -1568,7 +1571,14 @@ export class SupabaseRepository implements Repository {
     );
     // 브랜드 칸(0061)을 옮긴 뒤에 지운다 — 먼저 지우면 cascade로 사라진다.
     await this.moveProfileFields({ exhibitorId: from }, { exhibitorId: to });
+    if (outreach) await this.moveOutreach("move_brand_outreach", from, to);
     maybeWrote(await db.from("exhibitor").delete().eq("id", from).select("id"), "참가사 정리");
+  }
+
+  /** 합칠 때 연락 옮기기 — SQL 함수(0062) 한 번으로 한 트랜잭션. 규칙은 함수 주석, mock은 같은 일을 한다. */
+  private async moveOutreach(fn: "move_participant_permission" | "move_brand_outreach", from: string, to: string): Promise<void> {
+    const { error } = await createServiceClient().rpc(fn, { p_from: from, p_to: to });
+    if (error) throw new Error(`연락 이동 실패(${fn}): ${error.message}`);
   }
 
   /**
