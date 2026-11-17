@@ -275,15 +275,11 @@ describe("회전을 보는 겹침 판정", () => {
 
 /**
  * 겹침이 **주최 원본의 사실**인 쌍 — 우리가 옮기다 만든 오차가 아니라서 고치지 않는다.
- *
- * 카페쇼 도면은 손으로 딴 게 아니라 exporum 배치도 API에서 그대로 변환한 것이다.
- * 그러니 1m 겹침은 주최가 그렇게 들고 있는 값이고, 우리가 부스를 줄이면 지도가
- * 원본과 달라지기만 한다(`floorplan-cafeshow.test.ts`가 이 쌍을 따로 못박아 둔다).
+ * 지금은 없다. 카페쇼의 옛 예외 A111×A107은 주최가 고쳤고, API가 감싸는 네모로 주는
+ * ㄱ자 부스는 `scripts/floorplan-from-exporum.mjs`의 `RECT_OVERRIDES`가 배치도대로 자른다.
  * 여기 적지 않은 겹침은 전부 오차로 본다 — 예외는 이름을 대야 한다.
  */
-const KNOWN_OVERLAPS: Record<string, string[]> = {
-  "cafeshow-2026": ["A107×A111"],
-};
+const KNOWN_OVERLAPS: Record<string, string[]> = {};
 
 describe.each(Object.keys(FLOORPLANS))("%s 도면", (slug) => {
   const fp = FLOORPLANS[slug];
