@@ -311,7 +311,26 @@ export const appEventBatchSchema = z.object({
 });
 export type AppEventBatchInput = z.infer<typeof appEventBatchSchema>;
 
+/** 웹의 옛 모양(데모 토큰). 저장하지 않는다 — FCM 키가 없어 웹 푸시는 꺼져 있다. */
 export const pushSubscribeSchema = z.object({ token: z.string().min(1) });
+
+/** iOS APNs 기기 토큰(0067). 로그인 전이면 anonId가 있어야 한다(라우트가 확인). */
+export const pushDeviceSchema = z.object({
+  platform: z.literal("ios"),
+  /** APNs 기기 토큰(16진수). 지금은 32바이트(64자)지만 길이는 바뀔 수 있다고 Apple이 말한다. */
+  token: z.string().regex(/^[0-9a-fA-F]{32,400}$/),
+  environment: z.enum(["sandbox", "production"]),
+  anonId: z.string().uuid().optional(),
+  appVersion: z.string().max(32).optional(),
+});
+export type PushDeviceInput = z.infer<typeof pushDeviceSchema>;
+
+/** 로그인 직후 기기에 먼저 남긴 브랜드 하트를 한 번에 올린다. 합집합이다(빼지 않는다). */
+export const brandHeartSyncSchema = z.object({
+  exhibitorIds: z.array(z.string().min(1).max(100)).min(1).max(500),
+});
+
+export const pushUnsubscribeSchema = z.object({ token: z.string().min(1).max(400) });
 
 export const loginSchema = z.object({
   nickname: z

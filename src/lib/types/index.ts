@@ -410,6 +410,65 @@ export interface AnalyticsEvent {
   eventId?: string;
 }
 
+/** APNs 기기 토큰(0067). 브랜드 알림은 userId가 있는 행만 대상이다(2026-11-17). */
+export interface PushDevice {
+  id: string;
+  token: string;
+  platform: "ios";
+  environment: "sandbox" | "production";
+  userId: string | null;
+  anonId?: string;
+  appVersion?: string;
+  createdAt: string;
+  lastSeenAt: string;
+  revokedAt?: string;
+}
+
+/** 브랜드 하트(0068). 부스 하트와 따로, 브랜드(exhibitor)에 건다. */
+export interface BrandHeart {
+  userId: string;
+  exhibitorId: string;
+  createdAt: string;
+}
+
+/** 브랜드의 다가오는(또는 진행 중) 참가 한 줄. 부스가 없을 수 있다(브랜드 먼저 인입). */
+export interface UpcomingParticipation {
+  exhibitorId: string;
+  participantId: string;
+  displayName: string;
+  exhibition: {
+    id: string;
+    slug: string;
+    name: string;
+    venue: string;
+    startDate: string;
+    endDate: string;
+  };
+  /** 대표 부스. 부스 배정 전이면 없다. */
+  booth?: { id: string; code?: string; name: string };
+}
+
+/** 마이페이지와 내보내기용 — 노트에 부스, 박람회, 브랜드를 붙인 것. */
+export interface NoteWithContext extends BoothNote {
+  booth: {
+    id: string;
+    name: string;
+    code?: string;
+    kind?: BoothKind;
+    categoryId: string;
+    hallId: string;
+  } | null;
+  exhibition: {
+    id: string;
+    slug: string;
+    name: string;
+    venue: string;
+    startDate: string;
+    endDate: string;
+  } | null;
+  brand: { exhibitorId: string; participantId: string; name: string } | null;
+}
+
 /** 앱 이벤트 한 줄을 저장소에 넣는 모양. 박람회, 부스는 서버가 확인한 것만 온다. */
 export interface AppEventRow {
   eventId: string;
