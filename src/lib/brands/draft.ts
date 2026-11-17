@@ -28,6 +28,7 @@ import { checkToneConversion } from "@/lib/brands/tone-gate";
 import { brandFieldLessons, lessonLines } from "@/lib/brands/lessons";
 import {
   AI_DRAFT_FIELDS,
+  FIELD_STATUS_LABEL,
   IDENTITY_BASIS_FIELDS,
   ITEM_OPTIONS,
   TEXTURE_OPTIONS,
@@ -208,7 +209,7 @@ export async function runBrandProfileDraft(
   };
   const guard = (field: string) => {
     if (workerMayWrite(cur(field))) return true;
-    result.skipped.push({ field, reason: `이미 ${cur(field)!.status} 칸이라 건드리지 않아요` });
+    result.skipped.push({ field, reason: `이미 ${FIELD_STATUS_LABEL[cur(field)!.status]} 칸이라 건드리지 않아요` });
     return false;
   };
 

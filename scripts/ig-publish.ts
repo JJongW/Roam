@@ -29,7 +29,7 @@ try {
 const BUCKET = "ig-publish";
 
 function need(name: string, value: string | undefined): string {
-  if (!value) throw new Error(`${name}가 설정되지 않았습니다 (.env 또는 셸 환경변수)`);
+  if (!value) throw new Error(`${name}가 설정되지 않았어요 (.env 또는 셸 환경변수)`);
   return value;
 }
 

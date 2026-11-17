@@ -75,7 +75,7 @@ export async function runPublishCli(argv: string[], deps: CliDeps): Promise<numb
     return 1;
   }
   if (args.check && args.publish) {
-    out("--check와 --publish는 같이 쓸 수 없습니다 — 확인만 하려면 --check, 게시하려면 --publish");
+    out("--check와 --publish는 같이 쓸 수 없어요. 확인만 하려면 --check, 게시하려면 --publish를 붙여 주세요");
     return 1;
   }
 
@@ -95,7 +95,7 @@ export async function runPublishCli(argv: string[], deps: CliDeps): Promise<numb
   const notJpeg = files.filter((f) => !isJpeg(f.bytes)).map((f) => f.name);
   if (notJpeg.length) {
     // sharp가 의존성에 없어 변환하지 않는다. Figma 내보내기에서 JPG를 고르면 된다.
-    errors.push(`JPEG가 아닌 파일: ${notJpeg.join(", ")} — Figma에서 JPG로 내보내 주세요 (Instagram API는 JPEG만 받습니다)`);
+    errors.push(`JPEG가 아닌 파일: ${notJpeg.join(", ")} — Figma에서 JPG로 내보내 주세요 (Instagram API는 JPEG만 받아요)`);
   }
   if (errors.length) {
     for (const e of errors) out(`✗ ${e}`);
@@ -111,12 +111,12 @@ export async function runPublishCli(argv: string[], deps: CliDeps): Promise<numb
   }
 
   if (!args.publish && !args.check) {
-    out("드라이런 — 아무것도 올리지 않았습니다. 실제 API로 확인하려면 --check, 게시하려면 --publish를 붙이세요.");
+    out("드라이런이라 아무것도 올리지 않았어요. 실제 API로 확인하려면 --check, 게시하려면 --publish를 붙여 주세요.");
     return 0;
   }
   // --check는 공개되지 않으니 확인을 묻지 않는다(이미지는 Storage 공개 버킷에는 올라간다).
-  if (args.publish && !args.yes && !(await deps.confirm("이대로 인스타에 게시할까요? 게시하면 바로 공개됩니다 (y/N) "))) {
-    out("취소했습니다.");
+  if (args.publish && !args.yes && !(await deps.confirm("이대로 인스타에 게시할까요? 게시하면 바로 공개돼요 (y/N) "))) {
+    out("취소했어요.");
     return 1;
   }
 
@@ -129,12 +129,12 @@ export async function runPublishCli(argv: string[], deps: CliDeps): Promise<numb
 
   if (args.check) {
     const prep = await deps.prepare({ imageUrls, caption, locationId: args.locationId });
-    out(`확인 끝 — ${prep.itemCount}장 캐러셀이 게시 가능한 상태입니다(컨테이너 ${prep.creationId}). 게시하지 않았고, 컨테이너는 24시간 뒤 사라집니다.`);
+    out(`확인 끝. ${prep.itemCount}장 캐러셀을 게시할 수 있어요(컨테이너 ${prep.creationId}). 게시하지 않았고, 컨테이너는 24시간 뒤 사라져요.`);
     return 0;
   }
 
   const res = await deps.publish({ imageUrls, caption, locationId: args.locationId });
-  out(`게시했습니다: ${res.permalink ?? `media ${res.mediaId}`}`);
+  out(`게시했어요: ${res.permalink ?? `media ${res.mediaId}`}`);
   return 0;
 }
 
