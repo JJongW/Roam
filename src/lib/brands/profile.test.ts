@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   BRAND_FIELDS,
+  confirmedItems,
   publicValue,
   staleOnNewAppearance,
   workerMayWrite,
@@ -111,5 +112,18 @@ describe("planFieldMerge", () => {
       move: ["items"],
       drop: ["links"],
     });
+  });
+});
+
+describe("DM 품목 자리에 넣을 값(confirmedItems)", () => {
+  it("공식 자료, 에디터 확인, 작가 확인 칸만 품목으로 쓴다", () => {
+    for (const status of ["collected", "reviewed", "artist_confirmed"] as const)
+      expect(confirmedItems({ status, value: ["엽서", "스티커"] })).toEqual(["엽서", "스티커"]);
+  });
+
+  it("AI 초안과 다시 볼 칸, 빈 칸은 빈 목록이라 DM에서 그 문장이 빠진다", () => {
+    expect(confirmedItems({ status: "ai_draft", value: ["엽서"] })).toEqual([]);
+    expect(confirmedItems({ status: "stale", value: ["엽서"] })).toEqual([]);
+    expect(confirmedItems(undefined)).toEqual([]);
   });
 });

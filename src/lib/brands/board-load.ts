@@ -2,6 +2,7 @@ import "server-only";
 import type { Repository } from "@/lib/repositories/types";
 import { buildRow, CONFIDENCE_SOURCE_PREFIX, HANDLE_CONFIDENCES, type BoardRow, type BoardSource, type HandleConfidence } from "@/lib/brands/board";
 import type { ImportTarget } from "@/lib/brands/handle-import";
+import { confirmedItems } from "@/lib/brands/profile";
 import { getOutreachStore, subjectsFromGraph, type OutreachMode } from "@/lib/brands/outreach-store";
 import type { Exhibition, ProfileField } from "@/lib/types";
 
@@ -52,10 +53,8 @@ export async function loadContactBoard(
       { value: exhibitorById.get(exhibitorId)?.instagramUrl, confidence: "official" as const },
     ];
   };
-  const itemsOf = (exhibitorId: string) => {
-    const v = fieldOf.get(`${exhibitorId}:items`)?.value;
-    return Array.isArray(v) ? v.filter((x): x is string => typeof x === "string") : [];
-  };
+  // DM 품목 자리는 확인된 칸만. AI 초안이 "공식 계정에 소개된" 사실처럼 브랜드에게 나가지 않게 한다.
+  const itemsOf = (exhibitorId: string) => confirmedItems(fieldOf.get(`${exhibitorId}:items`));
 
   const nameOf = new Map(participants.map((p) => [p.id, p.displayName]));
   const rows: BoardRow[] = subjects.map((s) => {
