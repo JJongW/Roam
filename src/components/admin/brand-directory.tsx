@@ -56,6 +56,7 @@ export function BrandDirectory({
   brands: BrandSummary[];
   unlinkedCount: number;
   exhibitions: { id: string; name: string }[];
+  /** 출전 id → 연락 상태. 저장된 행이 없는 출전은 빠져 있고 "보내지 않음"으로 본다. */
   contactStatus: Record<string, BrandContactStatus>;
 }) {
   const [q, setQ] = useState("");
@@ -323,7 +324,8 @@ function BrandList({ rows, contactStatus }: { rows: BrandSummary[]; contactStatu
     <Card className="divide-y divide-border p-0">
       {rows.map((b) => {
         const latest = b.appearances[0];
-        const status = latest ? contactStatus[latest.boothId] ?? "not-sent" : null;
+        // 연락 상태는 출전(participantId) 열쇠다. 최근 출전의 상태를 보여 준다.
+        const status = latest ? (latest.participantId && contactStatus[latest.participantId]) || "not-sent" : null;
         return (
           <Link
             key={b.exhibitorId}

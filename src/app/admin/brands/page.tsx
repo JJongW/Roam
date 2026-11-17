@@ -1,6 +1,7 @@
 import { getRepository } from "@/lib/repositories";
 import { loadBrandData } from "@/lib/brands/load";
 import { buildBrandDirectory } from "@/lib/brands/directory";
+import { getOutreachStore, subjectsFromGraph } from "@/lib/brands/outreach-store";
 import { BrandDirectory } from "@/components/admin/brand-directory";
 
 export const metadata = { title: "브랜드" };
@@ -9,7 +10,10 @@ export const metadata = { title: "브랜드" };
 export default async function AdminBrandsPage() {
   const repo = await getRepository();
   const data = await loadBrandData(repo);
-  const contacts = await repo.listBrandContacts();
+  // 연락 배지는 연락 보드와 같은 저장 길목에서 읽는다(출전 열쇠). 옛 brand_contact(부스 열쇠)를
+  // 직접 읽으면 출전 허락(participant_permission)에 쓴 상태가 안 보여 늘 "보내지 않음"이 된다.
+  const store = await getOutreachStore(repo);
+  const statuses = await store.statuses(subjectsFromGraph(data.graph));
   const { brands, unlinked } = buildBrandDirectory(data);
   const exhibitionOptions = [...data.exhibitions]
     .sort((a, b) => b.startDate.localeCompare(a.startDate))
@@ -19,7 +23,7 @@ export default async function AdminBrandsPage() {
       brands={brands}
       unlinkedCount={unlinked.length}
       exhibitions={exhibitionOptions}
-      contactStatus={Object.fromEntries(contacts.map((c) => [c.boothId, c.status]))}
+      contactStatus={Object.fromEntries(statuses)}
     />
   );
 }
