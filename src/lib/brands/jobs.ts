@@ -116,9 +116,9 @@ export async function enqueueExhibitionDrafts(
   opts: { actor: string | null; onlyNeeded?: boolean },
 ): Promise<{ brands: number; complete: number; jobIds: string[] }> {
   const graph = await repo.loadExhibitorGraph();
-  const inEx = new Set(graph.participants.filter((p) => p.exhibitionId === exhibitionId).map((p) => p.id));
-  const primary = new Set(graph.assignments.filter((a) => a.role === "primary" && inEx.has(a.participantId)).map((a) => a.participantId));
-  const ids = [...new Set(graph.participants.filter((p) => primary.has(p.id)).map((p) => p.exhibitorId))];
+  // 그 박람회의 출전 브랜드 전부. 부스 번호가 아직 없는 출전(브랜드 먼저 인입)도 넣는다 — 예전엔 대표 부스가
+  // 있는 출전만 골라 새해준비상점 251곳이 초안 0건이었다. 덮어쓰기는 조건부 쓰기가 막는다(draft.ts).
+  const ids = [...new Set(graph.participants.filter((p) => p.exhibitionId === exhibitionId).map((p) => p.exhibitorId))];
   let targets = ids;
   if (opts.onlyNeeded !== false && ids.length) {
     const fields = await repo.listProfileFields({ exhibitorIds: ids });

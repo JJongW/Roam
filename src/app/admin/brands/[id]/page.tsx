@@ -23,8 +23,9 @@ export default async function BrandProfilePage({ params }: Props) {
   const brand = buildBrandDirectory(data).brands.find((b) => b.exhibitorId === exhibitorId);
   if (!brand) notFound();
 
-  const boothIds = brand.appearances.map((a) => a.boothId);
-  const participantIds = brand.appearances.flatMap((a) => (a.participantId ? [a.participantId] : []));
+  // 출전이 열쇠다. 부스는 대표 배정이 있는 출전에만 있다(브랜드 먼저 인입한 출전은 부스가 없다).
+  const boothIds = brand.appearances.flatMap((a) => (a.boothId ? [a.boothId] : []));
+  const participantIds = brand.appearances.map((a) => a.participantId);
   const [participantFields, notes, store, queuedJobs] = await Promise.all([
     repo.listProfileFields({ participantIds }),
     repo.listNotesByBoothIds(boothIds),
@@ -41,7 +42,7 @@ export default async function BrandProfilePage({ params }: Props) {
   const linkSrc: string[] = [];
   const seen = new Set<string>();
   for (const a of brand.appearances) {
-    const b = boothById.get(a.boothId);
+    const b = a.boothId ? boothById.get(a.boothId) : undefined;
     if (!b) continue;
     for (const [kind, url] of [
       ["instagram", b.instagramUrl],
@@ -58,7 +59,7 @@ export default async function BrandProfilePage({ params }: Props) {
   if (links.length) suggestions.push({ field: "links", value: links, sources: [...new Set(linkSrc)] });
   // 공식 소개 원문(합성 소개 제외). 가져오면 원문만 공식 자료로 남고, 말투 변환은 워커 몫이다.
   const intro = pickIntro(
-    brand.appearances.map((a) => boothById.get(a.boothId)).filter((b): b is NonNullable<typeof b> => !!b),
+    brand.appearances.map((a) => (a.boothId ? boothById.get(a.boothId) : undefined)).filter((b): b is NonNullable<typeof b> => !!b),
   );
   if (intro) suggestions.push({ field: "intro", value: { original: intro.text }, sources: [intro.source] });
   const aliasNames = [...new Set(brand.appearances.map((a) => a.name))].filter((n) => n !== brand.name);
@@ -66,7 +67,9 @@ export default async function BrandProfilePage({ params }: Props) {
     suggestions.push({
       field: "aliases",
       value: aliasNames,
-      sources: brand.appearances.filter((a) => aliasNames.includes(a.name)).map((a) => `roam:booth/${a.boothId}`),
+      sources: brand.appearances
+        .filter((a) => aliasNames.includes(a.name))
+        .map((a) => (a.boothId ? `roam:booth/${a.boothId}` : `roam:participant/${a.participantId}`)),
     });
 
   // 연락은 출전(브랜드 × 박람회) 단위다 — 부스 없는 출전(브랜드 먼저 인입)도 보여 준다.

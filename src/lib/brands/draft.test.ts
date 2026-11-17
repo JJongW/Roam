@@ -149,6 +149,28 @@ describe("runBrandProfileDraft", () => {
     expect(r.written.map((w) => w.field)).not.toContain("items");
   });
 
+  it("부스 없는 출전은 인입이 출처와 함께 모은 소개 원문을 자료로 쓰고, 출처가 그 URL만 가리킬 수 있다", async () => {
+    const { repo } = await setup();
+    const graph = (globalThis as unknown as { __roamStore: { exhibitorGraph: { exhibitors: unknown[]; participants: unknown[] } } }).__roamStore.exhibitorGraph;
+    graph.exhibitors.push({ id: "ex_nb", canonicalName: "새해 공방" });
+    graph.participants.push({ id: "pt_nb", exhibitorId: "ex_nb", exhibitionId: "exh_house_archive_2026", displayName: "새해 공방" });
+    const official = "https://fair.example/brand/1";
+    await repo.upsertProfileField({ subject: { exhibitorId: "ex_nb" }, field: "intro", value: { original: "손그림 엽서와 달력을 만듭니다." }, sources: [official], status: "collected", actor: "system:brands-intake" });
+    const draftFields = vi.fn<NonNullable<DraftDeps["draftFields"]>>(async () => ({
+      fields: [
+        { field: "items", value: ["엽서"], sources: [official] },
+        { field: "texture", value: { tags: ["일상툰"] }, sources: ["roam:booth/b_x"] }, // 자료에 없는 출처
+      ],
+    }));
+    const r = await runBrandProfileDraft(repo, "ex_nb", { draftFields });
+    if ("error" in r) throw new Error(r.error);
+    expect(draftFields).toHaveBeenCalledTimes(1);
+    expect(draftFields.mock.calls[0][0].prompt).toContain("손그림 엽서와 달력을 만듭니다.");
+    const fields = await repo.listProfileFields({ exhibitorIds: ["ex_nb"] });
+    expect(fields.find((f) => f.field === "items")).toMatchObject({ status: "ai_draft", sources: [official] });
+    expect(fields.find((f) => f.field === "texture")).toBeUndefined();
+  });
+
   it("정체 한 줄은 근거 칸이 없으면 쓰지 않는다", async () => {
     const { repo, real, exhibitorOf } = await setup();
     // 실제 소개가 없는(합성 소개뿐인) 브랜드는 자료가 없어 LLM을 부르지 않는다.

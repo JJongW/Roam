@@ -75,6 +75,16 @@ describe("잡은 박람회 단위로만", () => {
     expect(await enqueueBrandDrafts(repo, [ha[1]], { actor: null, reason: "버튼" })).toEqual({ jobIds: [], brands: 0 });
   });
 
+  it("부스 번호가 아직 없는 출전(브랜드 먼저 인입)도 초안 대상이다", async () => {
+    const { repo } = await backfilled();
+    const graph = (globalThis as unknown as { __roamStore: { exhibitorGraph: ExhibitorGraph } }).__roamStore.exhibitorGraph;
+    graph.exhibitors.push({ id: "ex_boothless", canonicalName: "부스 없는 브랜드" });
+    graph.participants.push({ id: "pt_boothless", exhibitorId: "ex_boothless", exhibitionId: "exh_house_archive_2026", displayName: "부스 없는 브랜드" });
+    await enqueueExhibitionDrafts(repo, "exh_house_archive_2026", { actor: "ted" });
+    const queued = (await repo.listJobs({ type: BRAND_DRAFT_JOB, status: "queued", limit: 100 })).flatMap((j) => j.payload.exhibitorIds as string[]);
+    expect(queued).toContain("ex_boothless");
+  });
+
   it("인입(박람회 하나)이 기존 브랜드에 새 출전을 이으면 그 박람회 것만 잡에 넣고 stale로 돌린다", async () => {
     const { repo } = await backfilled();
     const graph = await repo.loadExhibitorGraph();

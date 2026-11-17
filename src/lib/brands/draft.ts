@@ -276,6 +276,21 @@ export async function runBrandProfileDraft(
   if (wanted.length === 0) return result;
 
   const materials: Material[] = booths.map(boothMaterial).filter((m): m is Material => !!m);
+  // 부스가 없는 출전(브랜드 먼저 인입)은 부스 자료가 없다. 인입이 공식 출처와 함께 모아 둔 소개 원문을
+  // 자료로 쓴다 — 출처가 그 URL이라 초안의 sources도 그 URL만 가리킬 수 있다. 출처 없는 원문은 쓰지 않는다.
+  const introField = cur("intro");
+  const introOriginal = (introField?.value as { original?: unknown } | null | undefined)?.original;
+  const introSource = introField?.sources.find((s) => /^https?:\/\//.test(s));
+  if (
+    introField &&
+    introField.status !== "ai_draft" &&
+    introField.status !== "stale" &&
+    typeof introOriginal === "string" &&
+    introOriginal.trim() &&
+    introSource &&
+    !materials.some((m) => m.id === introSource)
+  )
+    materials.push({ id: introSource, text: `공식 소개: ${introOriginal.trim()}` });
   if (deps.fetchText) {
     const urls = [...new Set(booths.map((b) => b.websiteUrl).filter((u): u is string => !!u && mayFetch(u)))].slice(0, 3);
     for (const url of urls) {

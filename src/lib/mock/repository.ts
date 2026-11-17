@@ -420,7 +420,16 @@ export class MockRepository implements Repository {
     for (const c of plan.candidates) {
       const exhibitorId = ex(c.target);
       if (store().linkCandidates.some((x) => x.boothId === c.boothId && x.exhibitorId === exhibitorId)) continue;
-      store().linkCandidates.push({ id: uid("xlc"), boothId: c.boothId, exhibitorId, reason: c.reason, status: "pending", createdAt: now() });
+      const primary = plan.assignments.find((a) => a.boothId === c.boothId && a.role === "primary");
+      store().linkCandidates.push({
+        id: uid("xlc"),
+        boothId: c.boothId,
+        participantId: primary ? pt(primary.participantRef) : null,
+        exhibitorId,
+        reason: c.reason,
+        status: "pending",
+        createdAt: now(),
+      });
       candidates++;
     }
     return {
@@ -510,9 +519,10 @@ export class MockRepository implements Repository {
     if (!c || c.status !== "pending") return c ?? null;
     if (decision === "approved") {
       const gph = store().exhibitorGraph;
-      const asg = gph.assignments.find((a) => a.boothId === c.boothId && a.role === "primary");
-      if (!asg) throw new Error("이 부스는 아직 참가사에 배정되지 않았습니다 — 백필부터");
-      const from = gph.participants.find((p) => p.id === asg.participantId)!.exhibitorId;
+      const participantId =
+        c.participantId ?? gph.assignments.find((a) => a.boothId === c.boothId && a.role === "primary")?.participantId;
+      if (!participantId) throw new Error("이 부스는 아직 참가사에 배정되지 않았습니다 — 백필부터");
+      const from = gph.participants.find((p) => p.id === participantId)!.exhibitorId;
       const to = c.exhibitorId;
       if (from !== to) {
         const outreach = await this.hasParticipantOutreach();
