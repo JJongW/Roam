@@ -8858,6 +8858,264 @@
    "tags": [
     "cs-facility"
    ]
+  },
+  {
+   "code": "A340",
+   "name": "캘리포니아 올리브 협회",
+   "hall": "A홀(1층)",
+   "category": "기타",
+   "categorySlug": "cs-etc",
+   "kind": "exhibitor",
+   "tags": [
+    "cs-etc"
+   ],
+   "logoUrl": "/booths/cafeshow-2026/logo/A340.webp"
+  },
+  {
+   "code": "A343",
+   "name": "손스마켓메이커즈",
+   "hall": "A홀(1층)",
+   "category": "기타",
+   "categorySlug": "cs-etc",
+   "kind": "exhibitor",
+   "tags": [
+    "cs-etc"
+   ],
+   "logoUrl": "/booths/cafeshow-2026/logo/A343.webp"
+  },
+  {
+   "code": "A347",
+   "name": "챌린지 휘핑크림",
+   "hall": "A홀(1층)",
+   "category": "원부재료(업계용)",
+   "categorySlug": "cs-ingredients",
+   "kind": "exhibitor",
+   "tags": [
+    "cs-ingredients"
+   ]
+  },
+  {
+   "code": "A424",
+   "name": "LOQUAT COFFEE",
+   "hall": "A홀(1층)",
+   "category": "커피",
+   "categorySlug": "cs-coffee",
+   "kind": "exhibitor",
+   "tags": [
+    "cs-coffee"
+   ]
+  },
+  {
+   "code": "A554",
+   "name": "㈜쉐프스푸드",
+   "hall": "A홀(1층)",
+   "category": "기타",
+   "categorySlug": "cs-etc",
+   "kind": "exhibitor",
+   "tags": [
+    "cs-etc"
+   ],
+   "logoUrl": "/booths/cafeshow-2026/logo/A554.webp"
+  },
+  {
+   "code": "A651",
+   "name": "보리커피 임누",
+   "hall": "A홀(1층)",
+   "category": "커피",
+   "categorySlug": "cs-coffee",
+   "kind": "exhibitor",
+   "tags": [
+    "cs-coffee"
+   ],
+   "company": "MALZKAFFEE IM NU",
+   "logoUrl": "/booths/cafeshow-2026/logo/A651.webp"
+  },
+  {
+   "code": "A841",
+   "name": "(주)돌핀",
+   "hall": "A홀(1층)",
+   "category": "기타",
+   "categorySlug": "cs-etc",
+   "kind": "exhibitor",
+   "tags": [
+    "cs-etc"
+   ],
+   "company": "DOLPHIN CO., LTD."
+  },
+  {
+   "code": "B363",
+   "name": "루하루",
+   "hall": "B홀(1층)",
+   "category": "기타",
+   "categorySlug": "cs-etc",
+   "kind": "exhibitor",
+   "tags": [
+    "cs-etc"
+   ],
+   "logoUrl": "/booths/cafeshow-2026/logo/B363.webp"
+  },
+  {
+   "code": "B532",
+   "name": "BOGAWANTALAWA TEA CEYLON (PVT) LTD.",
+   "hall": "B홀(1층)",
+   "category": "차",
+   "categorySlug": "cs-tea",
+   "kind": "exhibitor",
+   "tags": [
+    "cs-tea"
+   ]
+  },
+  {
+   "code": "B664",
+   "name": "주식회사 에버루트",
+   "hall": "B홀(1층)",
+   "category": "기타",
+   "categorySlug": "cs-etc",
+   "kind": "exhibitor",
+   "tags": [
+    "cs-etc"
+   ],
+   "logoUrl": "/booths/cafeshow-2026/logo/B664.webp"
+  },
+  {
+   "code": "B147",
+   "name": "차합시다",
+   "hall": "1층 로비",
+   "category": "차",
+   "categorySlug": "cs-tea",
+   "kind": "exhibitor",
+   "tags": [
+    "cs-tea"
+   ],
+   "logoUrl": "/booths/cafeshow-2026/logo/B147.webp"
+  },
+  {
+   "code": "B149",
+   "name": "타무르",
+   "hall": "1층 로비",
+   "category": "기타",
+   "categorySlug": "cs-etc",
+   "kind": "exhibitor",
+   "tags": [
+    "cs-etc"
+   ],
+   "logoUrl": "/booths/cafeshow-2026/logo/B149.webp"
+  },
+  {
+   "code": "L001",
+   "name": "네이버페이",
+   "hall": "1층 로비",
+   "category": "기타",
+   "categorySlug": "cs-etc",
+   "kind": "exhibitor",
+   "tags": [
+    "cs-etc"
+   ],
+   "logoUrl": "/booths/cafeshow-2026/logo/L001.webp"
+  },
+  {
+   "code": "L002",
+   "name": "체리스초이스 쇼케이스",
+   "hall": "A홀(1층)",
+   "category": "기타",
+   "categorySlug": "cs-etc",
+   "kind": "exhibitor",
+   "tags": [
+    "cs-etc"
+   ],
+   "company": "Cherry’s Choice Showcase"
+  },
+  {
+   "code": "L100",
+   "name": "라이프집",
+   "hall": "1층 로비",
+   "category": "기타",
+   "categorySlug": "cs-etc",
+   "kind": "exhibitor",
+   "tags": [
+    "cs-etc"
+   ],
+   "logoUrl": "/booths/cafeshow-2026/logo/L100.webp"
+  },
+  {
+   "code": "L122",
+   "name": "비타사나",
+   "hall": "1층 로비",
+   "category": "기타",
+   "categorySlug": "cs-etc",
+   "kind": "exhibitor",
+   "tags": [
+    "cs-etc"
+   ],
+   "logoUrl": "/booths/cafeshow-2026/logo/L122.webp"
+  },
+  {
+   "code": "PREVIEW",
+   "name": "크리에이터 CCC 라운지",
+   "hall": "1층 로비",
+   "category": "기타",
+   "categorySlug": "cs-etc",
+   "kind": "exhibitor",
+   "tags": [
+    "cs-etc"
+   ],
+   "company": "Creator CCC Lounge"
+  },
+  {
+   "code": "STUDIO 159",
+   "name": "빅토리아 아르두이노",
+   "hall": "1층 로비",
+   "category": "기타",
+   "categorySlug": "cs-etc",
+   "kind": "exhibitor",
+   "tags": [
+    "cs-etc"
+   ]
+  },
+  {
+   "code": "L300",
+   "name": "라이프집",
+   "hall": "3층 로비",
+   "category": "기타",
+   "categorySlug": "cs-etc",
+   "kind": "exhibitor",
+   "tags": [
+    "cs-etc"
+   ],
+   "logoUrl": "/booths/cafeshow-2026/logo/L300.webp"
+  },
+  {
+   "code": "L134",
+   "name": "짐 보관 배송 컨시어지",
+   "hall": "1층 로비",
+   "category": "편의시설",
+   "categorySlug": "cs-facility",
+   "kind": "facility",
+   "tags": [
+    "cs-facility"
+   ]
+  },
+  {
+   "code": "L332",
+   "name": "짐 보관 배송 컨시어지",
+   "hall": "3층 로비",
+   "category": "편의시설",
+   "categorySlug": "cs-facility",
+   "kind": "facility",
+   "tags": [
+    "cs-facility"
+   ]
+  },
+  {
+   "code": "STAGE-C-1",
+   "name": "무대",
+   "hall": "3층 로비",
+   "category": "편의시설",
+   "categorySlug": "cs-facility",
+   "kind": "facility",
+   "tags": [
+    "cs-facility"
+   ]
   }
  ]
 }
