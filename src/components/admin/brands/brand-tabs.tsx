@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 export function BrandTabs({ pending }: { pending: number }) {
   const pathname = usePathname();
   const onLinks = pathname.startsWith("/admin/brands/links");
+  const onContacts = pathname.startsWith("/admin/brands/contacts");
   const tab = (href: string, label: React.ReactNode, active: boolean) => (
     <Link
       href={href}
@@ -21,7 +22,8 @@ export function BrandTabs({ pending }: { pending: number }) {
   );
   return (
     <nav className="inline-flex gap-1 rounded-xl bg-secondary p-1" aria-label="브랜드 화면">
-      {tab("/admin/brands", "브랜드 목록", !onLinks)}
+      {tab("/admin/brands", "브랜드 목록", !onLinks && !onContacts)}
+      {tab("/admin/brands/contacts", "연락 현황", onContacts)}
       {tab(
         "/admin/brands/links",
         <>

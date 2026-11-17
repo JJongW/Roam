@@ -37,6 +37,9 @@ import type {
   BoothAppearance,
   BrandContact,
   BrandContactLog,
+  BrandOutreach,
+  BrandOutreachLog,
+  ParticipantPermission,
   ProfileField,
   ProfileFieldStatus,
   ProfileSubject,
@@ -51,6 +54,8 @@ import type {
   BoothNoteInput,
   BrandContactLogInput,
   BrandContactPatch,
+  BrandOutreachPatch,
+  ParticipantPermissionPatch,
   CommunityPostInput,
   EventInput,
   ExhibitionInput,
@@ -164,6 +169,31 @@ export interface Repository {
   ): Promise<BrandContact | null>;
   /** 최근 것 먼저(occurredAt 내림차순). */
   listBrandContactLogs(boothId: string): Promise<BrandContactLog[]>;
+  /** 여러 부스의 기록을 한 번에(연락 현황 보드). 순서는 정하지 않는다. */
+  listBrandContactLogsForBooths(boothIds: string[]): Promise<BrandContactLog[]>;
+
+  // 연락의 목표 모양(스키마 정규화 초안 STEP 1) — 브랜드 연락처와 VOC, 출전 허락. 부스 없이 된다.
+  // 운영은 STEP 1 적용 전까지 테이블이 없다 → hasParticipantOutreach()가 false고, 연락 보드는
+  // 옛 brand_contact로 돌아간다(lib/brands/outreach-store.ts). 이 함수들은 그때 부르지 않는다.
+  /** 목표 모양 테이블이 있나. mock은 늘 true. */
+  hasParticipantOutreach(): Promise<boolean>;
+  listParticipantPermissions(exhibitionId: string): Promise<ParticipantPermission[]>;
+  /** 보낸 키만 바꾼다. 행이 없으면 만든다. 출전이 없으면 null. 체크리스트는 applyChecklist로 합친다. */
+  upsertParticipantPermission(
+    participantId: string,
+    patch: ParticipantPermissionPatch,
+    actor: string | null,
+  ): Promise<ParticipantPermission | null>;
+  listBrandOutreach(exhibitorIds: string[]): Promise<BrandOutreach[]>;
+  /** 보낸 키만 바꾼다. 행이 없으면 만든다. 브랜드가 없으면 null. */
+  upsertBrandOutreach(exhibitorId: string, patch: BrandOutreachPatch, actor: string | null): Promise<BrandOutreach | null>;
+  /** 브랜드들의 VOC. 순서는 정하지 않는다. */
+  listBrandOutreachLogs(exhibitorIds: string[]): Promise<BrandOutreachLog[]>;
+  /** VOC 한 줄. 브랜드가 없으면 null. participantId는 그 브랜드의 출전이어야 한다. */
+  addBrandOutreachLog(
+    input: BrandContactLogInput & { exhibitorId: string; participantId?: string | null },
+    actor: string | null,
+  ): Promise<BrandOutreachLog | null>;
   /** VOC 한 줄 추가. 컨택 행이 없으면 빈 행을 먼저 만든다. 부스가 없으면 null. */
   addBrandContactLog(
     boothId: string,

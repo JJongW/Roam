@@ -4,24 +4,27 @@
 // 나중에 그 csv를 그대로 가져올 수 있게. `replied`(답은 왔는데 허락 여부는 아직)만
 // 이쪽에서 더했다.
 import type {
+  BrandOutreach,
+  ParticipantPermission,
   BrandContact,
   BrandContactChannel,
   BrandContactLogDirection,
   BrandContactLogKind,
   BrandContactStatus,
 } from "@/lib/types";
-import type { BrandContactPatch } from "@/lib/schemas";
+import type { BrandContactPatch, BrandOutreachPatch, ParticipantPermissionPatch } from "@/lib/schemas";
 
 export const CONTACT_STATUS_LABEL: Record<BrandContactStatus, string> = {
-  "not-sent": "미연락",
-  sent: "DM 보냄",
+  // 2026-11-17 연락 현황 보드에 맞춰 짧게(채널이 메일일 수도 있어 "DM 보냄"을 "보냄"으로).
+  "not-sent": "아직 안 보냄",
+  sent: "보냄",
   read: "읽음",
-  replied: "답장 받음",
+  replied: "답장",
   granted: "허락",
   partial: "일부 허락",
   declined: "거절",
-  "no-reply": "응답 없음",
-  withdrawn: "허락 철회",
+  "no-reply": "답 없음",
+  withdrawn: "철회",
 };
 
 export const CONTACT_CHANNEL_LABEL: Record<BrandContactChannel, string> = {
@@ -182,4 +185,51 @@ export function emptyContact(boothId: string, exhibitionId: string, at: string):
     createdAt: at,
     updatedAt: at,
   };
+}
+
+// --- 목표 모양(브랜드 연락처 + 출전 허락) 합치기 — mock과 Supabase가 같은 규칙을 쓴다 ---------
+
+export function emptyPermission(participantId: string, exhibitionId: string, at: string): ParticipantPermission {
+  return {
+    participantId,
+    exhibitionId,
+    status: "not-sent",
+    sentAt: null,
+    reply: null,
+    allowedUse: [],
+    photoSource: null,
+    textSource: null,
+    notes: null,
+    checklist: {},
+    updatedBy: null,
+    createdAt: at,
+    updatedAt: at,
+  };
+}
+
+export function mergePermissionPatch(
+  prev: ParticipantPermission,
+  patch: ParticipantPermissionPatch,
+  actor: string | null,
+  at: string,
+): ParticipantPermission {
+  const { checklist, ...fields } = patch;
+  const next: ParticipantPermission = { ...prev, updatedBy: actor, updatedAt: at };
+  for (const [k, v] of Object.entries(fields)) {
+    if (v !== undefined) (next as unknown as Record<string, unknown>)[k] = v;
+  }
+  if (checklist) next.checklist = applyChecklist(prev.checklist, checklist, at);
+  return next;
+}
+
+export function emptyOutreach(exhibitorId: string, at: string): BrandOutreach {
+  return { exhibitorId, channel: null, handle: null, doNotContact: false, notes: null, updatedBy: null, createdAt: at, updatedAt: at };
+}
+
+export function mergeOutreachPatch(prev: BrandOutreach, patch: BrandOutreachPatch, actor: string | null, at: string): BrandOutreach {
+  const next: BrandOutreach = { ...prev, updatedBy: actor, updatedAt: at };
+  if (patch.channel !== undefined) next.channel = patch.channel;
+  if (patch.handle !== undefined) next.handle = patch.handle;
+  if (patch.doNotContact !== undefined) next.doNotContact = patch.doNotContact;
+  return next;
 }

@@ -278,3 +278,13 @@ export const DWELL_TIERS: { maxArea: number; minutes: number }[] = [
 ];
 /** 정지 수 상한 추정에 쓰는 최소 체류(분) — 가장 빽빽한(모두 소형) 경우 기준. */
 export const MIN_DWELL_MINUTES = 2;
+
+// --- 브랜드 연락(사진 허락 DM) 보내는 곳 -------------------------------------
+// 연락은 늘 Roam 이름으로 나간다. 운영자 개인 계정이나 개인 메일로 보내지 않는다
+// (2026-11-17 Ted: "ted계정으로 발송하면 안 되지, 이메일도 우리 이메일로 해야지").
+// 메일 주소는 약관, 개인정보처리방침의 문의 주소와 같은 Roam 팀 메일이다.
+// 보드는 보내지 않는다 — 문구를 복사하거나 메일 초안(mailto)만 연다.
+export const OUTREACH_SENDER = {
+  instagram: "withromi.con",
+  email: "roam.ai.kr@gmail.com",
+} as const;

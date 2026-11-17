@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { AtSign, ExternalLink, Loader2, Pencil } from "lucide-react";
 import { toast } from "sonner";
@@ -7,14 +8,26 @@ import { api, ApiClientError } from "@/lib/api/client";
 import type { BrandAppearance, BrandSummary } from "@/lib/brands/directory";
 import { BRAND_FIELDS, PARTICIPANT_FIELDS, summarizeFill } from "@/lib/brands/profile";
 import { REACTION_LABEL, type ReactionCounts } from "@/lib/brands/reactions";
-import type { BrandContact, BrandContactStatus, ProfileField } from "@/lib/types";
+import type { BrandContactStatus, ProfileField } from "@/lib/types";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/ui/chip";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { StatusBadge } from "@/components/admin/brand-directory";
-import { BrandContactSheet } from "@/components/admin/brand-contact-sheet";
+import { BrandContactSheet, type ContactSheetTarget } from "@/components/admin/brand-contact-sheet";
 import { FieldCard } from "@/components/admin/brands/field-card";
+
+/** 연락 탭 한 줄 — 출전(브랜드 × 박람회). 부스는 있으면 붙는다. */
+export interface Participation {
+  participantId: string;
+  exhibitionName: string;
+  startDate: string;
+  code: string | null;
+  name: string;
+  instagramUrl: string | null;
+  status: BrandContactStatus;
+  writable: boolean;
+}
 
 export interface Suggestion {
   field: string;
@@ -29,7 +42,7 @@ export function BrandProfile({
   suggestions,
   reactions,
   draftQueued,
-  contactStatus: initialContactStatus,
+  participations,
 }: {
   draftQueued: boolean;
   brand: BrandSummary;
@@ -37,12 +50,14 @@ export function BrandProfile({
   participantFields: ProfileField[];
   suggestions: Suggestion[];
   reactions: ReactionCounts;
-  contactStatus: Record<string, BrandContactStatus>;
+  participations: Participation[];
 }) {
   const [brandFields, setBrandFields] = useState(initialBrandFields);
   const [participantFields, setParticipantFields] = useState(initialParticipantFields);
-  const [contactStatus, setContactStatus] = useState(initialContactStatus);
-  const [contactTarget, setContactTarget] = useState<{ brand: string; appearance: BrandAppearance } | null>(null);
+  const [contactStatus, setContactStatus] = useState<Record<string, BrandContactStatus>>(() =>
+    Object.fromEntries(participations.map((p) => [p.participantId, p.status])),
+  );
+  const [contactTarget, setContactTarget] = useState<ContactSheetTarget | null>(null);
 
   const fill = summarizeFill(brandFields);
   const artist = brandFields.find((f) => f.field === "artistName")?.value;
@@ -147,19 +162,37 @@ export function BrandProfile({
         </TabsContent>
 
         <TabsContent value="contact" className="space-y-3 pt-3">
-          <p className="text-sm text-muted-foreground">허락은 박람회마다 따로 받아요. 출전마다 연락 기록이 따로 있어요.</p>
+          <p className="text-sm text-muted-foreground">
+            허락은 박람회마다 따로 받아요. 계정과 오간 말은 브랜드 하나에 모여요. 박람회 하나를 한눈에 보려면{" "}
+            <Link href="/admin/brands/contacts" className="underline">
+              연락 현황
+            </Link>
+            에서 봐요.
+          </p>
           <Card className="divide-y divide-border p-0">
-            {brand.appearances.map((a) => (
-              <div key={a.boothId} className="flex flex-wrap items-center gap-3 px-4 py-3">
+            {participations.length === 0 && <p className="px-4 py-3 text-sm text-muted-foreground">이 브랜드의 출전이 없어요.</p>}
+            {participations.map((a) => (
+              <div key={a.participantId} className="flex flex-wrap items-center gap-3 px-4 py-3">
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-semibold">{a.exhibitionName}</p>
                   <p className="text-xs text-muted-foreground">
-                    {a.code ? `부스 ${a.code}, ` : ""}
+                    {a.code ? `부스 ${a.code}, ` : "부스 아직 없음, "}
                     {a.name}
                   </p>
                 </div>
-                <StatusBadge status={contactStatus[a.boothId] ?? "not-sent"} />
-                <Button size="sm" variant="outline" onClick={() => setContactTarget({ brand: brand.name, appearance: a })}>
+                <StatusBadge status={contactStatus[a.participantId] ?? "not-sent"} />
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() =>
+                    setContactTarget({
+                      brand: brand.name,
+                      participantId: a.participantId,
+                      subtitle: `${a.exhibitionName}${a.code ? `, 부스 ${a.code}` : ""}`,
+                      defaultHandle: a.instagramUrl,
+                    })
+                  }
+                >
                   연락 기록
                 </Button>
               </div>
@@ -171,7 +204,7 @@ export function BrandProfile({
       <BrandContactSheet
         target={contactTarget}
         onClose={() => setContactTarget(null)}
-        onSaved={(c: BrandContact) => setContactStatus((m) => ({ ...m, [c.boothId]: c.status }))}
+        onChanged={(participantId, view) => setContactStatus((m) => ({ ...m, [participantId]: view.status }))}
       />
     </div>
   );
