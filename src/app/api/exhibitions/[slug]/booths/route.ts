@@ -1,5 +1,6 @@
 import { getRepository } from "@/lib/repositories";
 import { ok } from "@/lib/api/http";
+import { withBrandIds } from "@/lib/booth/brand-ids";
 
 type Ctx = { params: Promise<{ slug: string }> };
 
@@ -14,5 +15,6 @@ export async function GET(req: Request, { params }: Ctx) {
     cursor: searchParams.get("cursor") ?? undefined,
     limit: Number(searchParams.get("limit")) || undefined,
   });
-  return ok(page);
+  // 대표 브랜드 id(exhibitorId, participantId)를 붙인다 — 이번 페이지 부스만.
+  return ok({ ...page, data: await withBrandIds(repo, page.data) });
 }

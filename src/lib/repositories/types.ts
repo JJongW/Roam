@@ -219,6 +219,10 @@ export interface Repository {
   /** 이 부스(대표 배정)의 브랜드 공식 소개 칸. 방문객 화면이 부르므로 서비스 롤로 읽고,
    *  앱에 보일지(publicValue)는 호출부가 brandIntroFromField로 거른다. 없으면 null. */
   getBrandIntroFieldForBooth(boothId: string): Promise<ProfileField | null>;
+  /** 부스 → 대표(primary) 참가와 브랜드. 배정 없는 부스는 빠진다. 실패는 throw. */
+  listPrimaryBrandLinks(
+    boothIds: string[],
+  ): Promise<Record<string, { exhibitorId: string; participantId: string }>>;
 
   listEnrichmentCandidates(opts?: {
     exhibitionId?: string;

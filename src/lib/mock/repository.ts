@@ -607,6 +607,20 @@ export class MockRepository implements Repository {
     return st.profileFields.length < before;
   }
 
+  async listPrimaryBrandLinks(
+    boothIds: string[],
+  ): Promise<Record<string, { exhibitorId: string; participantId: string }>> {
+    const gph = store().exhibitorGraph;
+    const want = new Set(boothIds);
+    const out: Record<string, { exhibitorId: string; participantId: string }> = {};
+    for (const a of gph.assignments) {
+      if (a.role !== "primary" || !want.has(a.boothId)) continue;
+      const p = gph.participants.find((x) => x.id === a.participantId);
+      if (p) out[a.boothId] = { exhibitorId: p.exhibitorId, participantId: p.id };
+    }
+    return out;
+  }
+
   async getBrandIntroFieldForBooth(boothId: string): Promise<ProfileField | null> {
     const gph = store().exhibitorGraph;
     const a = gph.assignments.find((x) => x.boothId === boothId && x.role === "primary");

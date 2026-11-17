@@ -110,6 +110,11 @@ export interface Booth {
   kind?: BoothKind;
   name: string;
   company: string;
+  /** 대표 브랜드(exhibitor.id). 부스 API 응답에만 붙인다(lib/booth/brand-ids.ts) — 저장소
+   *  읽기는 채우지 않는다. 브랜드 하트, 브랜드 알림, 다음 박람회 잇기의 열쇠. 배정 전이면 없음. */
+  exhibitorId?: string;
+  /** 대표 참가(exhibition_participant.id). 위와 같다. */
+  participantId?: string;
   /** Co-located exhibitors sharing this booth code (e.g. a country pavilion or
    *  a shared indie stand). Surfaced in search so any of
    *  them resolves to this booth, even though the map shows one name. */

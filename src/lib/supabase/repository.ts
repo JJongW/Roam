@@ -1668,6 +1668,26 @@ export class SupabaseRepository implements Repository {
     return mapProfileField(wrote(res, "프로필 칸 저장") as Row);
   }
 
+  async listPrimaryBrandLinks(
+    boothIds: string[],
+  ): Promise<Record<string, { exhibitorId: string; participantId: string }>> {
+    const db = createServiceClient();
+    const rows = await inChunks<Row>(boothIds, "부스 대표 브랜드", (slice) =>
+      db
+        .from("booth_participant")
+        .select("booth_id, participant_id, participant:participant_id(exhibitor_id)")
+        .eq("role", "primary")
+        .in("booth_id", slice),
+    );
+    const out: Record<string, { exhibitorId: string; participantId: string }> = {};
+    for (const r of rows) {
+      const exhibitorId = optStr(((r.participant ?? null) as Row | null)?.exhibitor_id);
+      if (!exhibitorId) continue;
+      out[str(r.booth_id)] = { exhibitorId, participantId: str(r.participant_id) };
+    }
+    return out;
+  }
+
   async getBrandIntroFieldForBooth(boothId: string): Promise<ProfileField | null> {
     const db = createServiceClient();
     const { data: asg, error } = await db
