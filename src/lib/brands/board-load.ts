@@ -1,6 +1,6 @@
 import "server-only";
 import type { Repository } from "@/lib/repositories/types";
-import { buildRow, CONFIDENCE_SOURCE_PREFIX, HANDLE_CONFIDENCES, type BoardRow, type BoardSource, type HandleConfidence } from "@/lib/brands/board";
+import { buildRow, CONFIDENCE_SOURCE_PREFIX, HANDLE_CONFIDENCES, handleCandidates, type BoardRow, type HandleConfidence } from "@/lib/brands/board";
 import type { ImportTarget } from "@/lib/brands/handle-import";
 import { confirmedItems } from "@/lib/brands/profile";
 import { getOutreachStore, subjectsFromGraph, type OutreachMode } from "@/lib/brands/outreach-store";
@@ -46,13 +46,6 @@ export async function loadContactBoard(
     return url ? { url, confidence: confidenceFromSources(links.sources) } : null;
   };
 
-  const brandHandles = (exhibitorId: string): BoardSource["handles"] => {
-    const ig = profileInstagram(exhibitorId);
-    return [
-      ...(ig ? [{ value: ig.url, confidence: ig.confidence }] : []),
-      { value: exhibitorById.get(exhibitorId)?.instagramUrl, confidence: "official" as const },
-    ];
-  };
   // DM 품목 자리는 확인된 칸만. AI 초안이 "공식 계정에 소개된" 사실처럼 브랜드에게 나가지 않게 한다.
   const itemsOf = (exhibitorId: string) => confirmedItems(fieldOf.get(`${exhibitorId}:items`));
 
@@ -68,8 +61,12 @@ export async function loadContactBoard(
         view: st?.view ?? null,
         writable: st?.writable ?? false,
         logs: st?.logs ?? [],
-        // 브랜드 연락처(view.handle)가 먼저고(buildRow), 그다음 부스 링크, 브랜드 프로필, 브랜드 공식 링크.
-        handles: [...(booth ? [{ value: booth.instagramUrl, confidence: "official" as const }] : []), ...brandHandles(s.exhibitorId)],
+        // 브랜드가 먼저, 부스는 나중(handleCandidates) — 브랜드와 부스 인스타가 다른 23곳에서 부스 계정으로 DM이 가지 않게 한다.
+        handles: handleCandidates({
+          profile: profileInstagram(s.exhibitorId),
+          brandOfficial: exhibitorById.get(s.exhibitorId)?.instagramUrl,
+          booth: booth?.instagramUrl,
+        }),
         items: itemsOf(s.exhibitorId),
       },
       today,
