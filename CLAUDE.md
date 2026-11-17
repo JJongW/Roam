@@ -62,8 +62,10 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
   실패는 재시도 안 함. 설정·Meta 제약 `docs/decisions/2026-10-14_instagram-comment-auto-dm.md`.
   토큰(60일)은 cron `/api/cron/ig-token-refresh`가 7일마다 갱신해 `ig_token`(0059)에 두고,
   웹훅·게시 CLI는 `ig_token` > env 순으로 읽는다(`lib/instagram/token.ts`).
-- **인스타 카드뉴스 자동 게시**: `npm run ig:publish -- --dir <JPG 폴더> --caption <캡션.txt> [--check | --publish]`
-  — 기본 드라이런, `--check`는 게시 직전(캐러셀 FINISHED)까지만 실제 API 확인, `--publish`면 공개 버킷 `ig-publish`에
+- **인스타 카드뉴스 자동 게시**: `npm run ig:publish -- --dir <JPG 폴더> --caption <캡션.txt> (--brands <브랜드.json> | --no-brands) [--check | --publish]`
+  — **허락 문**: 게시물에 나온 브랜드를 `publish-brands.v1` 파일(출전 id와 용도)로 밝히거나, 없으면 `--no-brands`.
+  허락 기록(participant_permission granted/partial + 맞는 allowed_use), 연락 금지, 내려 달라는 요청을 읽어 걸리면
+  드라이런부터 멈춘다(`src/lib/instagram/permission-gate.ts`, 읽기만). 기본 드라이런, `--check`는 게시 직전(캐러셀 FINISHED)까지만 실제 API 확인, `--publish`면 공개 버킷 `ig-publish`에
   올리고 캐러셀 게시(`src/lib/instagram/publish.ts`). `instagram_business_content_publish` 권한 필요.
   `docs/decisions/2026-10-14_instagram-auto-publish.md`.
 

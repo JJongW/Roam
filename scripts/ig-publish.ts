@@ -1,6 +1,9 @@
 /**
  * 인스타 캐러셀 게시 CLI — `npm run ig:publish -- --dir <폴더> --caption <캡션.txt> [--publish]`.
  *
+ * 게시물에 나온 브랜드는 `--brands <publish-brands.v1 파일>`로, 브랜드가 없으면 `--no-brands`로 밝힌다.
+ * 허락 문(src/lib/instagram/permission-gate.ts)이 허락 기록을 읽고 걸리면 멈춘다.
+ *
  * 기본은 드라이런(이미지·캡션 검사만). `--check`는 업로드와 캐러셀 준비(FINISHED)까지만
  * 실제로 하고 게시하지 않는다. `--publish`를 붙여야 Supabase Storage 공개 버킷
  * `ig-publish`에 올리고 Graph API로 게시한다. 결정 근거:
@@ -14,6 +17,7 @@ import { createClient } from "@supabase/supabase-js";
 import { prepareCarousel, publishCarousel, type PublishConfig } from "@/lib/instagram/publish";
 import { runPublishCli } from "@/lib/instagram/publish-cli";
 import { createTokenStore, loadIgToken } from "@/lib/instagram/token";
+import { loadPublishGate } from "@/lib/instagram/permission-gate";
 
 // Next 밖이라 .env를 직접 읽는다(없으면 조용히 넘어간다 — 드라이런은 env가 필요 없다).
 try {
@@ -75,6 +79,11 @@ const code = await runPublishCli(process.argv.slice(2), {
   },
   out: (l) => console.log(l),
   today: () => new Date().toISOString().slice(0, 10),
+  // 허락 문은 운영 DB를 읽기만 한다(participant_permission, brand_outreach, brand_outreach_log).
+  checkPermissions: async (featured) => {
+    const { getRepository } = await import("@/lib/repositories");
+    return loadPublishGate(await getRepository(), featured);
+  },
 }).catch((e: unknown) => {
   console.error(`✗ ${e instanceof Error ? e.message : String(e)}`);
   return 1;
