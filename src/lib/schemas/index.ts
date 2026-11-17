@@ -438,6 +438,53 @@ export const brandContactLogInputSchema = z
   .strict();
 export type BrandContactLogInput = z.infer<typeof brandContactLogInputSchema>;
 
+/** 출전 허락 부분 수정(내부용, API 입력 아님). 연락처 칸(handle, channel)은 브랜드 쪽이다. */
+export type ParticipantPermissionPatch = Omit<BrandContactPatch, "handle" | "channel">;
+/** 브랜드 연락처 부분 수정(내부용). */
+export type BrandOutreachPatch = Partial<{ channel: BrandContactPatch["channel"]; handle: string | null; doNotContact: boolean }>;
+
+/** 연락 보드의 한 번 누르기 동작(src/lib/brands/contact-actions.ts가 수정과 기록으로 푼다). */
+const allowedUseToken = z.string().trim().regex(/^[a-z0-9-]{1,40}$/, "영문 소문자, 숫자, -만 써요");
+export const contactActionSchema = z.discriminatedUnion("type", [
+  z.object({ type: z.literal("mark-sent") }).strict(),
+  z.object({ type: z.literal("set-status"), status: z.enum(BRAND_CONTACT_STATUSES) }).strict(),
+  z.object({ type: z.literal("toggle-use"), token: allowedUseToken, on: z.boolean() }).strict(),
+  z.object({ type: z.literal("toggle-check"), key: z.enum(CONTACT_CHECKLIST_KEYS), on: z.boolean() }).strict(),
+  z.object({ type: z.literal("confirm-handle"), handle: z.string().trim().min(1).max(200) }).strict(),
+  z
+    .object({
+      type: z.literal("received"),
+      kind: z.enum(["message", "permission", "edit-request", "takedown-request"]),
+      /** 받은 말 요지. 비워도 된다(동작 이름이 기록에 남는다). */
+      note: nullableText(1000).optional(),
+    })
+    .strict(),
+  z.object({ type: z.literal("thanks-sent") }).strict(),
+  /** 브랜드 전체에 걸리는 연락 금지(모든 박람회). 목표 모양(brand_outreach)에서만 저장된다. */
+  z.object({ type: z.literal("set-do-not-contact"), on: z.boolean() }).strict(),
+  z.object({ type: z.literal("resolve-request") }).strict(),
+  z
+    .object({ type: z.literal("set-sent-date"), sentAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "YYYY-MM-DD로 적어 주세요") })
+    .strict(),
+  z.object({ type: z.literal("note"), text: z.string().trim().min(1, "내용을 적어 주세요").max(2000) }).strict(),
+  z
+    .object({ type: z.literal("set-sources"), photoSource: nullableText(1000).optional(), textSource: nullableText(1000).optional() })
+    .strict(),
+]);
+export type ContactAction = z.infer<typeof contactActionSchema>;
+
+export const contactActionsInputSchema = z
+  .object({
+    /** 출전(브랜드 × 박람회) 단위. handle은 보드가 미리 채운 계정 — 브랜드에 계정이 없을 때만 쓴다. */
+    targets: z
+      .array(z.object({ participantId: z.string().min(1).max(200), handle: z.string().trim().max(200).optional() }).strict())
+      .min(1)
+      .max(300),
+    action: contactActionSchema,
+  })
+  .strict();
+export type ContactActionsInput = z.infer<typeof contactActionsInputSchema>;
+
 // --- 브랜드 프로필 칸(0061) ---------------------------------------------------
 // 값 모양은 칸마다 달라서 여기선 unknown으로 받고, 라우트가 parseFieldValue로 검사한다.
 export const profileFieldPatchSchema = z

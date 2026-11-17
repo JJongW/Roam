@@ -68,11 +68,21 @@ import type {
   BoothAppearance,
   BrandContact,
   BrandContactLog,
+  BrandOutreach,
+  BrandOutreachLog,
+  ParticipantPermission,
   ProfileField,
   ProfileFieldStatus,
   ProfileSubject,
 } from "@/lib/types";
-import { emptyContact, mergeContactPatch } from "@/lib/brands/contact";
+import {
+  emptyContact,
+  emptyOutreach,
+  emptyPermission,
+  mergeContactPatch,
+  mergeOutreachPatch,
+  mergePermissionPatch,
+} from "@/lib/brands/contact";
 import { planFieldMerge, profileFieldId } from "@/lib/brands/profile";
 import type {
   AnalyticsEventInput,
@@ -82,6 +92,8 @@ import type {
   BoothNoteInput,
   BrandContactLogInput,
   BrandContactPatch,
+  BrandOutreachPatch,
+  ParticipantPermissionPatch,
   CommunityPostInput,
   EventInput,
   ExhibitionInput,
@@ -125,6 +137,10 @@ interface Store {
   /** 0061 — 브랜드 컨택과 VOC 로그. */
   brandContacts: BrandContact[];
   brandContactLogs: BrandContactLog[];
+  // 연락 목표 모양(정규화 초안 STEP 1). 운영엔 아직 없다.
+  participantPermissions: ParticipantPermission[];
+  brandOutreach: BrandOutreach[];
+  brandOutreachLogs: BrandOutreachLog[];
   profileFields: ProfileField[];
 }
 
@@ -184,6 +200,9 @@ function buildStore(): Store {
     linkCandidates: [],
     brandContacts: [],
     brandContactLogs: [],
+    participantPermissions: [],
+    brandOutreach: [],
+    brandOutreachLogs: [],
     profileFields: [],
   };
 }
@@ -496,15 +515,18 @@ export class MockRepository implements Repository {
       const from = gph.participants.find((p) => p.id === asg.participantId)!.exhibitorId;
       const to = c.exhibitorId;
       if (from !== to) {
+        const outreach = await this.hasParticipantOutreach();
         for (const p of gph.participants.filter((x) => x.exhibitorId === from)) {
           const same = gph.participants.find((x) => x.exhibitorId === to && x.exhibitionId === p.exhibitionId);
           if (same) {
             for (const a of gph.assignments) if (a.participantId === p.id) a.participantId = same.id;
             this.moveProfileFields({ participantId: p.id }, { participantId: same.id });
+            if (outreach) this.moveParticipantPermission(p.id, same.id);
             gph.participants = gph.participants.filter((x) => x.id !== p.id);
           } else p.exhibitorId = to;
         }
         this.moveProfileFields({ exhibitorId: from }, { exhibitorId: to });
+        if (outreach) this.moveBrandOutreach(from, to);
         for (const o of store().linkCandidates)
           if (o.exhibitorId === from && o.status === "pending") o.status = "superseded";
         gph.exhibitors = gph.exhibitors.filter((e) => e.id !== from);
@@ -614,6 +636,48 @@ export class MockRepository implements Repository {
         });
   }
 
+  /** SQL move_participant_permission(0062)과 같은 규칙: 대상이 없거나 아직 안 보냄이면 from 허락을 쓰고,
+   *  대상에 진행된 허락이 있으면 대상 것을 지킨다. from 행은 지우고 VOC의 출전도 대상으로. */
+  private moveParticipantPermission(from: string, to: string) {
+    const st = store();
+    const f = st.participantPermissions.find((r) => r.participantId === from);
+    if (f) {
+      const i = st.participantPermissions.findIndex((r) => r.participantId === to);
+      const at = now();
+      if (i < 0) st.participantPermissions.push({ ...f, participantId: to, updatedAt: at });
+      else if (st.participantPermissions[i].status === "not-sent") {
+        const t = st.participantPermissions[i];
+        st.participantPermissions[i] = { ...f, participantId: to, exhibitionId: t.exhibitionId, createdAt: t.createdAt, updatedAt: at };
+      }
+      st.participantPermissions = st.participantPermissions.filter((r) => r.participantId !== from);
+    }
+    for (const l of st.brandOutreachLogs) if (l.participantId === from) l.participantId = to;
+  }
+
+  /** SQL move_brand_outreach(0062)과 같은 규칙: 대상 값이 먼저(빈 칸만 from으로), 연락 금지는 둘 중 하나라도. */
+  private moveBrandOutreach(from: string, to: string) {
+    const st = store();
+    const f = st.brandOutreach.find((r) => r.exhibitorId === from);
+    if (f) {
+      const i = st.brandOutreach.findIndex((r) => r.exhibitorId === to);
+      const at = now();
+      if (i < 0) st.brandOutreach.push({ ...f, exhibitorId: to, updatedAt: at });
+      else {
+        const t = st.brandOutreach[i];
+        st.brandOutreach[i] = {
+          ...t,
+          channel: t.channel ?? f.channel,
+          handle: t.handle ?? f.handle,
+          notes: t.notes ?? f.notes,
+          doNotContact: t.doNotContact || f.doNotContact,
+          updatedAt: at,
+        };
+      }
+      st.brandOutreach = st.brandOutreach.filter((r) => r.exhibitorId !== from);
+    }
+    for (const l of st.brandOutreachLogs) if (l.exhibitorId === from) l.exhibitorId = to;
+  }
+
   // --- 브랜드 컨택(0061) ---------------------------------------------------
   async listBrandContacts(opts?: { exhibitionId?: string }): Promise<BrandContact[]> {
     return store()
@@ -648,6 +712,94 @@ export class MockRepository implements Repository {
       .brandContactLogs.filter((l) => l.boothId === boothId)
       .sort((a, b) => b.occurredAt.localeCompare(a.occurredAt))
       .map((l) => ({ ...l }));
+  }
+
+  async listBrandContactLogsForBooths(boothIds: string[]): Promise<BrandContactLog[]> {
+    const ids = new Set(boothIds);
+    return store()
+      .brandContactLogs.filter((l) => ids.has(l.boothId))
+      .map((l) => ({ ...l }));
+  }
+
+  // --- 연락 목표 모양(브랜드 연락처, 출전 허락, 브랜드 VOC) --------------------
+  async hasParticipantOutreach(): Promise<boolean> {
+    return true;
+  }
+
+  async listParticipantPermissions(exhibitionId: string): Promise<ParticipantPermission[]> {
+    return store()
+      .participantPermissions.filter((p) => p.exhibitionId === exhibitionId)
+      .map((p) => structuredClone(p));
+  }
+
+  async upsertParticipantPermission(
+    participantId: string,
+    patch: ParticipantPermissionPatch,
+    actor: string | null,
+  ): Promise<ParticipantPermission | null> {
+    const st = store();
+    const participant = st.exhibitorGraph.participants.find((p) => p.id === participantId);
+    if (!participant) return null;
+    const at = now();
+    const i = st.participantPermissions.findIndex((p) => p.participantId === participantId);
+    const prev = i >= 0 ? st.participantPermissions[i] : emptyPermission(participantId, participant.exhibitionId, at);
+    const next = mergePermissionPatch(prev, patch, actor, at);
+    if (i >= 0) st.participantPermissions[i] = next;
+    else st.participantPermissions.push(next);
+    return structuredClone(next);
+  }
+
+  async listBrandOutreach(exhibitorIds: string[]): Promise<BrandOutreach[]> {
+    const ids = new Set(exhibitorIds);
+    return store()
+      .brandOutreach.filter((o) => ids.has(o.exhibitorId))
+      .map((o) => ({ ...o }));
+  }
+
+  async upsertBrandOutreach(exhibitorId: string, patch: BrandOutreachPatch, actor: string | null): Promise<BrandOutreach | null> {
+    const st = store();
+    if (!st.exhibitorGraph.exhibitors.some((e) => e.id === exhibitorId)) return null;
+    const at = now();
+    const i = st.brandOutreach.findIndex((o) => o.exhibitorId === exhibitorId);
+    const next = mergeOutreachPatch(i >= 0 ? st.brandOutreach[i] : emptyOutreach(exhibitorId, at), patch, actor, at);
+    if (i >= 0) st.brandOutreach[i] = next;
+    else st.brandOutreach.push(next);
+    return { ...next };
+  }
+
+  async listBrandOutreachLogs(exhibitorIds: string[]): Promise<BrandOutreachLog[]> {
+    const ids = new Set(exhibitorIds);
+    return store()
+      .brandOutreachLogs.filter((l) => ids.has(l.exhibitorId))
+      .map((l) => ({ ...l }));
+  }
+
+  async addBrandOutreachLog(
+    input: BrandContactLogInput & { exhibitorId: string; participantId?: string | null },
+    actor: string | null,
+  ): Promise<BrandOutreachLog | null> {
+    const st = store();
+    if (!st.exhibitorGraph.exhibitors.some((e) => e.id === input.exhibitorId)) return null;
+    if (input.participantId) {
+      const p = st.exhibitorGraph.participants.find((x) => x.id === input.participantId);
+      // supabase는 FK만 건다. 다른 브랜드의 출전을 다는 실수는 여기서 막는다(저장소 둘이 같게).
+      if (!p || p.exhibitorId !== input.exhibitorId) throw new Error("출전이 그 브랜드의 것이 아니에요");
+    }
+    const at = now();
+    const log: BrandOutreachLog = {
+      id: uid("bol"),
+      exhibitorId: input.exhibitorId,
+      participantId: input.participantId ?? null,
+      direction: input.direction,
+      kind: input.kind,
+      channel: input.channel ?? null,
+      summary: input.summary,
+      actor,
+      occurredAt: input.occurredAt ? new Date(input.occurredAt).toISOString() : at,
+      createdAt: at,
+    };
+    st.brandOutreachLogs.push(log);
+    return { ...log };
   }
 
   async addBrandContactLog(

@@ -68,6 +68,9 @@ import type {
   BoothAppearance,
   BrandContact,
   BrandContactLog,
+  BrandOutreach,
+  BrandOutreachLog,
+  ParticipantPermission,
   ProfileField,
   ProfileFieldStatus,
   ProfileSubject,
@@ -75,13 +78,22 @@ import type {
 import { profileFieldId } from "@/lib/brands/profile";
 import type { ExhibitorPlan, Ref } from "@/lib/exhibitor/plan";
 import { exhibitionIdFor } from "@/lib/exhibition/id";
-import { emptyContact, mergeContactPatch } from "@/lib/brands/contact";
+import {
+  emptyContact,
+  emptyOutreach,
+  emptyPermission,
+  mergeContactPatch,
+  mergeOutreachPatch,
+  mergePermissionPatch,
+} from "@/lib/brands/contact";
 import type {
   AnalyticsEventInput,
   BookmarkInput,
   BoothEnrichmentPatch,
   BrandContactLogInput,
   BrandContactPatch,
+  BrandOutreachPatch,
+  ParticipantPermissionPatch,
   BoothInput,
   BoothNoteInput,
   CommunityPostInput,
@@ -1337,6 +1349,163 @@ export class SupabaseRepository implements Repository {
     return rows.map(mapBrandContactLog);
   }
 
+  async listBrandContactLogsForBooths(boothIds: string[]): Promise<BrandContactLog[]> {
+    const db = createServiceClient();
+    // 조각 하나(부스 200곳)의 기록이 1천 줄을 넘을 수 있다 — 조각 안에서도 끝까지 읽는다.
+    const rows = await inChunks<Row>([...new Set(boothIds)], "브랜드 컨택 로그", async (slice) => ({
+      data: await readAll<Row>(
+        (a, b) => db.from("brand_contact_log").select("*").in("booth_id", slice).order("id").range(a, b),
+        "브랜드 컨택 로그",
+      ),
+      error: null,
+    }));
+    return rows.map(mapBrandContactLog);
+  }
+
+  // --- 연락 목표 모양(정규화 초안 STEP 1: brand_outreach, participant_permission, brand_outreach_log) ---
+  // ⚠️ 운영에 아직 없는 테이블이다. hasParticipantOutreach()가 true일 때만 부른다(outreach-store.ts).
+  // 칸 이름은 초안(docs/schema-normalization 브랜치 supabase/migrations/_draft/participant-rekey.draft.sql)을 따른다.
+
+  async hasParticipantOutreach(): Promise<boolean> {
+    if (participantOutreachReady) return true;
+    // head:true 카운트는 없는 테이블에도 에러를 안 낸다(CLAUDE.md) — 행을 읽어 본다.
+    const db = createServiceClient();
+    const { error } = await db.from("participant_permission").select("participant_id").limit(1);
+    // 있을 때만 기억한다. 없으면 다음 요청에 다시 본다(적용 뒤 재배포 없이도 넘어가게).
+    if (!error) participantOutreachReady = true;
+    return participantOutreachReady;
+  }
+
+  async listParticipantPermissions(exhibitionId: string): Promise<ParticipantPermission[]> {
+    const db = createServiceClient();
+    const rows = await readAll<Row>(
+      (a, b) => db.from("participant_permission").select("*").eq("exhibition_id", exhibitionId).order("participant_id").range(a, b),
+      "출전 허락",
+    );
+    return rows.map(mapPermission);
+  }
+
+  async upsertParticipantPermission(
+    participantId: string,
+    patch: ParticipantPermissionPatch,
+    actor: string | null,
+  ): Promise<ParticipantPermission | null> {
+    const db = createServiceClient();
+    const { data: p, error } = await db.from("exhibition_participant").select("id,exhibition_id").eq("id", participantId).maybeSingle();
+    if (error) throw new Error(`출전 조회 실패: ${error.message}`);
+    if (!p) return null;
+    const at = now();
+    const { data: cur, error: e2 } = await db.from("participant_permission").select("*").eq("participant_id", participantId).maybeSingle();
+    if (e2) throw new Error(`출전 허락 조회 실패: ${e2.message}`);
+    const prev = cur ? mapPermission(cur as Row) : emptyPermission(participantId, str((p as Row).exhibition_id), at);
+    const next = mergePermissionPatch(prev, patch, actor, at);
+    const res = await db
+      .from("participant_permission")
+      .upsert(
+        {
+          participant_id: next.participantId,
+          exhibition_id: next.exhibitionId,
+          status: next.status,
+          sent_at: next.sentAt,
+          reply: next.reply,
+          allowed_use: next.allowedUse,
+          photo_source: next.photoSource,
+          text_source: next.textSource,
+          notes: next.notes,
+          checklist: next.checklist,
+          updated_by: next.updatedBy,
+          created_at: next.createdAt,
+          updated_at: next.updatedAt,
+        },
+        { onConflict: "participant_id" },
+      )
+      .select("*")
+      .single();
+    return mapPermission(wrote(res, "출전 허락 저장") as Row);
+  }
+
+  async listBrandOutreach(exhibitorIds: string[]): Promise<BrandOutreach[]> {
+    const db = createServiceClient();
+    const rows = await inChunks<Row>([...new Set(exhibitorIds)], "브랜드 연락처", (slice) =>
+      db.from("brand_outreach").select("*").in("exhibitor_id", slice),
+    );
+    return rows.map(mapOutreach);
+  }
+
+  async upsertBrandOutreach(exhibitorId: string, patch: BrandOutreachPatch, actor: string | null): Promise<BrandOutreach | null> {
+    const db = createServiceClient();
+    const { data: ex, error } = await db.from("exhibitor").select("id").eq("id", exhibitorId).maybeSingle();
+    if (error) throw new Error(`브랜드 조회 실패: ${error.message}`);
+    if (!ex) return null;
+    const at = now();
+    const { data: cur, error: e2 } = await db.from("brand_outreach").select("*").eq("exhibitor_id", exhibitorId).maybeSingle();
+    if (e2) throw new Error(`브랜드 연락처 조회 실패: ${e2.message}`);
+    const next = mergeOutreachPatch(cur ? mapOutreach(cur as Row) : emptyOutreach(exhibitorId, at), patch, actor, at);
+    const res = await db
+      .from("brand_outreach")
+      .upsert(
+        {
+          exhibitor_id: next.exhibitorId,
+          channel: next.channel,
+          handle: next.handle,
+          do_not_contact: next.doNotContact,
+          notes: next.notes,
+          updated_by: next.updatedBy,
+          created_at: next.createdAt,
+          updated_at: next.updatedAt,
+        },
+        { onConflict: "exhibitor_id" },
+      )
+      .select("*")
+      .single();
+    return mapOutreach(wrote(res, "브랜드 연락처 저장") as Row);
+  }
+
+  async listBrandOutreachLogs(exhibitorIds: string[]): Promise<BrandOutreachLog[]> {
+    const db = createServiceClient();
+    const rows = await inChunks<Row>([...new Set(exhibitorIds)], "브랜드 VOC", async (slice) => ({
+      data: await readAll<Row>(
+        (a, b) => db.from("brand_outreach_log").select("*").in("exhibitor_id", slice).order("id").range(a, b),
+        "브랜드 VOC",
+      ),
+      error: null,
+    }));
+    return rows.map(mapOutreachLog);
+  }
+
+  async addBrandOutreachLog(
+    input: BrandContactLogInput & { exhibitorId: string; participantId?: string | null },
+    actor: string | null,
+  ): Promise<BrandOutreachLog | null> {
+    const db = createServiceClient();
+    const { data: ex, error } = await db.from("exhibitor").select("id").eq("id", input.exhibitorId).maybeSingle();
+    if (error) throw new Error(`브랜드 조회 실패: ${error.message}`);
+    if (!ex) return null;
+    if (input.participantId) {
+      const { data: p, error: e2 } = await db.from("exhibition_participant").select("exhibitor_id").eq("id", input.participantId).maybeSingle();
+      if (e2) throw new Error(`출전 조회 실패: ${e2.message}`);
+      if (!p || str((p as Row).exhibitor_id) !== input.exhibitorId) throw new Error("출전이 그 브랜드의 것이 아니에요");
+    }
+    const at = now();
+    const res = await db
+      .from("brand_outreach_log")
+      .insert({
+        id: uid("bol"),
+        exhibitor_id: input.exhibitorId,
+        participant_id: input.participantId ?? null,
+        direction: input.direction,
+        kind: input.kind,
+        channel: input.channel ?? null,
+        summary: input.summary,
+        actor,
+        occurred_at: input.occurredAt ?? at,
+        created_at: at,
+      })
+      .select("*")
+      .single();
+    return mapOutreachLog(wrote(res, "브랜드 VOC 저장") as Row);
+  }
+
   async addBrandContactLog(
     boothId: string,
     input: BrandContactLogInput,
@@ -1371,6 +1540,8 @@ export class SupabaseRepository implements Repository {
    *  그쪽으로 옮기고 from의 참가 사실은 지운다. 없으면 참가 사실의 주인을 바꾼다. */
   private async mergeExhibitor(from: string, to: string): Promise<void> {
     const db = createServiceClient();
+    // 연락 테이블(0062)은 on delete restrict다 — 지우기 전에 옮긴다. 테이블이 없으면(STEP 1 전) 건너뛴다.
+    const outreach = await this.hasParticipantOutreach();
     const { data: fromPs, error } = await db.from("exhibition_participant").select("id,exhibition_id").eq("exhibitor_id", from);
     if (error) throw new Error(`참가 사실 조회 실패: ${error.message}`);
     for (const p of (fromPs ?? []) as Row[]) {
@@ -1384,6 +1555,7 @@ export class SupabaseRepository implements Repository {
         );
         // 출전 칸(0061)도 옮긴다 — 참가 사실을 지우면 cascade로 사라진다.
         await this.moveProfileFields({ participantId: str(p.id) }, { participantId: str((same as Row).id) });
+        if (outreach) await this.moveOutreach("move_participant_permission", str(p.id), str((same as Row).id));
         maybeWrote(await db.from("exhibition_participant").delete().eq("id", str(p.id)).select("id"), "참가 사실 정리");
       } else {
         wrote(
@@ -1399,7 +1571,14 @@ export class SupabaseRepository implements Repository {
     );
     // 브랜드 칸(0061)을 옮긴 뒤에 지운다 — 먼저 지우면 cascade로 사라진다.
     await this.moveProfileFields({ exhibitorId: from }, { exhibitorId: to });
+    if (outreach) await this.moveOutreach("move_brand_outreach", from, to);
     maybeWrote(await db.from("exhibitor").delete().eq("id", from).select("id"), "참가사 정리");
+  }
+
+  /** 합칠 때 연락 옮기기 — SQL 함수(0062) 한 번으로 한 트랜잭션. 규칙은 함수 주석, mock은 같은 일을 한다. */
+  private async moveOutreach(fn: "move_participant_permission" | "move_brand_outreach", from: string, to: string): Promise<void> {
+    const { error } = await createServiceClient().rpc(fn, { p_from: from, p_to: to });
+    if (error) throw new Error(`연락 이동 실패(${fn}): ${error.message}`);
   }
 
   /**
@@ -3316,6 +3495,58 @@ function mapBrandContact(r: Row): BrandContact {
     updatedBy: optStr(r.updated_by) ?? null,
     createdAt: str(r.created_at),
     updatedAt: str(r.updated_at),
+  };
+}
+
+/** 목표 모양 테이블이 있다고 확인했나(프로세스 단위). 한 번 true면 그대로 둔다. */
+let participantOutreachReady = false;
+
+function mapPermission(r: Row): ParticipantPermission {
+  return {
+    participantId: str(r.participant_id),
+    exhibitionId: str(r.exhibition_id),
+    status: str(r.status) as ParticipantPermission["status"],
+    sentAt: optStr(r.sent_at) ?? null,
+    reply: optStr(r.reply) ?? null,
+    allowedUse: Array.isArray(r.allowed_use) ? (r.allowed_use as unknown[]).map(String) : [],
+    photoSource: optStr(r.photo_source) ?? null,
+    textSource: optStr(r.text_source) ?? null,
+    notes: optStr(r.notes) ?? null,
+    checklist:
+      r.checklist && typeof r.checklist === "object" && !Array.isArray(r.checklist)
+        ? (r.checklist as Record<string, string>)
+        : {},
+    updatedBy: optStr(r.updated_by) ?? null,
+    createdAt: str(r.created_at),
+    updatedAt: str(r.updated_at),
+  };
+}
+
+function mapOutreach(r: Row): BrandOutreach {
+  return {
+    exhibitorId: str(r.exhibitor_id),
+    channel: (optStr(r.channel) ?? null) as BrandOutreach["channel"],
+    handle: optStr(r.handle) ?? null,
+    doNotContact: r.do_not_contact === true,
+    notes: optStr(r.notes) ?? null,
+    updatedBy: optStr(r.updated_by) ?? null,
+    createdAt: str(r.created_at),
+    updatedAt: str(r.updated_at),
+  };
+}
+
+function mapOutreachLog(r: Row): BrandOutreachLog {
+  return {
+    id: str(r.id),
+    exhibitorId: str(r.exhibitor_id),
+    participantId: optStr(r.participant_id) ?? null,
+    direction: str(r.direction) as BrandOutreachLog["direction"],
+    kind: str(r.kind) as BrandOutreachLog["kind"],
+    channel: (optStr(r.channel) ?? null) as BrandOutreachLog["channel"],
+    summary: str(r.summary),
+    actor: optStr(r.actor) ?? null,
+    occurredAt: str(r.occurred_at),
+    createdAt: str(r.created_at),
   };
 }
 

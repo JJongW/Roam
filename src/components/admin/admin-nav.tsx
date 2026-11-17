@@ -19,6 +19,7 @@ import {
   ScanSearch,
   ClipboardList,
   Tags,
+  Send,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/common/theme-toggle";
@@ -29,6 +30,8 @@ const ITEMS = [
   { href: "/admin/booths", label: "부스", icon: Store },
   // 모든 박람회의 브랜드 프로필 + 연결 확인 목록(예전 "브랜드 연결"을 합쳤다, 2026-11-03).
   { href: "/admin/brands", label: "브랜드", icon: Tags },
+  // 사진 허락 연락 현황(2026-11-17). 보내기는 사람이 한다 — 보드는 현황과 기록만.
+  { href: "/admin/brands/contacts", label: "브랜드 연락", icon: Send },
   { href: "/admin/intake", label: "인입", icon: Upload },
   { href: "/admin/enrichment", label: "초안 검수", icon: Sparkles },
   { href: "/admin/verify", label: "대조 검수", icon: ScanSearch, exact: true },
@@ -44,8 +47,12 @@ const ITEMS = [
 
 function useActive() {
   const pathname = usePathname();
+  const matches = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+  // 더 긴 메뉴가 맞으면 짧은 쪽은 끈다(/admin/brands/contacts에서 "브랜드"까지 켜지지 않게).
   return (href: string, exact?: boolean) =>
-    exact ? pathname === href : pathname.startsWith(href);
+    exact
+      ? pathname === href
+      : matches(href) && !ITEMS.some((it) => it.href.length > href.length && it.href.startsWith(href) && matches(it.href));
 }
 
 export function AdminSidebar() {

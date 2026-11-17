@@ -593,6 +593,55 @@ export interface BrandContactLog {
   createdAt: string;
 }
 
+// --- 연락의 목표 모양(스키마 정규화 초안 STEP 1, 2026-11-17, 아직 운영 미적용) -----------
+// 연락처와 VOC는 브랜드(exhibitor)에, 회차별 허락은 출전(exhibition_participant)에 붙는다.
+// 부스는 필요 없다. 초안: supabase/migrations/_draft/participant-rekey.draft.sql(브랜치 docs/schema-normalization).
+// STEP 1 전까지 운영은 옛 brand_contact(부스 키)를 쓰고, 연락 보드는 lib/brands/outreach-store.ts가 둘을 가린다.
+
+/** 브랜드에 누구로 어떻게 닿나. 박람회가 바뀌어도 같다(brand_outreach). */
+export interface BrandOutreach {
+  exhibitorId: string;
+  channel: BrandContactChannel | null;
+  handle: string | null;
+  /** 더 연락하지 않는다(내려 달라는 요청 등). 모든 박람회에 걸린다. */
+  doNotContact: boolean;
+  notes: string | null;
+  updatedBy: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/** 이번 회차 콘텐츠에 무엇을 써도 되나(participant_permission). */
+export interface ParticipantPermission {
+  participantId: string;
+  exhibitionId: string;
+  status: BrandContactStatus;
+  sentAt: string | null;
+  reply: string | null;
+  allowedUse: string[];
+  photoSource: string | null;
+  textSource: string | null;
+  notes: string | null;
+  checklist: Record<string, string>;
+  updatedBy: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/** 브랜드와 오간 말(brand_outreach_log). 특정 회차 이야기면 participantId. 쌓기만 한다. */
+export interface BrandOutreachLog {
+  id: string;
+  exhibitorId: string;
+  participantId: string | null;
+  direction: BrandContactLogDirection;
+  kind: BrandContactLogKind;
+  channel: BrandContactChannel | null;
+  summary: string;
+  actor: string | null;
+  occurredAt: string;
+  createdAt: string;
+}
+
 /**
  * 브랜드 프로필 칸(0061 brand_profile_field). 기준 문서: Roam-design
  * `docs/content/engine/brand-profile-spec.md` 3~5장. 한 행 = 한 브랜드(exhibitor)나

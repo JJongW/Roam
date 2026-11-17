@@ -15,7 +15,6 @@ import {
   type GroupBy,
 } from "@/lib/brands/directory";
 import type { FillLevel } from "@/lib/brands/profile";
-import { CONTACT_STATUS_LABEL } from "@/lib/brands/contact";
 import type { BrandContactStatus } from "@/lib/types";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -30,29 +29,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { EmptyState } from "@/components/common/states";
+import { StatusChip } from "@/components/admin/brands/contact-status";
 
 const ALL = "all";
 const PAGE = 60;
 
-/** 연락 상태 색. 기존 토큰(primary, muted, destructive)만 쓴다. */
-const STATUS_TONE: Record<BrandContactStatus, string> = {
-  "not-sent": "bg-secondary text-muted-foreground",
-  sent: "bg-primary/10 text-primary",
-  read: "bg-primary/10 text-primary",
-  replied: "bg-primary/15 text-primary",
-  granted: "bg-primary text-primary-foreground",
-  partial: "bg-primary/70 text-primary-foreground",
-  declined: "bg-destructive/10 text-destructive",
-  "no-reply": "bg-secondary text-foreground/70",
-  withdrawn: "bg-destructive/10 text-destructive",
-};
-
+/** 연락 상태 표시. 색은 연락 현황 보드와 같은 곳(contact-status.tsx)에서 온다. */
 export function StatusBadge({ status, className }: { status: BrandContactStatus; className?: string }) {
-  return (
-    <span className={cn("inline-flex h-6 items-center rounded-full px-2 text-xs font-bold", STATUS_TONE[status], className)}>
-      {CONTACT_STATUS_LABEL[status]}
-    </span>
-  );
+  return <StatusChip status={status} className={className} />;
 }
 
 const VIEW_LABEL: Record<"list" | GroupBy, string> = {

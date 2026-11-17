@@ -7,7 +7,8 @@ import { countReactions } from "@/lib/brands/reactions";
 import { anchorKey } from "@/lib/exhibitor/identity";
 import { pickIntro } from "@/lib/brands/draft";
 import { BRAND_DRAFT_JOB } from "@/lib/brands/jobs";
-import { BrandProfile, type Suggestion } from "@/components/admin/brands/brand-profile";
+import { BrandProfile, type Participation, type Suggestion } from "@/components/admin/brands/brand-profile";
+import { getOutreachStore, subjectsFromGraph } from "@/lib/brands/outreach-store";
 
 export const metadata = { title: "브랜드 프로필" };
 
@@ -24,10 +25,10 @@ export default async function BrandProfilePage({ params }: Props) {
 
   const boothIds = brand.appearances.map((a) => a.boothId);
   const participantIds = brand.appearances.flatMap((a) => (a.participantId ? [a.participantId] : []));
-  const [participantFields, notes, contacts, queuedJobs] = await Promise.all([
+  const [participantFields, notes, store, queuedJobs] = await Promise.all([
     repo.listProfileFields({ participantIds }),
     repo.listNotesByBoothIds(boothIds),
-    repo.listBrandContacts(),
+    getOutreachStore(repo),
     repo.listJobs({ type: BRAND_DRAFT_JOB, status: "queued", limit: 1000 }),
   ]);
   const draftQueued = queuedJobs.some((j) => ((j.payload.exhibitorIds as string[] | undefined) ?? []).includes(exhibitorId));
@@ -68,7 +69,27 @@ export default async function BrandProfilePage({ params }: Props) {
       sources: brand.appearances.filter((a) => aliasNames.includes(a.name)).map((a) => `roam:booth/${a.boothId}`),
     });
 
-  const boothSet = new Set(boothIds);
+  // 연락은 출전(브랜드 × 박람회) 단위다 — 부스 없는 출전(브랜드 먼저 인입)도 보여 준다.
+  const exName = new Map(data.exhibitions.map((e) => [e.id, e]));
+  const subjects = subjectsFromGraph(data.graph).filter((s) => s.exhibitorId === exhibitorId);
+  const states = await store.read(subjects);
+  const participantName = new Map(data.graph.participants.map((p) => [p.id, p.displayName]));
+  const participations: Participation[] = subjects
+    .map((s) => {
+      const booth = s.boothId ? boothById.get(s.boothId) : undefined;
+      const st = states.get(s.participantId);
+      return {
+        participantId: s.participantId,
+        exhibitionName: exName.get(s.exhibitionId)?.name ?? s.exhibitionId,
+        startDate: exName.get(s.exhibitionId)?.startDate ?? "",
+        code: booth?.code ?? null,
+        name: participantName.get(s.participantId) ?? booth?.name ?? brand.name,
+        instagramUrl: booth?.instagramUrl ?? data.graph.exhibitors.find((e) => e.id === exhibitorId)?.instagramUrl ?? null,
+        status: st?.view.status ?? "not-sent",
+        writable: st?.writable ?? false,
+      };
+    })
+    .sort((a, b) => b.startDate.localeCompare(a.startDate));
   return (
     <div className="space-y-4">
       <p className="text-sm text-muted-foreground">
@@ -83,7 +104,7 @@ export default async function BrandProfilePage({ params }: Props) {
         suggestions={suggestions}
         reactions={countReactions(notes)}
         draftQueued={draftQueued}
-        contactStatus={Object.fromEntries(contacts.filter((c) => boothSet.has(c.boothId)).map((c) => [c.boothId, c.status]))}
+        participations={participations}
       />
     </div>
   );
