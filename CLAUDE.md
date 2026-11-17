@@ -56,7 +56,12 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
   설계 `docs/superpowers/specs/2026-10-02-cross-exhibition-brand-design.md`.
 - **커뮤니티는 웹에서 뺐다.** API(`/api/exhibitions/[slug]/community`·`/api/community/*`)와 `community_post`
   테이블은 iOS가 써서 남겨 둔다 — iOS에서도 빼면 그때 정리.
-- 푸시(FCM)는 키 미설정이라 비활성.
+- 푸시(FCM)는 키 미설정이라 비활성. iOS APNs 토큰은 `push_device`(0067)에 저장만 한다(보내기 없음).
+  브랜드 알림 대상은 `user_id`가 있는 토큰뿐(2026-11-17).
+- **부스 노트 규칙은 `lib/notes/apply.ts` 한 곳**: 다녀왔어요(`visited_at`)는 평가와 따로, 하트는
+  `hearted_at` + 옛 interest(must·curious=하트)를 함께 맞춘다. 브랜드 하트는 `brand_heart`(0068)로 따로.
+- **앱 이벤트**: `POST /api/analytics/events`가 iOS 묶음(`events[]`, `type='app'` + `name`)도 받는다(0066).
+  위치, 메모, 회고 글은 속성에서 지운다(`lib/analytics/app-events.ts`). 설계 `docs/decisions/2026-11-17_ios-기반-api.md`.
 - **인스타 댓글 자동 DM**: `/api/instagram/webhook`(서명 검증 → 키워드 매칭 → Private Reply). 규칙은
   `src/lib/instagram/rules.ts`(문구 해요체). 웹훅 재전송 중복 방지는 `ig_comment_dm`(0058)에 댓글 ID로 선점 —
   실패는 재시도 안 함. 설정·Meta 제약 `docs/decisions/2026-10-14_instagram-comment-auto-dm.md`.
