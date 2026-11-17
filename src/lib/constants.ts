@@ -174,6 +174,13 @@ export const SIGNAL_WEIGHTS: Record<
   verdict_bad: { explicit: 0, implicit: 0, negative: 1.2 },
   // 특정 부스를 직접 검색 = 능동적 강한 관심(꼭 갈래에 준함).
   search_query: { explicit: 1.3, implicit: 0, negative: 0 },
+  // 하트 하나(2026-11-07)는 옛 꼭 갈래(1.2)와 끌려(0.6)를 하나로 합친 것 — 그 사이 값.
+  heart_added: { explicit: 1.0, implicit: 0, negative: 0 },
+  // 빼기, 다녀왔어요는 취향 신호가 아니다. 하트를 뺐다고 싫어하는 게 아니고, 다녀왔다고
+  // 좋아하는 게 아니다(브랜드 규칙 §4). 원장에만 남기고 증류엔 안 넣는다.
+  heart_removed: { explicit: 0, implicit: 0, negative: 0 },
+  visit_marked: { explicit: 0, implicit: 0, negative: 0 },
+  visit_unmarked: { explicit: 0, implicit: 0, negative: 0 },
 };
 
 /** Reasoner/Planner 튜닝. 피로도 가중 + 재계획 시 피로 페널티. */

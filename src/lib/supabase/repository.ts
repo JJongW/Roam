@@ -78,6 +78,7 @@ import type {
 import { profileFieldId } from "@/lib/brands/profile";
 import type { ExhibitorPlan, Ref } from "@/lib/exhibitor/plan";
 import { exhibitionIdFor } from "@/lib/exhibition/id";
+import { applyNoteInput, heartOf, type NoteState } from "@/lib/notes/apply";
 import {
   emptyContact,
   emptyOutreach,
@@ -551,6 +552,13 @@ function mapNote(r: Row): BoothNote {
         ? undefined
         : (String(r.verdict) as BoothNote["verdict"]),
     visitedAt: r.visited_at == null ? undefined : str(r.visited_at),
+    visited: r.visited_at != null,
+    verdictAt: r.verdict_at == null ? undefined : str(r.verdict_at),
+    heartedAt: r.hearted_at == null ? undefined : str(r.hearted_at),
+    heart: heartOf({
+      heartedAt: r.hearted_at == null ? null : str(r.hearted_at),
+      interest: (r.interest ?? null) as BoothNote["interest"] | null,
+    }),
     judgedClass:
       r.judged_class == null
         ? undefined
@@ -2639,32 +2647,25 @@ export class SupabaseRepository implements Repository {
       .eq("user_id", userId)
       .eq("booth_id", boothId)
       .maybeSingle();
-    const existingRow = existingData as Row | null;
-
-    const interest =
-      input.interest !== undefined
-        ? (input.interest ?? null)
-        : (existingRow?.interest ?? null);
-    const verdict =
-      input.verdict !== undefined
-        ? (input.verdict ?? null)
-        : (existingRow?.verdict ?? null);
-    const memo =
-      input.memo !== undefined
-        ? (input.memo ?? null)
-        : (existingRow?.memo ?? null);
-    const photos =
-      input.photos !== undefined
-        ? input.photos
-        : ((existingRow?.photos as string[] | undefined) ?? []);
-    // Empty note (after applying this write on top of the existing row) →
-    // delete so the gallery/back-end stays clean.
-    if (
-      !interest &&
-      !verdict &&
-      (memo == null || !(memo as string).trim()) &&
-      photos.length === 0
-    ) {
+    const e = existingData as Row | null;
+    const existing: NoteState | null = e
+      ? {
+          interest: (e.interest ?? null) as NoteState["interest"],
+          heartedAt: e.hearted_at == null ? null : str(e.hearted_at),
+          verdict: (e.verdict ?? null) as NoteState["verdict"],
+          verdictAt: e.verdict_at == null ? null : str(e.verdict_at),
+          visitedAt: e.visited_at == null ? null : str(e.visited_at),
+          memo: e.memo == null ? null : String(e.memo),
+          photos: Array.isArray(e.photos) ? e.photos.map(String) : [],
+        }
+      : null;
+    const { next, touchesHeart, touchesVisit, empty } = applyNoteInput(
+      existing,
+      input,
+      now(),
+    );
+    // 비면(다녀왔어요와 하트까지 없으면) 행을 지워 저장소를 깨끗하게 둔다.
+    if (empty) {
       maybeWrote(
         await db
           .from("booth_note")
@@ -2673,24 +2674,26 @@ export class SupabaseRepository implements Repository {
           .eq("booth_id", boothId),
         "메모 삭제",
       );
-      return { userId, boothId, updatedAt: now() };
+      return { userId, boothId, heart: false, visited: false, updatedAt: now() };
     }
     const row: Row = {
       user_id: userId,
       booth_id: boothId,
-      memo,
-      photos,
+      memo: next.memo,
+      photos: next.photos,
       updated_at: now(),
     };
-    // interest·verdict는 각각 "이 요청이 그 필드를 건드리는지"에 따라 SET 절에
-    // 넣을지 뺄지 정한다 — undefined면 아예 안 넣어서 upsert 충돌 시 기존 값을
-    // 그대로 둔다(메모만 고치는 쓰기가 반응을 조용히 안 건드리게).
-    if (input.interest !== undefined) row.interest = interest;
-    if (input.verdict !== undefined) {
-      row.verdict = verdict;
-      // verdict를 새로 쓰는 순간이 곧 방문 시각. 해제하면 같이 지운다 — 판정이
-      // 곧 방문 기록이므로 둘을 분리해서 남기지 않는다(judgment-vocabulary §8-2).
-      row.visited_at = verdict ? now() : null;
+    // 하트 묶음, 방문 묶음은 이 요청이 건드릴 때만 SET 절에 넣는다 — 안 넣으면 upsert
+    // 충돌 시 기존 값을 그대로 둔다(메모만 고치는 쓰기가 반응을 조용히 안 건드리게).
+    // hearted_at, verdict_at은 0064 마이그레이션이 만든다. 배포 전에 적용해야 한다.
+    if (touchesHeart) {
+      row.interest = next.interest;
+      row.hearted_at = next.heartedAt;
+    }
+    if (touchesVisit) {
+      row.verdict = next.verdict;
+      row.verdict_at = next.verdictAt;
+      row.visited_at = next.visitedAt;
     }
     if (judgedClass !== undefined) row.judged_class = judgedClass;
     const res = await db

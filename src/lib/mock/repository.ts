@@ -84,6 +84,7 @@ import {
   mergePermissionPatch,
 } from "@/lib/brands/contact";
 import { planFieldMerge, profileFieldId } from "@/lib/brands/profile";
+import { applyNoteInput, heartOf, type NoteState } from "@/lib/notes/apply";
 import type {
   AnalyticsEventInput,
   BookmarkInput,
@@ -1576,7 +1577,9 @@ export class MockRepository implements Repository {
   // --- booth notes ---------------------------------------------------------
 
   async listNotes(userId: string): Promise<BoothNote[]> {
-    return store().notes.filter((n) => n.userId === userId);
+    return store()
+      .notes.filter((n) => n.userId === userId)
+      .map((n) => ({ ...n, heart: heartOf(n), visited: !!n.visitedAt }));
   }
 
   async upsertNote(
@@ -1586,47 +1589,44 @@ export class MockRepository implements Repository {
     judgedClass: "confident" | "uncertain" | null | undefined,
   ): Promise<BoothNote> {
     const s = store();
-    let n = s.notes.find((x) => x.userId === userId && x.boothId === boothId);
-    if (!n) {
-      n = {
-        userId,
-        boothId,
-        interest: input.interest ?? undefined,
-        verdict: input.verdict ?? undefined,
-        // verdict를 새로 쓰는 순간이 곧 방문 시각이다. 해제(verdict===null)면 같이 지운다.
-        visitedAt:
-          input.verdict !== undefined
-            ? input.verdict
-              ? now()
-              : undefined
-            : undefined,
-        memo: input.memo,
-        photos: input.photos,
-        judgedClass:
-          judgedClass === undefined ? undefined : (judgedClass ?? undefined),
-        updatedAt: now(),
-      };
-      s.notes.push(n);
-    } else {
-      if (input.interest !== undefined)
-        n.interest = input.interest ?? undefined;
-      if (input.verdict !== undefined) {
-        n.verdict = input.verdict ?? undefined;
-        n.visitedAt = input.verdict ? now() : undefined;
-      }
-      if (input.memo !== undefined) n.memo = input.memo;
-      if (input.photos !== undefined) n.photos = input.photos;
-      // Supabase 구현과 같은 규칙: judgedClass가 undefined면 판정 필드를 안 건드린다.
-      if (judgedClass !== undefined) {
-        n.judgedClass = judgedClass ?? undefined;
-      }
-      n.updatedAt = now();
-    }
-    // Drop empty notes so the store stays compact.
-    if (!n.interest && !n.verdict && !n.memo?.trim() && !n.photos?.length) {
+    const n = s.notes.find((x) => x.userId === userId && x.boothId === boothId);
+    const existing: NoteState | null = n
+      ? {
+          interest: n.interest ?? null,
+          heartedAt: n.heartedAt ?? null,
+          verdict: n.verdict ?? null,
+          verdictAt: n.verdictAt ?? null,
+          visitedAt: n.visitedAt ?? null,
+          memo: n.memo ?? null,
+          photos: n.photos ?? [],
+        }
+      : null;
+    // supabase 구현과 같은 규칙 하나(lib/notes/apply.ts)를 쓴다.
+    const { next, empty } = applyNoteInput(existing, input, now());
+    if (empty) {
       s.notes = s.notes.filter((x) => x !== n);
+      return { userId, boothId, heart: false, visited: false, updatedAt: now() };
     }
-    return n;
+    const out: BoothNote = {
+      userId,
+      boothId,
+      interest: next.interest ?? undefined,
+      heartedAt: next.heartedAt ?? undefined,
+      heart: heartOf(next),
+      verdict: next.verdict ?? undefined,
+      verdictAt: next.verdictAt ?? undefined,
+      visitedAt: next.visitedAt ?? undefined,
+      visited: !!next.visitedAt,
+      memo: next.memo ?? undefined,
+      photos: next.photos,
+      // judgedClass가 undefined면 판정 필드를 안 건드린다.
+      judgedClass:
+        judgedClass === undefined ? n?.judgedClass : (judgedClass ?? undefined),
+      updatedAt: now(),
+    };
+    if (n) Object.assign(n, out);
+    else s.notes.push(out);
+    return n ?? out;
   }
 
   async listNotesByBoothIds(boothIds: string[]): Promise<BoothNote[]> {

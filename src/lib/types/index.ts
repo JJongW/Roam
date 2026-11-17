@@ -319,14 +319,23 @@ export type JudgedClass = (typeof JUDGED_CLASSES)[number];
 export interface BoothNote {
   userId: string;
   boothId: string;
-  /** 관람 전 판단 — 피드·지도에서 아직 안 가본 부스에 매긴다. */
+  /** 관람 전 판단(옛 어휘). 새 클라이언트는 `heart`를 쓴다. must·curious는 하트,
+   *  pass는 하트 없음으로 읽는다(2026-11-17, 하트 하나). 옛 iOS가 아직 이 칸을
+   *  읽고 쓰므로 계속 채운다. */
   interest?: BoothInterest;
-  /** 현장 판단 — 다녀온 부스의 만족도. 이게 곧 방문 기록이다(verdict 있으면
-   *  visitedAt도 항상 있다). */
+  /** 하트 하나(2026-11-07 결정). `heartedAt`이 있거나 옛 interest가 must·curious면 true. */
+  heart?: boolean;
+  /** 하트를 남긴 시각. 하트를 빼면 지운다. */
+  heartedAt?: string;
+  /** 다녀온 뒤 평가. 선택이다 — 평가 없이 다녀왔어요만 있을 수 있다. */
   verdict?: BoothVerdict;
-  /** verdict를 남긴 시각(=방문 시각). verdict 해제 시 같이 지운다 — 판정이 곧
-   *  방문 기록이므로 둘을 분리해서 남기지 않는다. */
+  /** 평가를 남긴 시각. 평가를 지우면 같이 지운다. */
+  verdictAt?: string;
+  /** 다녀왔어요. 평가와 따로 쓰고 따로 지운다(2026-11-17 결정, 판단 어휘 §3-3 대체).
+   *  평가를 지워도 남는다. 다녀왔어요를 끄면 평가도 같이 지운다. */
   visitedAt?: string;
+  /** visitedAt이 있으면 true. 앱이 시각 없이 켜짐 여부만 읽을 수 있게. */
+  visited?: boolean;
   /** 가장 최근 반응(interest 또는 verdict) 판정 시점의 확신 등급 — 취향 정확도
    *  채점용. verdict 기록이 더 나중이자 최종이다. */
   judgedClass?: JudgedClass;
@@ -437,7 +446,11 @@ export type SignalKind =
   | "verdict_good" // 좋았어 — 현장, 몸으로 확인한 긍정
   | "verdict_ok" // 그냥그랬어 — 현장, 중립
   | "verdict_bad" // 아니었어 — 현장, 가보고 아니었다
-  | "search_query"; // 특정 부스 검색 = 강한 능동 관심
+  | "search_query" // 특정 부스 검색 = 강한 능동 관심
+  | "heart_added" // 하트 하나(2026-11-07) — 관람 전, 관심 표시
+  | "heart_removed" // 하트 빼기. 싫어요가 아니다(§4) — 가중치 0
+  | "visit_marked" // 다녀왔어요 — 방문 사실일 뿐 좋아함이 아니다(§4) — 가중치 0
+  | "visit_unmarked"; // 다녀왔어요 끄기 — 가중치 0
 
 /** 원장 1행 — 사용자 행동 신호. append-only, 재증류 소스. */
 /**

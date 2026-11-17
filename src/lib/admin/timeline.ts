@@ -31,6 +31,10 @@ const SIGNAL_LABELS: Record<SignalKind, string> = {
   verdict_ok: "그저 그랬어요",
   verdict_bad: "아니었어요",
   search_query: "검색",
+  heart_added: "하트",
+  heart_removed: "하트 빼기",
+  visit_marked: "다녀왔어요",
+  visit_unmarked: "다녀왔어요 끄기",
 };
 
 const ANALYTICS_LABELS: Record<AnalyticsType, string> = {

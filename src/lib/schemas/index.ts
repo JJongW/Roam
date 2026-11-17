@@ -306,6 +306,12 @@ export const boothNoteInputSchema = z.object({
   // 두면 서버가 그 필드를 안 건드린다.
   interest: z.enum(BOOTH_INTERESTS).nullish(),
   verdict: z.enum(BOOTH_VERDICTS).nullish(),
+  /** 하트 하나(2026-11-07). 보내면 interest보다 우선한다. true면 옛 interest를
+   *  must로(이미 must·curious면 그대로), false면 비운다 — 옛 클라이언트가 계속 읽게. */
+  heart: z.boolean().optional(),
+  /** 다녀왔어요(2026-11-17 결정, 평가와 따로). true면 방문 시각을 남기고(이미 있으면
+   *  그대로), false면 방문과 평가를 같이 지운다. 안 보내면 건드리지 않는다. */
+  visited: z.boolean().optional(),
   memo: z.string().max(300).optional(),
   /** Personal photos (Cloudinary URLs). Capped to keep notes lightweight. */
   photos: z.array(z.string().url()).max(4).optional(),

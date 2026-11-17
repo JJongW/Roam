@@ -72,7 +72,8 @@ export function computeJourneyFunnel(
       (s) =>
         (s.kind === "reaction_must" ||
           s.kind === "reaction_curious" ||
-          s.kind === "reaction_pass") &&
+          s.kind === "reaction_pass" ||
+          s.kind === "heart_added") &&
         s.boothCode,
     ),
   );
