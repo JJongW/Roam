@@ -45,7 +45,8 @@ export const ANALYTICS_TYPES = [
   "event_bookmark",
   "ui_click",
 ] as const;
-export type AnalyticsType = (typeof ANALYTICS_TYPES)[number];
+/** "app"은 이름 붙은 앱 이벤트(0066)용. 웹 단건 입력(analyticsEventInputSchema)은 받지 않는다. */
+export type AnalyticsType = (typeof ANALYTICS_TYPES)[number] | "app";
 
 export interface Point {
   x: number;
@@ -398,6 +399,31 @@ export interface AnalyticsEvent {
   y?: number;
   meta?: Record<string, unknown>;
   createdAt: string;
+  // --- 앱 이벤트(0066). 웹 옛 행은 비어 있다. ---
+  name?: string;
+  platform?: "web" | "ios" | "android";
+  appVersion?: string;
+  anonId?: string;
+  appSessionId?: string;
+  screenId?: string;
+  clientTs?: string;
+  eventId?: string;
+}
+
+/** 앱 이벤트 한 줄을 저장소에 넣는 모양. 박람회, 부스는 서버가 확인한 것만 온다. */
+export interface AppEventRow {
+  eventId: string;
+  name: string;
+  clientTs: string;
+  platform: "web" | "ios" | "android";
+  appVersion?: string;
+  anonId: string;
+  appSessionId?: string;
+  screenId?: string;
+  userId: string | null;
+  exhibitionId: string | null;
+  boothId: string | null;
+  props: Record<string, unknown>;
 }
 
 /**

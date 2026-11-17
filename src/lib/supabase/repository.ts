@@ -21,6 +21,7 @@ import type {
 } from "@/lib/repositories/types";
 import type {
   AnalyticsEvent,
+  AppEventRow,
   SurveyResponse,
   AnalyticsType,
   Booth,
@@ -610,6 +611,14 @@ function mapAnalytics(r: Row): AnalyticsEvent {
     y: r.y == null ? undefined : num(r.y),
     meta: r.meta == null ? undefined : (r.meta as Record<string, unknown>),
     createdAt: str(r.created_at),
+    name: optStr(r.name),
+    platform: optStr(r.platform) as AnalyticsEvent["platform"],
+    appVersion: optStr(r.app_version),
+    anonId: optStr(r.anon_id),
+    appSessionId: optStr(r.app_session_id),
+    screenId: optStr(r.screen_id),
+    clientTs: optStr(r.client_ts),
+    eventId: optStr(r.event_id),
   };
 }
 
@@ -3126,6 +3135,35 @@ export class SupabaseRepository implements Repository {
       created_at: now(),
     });
     loggedWrite(res, "분석 이벤트 적재");
+  }
+
+  async recordAppEvents(rows: AppEventRow[]): Promise<void> {
+    if (rows.length === 0) return;
+    // 서비스 롤로 쓴다 — analytics_event엔 select 정책이 없고, 중복 무시(on conflict
+    // do nothing)는 RLS 아래서 기대대로 안 돌 수 있다. 신원은 라우트가 이미 정했다.
+    const db = createServiceClient();
+    const res = await db.from("analytics_event").upsert(
+      rows.map((r) => ({
+        id: uid("an"),
+        session_id: null,
+        user_id: r.userId,
+        exhibition_id: r.exhibitionId,
+        type: "app",
+        booth_id: r.boothId,
+        meta: r.props,
+        created_at: now(),
+        name: r.name,
+        platform: r.platform,
+        app_version: r.appVersion ?? null,
+        anon_id: r.anonId,
+        app_session_id: r.appSessionId ?? null,
+        screen_id: r.screenId ?? null,
+        client_ts: r.clientTs,
+        event_id: r.eventId,
+      })),
+      { onConflict: "event_id", ignoreDuplicates: true },
+    );
+    loggedWrite(res, "앱 이벤트 적재");
   }
 
   async _allAnalytics(exhibitionId: string): Promise<AnalyticsEvent[]> {

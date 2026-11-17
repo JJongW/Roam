@@ -2,6 +2,7 @@ import type { ChangeEntry, AuditContext } from "@/lib/audit/diff";
 import type { CurveInput } from "@/lib/memory/learning-curve";
 import type {
   AnalyticsEvent,
+  AppEventRow,
   SurveyResponse,
   Booth,
   BoothListItem,
@@ -558,4 +559,7 @@ export interface Repository {
     exhibitionId: string,
   ): Promise<{ stage: string; count: number; rate: number }[]>;
   _allAnalytics?(exhibitionId: string): Promise<AnalyticsEvent[]>;
+  /** 이름 붙은 앱 이벤트 묶음(0066). event_id가 이미 있으면 건너뛴다. 텔레메트리라 실패는
+   *  로그만 남긴다(화면을 막지 않는다). */
+  recordAppEvents(rows: AppEventRow[]): Promise<void>;
 }

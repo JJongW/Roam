@@ -45,6 +45,7 @@ const ANALYTICS_LABELS: Record<AnalyticsType, string> = {
   booth_arrive: "부스 도착",
   event_bookmark: "이벤트 북마크",
   ui_click: "버튼 클릭",
+  app: "앱 이벤트",
 };
 
 /**

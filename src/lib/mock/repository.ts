@@ -32,6 +32,7 @@ import type { ListBoothQuery, Repository } from "@/lib/repositories/types";
 import type {
   AiQueryLog,
   AnalyticsEvent,
+  AppEventRow,
   SurveyResponse,
   Booth,
   BoothListItem,
@@ -1796,6 +1797,33 @@ export class MockRepository implements Repository {
       createdAt: now(),
       ...input,
     });
+  }
+
+  async recordAppEvents(rows: AppEventRow[]): Promise<void> {
+    const st = store();
+    const seen = new Set(st.analytics.map((a) => a.eventId).filter(Boolean));
+    for (const r of rows) {
+      if (seen.has(r.eventId)) continue;
+      seen.add(r.eventId);
+      st.analytics.push({
+        id: uid("an"),
+        sessionId: "",
+        userId: r.userId,
+        exhibitionId: r.exhibitionId ?? "",
+        type: "app",
+        boothId: r.boothId ?? undefined,
+        meta: r.props,
+        createdAt: now(),
+        name: r.name,
+        platform: r.platform,
+        appVersion: r.appVersion,
+        anonId: r.anonId,
+        appSessionId: r.appSessionId,
+        screenId: r.screenId,
+        clientTs: r.clientTs,
+        eventId: r.eventId,
+      });
+    }
   }
 
   async _allAnalytics(exhibitionId: string): Promise<AnalyticsEvent[]> {
