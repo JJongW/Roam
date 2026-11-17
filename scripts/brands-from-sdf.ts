@@ -1,0 +1,111 @@
+/**
+ * 서울디자인페스티벌 공식 참가브랜드 명단 → brands.v1 파일.
+ *
+ *   npm run brands:sdf -- <연도 term id> --slug <행사 slug|none> --out <파일.json> [--raw <원본.json>] [--no-details]
+ *
+ *   연도 term id: 2025 = 24, 2026 = 37(2026-11-17 기준 아직 0건)
+ *
+ * 공식 WP REST(seoul.designfestival.co.kr/wp-json/wp/v2/exhibitor)로 명단을 받고, 소개와 링크는
+ * REST에 없어 브랜드 상세 HTML을 읽는다(같은 호스트에 0.5초 간격, robots.txt는 /wp-admin/만 막음).
+ * 서울디자인스팟(행사장 밖 매장 프로그램)은 뺀다. 변환은 src/lib/intake/sdf-official.ts(순수, 테스트 있음).
+ *
+ * **파일만 만든다.** 운영 DB에 쓰지 않는다. 적용은 사람이 /admin/intake 미리보기를 보고 한다
+ * (2026-11-17 라운드 테이블 "지금" 7번). 인스타는 공식 사이트가 건 링크만 쓴다 — 인스타를 긁지 않는다.
+ */
+import { mkdirSync, writeFileSync } from "node:fs";
+import { dirname } from "node:path";
+import { SDF_OFFSITE_TERMS, buildSdfBrandsFile, decodeEntities, parseSdfDetail, type SdfDetail, type SdfRestExhibitor } from "@/lib/intake/sdf-official";
+
+const BASE = "https://seoul.designfestival.co.kr/wp-json/wp/v2";
+// 공식 사이트가 일반 브라우저 UA가 아니면 막는 경우가 있어 평범한 UA를 쓴다(조회만, 0.5초 간격).
+const UA = "Mozilla/5.0 (Macintosh) AppleWebKit/537.36 Chrome/130 Safari/537.36";
+const GAP_MS = 500;
+
+const argv = process.argv.slice(2).filter((a) => a !== "--");
+const yearId = Number(argv[0]);
+const opt = (name: string) => {
+  const i = argv.indexOf(name);
+  return i >= 0 ? argv[i + 1] : undefined;
+};
+const slugArg = opt("--slug");
+const out = opt("--out");
+const rawOut = opt("--raw");
+const details = !argv.includes("--no-details");
+if (!Number.isInteger(yearId) || yearId <= 0 || !slugArg || !out) {
+  console.error("사용법: npm run brands:sdf -- <연도 term id> --slug <행사 slug|none> --out <파일.json> [--raw <원본.json>] [--no-details]");
+  process.exit(1);
+}
+const exhibitionSlug = slugArg === "none" ? null : slugArg;
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+let last = 0;
+async function get(url: string): Promise<Response> {
+  const wait = last + GAP_MS - Date.now();
+  if (wait > 0) await sleep(wait);
+  last = Date.now();
+  const res = await fetch(url, { headers: { "user-agent": UA }, signal: AbortSignal.timeout(30_000) });
+  if (!res.ok) throw new Error(`${res.status} ${url}`);
+  return res;
+}
+
+async function terms(tax: string): Promise<Map<number, string>> {
+  const rows = (await (await get(`${BASE}/${tax}?per_page=100`)).json()) as { id: number; name: string }[];
+  return new Map(rows.map((t) => [t.id, decodeEntities(t.name)]));
+}
+
+const [years, termNames, typeNames] = [await terms("exhibition_year"), await terms("exhibition_term"), await terms("exhibition_type")];
+if (!years.has(yearId)) {
+  console.error(`✗ 연도 term id ${yearId}를 찾지 못했어요. 있는 값: ${[...years].map(([id, n]) => `${n}=${id}`).join(", ")}`);
+  process.exit(1);
+}
+
+const sourceUrl = `${BASE}/exhibitor?exhibition_year=${yearId}`;
+const rows: SdfRestExhibitor[] = [];
+for (let page = 1; ; page++) {
+  const res = await get(`${sourceUrl}&per_page=100&page=${page}&orderby=id&order=asc`);
+  const items = (await res.json()) as SdfRestExhibitor[];
+  rows.push(...items);
+  const totalPages = Number(res.headers.get("x-wp-totalpages") ?? 1);
+  if (!items.length || page >= totalPages) break;
+}
+console.log(`${years.get(yearId)}년 명단 ${rows.length}건`);
+if (!rows.length) {
+  console.error("✗ 명단이 아직 비어 있어요. 파일을 만들지 않았어요");
+  process.exit(1);
+}
+
+const offsite = new Set([...termNames].filter(([, n]) => SDF_OFFSITE_TERMS.includes(n)).map(([id]) => id));
+const want = rows.filter((r) => !r.exhibition_term.some((t) => offsite.has(t)));
+const detailMap = new Map<number, SdfDetail>();
+if (details) {
+  for (const [i, r] of want.entries()) {
+    try {
+      detailMap.set(r.id, parseSdfDetail(await (await get(r.link)).text()));
+    } catch (e) {
+      console.warn(`  상세를 못 읽었어요(이름만 넣어요): ${r.link} ${e instanceof Error ? e.message : e}`);
+    }
+    if ((i + 1) % 25 === 0) console.log(`  상세 ${i + 1}/${want.length}`);
+  }
+}
+
+const today = new Date().toISOString().slice(0, 10);
+const { file, excluded } = buildSdfBrandsFile({
+  rows,
+  termNames,
+  typeNames,
+  details: detailMap,
+  exhibitionSlug,
+  sourceUrl,
+  collectedAt: today,
+  note: `서울디자인페스티벌 ${years.get(yearId)} 공식 참가브랜드(WP REST + 상세 페이지). 서울디자인스팟 ${rows.length - want.length}곳은 행사장 밖 프로그램이라 뺐어요. 부스 번호는 사이트에 없어요`,
+});
+mkdirSync(dirname(out), { recursive: true });
+writeFileSync(out, `${JSON.stringify(file, null, 2)}\n`);
+if (rawOut) {
+  mkdirSync(dirname(rawOut), { recursive: true });
+  writeFileSync(rawOut, `${JSON.stringify({ sourceUrl, fetchedAt: today, rows, details: Object.fromEntries(detailMap) }, null, 1)}\n`);
+}
+const withIg = file.brands.filter((b) => b.instagramUrl).length;
+const withIntro = file.brands.filter((b) => b.intro).length;
+console.log(`✓ brands.v1 ${file.brands.length}곳 → ${out} (서울디자인스팟 ${excluded.length}곳 뺌, 인스타 ${withIg}, 소개 ${withIntro})`);
+console.log("  운영 DB에는 쓰지 않았어요. /admin/intake에 올려 미리보기를 보고 적용해 주세요");
