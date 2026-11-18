@@ -36,8 +36,10 @@ const EXEMPT_PREFIXES = ["/login", "/auth", "/admin"];
  * /login, verification is rejected on the spot.
  *
  * `/survey`는 공개 설문이다 — 링크를 받은 사람이 계정을 만들 이유가 없다.
+ * `/visited`는 "다녀왔어요" 목록(UI 6-10)이다. 기록은 이 기기에 먼저 남고 로그인 전에는 기기 것만
+ * 보여 준다(화면 설계서 6-10 상태, "로그인 없이 모두 할 수 있어요").
  */
-export const PUBLIC_PATHS = ["/", "/privacy", "/terms", "/survey"];
+export const PUBLIC_PATHS = ["/", "/privacy", "/terms", "/survey", "/visited"];
 /** 정확한 패턴 매치 — 하위 경로(메모장·커뮤니티 등)는 자동으로 안 걸린다. */
 export const PUBLIC_PATH_PATTERNS = [
   /^\/exhibitions\/[^/]+$/,
