@@ -3,10 +3,13 @@
 import {
   useCallback,
   useEffect,
+  useImperativeHandle,
   useLayoutEffect,
   useMemo,
   useRef,
   useState,
+  type ReactNode,
+  type Ref,
 } from "react";
 import { Minus, Plus, Maximize2, RotateCw } from "lucide-react";
 import { cn, clamp } from "@/lib/utils";
@@ -64,7 +67,52 @@ function unit(a: { x: number; y: number }, b: { x: number; y: number }) {
   return { x: dx / len, y: dy / len };
 }
 
+/** 도면 단위 상자(중심 x, y). */
+export interface MapRect {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  color?: string;
+  rotate?: number;
+}
+
+/**
+ * 다른 그림 층(v2 지도)이 이 엔진의 이동, 확대, 누르기, 회전을 그대로 쓰면서 그림만 바꿀 때
+ * 받는 것. 엔진은 하나로 두고(제스처와 화면 맞춤은 한 벌), 무엇을 그리는지만 넘긴다.
+ */
+export interface MapLayerContext {
+  width: number;
+  height: number;
+  booths: BoothListItem[];
+  floorplan?: Floorplan;
+  /** 부스의 도면 상자. 도면이 있는데 그 부스가 도면에 없으면 null. */
+  geomOf: (b: BoothListItem) => MapRect | null;
+  /** 홀 바닥판(도면 또는 부스 범위). */
+  hallRegions: { label: string; x: number; y: number; w: number; h: number }[];
+  /** 지도가 돌아가도 글자가 서 있게 하는 변환. 0도면 undefined. */
+  upright: (ax: number, ay: number) => string | undefined;
+  selectedId?: string | null;
+}
+
+/** 바깥에서 지도를 움직이는 손잡이(웹 v2의 확대 버튼, 홀 바꾸기). */
+export interface MapHandle {
+  zoomIn: () => void;
+  zoomOut: () => void;
+  reset: () => void;
+  /** 도면 상자 하나를 화면에 맞춘다(홀 바꾸기). x, y는 왼쪽 위. */
+  focusRect: (r: { x: number; y: number; w: number; h: number }) => void;
+}
+
 interface MapProps {
+  /** 주면 v1 그림 대신 이 층을 그린다(엔진은 같다). */
+  renderLayer?: (ctx: MapLayerContext) => ReactNode;
+  /** 엔진의 v1 컨트롤(회전, 확대, 축소, 전체)을 숨긴다. */
+  hideControls?: boolean;
+  handleRef?: Ref<MapHandle>;
+  /** 처음 들어올 때: "readable"(기본, 입구를 이름이 읽히는 배율로) 또는 "whole"(전체 맞춤).
+   *  웹 v2는 "whole" — 11-16 결정 "지도 처음은 전체"(설문 10/18). */
+  entry?: "readable" | "whole";
   width: number;
   height: number;
   booths: BoothListItem[];
@@ -160,6 +208,10 @@ export function ExhibitionMap({
   exhibitionSlug,
   viewportClassName = "inset-0",
   controlsClassName = "bottom-4 right-3",
+  renderLayer,
+  hideControls = false,
+  handleRef,
+  entry = "readable",
 }: MapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
@@ -441,7 +493,7 @@ export function ExhibitionMap({
         return;
       }
       const contain = Math.min(cw / fw, ch / fh) * 0.96;
-      if (!whole && !focus && floorplan && entryScaleBase != null) {
+      if (!whole && entry !== "whole" && !focus && floorplan && entryScaleBase != null) {
         const fill = fillHeight ? Math.max(contain, (ch / fh) * 0.92) : contain;
         const s = Math.max(entryScaleBase, fill);
         const p = toContent(entryPoint(floorplan));
@@ -479,7 +531,9 @@ export function ExhibitionMap({
           // top (not vertical-centred) so there's no large empty band above.
           y:
             !focus && scaledH < ch
-              ? 12
+              ? entry === "whole"
+                ? (ch - scaledH) / 2
+                : 12
               : clamp(
                   ch / 2 - cy * s,
                   Math.min(0, ch - scaledH),
@@ -500,6 +554,7 @@ export function ExhibitionMap({
       focus?.y,
       floorplan,
       entryScaleBase,
+      entry,
       toContent,
       applyView,
       footprint,
@@ -648,6 +703,37 @@ export function ExhibitionMap({
       persistView();
     },
     [clampOffset, applyView, minScale, maxScale, persistView],
+  );
+
+  useImperativeHandle(
+    handleRef,
+    () => ({
+      zoomIn: () => zoomBy(1.25, undefined, true),
+      zoomOut: () => zoomBy(0.8, undefined, true),
+      reset: () => resetView(),
+      focusRect: (r) => {
+        const el = containerRef.current;
+        if (!el) return;
+        const cw = el.clientWidth;
+        const ch = el.clientHeight;
+        const c = toContent({ x: r.x + r.w / 2, y: r.y + r.h / 2 });
+        const s = clamp(
+          Math.min(cw / r.w, ch / r.h) * 0.92,
+          minScale(),
+          maxScale(),
+        );
+        view.current = {
+          scale: s,
+          offset: clampOffset({ x: cw / 2 - c.x * s, y: focusCenterY(el, c.y, s) }, s),
+        };
+        userAdjusted.current = true;
+        applyView(true);
+        persistView();
+      },
+    }),
+    // focusCenterY는 렌더마다 새로 만드는 함수라 뺀다(focusBottomInset만 읽는다).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [zoomBy, resetView, toContent, minScale, maxScale, clampOffset, applyView, persistView, focusBottomInset],
   );
 
   function localPoint(e: { clientX: number; clientY: number }): Point {
@@ -992,6 +1078,22 @@ export function ExhibitionMap({
           style={{ transformOrigin: "0 0", willChange: "transform" }}
           className="select-none"
         >
+          {renderLayer ? (
+            renderLayer({
+              width,
+              height,
+              booths,
+              floorplan,
+              geomOf: (b) =>
+                floorplan && !(b.code && rectByCode.has(b.code))
+                  ? null
+                  : geomOf(b),
+              hallRegions,
+              upright,
+              selectedId,
+            })
+          ) : (
+            <>
           {/* grid backdrop. No SVG filters — drop-shadow filters force costly
               re-rasterisation on every zoom and were the main pan/zoom lag. */}
           <defs>
@@ -1577,10 +1679,13 @@ export function ExhibitionMap({
               />
             </g>
           )}
+            </>
+          )}
         </svg>
       </div>
 
       {/* controls */}
+      {!hideControls && (
       <div
         className={cn("absolute z-10 flex flex-col gap-2", controlsClassName)}
       >
@@ -1633,6 +1738,7 @@ export function ExhibitionMap({
           <Maximize2 className="size-5" />
         </Button>
       </div>
+      )}
     </div>
   );
 }

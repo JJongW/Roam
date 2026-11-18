@@ -1,5 +1,5 @@
-import { LoadingScreen } from "@/components/common/loading-screen";
+import { BoothDetailSkeleton } from "@/components/booth-v2/booth-detail-skeleton";
 
 export default function Loading() {
-  return <LoadingScreen topic="booth" />;
+  return <BoothDetailSkeleton />;
 }

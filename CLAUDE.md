@@ -105,8 +105,20 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
 - 가치 slug 단일 소스 `src/lib/values/index.ts`. 8개 밖의 값은 `/api/me/values`가 400.
 - 취향 정확도는 `getTasteAccuracy`(booth_note 집계). 예전 `tasteProgress`는 삭제됐다.
 
+## 디자인 시스템 v2 (2026-11-18 Ted 결정)
+- **웹은 디자인 값을 Roam-design에서만 받는다.** 웹 안에 색, 간격, 글자, 둥글기, 그림자 값을 새로 정의하지 않는다.
+  없는 토큰은 Roam-design `tokens/v2/*.json`에 PR로 먼저 더하고, `npm run tokens:sync -- --commit <sha>`로 받는다.
+- 사본: `src/styles/v2/{tokens,theme}.css`(손으로 고치지 않는다), 고정 커밋 `src/styles/v2/source.json`. `npm run tokens:check`.
+- v2 화면 파일은 `src/styles/v2/v2-guard.test.ts`의 `V2_FILES`에 넣는다. hex, 색 함수, Tailwind 임의값(`[13px]`, `[#fff]`),
+  v1 변수(`var(--primary)`)와 v1 색 이름(`bg-card`), Tailwind 기본 눈금(`p-4`, `text-sm`, `rounded-lg`, `size-5`)이 들어오면 테스트가 깨진다.
+  허용: `-v2-` 유틸리티, `var(--roam-v2-*)` 하나만 담은 임의값, 비율(`w-2/5`), 0. 검사에 예외를 늘려 지나가지 않는다.
+- 화면 문구는 `src/lib/copy/v1.ts` 한 곳(iOS `V1Copy.swift`와 같은 문장). 이벤트는 `src/lib/analytics/app-track.ts`(iOS 이름 그대로).
+- 계획, 화면 목록, 순서: `docs/decisions/2026-11-18_웹-디자인-v2-이전-계획.md`. 운영 콘솔(`/admin`)은 v1 그대로 둔다.
+
 ## 지도
-- 뒤로가기(`map-view.tsx` `handleBack`): history 있으면 `router.back()`, 없을 때만 전시 홈으로 push.
+- 방문객 지도는 v2(`components/map-v2/fair-map-screen.tsx`)다. 엔진은 `components/map/exhibition-map.tsx` 하나이고 v2는
+  `renderLayer`로 그림만 바꾼다. 처음 열면 전체(`entry="whole"`, 11-16).
+- 뒤로가기(`components/v2/back-button.tsx`): 앱 안에서 왔으면 `router.back()`, 아니면 전시 홈으로 push.
 - **장소(venue)와 배치(layout)는 다르다.** 벽·입출구·화장실은 건물 속성이라 `src/lib/venues/<venue>.json`에
   한 번 저작하고 모든 전시가 재사용한다. 전시는 부스 배치만 말한다. 합성은 `src/lib/floorplan/compose.ts`.
   새 도면은 "표준부스가 3×3m(플라츠 3×2m)로 떨어지나"로 스케일을 검증한다.
@@ -131,7 +143,7 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
 - mock(`seed*.ts`)은 아직 전시별 JSON을 import한다(미정리). `scripts/gen-seed.mjs`는 **실행 불가**(gitignore된 `supabase/seed.sql`을 연다).
 
 ## ⚠️ 데드코드 (지우거나 되살리기 전엔 믿지 말 것)
-호출부 0: `ai/booth-recommender.ts` · `onboarding/onboarding-{flow,inference,types}.ts` · `stores/onboarding.ts` ·
+호출부 0: `components/map/map-view.tsx`(v1 지도 화면, 11-18 v2로 바뀜. 테스트만 읽는다) · `ai/booth-recommender.ts` · `onboarding/onboarding-{flow,inference,types}.ts` · `stores/onboarding.ts` ·
 repo의 `logAiQuery`/`topQueryKeywords`(+ `ai_query_log` 테이블).
 
 **한 번도 안 쓴 UI 모듈**(참조 0): `ui/{slider,separator,progress}.tsx` · `common/rating.tsx`.
