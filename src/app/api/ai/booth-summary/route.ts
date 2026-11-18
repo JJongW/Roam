@@ -10,6 +10,7 @@ import {
 import { hasGemini, generateJSON, generateText } from "@/lib/ai/gemini";
 import { hasRealBlurb } from "@/lib/booth/blurb";
 import { prebuiltSummary, type BoothExtract } from "@/lib/booth/summary-cache";
+import { normalizeSummaryVoice } from "@/lib/booth/summary-voice";
 
 const bodySchema = z.object({ boothId: z.string().min(1) });
 
@@ -90,10 +91,13 @@ export async function POST(req: Request) {
         temperature: 0.2,
       });
       const clean: Extract = {
-        summary: data.summary
-          .trim()
-          .replace(/^["'"']|["'"']$/g, "")
-          .slice(0, 120),
+        // 모델이 프롬프트를 어겨도 합니다체나 가운뎃점이 화면에 나가지 않게 한다.
+        summary: normalizeSummaryVoice(
+          data.summary
+            .trim()
+            .replace(/^["'"']|["'"']$/g, "")
+            .slice(0, 120),
+        ),
         newReleases: (data.newReleases ?? []).filter(Boolean).slice(0, 6),
         goods: (data.goods ?? []).filter(Boolean).slice(0, 6),
       };
@@ -103,7 +107,7 @@ export async function POST(req: Request) {
       // Structured extract failed (model/JSON variance) — fall back to a plain
       // one-line summary so the booth still gets its 한 줄 요약 (no 500, no blank).
       try {
-        const summary = (
+        const summary = normalizeSummaryVoice((
           await generateText({
             system:
               "너는 박람회 부스를 한 문장으로 요약하는 도우미야. 이 부스가 무엇을 보여주는 곳인지 한국어 해요체 한 문장(40자 내외)으로만 답해. 합니다체와 반말, 과장, 이모지, 따옴표, 가운뎃점(·), '전시'라는 말 없이 담백하게.",
@@ -118,7 +122,7 @@ export async function POST(req: Request) {
         )
           .trim()
           .replace(/^["'"']|["'"']$/g, "")
-          .slice(0, 120);
+          .slice(0, 120));
         const data: Extract = { summary, newReleases: [], goods: [] };
         if (summary) cache.set(boothId, { data, at: Date.now() });
         return ok(data);
