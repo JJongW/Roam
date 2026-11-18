@@ -20,7 +20,8 @@ import { haExhibition } from "@/lib/mock/seed-house-archive";
 // - 하우스 아카이브 enrichment.summary: 주최 측 브랜드 디렉터리 소개 원문
 //   (`scripts/gen-house-archive-enrichment.mjs`)이라 뺀다.
 // - 마곡리빙마켓 enrichment.summary: 126건 중 67건이 주최 디렉터리의 브랜드 소개를
-//   그대로 옮긴 글이라(`data/verified`의 directory와 같다) summary 칸째 뺀다.
+//   그대로 옮긴 글이다. `data/verified`의 directory 원문과 겹치는 summary만 빼고,
+//   Roam이 쓴 나머지 59건은 검사한다(`isDirectoryOriginal`).
 // - 인입 파일의 description, longDescription, category, 브랜드 intro, verified의
 //   directory와 instagram: 브랜드나 주최 원문이라 뺀다.
 // - 부스 이름은 고유명사라 시드 문구에서 이름을 지우고 본다.
@@ -66,7 +67,45 @@ const ROAM_FIELDS = [
 ];
 
 /** summary가 브랜드나 주최 원문인 전시. */
-const BRAND_SOURCED_SUMMARY = new Set(["house-archive-2026", "magok-livingmarket-2026"]);
+const BRAND_SOURCED_SUMMARY = new Set(["house-archive-2026"]);
+
+const squash = (t: string) => t.replace(/[\s.,·"'’“”()\-—]/g, "");
+
+interface DirectoryFact {
+  summary?: string;
+  directory?: { intro?: string; pr?: string };
+}
+
+/**
+ * summary가 주최 디렉터리의 브랜드 소개 원문을 옮긴 것인가. "이름 — " 뒤 본문을
+ * 20자씩 잘라 절반 넘게 원문 안에 있으면 원문으로 본다.
+ */
+function isDirectoryOriginal(summary: string, fact?: DirectoryFact): boolean {
+  const d = fact?.directory;
+  if (!d) return false;
+  const source = squash(`${d.intro ?? ""}${d.pr ?? ""}`);
+  const body = squash(summary.includes(" — ") ? summary.split(" — ").slice(1).join(" — ") : summary);
+  const chunks: string[] = [];
+  for (let i = 0; i < Math.max(1, body.length - 20); i += 20) chunks.push(body.slice(i, i + 20));
+  return chunks.filter((c) => source.includes(c)).length / chunks.length > 0.5;
+}
+
+function loadVerifiedBooths(slug: string): Record<string, DirectoryFact> {
+  try {
+    const raw = JSON.parse(readFileSync(join(process.cwd(), "data/verified", `${slug}.json`), "utf8"));
+    return raw.booths ?? {};
+  } catch {
+    return {};
+  }
+}
+
+/** Roam 칸만 모은다. summary는 브랜드 원문이 아닐 때만 넣는다. */
+function roamFieldsOf(e: Record<string, unknown>, slug: string, fact?: DirectoryFact) {
+  const summary = typeof e.summary === "string" ? e.summary : "";
+  const withSummary =
+    !BRAND_SOURCED_SUMMARY.has(slug) && !!summary && !isDirectoryOriginal(summary, fact);
+  return roamFields(e, withSummary);
+}
 
 function roamFields(e: Record<string, unknown>, withSummary: boolean) {
   const keys = withSummary ? [...ROAM_FIELDS, "summary"] : ROAM_FIELDS;
@@ -110,13 +149,23 @@ describe("Roam이 쓴 데이터는 해요체이고 가운뎃점이 없다", () =
       it(f, () => {
         const raw = JSON.parse(readFileSync(join(dir, f), "utf8"));
         if (!Array.isArray(raw.booths)) return;
-        const withSummary = !BRAND_SOURCED_SUMMARY.has(raw.exhibitionSlug);
+        const verified = loadVerifiedBooths(raw.exhibitionSlug);
         const pairs = (raw.booths as { code: string; enrichment?: Record<string, unknown> }[])
           .filter((b) => b.enrichment)
-          .flatMap((b) => strings(roamFields(b.enrichment!, withSummary), b.code));
+          .flatMap((b) =>
+            strings(roamFieldsOf(b.enrichment!, raw.exhibitionSlug, verified[b.code]), b.code),
+          );
         expect(withDot(pairs)).toEqual([]);
       });
     }
+  });
+
+  it("마곡 summary 중 Roam이 쓴 59건을 검사 대상으로 잡는다", () => {
+    const booths = loadVerifiedBooths("magok-livingmarket-2026");
+    const roam = Object.values(booths).filter(
+      (b) => b.summary && !isDirectoryOriginal(b.summary, b),
+    );
+    expect(roam.length).toBe(59);
   });
 
   describe("data/verified 확인 사실의 Roam 칸", () => {
@@ -125,8 +174,9 @@ describe("Roam이 쓴 데이터는 해요체이고 가운뎃점이 없다", () =
     for (const f of files) {
       it(f, () => {
         const raw = JSON.parse(readFileSync(join(dir, f), "utf8"));
+        const slug: string = raw.exhibitionSlug ?? f.replace(/\.json$/, "");
         const pairs = Object.entries((raw.booths ?? {}) as Record<string, Record<string, unknown>>).flatMap(
-          ([code, v]) => strings(roamFields(v, !BRAND_SOURCED_SUMMARY.has(raw.exhibitionSlug ?? f.replace(/\.json$/, ""))), code),
+          ([code, v]) => strings(roamFieldsOf(v, slug, v as DirectoryFact), code),
         );
         expect(withDot(pairs)).toEqual([]);
       });
