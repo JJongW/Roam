@@ -323,7 +323,7 @@ function BrandList({ rows, contactStatus }: { rows: BrandSummary[]; contactStatu
     <Card className="divide-y divide-border p-0">
       {rows.map((b) => {
         const latest = b.appearances[0];
-        const status = latest ? contactStatus[latest.boothId] ?? "not-sent" : null;
+        const status = latest ? (latest.boothId && contactStatus[latest.boothId]) || "not-sent" : null;
         return (
           <Link
             key={b.exhibitorId}

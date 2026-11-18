@@ -116,9 +116,8 @@ export async function enqueueExhibitionDrafts(
   opts: { actor: string | null; onlyNeeded?: boolean },
 ): Promise<{ brands: number; complete: number; jobIds: string[] }> {
   const graph = await repo.loadExhibitorGraph();
-  const inEx = new Set(graph.participants.filter((p) => p.exhibitionId === exhibitionId).map((p) => p.id));
-  const primary = new Set(graph.assignments.filter((a) => a.role === "primary" && inEx.has(a.participantId)).map((a) => a.participantId));
-  const ids = [...new Set(graph.participants.filter((p) => primary.has(p.id)).map((p) => p.exhibitorId))];
+  // 출전 전체다. 부스 번호 전 출전도 공식 소개 말투 바꾸기처럼 부스 없이 할 일이 있다(정규화 감사 "코드 0").
+  const ids = [...new Set(graph.participants.filter((p) => p.exhibitionId === exhibitionId).map((p) => p.exhibitorId))];
   let targets = ids;
   if (opts.onlyNeeded !== false && ids.length) {
     const fields = await repo.listProfileFields({ exhibitorIds: ids });

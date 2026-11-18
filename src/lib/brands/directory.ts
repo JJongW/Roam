@@ -1,7 +1,8 @@
 // /admin/brands 목록 — 모든 박람회의 브랜드(exhibitor)를 한 화면에. 순수 함수, I/O 없음.
 //
 // 브랜드가 중심이다(기준 문서 brand-profile-spec 1장). 한 줄 = 참가사 그래프(0040)의
-// 브랜드 하나, 그 아래 출전(대표 배정된 부스)들. 같은 브랜드인지는 여기서 새로 판단하지
+// 브랜드 하나, 그 아래 출전들. 출전은 부스가 아니다 — 부스 번호 전(brands.v1)에도 출전이 있고,
+// 대표 배정된 부스가 있으면 그 부스 칸이 붙는다(2026-11-17 정규화 감사 "코드 0"). 같은 브랜드인지는 여기서 새로 판단하지
 // 않는다 — lib/exhibitor/identity.ts가 정하고, 애매한 짝은 연결 확인 목록으로 간다.
 // 아직 어느 브랜드에도 이어지지 않은 부스는 `unlinked`로 따로 돌려준다(백필 전 상태).
 import { findBoothEnrichmentGaps } from "@/lib/admin/data-issues";
@@ -11,13 +12,14 @@ import type { Booth, Category, Exhibition, ExhibitorGraph, ProfileField } from "
 export type EnrichmentState = "full" | "partial" | "none";
 
 export interface BrandAppearance {
-  boothId: string;
+  /** 대표 배정된 부스. 부스 번호가 아직 없는 출전이면 없다. */
+  boothId?: string;
   participantId?: string;
   exhibitionId: string;
   exhibitionName: string;
   startDate: string;
   code?: string;
-  /** 그 회차 표기 이름(부스 이름). */
+  /** 그 회차 표기 이름(부스 이름, 부스가 없으면 출전 표기 이름). */
   name: string;
   company: string;
   categoryId: string;
@@ -121,6 +123,25 @@ export function buildBrandDirectory(input: {
     const brand = owner && brands.get(owner.exhibitorId);
     if (brand) brand.appearances.push(a);
     else unlinked.push(a);
+  }
+
+  // 부스가 없는 출전(브랜드 먼저 인입). 부스 칸은 비우고 출전 표기 이름으로 한 줄.
+  const seen = new Set([...ownerOfBooth.values()].map((o) => o.participantId));
+  for (const p of input.graph.participants) {
+    const brand = brands.get(p.exhibitorId);
+    if (!brand || seen.has(p.id)) continue;
+    const ex = exById.get(p.exhibitionId);
+    brand.appearances.push({
+      participantId: p.id,
+      exhibitionId: p.exhibitionId,
+      exhibitionName: ex?.name ?? p.exhibitionId,
+      startDate: ex?.startDate ?? "",
+      name: p.displayName,
+      company: "",
+      categoryId: "",
+      enrichment: "none",
+      enrichmentMissing: REQUIRED_COUNT,
+    });
   }
 
   const out = [...brands.values()];

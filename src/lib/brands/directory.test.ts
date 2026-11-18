@@ -68,6 +68,31 @@ const fields = [
   field("x2", "items", ["키링"], "stale"),
 ];
 
+describe("buildBrandDirectory — 부스 없는 출전", () => {
+  // 브랜드 먼저 인입(brands.v1): 출전은 있고 부스 번호는 아직 없다(2026-11-17 Ted "브랜드가 우선, 부스는 그 이후").
+  const g: ExhibitorGraph = {
+    ...graph,
+    exhibitors: [...graph.exhibitors, { id: "x3", canonicalName: "새벽" }],
+    participants: [...graph.participants, { id: "p4", exhibitorId: "x3", exhibitionId: "e_new", displayName: "새벽 상점" }],
+  };
+  const { brands } = buildBrandDirectory({ exhibitions, booths, categories, graph: g, fields });
+
+  it("부스가 없어도 출전으로 보이고, 박람회로 걸러도 남는다", () => {
+    const x3 = brands.find((b) => b.exhibitorId === "x3")!;
+    expect(x3.appearances).toEqual([
+      expect.objectContaining({ participantId: "p4", exhibitionId: "e_new", exhibitionName: "이번 페어", name: "새벽 상점" }),
+    ]);
+    expect(x3.appearances[0].boothId).toBeUndefined();
+    expect(filterDirectory(brands, { exhibitionId: "e_new" }).map((b) => b.exhibitorId)).toContain("x3");
+    expect(groupDirectory(brands, "exhibition").find((gr) => gr.key === "__none")?.rows ?? []).not.toContainEqual(x3);
+  });
+
+  it("부스가 있는 출전은 한 번만 나온다", () => {
+    const x1 = brands.find((b) => b.exhibitorId === "x1")!;
+    expect(x1.appearances.map((a) => a.participantId)).toEqual(["p2", "p1"]);
+  });
+});
+
 describe("buildBrandDirectory", () => {
   const { brands, unlinked } = buildBrandDirectory({ exhibitions, booths, categories, graph, fields });
 
