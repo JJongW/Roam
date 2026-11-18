@@ -1,6 +1,11 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "../styles/tokens.css";
+/* 디자인 시스템 v2 — v1 다음에 싣는다. 이름이 전부 --roam-v2-*, Tailwind -v2- 라 v1
+   @theme과 겹치지 않고 함께 산다. 두 파일은 Roam-design 고정 커밋의 생성본 그대로다
+   (npm run tokens:sync, src/styles/v2/source.json). 손으로 고치면 tokens 검사가 막는다. */
+@import "../styles/v2/tokens.css";
+@import "../styles/v2/theme.css";
 
 /* ------------------------------------------------------------------ */
 /* Roam design system — minimal, editorial, Apple HIG aligned          */
