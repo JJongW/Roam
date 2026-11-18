@@ -1,4 +1,4 @@
-import { Check, Heart } from "lucide-react";
+import { Bath, Check, Heart } from "lucide-react";
 import type { MapLayerContext } from "@/components/map/exhibition-map";
 import {
   CODE_RATIO,
@@ -6,6 +6,7 @@ import {
   NAME_LINE_HEIGHT,
 } from "@/components/map/booth-label";
 import { V2_NUM, V2_PX } from "@/styles/v2/lengths.generated";
+import { entranceMarkers, wcMarkers } from "./map-markers";
 import type { BoothListItem } from "@/lib/types";
 
 /**
@@ -40,7 +41,15 @@ export function MapLayerV2({
   /** 편의시설 칩, 검색 결과처럼 지금 눈에 띄워야 하는 칸. 있으면 나머지는 흐리게. */
   highlightIds?: Set<string> | null;
 }) {
-  const { booths, floorplan, geomOf, hallRegions, upright, selectedId } = ctx;
+  const {
+    booths,
+    floorplan,
+    geomOf,
+    hallRegions,
+    upright,
+    selectedId,
+    fitScale,
+  } = ctx;
   const sel = selectedId ? booths.find((b) => b.id === selectedId) : undefined;
   const ordered = sel
     ? [...booths.filter((b) => b.id !== sel.id), sel]
@@ -48,8 +57,6 @@ export function MapLayerV2({
   const stroke = V2_PX["stroke-width-s1"];
   const hallStroke = V2_PX["stroke-width-s3"];
   const markerR = V2_PX["radius-r1"];
-  // 출입구 알약 글자는 이 도면의 보통 부스 칸 높이에 맞춘다(도면마다 단위가 달라서).
-  const cellH = typicalCellHeight(floorplan?.booths);
 
   return (
     <g>
@@ -143,36 +150,54 @@ export function MapLayerV2({
         );
       })}
 
-      {floorplan?.decor.map((d, i) => {
-        if (d.type !== "entrance") return null;
-        const s = d.size ?? 1;
-        const fs = cellH * V2_NUM["ratio-map-entrance-label"] * s;
-        const pw = d.text.length * fs * 0.9 + fs * 1.6;
-        const ph = fs * 1.7;
-        return (
-          <g key={`ent-${i}`} transform={upright(d.x, d.y)}>
+      {/* 길잡이 표식: 벽 바깥에 붙여 부스 칸을 덮지 않는다(map-markers.ts). 화장실 칩을 켜면 진하게 남는다. */}
+      {floorplan &&
+        wcMarkers(floorplan, fitScale).map((m, i) => (
+          <g key={`wc-${i}`} transform={upright(m.x + m.w / 2, m.y + m.h / 2)}>
             <rect
-              x={d.x - pw / 2}
-              y={d.y - ph / 2}
-              width={pw}
-              height={ph}
-              rx={ph / 2}
+              x={m.x}
+              y={m.y}
+              width={m.w}
+              height={m.h}
+              rx={m.h / 2}
+              fill={C("bg-layer-floating")}
+              stroke={C("stroke-neutral-muted")}
+              strokeWidth={stroke}
+            />
+            <Bath
+              aria-hidden
+              x={m.x + (m.w - m.icon) / 2}
+              y={m.y + (m.h - m.icon) / 2}
+              width={m.icon}
+              height={m.icon}
+              stroke={C("fg-neutral")}
+            />
+          </g>
+        ))}
+      {floorplan &&
+        entranceMarkers(floorplan, fitScale).map((m, i) => (
+          <g key={`ent-${i}`} transform={upright(m.x + m.w / 2, m.y + m.h / 2)}>
+            <rect
+              x={m.x}
+              y={m.y}
+              width={m.w}
+              height={m.h}
+              rx={m.h / 2}
               fill={C("map-entrance")}
             />
             <text
-              x={d.x}
-              y={d.y}
-              fontSize={fs}
+              x={m.x + m.w / 2}
+              y={m.y + m.h / 2}
+              fontSize={m.fontSize}
               textAnchor="middle"
               dominantBaseline="central"
               fill={C("fg-neutral-inverted")}
               className="font-v2-ui font-v2-medium"
             >
-              {d.text}
+              {m.text}
             </text>
           </g>
-        );
-      })}
+        ))}
     </g>
   );
 }
@@ -199,12 +224,6 @@ function VisitedCheck({
       stroke={color}
     />
   );
-}
-
-function typicalCellHeight(booths?: { w: number; h: number }[]): number {
-  if (!booths?.length) return 80;
-  const hs = booths.map((b) => Math.min(b.w, b.h)).sort((a, b) => a - b);
-  return hs[Math.floor(hs.length / 2)];
 }
 
 function CellLabel({

@@ -171,6 +171,8 @@ export function FairMapScreen({
   }, [records, hydrated]);
 
   // 편의시설 칩은 이 박람회 데이터에 실제로 있는 종류만 띄운다(없는 칩을 그리지 않는다).
+  // 두 군데서 모은다: 편의시설 부스 칸(이름으로 가름)과 배치도 표식(화장실, 출입구). 표식은 장소
+  // 데이터(venues/*.json)에서 오고 iOS도 이걸로 칩을 띄운다(W3 검토: sif에서 웹만 칩이 없었다).
   const amenityMatches = useMemo(() => {
     const out = new Map<AmenityId, string[]>();
     for (const a of AMENITIES) {
@@ -181,6 +183,23 @@ export function FairMapScreen({
     }
     return out;
   }, [booths]);
+  const amenityPoints = useMemo(() => {
+    const out = new Map<AmenityId, { x: number; y: number }[]>();
+    if (!floorplan) return out;
+    const wc = floorplan.decor.filter((d) => d.type === "wc");
+    if (wc.length) out.set("toilet", wc);
+    const ents = floorplan.decor.filter((d) => d.type === "entrance");
+    const gates = ents.length ? ents : (floorplan.gates ?? []);
+    if (gates.length) out.set("entrance", gates);
+    return out;
+  }, [floorplan]);
+  const amenityIds = useMemo(
+    () =>
+      AMENITIES.filter(
+        (a) => amenityMatches.has(a.id) || amenityPoints.has(a.id),
+      ),
+    [amenityMatches, amenityPoints],
+  );
 
   const q = query.trim().toLowerCase();
   const results = useMemo(() => {
@@ -235,27 +254,49 @@ export function FairMapScreen({
     }
   };
 
-  const focusIds = (ids: string[], context = 0.3) => {
-    const rects = ids
-      .map((id) => booths.find((b) => b.id === id))
-      .map((b) =>
-        b?.code
-          ? floorplan?.booths.find((fb) => fb.code === b.code)
-          : undefined,
-      )
-      .filter((r): r is NonNullable<typeof r> => !!r);
+  // 편의시설 표식은 홀 끝과 끝에 흩어져 있다. 다 담으려 줄이면 지도가 점이 되니, 지금 보는 곳에서
+  // 가장 가까운 한 곳을 비춘다("가장 가까운 화장실").
+  const nearestFirst = (pts: { x: number; y: number }[]) => {
+    const c = mapRef.current?.viewCenter();
+    if (!c || pts.length < 2) return pts;
+    const d = (p: { x: number; y: number }) =>
+      (p.x - c.x) ** 2 + (p.y - c.y) ** 2;
+    return [pts.reduce((a, b) => (d(b) < d(a) ? b : a))];
+  };
+
+  const focusIds = (
+    ids: string[],
+    context = 0.3,
+    points: { x: number; y: number }[] = [],
+    opts?: { atFit?: boolean },
+  ) => {
+    type Box = { x: number; y: number; w: number; h: number };
+    const rects: Box[] = [
+      ...ids
+        .map((id) => booths.find((b) => b.id === id))
+        .map((b): Box | undefined =>
+          b?.code
+            ? floorplan?.booths.find((fb) => fb.code === b.code)
+            : undefined,
+        )
+        .filter((r): r is Box => !!r),
+      ...points.map((p) => ({ x: p.x, y: p.y, w: 0, h: 0 })),
+    ];
     if (!rects.length) return;
     const x0 = Math.min(...rects.map((r) => r.x - r.w / 2));
     const y0 = Math.min(...rects.map((r) => r.y - r.h / 2));
     const x1 = Math.max(...rects.map((r) => r.x + r.w / 2));
     const y1 = Math.max(...rects.map((r) => r.y + r.h / 2));
     const pad = Math.max(x1 - x0, y1 - y0) * context + 60;
-    mapRef.current?.focusRect({
-      x: x0 - pad,
-      y: y0 - pad,
-      w: x1 - x0 + pad * 2,
-      h: y1 - y0 + pad * 2,
-    });
+    mapRef.current?.focusRect(
+      {
+        x: x0 - pad,
+        y: y0 - pad,
+        w: x1 - x0 + pad * 2,
+        h: y1 - y0 + pad * 2,
+      },
+      opts,
+    );
   };
 
   // 부스 하나를 보여 줄 때(찾기, 지도에서 보기): 그 부스가 있는 홀 하나를 안전 띠에 맞춘다
@@ -394,9 +435,9 @@ export function FairMapScreen({
             </label>
           </div>
 
-          {!q && amenityMatches.size > 0 && (
+          {!q && amenityIds.length > 0 && (
             <div className="pointer-events-auto flex w-full max-w-[var(--roam-v2-size-content-max-width)] gap-v2-between-chips overflow-x-auto pb-v2-x1">
-              {AMENITIES.filter((a) => amenityMatches.has(a.id)).map((a) => {
+              {amenityIds.map((a) => {
                 const Icon = AMENITY_ICON[a.id];
                 const on = amenity === a.id;
                 return (
@@ -407,7 +448,13 @@ export function FairMapScreen({
                     onClick={() => {
                       const next = on ? null : a.id;
                       setAmenity(next);
-                      if (next) focusIds(amenityMatches.get(next) ?? []);
+                      if (next)
+                        focusIds(
+                          amenityMatches.get(next) ?? [],
+                          0.3,
+                          nearestFirst(amenityPoints.get(next) ?? []),
+                          { atFit: true },
+                        );
                     }}
                     className={clsx(
                       "flex shrink-0 items-center gap-v2-x1 rounded-v2-pill border px-v2-x2-5 py-v2-x1-5 text-v2-t4 font-v2-medium shadow-v2-s2",
