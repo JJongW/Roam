@@ -22,13 +22,19 @@ export function BackButton({
     <button
       type="button"
       aria-label={label.back}
-      onClick={() => (hasNavigatedInApp() ? router.back() : router.push(fallbackHref))}
+      onClick={() =>
+        hasNavigatedInApp() ? router.back() : router.push(fallbackHref)
+      }
       className={clsx(
         "flex size-v2-x11 items-center justify-center rounded-v2-full text-v2-fg-neutral active:bg-v2-bg-transparent-pressed",
         className,
       )}
     >
-      <ChevronLeft aria-hidden strokeWidth={2} className="size-[var(--roam-v2-icon-size-lg)]" />
+      <ChevronLeft
+        aria-hidden
+        strokeWidth={2}
+        className="size-[var(--roam-v2-icon-size-lg)]"
+      />
     </button>
   );
 }

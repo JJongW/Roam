@@ -8,9 +8,18 @@ import { V2_PX } from "@/styles/v2/lengths.generated";
  * 그림은 Figma Romi Default Ink 그대로(public/romi/romi-default-ink.svg).
  */
 const SIZE = {
-  sm: { box: "size-[var(--roam-v2-size-romi-avatar-sm)]", ink: V2_PX["size-romi-ink-sm"] },
-  md: { box: "size-[var(--roam-v2-size-romi-avatar-md)]", ink: V2_PX["size-romi-ink-md"] },
-  lg: { box: "size-[var(--roam-v2-size-romi-avatar-lg)]", ink: V2_PX["size-romi-ink-lg"] },
+  sm: {
+    box: "size-[var(--roam-v2-size-romi-avatar-sm)]",
+    ink: V2_PX["size-romi-ink-sm"],
+  },
+  md: {
+    box: "size-[var(--roam-v2-size-romi-avatar-md)]",
+    ink: V2_PX["size-romi-ink-md"],
+  },
+  lg: {
+    box: "size-[var(--roam-v2-size-romi-avatar-lg)]",
+    ink: V2_PX["size-romi-ink-lg"],
+  },
 } as const;
 
 export function RomiAvatar({
@@ -30,7 +39,13 @@ export function RomiAvatar({
         className,
       )}
     >
-      <Image src="/romi/romi-default-ink.svg" alt="" width={s.ink} height={s.ink} unoptimized />
+      <Image
+        src="/romi/romi-default-ink.svg"
+        alt=""
+        width={s.ink}
+        height={s.ink}
+        unoptimized
+      />
     </span>
   );
 }

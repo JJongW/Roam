@@ -11,6 +11,11 @@ export const romi = {
   inHall: (hall: string) => `${hall}이에요, 같이 둘러봐요`,
   /** 홀 이름을 모를 때 */
   lookAround: "같이 둘러봐요",
+  /** 6-03 다녀왔어요 직후. 평가를 묻지 않고 남긴 것을 기억한다고만 말한다(로미는 동행자). */
+  visitRemembered: (name: string) => `‘${name}’, 다녀온 곳으로 기억해 둘게요`,
+  visitLaterNote: "어떠셨는지는 나중에 남기셔도 돼요.",
+  /** 6-09 다녀온 뒤 상세 위 띠 */
+  howWasIt: (name: string) => `‘${name}’, 어떠셨어요?`,
   /** 10-01 열리기 전 */
   prefairLine: "아직 열리기 전이에요, 미리 둘러봐요",
 } as const;
@@ -38,6 +43,25 @@ export const system = {
     hadVerdict
       ? `‘${name}’, 다녀온 곳에서 뺐어요. 남긴 평가도 함께 빠졌어요.`
       : `‘${name}’, 다녀온 곳에서 뺐어요.`,
+  /** 6-05 남기신 것 */
+  visitedAtTime: (time: string) => `${time}에 다녀왔어요`,
+  visitedPlain: "다녀왔어요",
+  /** 6-08 */
+  memoCleared: (name: string) => `‘${name}’ 메모를 지웠어요`,
+  /** 6-10 */
+  visitedSummary: (fairs: number, booths: number) => `박람회 ${fairs}곳에서 부스 ${booths}곳을 다녀왔어요`,
+  visitedOnDay: (day: string, place?: string) => [`${day} 다녀왔어요`, place].filter(Boolean).join(", "),
+  visitedEmptyTitle: "아직 다녀온 곳이 없어요",
+  visitedEmptyBody: "부스 카드에서 다녀왔어요를 누르면 여기에 모여요.",
+  visitedLoading: "다녀온 곳을 불러오고 있어요",
+  /** 이벤트(v1 상세에서 옮김) */
+  eventStandingOp: "상시 운영",
+  eventSoon: "알림을 받기로 한 이벤트가 곧 시작해요.",
+  eventReminded: "이벤트 알림을 예약했어요",
+  eventNoPush: "이 브라우저는 알림을 받을 수 없어요",
+  eventNeedPermission: "알림을 받으려면 브라우저에서 알림을 허용해 주세요",
+  eventLive: "진행 중",
+  welcomeKitLeft: (n: number) => `${n}개 남음`,
   /** 5-02 로그인 제안(웹은 계정 로그인 화면으로) */
   loginPrompt: "하트는 이 기기에 남아요. 로그인하면 계정에도 남아요.",
 } as const;
@@ -66,12 +90,47 @@ export const label = {
   zoomOut: "지도 축소",
   wholeView: "전체 보기",
   hallSwitch: "홀 바꾸기",
+  /** 6 평가 칩. 판단 어휘(02_voice-tone §5) */
+  verdict: { good: "좋았어요", ok: "그저 그랬어요", bad: "아니었어요" },
+  later: "나중에 할게요",
+  leftSection: "남기신 것",
+  memoAdd: "메모 한 줄 남기기",
+  memoField: "메모 한 줄",
+  memoEdit: "메모 쓰기",
+  done: "완료",
+  todayVisited: "오늘 다녀온 곳",
+  visitedList: "다녀왔어요",
+  events: "이벤트",
+  standing: "상시",
+  otherFairs: "다른 행사에서도",
+  welcomeKit: "웰컴 키트",
+  eventRemind: "이벤트 알림 받기",
+  togetherBooths: (n: number) => `함께 입점한 곳 ${n}곳`,
   /** "A홀 A13" */
   hallNumber: (hall?: string | null, code?: string | null) =>
     [hall, code].filter(Boolean).join(" "),
 } as const;
 
 /** 편의시설 칩(3-01). 서버에 종류 칸이 없어(설계서 D9) 이름으로 가른다. iOS와 같은 여섯. */
+/** 메모 한 줄 길이(UI/입력 줄, 6-04). 서버는 300자까지 받지만 화면은 50자(설계서 §0-5). */
+export const MEMO_MAX = 50;
+
+/** "오후 2시 20분" */
+export function clockKo(iso: string): string {
+  const d = new Date(iso);
+  const h = d.getHours();
+  const m = d.getMinutes();
+  const ap = h < 12 ? "오전" : "오후";
+  const h12 = h % 12 === 0 ? 12 : h % 12;
+  return `${ap} ${h12}시${m ? ` ${m}분` : ""}`;
+}
+
+/** "11월 2일" */
+export function dayKo(iso: string): string {
+  const d = new Date(iso);
+  return `${d.getMonth() + 1}월 ${d.getDate()}일`;
+}
+
 export const AMENITIES = [
   { id: "toilet", title: "화장실", match: /화장실|toilet|restroom|wc/i },
   { id: "restaurant", title: "식당", match: /식당|푸드|food|restaurant/i },

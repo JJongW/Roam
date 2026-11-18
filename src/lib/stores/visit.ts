@@ -24,6 +24,9 @@ export interface BoothRecord {
   heart?: boolean;
   /** 다녀왔어요. 평가와 따로다(2026-11-17). 없으면 평가가 있는지로 읽는다(`isVisited`). */
   visited?: boolean;
+  /** 다녀왔어요를 처음 누른 시각(ISO). "오후 2시 20분에 다녀왔어요"(6-05)와 "오늘 다녀온 곳"(6-04)이 읽는다.
+   *  옛 기록이나 서버가 시각을 주지 않으면 비어 있고, 그때는 시각 줄 없이 "다녀왔어요"만 보인다. */
+  visitedAt?: string;
 }
 
 /** 하트가 켜져 있는지 — 새 칸이 있으면 그것, 없으면 옛 interest(must, curious). */
@@ -163,6 +166,9 @@ export const useVisitStore = create<VisitState>()(
             visited:
               isVisited(s.records[boothId]) ||
               (s.records[boothId]?.verdict !== verdict && !!verdict),
+            visitedAt:
+              s.records[boothId]?.visitedAt ??
+              (s.records[boothId]?.verdict !== verdict && !!verdict ? new Date().toISOString() : undefined),
           }),
         })),
       setHeart: (boothId, on) =>
@@ -182,7 +188,9 @@ export const useVisitStore = create<VisitState>()(
           records: patch(
             s.records,
             boothId,
-            on ? { visited: true } : { visited: false, verdict: undefined },
+            on
+              ? { visited: true, visitedAt: s.records[boothId]?.visitedAt ?? new Date().toISOString() }
+              : { visited: false, verdict: undefined, visitedAt: undefined },
           ),
         })),
       restore: (boothId, record) =>
@@ -219,6 +227,7 @@ export const useVisitStore = create<VisitState>()(
                 // 서버가 새 칸을 주면 그대로 받는다(옛 서버 응답엔 없어서 undefined로 남는다).
                 heart: n.heart ?? records[n.boothId]?.heart,
                 visited: n.visited ?? records[n.boothId]?.visited,
+                visitedAt: n.visitedAt ?? records[n.boothId]?.visitedAt,
                 memo: n.memo,
                 photos: n.photos,
               };

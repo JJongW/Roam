@@ -66,6 +66,16 @@ export const V2_FILES = [
   "src/app/(visitor)/exhibitions/[slug]/map/loading.tsx",
   "src/app/(visitor)/booths/[id]/page.tsx",
   "src/app/(visitor)/booths/[id]/loading.tsx",
+  // W2(UI 6, v1 상세 칸 옮김)
+  "src/components/v2/choice-chip.tsx",
+  "src/components/v2/line-input.tsx",
+  "src/components/map-v2/romi-line-card.tsx",
+  "src/components/map-v2/today-sheet.tsx",
+  "src/components/booth-v2/left-section.tsx",
+  "src/components/booth-v2/verdict-band.tsx",
+  "src/components/booth-v2/booth-extras.tsx",
+  "src/components/booth-v2/visited-list.tsx",
+  "src/app/(visitor)/visited/page.tsx",
 ];
 
 /** 주석을 지운다 — 설명에 예시 값이 들어 있어도 된다. */

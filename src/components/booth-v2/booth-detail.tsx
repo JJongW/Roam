@@ -2,18 +2,37 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-import { AtSign, Check, ChevronRight, Globe, MapPin, ShoppingBag } from "lucide-react";
+import {
+  AtSign,
+  Check,
+  ChevronRight,
+  Globe,
+  MapPin,
+  ShoppingBag,
+} from "lucide-react";
 import { clsx } from "clsx";
 import { BackButton } from "@/components/v2/back-button";
 import { HeartButton } from "@/components/v2/heart-button";
 import { Snackbar } from "@/components/v2/snackbar";
 import { useBoothSignals } from "@/components/booth-v2/booth-actions";
+import { LeftSection } from "@/components/booth-v2/left-section";
+import { VerdictBand } from "@/components/booth-v2/verdict-band";
+import {
+  AliasesSection,
+  AppearancesSection,
+  EventsSection,
+  WelcomeKitSection,
+  type Appearance,
+} from "@/components/booth-v2/booth-extras";
 import { label, system } from "@/lib/copy/v1";
 import { SCREEN, track } from "@/lib/analytics/app-track";
-import type { Booth, Category } from "@/lib/types";
+import type { Booth, BoothEvent, Category, WelcomeKit } from "@/lib/types";
 
 export interface BoothDetailV2Props {
-  booth: Pick<Booth, "id" | "name" | "code" | "images" | "instagramUrl" | "websiteUrl"> & {
+  booth: Pick<
+    Booth,
+    "id" | "name" | "code" | "images" | "instagramUrl" | "websiteUrl"
+  > & {
     goods: string[];
   };
   category?: Pick<Category, "name">;
@@ -22,6 +41,12 @@ export interface BoothDetailV2Props {
   /** 소개 글. 브랜드 공식 소개 > 부스 저작 요약 > 부스 원문 순서로 서버가 고른다(lib/brands/intro.ts). */
   intro?: string;
   introSource?: "brand" | "summary" | "original";
+  events?: BoothEvent[];
+  welcomeKit?: WelcomeKit;
+  appearances?: Appearance[];
+  aliases?: string[];
+  /** 박람회가 끝났으면 위에 "어떠셨어요?" 띠(6-09). 여는 날엔 평가를 묻지 않는다. */
+  fairEnded?: boolean;
 }
 
 /**
@@ -31,9 +56,23 @@ export interface BoothDetailV2Props {
  * - 정보가 비면 EM-1A: 이름이 1순위, 소개 상자 대신 "지금은 부스 이름과 위치만 나와 있어요."(11-15).
  * - 화살표는 갈 곳이 있는 줄에만(11-15).
  * - 브랜드가 직접 쓴 소개 원문은 고치지 않는다(브랜드 규칙 §1 예외, 11-09).
- * - 길 안내 버튼은 웹에 아직 없다(UI 9). 메모, 평가, 이벤트, 후기는 v1 상세에만 있고 다음 단계에서 옮긴다.
+ * - 길 안내 버튼은 웹에 아직 없다(UI 9).
+ * - W2: 남기신 것(6-05, 6-07, 6-08), 끝난 박람회의 어떠셨어요 띠(6-09), v1에서 옮긴 이벤트, 웰컴 키트,
+ *   다른 행사에서도, 함께 입점한 곳. AI 요약과 후기는 옮기지 않았다(docs/decisions/2026-11-18_웹-디자인-v2-이전-계획.md W2).
  */
-export function BoothDetailV2({ booth, category, hallName, exhibitionSlug, intro, introSource }: BoothDetailV2Props) {
+export function BoothDetailV2({
+  booth,
+  category,
+  hallName,
+  exhibitionSlug,
+  intro,
+  introSource,
+  events = [],
+  welcomeKit,
+  appearances = [],
+  aliases,
+  fairEnded,
+}: BoothDetailV2Props) {
   const s = useBoothSignals({
     boothId: booth.id,
     name: booth.name,
@@ -46,13 +85,22 @@ export function BoothDetailV2({ booth, category, hallName, exhibitionSlug, intro
       screen: SCREEN.boothDetail,
       exhibitionSlug,
       boothId: booth.id,
-      props: { photo_count: booth.images.length, intro_source: introSource ?? "none" },
+      props: {
+        photo_count: booth.images.length,
+        intro_source: introSource ?? "none",
+      },
     });
   }, [booth.id, booth.images.length, exhibitionSlug, introSource]);
 
   const where = label.hallNumber(hallName, booth.code);
-  const mapHref = exhibitionSlug ? `/exhibitions/${exhibitionSlug}/map?booth=${booth.id}` : undefined;
-  const sparse = !intro && booth.goods.length === 0 && !booth.instagramUrl && !booth.websiteUrl;
+  const mapHref = exhibitionSlug
+    ? `/exhibitions/${exhibitionSlug}/map?booth=${booth.id}`
+    : undefined;
+  const sparse =
+    !intro &&
+    booth.goods.length === 0 &&
+    !booth.instagramUrl &&
+    !booth.websiteUrl;
 
   return (
     <div className="min-h-dvh bg-v2-bg-layer-default font-v2-ui text-v2-fg-neutral">
@@ -61,8 +109,20 @@ export function BoothDetailV2({ booth, category, hallName, exhibitionSlug, intro
           <BackButton fallbackHref={mapHref ?? "/"} />
         </div>
 
+        {fairEnded && (
+          <VerdictBand
+            boothId={booth.id}
+            name={booth.name}
+            screen={SCREEN.boothDetail}
+            exhibitionSlug={exhibitionSlug}
+          />
+        )}
+
         {booth.images.length > 0 && (
-          <ul aria-label={label.photo} className="flex gap-v2-x2 overflow-x-auto px-v2-x4 pt-v2-x2">
+          <ul
+            aria-label={label.photo}
+            className="flex gap-v2-x2 overflow-x-auto px-v2-x4 pt-v2-x2"
+          >
             {booth.images.map((src, i) => (
               <li key={src + i} className="w-2/5 shrink-0">
                 {/* eslint-disable-next-line @next/next/no-img-element -- 브랜드 사진은 외부 주소가 제각각이라 next/image 도메인 목록에 다 넣을 수 없다 */}
@@ -79,8 +139,14 @@ export function BoothDetailV2({ booth, category, hallName, exhibitionSlug, intro
 
         <div className="flex flex-col gap-v2-x3 px-v2-x4 pt-v2-x5">
           <div className="flex flex-col gap-v2-x1">
-            <h1 className="text-v2-t7 font-v2-bold tracking-v2-card-title">{booth.name}</h1>
-            {where && <p className="text-v2-t3 font-v2-medium text-v2-fg-neutral-muted">{where}</p>}
+            <h1 className="text-v2-t7 font-v2-bold tracking-v2-card-title">
+              {booth.name}
+            </h1>
+            {where && (
+              <p className="text-v2-t3 font-v2-medium text-v2-fg-neutral-muted">
+                {where}
+              </p>
+            )}
           </div>
           {category && (
             <div className="flex flex-wrap gap-v2-x1-5">
@@ -94,13 +160,19 @@ export function BoothDetailV2({ booth, category, hallName, exhibitionSlug, intro
         <div className="px-v2-x4 pt-v2-x6">
           {intro ? (
             <section className="flex flex-col gap-v2-x1-5 rounded-v2-r3 bg-v2-bg-neutral-weak p-v2-x4">
-              <h2 className="text-v2-t3 font-v2-medium text-v2-fg-neutral-muted">{label.brandIntro}</h2>
+              <h2 className="text-v2-t3 font-v2-medium text-v2-fg-neutral-muted">
+                {label.brandIntro}
+              </h2>
               <p className="whitespace-pre-line text-v2-t5 font-v2-regular leading-[var(--roam-v2-line-height-t6-5)] tracking-v2-body">
                 {intro}
               </p>
             </section>
           ) : (
-            sparse && <p className="text-v2-t4 text-v2-fg-neutral-muted">{system.nameAndLocationOnly}</p>
+            sparse && (
+              <p className="text-v2-t4 text-v2-fg-neutral-muted">
+                {system.nameAndLocationOnly}
+              </p>
+            )
           )}
         </div>
 
@@ -113,11 +185,21 @@ export function BoothDetailV2({ booth, category, hallName, exhibitionSlug, intro
               action={mapHref ? label.showOnMap : undefined}
               href={mapHref}
               onClick={() =>
-                track("booth_show_on_map", { screen: SCREEN.boothDetail, exhibitionSlug, boothId: booth.id })
+                track("booth_show_on_map", {
+                  screen: SCREEN.boothDetail,
+                  exhibitionSlug,
+                  boothId: booth.id,
+                })
               }
             />
           )}
-          {booth.goods.length > 0 && <InfoRow icon={ShoppingBag} title={label.goods} sub={booth.goods.join(", ")} />}
+          {booth.goods.length > 0 && (
+            <InfoRow
+              icon={ShoppingBag}
+              title={label.goods}
+              sub={booth.goods.join(", ")}
+            />
+          )}
           {booth.instagramUrl && (
             <InfoRow
               icon={AtSign}
@@ -139,10 +221,22 @@ export function BoothDetailV2({ booth, category, hallName, exhibitionSlug, intro
             />
           )}
         </ul>
+
+        <LeftSection
+          boothId={booth.id}
+          name={booth.name}
+          screen={SCREEN.boothDetail}
+          exhibitionSlug={exhibitionSlug}
+          show={s.show}
+        />
+        <EventsSection events={events} show={s.show} />
+        <WelcomeKitSection kit={welcomeKit} />
+        <AppearancesSection items={appearances} />
+        <AliasesSection names={aliases} />
       </div>
 
       {/* 아래 고정 바 */}
-      <div className="fixed inset-x-0 bottom-0 z-20 mx-auto w-full max-w-md">
+      <div className="fixed inset-x-0 bottom-0 z-20 mx-auto w-full max-w-[var(--roam-v2-size-content-max-width)]">
         <div className="mx-auto w-full px-v2-x4 pb-v2-x2">
           <Snackbar state={s.snack} onClose={s.closeSnack} />
         </div>
@@ -160,7 +254,12 @@ export function BoothDetailV2({ booth, category, hallName, exhibitionSlug, intro
                   : "border-v2-stroke-neutral-muted bg-v2-bg-layer-floating text-v2-fg-neutral active:bg-v2-bg-layer-floating-pressed",
               )}
             >
-              {s.visited && <Check aria-hidden className="size-[var(--roam-v2-icon-size-sm)]" />}
+              {s.visited && (
+                <Check
+                  aria-hidden
+                  className="size-[var(--roam-v2-icon-size-sm)]"
+                />
+              )}
               {label.visited}
             </button>
           </div>
@@ -189,15 +288,27 @@ function InfoRow({
 }) {
   const body = (
     <>
-      <Icon aria-hidden className="size-[var(--roam-v2-icon-size-md)] shrink-0 text-v2-fg-neutral" />
+      <Icon
+        aria-hidden
+        className="size-[var(--roam-v2-icon-size-md)] shrink-0 text-v2-fg-neutral"
+      />
       <span className="flex min-w-0 flex-1 flex-col gap-v2-x0-5">
-        <span className="text-v2-t5 font-v2-medium text-v2-fg-neutral">{title}</span>
-        {sub && <span className="break-words text-v2-t3 font-v2-medium text-v2-fg-neutral-muted">{sub}</span>}
+        <span className="text-v2-t5 font-v2-medium text-v2-fg-neutral">
+          {title}
+        </span>
+        {sub && (
+          <span className="break-words text-v2-t3 font-v2-medium text-v2-fg-neutral-muted">
+            {sub}
+          </span>
+        )}
       </span>
       {href && (
         <span className="flex shrink-0 items-center text-v2-t4 font-v2-medium text-v2-fg-neutral-muted">
           {action}
-          <ChevronRight aria-hidden className="size-[var(--roam-v2-icon-size-md)]" />
+          <ChevronRight
+            aria-hidden
+            className="size-[var(--roam-v2-icon-size-md)]"
+          />
         </span>
       )}
     </>
@@ -207,11 +318,20 @@ function InfoRow({
   return (
     <li>
       {external ? (
-        <a href={href} target="_blank" rel="noopener noreferrer" className={clsx(row, "active:bg-v2-bg-layer-default-pressed")}>
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={clsx(row, "active:bg-v2-bg-layer-default-pressed")}
+        >
           {body}
         </a>
       ) : (
-        <Link href={href} onClick={onClick} className={clsx(row, "active:bg-v2-bg-layer-default-pressed")}>
+        <Link
+          href={href}
+          onClick={onClick}
+          className={clsx(row, "active:bg-v2-bg-layer-default-pressed")}
+        >
           {body}
         </Link>
       )}

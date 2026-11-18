@@ -39,7 +39,9 @@ export function Snackbar({
         className,
       )}
     >
-      <span className="min-w-0 flex-1 whitespace-pre-line">{state.message}</span>
+      <span className="min-w-0 flex-1 whitespace-pre-line">
+        {state.message}
+      </span>
       {state.actionLabel && (
         <button
           type="button"

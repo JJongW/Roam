@@ -25,6 +25,14 @@ export const APP_EVENT_NAMES = [
   "heart_save_fail",
   "visit_mark",
   "visit_unmark",
+  "visit_undo",
+  "verdict_set",
+  "verdict_cleared",
+  "memo_saved",
+  "memo_cleared",
+  "memo_undo",
+  "visited_list_open",
+  "visited_list_row_tap",
   "romi_sheet_open",
   "route_start",
 ] as const;
@@ -38,6 +46,9 @@ export const SCREEN = {
   boothDetail: "UI 4-02",
   photoViewer: "UI 4-03",
   heartUndo: "UI 5-08",
+  visitRemembered: "UI 6-03",
+  todayVisited: "UI 6-04",
+  visitedList: "UI 6-10",
 } as const;
 export type ScreenId = (typeof SCREEN)[keyof typeof SCREEN];
 

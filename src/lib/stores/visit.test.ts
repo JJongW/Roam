@@ -125,3 +125,40 @@ describe("하트와 다녀왔어요(새 칸, 2026-11-07, 11-17)", () => {
     expect(body).not.toHaveProperty("heart");
   });
 });
+
+describe("다녀온 시각(visitedAt, UI 6-05, 6-04)", () => {
+  beforeEach(() => useVisitStore.setState({ records: {}, hasPendingSync: false }));
+
+  it("다녀왔어요를 켜면 처음 시각을 남기고, 다시 켜도 처음 시각을 지킨다", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-11-18T05:20:00Z"));
+    useVisitStore.getState().setVisited("b1", true);
+    const first = useVisitStore.getState().records.b1.visitedAt;
+    expect(first).toBe("2026-11-18T05:20:00.000Z");
+    vi.setSystemTime(new Date("2026-11-18T06:00:00Z"));
+    useVisitStore.getState().setVisited("b1", true);
+    expect(useVisitStore.getState().records.b1.visitedAt).toBe(first);
+    vi.useRealTimers();
+  });
+
+  it("다녀왔어요를 끄면 시각과 평가가 같이 빠지고, 평가를 풀면 방문과 시각은 남는다", () => {
+    useVisitStore.getState().setVisited("b1", true);
+    useVisitStore.getState().setVerdict("b1", "good");
+    useVisitStore.getState().setVerdict("b1", "good"); // 같은 칩 다시 = 풀기
+    const r = useVisitStore.getState().records.b1;
+    expect(r.verdict).toBeUndefined();
+    expect(isVisited(r)).toBe(true);
+    expect(r.visitedAt).toBeTruthy();
+    useVisitStore.getState().setVerdict("b1", "ok");
+    useVisitStore.getState().setVisited("b1", false);
+    const off = useVisitStore.getState().records.b1;
+    expect(off?.verdict).toBeUndefined();
+    expect(off?.visitedAt).toBeUndefined();
+  });
+
+  it("평가를 먼저 남기면 그때가 다녀온 시각이다", () => {
+    useVisitStore.getState().setVerdict("b2", "bad");
+    expect(useVisitStore.getState().records.b2.visitedAt).toBeTruthy();
+    expect(isVisited(useVisitStore.getState().records.b2)).toBe(true);
+  });
+});

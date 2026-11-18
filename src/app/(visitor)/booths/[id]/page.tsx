@@ -8,8 +8,11 @@ import { boothAbout } from "@/lib/booth/about";
 import { brandIntroForBooth } from "@/lib/brands/intro";
 import { FLOORPLANS } from "@/lib/floorplans";
 import { floorplanHallOf } from "@/lib/floorplan/hall-of";
+import { devSkeletonDelay } from "@/lib/dev/skeleton-delay";
+import { exhibitionStatus } from "@/lib/exhibition/status";
+import { todayISO } from "@/lib/exhibition/current";
 
-type Props = { params: Promise<{ id: string }> };
+type Props = { params: Promise<{ id: string }>; searchParams: Promise<{ skeletonDelay?: string }> };
 
 export async function generateMetadata({ params }: Props) {
   const { id } = await params;
@@ -25,18 +28,24 @@ export async function generateMetadata({ params }: Props) {
  * 부스 상세(UI 4-02). 디자인 시스템 v2(docs/decisions/2026-11-18_웹-디자인-v2-이전-계획.md).
  * 소개 우선순위는 그대로다: 브랜드 공식 소개 > 부스 저작 요약 > 부스 원문(lib/brands/intro.ts).
  */
-export default async function BoothDetailPage({ params }: Props) {
+export default async function BoothDetailPage({ params, searchParams }: Props) {
   const { id } = await params;
+  await devSkeletonDelay((await searchParams).skeletonDelay);
   const detail = await getBoothDetailCached(id);
   if (!detail) notFound();
-  const { booth, category } = detail;
+  const { booth, category, events, welcomeKit } = detail;
   const repo = await getRepository();
-  const [brandIntro, exhibitions, halls] = await Promise.all([
+  const [brandIntro, exhibitions, halls, appearances] = await Promise.all([
     brandIntroForBooth(repo, booth.id),
     listExhibitionsCached().catch(() => null),
     repo.listHalls(booth.exhibitionId).catch(() => []),
+    // 같은 브랜드의 다른 행사 출전(참가사 연결). 실패해도 페이지는 뜬다.
+    repo.boothAppearances(booth.id).catch(() => []),
   ]);
-  const exhibitionSlug = exhibitions?.data.find((e) => e.id === booth.exhibitionId)?.slug;
+  const exhibition = exhibitions?.data.find((e) => e.id === booth.exhibitionId);
+  const exhibitionSlug = exhibition?.slug;
+  // 끝난 박람회(한국 날짜 기준, 다른 화면과 같은 판정)에서만 평가를 묻는다(6-09).
+  const fairEnded = !!exhibition && exhibitionStatus(exhibition, todayISO()) === "ended";
   const hallName =
     floorplanHallOf(exhibitionSlug ? FLOORPLANS[exhibitionSlug] : undefined, booth.code) ??
     halls.find((h) => h.id === booth.hallId)?.name;
@@ -64,6 +73,16 @@ export default async function BoothDetailPage({ params }: Props) {
         exhibitionSlug={exhibitionSlug}
         intro={intro}
         introSource={introSource}
+        events={events}
+        welcomeKit={welcomeKit}
+        appearances={appearances.map((a) => ({
+          boothId: a.boothId,
+          exhibitionName: a.exhibitionName,
+          displayName: a.displayName,
+          boothCode: a.boothCode,
+        }))}
+        aliases={booth.aliases}
+        fairEnded={fairEnded}
       />
     </>
   );

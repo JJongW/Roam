@@ -1,7 +1,11 @@
-import { Heart } from "lucide-react";
+import { Check, Heart } from "lucide-react";
 import type { MapLayerContext } from "@/components/map/exhibition-map";
-import { CODE_RATIO, layoutBoothLabel, NAME_LINE_HEIGHT } from "@/components/map/booth-label";
-import { V2_PX } from "@/styles/v2/lengths.generated";
+import {
+  CODE_RATIO,
+  layoutBoothLabel,
+  NAME_LINE_HEIGHT,
+} from "@/components/map/booth-label";
+import { V2_NUM, V2_PX } from "@/styles/v2/lengths.generated";
 import type { BoothListItem } from "@/lib/types";
 
 /**
@@ -14,6 +18,8 @@ import type { BoothListItem } from "@/lib/types";
  * - 글자 크기는 칸 크기에 맞춘다(booth-label.ts, iOS BoothLabel과 같은 규칙). 도면 단위가
  *   화면 px이 아니라서 t2(12) 같은 고정 크기를 쓰면 큰 도면에선 점, 작은 도면에선 넘친다.
  * - 하트 칸은 가운데 하트 + 이름(2994:808), 편의시설 칸은 회색 면(2994:813).
+ * - 다녀온 칸(UI/지도/다녀온 칸 3002:4574)은 보통 칸 이름표 + 오른쪽 아래 체크. 하트보다 앞선다(6-02,
+ *   섹션 8 "경험한 판정이 먼저").
  * - 도면 원본 색(존 색)은 쓰지 않는다. v2는 부스 칸 한 색이고 상태만 색으로 가른다.
  */
 
@@ -25,16 +31,20 @@ const CELL_GAP = 3;
 export function MapLayerV2({
   ctx,
   heartIds,
+  visitedIds,
   highlightIds,
 }: {
   ctx: MapLayerContext;
   heartIds: Set<string>;
+  visitedIds?: Set<string>;
   /** 편의시설 칩, 검색 결과처럼 지금 눈에 띄워야 하는 칸. 있으면 나머지는 흐리게. */
   highlightIds?: Set<string> | null;
 }) {
   const { booths, floorplan, geomOf, hallRegions, upright, selectedId } = ctx;
   const sel = selectedId ? booths.find((b) => b.id === selectedId) : undefined;
-  const ordered = sel ? [...booths.filter((b) => b.id !== sel.id), sel] : booths;
+  const ordered = sel
+    ? [...booths.filter((b) => b.id !== sel.id), sel]
+    : booths;
   const stroke = V2_PX["stroke-width-s1"];
   const hallStroke = V2_PX["stroke-width-s3"];
   const markerR = V2_PX["radius-r1"];
@@ -73,17 +83,26 @@ export function MapLayerV2({
         if (!g) return null;
         const facility = b.kind === "facility";
         const isSel = b.id === selectedId;
-        const hearted = !facility && heartIds.has(b.id);
+        const visited = !facility && !!visitedIds?.has(b.id);
+        const hearted = !facility && !visited && heartIds.has(b.id);
         const dim = highlightIds ? !highlightIds.has(b.id) && !isSel : false;
         const w = Math.max(8, g.w - CELL_GAP * 2);
         const h = Math.max(8, g.h - CELL_GAP * 2);
-        const fill = isSel ? C("map-booth-selected") : facility ? C("map-booth-facility") : C("map-booth");
-        const text = isSel ? C("map-label-selected") : facility ? C("fg-neutral-muted") : C("map-label");
+        const fill = isSel
+          ? C("map-booth-selected")
+          : facility
+            ? C("map-booth-facility")
+            : C("map-booth");
+        const text = isSel
+          ? C("map-label-selected")
+          : facility
+            ? C("fg-neutral-muted")
+            : C("map-label");
         return (
           <g
             key={b.id}
             transform={`translate(${g.x} ${g.y})${g.rotate ? ` rotate(${g.rotate})` : ""}`}
-            opacity={dim ? 0.35 : 1}
+            opacity={dim ? V2_NUM["opacity-map-dim"] : 1}
           >
             <rect
               x={-w / 2}
@@ -92,11 +111,33 @@ export function MapLayerV2({
               height={h}
               rx={markerR}
               fill={fill}
-              stroke={isSel ? C("map-booth-selected") : C("stroke-neutral-weak")}
+              stroke={
+                isSel ? C("map-booth-selected") : C("stroke-neutral-weak")
+              }
               strokeWidth={stroke}
             />
-            <g transform={upright(0, 0) ?? (g.rotate ? `rotate(${-g.rotate})` : undefined)}>
-              <CellLabel booth={b} w={w} h={h} color={text} hearted={hearted} selected={isSel} />
+            <g
+              transform={
+                upright(0, 0) ?? (g.rotate ? `rotate(${-g.rotate})` : undefined)
+              }
+            >
+              <CellLabel
+                booth={b}
+                w={w}
+                h={h}
+                color={text}
+                hearted={hearted}
+                selected={isSel}
+              />
+              {visited && (
+                <VisitedCheck
+                  w={w}
+                  h={h}
+                  color={
+                    isSel ? C("map-label-selected") : C("fg-neutral-muted")
+                  }
+                />
+              )}
             </g>
           </g>
         );
@@ -105,7 +146,7 @@ export function MapLayerV2({
       {floorplan?.decor.map((d, i) => {
         if (d.type !== "entrance") return null;
         const s = d.size ?? 1;
-        const fs = cellH * 0.16 * s;
+        const fs = cellH * V2_NUM["ratio-map-entrance-label"] * s;
         const pw = d.text.length * fs * 0.9 + fs * 1.6;
         const ph = fs * 1.7;
         return (
@@ -133,6 +174,30 @@ export function MapLayerV2({
         );
       })}
     </g>
+  );
+}
+
+/** 다녀온 칸 오른쪽 아래 체크. 하트 칸 하트와 같은 크기 규칙(칸 크기에 맞춘다). */
+function VisitedCheck({
+  w,
+  h,
+  color,
+}: {
+  w: number;
+  h: number;
+  color: string;
+}) {
+  const base = Math.max(7, Math.min(26, Math.min(w, h) / 5.5));
+  const size = Math.min(base * 1.4, h * 0.35);
+  const pad = Math.min(w * 0.08, base * 0.6);
+  return (
+    <Check
+      x={w / 2 - pad - size}
+      y={h / 2 - pad - size}
+      width={size}
+      height={size}
+      stroke={color}
+    />
   );
 }
 
@@ -168,10 +233,14 @@ function CellLabel({
     !center && !!booth.code,
   );
   const lineH = layout.fontSize * NAME_LINE_HEIGHT;
-  const fontClass = hearted || selected ? "font-v2-ui font-v2-bold" : "font-v2-ui font-v2-regular";
+  const fontClass =
+    hearted || selected
+      ? "font-v2-ui font-v2-bold"
+      : "font-v2-ui font-v2-regular";
 
   if (center) {
-    const blockH = iconSize + (iconSize ? lineH * 0.3 : 0) + lineH * layout.lines.length;
+    const blockH =
+      iconSize + (iconSize ? lineH * 0.3 : 0) + lineH * layout.lines.length;
     const top = -blockH / 2;
     return (
       <g>
@@ -195,7 +264,12 @@ function CellLabel({
             <tspan
               key={i}
               x={0}
-              y={top + iconSize + (iconSize ? lineH * 0.3 : 0) + lineH * (i + 0.8)}
+              y={
+                top +
+                iconSize +
+                (iconSize ? lineH * 0.3 : 0) +
+                lineH * (i + 0.8)
+              }
             >
               {line}
             </tspan>
@@ -216,12 +290,22 @@ function CellLabel({
   return (
     <text fill={color} className={fontClass}>
       {booth.code && (
-        <tspan x={left} y={codeY} fontSize={codeSize} opacity={0.7}>
+        <tspan
+          x={left}
+          y={codeY}
+          fontSize={codeSize}
+          opacity={V2_NUM["opacity-map-code"]}
+        >
           {booth.code}
         </tspan>
       )}
       {layout.lines.map((line, i) => (
-        <tspan key={i} x={left} y={firstY + lineH * i} fontSize={layout.fontSize}>
+        <tspan
+          key={i}
+          x={left}
+          y={firstY + lineH * i}
+          fontSize={layout.fontSize}
+        >
           {line}
         </tspan>
       ))}

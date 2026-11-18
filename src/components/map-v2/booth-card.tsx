@@ -11,6 +11,7 @@ import { useBoothSignals } from "@/components/booth-v2/booth-actions";
 import { label } from "@/lib/copy/v1";
 import { SCREEN } from "@/lib/analytics/app-track";
 import type { BoothListItem, Category } from "@/lib/types";
+import type { BoothRecord } from "@/lib/stores/visit";
 
 /**
  * UI 4-01 부스 카드(Figma 3-02 아래 카드, 3008:1032).
@@ -26,12 +27,15 @@ export function BoothCardV2({
   categories,
   exhibitionSlug,
   className,
+  onVisitMarked,
 }: {
   booth: BoothListItem;
   hallName?: string;
   categories: Category[];
   exhibitionSlug: string;
   className?: string;
+  /** 알약으로 다녀왔어요를 켠 직후. 지도 화면이 카드를 내리고 로미 줄(6-03)을 띄운다. */
+  onVisitMarked?: (before: BoothRecord | undefined) => void;
 }) {
   const s = useBoothSignals({
     boothId: booth.id,
@@ -39,16 +43,22 @@ export function BoothCardV2({
     surface: "card",
     screen: SCREEN.boothCard,
     exhibitionSlug,
+    onVisitMarked,
   });
   const where = label.hallNumber(hallName, booth.code);
   return (
-    <div className={clsx("pointer-events-none flex flex-col gap-v2-x2", className)}>
+    <div
+      className={clsx("pointer-events-none flex flex-col gap-v2-x2", className)}
+    >
       <Snackbar state={s.snack} onClose={s.closeSnack} />
       <section
         aria-label={booth.name}
         className="pointer-events-auto relative mt-v2-x5 flex flex-col gap-v2-x3 rounded-[var(--roam-v2-trial-radius-card-1)] border border-v2-stroke-neutral-muted bg-v2-bg-layer-floating p-v2-x4 pt-v2-x6 shadow-v2-s2"
       >
-        <RomiAvatar size="md" className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2" />
+        <RomiAvatar
+          size="md"
+          className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2"
+        />
         <VisitedPill
           on={s.visited}
           onToggle={s.toggleVisited}
@@ -56,15 +66,26 @@ export function BoothCardV2({
         />
         <div className="flex items-start gap-v2-x2">
           <div className="flex min-w-0 flex-1 flex-col gap-v2-x1">
-            <h2 className="text-v2-t7 font-v2-bold tracking-v2-card-title text-v2-fg-neutral">{booth.name}</h2>
+            <h2 className="text-v2-t7 font-v2-bold tracking-v2-card-title text-v2-fg-neutral">
+              {booth.name}
+            </h2>
             {where && (
               <p className="text-v2-t3 font-v2-medium text-v2-fg-neutral-muted">
                 {hallName && <span>{hallName} </span>}
-                {booth.code && <span className="text-v2-fg-neutral">{booth.code}</span>}
+                {booth.code && (
+                  <span className="text-v2-fg-neutral">{booth.code}</span>
+                )}
+                {s.visited && (
+                  <span className="text-v2-fg-brand"> {label.visited}</span>
+                )}
               </p>
             )}
           </div>
-          <HeartButton on={s.hearted} onToggle={s.toggleHeart} className="-mr-v2-x2 -mt-v2-x2" />
+          <HeartButton
+            on={s.hearted}
+            onToggle={s.toggleHeart}
+            className="-mr-v2-x2 -mt-v2-x2"
+          />
         </div>
         {categories.length > 0 && (
           <div className="flex flex-wrap gap-v2-between-chips">
