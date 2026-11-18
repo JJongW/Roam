@@ -1,7 +1,7 @@
 import "server-only";
 import type { Repository } from "@/lib/repositories/types";
 import { emptyView, splitPatch, type ActionPlan, type ContactView } from "@/lib/brands/contact-actions";
-import type { BrandContact, BrandContactChannel, BrandContactLog, BrandOutreach, BrandOutreachLog, ExhibitorGraph, ParticipantPermission } from "@/lib/types";
+import type { BrandContact, BrandContactChannel, BrandContactStatus, BrandContactLog, BrandOutreach, BrandOutreachLog, ExhibitorGraph, ParticipantPermission } from "@/lib/types";
 
 /**
  * 연락 보드의 저장 길목. 화면과 API는 출전(participantId)과 브랜드(exhibitorId)만 말하고,
@@ -49,6 +49,11 @@ export interface SubjectState {
 export interface OutreachStore {
   mode: OutreachMode;
   read(subjects: ContactSubject[]): Promise<Map<string, SubjectState>>;
+  /**
+   * 출전별 연락 상태만(목록 배지용). 기록과 연락처는 읽지 않는다.
+   * 저장된 행이 없는 출전은 빠진다 — 화면이 "보내지 않음"으로 본다.
+   */
+  statuses(subjects: ContactSubject[]): Promise<Map<string, BrandContactStatus>>;
   /** 계획 하나를 저장하고 기록을 남긴 뒤 새 상태를 돌려준다. 저장할 수 없으면 reason. */
   apply(
     subject: ContactSubject,
@@ -142,6 +147,12 @@ function participantStore(repo: Repository): OutreachStore {
   return {
     mode: "participant",
     read,
+    async statuses(subjects) {
+      const want = new Set(subjects.map((s) => s.participantId));
+      const exhibitionIds = [...new Set(subjects.map((s) => s.exhibitionId))];
+      const perms = (await Promise.all(exhibitionIds.map((id) => repo.listParticipantPermissions(id)))).flat();
+      return new Map(perms.filter((p) => want.has(p.participantId)).map((p) => [p.participantId, p.status]));
+    },
     async apply(subject, plan, actor) {
       const { outreach, permission } = splitPatch(plan.patch);
       if (Object.keys(permission).length && !(await repo.upsertParticipantPermission(subject.participantId, permission, actor)))
@@ -217,6 +228,17 @@ function boothStore(repo: Repository): OutreachStore {
   return {
     mode: "booth",
     read,
+    async statuses(subjects) {
+      const exhibitionIds = [...new Set(subjects.map((s) => s.exhibitionId))];
+      const contacts = (await Promise.all(exhibitionIds.map((id) => repo.listBrandContacts({ exhibitionId: id })))).flat();
+      const byBooth = new Map(contacts.map((c) => [c.boothId, c.status]));
+      const out = new Map<string, BrandContactStatus>();
+      for (const s of subjects) {
+        const st = s.boothId ? byBooth.get(s.boothId) : undefined;
+        if (st) out.set(s.participantId, st);
+      }
+      return out;
+    },
     async apply(subject, plan, actor) {
       if (!subject.boothId) return { ok: false, reason: READ_ONLY_REASON };
       const { doNotContact, ...patch } = plan.patch;

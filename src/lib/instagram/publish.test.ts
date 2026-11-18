@@ -95,18 +95,19 @@ describe("publishCarousel", () => {
   });
 });
 
-function cliDeps(files: Record<string, Uint8Array>, over: Partial<CliDeps> = {}) {
+function cliDeps(files: Record<string, Uint8Array>, over: Partial<CliDeps> = {}, texts: Record<string, string> = {}) {
   const lines: string[] = [];
   const deps = {
     listDir: vi.fn(async () => Object.keys(files)),
     readFile: vi.fn(async (p: string) => files[p.split("/").pop()!]),
-    readText: vi.fn(async () => "캡션 #DDP\n"),
+    readText: vi.fn(async (p: string) => (p.endsWith(".json") ? (texts[p] ?? "") : "캡션 #DDP\n")),
     upload: vi.fn(async (key: string) => `https://cdn/${key}`),
     publish: vi.fn(async () => ({ mediaId: "M", permalink: "https://www.instagram.com/p/x/" })),
     prepare: vi.fn(async () => ({ creationId: "C1", itemCount: 2 })),
     confirm: vi.fn(async () => true),
     out: (l: string) => lines.push(l),
     today: () => "2026-10-14",
+    checkPermissions: vi.fn(async () => [] as string[]),
     ...over,
   } satisfies CliDeps;
   return { deps, lines };
@@ -117,7 +118,7 @@ describe("runPublishCli", () => {
 
   it("기본은 드라이런 — 업로드도 게시도 하지 않는다", async () => {
     const { deps, lines } = cliDeps(two);
-    expect(await runPublishCli(["--dir", "out/08", "--caption", "c.txt"], deps)).toBe(0);
+    expect(await runPublishCli(["--dir", "out/08", "--caption", "c.txt", "--no-brands"], deps)).toBe(0);
     expect(deps.upload).not.toHaveBeenCalled();
     expect(deps.publish).not.toHaveBeenCalled();
     expect(deps.confirm).not.toHaveBeenCalled();
@@ -129,21 +130,21 @@ describe("runPublishCli", () => {
 
   it("PNG가 섞이면 게시하지 않고 JPG 내보내기를 안내한다", async () => {
     const { deps, lines } = cliDeps({ "01.png": PNG, "02.jpg": JPEG });
-    expect(await runPublishCli(["--dir", "d", "--caption", "c", "--publish", "--yes"], deps)).toBe(1);
+    expect(await runPublishCli(["--dir", "d", "--caption", "c", "--publish", "--yes", "--no-brands"], deps)).toBe(1);
     expect(deps.upload).not.toHaveBeenCalled();
     expect(lines.join("\n")).toContain("JPG로 내보내");
   });
 
   it("--publish는 확인을 받고, 거절하면 아무것도 올리지 않는다", async () => {
     const { deps } = cliDeps(two, { confirm: vi.fn(async () => false) });
-    expect(await runPublishCli(["--dir", "d", "--caption", "c", "--publish"], deps)).toBe(1);
+    expect(await runPublishCli(["--dir", "d", "--caption", "c", "--publish", "--no-brands"], deps)).toBe(1);
     expect(deps.confirm).toHaveBeenCalledOnce();
     expect(deps.upload).not.toHaveBeenCalled();
   });
 
   it("--publish --yes는 순서대로 올리고 게시한다", async () => {
     const { deps } = cliDeps(two);
-    expect(await runPublishCli(["--dir", "out/카드08", "--caption", "c", "--publish", "--yes", "--slug", "SDW 08"], deps)).toBe(0);
+    expect(await runPublishCli(["--dir", "out/카드08", "--caption", "c", "--publish", "--yes", "--slug", "SDW 08", "--no-brands"], deps)).toBe(0);
     expect(deps.confirm).not.toHaveBeenCalled();
     expect(vi.mocked(deps.upload).mock.calls.map((c) => c[0])).toEqual(["2026-10-14-sdw-08/01.jpg", "2026-10-14-sdw-08/02.jpg"]);
     expect(deps.publish).toHaveBeenCalledWith({
@@ -155,7 +156,7 @@ describe("runPublishCli", () => {
 
   it("--check는 확인 없이 올리고 준비까지만 한다 — 게시하지 않는다", async () => {
     const { deps, lines } = cliDeps(two);
-    expect(await runPublishCli(["--dir", "d", "--caption", "c", "--check"], deps)).toBe(0);
+    expect(await runPublishCli(["--dir", "d", "--caption", "c", "--check", "--no-brands"], deps)).toBe(0);
     expect(deps.confirm).not.toHaveBeenCalled();
     expect(deps.upload).toHaveBeenCalledTimes(2);
     expect(deps.prepare).toHaveBeenCalledOnce();
@@ -165,8 +166,48 @@ describe("runPublishCli", () => {
 
   it("--check와 --publish를 같이 주면 아무것도 하지 않는다", async () => {
     const { deps } = cliDeps(two);
-    expect(await runPublishCli(["--dir", "d", "--caption", "c", "--check", "--publish", "--yes"], deps)).toBe(1);
+    expect(await runPublishCli(["--dir", "d", "--caption", "c", "--check", "--publish", "--yes", "--no-brands"], deps)).toBe(1);
     expect(deps.upload).not.toHaveBeenCalled();
+  });
+
+  it("브랜드를 밝히지 않으면 드라이런도 멈춘다(--brands나 --no-brands 중 하나)", async () => {
+    const { deps, lines } = cliDeps(two);
+    expect(await runPublishCli(["--dir", "d", "--caption", "c", "--publish", "--yes"], deps)).toBe(1);
+    expect(deps.upload).not.toHaveBeenCalled();
+    expect(lines.join("\n")).toContain("--no-brands를 붙여요");
+    expect(deps.checkPermissions).not.toHaveBeenCalled();
+  });
+
+  it("허락 문이 이유를 돌려주면 올리지도 게시하지도 않고 이유를 보여 준다", async () => {
+    const brands = JSON.stringify({ version: "publish-brands.v1", brands: [{ participantId: "pt1", uses: ["photo", "tag"] }, { participantId: "pt2" }] });
+    const checkPermissions = vi.fn(async () => ["달빛: 허락 기록이 없어요. 허락을 받고 연락 보드에 남긴 뒤 게시해 주세요"]);
+    const { deps, lines } = cliDeps(two, { checkPermissions }, { "b.json": brands });
+    expect(await runPublishCli(["--dir", "d", "--caption", "c", "--brands", "b.json", "--publish", "--yes"], deps)).toBe(1);
+    expect(checkPermissions).toHaveBeenCalledWith([
+      { participantId: "pt1", uses: ["photo", "tag"] },
+      { participantId: "pt2", uses: ["photo"] }, // 안 적으면 사진
+    ]);
+    expect(deps.upload).not.toHaveBeenCalled();
+    expect(deps.publish).not.toHaveBeenCalled();
+    expect(lines.join("\n")).toContain("허락 기록이 없어요");
+  });
+
+  it("허락 문을 넘으면 게시한다", async () => {
+    const brands = JSON.stringify({ version: "publish-brands.v1", brands: [{ participantId: "pt1" }] });
+    const { deps, lines } = cliDeps(two, {}, { "b.json": brands });
+    expect(await runPublishCli(["--dir", "d", "--caption", "c", "--brands", "b.json", "--publish", "--yes"], deps)).toBe(0);
+    expect(deps.publish).toHaveBeenCalledOnce();
+    expect(lines.join("\n")).toContain("허락 문 통과");
+  });
+
+  it("브랜드 파일 형식이 틀리거나 빈 목록이면 멈춘다", async () => {
+    const empty = JSON.stringify({ version: "publish-brands.v1", brands: [] });
+    const { deps, lines } = cliDeps(two, {}, { "b.json": empty, "x.json": "{" });
+    expect(await runPublishCli(["--dir", "d", "--caption", "c", "--brands", "b.json"], deps)).toBe(1);
+    expect(lines.join("\n")).toContain("--no-brands를 붙여요");
+    expect(await runPublishCli(["--dir", "d", "--caption", "c", "--brands", "x.json"], deps)).toBe(1);
+    expect(await runPublishCli(["--dir", "d", "--caption", "c", "--brands", "b.json", "--no-brands"], deps)).toBe(1);
+    expect(deps.checkPermissions).not.toHaveBeenCalled();
   });
 
   it("슬러그는 영문·숫자만 남긴다", () => {

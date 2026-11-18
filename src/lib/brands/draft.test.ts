@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { MockRepository } from "@/lib/mock/repository";
 import { planFromRepository } from "@/lib/exhibitor/service";
 import { hasRealBlurb } from "@/lib/booth/blurb";
-import { TONE_SYSTEM, draftSystemPrompt, mayFetch, runBrandProfileDraft, type DraftDeps } from "./draft";
+import { CHANGED_REASON, TONE_SYSTEM, draftSystemPrompt, mayFetch, runBrandProfileDraft, type DraftDeps } from "./draft";
 import { hasBatchim } from "./tone-gate";
 
 beforeEach(() => {
@@ -111,6 +111,64 @@ describe("runBrandProfileDraft", () => {
     expect(fields.find((f) => f.field === "signatureWorks")!.value).toEqual(["사람이 쓴 것"]);
     // 자료에 인스타 본문은 없다 — 프롬프트 자료 id는 roam:booth와 허용된 URL뿐.
     expect(draftFields.mock.calls[0][0].prompt).not.toMatch(/instagram\.com\/[^\s]*\]/);
+  });
+
+  it("LLM을 부르는 사이에 사람이 확인한 칸은 덮지 않는다(조건부 쓰기)", async () => {
+    const { repo, real, exhibitorOf } = await setup();
+    const x = exhibitorOf(real[0].id);
+    const subject = { exhibitorId: x };
+    const src = `roam:booth/${real[0].id}`;
+    // 읽을 때 items는 AI 초안(워커가 써도 되는 칸), texture는 빈 칸이다.
+    await repo.upsertProfileField({ subject, field: "items", value: ["엽서"], sources: [src], status: "ai_draft", actor: "worker:brand-profile-draft" });
+    const r = await runBrandProfileDraft(repo, x, {
+      draftFields: async () => {
+        // LLM이 도는 동안 Ted가 items를 확인하고, texture를 직접 채운다.
+        await repo.upsertProfileField({ subject, field: "items", value: ["포스터"], sources: [src], status: "reviewed", actor: "ted" });
+        await repo.upsertProfileField({ subject, field: "texture", value: { tags: ["일상툰"] }, sources: [src], status: "reviewed", actor: "ted" });
+        return {
+          fields: [
+            { field: "items", value: ["스티커"], sources: [src] },
+            { field: "texture", value: { tags: ["동물 마스코트"] }, sources: [src] },
+            { field: "signatureWorks", value: ["정원 엽서"], sources: [src] },
+          ],
+        };
+      },
+    });
+    if ("error" in r) throw new Error(r.error);
+    const fields = await repo.listProfileFields({ exhibitorIds: [x] });
+    expect(fields.find((f) => f.field === "items")).toMatchObject({ status: "reviewed", value: ["포스터"], actor: "ted" });
+    expect(fields.find((f) => f.field === "texture")).toMatchObject({ status: "reviewed", value: { tags: ["일상툰"] } });
+    // 그사이 아무도 안 건드린 칸은 그대로 쓴다.
+    expect(fields.find((f) => f.field === "signatureWorks")).toMatchObject({ status: "ai_draft", value: ["정원 엽서"] });
+    expect(r.skipped).toEqual(
+      expect.arrayContaining([
+        { field: "items", reason: CHANGED_REASON },
+        { field: "texture", reason: CHANGED_REASON },
+      ]),
+    );
+    expect(r.written.map((w) => w.field)).not.toContain("items");
+  });
+
+  it("부스 없는 출전은 인입이 출처와 함께 모은 소개 원문을 자료로 쓰고, 출처가 그 URL만 가리킬 수 있다", async () => {
+    const { repo } = await setup();
+    const graph = (globalThis as unknown as { __roamStore: { exhibitorGraph: { exhibitors: unknown[]; participants: unknown[] } } }).__roamStore.exhibitorGraph;
+    graph.exhibitors.push({ id: "ex_nb", canonicalName: "새해 공방" });
+    graph.participants.push({ id: "pt_nb", exhibitorId: "ex_nb", exhibitionId: "exh_house_archive_2026", displayName: "새해 공방" });
+    const official = "https://fair.example/brand/1";
+    await repo.upsertProfileField({ subject: { exhibitorId: "ex_nb" }, field: "intro", value: { original: "손그림 엽서와 달력을 만듭니다." }, sources: [official], status: "collected", actor: "system:brands-intake" });
+    const draftFields = vi.fn<NonNullable<DraftDeps["draftFields"]>>(async () => ({
+      fields: [
+        { field: "items", value: ["엽서"], sources: [official] },
+        { field: "texture", value: { tags: ["일상툰"] }, sources: ["roam:booth/b_x"] }, // 자료에 없는 출처
+      ],
+    }));
+    const r = await runBrandProfileDraft(repo, "ex_nb", { draftFields });
+    if ("error" in r) throw new Error(r.error);
+    expect(draftFields).toHaveBeenCalledTimes(1);
+    expect(draftFields.mock.calls[0][0].prompt).toContain("손그림 엽서와 달력을 만듭니다.");
+    const fields = await repo.listProfileFields({ exhibitorIds: ["ex_nb"] });
+    expect(fields.find((f) => f.field === "items")).toMatchObject({ status: "ai_draft", sources: [official] });
+    expect(fields.find((f) => f.field === "texture")).toBeUndefined();
   });
 
   it("정체 한 줄은 근거 칸이 없으면 쓰지 않는다", async () => {

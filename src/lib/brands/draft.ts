@@ -28,6 +28,7 @@ import { checkToneConversion } from "@/lib/brands/tone-gate";
 import { brandFieldLessons, lessonLines } from "@/lib/brands/lessons";
 import {
   AI_DRAFT_FIELDS,
+  FIELD_STATUS_LABEL,
   IDENTITY_BASIS_FIELDS,
   ITEM_OPTIONS,
   TEXTURE_OPTIONS,
@@ -152,6 +153,9 @@ export function pickIntro(booths: Booth[]): { text: string; source: string } | n
   return null;
 }
 
+/** 읽고 쓰는 사이에 그 칸이 바뀌어서 쓰지 않았을 때. */
+export const CHANGED_REASON = "초안을 쓰는 사이에 칸이 바뀌어서 건드리지 않았어요";
+
 export async function runBrandProfileDraft(
   repo: Repository,
   exhibitorId: string,
@@ -183,13 +187,29 @@ export async function runBrandProfileDraft(
       result.skipped.push({ field, reason: checked.message });
       return false;
     }
-    await repo.upsertProfileField({ subject, field, value: checked.value, sources, status, actor: DRAFT_ACTOR });
+    // 읽은 뒤 LLM을 부르는 사이에 사람이 칸을 확인하거나 고쳤으면 덮지 않는다(조건부 쓰기, DB에서 판단).
+    const before = cur(field);
+    const r = await repo.upsertProfileFieldIfUnchanged(
+      { subject, field, value: checked.value, sources, status, actor: DRAFT_ACTOR },
+      before ? { status: before.status, updatedAt: before.updatedAt } : null,
+    );
+    if (!r.ok) {
+      result.skipped.push({
+        field,
+        reason: r.reason === "changed" ? CHANGED_REASON : "브랜드를 찾을 수 없어요",
+      });
+      return false;
+    }
+    // 같은 실행에서 같은 칸을 다시 쓸 때 방금 쓴 행을 기준으로 삼는다.
+    const i = existing.findIndex((f) => f.field === field);
+    if (i >= 0) existing[i] = r.field;
+    else existing.push(r.field);
     result.written.push({ field, status });
     return true;
   };
   const guard = (field: string) => {
     if (workerMayWrite(cur(field))) return true;
-    result.skipped.push({ field, reason: `이미 ${cur(field)!.status} 칸이라 건드리지 않아요` });
+    result.skipped.push({ field, reason: `이미 ${FIELD_STATUS_LABEL[cur(field)!.status]} 칸이라 건드리지 않아요` });
     return false;
   };
 
@@ -257,6 +277,21 @@ export async function runBrandProfileDraft(
   if (wanted.length === 0) return result;
 
   const materials: Material[] = booths.map(boothMaterial).filter((m): m is Material => !!m);
+  // 부스가 없는 출전(브랜드 먼저 인입)은 부스 자료가 없다. 인입이 공식 출처와 함께 모아 둔 소개 원문을
+  // 자료로 쓴다 — 출처가 그 URL이라 초안의 sources도 그 URL만 가리킬 수 있다. 출처 없는 원문은 쓰지 않는다.
+  const introField = cur("intro");
+  const introOriginal = (introField?.value as { original?: unknown } | null | undefined)?.original;
+  const introSource = introField?.sources.find((s) => /^https?:\/\//.test(s));
+  if (
+    introField &&
+    introField.status !== "ai_draft" &&
+    introField.status !== "stale" &&
+    typeof introOriginal === "string" &&
+    introOriginal.trim() &&
+    introSource &&
+    !materials.some((m) => m.id === introSource)
+  )
+    materials.push({ id: introSource, text: `공식 소개: ${introOriginal.trim()}` });
   if (deps.fetchText) {
     const urls = [...new Set(booths.map((b) => b.websiteUrl).filter((u): u is string => !!u && mayFetch(u)))].slice(0, 3);
     for (const url of urls) {

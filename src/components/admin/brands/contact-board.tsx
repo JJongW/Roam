@@ -81,6 +81,7 @@ export function ContactBoard({
   const [shown, setShown] = useState(PAGE);
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [focus, setFocus] = useState(0);
+  const [pendingFocus, setPendingFocus] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [sheet, setSheet] = useState<ContactSheetTarget | null>(null);
   const [importing, setImporting] = useState(false);
@@ -102,6 +103,12 @@ export function ContactBoard({
     [rows, q, statuses, hasHandle, confidence, flag, sort],
   );
   const page = visible.slice(0, shown);
+  // 보냄 뒤 넘어갈 줄. 렌더 중에 맞춘다(effect 없이, 위 seen과 같은 방식).
+  if (pendingFocus) {
+    setPendingFocus(null);
+    const idx = page.findIndex((r) => r.key === pendingFocus);
+    if (idx >= 0 && idx !== focus) setFocus(idx);
+  }
   const filtered = q || statuses.length || hasHandle !== ALL || confidence !== ALL || flag;
 
   const resetPaging = () => {
@@ -136,9 +143,10 @@ export function ContactBoard({
       const writable = targets.filter((r) => r.writable);
       if (writable.length === 0) {
         toast.message(READ_ONLY_HINT);
-        return;
+        return 0;
       }
       setBusy(true);
+      let done = 0;
       try {
         const r = await runContactAction(
           writable.map((row) => ({
@@ -149,6 +157,7 @@ export function ContactBoard({
         );
         applyResults(r.results.map((x) => ({ participantId: x.participantId, view: x.state.view, log: x.log })));
         if (r.results.length) toast.success(okMsg(r.results.length));
+        done = r.results.length;
         if (r.skipped.length)
           toast.message(`${r.skipped.length}곳은 그대로 뒀어요`, {
             description: [...new Set(r.skipped.map((s) => s.reason))].join(", "),
@@ -158,6 +167,7 @@ export function ContactBoard({
       } finally {
         setBusy(false);
       }
+      return done;
     },
     [applyResults],
   );
@@ -165,6 +175,18 @@ export function ContactBoard({
   const markSent = useCallback(
     (targets: BoardRow[]) => act(targets, { type: "mark-sent" }, (n) => `${n}곳을 보냄으로 표시했어요. 보낸 날짜는 오늘이에요`),
     [act],
+  );
+  /**
+   * 한 줄을 보냄으로 표시하고 다음 줄로 넘어간다(s 키, 줄의 보냄 버튼). 저장이 안 되면 그 줄에 남는다.
+   * 거르기 때문에 보낸 줄이 목록에서 빠져도 같은 다음 줄로 가도록 index가 아니라 key로 찾는다.
+   */
+  const markSentAndNext = useCallback(
+    async (row: BoardRow, index: number) => {
+      const nextKey = page[index + 1]?.key ?? null;
+      const n = await markSent([row]);
+      if (n > 0 && nextKey) setPendingFocus(nextKey);
+    },
+    [markSent, page],
   );
   const setStatus = useCallback(
     (row: BoardRow, status: BrandContactStatus) =>
@@ -217,7 +239,7 @@ export function ContactBoard({
   const allOnPage = selectable.length > 0 && selectable.every((r) => selected.has(r.key));
   const selectedRows = rows.filter((r) => selected.has(r.key));
 
-  // 키보드: / 찾기, j k 줄 이동, x 고르기, c 문구 복사, s 보냄, o 프로필, Enter 자세히, 1~9 상태, Esc 선택 풀기.
+  // 키보드: / 찾기, j k 줄 이동, x 고르기, c 문구 복사, s 보냄 후 다음 줄, o 프로필, Enter 자세히, 1~9 상태, Esc 선택 풀기.
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       const t = e.target as HTMLElement | null;
@@ -241,14 +263,14 @@ export function ContactBoard({
       else if (!row) return;
       else if (k === "x" && row.writable) toggleSelect(row.key);
       else if (k === "c") copyDm(row);
-      else if (k === "s") markSent([row]);
+      else if (k === "s") markSentAndNext(row, focus);
       else if (k === "o" && row.handle) window.open(instagramProfileUrl(row.handle), "_blank", "noopener");
       else if (k === "Enter") openSheet(row);
       else if (/^[1-9]$/.test(k)) setStatus(row, STATUS_ORDER[Number(k) - 1]);
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [page, focus, sheet, importing, copyDm, markSent, openSheet, setStatus]);
+  }, [page, focus, sheet, importing, copyDm, markSentAndNext, openSheet, setStatus]);
 
   useEffect(() => {
     document.getElementById(`row-${focus}`)?.scrollIntoView({ block: "nearest" });
@@ -530,7 +552,10 @@ export function ContactBoard({
                   onToggle={() => toggleSelect(row.key)}
                   onStatus={(s) => setStatus(row, s)}
                   onCopy={() => copyDm(row)}
-                  onSent={() => markSent([row])}
+                  onSent={() => {
+                    setFocus(i);
+                    markSentAndNext(row, i);
+                  }}
                   onOpen={() => openSheet(row)}
                 />
               ))}
@@ -544,7 +569,7 @@ export function ContactBoard({
         </Button>
       )}
       <p className="text-xs text-muted-foreground">
-        단축키: / 찾기, j k 줄 이동, x 고르기, c DM 문구 복사, s 보냄으로 표시, o 프로필 열기, Enter 자세히, 1~9 상태 바꾸기
+        단축키: / 찾기, j k 줄 이동, x 고르기, c DM 문구 복사, s 보냄으로 표시하고 다음 줄로, o 프로필 열기, Enter 자세히, 1~9 상태 바꾸기
         (아직 안 보냄부터 철회까지 순서), Esc 선택 풀기
       </p>
 

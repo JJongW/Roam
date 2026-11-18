@@ -1,4 +1,5 @@
 import { countHashtags, isJpeg, validateCarousel, IG_LIMITS } from "./publish";
+import { featuredBrandsSchema, type FeaturedBrand } from "./permission-gate";
 
 /**
  * `npm run ig:publish`의 본체. 파일·네트워크·입력은 전부 deps로 받는다 — 기본이
@@ -11,6 +12,10 @@ export interface CliArgs {
   caption?: string;
   locationId?: string;
   slug?: string;
+  /** 게시물에 나온 브랜드 목록 파일(publish-brands.v1). */
+  brands?: string;
+  /** 브랜드가 하나도 안 나오는 게시물이라고 밝힌다. */
+  noBrands: boolean;
   publish: boolean;
   /** 게시 직전(캐러셀 FINISHED)까지만 실제로 해 본다. 공개되지 않는다. */
   check: boolean;
@@ -18,7 +23,7 @@ export interface CliArgs {
 }
 
 export function parseArgs(argv: string[]): CliArgs {
-  const args: CliArgs = { publish: false, check: false, yes: false };
+  const args: CliArgs = { publish: false, check: false, yes: false, noBrands: false };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     const next = () => argv[++i];
@@ -26,6 +31,8 @@ export function parseArgs(argv: string[]): CliArgs {
     else if (a === "--caption") args.caption = next();
     else if (a === "--location-id") args.locationId = next();
     else if (a === "--slug") args.slug = next();
+    else if (a === "--brands") args.brands = next();
+    else if (a === "--no-brands") args.noBrands = true;
     else if (a === "--publish") args.publish = true;
     else if (a === "--check") args.check = true;
     else if (a === "--yes" || a === "-y") args.yes = true;
@@ -47,6 +54,8 @@ export interface CliDeps {
   confirm(question: string): Promise<boolean>;
   out(line: string): void;
   today(): string;
+  /** 허락 문. 게시물에 나온 브랜드의 막는 이유 목록(없으면 빈 배열). 읽기만 한다. */
+  checkPermissions(featured: FeaturedBrand[]): Promise<string[]>;
 }
 
 const IMAGE_EXT = /\.(jpe?g|png|webp)$/i;
@@ -62,11 +71,11 @@ export async function runPublishCli(argv: string[], deps: CliDeps): Promise<numb
   const args = parseArgs(argv);
   const { out } = deps;
   if (!args.dir || !args.caption) {
-    out("사용법: npm run ig:publish -- --dir <이미지 폴더> --caption <캡션.txt> [--location-id <id>] [--slug <이름>] [--check | --publish] [--yes]");
+    out("사용법: npm run ig:publish -- --dir <이미지 폴더> --caption <캡션.txt> (--brands <브랜드.json> | --no-brands) [--location-id <id>] [--slug <이름>] [--check | --publish] [--yes]");
     return 1;
   }
   if (args.check && args.publish) {
-    out("--check와 --publish는 같이 쓸 수 없습니다 — 확인만 하려면 --check, 게시하려면 --publish");
+    out("--check와 --publish는 같이 쓸 수 없어요. 확인만 하려면 --check, 게시하려면 --publish를 붙여 주세요");
     return 1;
   }
 
@@ -86,20 +95,28 @@ export async function runPublishCli(argv: string[], deps: CliDeps): Promise<numb
   const notJpeg = files.filter((f) => !isJpeg(f.bytes)).map((f) => f.name);
   if (notJpeg.length) {
     // sharp가 의존성에 없어 변환하지 않는다. Figma 내보내기에서 JPG를 고르면 된다.
-    errors.push(`JPEG가 아닌 파일: ${notJpeg.join(", ")} — Figma에서 JPG로 내보내 주세요 (Instagram API는 JPEG만 받습니다)`);
+    errors.push(`JPEG가 아닌 파일: ${notJpeg.join(", ")} — Figma에서 JPG로 내보내 주세요 (Instagram API는 JPEG만 받아요)`);
   }
   if (errors.length) {
     for (const e of errors) out(`✗ ${e}`);
     return 1;
   }
 
+  // 허락 문 — 드라이런에서도 본다(드라이런이 통과했는데 게시에서 막히면 헷갈린다).
+  const gate = await permissionGate(args, deps);
+  if (gate.length) {
+    out("✗ 허락 문에서 멈췄어요");
+    for (const e of gate) out(`  ✗ ${e}`);
+    return 1;
+  }
+
   if (!args.publish && !args.check) {
-    out("드라이런 — 아무것도 올리지 않았습니다. 실제 API로 확인하려면 --check, 게시하려면 --publish를 붙이세요.");
+    out("드라이런이라 아무것도 올리지 않았어요. 실제 API로 확인하려면 --check, 게시하려면 --publish를 붙여 주세요.");
     return 0;
   }
   // --check는 공개되지 않으니 확인을 묻지 않는다(이미지는 Storage 공개 버킷에는 올라간다).
-  if (args.publish && !args.yes && !(await deps.confirm("이대로 인스타에 게시할까요? 게시하면 바로 공개됩니다 (y/N) "))) {
-    out("취소했습니다.");
+  if (args.publish && !args.yes && !(await deps.confirm("이대로 인스타에 게시할까요? 게시하면 바로 공개돼요 (y/N) "))) {
+    out("취소했어요.");
     return 1;
   }
 
@@ -112,11 +129,35 @@ export async function runPublishCli(argv: string[], deps: CliDeps): Promise<numb
 
   if (args.check) {
     const prep = await deps.prepare({ imageUrls, caption, locationId: args.locationId });
-    out(`확인 끝 — ${prep.itemCount}장 캐러셀이 게시 가능한 상태입니다(컨테이너 ${prep.creationId}). 게시하지 않았고, 컨테이너는 24시간 뒤 사라집니다.`);
+    out(`확인 끝. ${prep.itemCount}장 캐러셀을 게시할 수 있어요(컨테이너 ${prep.creationId}). 게시하지 않았고, 컨테이너는 24시간 뒤 사라져요.`);
     return 0;
   }
 
   const res = await deps.publish({ imageUrls, caption, locationId: args.locationId });
-  out(`게시했습니다: ${res.permalink ?? `media ${res.mediaId}`}`);
+  out(`게시했어요: ${res.permalink ?? `media ${res.mediaId}`}`);
   return 0;
+}
+
+/** 게시물의 브랜드를 읽어 허락 문을 돌린다. 막는 이유 목록(해요체)을 돌려준다. */
+async function permissionGate(args: CliArgs, deps: CliDeps): Promise<string[]> {
+  if (args.brands && args.noBrands) return ["--brands와 --no-brands는 같이 쓸 수 없어요"];
+  if (args.noBrands) {
+    deps.out("브랜드 없음(--no-brands) — 허락 문을 건너뛰어요");
+    return [];
+  }
+  if (!args.brands)
+    return [
+      "게시물에 나온 브랜드를 --brands <파일>로 알려 주세요. 브랜드가 하나도 안 나오면 --no-brands를 붙여요",
+    ];
+  let raw: unknown;
+  try {
+    raw = JSON.parse(await deps.readText(args.brands));
+  } catch {
+    return [`브랜드 파일을 읽지 못했어요: ${args.brands}`];
+  }
+  const parsed = featuredBrandsSchema.safeParse(raw);
+  if (!parsed.success) return parsed.error.issues.map((i) => `브랜드 파일 형식이 맞지 않아요: ${i.path.join(".") || "파일"} ${i.message}`);
+  const reasons = await deps.checkPermissions(parsed.data.brands);
+  if (!reasons.length) deps.out(`허락 문 통과 — 브랜드 ${parsed.data.brands.length}곳 모두 허락 기록이 있어요`);
+  return reasons;
 }

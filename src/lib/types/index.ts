@@ -783,6 +783,8 @@ export interface ProfileField {
 export interface ExhibitorLinkCandidate {
   id: string;
   boothId: string;
+  /** 후보가 된 출전(0062 칸, 0063이 대표 배정으로 채움). 옛 행이나 배정 전이면 null — 그때는 부스로 찾는다. */
+  participantId: string | null;
   exhibitorId: string;
   reason: string;
   status: "pending" | "approved" | "rejected" | "superseded";
