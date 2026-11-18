@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { pushNote, useVisitStore } from "./visit";
+import { isHearted, isVisited, pushNote, useVisitStore } from "./visit";
 
 /**
  * pushNote의 필드 포함 로직 회귀 테스트 — judgment-vocabulary 최종 리뷰 Fix 1.
@@ -68,5 +68,60 @@ describe("pushNote — touched로 밝힌 필드만 서버에 보낸다", () => {
     await pushNote("b1");
     const body = getBody();
     expect(body).toMatchObject({ interest: "must", verdict: "good" });
+  });
+});
+
+describe("하트와 다녀왔어요(새 칸, 2026-11-07, 11-17)", () => {
+  const originalFetch = global.fetch;
+  afterEach(() => {
+    global.fetch = originalFetch;
+  });
+  beforeEach(() => {
+    useVisitStore.setState({ records: {}, hasPendingSync: false });
+  });
+
+  it("하트를 켜면 interest도 must로 맞추고, 끄면 비운다", () => {
+    const s = useVisitStore.getState();
+    s.setHeart("b1", true);
+    expect(useVisitStore.getState().records.b1).toMatchObject({ heart: true, interest: "must" });
+    expect(isHearted(useVisitStore.getState().records.b1)).toBe(true);
+    useVisitStore.getState().setHeart("b1", false);
+    expect(useVisitStore.getState().records.b1).toBeUndefined();
+  });
+
+  it("옛 interest curious는 하트로 읽고, pass는 하트가 아니다", () => {
+    expect(isHearted({ interest: "curious" })).toBe(true);
+    expect(isHearted({ interest: "pass" })).toBe(false);
+  });
+
+  it("다녀왔어요를 끄면 평가도 지우고, 메모는 남긴다", () => {
+    useVisitStore.setState({ records: { b1: { visited: true, verdict: "good", memo: "m" } } });
+    useVisitStore.getState().setVisited("b1", false);
+    const r = useVisitStore.getState().records.b1;
+    expect(r.verdict).toBeUndefined();
+    expect(isVisited(r)).toBe(false);
+    expect(r.memo).toBe("m");
+  });
+
+  it("평가가 있으면 다녀온 것으로 읽는다(옛 기록)", () => {
+    expect(isVisited({ verdict: "ok" })).toBe(true);
+    expect(isVisited({ interest: "must" })).toBe(false);
+  });
+
+  it("pushNote는 touched.heart, touched.visited일 때 새 칸만 보낸다", async () => {
+    let body: Record<string, unknown> = {};
+    global.fetch = vi.fn(async (_i, init?: RequestInit) => {
+      body = JSON.parse(init!.body as string);
+      return { status: 200, ok: true, json: async () => ({ data: { note: {}, taste: null } }) } as Response;
+    }) as unknown as typeof fetch;
+    useVisitStore.getState().setHeart("b1", true);
+    await pushNote("b1", { heart: true });
+    expect(body).toMatchObject({ heart: true });
+    expect(body).not.toHaveProperty("interest");
+    expect(body).not.toHaveProperty("visited");
+    useVisitStore.getState().setVisited("b1", true);
+    await pushNote("b1", { visited: true });
+    expect(body).toMatchObject({ visited: true });
+    expect(body).not.toHaveProperty("heart");
   });
 });
