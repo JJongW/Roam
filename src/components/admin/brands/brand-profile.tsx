@@ -109,7 +109,7 @@ export function BrandProfile({
               </p>
               <ul className="space-y-1 text-sm">
                 {brand.appearances.map((a) => (
-                  <li key={a.boothId}>
+                  <li key={a.participantId}>
                     {a.exhibitionName}
                     <span className="text-muted-foreground">{a.code ? `, 부스 ${a.code}` : ""}{a.name !== brand.name ? `, 표기 ${a.name}` : ""}</span>
                   </li>
@@ -140,23 +140,19 @@ export function BrandProfile({
         <TabsContent value="appearances" className="space-y-4 pt-3">
           {brand.appearances.length === 0 && <p className="text-sm text-muted-foreground">이 브랜드에 이어진 출전이 없어요.</p>}
           {brand.appearances.map((a) => (
-            <Card key={a.boothId} className="p-0">
+            <Card key={a.participantId} className="p-0">
               <AppearanceHeader a={a} />
-              {a.participantId ? (
-                <div className="divide-y divide-border border-t border-border">
-                  {PARTICIPANT_FIELDS.map((def) => (
-                    <FieldCard
-                      key={def.key}
-                      def={def}
-                      subject={{ participantId: a.participantId! }}
-                      field={participantFields.find((f) => f.participantId === a.participantId && f.field === def.key)}
-                      onSaved={(k, f) => setParticipantFields((l) => replace(l, "participantId", a.participantId!, k, f))}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <p className="border-t border-border px-4 py-3 text-sm text-muted-foreground">참가 기록이 없어 출전 칸을 쓸 수 없어요.</p>
-              )}
+              <div className="divide-y divide-border border-t border-border">
+                {PARTICIPANT_FIELDS.map((def) => (
+                  <FieldCard
+                    key={def.key}
+                    def={def}
+                    subject={{ participantId: a.participantId }}
+                    field={participantFields.find((f) => f.participantId === a.participantId && f.field === def.key)}
+                    onSaved={(k, f) => setParticipantFields((l) => replace(l, "participantId", a.participantId, k, f))}
+                  />
+                ))}
+              </div>
             </Card>
           ))}
         </TabsContent>
@@ -237,6 +233,7 @@ function AppearanceHeader({ a }: { a: BrandAppearance }) {
   const [moving, setMoving] = useState(false);
   // 부스 편집 화면은 고른 박람회(쿠키) 하나만 그린다 — 그 회차로 바꾼 뒤 연다.
   async function openEditor() {
+    if (!a.boothId) return;
     setMoving(true);
     try {
       await api.post("/api/admin/exhibition-selection", { exhibitionId: a.exhibitionId });
@@ -252,8 +249,14 @@ function AppearanceHeader({ a }: { a: BrandAppearance }) {
       <div className="min-w-0 flex-1 space-y-1">
         <p className="font-semibold">{a.exhibitionName}</p>
         <p className="text-sm text-muted-foreground">
-          부스명 {a.name}, {a.code ? `부스 번호 ${a.code}` : "부스 번호 없음"}
-          {a.categoryName ? `, ${a.categoryName}` : ""}
+          {a.boothId ? (
+            <>
+              부스명 {a.name}, {a.code ? `부스 번호 ${a.code}` : "부스 번호 없음"}
+              {a.categoryName ? `, ${a.categoryName}` : ""}
+            </>
+          ) : (
+            <>표기 이름 {a.name}, 부스 아직 없음</>
+          )}
         </p>
         <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
           {ig && (
@@ -268,13 +271,17 @@ function AppearanceHeader({ a }: { a: BrandAppearance }) {
               웹
             </a>
           )}
-          <span>{a.enrichment === "full" ? "부스 저작 채움" : a.enrichment === "partial" ? `부스 저작 빈 칸 ${a.enrichmentMissing}` : "부스 저작 없음"}</span>
+          {a.boothId && (
+            <span>{a.enrichment === "full" ? "부스 저작 채움" : a.enrichment === "partial" ? `부스 저작 빈 칸 ${a.enrichmentMissing}` : "부스 저작 없음"}</span>
+          )}
         </div>
       </div>
-      <Button size="sm" variant="ghost" onClick={openEditor} disabled={moving} aria-label="부스 편집">
-        <Pencil />
-        부스 편집
-      </Button>
+      {a.boothId && (
+        <Button size="sm" variant="ghost" onClick={openEditor} disabled={moving} aria-label="부스 편집">
+          <Pencil />
+          부스 편집
+        </Button>
+      )}
     </div>
   );
 }

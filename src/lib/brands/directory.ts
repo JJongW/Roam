@@ -1,8 +1,10 @@
 // /admin/brands 목록 — 모든 박람회의 브랜드(exhibitor)를 한 화면에. 순수 함수, I/O 없음.
 //
 // 브랜드가 중심이다(기준 문서 brand-profile-spec 1장). 한 줄 = 참가사 그래프(0040)의
-// 브랜드 하나, 그 아래 출전(대표 배정된 부스)들. 같은 브랜드인지는 여기서 새로 판단하지
-// 않는다 — lib/exhibitor/identity.ts가 정하고, 애매한 짝은 연결 확인 목록으로 간다.
+// 브랜드 하나, 그 아래 출전(exhibition_participant)들. 부스는 대표 배정이 있으면 붙는 칸이다
+// (2026-11-17 Ted "브랜드가 우선, 부스는 그 이후") — 부스 없는 출전(브랜드 먼저 인입)도 출전이다.
+// 같은 브랜드인지는 여기서 새로 판단하지 않는다 — lib/exhibitor/identity.ts가 정하고,
+// 애매한 짝은 연결 확인 목록으로 간다.
 // 아직 어느 브랜드에도 이어지지 않은 부스는 `unlinked`로 따로 돌려준다(백필 전 상태).
 import { findBoothEnrichmentGaps } from "@/lib/admin/data-issues";
 import { summarizeFill, fillLevel, type FillLevel, type FillSummary } from "@/lib/brands/profile";
@@ -10,22 +12,34 @@ import type { Booth, Category, Exhibition, ExhibitorGraph, ProfileField } from "
 
 export type EnrichmentState = "full" | "partial" | "none";
 
+/** 출전 하나(브랜드 × 박람회). 부스 칸은 대표 배정 부스가 있을 때만 채워진다. */
 export interface BrandAppearance {
-  boothId: string;
-  participantId?: string;
+  /** 열쇠. 출전(exhibition_participant) id. */
+  participantId: string;
+  /** 대표 배정 부스. 부스 번호가 아직 없는 출전은 없다. */
+  boothId?: string;
   exhibitionId: string;
   exhibitionName: string;
   startDate: string;
   code?: string;
-  /** 그 회차 표기 이름(부스 이름). */
+  /** 그 회차 표기 이름(출전 표기 이름, 없으면 부스 이름). */
   name: string;
-  company: string;
-  categoryId: string;
+  company?: string;
+  categoryId?: string;
   categoryName?: string;
   instagramUrl?: string;
   websiteUrl?: string;
-  enrichment: EnrichmentState;
-  enrichmentMissing: number;
+  /** 부스 저작 채움. 부스가 없으면 없다. */
+  enrichment?: EnrichmentState;
+  enrichmentMissing?: number;
+}
+
+/** 아직 어느 브랜드에도 대표 배정되지 않은 부스. */
+export interface UnlinkedBooth {
+  boothId: string;
+  exhibitionId: string;
+  code?: string;
+  name: string;
 }
 
 export interface BrandSummary {
@@ -53,20 +67,24 @@ export function buildBrandDirectory(input: {
   categories: Category[];
   graph: ExhibitorGraph;
   fields: ProfileField[];
-}): { brands: BrandSummary[]; unlinked: BrandAppearance[] } {
+}): { brands: BrandSummary[]; unlinked: UnlinkedBooth[] } {
   const exById = new Map(input.exhibitions.map((e) => [e.id, e]));
   const catById = new Map(input.categories.map((c) => [c.id, c]));
   const participantById = new Map(input.graph.participants.map((p) => [p.id, p]));
 
-  // 부스 → (참가 사실, 브랜드). 공동 출전(co_exhibitor)은 그 부스의 브랜드가 아니다(0040).
-  const ownerOfBooth = new Map<string, { participantId: string; exhibitorId: string }>();
-  for (const a of input.graph.assignments) {
-    if (a.role !== "primary") continue;
-    const p = participantById.get(a.participantId);
-    if (p) ownerOfBooth.set(a.boothId, { participantId: p.id, exhibitorId: p.exhibitorId });
-  }
-
   const booths = input.booths.filter((b) => (b.kind ?? "exhibitor") === "exhibitor");
+  const boothById = new Map(booths.map((b) => [b.id, b]));
+
+  // 출전 → 대표 부스. 공동 출전(co_exhibitor)은 그 부스의 브랜드가 아니다(0040).
+  const boothOfParticipant = new Map<string, Booth>();
+  const ownedBooths = new Set<string>();
+  for (const a of input.graph.assignments) {
+    if (a.role !== "primary" || !participantById.has(a.participantId)) continue;
+    const b = boothById.get(a.boothId);
+    if (!b) continue;
+    ownedBooths.add(b.id);
+    if (!boothOfParticipant.has(a.participantId)) boothOfParticipant.set(a.participantId, b);
+  }
   const gaps = new Map(findBoothEnrichmentGaps(booths).map((g) => [g.boothId, g.missingFields.length]));
 
   const fieldsByExhibitor = new Map<string, ProfileField[]>();
@@ -97,31 +115,37 @@ export function buildBrandDirectory(input: {
     });
   }
 
-  const unlinked: BrandAppearance[] = [];
-  for (const b of booths) {
-    const ex = exById.get(b.exhibitionId);
-    const missing = gaps.get(b.id) ?? 0;
-    const owner = ownerOfBooth.get(b.id);
-    const a: BrandAppearance = {
-      boothId: b.id,
-      participantId: owner?.participantId,
-      exhibitionId: b.exhibitionId,
-      exhibitionName: ex?.name ?? b.exhibitionId,
+  for (const p of input.graph.participants) {
+    const brand = brands.get(p.exhibitorId);
+    if (!brand) continue;
+    const ex = exById.get(p.exhibitionId);
+    const b = boothOfParticipant.get(p.id);
+    const missing = b ? (gaps.get(b.id) ?? 0) : 0;
+    brand.appearances.push({
+      participantId: p.id,
+      exhibitionId: p.exhibitionId,
+      exhibitionName: ex?.name ?? p.exhibitionId,
       startDate: ex?.startDate ?? "",
-      code: b.code,
-      name: b.name,
-      company: b.company,
-      categoryId: b.categoryId,
-      categoryName: catById.get(b.categoryId)?.name,
-      instagramUrl: b.instagramUrl || undefined,
-      websiteUrl: b.websiteUrl || undefined,
-      enrichment: !b.enrichment ? "none" : missing === 0 ? "full" : "partial",
-      enrichmentMissing: b.enrichment ? missing : REQUIRED_COUNT,
-    };
-    const brand = owner && brands.get(owner.exhibitorId);
-    if (brand) brand.appearances.push(a);
-    else unlinked.push(a);
+      name: p.displayName || b?.name || brand.name,
+      ...(b
+        ? {
+            boothId: b.id,
+            code: b.code,
+            company: b.company,
+            categoryId: b.categoryId,
+            categoryName: catById.get(b.categoryId)?.name,
+            instagramUrl: b.instagramUrl || undefined,
+            websiteUrl: b.websiteUrl || undefined,
+            enrichment: !b.enrichment ? "none" : missing === 0 ? "full" : "partial",
+            enrichmentMissing: b.enrichment ? missing : REQUIRED_COUNT,
+          }
+        : {}),
+    });
   }
+
+  const unlinked: UnlinkedBooth[] = booths
+    .filter((b) => !ownedBooths.has(b.id))
+    .map((b) => ({ boothId: b.id, exhibitionId: b.exhibitionId, code: b.code, name: b.name }));
 
   const out = [...brands.values()];
   for (const r of out)
@@ -157,7 +181,7 @@ export function filterDirectory(rows: BrandSummary[], f: DirectoryFilter): Brand
     const scoped = f.exhibitionId ? r.appearances.filter((a) => a.exhibitionId === f.exhibitionId) : r.appearances;
     if (f.exhibitionId && scoped.length === 0) continue;
     if (q) {
-      const names = [r.name, r.artistName ?? "", ...r.aliases, ...scoped.flatMap((a) => [a.name, a.company])];
+      const names = [r.name, r.artistName ?? "", ...r.aliases, ...scoped.flatMap((a) => [a.name, a.company ?? ""])];
       if (!names.some((n) => n.toLowerCase().includes(q))) continue;
     }
     out.push(f.exhibitionId ? { ...r, appearances: scoped } : r);

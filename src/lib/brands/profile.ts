@@ -223,6 +223,21 @@ export function publicValue(def: FieldDef, field: Pick<ProfileField, "status" | 
   return field.value;
 }
 
+/**
+ * 확인된 값으로 치는 상태. 공식 자료에서 모은 값(collected), 에디터 확인(reviewed), 작가 확인(artist_confirmed).
+ * AI 초안(ai_draft)과 다시 볼 것(stale)은 짐작이거나 낡은 값이라 브랜드에게 사실처럼 말하지 않는다.
+ */
+export const CONFIRMED_FIELD_STATUSES: readonly ProfileFieldStatus[] = ["collected", "reviewed", "artist_confirmed"];
+
+/**
+ * 브랜드에게 나가는 글(DM)의 품목 자리에 넣을 값. 확인된 칸의 글자 목록만 돌려주고, 아니면 빈 목록이다.
+ * 빈 목록이면 DM 틀이 그 문장을 통째로 뺀다(outreach.ts fillTemplate). Ted 문안은 건드리지 않는다.
+ */
+export function confirmedItems(field: Pick<ProfileField, "status" | "value"> | undefined): string[] {
+  if (!field || !CONFIRMED_FIELD_STATUSES.includes(field.status)) return [];
+  return Array.isArray(field.value) ? field.value.filter((x): x is string => typeof x === "string") : [];
+}
+
 /** AI가 초안을 쓰는 칸(ai_draft). 나머지는 결정적으로 모으거나(collected) 사람 몫이다. */
 export const AI_DRAFT_FIELDS = ["identityLine", "items", "signatureWorks", "texture"] as const;
 /** 정체 한 줄의 근거가 되는 칸 — 하나도 없으면 정체 한 줄을 쓰지 않는다(3장). */

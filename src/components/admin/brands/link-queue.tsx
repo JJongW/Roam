@@ -169,7 +169,7 @@ export function LinkQueue({ rows, rejectedCount }: { rows: LinkRow[]; rejectedCo
                       {r.target.artistName ? `, 작가 ${r.target.artistName}` : ""}, 출전 {r.target.appearances.length}회
                     </p>
                     {r.target.appearances.map((s) => (
-                      <Side key={s.boothId} s={s} />
+                      <Side key={s.key} s={s} />
                     ))}
                   </div>
                 </div>

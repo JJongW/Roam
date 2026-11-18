@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { MockRepository } from "./repository";
 import { planFromRepository } from "@/lib/exhibitor/service";
 import { buildLinkRows } from "@/lib/brands/links";
+import type { ExhibitorGraph } from "@/lib/types";
 
 beforeEach(() => {
   (globalThis as unknown as { __roamStore?: unknown }).__roamStore = undefined;
@@ -80,5 +81,22 @@ describe("MockRepository 브랜드 프로필 칸(0061)", () => {
     expect(rows[0].evidence.some((e) => e.startsWith("이름이 같아요"))).toBe(true);
     expect(rows[0].target.appearances.length).toBeGreaterThan(0);
     expect(rows[0].booth).not.toBeNull();
+    // 후보는 출전(participantId)을 들고 있고, 화면 열쇠도 출전이다(0062, 0063).
+    expect(candidates.every((c) => c.participantId)).toBe(true);
+    expect(rows[0].booth!.key).toBe(candidates[0].participantId);
+    expect(rows[0].target.appearances.every((a) => a.participantId && a.key === a.participantId)).toBe(true);
+  });
+
+  it("연결 승인은 후보의 출전으로 원래 브랜드를 찾는다(부스 배정이 없어도)", async () => {
+    await backfill(repo);
+    const [c] = await repo.listExhibitorLinkCandidates("pending");
+    const graph = (globalThis as unknown as { __roamStore: { exhibitorGraph: ExhibitorGraph } }).__roamStore.exhibitorGraph;
+    const from = graph.participants.find((p) => p.id === c.participantId)!.exhibitorId;
+    expect(from).not.toBe(c.exhibitorId);
+    // 부스 배정을 지워도 후보의 participantId로 원래 브랜드를 찾아 합친다.
+    graph.assignments = graph.assignments.filter((a) => a.boothId !== c.boothId);
+    const decided = await repo.decideExhibitorLinkCandidate(c.id, "approved", "ted");
+    expect(decided?.status).toBe("approved");
+    expect(graph.participants.some((p) => p.exhibitorId === from)).toBe(false);
   });
 });

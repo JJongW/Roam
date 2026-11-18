@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { actionFlags, applyContactResult, buildRow, daysBetween, filterRows, funnel, sortRows, type BoardSource } from "./board";
+import { actionFlags, applyContactResult, buildRow, daysBetween, filterRows, funnel, handleCandidates, sortRows, type BoardSource } from "./board";
 import { emptyView, type ContactView } from "./contact-actions";
 
 const T = "2026-11-17";
@@ -109,5 +109,27 @@ describe("저장 결과 반영", () => {
       T,
     );
     expect(next).toMatchObject({ status: "granted", flags: [], allowedUse: ["tag"], lastLog: { summary: "상태 바꿈: 보냄 → 허락" } });
+  });
+});
+
+describe("인스타 계정 후보 순서(handleCandidates)", () => {
+  it("브랜드 계정이 부스 계정보다 먼저예요", () => {
+    const row = buildRow(
+      src({ handles: handleCandidates({ profile: null, brandOfficial: "https://instagram.com/brand_ig", booth: "https://instagram.com/booth_ig" }) }),
+      T,
+    );
+    expect(row.handle).toBe("brand_ig");
+  });
+
+  it("브랜드 프로필 links 칸이 공식 링크보다 먼저이고, 브랜드 쪽이 비면 부스로 내려가요", () => {
+    const withProfile = handleCandidates({ profile: { url: "@from_profile", confidence: "high" }, brandOfficial: "@official", booth: "@booth" });
+    expect(buildRow(src({ handles: withProfile }), T)).toMatchObject({ handle: "from_profile", handleConfidence: "high" });
+    const onlyBooth = handleCandidates({ profile: null, brandOfficial: null, booth: "@booth" });
+    expect(buildRow(src({ handles: onlyBooth }), T).handle).toBe("booth");
+  });
+
+  it("연락에 실제로 쓴 계정은 그보다도 먼저예요", () => {
+    const h = handleCandidates({ profile: null, brandOfficial: "@official", booth: "@booth" });
+    expect(buildRow(src({ view: { handle: "@used" }, handles: h }), T)).toMatchObject({ handle: "used", handleConfidence: "confirmed" });
   });
 });

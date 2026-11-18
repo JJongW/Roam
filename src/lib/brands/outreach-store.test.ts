@@ -105,3 +105,21 @@ describe("연락 저장 길목 — 옛 부스 키로 돌아갈 때(STEP 1 전 �
     expect(r.ok).toBe(false);
   });
 });
+
+describe("목록 배지용 상태 읽기(statuses)", () => {
+  it("목표 모양: 부스 없는 출전의 보냄도 출전 열쇠로 읽히고, 기록 없는 출전은 빠진다", async () => {
+    const repo = new MockRepository();
+    const { withBooth, boothless } = await setup(repo);
+    await run(repo, boothless, { type: "mark-sent" }, "@new_brand");
+    const st = await (await getOutreachStore(repo)).statuses([withBooth, boothless]);
+    expect(Object.fromEntries(st)).toEqual({ pt_new: "sent" });
+  });
+
+  it("옛 부스 키: 부스로 찾은 상태를 출전 열쇠로 돌려준다", async () => {
+    const repo = new BoothOnlyRepository();
+    const { withBooth, boothless } = await setup(repo);
+    await run(repo, withBooth, { type: "mark-sent" }, "@a");
+    const st = await (await getOutreachStore(repo)).statuses([withBooth, boothless]);
+    expect(Object.fromEntries(st)).toEqual({ [withBooth.participantId]: "sent" });
+  });
+});

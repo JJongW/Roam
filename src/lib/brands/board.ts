@@ -124,6 +124,23 @@ export function actionFlags(
   return out;
 }
 
+/**
+ * 인스타 계정 후보 순서. 브랜드가 먼저고 부스는 나중이다(2026-11-17 Ted "브랜드가 우선, 부스는 그 이후").
+ * 브랜드 프로필 links 칸 → 브랜드 공식 링크(exhibitor.instagram_url) → 대표 부스 링크.
+ * 연락에 실제로 쓴 계정(view.handle)은 이보다도 앞이다(buildRow).
+ */
+export function handleCandidates(src: {
+  profile: { url: string; confidence: HandleConfidence } | null;
+  brandOfficial: string | null | undefined;
+  booth: string | null | undefined;
+}): BoardSource["handles"] {
+  return [
+    ...(src.profile ? [{ value: src.profile.url, confidence: src.profile.confidence }] : []),
+    { value: src.brandOfficial, confidence: "official" as const },
+    { value: src.booth, confidence: "official" as const },
+  ];
+}
+
 export function buildRow(s: BoardSource, today: string): BoardRow {
   const c = s.view;
   const contactHandle = c?.handle ?? null;

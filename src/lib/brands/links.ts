@@ -8,7 +8,10 @@ import { identityKeys, nameKey } from "@/lib/exhibitor/identity";
 import type { Booth, Exhibition, ExhibitorGraph, ExhibitorLinkCandidate, ProfileField } from "@/lib/types";
 
 export interface LinkSide {
-  boothId: string;
+  /** 출전 id. 출전으로 이어지지 않은 부스면 부스 id로 대신한다(화면 열쇠). */
+  key: string;
+  participantId?: string;
+  boothId?: string;
   exhibitionName: string;
   startDate: string;
   code?: string;
@@ -26,7 +29,7 @@ export interface LinkRow {
   /** 화면에 보여 줄 근거들(겹친 것). */
   evidence: string[];
   booth: LinkSide | null;
-  /** 이 부스가 지금 속한 브랜드(백필이 임시로 만든 것일 수 있다). */
+  /** 이 출전이 지금 속한 브랜드(백필이 임시로 만든 것일 수 있다). 후보의 participantId가 먼저, 없으면 부스의 대표 배정. */
   fromExhibitorId?: string;
   target: { exhibitorId: string; name: string; artistName?: string; appearances: LinkSide[] };
   createdAt: string;
@@ -49,19 +52,21 @@ export function buildLinkRows(input: {
       .map((f) => [f.exhibitorId!, f.value as string]),
   );
   const ownerOf = new Map<string, string>(); // boothId → exhibitorId (primary)
-  const boothsOf = new Map<string, string[]>(); // exhibitorId → boothIds
+  const boothOfParticipant = new Map<string, string>(); // participantId → boothId (primary)
   for (const a of input.graph.assignments) {
     if (a.role !== "primary") continue;
     const p = participantById.get(a.participantId);
     if (!p) continue;
     ownerOf.set(a.boothId, p.exhibitorId);
-    boothsOf.set(p.exhibitorId, [...(boothsOf.get(p.exhibitorId) ?? []), a.boothId]);
+    if (!boothOfParticipant.has(p.id)) boothOfParticipant.set(p.id, a.boothId);
   }
 
-  const side = (b: Booth | undefined): LinkSide | null => {
+  const side = (b: Booth | undefined, participantId?: string): LinkSide | null => {
     if (!b) return null;
     const ex = exById.get(b.exhibitionId);
     return {
+      key: participantId ?? b.id,
+      participantId,
       boothId: b.id,
       exhibitionName: ex?.name ?? b.exhibitionId,
       startDate: ex?.startDate ?? "",
@@ -73,16 +78,37 @@ export function buildLinkRows(input: {
       image: b.images?.[0] ?? b.logoUrl,
     };
   };
+  /** 출전 하나. 대표 부스가 있으면 부스 정보를, 없으면(브랜드 먼저 인입) 출전 표기 이름만. */
+  const participantSide = (participantId: string): LinkSide | null => {
+    const p = participantById.get(participantId);
+    if (!p) return null;
+    const boothId = boothOfParticipant.get(p.id);
+    const fromBooth = boothId ? side(boothById.get(boothId), p.id) : null;
+    if (fromBooth) return fromBooth;
+    const ex = exById.get(p.exhibitionId);
+    return {
+      key: p.id,
+      participantId: p.id,
+      exhibitionName: ex?.name ?? p.exhibitionId,
+      startDate: ex?.startDate ?? "",
+      name: p.displayName,
+      summary: "",
+    };
+  };
 
   return input.candidates.map((c) => {
     const b = boothById.get(c.boothId);
     const target = exhibitorById.get(c.exhibitorId);
-    const targetBooths = (boothsOf.get(c.exhibitorId) ?? []).map((id) => boothById.get(id)).filter((x): x is Booth => !!x);
-    const fromExhibitorId = ownerOf.get(c.boothId);
+    const targetParticipants = input.graph.participants.filter((p) => p.exhibitorId === c.exhibitorId);
+    const targetBooths = targetParticipants
+      .map((p) => boothOfParticipant.get(p.id))
+      .map((id) => (id ? boothById.get(id) : undefined))
+      .filter((x): x is Booth => !!x);
+    const fromExhibitorId = (c.participantId ? participantById.get(c.participantId)?.exhibitorId : undefined) ?? ownerOf.get(c.boothId);
     const evidence: string[] = [];
     if (b) {
       const nk = nameKey(b.name);
-      const targetNames = [target?.canonicalName ?? "", ...input.graph.participants.filter((p) => p.exhibitorId === c.exhibitorId).map((p) => p.displayName)];
+      const targetNames = [target?.canonicalName ?? "", ...targetParticipants.map((p) => p.displayName)];
       const hit = targetNames.find((n) => nk && nameKey(n) === nk);
       if (hit) evidence.push(`이름이 같아요: ${b.name} = ${hit}`);
       const mine = new Set(identityKeys(b));
@@ -98,14 +124,14 @@ export function buildLinkRows(input: {
       id: c.id,
       reason: c.reason,
       evidence,
-      booth: side(b),
+      booth: side(b, c.participantId ?? undefined),
       fromExhibitorId,
       target: {
         exhibitorId: c.exhibitorId,
         name: target?.canonicalName ?? c.exhibitorId,
         artistName: a2,
-        appearances: targetBooths
-          .map(side)
+        appearances: targetParticipants
+          .map((p) => participantSide(p.id))
           .filter((s): s is LinkSide => !!s)
           .sort((x, y) => y.startDate.localeCompare(x.startDate)),
       },

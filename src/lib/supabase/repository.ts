@@ -1124,6 +1124,13 @@ export class SupabaseRepository implements Repository {
       (rows) => db.from("booth_participant").insert(rows).select("booth_id"),
     );
     // 같은 쌍은 한 번만(unique) — 백필을 다시 돌려도 중복이 안 생긴다.
+    // 후보의 출전(participant_id, 0062)은 이번 계획의 대표 배정에서 잇는다. 없으면 null이고 판단 때 부스로 찾는다.
+    const candidateParticipant = new Map<string, string>();
+    for (const a of plan.assignments)
+      if (a.role === "primary" && !candidateParticipant.has(a.boothId)) {
+        const id = resolvePt(a.participantRef);
+        if (id) candidateParticipant.set(a.boothId, id);
+      }
     let candidates = 0;
     for (let i = 0; i < plan.candidates.length; i += 500) {
       const res = await db
@@ -1132,6 +1139,7 @@ export class SupabaseRepository implements Repository {
           plan.candidates.slice(i, i + 500).map((c) => ({
             id: uid("xlc"),
             booth_id: c.boothId,
+            participant_id: candidateParticipant.get(c.boothId) ?? null,
             exhibitor_id: resolveEx(c.target),
             reason: c.reason,
             created_at: t,
@@ -1276,13 +1284,18 @@ export class SupabaseRepository implements Repository {
     if (!cand || (cand as Row).status !== "pending") return cand ? mapLinkCandidate(cand as Row) : null;
     const c = cand as Row;
     if (decision === "approved") {
-      // 그 부스가 지금 속한 참가사(from)를 대상(to)에 통째로 합친다 — 모든 회차.
-      const { data: asg, error: e1 } = await db
-        .from("booth_participant").select("participant_id").eq("booth_id", str(c.booth_id)).eq("role", "primary").maybeSingle();
-      if (e1) throw new Error(`부스 배정 조회 실패: ${e1.message}`);
-      if (!asg) throw new Error("이 부스는 아직 참가사에 배정되지 않았습니다 — 백필부터");
+      // 그 출전이 지금 속한 브랜드(from)를 대상(to)에 통째로 합친다 — 모든 회차.
+      // 출전은 후보의 participant_id(0062, 0063이 채움)가 먼저고, 없으면 부스의 대표 배정으로 찾는다.
+      let participantId = optStr(c.participant_id) ?? null;
+      if (!participantId) {
+        const { data: asg, error: e1 } = await db
+          .from("booth_participant").select("participant_id").eq("booth_id", str(c.booth_id)).eq("role", "primary").maybeSingle();
+        if (e1) throw new Error(`부스 배정 조회 실패: ${e1.message}`);
+        if (!asg) throw new Error("이 부스는 아직 참가사에 배정되지 않았습니다 — 백필부터");
+        participantId = str((asg as Row).participant_id);
+      }
       const { data: fromP, error: e2 } = await db
-        .from("exhibition_participant").select("exhibitor_id").eq("id", str((asg as Row).participant_id)).single();
+        .from("exhibition_participant").select("exhibitor_id").eq("id", participantId).single();
       if (e2) throw new Error(`참가 사실 조회 실패: ${e2.message}`);
       const from = str((fromP as Row).exhibitor_id);
       const to = str(c.exhibitor_id);
@@ -1658,6 +1671,50 @@ export class SupabaseRepository implements Repository {
       .select("*")
       .single();
     return mapProfileField(wrote(res, "프로필 칸 저장") as Row);
+  }
+
+  async upsertProfileFieldIfUnchanged(
+    input: {
+      subject: ProfileSubject;
+      field: string;
+      value: unknown;
+      sources: string[];
+      status: ProfileFieldStatus;
+      actor: string | null;
+    },
+    expected: Pick<ProfileField, "status" | "updatedAt"> | null,
+  ): Promise<{ ok: true; field: ProfileField } | { ok: false; reason: "changed" | "no-subject" }> {
+    const db = createServiceClient();
+    const s = input.subject;
+    const { data: owner, error } =
+      "exhibitorId" in s
+        ? await db.from("exhibitor").select("id").eq("id", s.exhibitorId).maybeSingle()
+        : await db.from("exhibition_participant").select("id").eq("id", s.participantId).maybeSingle();
+    if (error) throw new Error(`프로필 대상 조회 실패: ${error.message}`);
+    if (!owner) return { ok: false, reason: "no-subject" };
+    const at = now();
+    const id = profileFieldId(s, input.field);
+    const row = {
+      ...profileFieldRow(
+        { id, field: input.field, value: input.value, sources: input.sources, status: input.status, verifiedAt: at, actor: input.actor },
+        s,
+      ),
+      updated_at: at,
+    };
+    // 조건은 DB가 한 문장 안에서 본다 — 읽기와 쓰기 사이에 사람이 고친 칸은 0행으로 끝난다.
+    // - 행이 없었으면: insert ... on conflict do nothing(ignoreDuplicates). 그사이 누가 만들었으면 0행.
+    // - 있었으면: update ... where id = ? and status = <읽은 상태> and updated_at = <읽은 시각>.
+    const res = expected
+      ? await db
+          .from("brand_profile_field")
+          .update(row)
+          .eq("id", id)
+          .eq("status", expected.status)
+          .eq("updated_at", expected.updatedAt)
+          .select("*")
+      : await db.from("brand_profile_field").upsert(row, { onConflict: "id", ignoreDuplicates: true }).select("*");
+    const rows = (maybeWrote(res, "프로필 칸 조건부 저장") as Row[] | null) ?? [];
+    return rows.length ? { ok: true, field: mapProfileField(rows[0]) } : { ok: false, reason: "changed" };
   }
 
   async getBrandIntroFieldForBooth(boothId: string): Promise<ProfileField | null> {
@@ -3568,6 +3625,7 @@ function mapLinkCandidate(r: Row): ExhibitorLinkCandidate {
   return {
     id: str(r.id),
     boothId: str(r.booth_id),
+    participantId: optStr(r.participant_id) ?? null,
     exhibitorId: str(r.exhibitor_id),
     reason: str(r.reason),
     status: str(r.status) as ExhibitorLinkCandidate["status"],
