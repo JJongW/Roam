@@ -191,6 +191,7 @@ export async function classifyForUser(
 const REFLECT_KINDS: ReadonlySet<SignalKind> = new Set<SignalKind>([
   "reaction_must",
   "reaction_curious",
+  "heart_added",
   "verdict_good",
   "verdict_ok",
   "booth_bookmarked",

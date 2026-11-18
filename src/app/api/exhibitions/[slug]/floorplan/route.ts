@@ -1,5 +1,6 @@
+import { NextResponse } from "next/server";
 import { notFound, ok } from "@/lib/api/http";
-import { FLOORPLANS, VENUE_OF } from "@/lib/floorplans";
+import { floorplanPayload, matchesEtag } from "@/lib/floorplan/delivery";
 
 type Ctx = { params: Promise<{ slug: string }> };
 
@@ -10,23 +11,27 @@ type Ctx = { params: Promise<{ slug: string }> };
  *
  * venue 제원(미터·축척·표준부스)을 같이 실어 보낸다 — 클라이언트가 픽셀만 받으면
  * 거리·소요시간 같은 걸 계산할 수 없다. 미터를 알아야 실제 공간이 된다.
+ *
+ * version과 ETag(2026-11-17): 앱이 기기에 보관한 사본을 If-None-Match로 확인한다.
+ * 같으면 304(본문 없음). 도면은 배포 때만 바뀌니 매번 다시 물어도 싸다.
  */
-export async function GET(_req: Request, { params }: Ctx) {
+const CACHE = "public, max-age=0, must-revalidate";
+
+export async function GET(req: Request, { params }: Ctx) {
   const { slug } = await params;
-  const floorplan = FLOORPLANS[slug];
-  if (!floorplan) return notFound(`도면이 없는 행사예요: ${slug}`);
-  const venue = VENUE_OF[slug];
-  return ok({
-    floorplan,
-    venue: venue
-      ? {
-          id: venue.id,
-          name: venue.name,
-          floor: venue.floor,
-          meters: venue.meters,
-          unitsPerMeter: venue.unitsPerMeter,
-          standardBoothMeters: venue.standardBoothMeters,
-        }
-      : null,
-  });
+  const payload = floorplanPayload(slug);
+  if (!payload) return notFound(`도면이 없는 행사예요: ${slug}`);
+  const etag = `"${payload.version}"`;
+  if (matchesEtag(req.headers.get("if-none-match"), payload.version)) {
+    return new NextResponse(null, { status: 304, headers: { ETag: etag, "Cache-Control": CACHE } });
+  }
+  return ok(
+    {
+      floorplan: payload.floorplan,
+      venue: payload.venue,
+      version: payload.version,
+      scale: payload.scale,
+    },
+    { headers: { ETag: etag, "Cache-Control": CACHE } },
+  );
 }

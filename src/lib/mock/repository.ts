@@ -32,6 +32,11 @@ import type { ListBoothQuery, Repository } from "@/lib/repositories/types";
 import type {
   AiQueryLog,
   AnalyticsEvent,
+  AppEventRow,
+  PushDevice,
+  BrandHeart,
+  UpcomingParticipation,
+  NoteWithContext,
   SurveyResponse,
   Booth,
   BoothListItem,
@@ -84,6 +89,7 @@ import {
   mergePermissionPatch,
 } from "@/lib/brands/contact";
 import { planFieldMerge, profileFieldId } from "@/lib/brands/profile";
+import { applyNoteInput, heartOf, type NoteState } from "@/lib/notes/apply";
 import type {
   AnalyticsEventInput,
   BookmarkInput,
@@ -142,6 +148,10 @@ interface Store {
   brandOutreach: BrandOutreach[];
   brandOutreachLogs: BrandOutreachLog[];
   profileFields: ProfileField[];
+  /** 0067 — APNs 기기 토큰. */
+  pushDevices: PushDevice[];
+  /** 0068 — 브랜드 하트. */
+  brandHearts: BrandHeart[];
 }
 
 // Persist across HMR / route invocations in a single Node process.
@@ -204,6 +214,8 @@ function buildStore(): Store {
     brandOutreach: [],
     brandOutreachLogs: [],
     profileFields: [],
+    pushDevices: [],
+    brandHearts: [],
   };
 }
 
@@ -537,6 +549,12 @@ export class MockRepository implements Repository {
         }
         this.moveProfileFields({ exhibitorId: from }, { exhibitorId: to });
         if (outreach) this.moveBrandOutreach(from, to);
+        // 브랜드 하트(0068)도 옮긴다. 이미 to에 하트가 있으면 하나로.
+        const st2 = store();
+        for (const h of st2.brandHearts.filter((x) => x.exhibitorId === from)) {
+          if (!st2.brandHearts.some((x) => x.userId === h.userId && x.exhibitorId === to)) h.exhibitorId = to;
+        }
+        st2.brandHearts = st2.brandHearts.filter((x) => x.exhibitorId !== from);
         for (const o of store().linkCandidates)
           if (o.exhibitorId === from && o.status === "pending") o.status = "superseded";
         gph.exhibitors = gph.exhibitors.filter((e) => e.id !== from);
@@ -633,6 +651,20 @@ export class MockRepository implements Repository {
     const before = st.profileFields.length;
     st.profileFields = st.profileFields.filter((r) => r.id !== id);
     return st.profileFields.length < before;
+  }
+
+  async listPrimaryBrandLinks(
+    boothIds: string[],
+  ): Promise<Record<string, { exhibitorId: string; participantId: string }>> {
+    const gph = store().exhibitorGraph;
+    const want = new Set(boothIds);
+    const out: Record<string, { exhibitorId: string; participantId: string }> = {};
+    for (const a of gph.assignments) {
+      if (a.role !== "primary" || !want.has(a.boothId)) continue;
+      const p = gph.participants.find((x) => x.id === a.participantId);
+      if (p) out[a.boothId] = { exhibitorId: p.exhibitorId, participantId: p.id };
+    }
+    return out;
   }
 
   async getBrandIntroFieldForBooth(boothId: string): Promise<ProfileField | null> {
@@ -1552,7 +1584,19 @@ export class MockRepository implements Repository {
     const i = s.users.findIndex((u) => u.id === id);
     if (i < 0) return false;
     s.users.splice(i, 1);
+    // supabase의 cascade와 직접 정리를 흉내낸다.
+    s.notes = s.notes.filter((n) => n.userId !== id);
+    s.userSignals = s.userSignals.filter((x) => x.userId !== id);
+    s.userBrains.delete(id);
+    s.bookmarks = s.bookmarks.filter((b) => b.userId !== id);
+    s.brandHearts = s.brandHearts.filter((h) => h.userId !== id);
+    s.pushDevices = s.pushDevices.filter((d) => d.userId !== id);
+    for (const a of s.analytics) if (a.userId === id) a.userId = null;
     return true;
+  }
+
+  async getAuthUserIds(): Promise<string[]> {
+    return [];
   }
 
   async getUser(id: string): Promise<User | null> {
@@ -1605,7 +1649,9 @@ export class MockRepository implements Repository {
   // --- booth notes ---------------------------------------------------------
 
   async listNotes(userId: string): Promise<BoothNote[]> {
-    return store().notes.filter((n) => n.userId === userId);
+    return store()
+      .notes.filter((n) => n.userId === userId)
+      .map((n) => ({ ...n, heart: heartOf(n), visited: !!n.visitedAt }));
   }
 
   async upsertNote(
@@ -1615,47 +1661,156 @@ export class MockRepository implements Repository {
     judgedClass: "confident" | "uncertain" | null | undefined,
   ): Promise<BoothNote> {
     const s = store();
-    let n = s.notes.find((x) => x.userId === userId && x.boothId === boothId);
-    if (!n) {
-      n = {
-        userId,
-        boothId,
-        interest: input.interest ?? undefined,
-        verdict: input.verdict ?? undefined,
-        // verdict를 새로 쓰는 순간이 곧 방문 시각이다. 해제(verdict===null)면 같이 지운다.
-        visitedAt:
-          input.verdict !== undefined
-            ? input.verdict
-              ? now()
-              : undefined
-            : undefined,
-        memo: input.memo,
-        photos: input.photos,
-        judgedClass:
-          judgedClass === undefined ? undefined : (judgedClass ?? undefined),
-        updatedAt: now(),
-      };
-      s.notes.push(n);
-    } else {
-      if (input.interest !== undefined)
-        n.interest = input.interest ?? undefined;
-      if (input.verdict !== undefined) {
-        n.verdict = input.verdict ?? undefined;
-        n.visitedAt = input.verdict ? now() : undefined;
-      }
-      if (input.memo !== undefined) n.memo = input.memo;
-      if (input.photos !== undefined) n.photos = input.photos;
-      // Supabase 구현과 같은 규칙: judgedClass가 undefined면 판정 필드를 안 건드린다.
-      if (judgedClass !== undefined) {
-        n.judgedClass = judgedClass ?? undefined;
-      }
-      n.updatedAt = now();
-    }
-    // Drop empty notes so the store stays compact.
-    if (!n.interest && !n.verdict && !n.memo?.trim() && !n.photos?.length) {
+    const n = s.notes.find((x) => x.userId === userId && x.boothId === boothId);
+    const existing: NoteState | null = n
+      ? {
+          interest: n.interest ?? null,
+          heartedAt: n.heartedAt ?? null,
+          verdict: n.verdict ?? null,
+          verdictAt: n.verdictAt ?? null,
+          visitedAt: n.visitedAt ?? null,
+          memo: n.memo ?? null,
+          photos: n.photos ?? [],
+        }
+      : null;
+    // supabase 구현과 같은 규칙 하나(lib/notes/apply.ts)를 쓴다.
+    const { next, empty } = applyNoteInput(existing, input, now());
+    if (empty) {
       s.notes = s.notes.filter((x) => x !== n);
+      return { userId, boothId, heart: false, visited: false, updatedAt: now() };
     }
-    return n;
+    const out: BoothNote = {
+      userId,
+      boothId,
+      interest: next.interest ?? undefined,
+      heartedAt: next.heartedAt ?? undefined,
+      heart: heartOf(next),
+      verdict: next.verdict ?? undefined,
+      verdictAt: next.verdictAt ?? undefined,
+      visitedAt: next.visitedAt ?? undefined,
+      visited: !!next.visitedAt,
+      memo: next.memo ?? undefined,
+      photos: next.photos,
+      // judgedClass가 undefined면 판정 필드를 안 건드린다.
+      judgedClass:
+        judgedClass === undefined ? n?.judgedClass : (judgedClass ?? undefined),
+      updatedAt: now(),
+    };
+    if (n) Object.assign(n, out);
+    else s.notes.push(out);
+    return n ?? out;
+  }
+
+  async listNotesWithContext(userId: string): Promise<NoteWithContext[]> {
+    const st = store();
+    const notes = await this.listNotes(userId);
+    const links = await this.listPrimaryBrandLinks(notes.map((n) => n.boothId));
+    const names = await this.getExhibitorNames(Object.values(links).map((l) => l.exhibitorId));
+    return notes.map((n) => {
+      const b = st.booths.find((x) => x.id === n.boothId);
+      const e = b && st.exhibitions.find((x) => x.id === b.exhibitionId);
+      const l = links[n.boothId];
+      return {
+        ...n,
+        booth: b
+          ? { id: b.id, name: b.name, code: b.code, kind: b.kind, categoryId: b.categoryId, hallId: b.hallId }
+          : null,
+        exhibition: e
+          ? { id: e.id, slug: e.slug, name: e.name, venue: e.venue, startDate: e.startDate, endDate: e.endDate }
+          : null,
+        brand: l ? { ...l, name: names[l.exhibitorId] ?? "" } : null,
+      };
+    });
+  }
+
+  async upsertPushDevice(input: {
+    token: string;
+    environment: "sandbox" | "production";
+    userId: string | null;
+    anonId?: string;
+    appVersion?: string;
+  }): Promise<PushDevice> {
+    const st = store();
+    const at = now();
+    let d = st.pushDevices.find((x) => x.token === input.token);
+    if (!d) {
+      d = { id: uid("pd"), token: input.token, platform: "ios", environment: input.environment, userId: null, createdAt: at, lastSeenAt: at };
+      st.pushDevices.push(d);
+    }
+    Object.assign(d, {
+      environment: input.environment,
+      userId: input.userId,
+      anonId: input.anonId,
+      appVersion: input.appVersion,
+      lastSeenAt: at,
+      revokedAt: undefined,
+    });
+    return { ...d };
+  }
+
+  async revokePushDevice(token: string): Promise<boolean> {
+    const d = store().pushDevices.find((x) => x.token === token);
+    if (!d) return false;
+    d.revokedAt = now();
+    return true;
+  }
+
+  async listBrandHearts(userId: string): Promise<BrandHeart[]> {
+    return store()
+      .brandHearts.filter((h) => h.userId === userId)
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+      .map((h) => ({ ...h }));
+  }
+
+  async addBrandHeart(userId: string, exhibitorId: string): Promise<BrandHeart | null> {
+    const st = store();
+    if (!st.exhibitorGraph.exhibitors.some((e) => e.id === exhibitorId)) return null;
+    const have = st.brandHearts.find((h) => h.userId === userId && h.exhibitorId === exhibitorId);
+    if (have) return { ...have };
+    const h = { userId, exhibitorId, createdAt: now() };
+    st.brandHearts.push(h);
+    return { ...h };
+  }
+
+  async removeBrandHeart(userId: string, exhibitorId: string): Promise<boolean> {
+    const st = store();
+    const before = st.brandHearts.length;
+    st.brandHearts = st.brandHearts.filter((h) => !(h.userId === userId && h.exhibitorId === exhibitorId));
+    return st.brandHearts.length < before;
+  }
+
+  async getExhibitorNames(exhibitorIds: string[]): Promise<Record<string, string>> {
+    const want = new Set(exhibitorIds);
+    return Object.fromEntries(
+      store()
+        .exhibitorGraph.exhibitors.filter((e) => want.has(e.id))
+        .map((e) => [e.id, e.canonicalName]),
+    );
+  }
+
+  async listUpcomingParticipations(
+    exhibitorIds: string[],
+    today: string,
+  ): Promise<UpcomingParticipation[]> {
+    const st = store();
+    const gph = st.exhibitorGraph;
+    const want = new Set(exhibitorIds);
+    const out: UpcomingParticipation[] = [];
+    for (const p of gph.participants) {
+      if (!want.has(p.exhibitorId)) continue;
+      const e = st.exhibitions.find((x) => x.id === p.exhibitionId);
+      if (!e || e.endDate < today) continue;
+      const a = gph.assignments.find((x) => x.participantId === p.id && x.role === "primary");
+      const b = a && st.booths.find((x) => x.id === a.boothId);
+      out.push({
+        exhibitorId: p.exhibitorId,
+        participantId: p.id,
+        displayName: p.displayName,
+        exhibition: { id: e.id, slug: e.slug, name: e.name, venue: e.venue, startDate: e.startDate, endDate: e.endDate },
+        booth: b ? { id: b.id, code: b.code, name: b.name } : undefined,
+      });
+    }
+    return out.sort((a, b) => a.exhibition.startDate.localeCompare(b.exhibition.startDate));
   }
 
   async listNotesByBoothIds(boothIds: string[]): Promise<BoothNote[]> {
@@ -1811,6 +1966,33 @@ export class MockRepository implements Repository {
       createdAt: now(),
       ...input,
     });
+  }
+
+  async recordAppEvents(rows: AppEventRow[]): Promise<void> {
+    const st = store();
+    const seen = new Set(st.analytics.map((a) => a.eventId).filter(Boolean));
+    for (const r of rows) {
+      if (seen.has(r.eventId)) continue;
+      seen.add(r.eventId);
+      st.analytics.push({
+        id: uid("an"),
+        sessionId: "",
+        userId: r.userId,
+        exhibitionId: r.exhibitionId ?? "",
+        type: "app",
+        boothId: r.boothId ?? undefined,
+        meta: r.props,
+        createdAt: now(),
+        name: r.name,
+        platform: r.platform,
+        appVersion: r.appVersion,
+        anonId: r.anonId,
+        appSessionId: r.appSessionId,
+        screenId: r.screenId,
+        clientTs: r.clientTs,
+        eventId: r.eventId,
+      });
+    }
   }
 
   async _allAnalytics(exhibitionId: string): Promise<AnalyticsEvent[]> {

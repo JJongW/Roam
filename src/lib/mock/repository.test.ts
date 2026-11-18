@@ -349,7 +349,8 @@ describe("MockRepository", () => {
       expect(note.visitedAt).toBeDefined();
     });
 
-    it("verdict를 해제하면 visitedAt도 같이 지워진다", async () => {
+    // 2026-11-17 결정으로 바뀜: 평가를 지워도 다녀왔어요는 남는다. 끄기는 visited: false.
+    it("verdict를 해제해도 visitedAt은 남고, visited: false면 같이 지워진다", async () => {
       await repo.upsertNote(
         "u_taste8",
         "b_a101",
@@ -363,7 +364,14 @@ describe("MockRepository", () => {
         null,
       );
       expect(cleared.verdict).toBeUndefined();
-      expect(cleared.visitedAt).toBeUndefined();
+      expect(cleared.visitedAt).toBeDefined();
+      const off = await repo.upsertNote(
+        "u_taste8",
+        "b_a101",
+        { visited: false },
+        null,
+      );
+      expect(off.visitedAt).toBeUndefined();
     });
 
     it("interest만 바꾸는 쓰기(verdict:undefined)는 기존 verdict·visitedAt을 안 지운다 — judgment-vocabulary 최종 리뷰 Fix 1 회귀", async () => {

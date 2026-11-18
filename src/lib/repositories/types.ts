@@ -2,6 +2,11 @@ import type { ChangeEntry, AuditContext } from "@/lib/audit/diff";
 import type { CurveInput } from "@/lib/memory/learning-curve";
 import type {
   AnalyticsEvent,
+  AppEventRow,
+  PushDevice,
+  BrandHeart,
+  UpcomingParticipation,
+  NoteWithContext,
   SurveyResponse,
   Booth,
   BoothListItem,
@@ -236,6 +241,10 @@ export interface Repository {
   /** 이 부스(대표 배정)의 브랜드 공식 소개 칸. 방문객 화면이 부르므로 서비스 롤로 읽고,
    *  앱에 보일지(publicValue)는 호출부가 brandIntroFromField로 거른다. 없으면 null. */
   getBrandIntroFieldForBooth(boothId: string): Promise<ProfileField | null>;
+  /** 부스 → 대표(primary) 참가와 브랜드. 배정 없는 부스는 빠진다. 실패는 throw. */
+  listPrimaryBrandLinks(
+    boothIds: string[],
+  ): Promise<Record<string, { exhibitorId: string; participantId: string }>>;
 
   listEnrichmentCandidates(opts?: {
     exhibitionId?: string;
@@ -438,8 +447,12 @@ export interface Repository {
   createUser(nickname: string): Promise<User>;
   /** 계정 목록(관리자용, 최신 가입순). */
   listUsers(opts?: { limit?: number; offset?: number }): Promise<User[]>;
-  /** 계정 삭제(관리자용). 존재 안 하면 false. */
+  /** 계정 삭제(관리자, 그리고 본인 DELETE /api/me). 존재 안 하면 false.
+   *  노트, 신호, 브레인, 동선, 브랜드 하트, 기기 토큰을 지우고 오류 로그와 이벤트의
+   *  계정 연결을 끊는다. auth.users는 지우지 않는다(라우트가 한다). */
   deleteUser(id: string): Promise<boolean>;
+  /** 이 계정과 같은 사람인 Supabase auth 사용자 id들(uuid 모양만). 없으면 빈 배열. */
+  getAuthUserIds(id: string): Promise<string[]>;
   getUser(id: string, opts?: AdminRead): Promise<User | null>;
   getUserByNickname(nickname: string): Promise<User | null>;
   /** 닉네임 변경(로그인 후 언제든) — 다른 계정이 이미 쓰는 닉네임이면 null.
@@ -468,6 +481,30 @@ export interface Repository {
   ): Promise<BoothNote>;
   /** 특정 부스 id 목록에 해당하는 모든 사용자의 노트(admin 데이터 이슈 계산용). */
   listNotesByBoothIds(boothIds: string[]): Promise<BoothNote[]>;
+  /** 내 노트에 부스, 박람회, 대표 브랜드를 붙여서(마이페이지, 내보내기). 실패는 throw. */
+  listNotesWithContext(userId: string): Promise<NoteWithContext[]>;
+
+  // push (0067) — 보내기는 아직 없다.
+  /** 같은 토큰이면 한 줄을 고친다. userId는 이번 요청의 로그인 상태 그대로(없으면 null). */
+  upsertPushDevice(input: {
+    token: string;
+    environment: "sandbox" | "production";
+    userId: string | null;
+    anonId?: string;
+    appVersion?: string;
+  }): Promise<PushDevice>;
+  /** 이 기기 토큰을 끊는다(revoked_at). 없으면 false. */
+  revokePushDevice(token: string): Promise<boolean>;
+
+  // brand hearts (0068)
+  listBrandHearts(userId: string): Promise<BrandHeart[]>;
+  /** 이미 있으면 그 줄을 돌려준다. 없는 브랜드면 null. */
+  addBrandHeart(userId: string, exhibitorId: string): Promise<BrandHeart | null>;
+  removeBrandHeart(userId: string, exhibitorId: string): Promise<boolean>;
+  /** 브랜드 이름(exhibitor.canonical_name). 없는 id는 빠진다. */
+  getExhibitorNames(exhibitorIds: string[]): Promise<Record<string, string>>;
+  /** 이 브랜드들의 참가 중 박람회가 아직 안 끝난 것(end_date >= today). 부스 없는 참가도 포함. */
+  listUpcomingParticipations(exhibitorIds: string[], today: string): Promise<UpcomingParticipation[]>;
   /** 부스 하나(가벼운 조회 — 목록 컬럼 + enrichment). getBoothDetail과 달리
    *  리뷰·이벤트·웰컴키트는 안 읽는다. 반응 판정 시 확신도 대조에 쓴다. */
   getBooth(id: string): Promise<Booth | null>;
@@ -571,4 +608,7 @@ export interface Repository {
     exhibitionId: string,
   ): Promise<{ stage: string; count: number; rate: number }[]>;
   _allAnalytics?(exhibitionId: string): Promise<AnalyticsEvent[]>;
+  /** 이름 붙은 앱 이벤트 묶음(0066). event_id가 이미 있으면 건너뛴다. 텔레메트리라 실패는
+   *  로그만 남긴다(화면을 막지 않는다). */
+  recordAppEvents(rows: AppEventRow[]): Promise<void>;
 }

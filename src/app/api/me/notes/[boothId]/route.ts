@@ -5,6 +5,7 @@ import { recordSignal, classifyForUser } from "@/lib/memory/service";
 import { boothNoteInputSchema } from "@/lib/schemas";
 import type { JudgedClass } from "@/lib/memory/taste";
 import type { SignalKind } from "@/lib/types";
+import { heartOf } from "@/lib/notes/apply";
 
 type Ctx = { params: Promise<{ boothId: string }> };
 
@@ -36,9 +37,15 @@ export async function PUT(req: Request, { params }: Ctx) {
   // 이 쓰기가 interest·verdict 중 무엇을 실제로 바꾸는지 각각 확인한다 — 메모만
   // 고치는 쓰기(둘 다 undefined로 옴)에서 이미 확정된 판정을 조용히 재계산하면
   // 안 된다(기존 statusChanged 가드와 같은 원칙, 이제 두 필드 각각에 적용).
+  // heart를 보내면 interest보다 우선한다(lib/notes/apply.ts) — interest 경로는 옛 클라이언트용.
+  const heartSent = parsed.data.heart !== undefined;
+  const heartChanged =
+    heartSent && heartOf(existing ?? {}) !== parsed.data.heart;
   const interestChanged =
-    parsed.data.interest !== undefined &&
-    (existing?.interest ?? null) !== (parsed.data.interest ?? null);
+    heartChanged ||
+    (!heartSent &&
+      parsed.data.interest !== undefined &&
+      (existing?.interest ?? null) !== (parsed.data.interest ?? null));
   const verdictChanged =
     parsed.data.verdict !== undefined &&
     (existing?.verdict ?? null) !== (parsed.data.verdict ?? null);
@@ -54,7 +61,8 @@ export async function PUT(req: Request, { params }: Ctx) {
         : null
       : null; // verdict 해제 → 판정도 지운다
   } else if (interestChanged) {
-    judgedClass = parsed.data.interest
+    const nowInterested = heartSent ? parsed.data.heart : parsed.data.interest;
+    judgedClass = nowInterested
       ? booth
         ? await classifyForUser(booth, user.id)
         : null
@@ -64,7 +72,12 @@ export async function PUT(req: Request, { params }: Ctx) {
   const note = await repo.upsertNote(user.id, boothId, parsed.data, judgedClass);
 
   // L4 메모리: 상태 변경이 곧 신호다. 이 경로가 유일한 신호 적재 지점.
-  if (interestChanged && parsed.data.interest) {
+  if (heartChanged) {
+    await recordSignal(user.id, {
+      kind: parsed.data.heart ? "heart_added" : "heart_removed",
+      boothId,
+    });
+  } else if (interestChanged && parsed.data.interest) {
     await recordSignal(user.id, {
       kind: SIGNAL_BY_INTEREST[parsed.data.interest],
       boothId,
@@ -73,6 +86,16 @@ export async function PUT(req: Request, { params }: Ctx) {
   if (verdictChanged && parsed.data.verdict) {
     await recordSignal(user.id, {
       kind: SIGNAL_BY_VERDICT[parsed.data.verdict],
+      boothId,
+    });
+  }
+
+  // 다녀왔어요는 평가와 다른 신호다(2026-11-17 결정). 평가로 처음 켜진 방문도 남긴다.
+  const wasVisited = !!existing?.visitedAt;
+  const isVisited = !!note.visitedAt;
+  if (wasVisited !== isVisited) {
+    await recordSignal(user.id, {
+      kind: isVisited ? "visit_marked" : "visit_unmarked",
       boothId,
     });
   }

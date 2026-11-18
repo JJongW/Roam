@@ -21,6 +21,11 @@ import type {
 } from "@/lib/repositories/types";
 import type {
   AnalyticsEvent,
+  AppEventRow,
+  PushDevice,
+  BrandHeart,
+  UpcomingParticipation,
+  NoteWithContext,
   SurveyResponse,
   AnalyticsType,
   Booth,
@@ -78,6 +83,7 @@ import type {
 import { profileFieldId } from "@/lib/brands/profile";
 import type { ExhibitorPlan, Ref } from "@/lib/exhibitor/plan";
 import { exhibitionIdFor } from "@/lib/exhibition/id";
+import { applyNoteInput, heartOf, type NoteState } from "@/lib/notes/apply";
 import {
   emptyContact,
   emptyOutreach,
@@ -248,6 +254,15 @@ function str(v: unknown): string {
   return v == null ? "" : String(v);
 }
 /** Nullable text column → string | undefined (keeps optional fields absent). */
+/** 마이그레이션 적용 전이라 표가 없는 에러인지(Postgres 42P01, PostgREST 스키마 캐시 PGRST205). */
+function isMissingTable(error: { code?: string } | null | undefined): boolean {
+  return error?.code === "42P01" || error?.code === "PGRST205";
+}
+
+function isUuid(v: string): boolean {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v);
+}
+
 function optStr(v: unknown): string | undefined {
   return v == null || v === "" ? undefined : String(v);
 }
@@ -538,6 +553,25 @@ function mapIssueLog(r: Row): IssueLog {
   };
 }
 
+function mapPushDevice(r: Row): PushDevice {
+  return {
+    id: str(r.id),
+    token: str(r.apns_token),
+    platform: "ios",
+    environment: str(r.environment) as PushDevice["environment"],
+    userId: r.user_id == null ? null : str(r.user_id),
+    anonId: optStr(r.anon_id),
+    appVersion: optStr(r.app_version),
+    createdAt: str(r.created_at),
+    lastSeenAt: str(r.last_seen_at),
+    revokedAt: optStr(r.revoked_at),
+  };
+}
+
+function mapBrandHeart(r: Row): BrandHeart {
+  return { userId: str(r.user_id), exhibitorId: str(r.exhibitor_id), createdAt: str(r.created_at) };
+}
+
 function mapNote(r: Row): BoothNote {
   return {
     userId: str(r.user_id),
@@ -551,6 +585,13 @@ function mapNote(r: Row): BoothNote {
         ? undefined
         : (String(r.verdict) as BoothNote["verdict"]),
     visitedAt: r.visited_at == null ? undefined : str(r.visited_at),
+    visited: r.visited_at != null,
+    verdictAt: r.verdict_at == null ? undefined : str(r.verdict_at),
+    heartedAt: r.hearted_at == null ? undefined : str(r.hearted_at),
+    heart: heartOf({
+      heartedAt: r.hearted_at == null ? null : str(r.hearted_at),
+      interest: (r.interest ?? null) as BoothNote["interest"] | null,
+    }),
     judgedClass:
       r.judged_class == null
         ? undefined
@@ -602,6 +643,14 @@ function mapAnalytics(r: Row): AnalyticsEvent {
     y: r.y == null ? undefined : num(r.y),
     meta: r.meta == null ? undefined : (r.meta as Record<string, unknown>),
     createdAt: str(r.created_at),
+    name: optStr(r.name),
+    platform: optStr(r.platform) as AnalyticsEvent["platform"],
+    appVersion: optStr(r.app_version),
+    anonId: optStr(r.anon_id),
+    appSessionId: optStr(r.app_session_id),
+    screenId: optStr(r.screen_id),
+    clientTs: optStr(r.client_ts),
+    eventId: optStr(r.event_id),
   };
 }
 
@@ -1585,7 +1634,30 @@ export class SupabaseRepository implements Repository {
     // 브랜드 칸(0061)을 옮긴 뒤에 지운다 — 먼저 지우면 cascade로 사라진다.
     await this.moveProfileFields({ exhibitorId: from }, { exhibitorId: to });
     if (outreach) await this.moveOutreach("move_brand_outreach", from, to);
+    // 브랜드 하트(0068)는 cascade라 지우기 전에 옮긴다.
+    await this.moveBrandHearts(from, to);
     maybeWrote(await db.from("exhibitor").delete().eq("id", from).select("id"), "참가사 정리");
+  }
+
+  /** 합칠 때 브랜드 하트 옮기기. 이미 to에 하트가 있는 사람은 하나로 합친다.
+   *  0068 적용 전(표 없음)이면 옮길 것도 없으니 건너뛴다. */
+  private async moveBrandHearts(from: string, to: string): Promise<void> {
+    const db = createServiceClient();
+    const { data, error } = await db.from("brand_heart").select("user_id, created_at").eq("exhibitor_id", from);
+    if (error) {
+      if (isMissingTable(error)) return;
+      throw new Error(`브랜드 하트 조회 실패: ${error.message}`);
+    }
+    const rows = (data ?? []) as Row[];
+    if (rows.length === 0) return;
+    loggedWrite(
+      await db.from("brand_heart").upsert(
+        rows.map((r) => ({ user_id: str(r.user_id), exhibitor_id: to, created_at: str(r.created_at) })),
+        { onConflict: "user_id,exhibitor_id", ignoreDuplicates: true },
+      ),
+      "브랜드 하트 이동",
+    );
+    maybeWrote(await db.from("brand_heart").delete().eq("exhibitor_id", from).select("user_id"), "브랜드 하트 정리");
   }
 
   /** 합칠 때 연락 옮기기 — SQL 함수(0062) 한 번으로 한 트랜잭션. 규칙은 함수 주석, mock은 같은 일을 한다. */
@@ -1671,6 +1743,26 @@ export class SupabaseRepository implements Repository {
       .select("*")
       .single();
     return mapProfileField(wrote(res, "프로필 칸 저장") as Row);
+  }
+
+  async listPrimaryBrandLinks(
+    boothIds: string[],
+  ): Promise<Record<string, { exhibitorId: string; participantId: string }>> {
+    const db = createServiceClient();
+    const rows = await inChunks<Row>(boothIds, "부스 대표 브랜드", (slice) =>
+      db
+        .from("booth_participant")
+        .select("booth_id, participant_id, participant:participant_id(exhibitor_id)")
+        .eq("role", "primary")
+        .in("booth_id", slice),
+    );
+    const out: Record<string, { exhibitorId: string; participantId: string }> = {};
+    for (const r of rows) {
+      const exhibitorId = optStr(((r.participant ?? null) as Row | null)?.exhibitor_id);
+      if (!exhibitorId) continue;
+      out[str(r.booth_id)] = { exhibitorId, participantId: str(r.participant_id) };
+    }
+    return out;
   }
 
   async upsertProfileFieldIfUnchanged(
@@ -2581,11 +2673,37 @@ export class SupabaseRepository implements Repository {
       await db.from("user_signal_log").delete().eq("user_id", id),
       "계정 삭제(신호 로그 정리)",
     );
+    // 0067, 0068은 cascade지만 적용 전이어도 삭제가 막히지 않게 표가 없으면 건너뛴다.
+    for (const table of ["brand_heart", "push_device"] as const) {
+      const res = await db.from(table).delete().eq("user_id", id);
+      if (!isMissingTable(res.error)) loggedWrite(res, `계정 삭제(${table} 정리)`);
+    }
+    // FK 없는 text 참조 — 오류 로그는 남기되 누구 것인지는 끊는다. 이벤트는 FK가
+    // set null이라 app_user를 지우면 같이 끊긴다(0042).
+    loggedWrite(
+      await db.from("issue_log").update({ user_id: null }).eq("user_id", id),
+      "계정 삭제(오류 로그 연결 끊기)",
+    );
     const { error, count } = await db
       .from("app_user")
       .delete({ count: "exact" })
       .eq("id", id);
     return !error && (count ?? 0) > 0;
+  }
+
+  async getAuthUserIds(id: string): Promise<string[]> {
+    const db = createServiceClient();
+    const { data, error } = await db
+      .from("app_user")
+      .select("id, provider_account_id")
+      .eq("id", id)
+      .maybeSingle();
+    if (error) throw new Error(`계정 조회 실패: ${error.message}`);
+    if (!data) return [];
+    // iOS Apple은 app_user.id가 곧 auth uid, 웹 Google은 provider_account_id가 auth uid다.
+    // iOS Google(google_native)의 provider_account_id는 Google sub(숫자)라 걸러진다.
+    const r = data as Row;
+    return [...new Set([str(r.id), optStr(r.provider_account_id) ?? ""])].filter(isUuid);
   }
 
   async getUser(id: string, opts?: AdminRead): Promise<User | null> {
@@ -2679,6 +2797,212 @@ export class SupabaseRepository implements Repository {
     return rows.map(mapNote);
   }
 
+  async listNotesWithContext(userId: string): Promise<NoteWithContext[]> {
+    const notes = await this.listNotes(userId);
+    if (notes.length === 0) return [];
+    const db = createServiceClient();
+    const boothRows = await inChunks<Row>(
+      notes.map((n) => n.boothId),
+      "노트 부스",
+      (slice) =>
+        db
+          .from("booth")
+          .select("id, name, code, kind, category_id, hall_id, exhibition_id")
+          .in("id", slice),
+    );
+    const exIds = [...new Set(boothRows.map((b) => str(b.exhibition_id)))];
+    const exRows = await inChunks<Row>(exIds, "노트 박람회", (slice) =>
+      db.from("exhibition").select("id, slug, name, venue, start_date, end_date").in("id", slice),
+    );
+    const links = await this.listPrimaryBrandLinks(boothRows.map((b) => str(b.id)));
+    const names = await this.getExhibitorNames([
+      ...new Set(Object.values(links).map((l) => l.exhibitorId)),
+    ]);
+    const boothById = new Map(boothRows.map((b) => [str(b.id), b]));
+    const exById = new Map(exRows.map((e) => [str(e.id), e]));
+    return notes.map((n) => {
+      const b = boothById.get(n.boothId);
+      const e = b ? exById.get(str(b.exhibition_id)) : undefined;
+      const l = links[n.boothId];
+      return {
+        ...n,
+        booth: b
+          ? {
+              id: str(b.id),
+              name: str(b.name),
+              code: optStr(b.code),
+              kind: optStr(b.kind) as Booth["kind"],
+              categoryId: str(b.category_id),
+              hallId: str(b.hall_id),
+            }
+          : null,
+        exhibition: e
+          ? {
+              id: str(e.id),
+              slug: str(e.slug),
+              name: str(e.name),
+              venue: str(e.venue),
+              startDate: str(e.start_date),
+              endDate: str(e.end_date),
+            }
+          : null,
+        brand: l
+          ? { exhibitorId: l.exhibitorId, participantId: l.participantId, name: names[l.exhibitorId] ?? "" }
+          : null,
+      };
+    });
+  }
+
+  // --- push devices (0067) -------------------------------------------------
+
+  async upsertPushDevice(input: {
+    token: string;
+    environment: "sandbox" | "production";
+    userId: string | null;
+    anonId?: string;
+    appVersion?: string;
+  }): Promise<PushDevice> {
+    const db = createServiceClient();
+    const at = now();
+    const res = await db
+      .from("push_device")
+      .upsert(
+        {
+          apns_token: input.token,
+          platform: "ios",
+          environment: input.environment,
+          user_id: input.userId,
+          anon_id: input.anonId ?? null,
+          app_version: input.appVersion ?? null,
+          last_seen_at: at,
+          revoked_at: null,
+        },
+        { onConflict: "apns_token" },
+      )
+      .select("*")
+      .single();
+    return mapPushDevice(wrote(res, "기기 토큰 저장") as Row);
+  }
+
+  async revokePushDevice(token: string): Promise<boolean> {
+    const db = createServiceClient();
+    const rows = maybeWrote(
+      await db
+        .from("push_device")
+        .update({ revoked_at: now() })
+        .eq("apns_token", token)
+        .select("id"),
+      "기기 토큰 끊기",
+    );
+    return (rows?.length ?? 0) > 0;
+  }
+
+  // --- brand hearts (0068) -------------------------------------------------
+
+  async listBrandHearts(userId: string): Promise<BrandHeart[]> {
+    const db = await this.userDb();
+    const { data, error } = await db
+      .from("brand_heart")
+      .select("*")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false });
+    if (error) throw new Error(`브랜드 하트 조회 실패: ${error.message}`);
+    return ((data ?? []) as Row[]).map(mapBrandHeart);
+  }
+
+  async addBrandHeart(userId: string, exhibitorId: string): Promise<BrandHeart | null> {
+    const names = await this.getExhibitorNames([exhibitorId]);
+    if (!names[exhibitorId]) return null;
+    const db = await this.userDb();
+    const { data: existing, error } = await db
+      .from("brand_heart")
+      .select("*")
+      .eq("user_id", userId)
+      .eq("exhibitor_id", exhibitorId)
+      .maybeSingle();
+    if (error) throw new Error(`브랜드 하트 조회 실패: ${error.message}`);
+    if (existing) return mapBrandHeart(existing as Row);
+    const res = await db
+      .from("brand_heart")
+      .insert({ user_id: userId, exhibitor_id: exhibitorId, created_at: now() })
+      .select("*")
+      .single();
+    return mapBrandHeart(wrote(res, "브랜드 하트 저장") as Row);
+  }
+
+  async removeBrandHeart(userId: string, exhibitorId: string): Promise<boolean> {
+    const db = await this.userDb();
+    const rows = maybeWrote(
+      await db
+        .from("brand_heart")
+        .delete()
+        .eq("user_id", userId)
+        .eq("exhibitor_id", exhibitorId)
+        .select("user_id"),
+      "브랜드 하트 빼기",
+    );
+    return (rows?.length ?? 0) > 0;
+  }
+
+  async getExhibitorNames(exhibitorIds: string[]): Promise<Record<string, string>> {
+    const db = createServiceClient();
+    const rows = await inChunks<Row>(exhibitorIds, "브랜드 이름", (slice) =>
+      db.from("exhibitor").select("id, canonical_name").in("id", slice),
+    );
+    return Object.fromEntries(rows.map((r) => [str(r.id), str(r.canonical_name)]));
+  }
+
+  async listUpcomingParticipations(
+    exhibitorIds: string[],
+    today: string,
+  ): Promise<UpcomingParticipation[]> {
+    if (exhibitorIds.length === 0) return [];
+    const db = createServiceClient();
+    const parts = await inChunks<Row>(exhibitorIds, "다가오는 참가", (slice) =>
+      db
+        .from("exhibition_participant")
+        .select("id, exhibitor_id, display_name, status, exhibition:exhibition_id(id, slug, name, venue, start_date, end_date)")
+        .in("exhibitor_id", slice)
+        .neq("status", "withdrawn"),
+    );
+    const live = parts.filter((p) => {
+      const e = p.exhibition as Row | null;
+      return e && str(e.end_date) >= today;
+    });
+    if (live.length === 0) return [];
+    const asg = await inChunks<Row>(
+      live.map((p) => str(p.id)),
+      "참가 부스",
+      (slice) =>
+        db
+          .from("booth_participant")
+          .select("participant_id, booth:booth_id(id, code, name)")
+          .eq("role", "primary")
+          .in("participant_id", slice),
+    );
+    const boothByPart = new Map(asg.map((a) => [str(a.participant_id), a.booth as Row | null]));
+    return live
+      .map((p) => {
+        const e = p.exhibition as Row;
+        const b = boothByPart.get(str(p.id));
+        return {
+          exhibitorId: str(p.exhibitor_id),
+          participantId: str(p.id),
+          displayName: str(p.display_name),
+          exhibition: {
+            id: str(e.id),
+            slug: str(e.slug),
+            name: str(e.name),
+            venue: str(e.venue),
+            startDate: str(e.start_date),
+            endDate: str(e.end_date),
+          },
+          booth: b ? { id: str(b.id), code: optStr(b.code), name: str(b.name) } : undefined,
+        };
+      })
+      .sort((a, b) => a.exhibition.startDate.localeCompare(b.exhibition.startDate));
+  }
+
   async upsertNote(
     userId: string,
     boothId: string,
@@ -2696,32 +3020,25 @@ export class SupabaseRepository implements Repository {
       .eq("user_id", userId)
       .eq("booth_id", boothId)
       .maybeSingle();
-    const existingRow = existingData as Row | null;
-
-    const interest =
-      input.interest !== undefined
-        ? (input.interest ?? null)
-        : (existingRow?.interest ?? null);
-    const verdict =
-      input.verdict !== undefined
-        ? (input.verdict ?? null)
-        : (existingRow?.verdict ?? null);
-    const memo =
-      input.memo !== undefined
-        ? (input.memo ?? null)
-        : (existingRow?.memo ?? null);
-    const photos =
-      input.photos !== undefined
-        ? input.photos
-        : ((existingRow?.photos as string[] | undefined) ?? []);
-    // Empty note (after applying this write on top of the existing row) →
-    // delete so the gallery/back-end stays clean.
-    if (
-      !interest &&
-      !verdict &&
-      (memo == null || !(memo as string).trim()) &&
-      photos.length === 0
-    ) {
+    const e = existingData as Row | null;
+    const existing: NoteState | null = e
+      ? {
+          interest: (e.interest ?? null) as NoteState["interest"],
+          heartedAt: e.hearted_at == null ? null : str(e.hearted_at),
+          verdict: (e.verdict ?? null) as NoteState["verdict"],
+          verdictAt: e.verdict_at == null ? null : str(e.verdict_at),
+          visitedAt: e.visited_at == null ? null : str(e.visited_at),
+          memo: e.memo == null ? null : String(e.memo),
+          photos: Array.isArray(e.photos) ? e.photos.map(String) : [],
+        }
+      : null;
+    const { next, touchesHeart, touchesVisit, empty } = applyNoteInput(
+      existing,
+      input,
+      now(),
+    );
+    // 비면(다녀왔어요와 하트까지 없으면) 행을 지워 저장소를 깨끗하게 둔다.
+    if (empty) {
       maybeWrote(
         await db
           .from("booth_note")
@@ -2730,24 +3047,26 @@ export class SupabaseRepository implements Repository {
           .eq("booth_id", boothId),
         "메모 삭제",
       );
-      return { userId, boothId, updatedAt: now() };
+      return { userId, boothId, heart: false, visited: false, updatedAt: now() };
     }
     const row: Row = {
       user_id: userId,
       booth_id: boothId,
-      memo,
-      photos,
+      memo: next.memo,
+      photos: next.photos,
       updated_at: now(),
     };
-    // interest·verdict는 각각 "이 요청이 그 필드를 건드리는지"에 따라 SET 절에
-    // 넣을지 뺄지 정한다 — undefined면 아예 안 넣어서 upsert 충돌 시 기존 값을
-    // 그대로 둔다(메모만 고치는 쓰기가 반응을 조용히 안 건드리게).
-    if (input.interest !== undefined) row.interest = interest;
-    if (input.verdict !== undefined) {
-      row.verdict = verdict;
-      // verdict를 새로 쓰는 순간이 곧 방문 시각. 해제하면 같이 지운다 — 판정이
-      // 곧 방문 기록이므로 둘을 분리해서 남기지 않는다(judgment-vocabulary §8-2).
-      row.visited_at = verdict ? now() : null;
+    // 하트 묶음, 방문 묶음은 이 요청이 건드릴 때만 SET 절에 넣는다 — 안 넣으면 upsert
+    // 충돌 시 기존 값을 그대로 둔다(메모만 고치는 쓰기가 반응을 조용히 안 건드리게).
+    // hearted_at, verdict_at은 0064 마이그레이션이 만든다. 배포 전에 적용해야 한다.
+    if (touchesHeart) {
+      row.interest = next.interest;
+      row.hearted_at = next.heartedAt;
+    }
+    if (touchesVisit) {
+      row.verdict = next.verdict;
+      row.verdict_at = next.verdictAt;
+      row.visited_at = next.visitedAt;
     }
     if (judgedClass !== undefined) row.judged_class = judgedClass;
     const res = await db
@@ -3160,6 +3479,35 @@ export class SupabaseRepository implements Repository {
       created_at: now(),
     });
     loggedWrite(res, "분석 이벤트 적재");
+  }
+
+  async recordAppEvents(rows: AppEventRow[]): Promise<void> {
+    if (rows.length === 0) return;
+    // 서비스 롤로 쓴다 — analytics_event엔 select 정책이 없고, 중복 무시(on conflict
+    // do nothing)는 RLS 아래서 기대대로 안 돌 수 있다. 신원은 라우트가 이미 정했다.
+    const db = createServiceClient();
+    const res = await db.from("analytics_event").upsert(
+      rows.map((r) => ({
+        id: uid("an"),
+        session_id: null,
+        user_id: r.userId,
+        exhibition_id: r.exhibitionId,
+        type: "app",
+        booth_id: r.boothId,
+        meta: r.props,
+        created_at: now(),
+        name: r.name,
+        platform: r.platform,
+        app_version: r.appVersion ?? null,
+        anon_id: r.anonId,
+        app_session_id: r.appSessionId ?? null,
+        screen_id: r.screenId ?? null,
+        client_ts: r.clientTs,
+        event_id: r.eventId,
+      })),
+      { onConflict: "event_id", ignoreDuplicates: true },
+    );
+    loggedWrite(res, "앱 이벤트 적재");
   }
 
   async _allAnalytics(exhibitionId: string): Promise<AnalyticsEvent[]> {

@@ -274,7 +274,63 @@ export const analyticsEventInputSchema = z.object({
 });
 export type AnalyticsEventInput = z.infer<typeof analyticsEventInputSchema>;
 
+/** 앱 이벤트 속성 값 — 짧은 원시값과 그 배열만. 글 원문은 서버가 길이로 한 번 더 자른다. */
+const appEventPropValue = z.union([
+  z.string().max(200),
+  z.number(),
+  z.boolean(),
+  z.null(),
+  z.array(z.union([z.string().max(100), z.number()])).max(50),
+]);
+
+/** iOS가 묶어 보내는 이름 붙은 이벤트 하나(화면 설계서 E 2-3, 2-4). */
+export const appEventSchema = z.object({
+  /** 기기에서 만든 uuid. 같은 id가 다시 오면 무시한다(재전송 중복 제거). */
+  eventId: z.string().uuid(),
+  /** snake_case 이름. 목록은 E 2-4가 원본이다. */
+  name: z.string().regex(/^[a-z][a-z0-9_]{1,63}$/),
+  /** 기기에서 일어난 시각. */
+  clientTs: z.string().datetime({ offset: true }),
+  /** Figma UI v1 화면 id, 예 "UI 3-01". */
+  screenId: z.string().max(32).optional(),
+  /** 박람회 맥락이 있으면 slug로. id를 받지 않는다(FK 검사 없이 넣지 않으려고). */
+  exhibitionSlug: z.string().max(100).optional(),
+  boothId: z.string().max(100).optional(),
+  props: z.record(z.string().max(40), appEventPropValue).optional(),
+});
+export type AppEventInput = z.infer<typeof appEventSchema>;
+
+export const appEventBatchSchema = z.object({
+  platform: z.enum(["ios", "android", "web"]),
+  appVersion: z.string().max(32).optional(),
+  /** 설치 단위 무작위 id(uuid). 광고 식별자 아님. 로그인해도 같이 보낸다. */
+  anonId: z.string().uuid(),
+  /** 앱이 만든 세션 id. */
+  sessionId: z.string().max(64).optional(),
+  events: z.array(appEventSchema).min(1).max(100),
+});
+export type AppEventBatchInput = z.infer<typeof appEventBatchSchema>;
+
+/** 웹의 옛 모양(데모 토큰). 저장하지 않는다 — FCM 키가 없어 웹 푸시는 꺼져 있다. */
 export const pushSubscribeSchema = z.object({ token: z.string().min(1) });
+
+/** iOS APNs 기기 토큰(0067). 로그인 전이면 anonId가 있어야 한다(라우트가 확인). */
+export const pushDeviceSchema = z.object({
+  platform: z.literal("ios"),
+  /** APNs 기기 토큰(16진수). 지금은 32바이트(64자)지만 길이는 바뀔 수 있다고 Apple이 말한다. */
+  token: z.string().regex(/^[0-9a-fA-F]{32,400}$/),
+  environment: z.enum(["sandbox", "production"]),
+  anonId: z.string().uuid().optional(),
+  appVersion: z.string().max(32).optional(),
+});
+export type PushDeviceInput = z.infer<typeof pushDeviceSchema>;
+
+/** 로그인 직후 기기에 먼저 남긴 브랜드 하트를 한 번에 올린다. 합집합이다(빼지 않는다). */
+export const brandHeartSyncSchema = z.object({
+  exhibitorIds: z.array(z.string().min(1).max(100)).min(1).max(500),
+});
+
+export const pushUnsubscribeSchema = z.object({ token: z.string().min(1).max(400) });
 
 export const loginSchema = z.object({
   nickname: z
@@ -306,6 +362,12 @@ export const boothNoteInputSchema = z.object({
   // 두면 서버가 그 필드를 안 건드린다.
   interest: z.enum(BOOTH_INTERESTS).nullish(),
   verdict: z.enum(BOOTH_VERDICTS).nullish(),
+  /** 하트 하나(2026-11-07). 보내면 interest보다 우선한다. true면 옛 interest를
+   *  must로(이미 must·curious면 그대로), false면 비운다 — 옛 클라이언트가 계속 읽게. */
+  heart: z.boolean().optional(),
+  /** 다녀왔어요(2026-11-17 결정, 평가와 따로). true면 방문 시각을 남기고(이미 있으면
+   *  그대로), false면 방문과 평가를 같이 지운다. 안 보내면 건드리지 않는다. */
+  visited: z.boolean().optional(),
   memo: z.string().max(300).optional(),
   /** Personal photos (Cloudinary URLs). Capped to keep notes lightweight. */
   photos: z.array(z.string().url()).max(4).optional(),

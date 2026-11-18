@@ -45,7 +45,8 @@ export const ANALYTICS_TYPES = [
   "event_bookmark",
   "ui_click",
 ] as const;
-export type AnalyticsType = (typeof ANALYTICS_TYPES)[number];
+/** "app"은 이름 붙은 앱 이벤트(0066)용. 웹 단건 입력(analyticsEventInputSchema)은 받지 않는다. */
+export type AnalyticsType = (typeof ANALYTICS_TYPES)[number] | "app";
 
 export interface Point {
   x: number;
@@ -110,6 +111,11 @@ export interface Booth {
   kind?: BoothKind;
   name: string;
   company: string;
+  /** 대표 브랜드(exhibitor.id). 부스 API 응답에만 붙인다(lib/booth/brand-ids.ts) — 저장소
+   *  읽기는 채우지 않는다. 브랜드 하트, 브랜드 알림, 다음 박람회 잇기의 열쇠. 배정 전이면 없음. */
+  exhibitorId?: string;
+  /** 대표 참가(exhibition_participant.id). 위와 같다. */
+  participantId?: string;
   /** Co-located exhibitors sharing this booth code (e.g. a country pavilion or
    *  a shared indie stand). Surfaced in search so any of
    *  them resolves to this booth, even though the map shows one name. */
@@ -319,14 +325,23 @@ export type JudgedClass = (typeof JUDGED_CLASSES)[number];
 export interface BoothNote {
   userId: string;
   boothId: string;
-  /** 관람 전 판단 — 피드·지도에서 아직 안 가본 부스에 매긴다. */
+  /** 관람 전 판단(옛 어휘). 새 클라이언트는 `heart`를 쓴다. must·curious는 하트,
+   *  pass는 하트 없음으로 읽는다(2026-11-17, 하트 하나). 옛 iOS가 아직 이 칸을
+   *  읽고 쓰므로 계속 채운다. */
   interest?: BoothInterest;
-  /** 현장 판단 — 다녀온 부스의 만족도. 이게 곧 방문 기록이다(verdict 있으면
-   *  visitedAt도 항상 있다). */
+  /** 하트 하나(2026-11-07 결정). `heartedAt`이 있거나 옛 interest가 must·curious면 true. */
+  heart?: boolean;
+  /** 하트를 남긴 시각. 하트를 빼면 지운다. */
+  heartedAt?: string;
+  /** 다녀온 뒤 평가. 선택이다 — 평가 없이 다녀왔어요만 있을 수 있다. */
   verdict?: BoothVerdict;
-  /** verdict를 남긴 시각(=방문 시각). verdict 해제 시 같이 지운다 — 판정이 곧
-   *  방문 기록이므로 둘을 분리해서 남기지 않는다. */
+  /** 평가를 남긴 시각. 평가를 지우면 같이 지운다. */
+  verdictAt?: string;
+  /** 다녀왔어요. 평가와 따로 쓰고 따로 지운다(2026-11-17 결정, 판단 어휘 §3-3 대체).
+   *  평가를 지워도 남는다. 다녀왔어요를 끄면 평가도 같이 지운다. */
   visitedAt?: string;
+  /** visitedAt이 있으면 true. 앱이 시각 없이 켜짐 여부만 읽을 수 있게. */
+  visited?: boolean;
   /** 가장 최근 반응(interest 또는 verdict) 판정 시점의 확신 등급 — 취향 정확도
    *  채점용. verdict 기록이 더 나중이자 최종이다. */
   judgedClass?: JudgedClass;
@@ -384,6 +399,90 @@ export interface AnalyticsEvent {
   y?: number;
   meta?: Record<string, unknown>;
   createdAt: string;
+  // --- 앱 이벤트(0066). 웹 옛 행은 비어 있다. ---
+  name?: string;
+  platform?: "web" | "ios" | "android";
+  appVersion?: string;
+  anonId?: string;
+  appSessionId?: string;
+  screenId?: string;
+  clientTs?: string;
+  eventId?: string;
+}
+
+/** APNs 기기 토큰(0067). 브랜드 알림은 userId가 있는 행만 대상이다(2026-11-17). */
+export interface PushDevice {
+  id: string;
+  token: string;
+  platform: "ios";
+  environment: "sandbox" | "production";
+  userId: string | null;
+  anonId?: string;
+  appVersion?: string;
+  createdAt: string;
+  lastSeenAt: string;
+  revokedAt?: string;
+}
+
+/** 브랜드 하트(0068). 부스 하트와 따로, 브랜드(exhibitor)에 건다. */
+export interface BrandHeart {
+  userId: string;
+  exhibitorId: string;
+  createdAt: string;
+}
+
+/** 브랜드의 다가오는(또는 진행 중) 참가 한 줄. 부스가 없을 수 있다(브랜드 먼저 인입). */
+export interface UpcomingParticipation {
+  exhibitorId: string;
+  participantId: string;
+  displayName: string;
+  exhibition: {
+    id: string;
+    slug: string;
+    name: string;
+    venue: string;
+    startDate: string;
+    endDate: string;
+  };
+  /** 대표 부스. 부스 배정 전이면 없다. */
+  booth?: { id: string; code?: string; name: string };
+}
+
+/** 마이페이지와 내보내기용 — 노트에 부스, 박람회, 브랜드를 붙인 것. */
+export interface NoteWithContext extends BoothNote {
+  booth: {
+    id: string;
+    name: string;
+    code?: string;
+    kind?: BoothKind;
+    categoryId: string;
+    hallId: string;
+  } | null;
+  exhibition: {
+    id: string;
+    slug: string;
+    name: string;
+    venue: string;
+    startDate: string;
+    endDate: string;
+  } | null;
+  brand: { exhibitorId: string; participantId: string; name: string } | null;
+}
+
+/** 앱 이벤트 한 줄을 저장소에 넣는 모양. 박람회, 부스는 서버가 확인한 것만 온다. */
+export interface AppEventRow {
+  eventId: string;
+  name: string;
+  clientTs: string;
+  platform: "web" | "ios" | "android";
+  appVersion?: string;
+  anonId: string;
+  appSessionId?: string;
+  screenId?: string;
+  userId: string | null;
+  exhibitionId: string | null;
+  boothId: string | null;
+  props: Record<string, unknown>;
 }
 
 /**
@@ -437,7 +536,11 @@ export type SignalKind =
   | "verdict_good" // 좋았어 — 현장, 몸으로 확인한 긍정
   | "verdict_ok" // 그냥그랬어 — 현장, 중립
   | "verdict_bad" // 아니었어 — 현장, 가보고 아니었다
-  | "search_query"; // 특정 부스 검색 = 강한 능동 관심
+  | "search_query" // 특정 부스 검색 = 강한 능동 관심
+  | "heart_added" // 하트 하나(2026-11-07) — 관람 전, 관심 표시
+  | "heart_removed" // 하트 빼기. 싫어요가 아니다(§4) — 가중치 0
+  | "visit_marked" // 다녀왔어요 — 방문 사실일 뿐 좋아함이 아니다(§4) — 가중치 0
+  | "visit_unmarked"; // 다녀왔어요 끄기 — 가중치 0
 
 /** 원장 1행 — 사용자 행동 신호. append-only, 재증류 소스. */
 /**
