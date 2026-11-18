@@ -121,6 +121,9 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
 - 지도 화면은 `fixed inset-0`으로 방문객 레이아웃의 `max-w-md`를 벗어나 화면을 다 쓴다. 검색과 칩(위), 로미 줄이나
   카드(아래)의 실제 높이를 재서 엔진 `safeInsets`로 넘긴다. 맞추기, 이동 한계, 부스 초점이 그 사이 띠 안에서 계산된다.
   위아래 겹침을 고치려고 엔진에 고정 여백을 넣지 않는다.
+- 출입구, 화장실 표식은 `components/map-v2/map-markers.ts`가 자리와 크기를 정한다(벽 바깥, 맞춘 배율에서 12px 이상).
+  표식을 고치면 `map-markers.test.ts`의 겹침 0 검사가 모든 도면에서 지켜져야 한다.
+- 웹 이벤트 알림은 이 탭 안 브라우저 알림뿐이다(서버 푸시 아님). 문구가 서버 발송을 약속하지 않게 한다.
 - 뼈대 확인: 개발 서버에서 `?skeletonDelay=3000`(최대 10초, 프로덕션은 무시, `lib/dev/skeleton-delay.ts`).
 - "다녀왔어요" 목록은 `/visited`(UI 6-10, 로그인 없이). 옛 `/exhibitions/[slug]/notes`는 여기로 넘긴다.
 - 뒤로가기(`components/v2/back-button.tsx`): 앱 안에서 왔으면 `router.back()`, 아니면 전시 홈으로 push.

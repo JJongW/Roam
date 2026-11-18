@@ -6,8 +6,7 @@ import { Bell, BellRing, ChevronRight } from "lucide-react";
 import { clsx } from "clsx";
 import { api } from "@/lib/api/client";
 import {
-  isPushSupported,
-  registerForPush,
+  isNotificationSupported,
   requestPermission,
   scheduleReminder,
 } from "@/lib/push/notify";
@@ -18,7 +17,8 @@ import type { BoothEvent, WelcomeKit } from "@/lib/types";
 /**
  * v1 상세에 있던 칸 가운데 브랜드 규칙에 맞는 것을 v2로 다시 세운다(W2, 2026-11-18).
  * - 이벤트: UI/시간표 줄(Figma 3002:4558). 시각 48 폭 + 이름과 곳. 끝난 것은 연한 글자, 동작 없음.
- *   "상시" 묶음이 먼저, 다음 날짜순. 시작 전 이벤트는 알림 받기(v1과 같은 웹 푸시 예약).
+ *   "상시" 묶음이 먼저, 다음 날짜순. 시작 전 이벤트는 알림 받기(이 탭이 열려 있을 때만 울리는
+ *   브라우저 알림. 서버 푸시가 아니다, `lib/push/notify.ts`).
  * - 웰컴 키트, 다른 행사에서도, 함께 입점한 곳: 정보 줄과 같은 글자 위계.
  * - 이벤트 제목과 설명, 웰컴 키트 글은 주최나 브랜드가 쓴 원문이라 고치지 않는다(브랜드 규칙 §1 예외).
  */
@@ -57,14 +57,21 @@ export function EventsSection({
   if (events.length === 0) return null;
 
   const remind = async (e: BoothEvent) => {
-    if (!isPushSupported()) return show({ message: system.eventNoPush });
+    if (!isNotificationSupported())
+      return show({ message: system.eventNoNotification });
     if ((await requestPermission()) !== "granted")
       return show({ message: system.eventNeedPermission });
-    await registerForPush();
+    const result = scheduleReminder(
+      e.title,
+      system.eventSoon,
+      Date.parse(e.startTime),
+    );
+    if (result !== "scheduled")
+      return show({ message: system.eventRemindFailed });
+    // 고른 이벤트는 계정 기록으로도 남긴다(알림을 보내는 데 쓰이지는 않는다).
     await api
       .post("/api/bookmarks", { targetType: "event", targetId: e.id })
       .catch(() => {});
-    scheduleReminder(e.title, system.eventSoon, Date.parse(e.startTime));
     setReminded((s) => new Set(s).add(e.id));
     show({ message: system.eventReminded });
   };
@@ -173,7 +180,7 @@ export function WelcomeKitSection({ kit }: { kit?: WelcomeKit }) {
           )}
         </span>
         <span className="flex min-h-v2-x6 shrink-0 items-center rounded-v2-r1-5 bg-v2-bg-neutral-weak px-v2-x2 py-v2-x1 text-v2-t2 font-v2-medium text-v2-fg-neutral-muted">
-          {system.welcomeKitLeft(kit.remainingCount)}
+          {system.welcomeKitPrepared(kit.remainingCount)}
         </span>
       </div>
     </section>

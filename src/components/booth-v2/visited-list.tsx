@@ -17,7 +17,8 @@ import { floorplanHallOf } from "@/lib/floorplan/hall-of";
 import { dayKo, label, system } from "@/lib/copy/v1";
 import { SCREEN, track } from "@/lib/analytics/app-track";
 import { V2_PX } from "@/styles/v2/lengths.generated";
-import type { BoothDetail } from "@/lib/types";
+import { useAuthStore } from "@/lib/stores/auth";
+import type { BoothDetail, NoteWithContext } from "@/lib/types";
 
 export interface FairInfo {
   id: string;
@@ -39,8 +40,9 @@ const C = (name: string) => `var(--roam-v2-color-${name})`;
 
 /**
  * UI 6-10 "다녀왔어요" 목록(Figma 3003:9490). 박람회별로 묶어 작은 지도(다녀온 칸만 진하게)와 부스 줄.
- * - 원천: 이 기기의 기록(로그인하면 계정 노트가 합쳐진 것). 부스 이름은 부스마다 GET /api/booths/{id}
- *   (설계서 6-10 "다른 박람회 부스 이름을 한 번에 받는 API가 없어요", API A-1 전까지).
+ * - 원천: 이 기기의 기록(로그인하면 계정 노트가 합쳐진 것).
+ * - 부스 이름: 로그인했으면 GET /api/me/notes?expand=booth 한 번(API A-1, PR #172). 거기 없는 것(아직 올라가지
+ *   않은 기기 기록)과 로그인 전에는 부스마다 GET /api/booths/{id}를 6개씩 묶어 부른다.
  * - 목록에서 지우지 않는다(41-B 버림). 고치기는 상세에서만(41-A). 평가가 없으면 비운다(세지 않음).
  */
 export function VisitedList({ fairs }: { fairs: FairInfo[] }) {
@@ -54,16 +56,32 @@ export function VisitedList({ fairs }: { fairs: FairInfo[] }) {
     [records, hydrated],
   );
   const idsKey = ids.slice().sort().join(",");
+  const authReady = useAuthStore((s) => s.ready);
+  const signedIn = useAuthStore((s) => !!s.user);
   const [meta, setMeta] = useState<
     Record<string, { name: string; code?: string; exhibitionId: string } | null>
   >({});
 
   useEffect(() => {
-    if (!idsKey) return;
+    if (!idsKey || !authReady) return;
     let alive = true;
-    const missing = idsKey.split(",");
     (async () => {
       const out: typeof meta = {};
+      if (signedIn) {
+        const notes = await api
+          .get<{ data: NoteWithContext[] }>("/api/me/notes?expand=booth")
+          .then((r) => r.data)
+          .catch(() => [] as NoteWithContext[]);
+        for (const n of notes) {
+          if (n.booth && n.exhibition)
+            out[n.boothId] = {
+              name: n.booth.name,
+              code: n.booth.code,
+              exhibitionId: n.exhibition.id,
+            };
+        }
+      }
+      const missing = idsKey.split(",").filter((id) => !(id in out));
       for (let i = 0; i < missing.length; i += 6) {
         await Promise.all(
           missing.slice(i, i + 6).map(async (id) => {
@@ -85,7 +103,7 @@ export function VisitedList({ fairs }: { fairs: FairInfo[] }) {
     return () => {
       alive = false;
     };
-  }, [idsKey]);
+  }, [idsKey, authReady, signedIn]);
 
   const loading =
     !hydrated || (ids.length > 0 && ids.some((id) => !(id in meta)));

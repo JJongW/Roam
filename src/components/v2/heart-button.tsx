@@ -20,8 +20,8 @@ export function HeartButton({
   return (
     <button
       type="button"
-      aria-label={label.heart}
-      aria-pressed={on}
+      // 누르면 일어날 일을 읽는다(상태에 따라 남기기, 빼기). 이름이 바뀌므로 aria-pressed는 함께 쓰지 않는다.
+      aria-label={on ? label.heartRemove : label.heartAdd}
       onClick={onToggle}
       className={clsx(
         "flex size-v2-x11 shrink-0 items-center justify-center rounded-v2-full bg-v2-bg-transparent active:bg-v2-bg-transparent-pressed",

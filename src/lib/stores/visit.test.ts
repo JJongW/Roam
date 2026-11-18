@@ -124,6 +124,22 @@ describe("하트와 다녀왔어요(새 칸, 2026-11-07, 11-17)", () => {
     expect(body).toMatchObject({ visited: true });
     expect(body).not.toHaveProperty("heart");
   });
+  it("로그인 뒤 소급 동기화(syncPendingReactions)는 기기에 남은 하트와 다녀왔어요를 함께 올린다", async () => {
+    const bodies: Record<string, Record<string, unknown>> = {};
+    global.fetch = vi.fn(async (input, init?: RequestInit) => {
+      bodies[String(input).split("/").pop()!] = JSON.parse(init!.body as string);
+      return { status: 200, ok: true, json: async () => ({ data: { note: {}, taste: { judgedCount: 0, pct: null } } }) } as Response;
+    }) as unknown as typeof fetch;
+    useVisitStore.setState({
+      records: { h1: { heart: true }, v1: { visited: true, visitedAt: "2026-11-18T05:20:00.000Z" } },
+      hasPendingSync: true,
+    });
+    const { syncPendingReactions } = await import("./auth");
+    expect(await syncPendingReactions()).toBe(true);
+    expect(bodies.h1).toMatchObject({ heart: true });
+    expect(bodies.v1).toMatchObject({ visited: true });
+    expect(useVisitStore.getState().hasPendingSync).toBe(false);
+  });
 });
 
 describe("다녀온 시각(visitedAt, UI 6-05, 6-04)", () => {

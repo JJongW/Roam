@@ -38,7 +38,6 @@ export default async function MapPage({ params, searchParams }: Props) {
         <div className="flex flex-1 flex-col items-center justify-center gap-v2-x3 px-v2-x6 text-center">
           <RomiAvatar size="lg" />
           <p className="text-v2-t6 font-v2-bold text-v2-fg-neutral">{system.noFloorplanTitle}</p>
-          <p className="text-v2-t4 text-v2-fg-neutral-muted">{system.noFloorplanBody}</p>
         </div>
       </div>
     );
