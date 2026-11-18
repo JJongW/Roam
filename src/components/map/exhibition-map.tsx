@@ -163,6 +163,10 @@ interface MapProps {
    *  bottom sheet) so fit + clamp use the visible area, not the full container.
    *  Tailwind positioning classes; defaults to filling the container. */
   viewportClassName?: string;
+  /** 지도 위에 떠 있는 것(위 찾기 줄과 칩, 아래 카드)이 가리는 높이(px). 주면 전체 보기,
+   *  최소 배율, 칸 맞추기가 그 사이 띠를 화면으로 보고 맞춘다(iOS 안전 영역과 같은 뜻).
+   *  지도 그림은 여전히 화면 전체에 그려져 떠 있는 것 밑으로 끌어 볼 수 있다. */
+  safeInsets?: { top: number; bottom: number };
   /** Position for the zoom controls cluster — override to clear an overlapping
    *  bottom sheet / nav. Defaults to bottom-right. */
   controlsClassName?: string;
@@ -212,8 +216,16 @@ export function ExhibitionMap({
   hideControls = false,
   handleRef,
   entry = "readable",
+  safeInsets,
 }: MapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const safeRef = useRef({ top: 0, bottom: 0 });
+  /** 가려지지 않는 세로 띠: 위 끝 y와 높이. safeInsets가 없으면 화면 전체. */
+  const band = (ch: number) => {
+    const { top, bottom } = safeRef.current;
+    const h = Math.max(ch * 0.3, ch - top - bottom);
+    return { top: ch - h > 0 ? Math.min(top, ch - h) : 0, h };
+  };
   const svgRef = useRef<SVGSVGElement>(null);
   const trackClick = (control: UiControl) =>
     trackUiClick({ exhibitionSlug }, control);
@@ -492,7 +504,8 @@ export function ExhibitionMap({
         persistView();
         return;
       }
-      const contain = Math.min(cw / fw, ch / fh) * 0.96;
+      const safe = band(ch);
+      const contain = Math.min(cw / fw, safe.h / fh) * 0.96;
       if (!whole && entry !== "whole" && !focus && floorplan && entryScaleBase != null) {
         const fill = fillHeight ? Math.max(contain, (ch / fh) * 0.92) : contain;
         const s = Math.max(entryScaleBase, fill);
@@ -532,7 +545,7 @@ export function ExhibitionMap({
           y:
             !focus && scaledH < ch
               ? entry === "whole"
-                ? (ch - scaledH) / 2
+                ? safe.top + (safe.h - scaledH) / 2
                 : 12
               : clamp(
                   ch / 2 - cy * s,
@@ -585,6 +598,13 @@ export function ExhibitionMap({
     userAdjusted.current = false;
     fit(true, true);
   }, [fit]);
+
+  // 떠 있는 것의 높이가 바뀌면(카드가 뜨고 칩 줄이 접히면) 띠를 새로 잡는다. 사용자가
+  // 아직 지도를 움직이지 않았으면 전체 보기를 그 띠에 다시 맞춘다.
+  useEffect(() => {
+    safeRef.current = { top: safeInsets?.top ?? 0, bottom: safeInsets?.bottom ?? 0 };
+    if (!restoredView.current && !userAdjusted.current) fit();
+  }, [safeInsets?.top, safeInsets?.bottom, fit]);
 
   // Re-fit whenever the container is (re)sized — handles late layout, rotation, etc.
   // 복원된 view가 있으면(위 lazy initializer에서 이미 state에 반영됨) fit()을
@@ -652,14 +672,15 @@ export function ExhibitionMap({
       const { fw, fh } = footprint();
       const marginX = cw / 2;
       const marginY = ch / 2;
+      const safe = band(ch);
       return {
         x:
           fw * s <= cw
             ? (cw - fw * s) / 2
             : clamp(off.x, cw - fw * s - marginX, marginX),
         y:
-          fh * s <= ch
-            ? (ch - fh * s) / 2
+          fh * s <= safe.h
+            ? safe.top + (safe.h - fh * s) / 2
             : clamp(off.y, ch - fh * s - marginY, marginY),
       };
     },
@@ -674,7 +695,7 @@ export function ExhibitionMap({
     const el = containerRef.current;
     if (!el) return 0.3;
     const { fw, fh } = footprint();
-    const contain = Math.min(el.clientWidth / fw, el.clientHeight / fh) * 0.96;
+    const contain = Math.min(el.clientWidth / fw, band(el.clientHeight).h / fh) * 0.96;
     return Math.min(0.3, contain);
   }, [footprint]);
 
@@ -717,14 +738,16 @@ export function ExhibitionMap({
         const cw = el.clientWidth;
         const ch = el.clientHeight;
         const c = toContent({ x: r.x + r.w / 2, y: r.y + r.h / 2 });
+        const safe = band(ch);
         const s = clamp(
-          Math.min(cw / r.w, ch / r.h) * 0.92,
+          Math.min(cw / r.w, (safeInsets ? safe.h : ch) / r.h) * 0.92,
           minScale(),
           maxScale(),
         );
+        const y = safeInsets ? safe.top + safe.h / 2 - c.y * s : focusCenterY(el, c.y, s);
         view.current = {
           scale: s,
-          offset: clampOffset({ x: cw / 2 - c.x * s, y: focusCenterY(el, c.y, s) }, s),
+          offset: clampOffset({ x: cw / 2 - c.x * s, y }, s),
         };
         userAdjusted.current = true;
         applyView(true);
@@ -733,7 +756,7 @@ export function ExhibitionMap({
     }),
     // focusCenterY는 렌더마다 새로 만드는 함수라 뺀다(focusBottomInset만 읽는다).
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [zoomBy, resetView, toContent, minScale, maxScale, clampOffset, applyView, persistView, focusBottomInset],
+    [zoomBy, resetView, toContent, minScale, maxScale, clampOffset, applyView, persistView, focusBottomInset, safeInsets],
   );
 
   function localPoint(e: { clientX: number; clientY: number }): Point {

@@ -5,12 +5,13 @@ import { hasUsableLayout } from "@/lib/floorplan/usable";
 import { BackButton } from "@/components/v2/back-button";
 import { RomiAvatar } from "@/components/v2/romi-avatar";
 import { system } from "@/lib/copy/v1";
+import { devSkeletonDelay } from "@/lib/dev/skeleton-delay";
 
 export const metadata = { title: "지도" };
 
 type Props = {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{ booth?: string }>;
+  searchParams: Promise<{ booth?: string; skeletonDelay?: string }>;
 };
 
 /**
@@ -20,7 +21,8 @@ type Props = {
  */
 export default async function MapPage({ params, searchParams }: Props) {
   const { slug } = await params;
-  const { booth } = await searchParams;
+  const { booth, skeletonDelay } = await searchParams;
+  await devSkeletonDelay(skeletonDelay);
   const repo = await getRepository();
   const detail = await repo.getExhibition(slug);
   if (!detail) notFound();
