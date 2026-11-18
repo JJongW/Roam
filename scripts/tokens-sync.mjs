@@ -53,8 +53,18 @@ export function deriveLengths(css) {
   return out;
 }
 
+/** 단위 없는 v2 숫자(opacity-*, ratio-*). SVG 속성과 도면 단위 계산에 쓴다. */
+export function deriveNumbers(css) {
+  const root = css.match(/:root\s*\{([\s\S]*?)\n\}/);
+  if (!root) throw new Error("tokens.css에 :root 블록이 없어요");
+  const out = {};
+  for (const m of root[1].matchAll(/--roam-v2-((?:opacity|ratio)-[a-z0-9-]+):\s*(-?[0-9.]+);/g)) out[m[1]] = Number(m[2]);
+  return out;
+}
+
 export function lengthsModule(css) {
   const lengths = deriveLengths(css);
+  const numbers = deriveNumbers(css);
   const body = Object.entries(lengths)
     .map(([k, v]) => `  ${JSON.stringify(k)}: ${v},`)
     .join("\n");
@@ -66,6 +76,11 @@ export function lengthsModule(css) {
     body,
     "} as const;",
     "export type V2PxToken = keyof typeof V2_PX;",
+    "",
+    "// 단위 없는 v2 숫자(불투명도, 배율).",
+    "export const V2_NUM = {",
+    ...Object.entries(numbers).map(([k, v]) => `  ${JSON.stringify(k)}: ${v},`),
+    "} as const;",
     "",
   ].join("\n");
 }

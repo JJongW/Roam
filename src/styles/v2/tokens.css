@@ -248,6 +248,10 @@
   --roam-v2-size-romi-ink-sm: 20px;
   --roam-v2-size-romi-ink-md: 26px;
   --roam-v2-size-romi-ink-lg: 35px;
+  --roam-v2-size-content-max-width: 448px;
+  --roam-v2-opacity-map-dim: 0.35;
+  --roam-v2-opacity-map-code: 0.7;
+  --roam-v2-ratio-map-entrance-label: 0.16;
   --roam-v2-trial-between-text-1: 0.375rem;
   --roam-v2-trial-between-text-2: 0.5rem;
   --roam-v2-trial-radius-card-1: 16px;

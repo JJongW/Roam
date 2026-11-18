@@ -118,6 +118,11 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
 ## 지도
 - 방문객 지도는 v2(`components/map-v2/fair-map-screen.tsx`)다. 엔진은 `components/map/exhibition-map.tsx` 하나이고 v2는
   `renderLayer`로 그림만 바꾼다. 처음 열면 전체(`entry="whole"`, 11-16).
+- 지도 화면은 `fixed inset-0`으로 방문객 레이아웃의 `max-w-md`를 벗어나 화면을 다 쓴다. 검색과 칩(위), 로미 줄이나
+  카드(아래)의 실제 높이를 재서 엔진 `safeInsets`로 넘긴다. 맞추기, 이동 한계, 부스 초점이 그 사이 띠 안에서 계산된다.
+  위아래 겹침을 고치려고 엔진에 고정 여백을 넣지 않는다.
+- 뼈대 확인: 개발 서버에서 `?skeletonDelay=3000`(최대 10초, 프로덕션은 무시, `lib/dev/skeleton-delay.ts`).
+- "다녀왔어요" 목록은 `/visited`(UI 6-10, 로그인 없이). 옛 `/exhibitions/[slug]/notes`는 여기로 넘긴다.
 - 뒤로가기(`components/v2/back-button.tsx`): 앱 안에서 왔으면 `router.back()`, 아니면 전시 홈으로 push.
 - **장소(venue)와 배치(layout)는 다르다.** 벽·입출구·화장실은 건물 속성이라 `src/lib/venues/<venue>.json`에
   한 번 저작하고 모든 전시가 재사용한다. 전시는 부스 배치만 말한다. 합성은 `src/lib/floorplan/compose.ts`.

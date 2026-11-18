@@ -64,6 +64,7 @@ export const V2_PX = {
   "size-romi-ink-sm": 20,
   "size-romi-ink-md": 26,
   "size-romi-ink-lg": 35,
+  "size-content-max-width": 448,
   "trial-between-text-1": 6,
   "trial-between-text-2": 8,
   "trial-radius-card-1": 16,
@@ -117,3 +118,10 @@ export const V2_PX = {
   "icon-size-xl": 28,
 } as const;
 export type V2PxToken = keyof typeof V2_PX;
+
+// 단위 없는 v2 숫자(불투명도, 배율).
+export const V2_NUM = {
+  "opacity-map-dim": 0.35,
+  "opacity-map-code": 0.7,
+  "ratio-map-entrance-label": 0.16,
+} as const;
