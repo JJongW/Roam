@@ -299,7 +299,7 @@ export function haeyoEnding(word: string, prev?: string): EndingResult {
 
 // ── 문자열, 값 ────────────────────────────────────────────────────────────────
 /** 공식 표기에 가운뎃점이 든 이름. 브랜드 표기라 그대로 둔다(§1). */
-const OFFICIAL_DOT_NAMES = ["동아시아·허블", "Strawberry Club·草莓烟"];
+export const OFFICIAL_DOT_NAMES = ["동아시아·허블", "Strawberry Club·草莓烟"];
 
 /** 가운뎃점을 쉼표로(§5). 공식 이름은 그대로. */
 export function undot(text: string): string {

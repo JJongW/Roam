@@ -20,6 +20,7 @@ import {
   ClipboardList,
   Tags,
   Send,
+  Newspaper,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/common/theme-toggle";
@@ -34,6 +35,7 @@ const ITEMS = [
   { href: "/admin/brands/contacts", label: "브랜드 연락", icon: Send },
   { href: "/admin/intake", label: "인입", icon: Upload },
   { href: "/admin/enrichment", label: "초안 검수", icon: Sparkles },
+  { href: "/admin/articles", label: "아티클", icon: Newspaper },
   { href: "/admin/verify", label: "대조 검수", icon: ScanSearch, exact: true },
   { href: "/admin/changes", label: "변경 이력", icon: GitCompare },
   { href: "/admin/events", label: "이벤트", icon: CalendarClock },

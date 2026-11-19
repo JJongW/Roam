@@ -65,6 +65,9 @@ import type {
   ChangeRecord,
   EnrichmentCandidate,
   Job,
+  Article,
+  ArticleInput,
+  ArticleStatus,
   VisitorSession,
   WelcomeKit,
   ExhibitorGraph,
@@ -152,6 +155,8 @@ interface Store {
   pushDevices: PushDevice[];
   /** 0068 — 브랜드 하트. */
   brandHearts: BrandHeart[];
+  /** 0070 — 아티클. */
+  articles: Article[];
 }
 
 // Persist across HMR / route invocations in a single Node process.
@@ -216,6 +221,7 @@ function buildStore(): Store {
     profileFields: [],
     pushDevices: [],
     brandHearts: [],
+    articles: [],
   };
 }
 
@@ -1040,6 +1046,62 @@ export class MockRepository implements Repository {
     if (opts?.status) rows = rows.filter((j) => j.status === opts.status);
     if (opts?.type) rows = rows.filter((j) => j.type === opts.type);
     return rows.slice(0, opts?.limit ?? 50);
+  }
+
+  // 아티클(0070). HMR로 살아남은 옛 store엔 칸이 없을 수 있다.
+  private articles(): Article[] {
+    const st = store();
+    st.articles ??= [];
+    return st.articles;
+  }
+
+  async listArticles(opts?: { status?: ArticleStatus[]; limit?: number }): Promise<Article[]> {
+    let rows = [...this.articles()].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    if (opts?.status) rows = rows.filter((a) => opts.status!.includes(a.status));
+    return structuredClone(rows.slice(0, opts?.limit ?? 200));
+  }
+
+  async getArticle(id: string): Promise<Article | null> {
+    const a = this.articles().find((x) => x.id === id);
+    return a ? structuredClone(a) : null;
+  }
+
+  async createArticle(input: ArticleInput): Promise<Article | null> {
+    // DB의 부분 unique 인덱스(subject_key where status in draft, approved)와 같은 규칙.
+    if (this.articles().some((a) => a.subjectKey === input.subjectKey && a.status !== "rejected")) return null;
+    const at = now();
+    const row: Article = {
+      ...structuredClone(input),
+      id: uid("art"),
+      status: "draft",
+      decidedBy: null,
+      decidedAt: null,
+      rejectReason: null,
+      createdAt: at,
+      updatedAt: at,
+    };
+    this.articles().push(row);
+    return structuredClone(row);
+  }
+
+  async decideArticle(
+    id: string,
+    decision: { status: "approved" | "rejected"; actor: string | null; reason?: string | null },
+  ): Promise<
+    | { ok: true; article: Article }
+    | { ok: false; reason: "not-found" }
+    | { ok: false; reason: "not-draft"; article: Article }
+  > {
+    const a = this.articles().find((x) => x.id === id);
+    if (!a) return { ok: false, reason: "not-found" };
+    if (a.status !== "draft") return { ok: false, reason: "not-draft", article: structuredClone(a) };
+    const at = now();
+    a.status = decision.status;
+    a.decidedBy = decision.actor;
+    a.decidedAt = at;
+    a.rejectReason = decision.status === "rejected" ? (decision.reason ?? null) : null;
+    a.updatedAt = at;
+    return { ok: true, article: structuredClone(a) };
   }
 
   async recordChange(entry: ChangeEntry): Promise<void> {
