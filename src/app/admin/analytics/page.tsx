@@ -1,8 +1,6 @@
-import { cookies } from "next/headers";
 import { getRepository } from "@/lib/repositories";
-import { listExhibitionsCached } from "@/lib/repositories/cached";
-import { resolveAdminExhibition, todayISO } from "@/lib/exhibition/current";
-import { ADMIN_EXHIBITION_COOKIE } from "@/lib/constants";
+import { getAdminFairScope } from "@/lib/admin/fair-scope";
+import { AdminFairHeader } from "@/components/admin/admin-fair-header";
 import { AdminSection } from "@/components/admin/section";
 import { PopularChart } from "@/components/charts/popular-chart";
 import { ConversionFunnel } from "@/components/charts/conversion-funnel";
@@ -19,9 +17,7 @@ export const metadata = { title: "분석" };
 
 export default async function AnalyticsPage() {
   const repo = await getRepository();
-  const { data: exhibitions } = await listExhibitionsCached();
-  const cookieId = (await cookies()).get(ADMIN_EXHIBITION_COOKIE)?.value;
-  const exhibition = resolveAdminExhibition(exhibitions, cookieId, todayISO());
+  const { exhibitions, exhibition } = await getAdminFairScope();
 
   if (!exhibition) {
     return <p className="text-muted-foreground">행사가 없어요.</p>;
@@ -53,10 +49,7 @@ export default async function AnalyticsPage() {
 
   return (
     <div className="space-y-6">
-      <header>
-        <h1 className="text-2xl font-extrabold">분석</h1>
-        <p className="text-sm text-muted-foreground">{exhibition.name}</p>
-      </header>
+      <AdminFairHeader title="분석" exhibitions={exhibitions} exhibition={exhibition} />
 
       <AdminSection
         title="방문 밀집도 히트맵"

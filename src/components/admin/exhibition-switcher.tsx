@@ -1,9 +1,8 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import { api, ApiClientError } from "@/lib/api/client";
+import { ApiClientError } from "@/lib/api/client";
 import {
   Select,
   SelectContent,
@@ -12,7 +11,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { Exhibition } from "@/lib/types";
+import { selectAdminExhibition } from "./select-exhibition";
 
+/** 박람회 선택기. 박람회 하나를 보는 화면의 머리 줄(AdminFairHeader)에서만 그린다. */
 export function ExhibitionSwitcher({
   exhibitions,
   selectedId,
@@ -20,16 +21,7 @@ export function ExhibitionSwitcher({
   exhibitions: Exhibition[];
   selectedId: string | undefined;
 }) {
-  const pathname = usePathname();
   const [pending, setPending] = useState(false);
-  if (
-    pathname.startsWith("/admin/accounts") ||
-    pathname.startsWith("/admin/design-system") ||
-    // 브랜드는 모든 박람회를 한 화면에서 보고 자체 박람회 필터가 있다.
-    pathname.startsWith("/admin/brands") ||
-    pathname.startsWith("/admin/exhibitions")
-  )
-    return null;
   if (exhibitions.length === 0) return null;
 
   const sorted = [...exhibitions].sort((a, b) =>
@@ -39,10 +31,10 @@ export function ExhibitionSwitcher({
   async function onChange(exhibitionId: string) {
     setPending(true);
     try {
-      await api.post("/api/admin/exhibition-selection", { exhibitionId });
+      await selectAdminExhibition(exhibitionId);
       window.location.reload();
     } catch (e) {
-      toast.error(e instanceof ApiClientError ? e.error.message : "행사 전환 실패");
+      toast.error(e instanceof ApiClientError ? e.error.message : "행사를 바꾸지 못했어요");
     } finally {
       setPending(false);
     }
@@ -50,7 +42,7 @@ export function ExhibitionSwitcher({
 
   return (
     <Select value={selectedId} onValueChange={onChange} disabled={pending}>
-      <SelectTrigger className="mb-5 w-full max-w-xs">
+      <SelectTrigger aria-label="볼 행사 고르기" className="w-full sm:w-64">
         <SelectValue placeholder="행사 선택" />
       </SelectTrigger>
       <SelectContent>

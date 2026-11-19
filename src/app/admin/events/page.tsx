@@ -1,17 +1,13 @@
-import { cookies } from "next/headers";
 import { getRepository } from "@/lib/repositories";
-import { listExhibitionsCached } from "@/lib/repositories/cached";
-import { resolveAdminExhibition, todayISO } from "@/lib/exhibition/current";
-import { ADMIN_EXHIBITION_COOKIE } from "@/lib/constants";
+import { getAdminFairScope } from "@/lib/admin/fair-scope";
+import { AdminFairHeader } from "@/components/admin/admin-fair-header";
 import { EventManager } from "@/components/admin/event-manager";
 
 export const metadata = { title: "이벤트 관리" };
 
 export default async function AdminEventsPage() {
   const repo = await getRepository();
-  const { data: exhibitions } = await listExhibitionsCached();
-  const cookieId = (await cookies()).get(ADMIN_EXHIBITION_COOKIE)?.value;
-  const exhibition = resolveAdminExhibition(exhibitions, cookieId, todayISO());
+  const { exhibitions, exhibition } = await getAdminFairScope();
   if (!exhibition) return <p className="text-muted-foreground">행사가 없어요.</p>;
 
   const booths = await repo.listBoothsByExhibitionId(exhibition.id);
@@ -19,10 +15,7 @@ export default async function AdminEventsPage() {
 
   return (
     <div className="space-y-5">
-      <header>
-        <h1 className="text-2xl font-extrabold">이벤트 관리</h1>
-        <p className="text-sm text-muted-foreground">{exhibition.name}</p>
-      </header>
+      <AdminFairHeader title="이벤트 관리" exhibitions={exhibitions} exhibition={exhibition} />
       <EventManager events={events} booths={booths} />
     </div>
   );

@@ -1,8 +1,6 @@
-import { cookies } from "next/headers";
 import { getRepository } from "@/lib/repositories";
-import { listExhibitionsCached } from "@/lib/repositories/cached";
-import { resolveAdminExhibition, todayISO } from "@/lib/exhibition/current";
-import { ADMIN_EXHIBITION_COOKIE } from "@/lib/constants";
+import { getAdminFairScope } from "@/lib/admin/fair-scope";
+import { AdminFairHeader } from "@/components/admin/admin-fair-header";
 import { CandidateQueue } from "@/components/admin/candidate-queue";
 import { CalibrationCard } from "@/components/admin/calibration-card";
 import { calibration } from "@/lib/enrichment/calibration";
@@ -16,9 +14,7 @@ import {
 /** 검수 큐. 초안은 여기서 승인해야 booth_enrichment로 간다. */
 export default async function AdminEnrichmentPage() {
   const repo = await getRepository();
-  const { data: exhibitions } = await listExhibitionsCached();
-  const cookieId = (await cookies()).get(ADMIN_EXHIBITION_COOKIE)?.value;
-  const exhibition = resolveAdminExhibition(exhibitions, cookieId, todayISO());
+  const { exhibitions, exhibition } = await getAdminFairScope();
 
   const candidates = exhibition
     ? await repo.listEnrichmentCandidates({
@@ -64,13 +60,12 @@ export default async function AdminEnrichmentPage() {
 
   return (
     <div className="space-y-6">
-      <header>
-        <h1 className="text-2xl font-extrabold">초안 검수</h1>
-        <p className="text-sm text-muted-foreground">
-          자동 초안은 여기서 승인해야 부스에 반영돼요. 고친 내용은 변경 이력에
-          남아 다음 초안을 더 좋게 만들어요.
-        </p>
-      </header>
+      <AdminFairHeader
+        title="초안 검수"
+        exhibitions={exhibitions}
+        exhibition={exhibition}
+        description="자동 초안은 여기서 승인해야 부스에 반영돼요. 고친 내용은 변경 이력에 남아 다음 초안을 더 좋게 만들어요."
+      />
       {exhibition && (
         <div className="rounded-2xl border border-border bg-card p-4">
           <div className="flex items-baseline justify-between gap-3">
