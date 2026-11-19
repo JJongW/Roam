@@ -69,7 +69,7 @@ describe("SDF 명단 → brands.v1", () => {
       intro: { status: "collected", source: "https://seoul.designfestival.co.kr/exhibitor/s1/" },
     });
     // 상세가 없으면 이름과 참가 구분만
-    expect(file.brands[1]).toEqual({ key: "sdf-3", name: "Studio & Co", category: "디자인브랜드" });
+    expect(file.brands[1]).toEqual({ key: "sdf-3", name: "Studio & Co", category: "디자인브랜드", participationType: "디자인브랜드" });
   });
 
   it("명단이 비면(2026 아직 미공개) 만들지 않아요", () => {

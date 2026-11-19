@@ -158,6 +158,8 @@ export function buildSdfBrandsFile(input: BuildInput): {
       // 주최 측 공식 소개 원문 그대로(브랜드나 주최가 쓴 글은 고치지 않는다, 2026-11-09). 말투 변환은 워커가 한다.
       ...(d?.introKo ? { intro: { text: d.introKo.slice(0, 4000), status: "collected" as const, source: r.link } } : {}),
       ...(category ? { category } : {}),
+      // 참가 구분(디자인브랜드, 영 디자이너 프로모션, 디자인 스페셜리스트). 개인 작가와 브랜드를 가르는 칸이다.
+      ...(terms[0] ? { participationType: terms[0].slice(0, 60) } : {}),
     };
     brands.push(b);
   }

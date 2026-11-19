@@ -202,6 +202,7 @@ export function planBrands(input: BrandsPlanInput): BrandsPlan {
     ].filter((n) => n && n !== lead.name);
     const company = members.find((m) => m.company)?.company;
     const category = members.find((m) => m.category)?.category;
+    const participationType = members.find((m) => m.participationType)?.participationType;
     const instagramUrl = members.find((m) => m.instagramUrl)?.instagramUrl;
     const websiteUrl = members.find((m) => m.websiteUrl)?.websiteUrl;
     const source = { url: file.source.url, collectedAt: file.source.collectedAt, ...(file.source.note ? { note: file.source.note } : {}) };
@@ -275,6 +276,7 @@ export function planBrands(input: BrandsPlanInput): BrandsPlan {
             brandKey: lead.key,
             ...(keys.length > 1 ? { brandKeys: keys } : {}),
             ...(category ? { category } : {}),
+            ...(participationType ? { participationType } : {}),
             source,
           },
         });
