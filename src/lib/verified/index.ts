@@ -70,3 +70,27 @@ export function sameText(a?: string | null, b?: string | null): boolean {
     (s ?? "").replace(/[\s.,·"'’“”()]/g, "").toLowerCase();
   return n(a) === n(b);
 }
+
+/**
+ * 대조 검수에 올릴 부스. 확인한 글이 있고, 운영 요약이 있는데 그 글과 다른 곳이다.
+ * 같은 말이거나 운영이 비어 있으면(인입이 채웠거나 채울 자리) `same`으로 센다.
+ * /admin/verify 화면과 관리자 홈의 건수가 같은 기준을 쓴다.
+ */
+export function diffVerified<B extends { code?: string | null; enrichment?: { summary?: string | null } | null }>(
+  booths: B[],
+  verified: Record<string, VerifiedFact>,
+): { rows: { booth: B; current: string; verified: VerifiedFact }[]; same: number } {
+  const rows: { booth: B; current: string; verified: VerifiedFact }[] = [];
+  let same = 0;
+  for (const b of booths) {
+    const v = b.code ? verified[b.code] : undefined;
+    if (!v?.summary) continue;
+    const current = b.enrichment?.summary ?? "";
+    if (!current || sameText(current, v.summary)) {
+      same++;
+      continue;
+    }
+    rows.push({ booth: b, current, verified: v });
+  }
+  return { rows, same };
+}
