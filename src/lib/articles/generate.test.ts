@@ -17,6 +17,8 @@ async function seeded(): Promise<MockRepository> {
   st.exhibitions = w.exhibitions.map((e) => ({ ...e, description: "", mapWidth: 0, mapHeight: 0, tips: {}, createdAt: "2026-11-01T00:00:00Z" }));
   st.exhibitorGraph = w.graph;
   st.profileFields = w.fields;
+  for (const [participantId, perm] of Object.entries(w.permissions ?? {}))
+    await repo.upsertParticipantPermission(participantId, { status: perm.status, allowedUse: perm.allowedUse }, "test");
   return repo;
 }
 
@@ -58,7 +60,10 @@ describe("generateDailyArticle", () => {
     const llm: LlmWriter = async ({ template }) => ({
       title: template.title,
       excerpt: "꼭 가 보세요. 최고의 브랜드입니다.",
-      blocks: [{ type: "paragraph", text: "올해 1000개를 판 브랜드입니다.", sourceIds: [template.sources[0].id] }],
+      blocks: [
+        { type: "text", text: "올해 1000개를 판 브랜드입니다.", sourceIds: [template.sources[0].id] },
+        ...template.body.flatMap((b, index) => (b.type === "photo" || b.type === "photo-group" ? [{ type: "keep" as const, index }] : [])),
+      ],
     });
     const r = await generateDailyArticle(repo, { today: TODAY, llm });
     if (r.status !== "created") throw new Error(r.status);
@@ -67,14 +72,40 @@ describe("generateDailyArticle", () => {
     expect(r.article.gate.rejectedAttempts[0].issues.join()).toMatch(/합니다체|단정|과장|1000/);
   });
 
+  it("LLM 판본이 사진을 빠뜨리면 그 판본은 버리고 틀 판본을 쓴다(모델은 사진을 고르거나 뺄 수 없다)", async () => {
+    const llm: LlmWriter = async ({ template }) => ({
+      title: template.title,
+      excerpt: template.excerpt,
+      blocks: [template.body.find((b) => b.type === "text") as never],
+    });
+    const r = await generateDailyArticle(repo, { today: TODAY, llm });
+    if (r.status !== "created") throw new Error(r.status);
+    expect(r.article.gate.writer).toBe("template");
+    expect(r.article.gate.rejectedAttempts[0].issues.join()).toContain("사진이나 브랜드 카드를 빠뜨렸어요");
+    expect(r.article.body.some((b) => b.type === "photo-group")).toBe(true);
+  });
+
+  it("저장된 초안엔 늘 허락 받은 대표 사진이 있다", async () => {
+    const r = await generateDailyArticle(repo, { today: TODAY });
+    if (r.status !== "created") throw new Error(r.status);
+    expect(r.article.hero).toMatchObject({ path: "/articles/test/hachi_1.webp", permissionId: "perm:pt_hachi_ny" });
+  });
+
+  it("허락 받은 사진이 하나도 없으면 아무것도 저장하지 않는다", async () => {
+    (globalThis as unknown as { __roamStore: { participantPermissions: unknown[] } }).__roamStore.participantPermissions = [];
+    expect((await generateDailyArticle(repo, { today: TODAY })).status).toBe("no-subject");
+    expect(await repo.listArticles()).toEqual([]);
+  });
+
   it("LLM 판본의 인용은 원문에서 채운다(모델이 인용을 고칠 수 없다)", async () => {
     const llm: LlmWriter = async ({ template }) => {
       const quote = template.body.find((b) => b.type === "quote")!;
-      const lead = template.body.find((b) => b.type === "paragraph")!;
+      const lead = template.body.find((b) => b.type === "text")!;
+      const photo = template.body.findIndex((b) => b.type === "photo-group" || b.type === "photo");
       return {
         title: template.title,
         excerpt: template.excerpt,
-        blocks: [lead as never, { type: "quote", sourceId: (quote as { sourceId: string }).sourceId }],
+        blocks: [lead as never, { type: "quote", sourceId: (quote as { sourceId: string }).sourceId }, { type: "keep", index: photo }],
       };
     };
     const r = await generateDailyArticle(repo, { today: TODAY, llm });

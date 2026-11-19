@@ -24,7 +24,9 @@ export const ARTICLE_SYSTEM = `너는 Roam의 에디터다. Roam은 박람회와
 - 읽는 사람을 "당신", "너"로 부르지 않고, "제가"를 쓰지 않는다. 화자는 Roam이다.
 - 추천하거나 취향을 아는 척하지 않는다("취향 저격", "좋아하실 거예요" 금지). 사실과 브랜드의 말을 전한다.
 - 다른 부스나 브랜드를 깎거나 "다 볼 필요 없다"처럼 배제하지 않는다.
-- 제목은 40자 안의 명사형 한 줄, 마침표 없이. 미리보기(excerpt)는 해요체 두 문장, 250자 안.`;
+- 제목은 40자 안의 명사형 한 줄, 마침표 없이. 미리보기(excerpt)는 해요체 두 문장, 250자 안.
+- 사진(photo, photo-group)과 브랜드 카드(brand-card)는 고치거나 빼지 않는다. 틀 판본의 덩어리 번호(0부터)로
+  {"type":"keep","index":번호}를 넣어 그대로 둔다. 사진을 새로 넣거나 설명을 지어내지 않는다.`;
 
 const schema = z.object({
   title: z.string().min(1).max(60),
@@ -32,8 +34,9 @@ const schema = z.object({
   blocks: z
     .array(
       z.union([
-        z.object({ type: z.enum(["paragraph", "heading"]), text: z.string().min(1).max(1200), sourceIds: z.array(z.string()).min(1) }),
+        z.object({ type: z.literal("text"), text: z.string().min(1).max(1200), sourceIds: z.array(z.string()).min(1) }),
         z.object({ type: z.literal("quote"), sourceId: z.string().min(1) }),
+        z.object({ type: z.literal("keep"), index: z.number().int().min(0) }),
       ]),
     )
     .min(2)
@@ -48,7 +51,7 @@ export function articleLlmWriter(): LlmWriter | undefined {
       `종류: ${template.kind === "brand_intro" ? "브랜드 하나 소개" : "박람회 참가 브랜드 모음"}`,
       `그대로 둘 고유명사: ${template.protectedTerms.join(", ")}`,
       `출처(JSON):\n${JSON.stringify(sources)}`,
-      `틀 판본(JSON, 사실과 순서의 기준):\n${JSON.stringify({ title: template.title, excerpt: template.excerpt, blocks: template.body })}`,
+      `틀 판본(JSON, 사실과 순서의 기준):\n${JSON.stringify({ title: template.title, excerpt: template.excerpt, blocks: template.body.map((b, index) => ({ index, ...b })) })}`,
       `틀 판본과 같은 사실만으로 더 읽기 좋게 다시 써. JSON {"title","excerpt","blocks"}로만 답해.`,
     ].join("\n\n");
     return (await generateJSON({ system: ARTICLE_SYSTEM, prompt, temperature: 0.3, schema })) as LlmDraft;

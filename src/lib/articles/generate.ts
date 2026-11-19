@@ -10,13 +10,17 @@ import { todayISO } from "@/lib/exhibition/current";
 import { composeTemplate, type Draft } from "./compose";
 import { checkArticle } from "./gate";
 import { pickCandidates, type Candidate } from "./select";
-import type { World } from "./facts";
+import { PHOTO_FIELD_STATUSES, type World } from "./facts";
+import { getOutreachStore, subjectsFromGraph } from "@/lib/brands/outreach-store";
 
-/** LLM 글쓴이가 돌려주는 판본. 인용은 출처 id만 받고 글은 원문에서 채운다(한 글자도 못 바꾸게). */
+/**
+ * LLM 글쓴이가 돌려주는 판본. 인용은 출처 id만 받고 글은 원문에서 채운다(한 글자도 못 바꾸게).
+ * 사진과 브랜드 카드는 `keep`으로 틀 판본의 덩어리 번호만 받는다 — 모델은 사진을 고르거나 바꿀 수 없다.
+ */
 export interface LlmDraft {
   title: string;
   excerpt: string;
-  blocks: ({ type: "paragraph" | "heading"; text: string; sourceIds: string[] } | { type: "quote"; sourceId: string })[];
+  blocks: ({ type: "text"; text: string; sourceIds: string[] } | { type: "quote"; sourceId: string } | { type: "keep"; index: number })[];
 }
 export type LlmWriter = (input: { template: Draft }) => Promise<LlmDraft>;
 
@@ -58,7 +62,29 @@ export async function loadWorld(repo: Repository, today: string): Promise<World>
     })),
     graph,
     fields,
+    permissions: await loadPhotoPermissions(repo, graph, fields),
   };
+}
+
+/**
+ * 회차별 사진 허락. 대표 사진 칸을 사람이 확인한 브랜드의 참가만 읽는다(나머지는 어차피 사진을 못 쓴다).
+ * 저장 자리(옛 brand_contact, 새 participant_permission)는 연락 보드와 같은 outreach-store가 가린다.
+ */
+export async function loadPhotoPermissions(
+  repo: Repository,
+  graph: World["graph"],
+  fields: World["fields"],
+): Promise<NonNullable<World["permissions"]>> {
+  const withPhotos = new Set(
+    fields.filter((f) => f.field === "photos" && f.exhibitorId && PHOTO_FIELD_STATUSES.includes(f.status)).map((f) => f.exhibitorId!),
+  );
+  const ids = graph.participants.filter((p) => withPhotos.has(p.exhibitorId)).map((p) => p.id);
+  if (!ids.length) return {};
+  const store = await getOutreachStore(repo);
+  const states = await store.read(subjectsFromGraph(graph, ids));
+  const out: NonNullable<World["permissions"]> = {};
+  for (const [participantId, st] of states) out[participantId] = { status: st.view.status, allowedUse: st.view.allowedUse };
+  return out;
 }
 
 async function withBoothCodes(repo: Repository, world: World, c: Candidate): Promise<World> {
@@ -81,13 +107,21 @@ export function fromLlm(template: Draft, out: LlmDraft, writer: string): Draft {
     template.body.filter((b): b is Extract<ArticleBlock, { type: "quote" }> => b.type === "quote").map((b) => [b.sourceId, b]),
   );
   const sources = new Map(template.sources.map((s) => [s.id, s]));
-  const body: ArticleBlock[] = out.blocks.map((b) => {
-    if (b.type !== "quote") return { type: b.type, text: b.text.trim(), sourceIds: b.sourceIds };
+  const body: ArticleBlock[] = out.blocks.flatMap((b): ArticleBlock[] => {
+    if (b.type === "text") return [{ type: "text", text: b.text.trim(), sourceIds: b.sourceIds }];
+    if (b.type === "keep") {
+      // 사진, 사진 묶음, 브랜드 카드만 그대로 가져온다. 다른 번호는 버린다.
+      const t = template.body[b.index];
+      return t && (t.type === "photo" || t.type === "photo-group" || t.type === "brand-card") ? [t] : [];
+    }
     const q = quotes.get(b.sourceId);
-    if (q) return q;
+    if (q) return [q];
     // 틀에 없던 인용이면 원문 전체를 그대로. 브랜드가 쓴 글이 아니면 게이트가 막는다.
-    return { type: "quote", text: sources.get(b.sourceId)?.text ?? "", sourceId: b.sourceId, attribution: "원문" };
+    return [{ type: "quote", text: sources.get(b.sourceId)?.text ?? "", sourceId: b.sourceId, attribution: "원문" }];
   });
+  // 틀 판본의 사진과 카드를 모델이 빠뜨리면 그 판본은 쓰지 않는다(게이트 대신 여기서 먼저). 대표 사진은 늘 틀 것.
+  const media = (xs: ArticleBlock[]) => xs.filter((x) => x.type !== "text" && x.type !== "quote").length;
+  if (media(body) < media(template.body)) throw new Error("LLM 판본이 사진이나 브랜드 카드를 빠뜨렸어요");
   return { ...template, title: out.title.trim(), excerpt: out.excerpt.trim(), body, writer };
 }
 
@@ -95,6 +129,7 @@ const gateOf = (d: Draft) =>
   checkArticle({
     title: d.title,
     excerpt: d.excerpt,
+    hero: d.hero,
     body: d.body,
     sources: d.sources,
     protectedTerms: d.protectedTerms,
@@ -146,6 +181,7 @@ export async function generateDailyArticle(repo: Repository, opts: GenerateOptio
         kind: draft.kind,
         title: draft.title,
         excerpt: draft.excerpt,
+        hero: draft.hero,
         body: draft.body,
         sources: draft.sources,
         gate,
@@ -170,7 +206,7 @@ export function generationNote(r: GenerateResult | { status: "error"; message: s
     case "dry-run":
       return null;
     case "no-subject":
-      return "오늘은 새 초안을 만들지 않았어요. 확인된 사실이 넉넉한 새 주제가 없어요.";
+      return "오늘은 새 초안을 만들지 않았어요. 허락 받은 사진과 확인된 사실이 함께 있는 새 주제가 없어요.";
     case "gate-failed":
       return `오늘은 새 초안을 만들지 않았어요. 후보 ${new Set(r.attempts.map((a) => a.subjectKey)).size}곳이 모두 말투나 근거 검사를 넘지 못했어요.`;
     case "error":

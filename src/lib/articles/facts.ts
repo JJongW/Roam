@@ -7,7 +7,7 @@
 // - 모든 사실은 출처 id를 갖는다. 본문 문장은 이 id로 사실을 가리키고, 게이트가 대조한다.
 import { CONFIRMED_FIELD_STATUSES, profileFieldId } from "@/lib/brands/profile";
 import { OFFICIAL_DOT_NAMES } from "@/lib/booth/roam-voice";
-import type { ArticleSource, Exhibition, ExhibitorGraph, ProfileField } from "@/lib/types";
+import type { ArticlePhoto, ArticleSource, BrandContactStatus, Exhibition, ExhibitorGraph, ProfileField } from "@/lib/types";
 
 export type ExhibitionLite = Pick<Exhibition, "id" | "slug" | "name" | "venue" | "startDate" | "endDate">;
 
@@ -21,6 +21,8 @@ export interface Participation {
   boothCode?: string;
   boothId?: string;
   upcoming: boolean;
+  /** 이 회차의 사진 허락(허락 또는 일부 허락 + 사진 토큰일 때만). */
+  photoGrant?: { sourceId: string; status: BrandContactStatus; allowedUse: string[] };
 }
 
 export interface BrandFacts {
@@ -37,6 +39,8 @@ export interface BrandFacts {
   priceRange?: { sourceId: string; min: number; max: number };
   identityLine?: { sourceId: string; text: string };
   links?: { sourceId: string; values: { kind: string; url: string }[] };
+  /** 사람이 허락 범위를 붙이고 확인한 대표 사진(앱에서 열리는 경로만). 회차 허락과 짝지어야 쓸 수 있다. */
+  photoField?: { sourceId: string; items: { path: string; scope: string }[] };
   participations: Participation[];
   /** 확인된 칸 수(intro, items, ...). 고르는 순서에 쓴다. */
   confirmedCount: number;
@@ -50,7 +54,24 @@ export interface World {
   fields: ProfileField[];
   /** 부스 id → 번호. 필요한 행사만 채워도 된다. */
   boothCodes?: Record<string, string>;
+  /** 참가(participant) id → 그 회차 연락 상태와 허락 범위. 없으면 사진 허락이 없는 것. */
+  permissions?: Record<string, { status: BrandContactStatus; allowedUse: string[] }>;
 }
+
+// --- 사진 허락 ----------------------------------------------------------------
+// 2026-11-19 Ted "아티클에 사진은 당연하게 넣어야 하고". 쓸 수 있는 사진은 둘 다 맞을 때만이다.
+// 1. 대표 사진 칸(brand_profile_field photos)을 사람이 확인했다(reviewed, artist_confirmed).
+//    이 칸은 "작가 허락 범위와 함께 사람이 넣어요"(profile.ts)인데, 명단 가져오기(brands.v1)가
+//    collected로 채운 주최 측 공개 사진은 작가 허락이 아니라 쓰지 않는다.
+// 2. 그 박람회 회차에 사진 허락이 있다(연락 상태 granted나 partial, 허락 범위에 account-photo나 sent-photo).
+//    "허락은 박람회마다 따로 받아요"(Roam-design brand-profile-spec §4).
+// 긁어 온 사진, 허락 없는 사진은 어떤 경우에도 넣지 않는다. 경로는 앱에서 열리는 것만("/…", https).
+
+export const PHOTO_FIELD_STATUSES: readonly ProfileField["status"][] = ["reviewed", "artist_confirmed"];
+export const PHOTO_GRANT_STATUSES: readonly BrandContactStatus[] = ["granted", "partial"];
+export const PHOTO_USE_TOKENS = ["account-photo", "sent-photo"] as const;
+
+export const isServablePhotoPath = (p: string) => /^(\/(?!\/)\S+|https:\/\/\S+)$/.test(p.trim());
 
 const CONFIRMED = new Set<string>(CONFIRMED_FIELD_STATUSES);
 
@@ -70,7 +91,37 @@ export const sourceIdOf = {
   exhibition: (id: string) => `exh:${id}`,
   participation: (id: string) => `pt:${id}`,
   booth: (id: string) => `booth:${id}`,
+  photo: (f: Pick<ProfileField, "id">) => `photo:${f.id}`,
+  permission: (participantId: string) => `perm:${participantId}`,
 };
+
+function photoGrantOf(world: World, participantId: string): Pick<Participation, "photoGrant"> {
+  const p = world.permissions?.[participantId];
+  if (!p || !PHOTO_GRANT_STATUSES.includes(p.status)) return {};
+  const allowedUse = p.allowedUse.filter((t) => (PHOTO_USE_TOKENS as readonly string[]).includes(t));
+  if (!allowedUse.length) return {};
+  return { photoGrant: { sourceId: sourceIdOf.permission(participantId), status: p.status, allowedUse } };
+}
+
+/** 이 회차에 쓸 수 있는 사진. 칸 확인과 회차 허락이 둘 다 있어야 한다. 없으면 빈 배열. */
+export function permittedPhotos(b: BrandFacts, participantId: string | undefined): ArticlePhoto[] {
+  const p = b.participations.find((x) => x.participantId === participantId);
+  if (!p?.photoGrant || !b.photoField) return [];
+  const grant = p.photoGrant;
+  return b.photoField.items.map((it, i) => ({
+    path: it.path,
+    alt: `${b.name} 사진 ${i + 1}`,
+    credit: `사진 ${b.name}`,
+    scope: it.scope,
+    sourceId: b.photoField!.sourceId,
+    permissionId: grant.sourceId,
+  }));
+}
+
+/** 브랜드 소개 글이 기대는 회차: 다가오는 첫 회차, 없으면 가장 최근 회차. */
+export function introParticipation(b: BrandFacts): Participation | undefined {
+  return b.participations.find((p) => p.upcoming) ?? b.participations.at(-1);
+}
 
 function confirmedField(byId: Map<string, ProfileField>, exhibitorId: string, key: string): ProfileField | undefined {
   const f = byId.get(profileFieldId({ exhibitorId }, key));
@@ -101,6 +152,7 @@ export function brandFacts(world: World, exhibitorId: string, byId = indexFields
         displayName: p.displayName,
         ...(boothCode && boothId ? { boothCode, boothId } : {}),
         upcoming: exhibition.endDate.slice(0, 10) >= world.today,
+        ...photoGrantOf(world, p.id),
       };
     })
     .sort((a, b) => a.exhibition.startDate.localeCompare(b.exhibition.startDate));
@@ -140,6 +192,13 @@ export function brandFacts(world: World, exhibitorId: string, byId = indexFields
     .map((l) => ({ kind: l.kind as string, url: l.url as string }));
   if (links && linkValues.length) out.links = { sourceId: sourceIdOf.field(links), values: linkValues };
 
+  const photos = byId.get(profileFieldId({ exhibitorId }, "photos"));
+  const photoItems = (Array.isArray(photos?.value) ? (photos!.value as { path?: unknown; scope?: unknown }[]) : [])
+    .filter((x) => typeof x.path === "string" && typeof x.scope === "string" && x.scope.trim() !== "" && isServablePhotoPath(x.path))
+    .map((x) => ({ path: (x.path as string).trim(), scope: (x.scope as string).trim() }));
+  if (photos && PHOTO_FIELD_STATUSES.includes(photos.status) && photoItems.length)
+    out.photoField = { sourceId: sourceIdOf.photo(photos), items: photoItems };
+
   out.confirmedCount = [out.intro, out.whyMake, out.items, out.signatureWorks, out.priceRange, out.identityLine, out.links].filter(Boolean).length;
   return out;
 }
@@ -178,7 +237,26 @@ export function brandSources(b: BrandFacts, fields: Map<string, ProfileField>): 
   if (b.priceRange) fieldSource(b.priceRange.sourceId, "가격대", `${b.priceRange.min}원부터 ${b.priceRange.max}원까지`);
   if (b.identityLine) fieldSource(b.identityLine.sourceId, "정체 한 줄", b.identityLine.text);
   if (b.links) fieldSource(b.links.sourceId, "링크", b.links.values.map((l) => l.url).join(" "));
+  if (b.photoField) {
+    const f = fields.get(b.photoField.sourceId.slice("photo:".length));
+    out.push({
+      id: b.photoField.sourceId,
+      kind: "photo",
+      label: `${b.name} 대표 사진(${f ? statusLabel(f.status) : "확인됨"})`,
+      origin: f?.sources ?? [],
+      // 게이트가 사진 경로를 이 줄 목록과 대조한다.
+      text: b.photoField.items.map((it) => `${it.path} | ${it.scope}`).join("\n"),
+    });
+  }
   for (const p of b.participations) {
+    if (p.photoGrant)
+      out.push({
+        id: p.photoGrant.sourceId,
+        kind: "permission",
+        label: `${b.name}의 ${p.exhibition.name} 사진 허락(${p.photoGrant.status === "granted" ? "허락" : "일부 허락"})`,
+        origin: [`roam:permission/${p.participantId}`],
+        text: `${p.displayName}, ${p.exhibition.name} 사진 허락: ${p.photoGrant.allowedUse.join(", ")}`,
+      });
     out.push({
       id: sourceIdOf.participation(p.participantId),
       kind: "participation",

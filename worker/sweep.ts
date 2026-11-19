@@ -22,7 +22,7 @@ import { getRepository } from "@/lib/repositories";
 import { collectBacklog, formatBacklog, DEFAULT_STALE_DAYS } from "@/lib/admin/backlog";
 import { generateDailyArticle, generationNote, type GenerateResult } from "@/lib/articles/generate";
 import { articleLlmWriter } from "@/lib/articles/llm";
-import { composeDailyReport, formatArticleSection, slackPayload } from "@/lib/articles/slack";
+import { composeDailyReport, formatArticleSection, heroImage, slackPayload } from "@/lib/articles/slack";
 import type { Article } from "@/lib/types";
 
 const STALE_DAYS = Number(process.env.SWEEP_STALE_DAYS ?? DEFAULT_STALE_DAYS);
@@ -87,12 +87,16 @@ async function main() {
     log("SLACK_WEBHOOK_URL 없음 — 로그까지만");
     return;
   }
-  const res = await fetch(HOOK, {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    // 버튼은 슬랙 앱 인터랙티브를 켰을 때만(SLACK_ARTICLE_BUTTONS=1). 아니면 서명 링크만.
-    body: JSON.stringify(slackPayload(text, { buttonsFor: process.env.SLACK_ARTICLE_BUTTONS === "1" ? drafts[0] : null })),
-  });
+  const post = (body: Record<string, unknown>) =>
+    fetch(HOOK, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+  // 버튼은 슬랙 앱 인터랙티브를 켰을 때만(SLACK_ARTICLE_BUTTONS=1). 아니면 서명 링크만.
+  const buttonsFor = process.env.SLACK_ARTICLE_BUTTONS === "1" ? drafts[0] : null;
+  let res = await post(slackPayload(text, { buttonsFor, image: heroImage(drafts[0], appUrl) }));
+  if (!res.ok && drafts[0]) {
+    // 슬랙이 대표 사진을 못 받으면(invalid_blocks 등) 메시지 전체가 거절된다. 보고는 빠지면 안 되니 사진 없이 다시.
+    log("슬랙 사진 블록 거절 — 사진 없이 다시", { status: res.status, body: (await res.text()).slice(0, 200) });
+    res = await post(slackPayload(text, { buttonsFor }));
+  }
   if (!res.ok) throw new Error(`슬랙 ${res.status} ${await res.text()}`);
   log("슬랙 발송");
 }

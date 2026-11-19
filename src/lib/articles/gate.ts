@@ -6,14 +6,20 @@
 // 2. 근거. 문단의 숫자와 영문 표기는 그 문단이 가리킨 출처 글에 있어야 하고, 인용은 브랜드가 쓴 원문의
 //    한 글자도 다르지 않은 조각이어야 한다(메모 card-news-copy-style, generated-review-allowed).
 //
+// 3. 사진(2026-11-19 Ted "아티클에 사진은 당연하게"). 대표 사진이 없거나, 사진이 확인된 대표 사진 칸에
+//    없는 경로이거나, 그 회차 사진 허락 출처가 없으면 막는다. 모음의 브랜드 카드는 사진이 있어야 한다.
+//
 // 게이트가 못 보는 것(사람 몫, 슬랙 승인): 한글 낱말로 지어낸 사실, 뜻이 미묘하게 바뀐 문장, 자연스러움.
 import { banmalEndings, contentFlags, OFFICIAL_DOT_NAMES, voiceIssues } from "@/lib/booth/roam-voice";
 import { hasHamnida } from "@/lib/booth/summary-voice";
-import type { ArticleBlock, ArticleSource } from "@/lib/types";
+import type { ArticleBlock, ArticlePhoto, ArticleSource } from "@/lib/types";
+import { isServablePhotoPath } from "./facts";
 
 export interface GateInput {
   title: string;
   excerpt: string;
+  /** 대표 사진. 없으면 막는다(fail closed). */
+  hero: ArticlePhoto | null | undefined;
   body: ArticleBlock[];
   sources: ArticleSource[];
   protectedTerms: string[];
@@ -108,7 +114,7 @@ export function checkArticle(input: GateInput): GateResult {
   if (input.title.length > TITLE_MAX) issues.push(`제목이 ${TITLE_MAX}자를 넘어요`);
   if (!input.excerpt.trim()) issues.push("미리보기 글이 비었어요");
   if (input.excerpt.length > EXCERPT_MAX_GATE) issues.push(`미리보기 글이 ${EXCERPT_MAX_GATE}자를 넘어요`);
-  if (!input.body.some((b) => b.type === "paragraph")) issues.push("Roam이 쓴 문단이 없어요");
+  if (!input.body.some((b) => b.type === "text")) issues.push("Roam이 쓴 문단이 없어요");
   if (input.sources.length === 0) issues.push("출처가 없어요");
 
   // 말투
@@ -121,9 +127,16 @@ export function checkArticle(input: GateInput): GateResult {
       issues.push(...voiceCheck(b.attribution, terms, "label"));
       continue;
     }
-    roamTexts.push(b.text);
-    issues.push(...voiceCheck(b.text, terms, b.type === "heading" ? "label" : "prose"));
+    if (b.type === "text") {
+      roamTexts.push(b.text);
+      issues.push(...voiceCheck(b.text, terms, "prose"));
+      continue;
+    }
+    // 사진 대체 글과 표기, 카드 이름은 라벨이다.
+    for (const ph of photosOf(b)) for (const t of [ph.alt, ph.credit]) issues.push(...voiceCheck(t, terms, "label"));
+    if (b.type === "brand-card") issues.push(...voiceCheck(b.name, terms, "label"));
   }
+  if (input.hero) for (const t of [input.hero.alt, input.hero.credit]) issues.push(...voiceCheck(t, terms, "label"));
   // 느낌표는 한 편에 한 번까지(메모 card-news-copy-style, 2026-11-03). 미리보기는 문단을 되풀이하니 빼고 센다.
   const bangs = roamTexts.filter((_, i) => i !== 1).join("").split("!").length - 1;
   if (bangs > 1) issues.push(`느낌표가 ${bangs}개예요(한 편에 하나까지)`);
@@ -148,9 +161,19 @@ export function checkArticle(input: GateInput): GateResult {
       else if (!b.text.trim() || !s.text.includes(b.text)) issues.push(`인용이 원문과 달라요(한 글자도 고치지 않아요): ${where}`);
       return;
     }
+    for (const ph of photosOf(b)) issues.push(...photoIssues(ph, sources, where));
+    if (b.type === "photo-group" && (b.photos.length < 2 || b.photos.length > 4)) issues.push(`사진 묶음은 두 장에서 네 장이에요: ${where}`);
+    if (b.type === "photo" || b.type === "photo-group") return;
     if (b.sourceIds.length === 0) issues.push(`출처 없는 문장: ${where}`);
     const missing = b.sourceIds.filter((id) => !sources.has(id));
     if (missing.length) issues.push(`목록에 없는 출처 ${missing.join(", ")}: ${where}`);
+    if (b.type === "brand-card") {
+      // 카드의 부스 번호와 품목은 카드가 가리킨 출처 글에 있어야 한다.
+      const basis = b.sourceIds.map((id) => sources.get(id)?.text ?? "").join("\n");
+      if (b.boothCode && !basis.includes(b.boothCode)) issues.push(`출처에 없는 부스 번호 ${b.boothCode}: ${where}`);
+      for (const it of b.items ?? []) if (!basis.includes(it)) issues.push(`출처에 없는 품목 ${it}: ${where}`);
+      return;
+    }
     grounded(
       b.text,
       b.sourceIds
@@ -161,6 +184,33 @@ export function checkArticle(input: GateInput): GateResult {
     );
   });
 
+  // 사진
+  if (!input.hero) issues.push("대표 사진이 없어요(허락 받은 사진이 있어야 저장해요)");
+  else issues.push(...photoIssues(input.hero, sources, "대표 사진"));
+
   const uniq = [...new Set(issues)];
   return { ok: uniq.length === 0, issues: uniq };
+}
+
+function photosOf(b: ArticleBlock): ArticlePhoto[] {
+  if (b.type === "photo" || b.type === "brand-card") return b.photo ? [b.photo] : [];
+  if (b.type === "photo-group") return b.photos ?? [];
+  return [];
+}
+
+/**
+ * 사진 한 장이 허락 안에 있나. 경로가 확인된 대표 사진 칸(kind photo) 줄 목록에 있어야 하고,
+ * 그 회차 사진 허락(kind permission) 출처가 있어야 한다. 하나라도 없으면 그 판본은 저장하지 않는다.
+ */
+export function photoIssues(ph: ArticlePhoto | null | undefined, sources: Map<string, ArticleSource>, where: string): string[] {
+  if (!ph || !ph.path) return [`사진이 비었어요: ${where}`];
+  const out: string[] = [];
+  if (!isServablePhotoPath(ph.path)) out.push(`앱에서 열 수 없는 사진 경로예요: ${where}`);
+  const field = sources.get(ph.sourceId);
+  if (field?.kind !== "photo") out.push(`사진의 대표 사진 칸 출처가 없어요: ${where}`);
+  else if (!field.text.split("\n").some((line) => line.split(" | ")[0] === ph.path)) out.push(`대표 사진 칸에 없는 사진이에요: ${where}`);
+  if (sources.get(ph.permissionId)?.kind !== "permission") out.push(`그 회차 사진 허락이 없어요: ${where}`);
+  if (!ph.credit?.trim()) out.push(`사진 표기가 없어요: ${where}`);
+  if (!ph.alt?.trim()) out.push(`사진 대체 글이 없어요: ${where}`);
+  return out;
 }
