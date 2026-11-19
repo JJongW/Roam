@@ -20,8 +20,8 @@ export async function GET(_req: Request, { params }: Ctx) {
   if (!detail) return notFound("부스를 찾을 수 없어요");
   // 브랜드 공식 소개(말투 게이트 통과본, 없으면 null). 키를 더하기만 해서 iOS의 기존
   // 디코딩은 그대로다. 있으면 앱은 부스 요약과 원문 대신 이걸 보여 준다(lib/brands/intro.ts).
-  // exhibitorId, participantId도 부스에 붙인다(키 추가만, lib/booth/brand-ids.ts).
-  const [booth] = await withBrandIds(repo, [detail.booth]);
+  // exhibitorId, participantId, exhibitorName(브랜드 이름)도 부스에 붙인다(키 추가만, lib/booth/brand-ids.ts).
+  const [booth] = await withBrandIds(repo, [detail.booth], { names: true });
   return ok({ ...detail, booth, brandIntro: await brandIntroForBooth(repo, id) });
 }
 

@@ -30,4 +30,35 @@ describe("withBrandIds", () => {
     const out = await withBrandIds(broken as never, [{ id: "b1" }]);
     expect(out).toEqual([{ id: "b1" }]);
   });
+
+  it("names를 켜면 브랜드 이름을 붙이고, 이름이 없으면 null이다", async () => {
+    const g = graph();
+    g.exhibitors.push({ id: "ex1", canonicalName: "꽃잠 " });
+    g.participants.push({ id: "pt1", exhibitorId: "ex1", exhibitionId: "e", displayName: "꽃잠 부스" });
+    g.participants.push({ id: "pt3", exhibitorId: "ex-missing", exhibitionId: "e", displayName: "C" });
+    g.assignments.push({ boothId: "b1", participantId: "pt1", role: "primary" });
+    g.assignments.push({ boothId: "b3", participantId: "pt3", role: "primary" });
+    const out = await withBrandIds(repo, [{ id: "b1" }, { id: "b2" }, { id: "b3" }], { names: true });
+    expect(out[0]).toEqual({ id: "b1", exhibitorId: "ex1", participantId: "pt1", exhibitorName: "꽃잠" });
+    expect(out[1]).toEqual({ id: "b2" });
+    expect(out[2]).toEqual({ id: "b3", exhibitorId: "ex-missing", participantId: "pt3", exhibitorName: null });
+  });
+
+  it("names를 안 켜면 이름 키가 없다(목록 응답은 그대로)", async () => {
+    const g = graph();
+    g.exhibitors.push({ id: "ex1", canonicalName: "꽃잠" });
+    g.participants.push({ id: "pt1", exhibitorId: "ex1", exhibitionId: "e", displayName: "꽃잠" });
+    g.assignments.push({ boothId: "b1", participantId: "pt1", role: "primary" });
+    const [b] = await withBrandIds(repo, [{ id: "b1" }]);
+    expect(b).not.toHaveProperty("exhibitorName");
+  });
+
+  it("이름 조회만 실패하면 id는 붙이고 이름은 null이다", async () => {
+    const half = {
+      listPrimaryBrandLinks: async () => ({ b1: { exhibitorId: "ex1", participantId: "pt1" } }),
+      getExhibitorNames: async () => { throw new Error("x"); },
+    };
+    const out = await withBrandIds(half as never, [{ id: "b1" }], { names: true });
+    expect(out).toEqual([{ id: "b1", exhibitorId: "ex1", participantId: "pt1", exhibitorName: null }]);
+  });
 });
