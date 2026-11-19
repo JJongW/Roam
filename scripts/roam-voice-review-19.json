@@ -1,0 +1,276 @@
+[
+  {
+    "table": "exhibition",
+    "keyCol": "id",
+    "key": "exh_0vqhgewmmupcsmeq",
+    "slug": "siwse-magok-2026",
+    "code": null,
+    "field": "tips",
+    "before": {
+      "guide": "10/1(목)·10/2(금) 11:00–19:00, 10/3(토) 10:00–18:00. 서측으로 들어가 동측으로 나갑니다. 잔 세척·얼음은 서측 벽 A-03·A-04.",
+      "ticket": "현장 20,000원. 바이어(명함)·초대권 소지자 무료. 미성년자 입장 불가 — 신분증 필수.",
+      "parking": "건물 주차장 이용. 시음 행사라 대중교통을 권장합니다.",
+      "transportation": "지하철 5호선 발산역·9호선 마곡나루역에서 도보. 코엑스 마곡 컨벤션센터 1층입니다."
+    },
+    "after": {
+      "guide": "10/1(목), 10/2(금) 11:00–19:00, 10/3(토) 10:00–18:00. 서측으로 들어가 동측으로 나가요. 잔 세척, 얼음은 서측 벽 A-03, A-04.",
+      "ticket": "현장 20,000원. 바이어(명함), 초대권 소지자 무료. 미성년자 입장 불가 — 신분증 필수.",
+      "parking": "건물 주차장 이용. 시음 행사라 대중교통을 권장해요.",
+      "transportation": "지하철 5호선 발산역, 9호선 마곡나루역에서 도보. 코엑스 마곡 컨벤션센터 1층이에요."
+    }
+  },
+  {
+    "table": "exhibition",
+    "keyCol": "id",
+    "key": "exh_cafeshow_2026",
+    "slug": "cafeshow-2026",
+    "code": null,
+    "field": "tips",
+    "before": {
+      "guide": "1층은 A·B홀, 3층은 C·D홀입니다. 지도에서 위쪽이 1층, 아래쪽이 3층이에요. 장비·포장·매장운영 같은 업계용 부스는 지도와 검색엔 있지만 추천에선 빠집니다.",
+      "parking": "코엑스 주차장 이용. 혼잡하니 대중교통을 권장합니다.",
+      "transportation": "지하철 2호선 삼성역 5·6번 출구, 9호선 봉은사역 7번 출구에서 코엑스 연결."
+    },
+    "after": {
+      "guide": "1층은 A홀, B홀, 3층은 C홀, D홀이에요. 지도에서 위쪽이 1층, 아래쪽이 3층이에요. 장비, 포장, 매장운영 같은 업계용 부스는 지도와 검색엔 있지만 추천에선 빠져요.",
+      "parking": "코엑스 주차장 이용. 혼잡하니 대중교통을 권장해요.",
+      "transportation": "지하철 2호선 삼성역 5번, 6번 출구, 9호선 봉은사역 7번 출구에서 코엑스 연결."
+    }
+  },
+  {
+    "table": "exhibition",
+    "keyCol": "id",
+    "key": "exh_ddp_designfair_2026",
+    "slug": "ddp-designfair-2026",
+    "code": null,
+    "field": "tips",
+    "before": {
+      "guide": "입구는 아트홀 출입구(A1) 쪽, 출구는 반대편 왼쪽입니다. 부스 번호 대신 브랜드 이름으로 찾으면 빠릅니다.",
+      "parking": "DDP 주차장은 혼잡합니다. 대중교통을 권장합니다.",
+      "transportation": "지하철 2·4·5호선 동대문역사문화공원역 1번 출구에서 DDP 연결."
+    },
+    "after": {
+      "guide": "입구는 아트홀 출입구(A1) 쪽, 출구는 반대편 왼쪽이에요. 부스 번호 대신 브랜드 이름으로 찾으면 빨라요.",
+      "parking": "DDP 주차장은 혼잡해요. 대중교통을 권장해요.",
+      "transportation": "지하철 2호선, 4호선, 5호선 동대문역사문화공원역 1번 출구에서 DDP 연결."
+    }
+  },
+  {
+    "table": "booth_enrichment",
+    "keyCol": "booth_id",
+    "key": "booth_x3z8eiwnmts3tps3",
+    "slug": "magok-livingmarket-2026",
+    "code": "F-20",
+    "field": "recommendation_reasons",
+    "before": {
+      "goods": "주얼리를 직접 착용해보고 고를 수 있어.",
+      "discovery": "파인 주얼리 브랜드 엘리크의 다양한 컬렉션을 새롭게 발견할 수 있어.",
+      "inspiration": "과하지 않게 빛나는 선을 어떻게 잡는지 보여줘."
+    },
+    "after": {
+      "goods": "주얼리를 직접 착용해보고 고를 수 있어요.",
+      "discovery": "파인 주얼리 브랜드 엘리크의 다양한 컬렉션을 새롭게 발견할 수 있어요.",
+      "inspiration": "과하지 않게 빛나는 선을 어떻게 잡는지 볼 수 있어요."
+    }
+  },
+  {
+    "table": "booth_enrichment",
+    "keyCol": "booth_id",
+    "key": "booth_agr4n9p4mts3tt33",
+    "slug": "magok-livingmarket-2026",
+    "code": "N-14",
+    "field": "recommendation_reasons",
+    "before": {
+      "goods": "핀칭잔을 직접 들어보고 고를 수 있어.",
+      "discovery": "한국적 정서가 담긴 물레 성형 방식으로 만들어진 현대적인 도자기를 발견할 수 있어.",
+      "inspiration": "기계 없이 손만으로 얇게 빚는 방식을 봐."
+    },
+    "after": {
+      "goods": "핀칭잔을 직접 들어보고 고를 수 있어요.",
+      "discovery": "한국적 정서가 담긴 물레 성형 방식으로 만들어진 현대적인 도자기를 발견할 수 있어요.",
+      "inspiration": "기계 없이 손만으로 얇게 빚는 방식을 볼 수 있어요."
+    }
+  },
+  {
+    "table": "booth_enrichment",
+    "keyCol": "booth_id",
+    "key": "booth_yz4ajgrfmts3tqy9",
+    "slug": "magok-livingmarket-2026",
+    "code": "H-03",
+    "field": "recommendation_reasons",
+    "before": {
+      "goods": "패브릭 소품을 낱개로 고를 수 있어.",
+      "discovery": "캠핑, 피크닉 등 야외 활동에 특화된 유니크한 디자인의 블랭킷과 매트를 발견할 수 있다.",
+      "inspiration": "그림 한 장으로 방 분위기가 바뀌는 걸 봐."
+    },
+    "after": {
+      "goods": "패브릭 소품을 낱개로 고를 수 있어요.",
+      "discovery": "캠핑, 피크닉 등 야외 활동에 특화된 유니크한 디자인의 블랭킷과 매트를 발견할 수 있어요.",
+      "inspiration": "그림 한 장으로 방 분위기가 바뀌는 걸 볼 수 있어요."
+    }
+  },
+  {
+    "table": "booth_enrichment",
+    "keyCol": "booth_id",
+    "key": "booth_ajuxnharmupd575j",
+    "slug": "siwse-magok-2026",
+    "code": "E-05",
+    "field": "recommendation_reasons",
+    "before": {
+      "trend": "MZ세대 취향을 저격하는 캔 와인과 팩 와인 등 휴대성 높은 주류 트렌드를 엿볼 수 있다. [cite: 챠오 캔와인 1, 챠오 캔와인 2]",
+      "discovery": "국내 주류 시장에서 아직 생소한 럼 커피 리큐르를 발견할 수 있다. [cite: 올드 세일러 커피 1]",
+      "experience": "챠오 캔 와인과 올드 세일러 커피 리큐르를 직접 시음해 볼 수 있다. [cite: 올드 세일러 커피 1]"
+    },
+    "after": {
+      "trend": "MZ세대 취향을 저격하는 캔 와인과 팩 와인 등 휴대성 높은 주류 트렌드를 엿볼 수 있어요.",
+      "discovery": "국내 주류 시장에서 아직 생소한 럼 커피 리큐르를 발견할 수 있어요.",
+      "experience": "챠오 캔 와인과 올드 세일러 커피 리큐르를 직접 시음해 볼 수 있어요."
+    }
+  },
+  {
+    "table": "booth_enrichment",
+    "keyCol": "booth_id",
+    "key": "booth_560tc9vomupd565g",
+    "slug": "siwse-magok-2026",
+    "code": "D-05",
+    "field": "recommendation_reasons",
+    "before": {
+      "goods": "대한민국 주류대상 백주 부문 대상을 받은 '대청관양' 등 황실 백주를 구매할 수 있어.",
+      "learning": "중국 상무부가 인정한 '중화노자호' 기업의 역사와 전통적인 주조 방식을 알아볼 수 있어.",
+      "discovery": "일반인은 알 수 없었던 청나라 황실의 술과 문화를 발견할 수 있어."
+    },
+    "after": {
+      "goods": "대한민국 주류대상 백주 부문 대상을 받은 '대청관양' 등 황실 백주를 구매할 수 있어요.",
+      "learning": "중국 상무부가 인정한 '중화노자호' 기업의 역사와 전통적인 주조 방식을 알아볼 수 있어요.",
+      "discovery": "일반인은 알 수 없었던 청나라 황실의 술과 문화를 발견할 수 있어요."
+    }
+  },
+  {
+    "table": "booth_enrichment",
+    "keyCol": "booth_id",
+    "key": "booth_xihzp9skmur2qhtg",
+    "slug": "ddp-designfair-2026",
+    "code": "A9",
+    "field": "roam_interpretation",
+    "before": "디어리얼은 쿠키와 브런치 색감의 타월로 욕실과 침실의 온도를 바꾸는 패브릭을 만드는구나.",
+    "after": "디어리얼은 쿠키와 브런치 색감의 타월로 욕실과 침실의 온도를 바꾸는 패브릭을 만드는 곳이에요."
+  },
+  {
+    "table": "booth_enrichment",
+    "keyCol": "booth_id",
+    "key": "booth_im653190muqc4hug",
+    "slug": "cafeshow-2026",
+    "code": "D154",
+    "field": "roam_interpretation",
+    "before": "몽파소에 대한 정보를 찾지 못했어.",
+    "after": null
+  },
+  {
+    "table": "booth_enrichment",
+    "keyCol": "booth_id",
+    "key": "booth_hq5i9yjmmuqc3v7n",
+    "slug": "cafeshow-2026",
+    "code": "A339",
+    "field": "roam_interpretation",
+    "before": "원웨이트레이딩(CDI)에 대한 정보가 없어서 로미도 잘 모르겠어.",
+    "after": null
+  },
+  {
+    "table": "booth_enrichment",
+    "keyCol": "booth_id",
+    "key": "booth_fpbaw1gpmuqc4ix2",
+    "slug": "cafeshow-2026",
+    "code": "D261",
+    "field": "roam_interpretation",
+    "before": "이 부스에 대한 구체적인 정보는 찾을 수 없어서 어떤 곳인지 알 수 없다.",
+    "after": null
+  },
+  {
+    "table": "booth_enrichment",
+    "keyCol": "booth_id",
+    "key": "booth_dkrrdhiomuqc40ga",
+    "slug": "cafeshow-2026",
+    "code": "B137",
+    "field": "roam_interpretation",
+    "before": "JOANSVILLE CORPORATION에 대한 정보를 찾을 수 없어서 어떤 부스인지 알려줄 수 없어.",
+    "after": null
+  },
+  {
+    "table": "booth_enrichment",
+    "keyCol": "booth_id",
+    "key": "booth_iep79e39muqc4bbe",
+    "slug": "cafeshow-2026",
+    "code": "C667",
+    "field": "roam_interpretation",
+    "before": "어떤 KABER인지 명확하지 않아 구체적인 해석을 제공하기 어렵다.",
+    "after": null
+  },
+  {
+    "table": "booth_enrichment",
+    "keyCol": "booth_id",
+    "key": "booth_oaeecmi7muqc402d",
+    "slug": "cafeshow-2026",
+    "code": "B126",
+    "field": "roam_interpretation",
+    "before": "스토리로드에 대한 정보를 찾을 수 없었어. 부스에서 직접 확인해봐야 할 것 같아.",
+    "after": null
+  },
+  {
+    "table": "booth_enrichment",
+    "keyCol": "booth_id",
+    "key": "booth_17j329lhmuqc4c9q",
+    "slug": "cafeshow-2026",
+    "code": "C743",
+    "field": "roam_interpretation",
+    "before": "Dosim coffee는 아직 어떤 커피를 선보이는지 알 수 없다.",
+    "after": null
+  },
+  {
+    "table": "booth_enrichment",
+    "keyCol": "booth_id",
+    "key": "booth_td7z1xlxmuqc45iw",
+    "slug": "cafeshow-2026",
+    "code": "B430",
+    "field": "roam_interpretation",
+    "before": "오트로 패밀리아에 대한 정보를 찾을 수 없었어.",
+    "after": null
+  },
+  {
+    "table": "booth_enrichment",
+    "keyCol": "booth_id",
+    "key": "booth_ni8f8hmdmts3tp2v",
+    "slug": "magok-livingmarket-2026",
+    "code": "E-03",
+    "field": "recommendation_reasons",
+    "before": {
+      "goods": "오브제 하나씩 골라 담기 좋아.",
+      "discovery": "프랑스 가렐 가문의 장인 정신이 깃든 하이엔드 스피커 브랜드를 발견할 수 있어.",
+      "inspiration": "놓는 자리에 따라 방이 달라지는 걸 보여줘."
+    },
+    "after": {
+      "goods": "오브제 하나씩 골라 담기 좋아요.",
+      "discovery": "프랑스 가렐 가문의 장인 정신이 깃든 하이엔드 스피커 브랜드를 발견할 수 있어요.",
+      "inspiration": "놓는 자리에 따라 방이 달라지는 걸 볼 수 있어요."
+    }
+  },
+  {
+    "table": "booth_enrichment",
+    "keyCol": "booth_id",
+    "key": "booth_pnbazac5mts3tq3n",
+    "slug": "magok-livingmarket-2026",
+    "code": "G-01",
+    "field": "recommendation_reasons",
+    "before": {
+      "goods": "시그니처 향을 담은 디퓨저, 룸스프레이, 사쉐 등 다양한 향기 굿즈를 구매할 수 있다.",
+      "discovery": "향기를 통해 브랜드와 공간의 새로운 정체성을 발견할 수 있다.",
+      "experience": "향에 따라 공간 인상이 달라지는 걸 직접 맡아봐.",
+      "inspiration": "향을 인테리어의 마지막 한 겹으로 보는 관점이야."
+    },
+    "after": {
+      "goods": "시그니처 향을 담은 디퓨저, 룸스프레이, 사쉐 등 다양한 향기 굿즈를 구매할 수 있어요.",
+      "discovery": "향기를 통해 브랜드와 공간의 새로운 정체성을 발견할 수 있어요.",
+      "experience": "향에 따라 공간 인상이 달라지는 걸 직접 맡아 볼 수 있어요.",
+      "inspiration": "향을 인테리어의 마지막 한 겹으로 보는 관점이에요."
+    }
+  }
+]
