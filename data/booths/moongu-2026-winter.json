@@ -1,0 +1,2751 @@
+{
+  "exhibitionSlug": "moongu-2026-winter",
+  "source": [
+    "https://comicw.net/moongu/booth_map.php?fare_id=36",
+    "https://comicw.net/g/boothcut/?fare=36"
+  ],
+  "collectedAt": "2026-11-19",
+  "mapReady": false,
+  "note": "배치도가 나오면 intake.v1을 만들 때 쓴다. days는 부스컷이 있는 팀만(나머지는 모름)",
+  "booths": [
+    {
+      "key": "moongu-2026-winter-g3778",
+      "name": "퐁시리",
+      "codes": [
+        "BA01"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3778",
+      "spec": "문구B"
+    },
+    {
+      "key": "moongu-2026-winter-ba02-6e6477",
+      "name": "MimiU",
+      "codes": [
+        "BA02"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3789",
+      "name": "김당고",
+      "codes": [
+        "BA03"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3789",
+      "spec": "문구B"
+    },
+    {
+      "key": "moongu-2026-winter-ba04-7da797",
+      "name": "말랑별 원정대",
+      "codes": [
+        "BA04"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-bb01-d619a1",
+      "name": "멜핀이네",
+      "codes": [
+        "BB01"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g4016",
+      "name": "에브리데이썬데이",
+      "codes": [
+        "BB02"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4016",
+      "spec": "문구B"
+    },
+    {
+      "key": "moongu-2026-winter-g3730",
+      "name": "@OJOUSHIKA",
+      "codes": [
+        "BB03"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3730",
+      "spec": "문구B"
+    },
+    {
+      "key": "moongu-2026-winter-g3873",
+      "name": "엔칸토",
+      "codes": [
+        "BC01"
+      ],
+      "days": [
+        "sat"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3873",
+      "spec": "문구B"
+    },
+    {
+      "key": "moongu-2026-winter-g4077",
+      "name": "분홍배연구소",
+      "codes": [
+        "BC02"
+      ],
+      "days": [
+        "sat"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4077",
+      "spec": "문구B"
+    },
+    {
+      "key": "moongu-2026-winter-bc03-4f547a",
+      "name": "띵띵이클럽",
+      "codes": [
+        "BC03"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3526",
+      "name": "보그 (Error)",
+      "codes": [
+        "BC04"
+      ],
+      "days": [
+        "sat"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3526",
+      "spec": "문구B"
+    },
+    {
+      "key": "moongu-2026-winter-g3572",
+      "name": "나인나인",
+      "codes": [
+        "CA01",
+        "CA02"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3572",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ca03-fae43a",
+      "name": "메리타드",
+      "codes": [
+        "CA03",
+        "CA04"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3591",
+      "name": "홍시",
+      "codes": [
+        "CA05",
+        "CA06"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3591",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ca07-54f555",
+      "name": "스튜디오 니모",
+      "codes": [
+        "CA07",
+        "CA08"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-ca09-813cc5",
+      "name": "말랑한친구들",
+      "codes": [
+        "CA09",
+        "CA10"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-ca11-9caad0",
+      "name": "졸니온더트립",
+      "codes": [
+        "CA11",
+        "CA12"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-ca13-5dcbac",
+      "name": "설깜먕!",
+      "codes": [
+        "CA13",
+        "CA14"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3531",
+      "name": "후루룩우동 스튜디오",
+      "codes": [
+        "CB01",
+        "CB02"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3531",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3559",
+      "name": "로로 아틀리에",
+      "codes": [
+        "CB03",
+        "CB04"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3559",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cb05-41bfc6",
+      "name": "마봉이",
+      "codes": [
+        "CB05",
+        "CB06"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3717",
+      "name": "Aurita",
+      "codes": [
+        "CB07",
+        "CB08"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3717",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3615",
+      "name": "트윙클타임",
+      "codes": [
+        "CB09",
+        "CB10"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3615",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3629",
+      "name": "슬퍼하지마 노농이",
+      "codes": [
+        "CB11",
+        "CB12"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3629",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cb13-782b0b",
+      "name": "은빛길",
+      "codes": [
+        "CB13",
+        "CB14"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3528",
+      "name": "별빛다움",
+      "codes": [
+        "CB15",
+        "CB16"
+      ],
+      "days": [
+        "sat"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3528",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cc01-d3a960",
+      "name": "휴더휴먼",
+      "codes": [
+        "CC01",
+        "CC02"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g4394",
+      "name": "탄산클럽",
+      "codes": [
+        "CC03",
+        "CC04"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4394",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4018",
+      "name": "은비",
+      "codes": [
+        "CC05",
+        "CC06"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4018",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3584",
+      "name": "Odd Tail",
+      "codes": [
+        "CC07",
+        "CC08"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3584",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3566",
+      "name": "멜로드림",
+      "codes": [
+        "CC09",
+        "CC10"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3566",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4392",
+      "name": "COMMON",
+      "codes": [
+        "CC11",
+        "CC12"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4392",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3544",
+      "name": "유코의 행운공방",
+      "codes": [
+        "CC13",
+        "CC14"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3544",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cc15-f7d214",
+      "name": "다린",
+      "codes": [
+        "CC15",
+        "CC16"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-cd01-abe4c5",
+      "name": "플러피피",
+      "codes": [
+        "CD01",
+        "CD02"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g4349",
+      "name": "보키다락방",
+      "codes": [
+        "CD03",
+        "CD04"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4349",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3631",
+      "name": "뜨리오 스튜디오",
+      "codes": [
+        "CD05",
+        "CD06"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3631",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cd07-ab4f05",
+      "name": "나신",
+      "codes": [
+        "CD07",
+        "CD08"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-cd09-c65eca",
+      "name": "아리웍스",
+      "codes": [
+        "CD09",
+        "CD10"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3461",
+      "name": "보트리와 아호리",
+      "codes": [
+        "CD11",
+        "CD12"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3461",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4399",
+      "name": "그쳊",
+      "codes": [
+        "CD13",
+        "CD14"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4399",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cd15-231276",
+      "name": "코코챠요나",
+      "codes": [
+        "CD15",
+        "CD16"
+      ],
+      "sharesCodeWith": [
+        "서녁문방구"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-cd15-e93970",
+      "name": "서녁문방구",
+      "codes": [
+        "CD15",
+        "CD16"
+      ],
+      "sharesCodeWith": [
+        "코코챠요나"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-ce01-38513b",
+      "name": "솔가",
+      "codes": [
+        "CE01",
+        "CE02"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-ce03-af2cea",
+      "name": "흰종이에달이스치운다",
+      "codes": [
+        "CE03",
+        "CE04"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3735",
+      "name": "다라코",
+      "codes": [
+        "CE05",
+        "CE06"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3735",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4092",
+      "name": "모구샵",
+      "codes": [
+        "CE07",
+        "CE08"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4092",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ce09-f612bd",
+      "name": "부스러기하우스",
+      "codes": [
+        "CE09",
+        "CE10"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-ce11-aa446a",
+      "name": "더 실",
+      "codes": [
+        "CE11",
+        "CE12"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-ce13-042870",
+      "name": "베이시 베이시",
+      "codes": [
+        "CE13",
+        "CE14"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g4216",
+      "name": "그림이좋아 송미영",
+      "codes": [
+        "CE15",
+        "CE16"
+      ],
+      "days": [
+        "sat"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4216",
+      "spec": "문구C",
+      "sharesCodeWith": [
+        "푸링 상점"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3502",
+      "name": "푸링 상점",
+      "codes": [
+        "CE15",
+        "CE16"
+      ],
+      "days": [
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3502",
+      "spec": "문구C",
+      "sharesCodeWith": [
+        "그림이좋아 송미영"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3844",
+      "name": "째꾸랜드",
+      "codes": [
+        "CF01",
+        "CF02"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3844",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cf03-d801b5",
+      "name": "ㅁㅋㅁㅋ",
+      "codes": [
+        "CF03",
+        "CF04"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3618",
+      "name": "라즈베리행성",
+      "codes": [
+        "CF05",
+        "CF06"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3618",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3493",
+      "name": "피카링스튜디오",
+      "codes": [
+        "CF07",
+        "CF08"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3493",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3463",
+      "name": "핌피빌리지",
+      "codes": [
+        "CF09",
+        "CF10"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3463",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cf11-5192aa",
+      "name": "우다 (wooda)",
+      "codes": [
+        "CF11",
+        "CF12"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-cf13-66b651",
+      "name": "숲 공방",
+      "codes": [
+        "CF13",
+        "CF14"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3933",
+      "name": "마황마황 대마황",
+      "codes": [
+        "CF15",
+        "CF16"
+      ],
+      "days": [
+        "sat"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3933",
+      "spec": "문구C",
+      "sharesCodeWith": [
+        "농구하는 하운드"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-cf15-7a605e",
+      "name": "농구하는 하운드",
+      "codes": [
+        "CF15",
+        "CF16"
+      ],
+      "sharesCodeWith": [
+        "마황마황 대마황"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-cg01-96941b",
+      "name": "찹쌀손",
+      "codes": [
+        "CG01",
+        "CG02"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3360",
+      "name": "방랑민족",
+      "codes": [
+        "CG03",
+        "CG04"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3360",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cg05-4fde45",
+      "name": "다롱상점",
+      "codes": [
+        "CG05",
+        "CG06"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3579",
+      "name": "시즌스토리",
+      "codes": [
+        "CG07",
+        "CG08"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3579",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4037",
+      "name": "서안",
+      "codes": [
+        "CG09",
+        "CG10"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4037",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cg11-7df0e8",
+      "name": "DuKu sekai",
+      "codes": [
+        "CG11",
+        "CG12"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3611",
+      "name": "단비스페이스",
+      "codes": [
+        "CG13",
+        "CG14"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3611",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3536",
+      "name": "메모리오브",
+      "codes": [
+        "CG15",
+        "CG16"
+      ],
+      "days": [
+        "sat"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3536",
+      "spec": "문구C",
+      "sharesCodeWith": [
+        "토우 오브제"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3588",
+      "name": "토우 오브제",
+      "codes": [
+        "CG15",
+        "CG16"
+      ],
+      "days": [
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3588",
+      "spec": "문구C",
+      "sharesCodeWith": [
+        "메모리오브"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3485",
+      "name": "솜솜별",
+      "codes": [
+        "CH01",
+        "CH02"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3485",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3578",
+      "name": "미나냥마켓",
+      "codes": [
+        "CH03",
+        "CH04"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3578",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ch05-a5da9b",
+      "name": "뿌리별",
+      "codes": [
+        "CH05",
+        "CH06"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3522",
+      "name": "빵부스러기",
+      "codes": [
+        "CH07",
+        "CH08"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3522",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3589",
+      "name": "무찌_8o8",
+      "codes": [
+        "CH09",
+        "CH10"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3589",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ch11-f8c847",
+      "name": "마닐랑",
+      "codes": [
+        "CH11",
+        "CH12"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-ch13-005130",
+      "name": "뉴클립",
+      "codes": [
+        "CH13",
+        "CH14"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-ch15-a20590",
+      "name": "포틴이 올까",
+      "codes": [
+        "CH15",
+        "CH16"
+      ],
+      "sharesCodeWith": [
+        "햇살이네"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-ch15-7fdd16",
+      "name": "햇살이네",
+      "codes": [
+        "CH15",
+        "CH16"
+      ],
+      "sharesCodeWith": [
+        "포틴이 올까"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3837",
+      "name": "오목누니 GuGu",
+      "codes": [
+        "CI01"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3837",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3949",
+      "name": "코땃쥐",
+      "codes": [
+        "CI02"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3949",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3568",
+      "name": "푸냐푸냐",
+      "codes": [
+        "CI03"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3568",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ci04-35e58e",
+      "name": "두야",
+      "codes": [
+        "CI04"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3571",
+      "name": "케슬러신드롬",
+      "codes": [
+        "CI05"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3571",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ci06-5c3907",
+      "name": "ACCACCR",
+      "codes": [
+        "CI06"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3763",
+      "name": "개암나무마법당",
+      "codes": [
+        "CI07"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3763",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3460",
+      "name": "푸젤 문방구",
+      "codes": [
+        "CI08"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3460",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4421",
+      "name": "마나코네",
+      "codes": [
+        "CI09"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4421",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4036",
+      "name": "BLUE WHALE",
+      "codes": [
+        "CI10"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4036",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ci11-590eb8",
+      "name": "오포세포",
+      "codes": [
+        "CI11"
+      ],
+      "sharesCodeWith": [
+        "프롬오로라"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-ci11-3b0e87",
+      "name": "프롬오로라",
+      "codes": [
+        "CI11"
+      ],
+      "sharesCodeWith": [
+        "오포세포"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g4403",
+      "name": "소낙",
+      "codes": [
+        "CI12"
+      ],
+      "days": [
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4403",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3513",
+      "name": "MUNIL",
+      "codes": [
+        "CI13"
+      ],
+      "days": [
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3513",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3600",
+      "name": "누꾸",
+      "codes": [
+        "CI15"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3600",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ci16-4ff84f",
+      "name": "흐무",
+      "codes": [
+        "CI16"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-cj01-15b48b",
+      "name": "희피빌리지",
+      "codes": [
+        "CJ01"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-cj02-e7fc0b",
+      "name": "도보게 작업실",
+      "codes": [
+        "CJ02"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g4398",
+      "name": "티뉴월드",
+      "codes": [
+        "CJ03"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4398",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4373",
+      "name": "도마린집",
+      "codes": [
+        "CJ04"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4373",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4391",
+      "name": "근로기준법준수",
+      "codes": [
+        "CJ05"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4391",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4390",
+      "name": "오밀유밀",
+      "codes": [
+        "CJ06"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4390",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3577",
+      "name": "록달",
+      "codes": [
+        "CJ07"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3577",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3994",
+      "name": "오락가락",
+      "codes": [
+        "CJ08"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3994",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3612",
+      "name": "후유",
+      "codes": [
+        "CJ09"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3612",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3576",
+      "name": "레이린",
+      "codes": [
+        "CJ10"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3576",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3551",
+      "name": "꼬질조작단",
+      "codes": [
+        "CJ11"
+      ],
+      "days": [
+        "sat"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3551",
+      "spec": "문구C",
+      "sharesCodeWith": [
+        "무염가염버터"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-cj11-a259be",
+      "name": "무염가염버터",
+      "codes": [
+        "CJ11"
+      ],
+      "sharesCodeWith": [
+        "꼬질조작단"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3935",
+      "name": "일식상점",
+      "codes": [
+        "CJ12"
+      ],
+      "days": [
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3935",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3562",
+      "name": "몌몸마",
+      "codes": [
+        "CJ13"
+      ],
+      "days": [
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3562",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3877",
+      "name": "숨숨랜드",
+      "codes": [
+        "CJ15"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3877",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4245",
+      "name": "나른솔솔",
+      "codes": [
+        "CJ16"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4245",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4070",
+      "name": "페코퐁",
+      "codes": [
+        "CK01"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4070",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3484",
+      "name": "오리는 꽥꽥",
+      "codes": [
+        "CK02"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3484",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ck03-8bcc20",
+      "name": "ODDOW",
+      "codes": [
+        "CK03"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-ck04-11b734",
+      "name": "디어 레코더",
+      "codes": [
+        "CK04"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3632",
+      "name": "리본냥",
+      "codes": [
+        "CK05"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3632",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4095",
+      "name": "UJE STUDIO",
+      "codes": [
+        "CK06"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4095",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3516",
+      "name": "잠히",
+      "codes": [
+        "CK07"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3516",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3843",
+      "name": "체리던 겨울 마켓",
+      "codes": [
+        "CK08"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3843",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4046",
+      "name": "멍마무",
+      "codes": [
+        "CK09"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4046",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3758",
+      "name": "부옹커플",
+      "codes": [
+        "CK10"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3758",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ck11-d258ea",
+      "name": "둥굴레 마을",
+      "codes": [
+        "CK11"
+      ],
+      "sharesCodeWith": [
+        "갸루 클럽"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-ck11-77b7ed",
+      "name": "갸루 클럽",
+      "codes": [
+        "CK11"
+      ],
+      "sharesCodeWith": [
+        "둥굴레 마을"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-ck12-986121",
+      "name": "호지티티",
+      "codes": [
+        "CK12"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g4410",
+      "name": "Bakeycap",
+      "codes": [
+        "CK13"
+      ],
+      "days": [
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4410",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3852",
+      "name": "푸른 궤도",
+      "codes": [
+        "CL01"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3852",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cl02-7abd91",
+      "name": "가람",
+      "codes": [
+        "CL02"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3457",
+      "name": "재행실험실",
+      "codes": [
+        "CL03"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3457",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3619",
+      "name": "곰팔이",
+      "codes": [
+        "CL04"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3619",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3793",
+      "name": "올레볼레",
+      "codes": [
+        "CL05"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3793",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3965",
+      "name": "찌구별",
+      "codes": [
+        "CL06"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3965",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3597",
+      "name": "파무파무",
+      "codes": [
+        "CL07"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3597",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4364",
+      "name": "히치",
+      "codes": [
+        "CL08"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4364",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cl09-5abdb1",
+      "name": "8.8스튜디오",
+      "codes": [
+        "CL09"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3850",
+      "name": "모람",
+      "codes": [
+        "CL10"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3850",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3570",
+      "name": "재재",
+      "codes": [
+        "CL11"
+      ],
+      "days": [
+        "sat"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3570",
+      "spec": "문구C",
+      "sharesCodeWith": [
+        "둥이양"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-cl11-289285",
+      "name": "둥이양",
+      "codes": [
+        "CL11"
+      ],
+      "sharesCodeWith": [
+        "재재"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-cl12-aefc13",
+      "name": "오와이마켓",
+      "codes": [
+        "CL12"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3699",
+      "name": "쿤: 몽환기록",
+      "codes": [
+        "CL13"
+      ],
+      "days": [
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3699",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cm01-0f3a0b",
+      "name": "스타리움",
+      "codes": [
+        "CM01"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-cm02-af1fb2",
+      "name": "다글다글",
+      "codes": [
+        "CM02"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g4402",
+      "name": "아지트",
+      "codes": [
+        "CM03"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4402",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4383",
+      "name": "지옥의 부스러",
+      "codes": [
+        "CM04"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4383",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cm05-d75943",
+      "name": "멜로디스티치",
+      "codes": [
+        "CM05"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3614",
+      "name": "김괜찮씨 상점",
+      "codes": [
+        "CM06"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3614",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3923",
+      "name": "은파루",
+      "codes": [
+        "CM07"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3923",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cm08-2cab02",
+      "name": "숨",
+      "codes": [
+        "CM08"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-cm09-19eb21",
+      "name": "김두부",
+      "codes": [
+        "CM09"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3756",
+      "name": "카페피피차차",
+      "codes": [
+        "CM10"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3756",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3979",
+      "name": "토라",
+      "codes": [
+        "CM11"
+      ],
+      "days": [
+        "sat"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3979",
+      "spec": "문구C",
+      "sharesCodeWith": [
+        "plig"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g4355",
+      "name": "plig",
+      "codes": [
+        "CM11"
+      ],
+      "days": [
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4355",
+      "spec": "문구C",
+      "sharesCodeWith": [
+        "토라"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-cm12-1887c6",
+      "name": "깃털공",
+      "codes": [
+        "CM12"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3736",
+      "name": "쿠모코모",
+      "codes": [
+        "CM13"
+      ],
+      "days": [
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3736",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3621",
+      "name": "조이집사 작업실",
+      "codes": [
+        "CN01"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3621",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cn02-62f8de",
+      "name": "딩글몽글",
+      "codes": [
+        "CN02"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3596",
+      "name": "히나타운",
+      "codes": [
+        "CN03"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3596",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4422",
+      "name": "DSMW",
+      "codes": [
+        "CN04"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4422",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cn05-4b9340",
+      "name": "댕구",
+      "codes": [
+        "CN05"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g4004",
+      "name": "소용",
+      "codes": [
+        "CN06"
+      ],
+      "days": [
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4004",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3480",
+      "name": "찌래",
+      "codes": [
+        "CN07"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3480",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3675",
+      "name": "히키데이",
+      "codes": [
+        "CN08"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3675",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3892",
+      "name": "밍숭맹수",
+      "codes": [
+        "CN09"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3892",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cn10-1df4d7",
+      "name": "SOROTOWN",
+      "codes": [
+        "CN10"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3751",
+      "name": "또로삐",
+      "codes": [
+        "CN11"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3751",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cn12-0ea158",
+      "name": "폿폿",
+      "codes": [
+        "CN12"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3857",
+      "name": "곰도리무스케이크",
+      "codes": [
+        "CN13"
+      ],
+      "days": [
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3857",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-co01-3f25cc",
+      "name": "얀냥",
+      "codes": [
+        "CO01"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-co02-e51e61",
+      "name": "끄적끄적 작업실",
+      "codes": [
+        "CO02"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-co03-867d2e",
+      "name": "mika",
+      "codes": [
+        "CO03"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-co04-0e92eb",
+      "name": "ST3LAM♡",
+      "codes": [
+        "CO04"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3849",
+      "name": "토마토맛쫀디기",
+      "codes": [
+        "CO05"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3849",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3741",
+      "name": "하우즈웨더",
+      "codes": [
+        "CO06"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3741",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-co07-0b7777",
+      "name": "당이네",
+      "codes": [
+        "CO07"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-co08-12c01d",
+      "name": "라기씨의 대충이런거",
+      "codes": [
+        "CO08"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3575",
+      "name": "올망졸망 하찌상점",
+      "codes": [
+        "CO09"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3575",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-co10-8f934a",
+      "name": "솔하",
+      "codes": [
+        "CO10"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-co11-c0a27c",
+      "name": "빙산의 일각",
+      "codes": [
+        "CO11"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-co12-0b08b4",
+      "name": "녹 NOK",
+      "codes": [
+        "CO12"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g4044",
+      "name": "표랑어린",
+      "codes": [
+        "CO13"
+      ],
+      "days": [
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4044",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3514",
+      "name": "도호",
+      "codes": [
+        "CP01"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3514",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cp02-6f8aa6",
+      "name": "문으",
+      "codes": [
+        "CP02"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3590",
+      "name": "모아지",
+      "codes": [
+        "CP03"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3590",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4385",
+      "name": "이초",
+      "codes": [
+        "CP04"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4385",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4327",
+      "name": "미니러키",
+      "codes": [
+        "CP05"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4327",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4328",
+      "name": "NCC",
+      "codes": [
+        "CP06"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4328",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4165",
+      "name": "닷새",
+      "codes": [
+        "CP07"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4165",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3835",
+      "name": "푸름푸름",
+      "codes": [
+        "CP10"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3835",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3458",
+      "name": "모노버니 스토어",
+      "codes": [
+        "CP11"
+      ],
+      "days": [
+        "sat"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3458",
+      "spec": "문구C",
+      "sharesCodeWith": [
+        "푹신펀치"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g4384",
+      "name": "푹신펀치",
+      "codes": [
+        "CP11"
+      ],
+      "days": [
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4384",
+      "spec": "문구C",
+      "sharesCodeWith": [
+        "모노버니 스토어"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3475",
+      "name": "4U4U",
+      "codes": [
+        "CP12"
+      ],
+      "days": [
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3475",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3478",
+      "name": "마녀공방",
+      "codes": [
+        "CQ01"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3478",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3627",
+      "name": "하니땅",
+      "codes": [
+        "CQ02"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3627",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3613",
+      "name": "송하",
+      "codes": [
+        "CQ03"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3613",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3574",
+      "name": "폴리의 잡화점",
+      "codes": [
+        "CQ04"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3574",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3896",
+      "name": "샘물무아레",
+      "codes": [
+        "CQ05"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3896",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cq06-b1f940",
+      "name": "은담의 보물각",
+      "codes": [
+        "CQ06"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-cq07-d044f3",
+      "name": "체리문데이지",
+      "codes": [
+        "CQ07"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3796",
+      "name": "밍라",
+      "codes": [
+        "CQ08"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3796",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3797",
+      "name": "랩터",
+      "codes": [
+        "CQ09"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3797",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3814",
+      "name": "밥초",
+      "codes": [
+        "CQ10"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3814",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3587",
+      "name": "슈미",
+      "codes": [
+        "CQ11"
+      ],
+      "days": [
+        "sat"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3587",
+      "spec": "문구C",
+      "sharesCodeWith": [
+        "호접몽"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-cq11-2ce711",
+      "name": "호접몽",
+      "codes": [
+        "CQ11"
+      ],
+      "sharesCodeWith": [
+        "슈미"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-cq12-0bf905",
+      "name": "비딜라잍",
+      "codes": [
+        "CQ12"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g4304",
+      "name": "세로니의정원",
+      "codes": [
+        "CR01"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4304",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3533",
+      "name": "꿀꿀이네 꿀단지",
+      "codes": [
+        "CR02"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3533",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4047",
+      "name": "배니싱 포인트",
+      "codes": [
+        "CR03"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4047",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3474",
+      "name": "포르티시모",
+      "codes": [
+        "CR04"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3474",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3942",
+      "name": "PAYOYO",
+      "codes": [
+        "CR05"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3942",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cr06-6429f8",
+      "name": "유즈스튜디오",
+      "codes": [
+        "CR06"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-cr07-999c4c",
+      "name": "HOODY",
+      "codes": [
+        "CR07"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-cr08-ca45cb",
+      "name": "쑈록",
+      "codes": [
+        "CR08"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-cr09-762dc2",
+      "name": "악기상점",
+      "codes": [
+        "CR09"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3862",
+      "name": "미애와 주머니곰양이",
+      "codes": [
+        "CR10"
+      ],
+      "days": [
+        "sat"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3862",
+      "spec": "문구C",
+      "sharesCodeWith": [
+        "미야우하우스"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3744",
+      "name": "미야우하우스",
+      "codes": [
+        "CR10"
+      ],
+      "days": [
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3744",
+      "spec": "문구C",
+      "sharesCodeWith": [
+        "미애와 주머니곰양이"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-cr11-d42f0b",
+      "name": "클레공방",
+      "codes": [
+        "CR11"
+      ],
+      "sharesCodeWith": [
+        "최고도 공작소"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-cr11-403aa9",
+      "name": "최고도 공작소",
+      "codes": [
+        "CR11"
+      ],
+      "sharesCodeWith": [
+        "클레공방"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3981",
+      "name": "조래미와 쥐콩이",
+      "codes": [
+        "CR12"
+      ],
+      "days": [
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3981",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cs01-b4e8bb",
+      "name": "동동동그라미",
+      "codes": [
+        "CS01"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3617",
+      "name": "모모또",
+      "codes": [
+        "CS02"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3617",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3552",
+      "name": "링고멘션",
+      "codes": [
+        "CS03"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3552",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cs04-cf654d",
+      "name": "체리치즈",
+      "codes": [
+        "CS04"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3553",
+      "name": "조호",
+      "codes": [
+        "CS05"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3553",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3483",
+      "name": "잉크",
+      "codes": [
+        "CS06"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3483",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cs07-de0166",
+      "name": "공사장",
+      "codes": [
+        "CS07"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3867",
+      "name": "함이하우스",
+      "codes": [
+        "CS08"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3867",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3573",
+      "name": "구산",
+      "codes": [
+        "CS09"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3573",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3477",
+      "name": "그린 판타지아",
+      "codes": [
+        "CS10"
+      ],
+      "days": [
+        "sat"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3477",
+      "spec": "문구C",
+      "sharesCodeWith": [
+        "할짝스튜디오"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g4217",
+      "name": "할짝스튜디오",
+      "codes": [
+        "CS10"
+      ],
+      "days": [
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4217",
+      "spec": "문구C",
+      "sharesCodeWith": [
+        "그린 판타지아"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3601",
+      "name": "뿌딩앤소디",
+      "codes": [
+        "CS11"
+      ],
+      "days": [
+        "sat"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3601",
+      "spec": "문구C",
+      "sharesCodeWith": [
+        "호니히"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3696",
+      "name": "호니히",
+      "codes": [
+        "CS11"
+      ],
+      "days": [
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3696",
+      "spec": "문구C",
+      "sharesCodeWith": [
+        "뿌딩앤소디"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3913",
+      "name": "몽글별",
+      "codes": [
+        "CS12"
+      ],
+      "days": [
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3913",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3622",
+      "name": "사랑의 형태",
+      "codes": [
+        "CT01"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3622",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3689",
+      "name": "퐁듀월드",
+      "codes": [
+        "CT02"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3689",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ct03-ff0532",
+      "name": "말랑앤뚠뚠",
+      "codes": [
+        "CT03"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3750",
+      "name": "MerryBlue",
+      "codes": [
+        "CT04"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3750",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ct05-870581",
+      "name": "파스텔파우",
+      "codes": [
+        "CT05"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-ct06-187744",
+      "name": "기그컴퍼니",
+      "codes": [
+        "CT06"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g4388",
+      "name": "1ntestine",
+      "codes": [
+        "CT07"
+      ],
+      "days": [
+        "sat",
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/4388",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3456",
+      "name": "999MALL",
+      "codes": [
+        "CT10"
+      ],
+      "days": [
+        "sat"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3456",
+      "spec": "문구C",
+      "sharesCodeWith": [
+        "신화일지"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-ct10-4bbbe3",
+      "name": "신화일지",
+      "codes": [
+        "CT10"
+      ],
+      "sharesCodeWith": [
+        "999MALL"
+      ]
+    },
+    {
+      "key": "moongu-2026-winter-g3616",
+      "name": "역류",
+      "codes": [
+        "CT11"
+      ],
+      "days": [
+        "sun"
+      ],
+      "boothcutUrl": "https://comicw.net/g/3616",
+      "spec": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ct12-6141eb",
+      "name": "포터메리",
+      "codes": [
+        "CT12"
+      ]
+    }
+  ]
+}
