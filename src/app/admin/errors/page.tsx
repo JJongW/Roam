@@ -1,8 +1,6 @@
-import { cookies } from "next/headers";
 import { getRepository } from "@/lib/repositories";
-import { listExhibitionsCached } from "@/lib/repositories/cached";
-import { resolveAdminExhibition, todayISO } from "@/lib/exhibition/current";
-import { ADMIN_EXHIBITION_COOKIE } from "@/lib/constants";
+import { getAdminFairScope } from "@/lib/admin/fair-scope";
+import { AdminFairHeader } from "@/components/admin/admin-fair-header";
 import {
   findBoothEnrichmentGaps,
   findNoteInconsistencies,
@@ -17,9 +15,7 @@ export const metadata = { title: "오류/이슈" };
 
 export default async function AdminErrorsPage() {
   const repo = await getRepository();
-  const { data: exhibitions } = await listExhibitionsCached();
-  const cookieId = (await cookies()).get(ADMIN_EXHIBITION_COOKIE)?.value;
-  const exhibition = resolveAdminExhibition(exhibitions, cookieId, todayISO());
+  const { exhibitions, exhibition } = await getAdminFairScope();
 
   const issues = await repo.listIssues({ limit: 1000, sinceDays: 30 });
   const groups = groupIssues(issues);
@@ -36,12 +32,12 @@ export default async function AdminErrorsPage() {
 
   return (
     <div className="space-y-5">
-      <header>
-        <h1 className="text-2xl font-extrabold">오류/이슈</h1>
-        {exhibition && (
-          <p className="text-sm text-muted-foreground">{exhibition.name}</p>
-        )}
-      </header>
+      <AdminFairHeader
+        title="오류/이슈"
+        exhibitions={exhibitions}
+        exhibition={exhibition}
+        description="오류 로그는 모든 행사를 모아 보고, 데이터 이슈만 고른 행사 기준으로 봐요."
+      />
 
       <Tabs defaultValue="logs">
         <TabsList>

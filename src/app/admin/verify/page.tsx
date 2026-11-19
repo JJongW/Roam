@@ -1,9 +1,7 @@
 import Link from "next/link";
-import { cookies } from "next/headers";
 import { getRepository } from "@/lib/repositories";
-import { listExhibitionsCached } from "@/lib/repositories/cached";
-import { resolveAdminExhibition, todayISO } from "@/lib/exhibition/current";
-import { ADMIN_EXHIBITION_COOKIE } from "@/lib/constants";
+import { getAdminFairScope } from "@/lib/admin/fair-scope";
+import { AdminFairHeader } from "@/components/admin/admin-fair-header";
 import { loadVerified, sameText } from "@/lib/verified";
 import { VerifyQueue, type VerifyRow } from "@/components/admin/verify-queue";
 
@@ -16,9 +14,7 @@ import { VerifyQueue, type VerifyRow } from "@/components/admin/verify-queue";
  */
 export default async function AdminVerifyPage() {
   const repo = await getRepository();
-  const { data: exhibitions } = await listExhibitionsCached();
-  const cookieId = (await cookies()).get(ADMIN_EXHIBITION_COOKIE)?.value;
-  const exhibition = resolveAdminExhibition(exhibitions, cookieId, todayISO());
+  const { exhibitions, exhibition } = await getAdminFairScope();
 
   const verified = exhibition ? loadVerified(exhibition.slug) : {};
   const booths = exhibition ? await repo.listBoothsFull(exhibition.id) : [];
@@ -52,16 +48,16 @@ export default async function AdminVerifyPage() {
 
   return (
     <div className="space-y-6">
-      <header>
-        <h1 className="text-2xl font-extrabold">대조 검수</h1>
+      <AdminFairHeader
+        title="대조 검수"
+        exhibitions={exhibitions}
+        exhibition={exhibition}
+        description="자동 초안이 쓴 글과 사람이 직접 확인한 글이 다를 때, 무엇이 맞는지 골라요. 인스타가 늘 옳은 것도 아니라 한 건씩 봐요."
+      >
         <p className="text-sm">
           <Link href="/admin/brands/links" className="underline">같은 브랜드인지는 브랜드의 연결 확인에서 골라요 →</Link>
         </p>
-        <p className="text-sm text-muted-foreground">
-          자동 초안이 쓴 글과 사람이 직접 확인한 글이 다를 때, 무엇이 맞는지
-          골라요. 인스타가 늘 옳은 것도 아니라 한 건씩 봐요.
-        </p>
-      </header>
+      </AdminFairHeader>
 
       <div className="rounded-2xl border border-border bg-card p-4 text-sm">
         <p>

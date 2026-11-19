@@ -8,6 +8,7 @@ import {
   ArrowRight,
   AlertTriangle,
   Bug,
+  ChevronRight,
 } from "lucide-react";
 import { getRepository } from "@/lib/repositories";
 import { listExhibitionsCached } from "@/lib/repositories/cached";
@@ -16,6 +17,7 @@ import { todayISO } from "@/lib/exhibition/current";
 import { Card } from "@/components/ui/card";
 import { Chip } from "@/components/ui/chip";
 import { AdminSection } from "@/components/admin/section";
+import { FairPortfolioLink } from "@/components/admin/fair-portfolio-link";
 import { OnboardingValueChart } from "@/components/charts/onboarding-value-chart";
 import { buildGlobalOverview } from "@/lib/admin/global-overview";
 import { learningCurve } from "@/lib/memory/learning-curve";
@@ -107,7 +109,7 @@ export default async function AdminOverviewPage() {
       <header>
         <h1 className="text-2xl font-extrabold">전체</h1>
         <p className="text-sm text-muted-foreground">
-          Roam 서비스 전체 — 행사를 고르지 않아도 떠요
+          Roam 서비스 전체
         </p>
       </header>
 
@@ -145,7 +147,7 @@ export default async function AdminOverviewPage() {
 
       <AdminSection
         title="행사 포트폴리오"
-        description="행사 전환은 상단 선택기에서"
+        description="누르면 그 행사 분석으로 가요"
       >
         {overview.portfolio.length === 0 ? (
           <p className="py-8 text-center text-sm text-muted-foreground">
@@ -158,32 +160,35 @@ export default async function AdminOverviewPage() {
                 .exhibition;
               const status = exhibitionStatus(ex, today);
               return (
-                <li
-                  key={p.id}
-                  className="flex items-center justify-between gap-3 py-3 first:pt-0 last:pb-0"
-                >
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p className="truncate font-bold">{p.name}</p>
-                      <Chip
-                        size="sm"
-                        variant={status === "ongoing" ? "tint" : "outline"}
-                      >
-                        {STATUS_LABEL[status]}
-                      </Chip>
+                <li key={p.id} className="py-1 first:pt-0 last:pb-0">
+                  <FairPortfolioLink
+                    exhibitionId={p.id}
+                    className="press -mx-2 flex items-center justify-between gap-3 rounded-lg px-2 py-2 hover:bg-secondary active:bg-card-pressed"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <p className="truncate font-bold">{p.name}</p>
+                        <Chip
+                          size="sm"
+                          variant={status === "ongoing" ? "tint" : "outline"}
+                        >
+                          {STATUS_LABEL[status]}
+                        </Chip>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        {p.startDate} ~ {p.endDate}
+                      </p>
                     </div>
-                    <p className="text-xs text-muted-foreground">
-                      {p.startDate} – {p.endDate}
-                    </p>
-                  </div>
-                  <div className="shrink-0 text-right">
-                    <p className="text-sm font-bold tabular">
-                      방문자 {p.visitorCount}
-                    </p>
-                    <p className="text-xs text-muted-foreground tabular">
-                      부스 {p.boothCount}
-                    </p>
-                  </div>
+                    <div className="shrink-0 text-right">
+                      <p className="text-sm font-bold tabular">
+                        방문자 {p.visitorCount}
+                      </p>
+                      <p className="text-xs text-muted-foreground tabular">
+                        부스 {p.boothCount}
+                      </p>
+                    </div>
+                    <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
+                  </FairPortfolioLink>
                 </li>
               );
             })}

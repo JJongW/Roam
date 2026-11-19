@@ -1,17 +1,13 @@
-import { cookies } from "next/headers";
 import { getRepository } from "@/lib/repositories";
-import { listExhibitionsCached } from "@/lib/repositories/cached";
-import { resolveAdminExhibition, todayISO } from "@/lib/exhibition/current";
-import { ADMIN_EXHIBITION_COOKIE } from "@/lib/constants";
+import { getAdminFairScope } from "@/lib/admin/fair-scope";
+import { AdminFairHeader } from "@/components/admin/admin-fair-header";
 import { BoothManager } from "@/components/admin/booth-manager";
 
 export const metadata = { title: "부스 관리" };
 
 export default async function AdminBoothsPage() {
   const repo = await getRepository();
-  const { data: exhibitions } = await listExhibitionsCached();
-  const cookieId = (await cookies()).get(ADMIN_EXHIBITION_COOKIE)?.value;
-  const exhibition = resolveAdminExhibition(exhibitions, cookieId, todayISO());
+  const { exhibitions, exhibition } = await getAdminFairScope();
   if (!exhibition) return <p className="text-muted-foreground">행사가 없어요.</p>;
 
   const detail = await repo.getExhibition(exhibition.slug);
@@ -22,10 +18,7 @@ export default async function AdminBoothsPage() {
 
   return (
     <div className="space-y-5">
-      <header>
-        <h1 className="text-2xl font-extrabold">부스 관리</h1>
-        <p className="text-sm text-muted-foreground">{exhibition.name}</p>
-      </header>
+      <AdminFairHeader title="부스 관리" exhibitions={exhibitions} exhibition={exhibition} />
       <BoothManager
         exhibitionId={exhibition.id}
         booths={booths}
