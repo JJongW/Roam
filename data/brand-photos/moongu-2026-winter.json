@@ -1,0 +1,458 @@
+{
+  "version": "brand-photos.v1",
+  "exhibitionSlug": "moongu-2026-winter",
+  "bucket": "brand-photos",
+  "root": "/Volumes/One Touch/작업 폴더/Roam/brand/일러스트",
+  "evidence": "Roam-design docs/content/engine/runs/moongu-2026-winter/permissions.csv (dmStatus granted 7행, 2026-11-10 수정본)",
+  "scannedAt": "2026-11-19",
+  "teams": [
+    {
+      "key": "moongu-9san93",
+      "name": "구산",
+      "artist": "9SAN93",
+      "instagramUrl": "https://www.instagram.com/9san93/",
+      "exhibitorId": "exr_d0yl2hiwmwa3kizf",
+      "officialBooth": "CS_09",
+      "day": "양일",
+      "boothcutUrl": "https://comicw.net/g/3573",
+      "folder": "9SAN93 - 9san93",
+      "scope": "작가가 DM으로 보낸 사진(sent-photo). 카드뉴스용으로 받은 허락이고, 2026-11-19 Ted 결정으로 아티클에도 써요",
+      "permission": {
+        "status": "granted",
+        "allowedUse": [
+          "sent-photo"
+        ],
+        "sentAt": "2026-11-03",
+        "reply": "소개 문장 지정(\"차가운 겨울 속 포근한 순간을…\" 그대로 써 달라)과 사진 보냄",
+        "photoSource": "/Volumes/One Touch/작업 폴더/Roam/brand/일러스트/9SAN93 - 9san93"
+      },
+      "photos": [
+        {
+          "file": "3C470A03-FDED-449E-B1BD-85F3D5A47873.JPG",
+          "sha256": "17604ab4c9f4598bb6607379b12b0767e1a1e57ed23276b548e275926c432857",
+          "bytes": 500639,
+          "width": 1080,
+          "height": 1350,
+          "use": true
+        },
+        {
+          "file": "5AECEBB8-5730-4596-AE79-A43C94B9F8F0.JPG",
+          "sha256": "93a3f90220bcc2fc7e1b2b133a91aca69597fdfa251e2da66bbfcf20448094df",
+          "bytes": 446282,
+          "width": 1080,
+          "height": 1350,
+          "use": true
+        }
+      ]
+    },
+    {
+      "key": "moongu-odd_tail",
+      "name": "Odd Tail",
+      "artist": "mika99",
+      "instagramUrl": "https://www.instagram.com/odd_tail/",
+      "exhibitorId": "exr_lsn0bmevmwa3kizf",
+      "officialBooth": "CC_07 CC_08",
+      "day": "양일",
+      "boothcutUrl": "https://comicw.net/g/3584",
+      "folder": "mika99 - odd_tail",
+      "scope": "작가가 DM으로 보낸 사진(sent-photo). 카드뉴스용으로 받은 허락이고, 2026-11-19 Ted 결정으로 아티클에도 써요",
+      "permission": {
+        "status": "granted",
+        "allowedUse": [
+          "sent-photo"
+        ],
+        "sentAt": "2026-11-03",
+        "reply": "소개와 사진 보냄",
+        "photoSource": "/Volumes/One Touch/작업 폴더/Roam/brand/일러스트/mika99 - odd_tail"
+      },
+      "photos": [
+        {
+          "file": "7814CB4B-FBF0-4E03-9F9C-C8C65910888F.JPG",
+          "sha256": "5eb2350a4c7f985322c1d742995ea48d715c4de347c01e11acafa45f0cd85404",
+          "bytes": 353012,
+          "width": 1080,
+          "height": 1350,
+          "use": true
+        },
+        {
+          "file": "88366A4F-D12E-4C0E-9313-0B2E275E1A8D.JPG",
+          "sha256": "c9c77e5ce5d401346b8007fabd7e4cd5eea17955660feff57eb2d860f957231a",
+          "bytes": 223384,
+          "width": 1080,
+          "height": 1350,
+          "use": true
+        },
+        {
+          "file": "965F4809-96B9-4FE0-BC36-B7D78DC427E2.JPG",
+          "sha256": "b85d51628bd65c563d13e0b8ab9325d9cd2eb7955d1a3e84074db79cebed6e67",
+          "bytes": 567059,
+          "width": 1080,
+          "height": 1350,
+          "use": true
+        }
+      ]
+    },
+    {
+      "key": "moongu-minidiary._.shm",
+      "name": "슈미",
+      "artist": "sumi슈미",
+      "instagramUrl": "https://www.instagram.com/minidiary._.shm/",
+      "exhibitorId": "exr_b7wsprlhmwa3kizf",
+      "officialBooth": "CQ_11",
+      "day": "토",
+      "boothcutUrl": "https://comicw.net/g/3587",
+      "folder": "sumi슈미 - minidiary._.shm",
+      "scope": "작가가 DM으로 보낸 사진(sent-photo). 카드뉴스용으로 받은 허락이고, 2026-11-19 Ted 결정으로 아티클에도 써요",
+      "permission": {
+        "status": "granted",
+        "allowedUse": [
+          "sent-photo"
+        ],
+        "sentAt": "2026-11-03",
+        "reply": "사진만 보냄, 소개는 못 받음",
+        "photoSource": "/Volumes/One Touch/작업 폴더/Roam/brand/일러스트/sumi슈미 - minidiary._.shm"
+      },
+      "photos": [
+        {
+          "file": "9C6CB1EB-961F-4CCB-83FF-8B9CF97A0407.JPG",
+          "sha256": "afe40181495536e0ebb8a321598aa71a78454ebaf1245bf239f6a9587b28da71",
+          "bytes": 111256,
+          "width": 1080,
+          "height": 1350,
+          "use": true
+        },
+        {
+          "file": "F668FBCC-939B-4F39-B7A7-F8A5C0E32D84.JPG",
+          "sha256": "66bb27a8ce05ae911a7f727084e6c28e929104ac7da2f19f9ed014ab5e6bc166",
+          "bytes": 60558,
+          "width": 480,
+          "height": 734,
+          "use": false,
+          "note": "작은 사진(480x734). 쓸지 Ted 결정"
+        },
+        {
+          "file": "F7D5F737-7DE2-477E-A1DA-6E2BA646AC48.JPG",
+          "sha256": "ec3872ff9898a4a58ecff0e160de0b769f11bb54903b405fde24a7edfbb4ca4d",
+          "bytes": 114922,
+          "width": 912,
+          "height": 724,
+          "use": true
+        }
+      ]
+    },
+    {
+      "key": "moongu-amu_goto_",
+      "name": "MUNIL",
+      "artist": "고토",
+      "instagramUrl": "https://www.instagram.com/amu_goto_/",
+      "exhibitorId": "exr_ebkvdj05mwa3kizf",
+      "officialBooth": "CI_13",
+      "day": "일",
+      "boothcutUrl": "https://comicw.net/g/3513",
+      "folder": "고토 - amu_goto_",
+      "scope": "작가가 DM으로 보낸 사진(sent-photo). 카드뉴스용으로 받은 허락이고, 2026-11-19 Ted 결정으로 아티클에도 써요",
+      "permission": {
+        "status": "granted",
+        "allowedUse": [
+          "sent-photo"
+        ],
+        "sentAt": "2026-11-03",
+        "reply": "소개 보냄, 사진은 구글 드라이브 링크로",
+        "photoSource": "/Volumes/One Touch/작업 폴더/Roam/brand/일러스트/고토 - amu_goto_ (작가가 보낸 구글 드라이브에서 9장 받음)"
+      },
+      "photos": [
+        {
+          "file": "1.png",
+          "sha256": "bf209432ba404af588122b62f1a295ef40114263b42402054cb72be49d999dfa",
+          "bytes": 575898,
+          "width": 2160,
+          "height": 2700,
+          "use": true
+        },
+        {
+          "file": "2.png",
+          "sha256": "2a319aa486f5ade43bf881c42e2aebd6a8a0bb7b39f67ae778f15dd58f5567e5",
+          "bytes": 521498,
+          "width": 2160,
+          "height": 2700,
+          "use": true
+        },
+        {
+          "file": "3.jpg",
+          "sha256": "db95cea61002cda43886b5c1f38d5805ded512854f72d6307693eb1b6c904d8d",
+          "bytes": 613865,
+          "width": 1080,
+          "height": 1350,
+          "use": true
+        },
+        {
+          "file": "4.jpg",
+          "sha256": "680a9ae73bcdae9064c3171731b5844e13343ee38eb93ca9a3cf7d85dd8f6a19",
+          "bytes": 970863,
+          "width": 1080,
+          "height": 1350,
+          "use": true
+        },
+        {
+          "file": "5.png",
+          "sha256": "93151d8d4e259ec06b424f572e7c56a61df35f3fa0cf2861a41705337b86e9eb",
+          "bytes": 8611376,
+          "width": 2160,
+          "height": 2700,
+          "use": true
+        },
+        {
+          "file": "6.png",
+          "sha256": "25f51357f6d3530c753926172c3523b396ebbd2be0ed3860c06f3965dc476352",
+          "bytes": 5888656,
+          "width": 2160,
+          "height": 2700,
+          "use": true
+        },
+        {
+          "file": "7.png",
+          "sha256": "ba34681af5e1c9ff1639b433e64ee79accc56dd30078a6bbcca9727d5e6e1e58",
+          "bytes": 8500486,
+          "width": 2160,
+          "height": 2700,
+          "use": true
+        },
+        {
+          "file": "8.jpg",
+          "sha256": "409df9b98eb8d27661bb06e749d338d9c9e25becf199f55376edc9cc19b196b5",
+          "bytes": 2889780,
+          "width": 4000,
+          "height": 2252,
+          "use": true
+        },
+        {
+          "file": "9.jpg",
+          "sha256": "dce680b654d8582f20d8e0b997c5d41160eccf5898987b672693a9a5edf3d808",
+          "bytes": 2302194,
+          "width": 4000,
+          "height": 2252,
+          "use": true
+        }
+      ]
+    },
+    {
+      "key": "moongu-bangrang23",
+      "name": "방랑민족",
+      "artist": "방랑민족",
+      "instagramUrl": "https://www.instagram.com/bangrang23/",
+      "exhibitorId": "exr_4dtzjtgzmwa3kizf",
+      "officialBooth": "CG_03 CG_04",
+      "day": "양일",
+      "boothcutUrl": "https://comicw.net/g/3360",
+      "folder": "방랑민족 - bangrang23",
+      "scope": "작가가 DM으로 보낸 사진(sent-photo). 카드뉴스용으로 받은 허락이고, 2026-11-19 Ted 결정으로 아티클에도 써요",
+      "permission": {
+        "status": "granted",
+        "allowedUse": [
+          "sent-photo"
+        ],
+        "sentAt": "2026-11-03",
+        "reply": "짧은 소개와 사진 보냄",
+        "photoSource": "/Volumes/One Touch/작업 폴더/Roam/brand/일러스트/방랑민족 - bangrang23"
+      },
+      "photos": [
+        {
+          "file": "AFFBB38F-C261-431B-90C4-112ABEA9F041.JPG",
+          "sha256": "bc4ee4df7c4ac7696e77ff41780bd45eb7adc069d0f81fd2287d56c5c6931501",
+          "bytes": 250975,
+          "width": 960,
+          "height": 1293,
+          "use": true
+        },
+        {
+          "file": "D7EC1279-BB9C-4E46-A0F1-CA84CCE64100.JPG",
+          "sha256": "2a934e67392fb46b9d0a66dd2b95f1db876c216ec83624f2f8f8845dddf456d9",
+          "bytes": 260330,
+          "width": 960,
+          "height": 1293,
+          "use": true
+        }
+      ]
+    },
+    {
+      "key": "moongu-starlight_daum",
+      "name": "별빛다움",
+      "artist": "별빛을담은밤",
+      "instagramUrl": "https://www.instagram.com/starlight_daum/",
+      "exhibitorId": "exr_xlyykdxrmwa3kizf",
+      "officialBooth": "CB_15 CB_16",
+      "day": "토",
+      "boothcutUrl": "https://comicw.net/g/3528",
+      "folder": "별빛을담은밤 - starlight_daum",
+      "scope": "작가가 DM으로 보낸 사진(sent-photo). 카드뉴스용으로 받은 허락이고, 2026-11-19 Ted 결정으로 아티클에도 써요",
+      "permission": {
+        "status": "granted",
+        "allowedUse": [
+          "sent-photo"
+        ],
+        "sentAt": "2026-11-03",
+        "reply": "소개(계기, 이야기, 뜨개책갈피 특징)와 사진 보냄",
+        "photoSource": "/Volumes/One Touch/작업 폴더/Roam/brand/일러스트/별빛을담은밤 - starlight_daum"
+      },
+      "photos": [
+        {
+          "file": "05481F63-4955-4267-939F-6FC2A47E6796.JPG",
+          "sha256": "9bac1dab75f111f2a348b076312080d0baf972ac864f05e7a057eebbe3adcc7a",
+          "bytes": 1157536,
+          "width": 2160,
+          "height": 2160,
+          "use": true
+        },
+        {
+          "file": "2161362B-0DF4-4575-BC4E-C75D9C2630DF.JPG",
+          "sha256": "d6aa09ed6bc7bb47fe0a842335b040c59fdc7d436b6260b03b757939f3904561",
+          "bytes": 249446,
+          "width": 830,
+          "height": 785,
+          "use": true
+        },
+        {
+          "file": "3638441A-6CB2-4AEC-BC33-6E75E259FF50.JPG",
+          "sha256": "c145f8b0fbd4da1e773187a9d9c25d781374bd431ad563bf2b690e2de8b5a510",
+          "bytes": 61454,
+          "width": 408,
+          "height": 414,
+          "use": false,
+          "note": "작은 사진(408x414). 쓸지 Ted 결정"
+        },
+        {
+          "file": "588AC3E6-4495-40BC-A99D-2ABBCD20C5EB.JPG",
+          "sha256": "520e0f1b4f26a97627d1e7939c3ed446ad9b31971b0dd5d65b29d498e0fc1ad8",
+          "bytes": 1533765,
+          "width": 2160,
+          "height": 2160,
+          "use": true
+        },
+        {
+          "file": "5F95B7D3-4A6C-4661-B3EE-7F0151863637.JPG",
+          "sha256": "a4a461086a53ece1a082628333d3a43b9d6684f855970ad0fa0b083215935d98",
+          "bytes": 969298,
+          "width": 3596,
+          "height": 3596,
+          "use": true
+        },
+        {
+          "file": "608AC3A0-801D-47DE-9159-89A9DC9304C3.JPG",
+          "sha256": "e494076b37dba1428dd7f4dd14c9843cff6cb147a511c82e38ca79d079896d71",
+          "bytes": 53807,
+          "width": 415,
+          "height": 414,
+          "use": false,
+          "note": "작은 사진(415x414). 쓸지 Ted 결정"
+        },
+        {
+          "file": "8848CACC-8FFC-4501-91C7-86E797790E03.JPG",
+          "sha256": "d9306dc81c516e70eafebecae02be5ab786e2fa0c741ab46857ef40c21845658",
+          "bytes": 1488592,
+          "width": 2160,
+          "height": 2160,
+          "use": true
+        },
+        {
+          "file": "A660DF0E-5569-44C3-AA16-A6D4606C9E6D.JPG",
+          "sha256": "51e76ef9735105419173a3758b4789f25999d00b413c4f37a8b076c6dd06e4b1",
+          "bytes": 1549674,
+          "width": 2160,
+          "height": 2160,
+          "use": true
+        },
+        {
+          "file": "B56DDA64-9DD0-4B10-B684-765BE91CC38D.JPG",
+          "sha256": "7f7f0734c7f7bff239b0e369a33e650d3ed4187ec503f21ef2fec295a8decb7d",
+          "bytes": 733635,
+          "width": 1206,
+          "height": 1554,
+          "use": true
+        },
+        {
+          "file": "C2D04450-76B5-46F1-BA53-09DCB7AF159D.JPG",
+          "sha256": "4ebba4fddfe053c2ff40adc97be0a7d4c7bebcac4314b41121e5516a2ab48afb",
+          "bytes": 1520025,
+          "width": 2160,
+          "height": 2160,
+          "use": true
+        },
+        {
+          "file": "C419BDDE-E56D-4B9A-BDCE-FBBEE53A3DC7.JPG",
+          "sha256": "da6b40e4b92958b3afa0272fd4ba5f7723df12d2b0289893d45b9a2031e87ac0",
+          "bytes": 819458,
+          "width": 2160,
+          "height": 2160,
+          "use": true
+        },
+        {
+          "file": "E048EC50-789B-416D-82C5-CD5DDD7ADA70.JPG",
+          "sha256": "bbe6189e58f7233c246bd5595896889dd69bd6e45f985a93e6a99be9d3667311",
+          "bytes": 1930937,
+          "width": 2160,
+          "height": 2880,
+          "use": true
+        },
+        {
+          "file": "ECDE477B-C1B8-4BE7-A632-51F5181AD979.JPG",
+          "sha256": "80da19acdab1993174fbd44f0ce8097f2182004cb685e6a2b9b80b7ae78eb9bd",
+          "bytes": 38227,
+          "width": 414,
+          "height": 414,
+          "use": false,
+          "note": "작은 사진(414x414). 쓸지 Ted 결정"
+        }
+      ]
+    },
+    {
+      "key": "moongu-ttwinklettime",
+      "name": "트윙클타임",
+      "artist": "트윙클타임",
+      "instagramUrl": "https://www.instagram.com/ttwinklettime/",
+      "exhibitorId": "exr_v16214k5mwa3kizf",
+      "officialBooth": "CB_09 CB_10",
+      "day": "양일",
+      "boothcutUrl": "https://comicw.net/g/3615",
+      "folder": "트윙클타임 - ttwinklettime",
+      "scope": "작가가 DM으로 보낸 사진(sent-photo). 카드뉴스용으로 받은 허락이고, 2026-11-19 Ted 결정으로 아티클에도 써요",
+      "permission": {
+        "status": "granted",
+        "allowedUse": [
+          "sent-photo"
+        ],
+        "sentAt": "2026-11-03",
+        "reply": "소개와 사진 보냄",
+        "photoSource": "/Volumes/One Touch/작업 폴더/Roam/brand/일러스트/트윙클타임 - ttwinklettime"
+      },
+      "photos": [
+        {
+          "file": "IMG_6329.PNG",
+          "sha256": "c92b093f85d0101a943281ebb4961bd88940da36aefc9d0675714a407b56b0a1",
+          "bytes": 2205449,
+          "width": 1170,
+          "height": 2532,
+          "use": false,
+          "note": "휴대폰 화면 캡처(위 상태 표시줄과 아래 여백 포함). 잘라 쓸지 Ted 결정"
+        },
+        {
+          "file": "IMG_6330.PNG",
+          "sha256": "7934e40923567c960a8dc3e98bf6cbb3e472fbcbd3fc519a839dc55291cf91bc",
+          "bytes": 2879165,
+          "width": 1170,
+          "height": 2532,
+          "use": false,
+          "note": "휴대폰 화면 캡처(위 상태 표시줄과 아래 여백 포함). 잘라 쓸지 Ted 결정"
+        },
+        {
+          "file": "IMG_6331.PNG",
+          "sha256": "0b74a395ae04512eefc8cafcad1c5ca4f5fc3b377e56083524c08921da55f2a9",
+          "bytes": 2471814,
+          "width": 1170,
+          "height": 2532,
+          "use": false,
+          "note": "휴대폰 화면 캡처(위 상태 표시줄과 아래 여백 포함). 잘라 쓸지 Ted 결정"
+        }
+      ]
+    }
+  ]
+}

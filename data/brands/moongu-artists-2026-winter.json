@@ -1,10 +1,10 @@
 {
   "version": "brands.v1",
-  "exhibitionSlug": null,
+  "exhibitionSlug": "moongu-2026-winter",
   "source": {
     "url": "https://www.instagram.com/withromi.con/",
     "collectedAt": "2026-11-10",
-    "note": "문구전 2026 겨울 사진 허락 DM에 답한 작가. 문구전 행사가 Roam에 들어오면 참가 사실을 잇는다. 사진은 외장 디스크 brand/일러스트에만 둠"
+    "note": "문구전 2026 겨울 사진 허락 DM에 답한 작가 7곳. 행사 행(data/exhibitions/moongu-2026-winter.json)이 운영에 생기면 이 파일로 참가 사실을 잇는다(docs/runbooks/moongu-2026-winter-photos.md). 사진은 외장 디스크 brand/일러스트에만 두고, 올릴 사진 목록과 해시는 data/brand-photos/moongu-2026-winter.json"
   },
   "brands": [
     {
