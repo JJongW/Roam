@@ -14,7 +14,7 @@ export function slackEscape(s: string): string {
 
 export interface ArticleReportInput {
   /** 승인을 기다리는 초안. 최신 것 먼저. 첫 편을 크게 보여 준다. */
-  drafts: Pick<Article, "id" | "title" | "excerpt" | "sources" | "kind" | "generatedFor">[];
+  drafts: Pick<Article, "id" | "title" | "excerpt" | "sources" | "kind" | "generatedFor" | "hero">[];
   /** 오늘 생성이 실패했거나 고를 주제가 없었을 때 한 줄. */
   note?: string | null;
 }
@@ -30,6 +30,14 @@ export const KIND_LABEL: Record<Article["kind"], string> = {
   brand_intro: "브랜드 소개",
   fair_roundup: "박람회 참가 브랜드 모음",
 };
+
+/** 사진 경로("/…" 또는 https)를 슬랙이 열 수 있는 절대 주소로. 그 밖의 경로는 null. */
+export function photoUrl(path: string | undefined | null, appUrl: string): string | null {
+  if (!path) return null;
+  if (/^https:\/\//.test(path)) return path;
+  if (/^\/(?!\/)/.test(path)) return appUrl.replace(/\/+$/, "") + encodeURI(path);
+  return null;
+}
 
 /** 미리보기 두세 줄. 슬랙 인용(>)으로. */
 function excerptLines(excerpt: string): string[] {
@@ -55,7 +63,8 @@ export function formatArticleSection(input: ArticleReportInput, links: ReportLin
     const preview = articleAdminUrl(app, top.id);
     lines.push(`*${slackEscape(top.title)}*  _${KIND_LABEL[top.kind]}, ${top.generatedFor}_`);
     lines.push(...excerptLines(top.excerpt));
-    lines.push(`출처 ${top.sources.length}개`);
+    const hero = photoUrl(top.hero?.path, app);
+    lines.push(hero ? `대표 사진 <${hero}|열기> (${slackEscape(top.hero.credit)})  |  출처 ${top.sources.length}개` : `출처 ${top.sources.length}개`);
     const actions = [`<${preview}|미리보기>`];
     if (links.linkSecret) {
       const opts = { secret: links.linkSecret, now: links.now };
@@ -81,24 +90,36 @@ export const SLACK_ACTION = { approve: "article_approve", reject: "article_rejec
  * 웹훅 본문. `buttons`면 Block Kit 버튼을 붙인다 — 그 웹훅이 인터랙티브를 켠 슬랙 앱에 속해
  * 있어야 눌린다(아니면 버튼이 오류를 낸다). text는 알림과 버튼 없는 클라이언트용으로 늘 같이 간다.
  */
-export function slackPayload(text: string, opts: { buttonsFor?: Pick<Article, "id"> | null } = {}): Record<string, unknown> {
-  if (!opts.buttonsFor) return { text };
-  const id = opts.buttonsFor.id;
-  return {
-    text,
-    blocks: [
-      // 섹션 글은 3000자 상한.
-      { type: "section", text: { type: "mrkdwn", text: text.slice(0, 2900) } },
-      {
-        type: "actions",
-        block_id: `article:${id}`,
-        elements: [
-          { type: "button", action_id: SLACK_ACTION.approve, text: { type: "plain_text", text: "승인" }, style: "primary", value: id },
-          { type: "button", action_id: SLACK_ACTION.reject, text: { type: "plain_text", text: "반려" }, style: "danger", value: id },
-        ],
-      },
-    ],
-  };
+export function slackPayload(
+  text: string,
+  opts: { buttonsFor?: Pick<Article, "id"> | null; image?: { url: string; alt: string } | null } = {},
+): Record<string, unknown> {
+  const image = opts.image && /^https:\/\//.test(opts.image.url) ? opts.image : null;
+  if (!opts.buttonsFor && !image) return { text };
+  const blocks: Record<string, unknown>[] = [
+    // 섹션 글은 3000자 상한.
+    { type: "section", text: { type: "mrkdwn", text: text.slice(0, 2900) } },
+  ];
+  // 대표 사진. 슬랙이 주소를 내려받지 못하면 메시지 전체가 거절된다 — 보내는 쪽(sweep)이 글만으로 다시 보낸다.
+  if (image) blocks.push({ type: "image", image_url: image.url, alt_text: image.alt.slice(0, 1900) });
+  if (opts.buttonsFor) {
+    const id = opts.buttonsFor.id;
+    blocks.push({
+      type: "actions",
+      block_id: `article:${id}`,
+      elements: [
+        { type: "button", action_id: SLACK_ACTION.approve, text: { type: "plain_text", text: "승인" }, style: "primary", value: id },
+        { type: "button", action_id: SLACK_ACTION.reject, text: { type: "plain_text", text: "반려" }, style: "danger", value: id },
+      ],
+    });
+  }
+  return { text, blocks };
+}
+
+/** 첫 초안의 대표 사진을 슬랙 이미지 블록 재료로. */
+export function heroImage(draft: Pick<Article, "hero"> | undefined, appUrl: string): { url: string; alt: string } | null {
+  const url = photoUrl(draft?.hero?.path, appUrl);
+  return url && draft?.hero ? { url, alt: draft.hero.alt } : null;
 }
 
 /** 슬랙 서명 검사(v0). https://api.slack.com/authentication/verifying-requests-from-slack */

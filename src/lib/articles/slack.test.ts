@@ -1,7 +1,7 @@
 import { createHmac } from "node:crypto";
 import { describe, expect, it } from "vitest";
 import { formatBacklog, type Backlog } from "@/lib/admin/backlog";
-import { composeDailyReport, formatArticleSection, parseApprovers, slackPayload, verifySlackSignature } from "./slack";
+import { composeDailyReport, formatArticleSection, heroImage, parseApprovers, photoUrl, slackPayload, verifySlackSignature } from "./slack";
 import { verifyArticleAction } from "./signed-link";
 
 const zero = { count: 0, oldestDays: 0, atLeast: false };
@@ -15,6 +15,7 @@ const draft = {
   excerpt: "하치는 새해 준비상점에 참가하는 브랜드예요. 새해 준비상점은 2026년 12월 4일부터 12월 6일까지 킨텍스 제2전시장 6홀에서 열려요.",
   sources: [{}, {}, {}] as never[],
   generatedFor: "2026-11-19",
+  hero: { path: "/articles/hachi 1.webp", alt: "하치 사진 1", credit: "사진 하치", scope: "작가가 보낸 사진", sourceId: "photo:1", permissionId: "perm:1" },
 };
 const APP = "https://roam.example/";
 const SECRET = "link-secret";
@@ -84,6 +85,27 @@ describe("매일 보고 — 적체 아래 아티클 칸", () => {
       ["article_approve", "art_1"],
       ["article_reject", "art_1"],
     ]);
+  });
+});
+
+describe("대표 사진", () => {
+  it("보고 글에 대표 사진 링크와 표기가 붙는다", () => {
+    const s = formatArticleSection({ drafts: [draft] }, { appUrl: APP })!;
+    expect(s).toContain("대표 사진 <https://roam.example/articles/hachi%201.webp|열기> (사진 하치)");
+  });
+  it("이미지 블록은 https 주소일 때만, 버튼과 같이 갈 수 있다", () => {
+    const image = heroImage(draft, APP)!;
+    expect(image).toEqual({ url: "https://roam.example/articles/hachi%201.webp", alt: "하치 사진 1" });
+    const p = slackPayload("t", { image }) as { blocks: { type: string; image_url?: string }[] };
+    expect(p.blocks.map((b) => b.type)).toEqual(["section", "image"]);
+    const both = slackPayload("t", { image, buttonsFor: { id: "art_1" } }) as { blocks: { type: string }[] };
+    expect(both.blocks.map((b) => b.type)).toEqual(["section", "image", "actions"]);
+    expect(slackPayload("t", { image: { url: "http://localhost:3000/a.webp", alt: "x" } })).toEqual({ text: "t" });
+  });
+  it("열 수 없는 경로는 주소로 만들지 않는다", () => {
+    expect(photoUrl("//evil.example/a.jpg", APP)).toBeNull();
+    expect(photoUrl("C:/a.jpg", APP)).toBeNull();
+    expect(photoUrl(undefined, APP)).toBeNull();
   });
 });
 

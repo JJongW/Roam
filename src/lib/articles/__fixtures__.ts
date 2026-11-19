@@ -1,5 +1,5 @@
 // 테스트 전용 세계. 실제 데이터 모양(brands.v1이 남기는 칸)을 따른다.
-import type { ExhibitorGraph, ProfileField, ProfileFieldStatus } from "@/lib/types";
+import type { BrandContactStatus, ExhibitorGraph, ProfileField, ProfileFieldStatus } from "@/lib/types";
 import type { ExhibitionLite, World } from "./facts";
 
 export const TODAY = "2026-11-19";
@@ -37,6 +37,19 @@ export function field(
   };
 }
 
+/** 사진 칸 값. 경로는 앱에서 열리는 "/…". scope는 사람이 붙인 허락 범위. */
+export const photos = (slug: string, n = 3, scope = "작가가 보낸 사진, 새해 준비상점 아티클과 카드뉴스에만") =>
+  Array.from({ length: n }, (_, i) => ({ path: `/articles/test/${slug}_${i + 1}.webp`, scope }));
+
+/** 새해 준비상점 회차 사진 허락. 지난 회차(pt_gusan_old)엔 없다 — 허락은 회차마다 따로. */
+export const PERMISSIONS: Record<string, { status: BrandContactStatus; allowedUse: string[] }> = {
+  pt_hachi_ny: { status: "granted", allowedUse: ["sent-photo", "tag"] },
+  pt_gusan_ny: { status: "granted", allowedUse: ["account-photo"] },
+  pt_paper_ny: { status: "partial", allowedUse: ["sent-photo"] },
+  pt_diary_ny: { status: "granted", allowedUse: ["account-photo", "text"] },
+  pt_draft_ny: { status: "granted", allowedUse: ["account-photo"] },
+};
+
 export function world(over: Partial<World> = {}): World {
   const graph: ExhibitorGraph = {
     exhibitors: [
@@ -63,8 +76,14 @@ export function world(over: Partial<World> = {}): World {
     field("ex_paper", "intro", { original: INTRO_LONG_A }),
     field("ex_paper", "items", ["엽서", "스티커"], "reviewed"),
     field("ex_diary", "intro", { original: INTRO_LONG_B }),
+    field("ex_hachi", "photos", photos("hachi"), "reviewed", ["인스타 DM으로 작가가 보낸 사진"]),
+    field("ex_gusan", "photos", photos("gusan", 1), "artist_confirmed", ["인스타 DM으로 작가가 보낸 사진"]),
+    field("ex_paper", "photos", photos("paper", 2), "reviewed"),
+    field("ex_diary", "photos", photos("diary", 1), "reviewed"),
+    // 명단 가져오기가 채운 주최 측 공개 사진(collected)은 작가 허락이 아니라 쓰지 않는다.
+    field("ex_draft", "photos", photos("draft", 2, "주최 측 사이트 공개 사진"), "collected"),
     // AI 초안은 사실로 쓰지 않는다.
     field("ex_draft", "intro", { original: "AI가 짐작해서 쓴 소개 문장이에요. 이건 아티클에 쓰면 안 돼요. 길이를 채우려고 더 적어요." }, "ai_draft"),
   ];
-  return { today: TODAY, exhibitions: FAIRS, graph, fields, ...over };
+  return { today: TODAY, exhibitions: FAIRS, graph, fields, permissions: PERMISSIONS, ...over };
 }

@@ -22,8 +22,13 @@ const input: ArticleInput = {
   kind: "brand_intro",
   title: "새해 준비상점에서 만나는 하치",
   excerpt: "하치는 새해 준비상점에 참가하는 브랜드예요.",
-  body: [{ type: "paragraph", text: "하치는 새해 준비상점에 참가하는 브랜드예요.", sourceIds: ["pt:1"] }],
-  sources: [{ id: "pt:1", kind: "participation", label: "참가 사실", origin: ["roam:participant/1", "https://example.org/a"], text: "하치" }],
+  hero: { path: "/articles/hachi_1.webp", alt: "하치 사진 1", credit: "사진 하치", scope: "작가가 보낸 사진", sourceId: "photo:1", permissionId: "perm:1" },
+  body: [{ type: "text", text: "하치는 새해 준비상점에 참가하는 브랜드예요.", sourceIds: ["pt:1"] }],
+  sources: [
+    { id: "pt:1", kind: "participation", label: "참가 사실", origin: ["roam:participant/1", "https://example.org/a"], text: "하치" },
+    { id: "photo:1", kind: "photo", label: "하치 대표 사진", origin: [], text: "/articles/hachi_1.webp | 작가가 보낸 사진" },
+    { id: "perm:1", kind: "permission", label: "하치 사진 허락", origin: ["roam:permission/1"], text: "하치, 사진 허락: sent-photo" },
+  ],
   gate: { ok: true, writer: "template", issues: [], rejectedAttempts: [], checkedAt: "2026-11-19T00:30:00Z" },
   subjectKey: "brand:ex_hachi",
   exhibitorIds: ["ex_hachi"],
@@ -59,6 +64,10 @@ describe("공개 API — 승인된 것만", () => {
     expect(list).toHaveLength(1);
     expect(list[0]).not.toHaveProperty("gate");
     expect(list[0].sources[0].origin).toEqual(["https://example.org/a"]);
+    // 사진은 경로, 대체 글, 표기만 나가고 허락 기록은 나가지 않는다.
+    expect(list[0].hero).toEqual({ path: "/articles/hachi_1.webp", alt: "하치 사진 1", credit: "사진 하치" });
+    expect(list[0].sources.map((x: { kind: string }) => x.kind)).not.toContain("permission");
+    expect(JSON.stringify(list[0])).not.toContain("sent-photo");
     expect((await (await LIST(new Request("http://localhost/api/articles?exhibitorId=other"))).json()).data.articles).toEqual([]);
     expect((await ONE(new Request("http://localhost/x"), ctx(id))).status).toBe(200);
   });
