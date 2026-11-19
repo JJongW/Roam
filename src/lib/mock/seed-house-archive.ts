@@ -41,7 +41,7 @@ export const haExhibition: Exhibition = {
   name: "하우스 아카이브: 홈 디깅 페어",
   venue: "코엑스 더 플라츠 2층 (COEX The Platz)",
   description:
-    "‘집’을 다섯 개의 방식으로 파고드는 홈 디깅 페어. 수집, 관계, 창작, 쉼, 탐험 다섯 테마의 집에 브랜드 부스와 테이블 마켓이 들어섭니다. 공식 부스배치도를 그대로 옮겨 실제 위치로 안내합니다.",
+    "‘집’을 다섯 개의 방식으로 파고드는 홈 디깅 페어. 수집, 관계, 창작, 쉼, 탐험 다섯 테마의 집에 브랜드 부스와 테이블 마켓이 들어서요. 공식 부스배치도를 그대로 옮겨 실제 위치로 안내해요.",
   startDate: "2026-08-13",
   endDate: "2026-08-16",
   // 공식 포스터(2309x3105 PNG 4.6MB) → 1289x1733 webp 178KB. 원본은 public에
@@ -51,8 +51,8 @@ export const haExhibition: Exhibition = {
   mapWidth: haFloor.width,
   mapHeight: haFloor.height,
   tips: {
-    transportation: "지하철 2호선 삼성역, 9호선 봉은사역에서 코엑스 연결. 더 플라츠는 코엑스 2층입니다.",
-    parking: "코엑스 지하주차장 이용. 대중교통을 권장합니다.",
+    transportation: "지하철 2호선 삼성역, 9호선 봉은사역에서 코엑스 연결. 더 플라츠는 코엑스 2층이에요.",
+    parking: "코엑스 지하주차장 이용. 대중교통을 권장해요.",
     ticket: "온라인 예매 및 현장 구매.",
     guide: "다섯 테마의 집을 따라 브랜드를 둘러보고, 테이블 마켓에서 작은 물건을 만나보세요.",
   },
