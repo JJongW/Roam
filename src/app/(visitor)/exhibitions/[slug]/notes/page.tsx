@@ -1,20 +1,9 @@
-import { notFound } from "next/navigation";
-import { getRepository } from "@/lib/repositories";
-import { NotesView } from "@/components/booth/notes-view";
+import { redirect } from "next/navigation";
 
-export const metadata = { title: "내 메모장" };
-
-type Props = { params: Promise<{ slug: string }> };
-
-export default async function NotesPage({ params }: Props) {
-  const { slug } = await params;
-  const repo = await getRepository();
-  const detail = await repo.getExhibition(slug);
-  if (!detail) notFound();
-
-  const booths = await repo.listBoothsByExhibitionId(detail.exhibition.id);
-
-  return (
-    <NotesView slug={slug} booths={booths} categories={detail.categories} />
-  );
+/**
+ * 예전 "내 메모장"(v1) 주소. v2에서는 메모가 부스 상세 "남기신 것"(6-05)에 있고, 다녀온 곳은
+ * 박람회를 묶은 "다녀왔어요" 목록(6-10)에 모인다. 옛 링크가 끊기지 않게 그리로 보낸다.
+ */
+export default function NotesPage() {
+  redirect("/visited");
 }

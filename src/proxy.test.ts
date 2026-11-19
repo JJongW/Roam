@@ -89,5 +89,7 @@ describe("proxy() 게이트", () => {
     expect(proxy(req("/terms")).status).toBe(200);
     // 공개 설문 — 링크를 받은 사람이 로그인 없이 답한다.
     expect(proxy(req("/survey")).status).toBe(200);
+    // 다녀왔어요 목록(6-10)은 기기 기록을 보여 주므로 로그인 없이 연다.
+    expect(proxy(req("/visited")).status).toBe(200);
   });
 });

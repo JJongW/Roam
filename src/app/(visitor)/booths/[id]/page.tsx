@@ -1,27 +1,18 @@
 import { notFound } from "next/navigation";
-import { ImageOrFallback } from "@/components/common/image-or-fallback";
-import { Ticket, ExternalLink, Globe } from "lucide-react";
-import { getBoothDetailCached } from "@/lib/repositories/cached";
+import { getBoothDetailCached, listExhibitionsCached } from "@/lib/repositories/cached";
 import { getRepository } from "@/lib/repositories";
-import Link from "next/link";
-import { Toolbar } from "@/components/common/toolbar";
-import { BookmarkButton } from "@/components/booth/bookmark-button";
-import { BoothAiSummary } from "@/components/booth/booth-ai-summary";
-import { boothAbout } from "@/lib/booth/about";
-import { BoothPersonalPanel } from "@/components/booth/booth-personal-panel";
-import { BoothHighlights } from "@/components/booth/booth-highlights";
-import { BoothGallery } from "@/components/booth/booth-gallery";
-import { BoothTabs } from "@/components/booth/booth-tabs";
-import { CategoryChip } from "@/components/booth/category-chip";
-import { ReviewSection } from "@/components/booth/review-section";
-import { EventList } from "@/components/booth/event-list";
 import { AnalyticsTracker } from "@/components/common/analytics-tracker";
 import { BoothExhibitionContextBridge } from "@/components/companion/booth-exhibition-context-bridge";
-import { Icon } from "@/components/common/icon";
-import { getI18n } from "@/lib/i18n/server";
+import { BoothDetailV2 } from "@/components/booth-v2/booth-detail";
+import { boothAbout } from "@/lib/booth/about";
 import { brandIntroForBooth } from "@/lib/brands/intro";
+import { FLOORPLANS } from "@/lib/floorplans";
+import { floorplanHallOf } from "@/lib/floorplan/hall-of";
+import { devSkeletonDelay } from "@/lib/dev/skeleton-delay";
+import { exhibitionStatus } from "@/lib/exhibition/status";
+import { todayISO } from "@/lib/exhibition/current";
 
-type Props = { params: Promise<{ id: string }> };
+type Props = { params: Promise<{ id: string }>; searchParams: Promise<{ skeletonDelay?: string }> };
 
 export async function generateMetadata({ params }: Props) {
   const { id } = await params;
@@ -33,352 +24,66 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
-export default async function BoothDetailPage({ params }: Props) {
+/**
+ * 부스 상세(UI 4-02). 디자인 시스템 v2(docs/decisions/2026-11-18_웹-디자인-v2-이전-계획.md).
+ * 소개 우선순위는 그대로다: 브랜드 공식 소개 > 부스 저작 요약 > 부스 원문(lib/brands/intro.ts).
+ */
+export default async function BoothDetailPage({ params, searchParams }: Props) {
   const { id } = await params;
-  // generateMetadata가 이미 부른 조회를 요청 캐시로 나눠 쓴다 — 예전엔 같은 부스를
-  // 한 페이지에서 두 번 읽어 DB 왕복이 두 세트였다.
+  await devSkeletonDelay((await searchParams).skeletonDelay);
   const detail = await getBoothDetailCached(id);
   if (!detail) notFound();
-
-  const { booth, category, welcomeKit, events, reviews, reviewSummary } =
-    detail;
-  // 같은 브랜드의 다른 행사 출전(참가사 연결, 설계 2026-10-02 §6). 실패해도 페이지는 뜬다.
+  const { booth, category, events, welcomeKit } = detail;
   const repo = await getRepository();
-  // 브랜드 공식 소개(브랜드에 하나, 어느 박람회 부스에서도 같은 소개). 실패하면 null.
-  const [appearances, brandIntro] = await Promise.all([
-    repo.boothAppearances(booth.id).catch(() => []),
+  const [brandIntro, exhibitions, halls, appearances] = await Promise.all([
     brandIntroForBooth(repo, booth.id),
+    listExhibitionsCached().catch(() => null),
+    repo.listHalls(booth.exhibitionId).catch(() => []),
+    // 같은 브랜드의 다른 행사 출전(참가사 연결). 실패해도 페이지는 뜬다.
+    repo.boothAppearances(booth.id).catch(() => []),
   ]);
-  const { t } = await getI18n();
+  const exhibition = exhibitions?.data.find((e) => e.id === booth.exhibitionId);
+  const exhibitionSlug = exhibition?.slug;
+  // 끝난 박람회(한국 날짜 기준, 다른 화면과 같은 판정)에서만 평가를 묻는다(6-09).
+  const fairEnded = !!exhibition && exhibitionStatus(exhibition, todayISO()) === "ended";
+  const hallName =
+    floorplanHallOf(exhibitionSlug ? FLOORPLANS[exhibitionSlug] : undefined, booth.code) ??
+    halls.find((h) => h.id === booth.hallId)?.name;
+
   const about = boothAbout(booth);
-  // 우선순위: 브랜드 공식 소개(Roam 말투, 게이트 통과) > 부스 저작 요약(quote) > 부스 원문(fallback).
-  // 브랜드 소개가 있으면 같은 종류의 원문 말투 글(quote, fallback)을 대신한다. 근거는 lib/brands/intro.ts.
-  const showBrandIntro = !!brandIntro;
-  if (showBrandIntro) {
-    about.quote = undefined;
-    about.fallback = undefined;
-  }
+  const intro = brandIntro?.text ?? about.quote ?? about.fallback;
+  const introSource = brandIntro ? "brand" : about.quote ? "summary" : about.fallback ? "original" : undefined;
 
   return (
-    <div className="contents landscape:fixed landscape:inset-0 landscape:z-30 landscape:flex landscape:flex-col landscape:overflow-hidden landscape:bg-background">
-      <AnalyticsTracker
-        type="view"
-        boothId={booth.id}
-        x={booth.x}
-        y={booth.y}
-      />
-      {/* URL에 전시 slug가 없는 화면이라, 컴패니언 바 클릭 계측이 전시를 알 수 있게
-          이 화면이 아는 exhibitionId를 스토어로 흘려보낸다. */}
+    <>
+      <AnalyticsTracker type="view" boothId={booth.id} x={booth.x} y={booth.y} />
       <BoothExhibitionContextBridge exhibitionId={booth.exhibitionId} />
-      <Toolbar
-        title={booth.name}
-        right={<BookmarkButton targetType="booth" targetId={booth.id} />}
+      <BoothDetailV2
+        booth={{
+          id: booth.id,
+          name: booth.name,
+          code: booth.code,
+          images: booth.images,
+          instagramUrl: booth.instagramUrl,
+          websiteUrl: booth.websiteUrl,
+          goods: booth.enrichment?.goodsKeywords ?? [],
+        }}
+        category={category ? { name: category.name } : undefined}
+        hallName={hallName}
+        exhibitionSlug={exhibitionSlug}
+        intro={intro}
+        introSource={introSource}
+        events={events}
+        welcomeKit={welcomeKit}
+        appearances={appearances.map((a) => ({
+          boothId: a.boothId,
+          exhibitionName: a.exhibitionName,
+          displayName: a.displayName,
+          boothCode: a.boothCode,
+        }))}
+        aliases={booth.aliases}
+        fairEnded={fairEnded}
       />
-      <main className="flex-1 pb-28 landscape:flex landscape:min-h-0 landscape:flex-1 landscape:flex-row landscape:pb-0">
-        {/* Landscape: identity column (hero + 정보 + AI 요약) on the left. */}
-        <div className="contents landscape:flex landscape:w-[360px] landscape:shrink-0 landscape:flex-col landscape:overflow-y-auto landscape:border-r landscape:border-border">
-          {/* hero */}
-          <div
-            className="flex items-center gap-4 p-5"
-            style={{
-              background: `linear-gradient(135deg, ${category.color}22, transparent)`,
-            }}
-          >
-            {/* 참가자 로고(있으면) — 카테고리 아이콘 대신 정체성이 바로 보인다.
-                못 불러오면 아이콘으로 돌아간다. */}
-            <ImageOrFallback
-              src={booth.logoUrl}
-              alt={booth.name}
-              className="size-16 shrink-0 rounded-2xl border border-border object-cover"
-              fallback={
-                <div
-                  className="flex size-16 items-center justify-center rounded-2xl"
-                  style={{
-                    backgroundColor: `${category.color}26`,
-                    color: category.color,
-                  }}
-                >
-                  <Icon name={category.icon} className="size-8" />
-                </div>
-              }
-            />
-            <div className="min-w-0">
-              {/* 이름은 위 Toolbar의 큰 제목이 h1으로 말한다 — 여기 또 쓰면 한
-                  화면에 같은 이름이 두 번, h1도 둘이 된다. */}
-              <p className="truncate text-sm text-muted-foreground">
-                {booth.company}
-              </p>
-              <div className="mt-1.5 flex items-center gap-2">
-                <span className="text-xs text-muted-foreground">
-                  {reviewSummary.count > 0
-                    ? t("booth.reviewCount", { n: reviewSummary.count })
-                    : t("booth.noReview")}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {booth.images.length > 0 && (
-            <div className="px-[var(--spacing-global-gutter)] pt-1 pb-2">
-              <BoothGallery images={booth.images} name={booth.name} />
-            </div>
-          )}
-
-          <div className="px-[var(--spacing-global-gutter)] py-2">
-            {/* At-a-glance 정보 + AI 요약 stay above the tabs (always visible). */}
-            <div className="flex flex-wrap items-center gap-2">
-              {booth.code && (
-                <span className="rounded-full border border-border bg-card px-3 py-1 text-sm font-bold tabular">
-                  {t("booth.code", { code: booth.code })}
-                </span>
-              )}
-              <CategoryChip category={category} />
-            </div>
-
-            <div className="mt-4">
-              <BoothAiSummary boothId={booth.id} />
-            </div>
-          </div>
-        </div>
-
-        {/* Right pane (landscape) / continues below (portrait): the tabs. */}
-        <div className="contents landscape:flex landscape:flex-1 landscape:flex-col landscape:overflow-y-auto">
-          <div className="px-[var(--spacing-global-gutter)] py-2 landscape:py-4">
-            <BoothTabs
-              intro={
-                <div className="space-y-6">
-                  {events.length > 0 && (
-                    <section className="space-y-2.5">
-                      <h2 className="text-base font-bold">
-                        {t("booth.events")}
-                      </h2>
-                      <EventList events={events} />
-                    </section>
-                  )}
-
-                  {welcomeKit?.enabled && (
-                    <section className="space-y-2.5">
-                      <h2 className="text-base font-bold">
-                        {t("booth.welcomeKit")}
-                      </h2>
-                      <div className="flex items-center gap-3 rounded-2xl border border-border bg-card p-4 shadow-[var(--shadow-card)]">
-                        <div className="flex size-11 items-center justify-center rounded-xl bg-primary/10">
-                          <Ticket className="size-5 text-primary" />
-                        </div>
-                        <div className="flex-1">
-                          <p className="font-bold">{welcomeKit.name}</p>
-                          <p className="text-sm text-muted-foreground">
-                            {welcomeKit.description}
-                          </p>
-                        </div>
-                        <span className="shrink-0 rounded-full bg-secondary px-2.5 py-1 text-xs font-bold tabular text-secondary-foreground">
-                          {t("booth.remaining", {
-                            n: welcomeKit.remainingCount,
-                          })}
-                        </span>
-                      </div>
-                    </section>
-                  )}
-
-                  {/* 소개 — longDescription은 seed 템플릿이라 914개가 같은 문장이었다.
-                      로미 발화는 테마·굿즈에서 파생하고(부스마다 다름), 작가 본인이 쓴
-                      글은 인용으로 분리한다(존댓말이어도 남의 말이라 고치지 않는다). */}
-                  {(about.romi || about.quote || about.fallback || showBrandIntro) && (
-                    <section className="space-y-2">
-                      <h2 className="text-base font-bold">
-                        {t("booth.about")}
-                      </h2>
-                      {about.romi && (
-                        <p className="text-[15px] leading-relaxed text-foreground/90">
-                          {about.romi}
-                        </p>
-                      )}
-                      {about.quote && (
-                        <figure className="space-y-1 border-l-2 border-border pl-3">
-                          <blockquote className="text-[15px] leading-relaxed text-foreground/80">
-                            {about.quote}
-                          </blockquote>
-                          <figcaption className="text-xs text-muted-foreground">
-                            {t("booth.aboutQuoteBy")}
-                          </figcaption>
-                        </figure>
-                      )}
-                      {showBrandIntro && brandIntro && (
-                        <figure className="space-y-1">
-                          <div className="space-y-1.5 text-[15px] leading-relaxed text-foreground/90">
-                            {brandIntro.text
-                              .split(/(?<=[.!?])\s+/)
-                              .map((s) => s.trim())
-                              .filter(Boolean)
-                              .map((s, i) => (
-                                <p key={i}>{s}</p>
-                              ))}
-                          </div>
-                          <figcaption className="text-xs text-muted-foreground">
-                            {t("booth.aboutBrandIntro")}
-                          </figcaption>
-                        </figure>
-                      )}
-                      {about.fallback && (
-                        <div className="space-y-1.5 text-[15px] leading-relaxed text-foreground/90">
-                          {about.fallback
-                            .split(/(?<=[.!?])\s+/)
-                            .map((s) => s.trim())
-                            .filter(Boolean)
-                            .map((s, i) => (
-                              <p key={i}>{s}</p>
-                            ))}
-                        </div>
-                      )}
-                    </section>
-                  )}
-                  {/* 아무 재료도 없으면 숨기지 말고 그렇다고 말한다 — 소개가 통째로 사라지면
-                      정보가 없는 건지 화면이 깨진 건지 구분이 안 된다(2026-10-02). */}
-                  {!about.romi &&
-                    !about.quote &&
-                    !about.fallback &&
-                    !showBrandIntro &&
-                    !booth.enrichment?.summary?.trim() &&
-                    !booth.enrichment?.roamInterpretation?.trim() && (
-                      <section className="space-y-2">
-                        <h2 className="text-base font-bold">{t("booth.about")}</h2>
-                        <p className="text-[15px] leading-relaxed text-muted-foreground">
-                          {t("booth.aboutEmpty")}
-                        </p>
-                      </section>
-                    )}
-
-                  {/* 다른 행사에서도 — 그 행사에 표기된 이름 그대로(설계 §3). */}
-                  {appearances.length > 0 && (
-                    <section className="space-y-2">
-                      <h2 className="text-base font-bold">{t("booth.otherExhibitions")}</h2>
-                      <ul className="space-y-1.5">
-                        {appearances.map((a) => (
-                          <li key={a.boothId}>
-                            <Link href={`/booths/${a.boothId}`} className="text-[15px] text-foreground/90 underline-offset-4 hover:underline">
-                              {a.exhibitionName}, ‘{a.displayName}’{a.boothCode ? `, ${t("booth.code", { code: a.boothCode })}` : ""}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </section>
-                  )}
-
-                  {/* 수동 주입 추가정보(굿즈·팁) — 있을 때만. */}
-                  {booth.enrichment &&
-                    (booth.enrichment.goodsKeywords.length > 0 ||
-                      booth.enrichment.tips) && (
-                      <section className="space-y-2.5">
-                        {booth.enrichment.goodsKeywords.length > 0 && (
-                          <div className="space-y-1.5">
-                            <h2 className="text-base font-bold">
-                              {t("booth.goods")}
-                            </h2>
-                            <div className="flex flex-wrap gap-1.5">
-                              {booth.enrichment.goodsKeywords.map((g) => (
-                                <span
-                                  key={g}
-                                  className="rounded-full border border-border bg-card px-3 py-1 text-sm font-medium text-foreground/90"
-                                >
-                                  {g}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                        {booth.enrichment.tips && (
-                          <div className="rounded-2xl border border-border bg-secondary/40 p-3">
-                            <p className="text-sm font-bold">
-                              {t("booth.tip")}
-                            </p>
-                            <p className="mt-1 text-sm leading-relaxed text-foreground/80">
-                              {booth.enrichment.tips}
-                            </p>
-                          </div>
-                        )}
-                      </section>
-                    )}
-
-                  {/* AI-extracted 신간·굿즈 (renders only when found). 굿즈는
-                      수동 enrichment가 있으면 중복되므로 숨긴다(신간만 노출). */}
-                  <BoothHighlights
-                    boothId={booth.id}
-                    hideGoods={Boolean(
-                      booth.enrichment &&
-                      booth.enrichment.goodsKeywords.length > 0,
-                    )}
-                  />
-
-                  {booth.aliases && booth.aliases.length > 0 && (
-                    <section className="space-y-2">
-                      <h2 className="text-base font-bold">
-                        함께 입점한 곳 {booth.aliases.length}곳
-                      </h2>
-                      <div className="flex flex-wrap gap-1.5">
-                        {booth.aliases.map((nm) => (
-                          <span
-                            key={nm}
-                            className="rounded-full border border-border bg-card px-3 py-1 text-sm font-medium text-foreground/90"
-                          >
-                            {nm}
-                          </span>
-                        ))}
-                      </div>
-                    </section>
-                  )}
-
-                  {(booth.instagramUrl || booth.websiteUrl) && (
-                    <section className="flex flex-wrap gap-2">
-                      {booth.instagramUrl && (
-                        <a
-                          href={booth.instagramUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-2 text-sm font-semibold press active:bg-card-pressed"
-                        >
-                          <ExternalLink className="size-4 text-[#e1306c]" />{" "}
-                          인스타그램
-                        </a>
-                      )}
-                      {booth.websiteUrl && (
-                        <a
-                          href={booth.websiteUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3.5 py-2 text-sm font-semibold press active:bg-card-pressed"
-                        >
-                          <Globe className="size-4 text-muted-foreground" />{" "}
-                          웹사이트
-                        </a>
-                      )}
-                    </section>
-                  )}
-                </div>
-              }
-              record={
-                <BoothPersonalPanel
-                  booth={booth}
-                  category={category}
-                  // 이 라우트(/booths/[id])엔 전시 slug가 없다 — JudgmentBar가 쓰는
-                  // exhibitionSlug는 "전시당 고유"하기만 하면 되는 스코핑 키(로그인
-                  // 안내 1회 표시용 sessionStorage 키 접미사)라 실제 URL slug일
-                  // 필요가 없다. exhibitionId를 그대로 쓴다 — 라우트가 나중에
-                  // slug 파라미터를 갖게 되면 그때 진짜 slug로 바꾼다.
-                  exhibitionSlug={booth.exhibitionId}
-                />
-              }
-              reviews={
-                <ReviewSection
-                  boothId={booth.id}
-                  initialReviews={reviews}
-                  initialSummary={reviewSummary}
-                  previewCount={2}
-                />
-              }
-            />
-          </div>
-        </div>
-      </main>
-    </div>
+    </>
   );
 }

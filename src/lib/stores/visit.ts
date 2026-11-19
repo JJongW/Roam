@@ -19,6 +19,28 @@ export interface BoothRecord {
   memo?: string;
   /** Personal photos (Cloudinary URLs) attached to this booth. */
   photos?: string[];
+  /** 하트 하나(2026-11-07). v2 화면이 쓴다. 없으면 옛 interest로 읽는다(`isHearted`).
+   *  서버 규칙(lib/notes/apply.ts)과 같이 interest도 맞춰 둬서 v1 화면 색이 어긋나지 않는다. */
+  heart?: boolean;
+  /** 다녀왔어요. 평가와 따로다(2026-11-17). 없으면 평가가 있는지로 읽는다(`isVisited`). */
+  visited?: boolean;
+  /** 다녀왔어요를 처음 누른 시각(ISO). "오후 2시 20분에 다녀왔어요"(6-05)와 "오늘 다녀온 곳"(6-04)이 읽는다.
+   *  옛 기록이나 서버가 시각을 주지 않으면 비어 있고, 그때는 시각 줄 없이 "다녀왔어요"만 보인다. */
+  visitedAt?: string;
+}
+
+/** 하트가 켜져 있는지 — 새 칸이 있으면 그것, 없으면 옛 interest(must, curious). */
+export function isHearted(r: BoothRecord | undefined): boolean {
+  if (!r) return false;
+  if (r.heart !== undefined) return r.heart;
+  return r.interest === "must" || r.interest === "curious";
+}
+
+/** 다녀왔어요가 켜져 있는지 — 새 칸이 있으면 그것, 없으면 평가가 있는지(평가는 다녀온 뒤에만 있다). */
+export function isVisited(r: BoothRecord | undefined): boolean {
+  if (!r) return false;
+  if (r.visited !== undefined) return r.visited;
+  return !!r.verdict;
 }
 
 /** 반응 쓰기 응답에 실려오는 취향 정확도 — 클라이언트는 이 값을 그대로 표시할 뿐
@@ -39,6 +61,12 @@ interface VisitState {
   setInterest: (boothId: string, interest: InterestValue | null) => void;
   /** verdict를 토글 — 같은 값을 다시 누르면 해제. */
   setVerdict: (boothId: string, verdict: VerdictValue | null) => void;
+  /** 하트를 켜고 끈다. 서버 규칙과 같게 interest도 맞춘다(켜면 must, 끄면 pass가 아니면 비움). */
+  setHeart: (boothId: string, on: boolean) => void;
+  /** 다녀왔어요를 켜고 끈다. 끄면 평가도 같이 지운다(2026-11-17, 서버와 같은 규칙). */
+  setVisited: (boothId: string, on: boolean) => void;
+  /** 되돌리기용 — 한 부스의 기록을 통째로 이전 값으로 돌린다. */
+  restore: (boothId: string, record: BoothRecord | undefined) => void;
   setMemo: (boothId: string, memo: string) => void;
   setPhotos: (boothId: string, photos: string[]) => void;
   /** Replace the cache from the server (called after sign-in). */
@@ -62,7 +90,7 @@ interface VisitState {
  */
 export async function pushNote(
   boothId: string,
-  touched?: { interest?: boolean; verdict?: boolean },
+  touched?: { interest?: boolean; verdict?: boolean; heart?: boolean; visited?: boolean },
 ): Promise<TasteUpdate | null> {
   const r = useVisitStore.getState().records[boothId];
   try {
@@ -72,6 +100,10 @@ export async function pushNote(
     };
     if (!touched || touched.interest) body.interest = r?.interest ?? null;
     if (!touched || touched.verdict) body.verdict = r?.verdict ?? null;
+    // 새 칸(PR #172). 하트를 보내면 서버가 interest보다 우선한다. 배치 동기화(touched 없음)는
+    // 기기에 새 칸이 있을 때만 보낸다 — 옛 기록에 없는 값을 지어 보내지 않는다.
+    if (touched ? touched.heart : r?.heart !== undefined) body.heart = isHearted(r);
+    if (touched ? touched.visited : r?.visited !== undefined) body.visited = isVisited(r);
     const res = await api.put<{ note: BoothNote; taste: TasteUpdate }>(
       `/api/me/notes/${boothId}`,
       body,
@@ -94,6 +126,8 @@ function patch(
   if (
     !merged.interest &&
     !merged.verdict &&
+    !merged.heart &&
+    !merged.visited &&
     !merged.memo?.trim() &&
     !merged.photos?.length
   ) {
@@ -117,6 +151,8 @@ export const useVisitStore = create<VisitState>()(
               s.records[boothId]?.interest === interest
                 ? undefined
                 : (interest ?? undefined),
+            // 옛 화면이 interest를 고치면 하트 칸을 비워 interest에서 다시 읽게 한다.
+            heart: undefined,
           }),
         })),
       setVerdict: (boothId, verdict) =>
@@ -126,8 +162,46 @@ export const useVisitStore = create<VisitState>()(
               s.records[boothId]?.verdict === verdict
                 ? undefined
                 : (verdict ?? undefined),
+            // 평가를 남기면 다녀온 것이다. 평가를 지워도 다녀왔어요는 남긴다(서버와 같은 규칙).
+            visited:
+              isVisited(s.records[boothId]) ||
+              (s.records[boothId]?.verdict !== verdict && !!verdict),
+            visitedAt:
+              s.records[boothId]?.visitedAt ??
+              (s.records[boothId]?.verdict !== verdict && !!verdict ? new Date().toISOString() : undefined),
           }),
         })),
+      setHeart: (boothId, on) =>
+        set((s) => {
+          const prev = s.records[boothId];
+          const interest: InterestValue | undefined = on
+            ? prev?.interest === "must" || prev?.interest === "curious"
+              ? prev.interest
+              : "must"
+            : prev?.interest === "pass"
+              ? "pass"
+              : undefined;
+          return { records: patch(s.records, boothId, { heart: on, interest }) };
+        }),
+      setVisited: (boothId, on) =>
+        set((s) => ({
+          records: patch(
+            s.records,
+            boothId,
+            on
+              ? { visited: true, visitedAt: s.records[boothId]?.visitedAt ?? new Date().toISOString() }
+              : { visited: false, verdict: undefined, visitedAt: undefined },
+          ),
+        })),
+      restore: (boothId, record) =>
+        set((s) => {
+          if (!record) {
+            const rest = { ...s.records };
+            delete rest[boothId];
+            return { records: rest };
+          }
+          return { records: { ...s.records, [boothId]: record } };
+        }),
       setMemo: (boothId, memo) =>
         set((s) => ({ records: patch(s.records, boothId, { memo }) })),
       setPhotos: (boothId, photos) =>
@@ -138,11 +212,22 @@ export const useVisitStore = create<VisitState>()(
         set((s) => {
           const records: Record<string, BoothRecord> = { ...s.records };
           for (const n of notes) {
-            if (n.interest || n.verdict || n.memo?.trim() || n.photos?.length)
+            if (
+              n.interest ||
+              n.verdict ||
+              n.heart ||
+              n.visited ||
+              n.memo?.trim() ||
+              n.photos?.length
+            )
               records[n.boothId] = {
                 ...records[n.boothId],
                 interest: n.interest ?? records[n.boothId]?.interest,
                 verdict: n.verdict ?? records[n.boothId]?.verdict,
+                // 서버가 새 칸을 주면 그대로 받는다(옛 서버 응답엔 없어서 undefined로 남는다).
+                heart: n.heart ?? records[n.boothId]?.heart,
+                visited: n.visited ?? records[n.boothId]?.visited,
+                visitedAt: n.visitedAt ?? records[n.boothId]?.visitedAt,
                 memo: n.memo,
                 photos: n.photos,
               };
