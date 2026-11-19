@@ -40,11 +40,7 @@ const UPCOMING_WINDOW_DAYS = 60;
 export default async function AdminOverviewPage() {
   const repo = await getRepository();
   const today = todayISO();
-  const [{ data: exhibitions }, users, issues] = await Promise.all([
-    listExhibitionsCached(),
-    repo.listUsers(),
-    repo.listIssues({ limit: 1000, sinceDays: 30 }),
-  ]);
+  const [{ data: exhibitions }, users] = await Promise.all([listExhibitionsCached(), repo.listUsers()]);
   const bundles = await loadFairBundles(repo, exhibitions);
 
   const overview = buildGlobalOverview(
@@ -58,7 +54,6 @@ export default async function AdminOverviewPage() {
   const todayView = await loadAdminToday(repo, {
     exhibitions,
     boothsByFair: new Map(bundles.map((b) => [b.exhibition.id, b.booths])),
-    issues,
     today,
     floorplanSlugs: new Set(Object.keys(FLOORPLANS)),
   });

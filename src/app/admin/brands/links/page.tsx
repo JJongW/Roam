@@ -1,4 +1,5 @@
 import { getRepository } from "@/lib/repositories";
+import { pendingLinkCandidates } from "@/lib/admin/queues";
 import { loadBrandData } from "@/lib/brands/load";
 import { buildLinkRows } from "@/lib/brands/links";
 import { LinkQueue } from "@/components/admin/brands/link-queue";
@@ -14,7 +15,7 @@ export default async function BrandLinksPage() {
   const repo = await getRepository();
   const [data, pending, rejected] = await Promise.all([
     loadBrandData(repo),
-    repo.listExhibitorLinkCandidates("pending"),
+    pendingLinkCandidates(repo),
     repo.listExhibitorLinkCandidates("rejected"),
   ]);
   const rows = buildLinkRows({ ...data, candidates: pending });

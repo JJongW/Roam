@@ -1,25 +1,25 @@
 import "server-only";
-import { existsSync, readdirSync, readFileSync } from "node:fs";
-import { join } from "node:path";
 import type { Repository } from "@/lib/repositories/types";
-import type { BoothListItem, Exhibition, IssueLog } from "@/lib/types";
-import { SCAN_LIMIT } from "@/lib/admin/backlog";
-import { findBoothEnrichmentGaps } from "@/lib/admin/data-issues";
-import { groupIssues } from "@/lib/admin/issue-grouping";
+import type { BoothListItem, Exhibition } from "@/lib/types";
 import { loadContactBoard } from "@/lib/brands/board-load";
-import { diffVerified, loadVerified } from "@/lib/verified";
+import { funnel } from "@/lib/brands/board";
+import {
+  articleQueue,
+  dataIssueQueue,
+  enrichmentQueue,
+  issueGroups,
+  pendingLinkCandidates,
+  verifyQueue,
+} from "@/lib/admin/queues";
+import { FILE_KIND_LABEL, intakeQueue, readRepoFiles, type RepoFile } from "@/lib/intake/queue";
 import {
   buildTodayItems,
-  countByFair,
-  pendingFileNotes,
-  pendingRepoFiles,
   sumFairs,
   unavailableFrom,
   upcomingFairs,
   type FairFacts,
   type QueueCount,
   type QueueKey,
-  type RepoFile,
   type TodayItem,
   type UpcomingFair,
 } from "@/lib/admin/today";
@@ -42,119 +42,81 @@ function addDays(iso: string, days: number): string {
   return new Date(Date.parse(`${iso}T00:00:00Z`) + days * 86_400_000).toISOString().slice(0, 10);
 }
 
-const fairRef = (e: Exhibition) => ({ id: e.id, slug: e.slug, name: e.name });
-
-/**
- * 레포 data/ 아래 인입 파일 목록. 못 읽으면 null(배포 번들에 data/가 빠졌을 때) — 0건으로 위장하지 않는다.
- * 밑줄로 시작하는 파일(_backup, _review)과 링크 보충 파일(-links)은 인입 계약 파일이 아니라 뺀다.
- */
-export function readRepoFiles(root = process.cwd()): RepoFile[] | null {
-  const read = (dir: string) => {
-    const abs = join(root, "data", dir);
-    if (!existsSync(abs)) return [];
-    return readdirSync(abs)
-      .filter((f) => f.endsWith(".json") && !f.startsWith("_") && !f.endsWith("-links.json"))
-      .map((f) => ({ path: `data/${dir}/${f}`, json: JSON.parse(readFileSync(join(abs, f), "utf8")) as Record<string, unknown> }));
-  };
-  try {
-    if (!existsSync(join(root, "data"))) return null;
-    const out: RepoFile[] = [];
-    for (const { path, json } of read("exhibitions")) {
-      if (typeof json.slug !== "string") continue;
-      out.push({
-        kind: "exhibition",
-        path,
-        slug: json.slug,
-        name: typeof json.name === "string" ? json.name : undefined,
-        startDate: typeof json.startDate === "string" ? json.startDate : undefined,
-        endDate: typeof json.endDate === "string" ? json.endDate : undefined,
-      });
-    }
-    for (const { path, json } of read("brands")) {
-      // 행사가 정해지지 않은 브랜드 파일(exhibitionSlug: null)은 기다리는 행사가 없다.
-      if (typeof json.exhibitionSlug !== "string") continue;
-      out.push({ kind: "brands", path, slug: json.exhibitionSlug, size: Array.isArray(json.brands) ? json.brands.length : undefined });
-    }
-    for (const { path, json } of read("intake")) {
-      if (typeof json.exhibitionSlug !== "string") continue;
-      out.push({ kind: "booths", path, slug: json.exhibitionSlug, size: Array.isArray(json.booths) ? json.booths.length : undefined });
-    }
-    return out;
-  } catch {
-    return null;
-  }
-}
+const fairRef = (e: Exhibition) => ({ exhibitionId: e.id, slug: e.slug, name: e.name });
 
 export interface AdminToday {
   items: TodayItem[];
   upcoming: UpcomingFair[];
-  /** 레포에 있고 운영에 아직 없는 인입 파일. 레포 파일을 못 읽었으면 null. */
-  pendingFiles: RepoFile[] | null;
 }
 
 /**
- * 관리자 홈 맨 위 두 칸을 채운다. 건수는 각 큐 화면이 쓰는 저장소 함수와 계산을 그대로 쓴다
- * (초안 검수 = listEnrichmentCandidates pending, 대조 = diffVerified, 연락 = loadContactBoard의 flags,
- * 브랜드 확인 = listExhibitorLinkCandidates pending, 오류 = groupIssues, 데이터 이슈 = findBoothEnrichmentGaps).
+ * 관리자 홈 맨 위 두 칸을 채운다. **숫자마다 그 큐 화면이 부르는 함수를 같은 범위로 부른다**
+ * (lib/admin/queues.ts, lib/intake/queue.ts, lib/brands/board.ts의 funnel). 박람회 하나를 보는 큐는
+ * 박람회마다 따로 불러 박람회별 줄로 보이고, 그 줄을 누르면 같은 숫자가 보이는 화면으로 간다.
  *
- * 홈이 이미 읽은 것(행사 목록, 행사별 부스 목록, 오류 로그)은 받아서 다시 읽지 않는다.
+ * 홈이 이미 읽은 것(행사 목록, 행사별 부스 목록)은 받아서 다시 읽지 않는다.
  */
 export async function loadAdminToday(
   repo: Repository,
   input: {
     exhibitions: Exhibition[];
     boothsByFair: Map<string, BoothListItem[]>;
-    issues: IssueLog[];
     today: string;
     floorplanSlugs: Set<string>;
     repoFiles?: RepoFile[] | null;
   },
 ): Promise<AdminToday> {
-  const { exhibitions, boothsByFair, issues, today, floorplanSlugs } = input;
+  const { exhibitions, boothsByFair, today, floorplanSlugs } = input;
   const repoFiles = input.repoFiles === undefined ? readRepoFiles() : input.repoFiles;
   const notEnded = exhibitions.filter((e) => e.endDate >= today);
   const contactFairs = exhibitions.filter((e) => e.endDate >= addDays(today, -CONTACT_LOOKBACK_DAYS));
-  const verifyFairs = exhibitions
-    .map((e) => ({ e, verified: loadVerified(e.slug) }))
-    .filter((x) => Object.keys(x.verified).length > 0);
 
   // 브랜드 그래프는 브랜드 수와 인입 대기 둘이 같이 쓴다. 못 읽으면 브랜드 수는 모름(null).
-  const graphP = repo.loadExhibitorGraph().catch(() => null);
+  const graph = await repo.loadExhibitorGraph().catch(() => null);
 
-  const [articles, contacts, brandLinks, drafts, verify, graph] = await Promise.all([
+  const [articles, contacts, brandLinks, drafts, verify, intake, errors, dataIssues] = await Promise.all([
     safely(async () => {
-      // 0070 적용 전이면 article 표가 없어 throw한다 — 홈은 "준비 전"으로 보여 준다.
-      const rows = await repo.listArticles({ status: ["draft"], limit: 200 });
-      return { state: "ok", count: rows.length, atLeast: rows.length >= 200 || undefined } as QueueCount;
+      // 0070 적용 전이면 article 표가 없어 throw한다. 홈은 "준비 전"으로 보여 준다.
+      const q = await articleQueue(repo);
+      return { state: "ok", count: q.drafts, atLeast: q.atLeast || undefined } as QueueCount;
     }),
-    safely(async () => {
-      const boards = await Promise.all(
-        contactFairs.map(async (e) => {
-          const { rows } = await loadContactBoard(repo, e, today);
-          return { exhibitionId: e.id, slug: e.slug, name: e.name, count: rows.filter((r) => r.flags.length > 0).length };
-        }),
-      );
-      return sumFairs(boards);
-    }),
-    safely(async () => {
-      const rows = await repo.listExhibitorLinkCandidates("pending");
-      return { state: "ok", count: rows.length } as QueueCount;
-    }),
-    safely(async () => {
-      const rows = await repo.listEnrichmentCandidates({ status: "pending", limit: SCAN_LIMIT.candidates });
-      return sumFairs(countByFair(rows, exhibitions.map(fairRef)), rows.length >= SCAN_LIMIT.candidates);
-    }),
+    safely(async () =>
+      sumFairs(
+        await Promise.all(
+          contactFairs.map(async (e) => {
+            const { rows } = await loadContactBoard(repo, e, today);
+            return { ...fairRef(e), count: funnel(rows).todo };
+          }),
+        ),
+      ),
+    ),
+    safely(async () => ({ state: "ok", count: (await pendingLinkCandidates(repo)).length }) as QueueCount),
     safely(async () => {
       const per = await Promise.all(
-        verifyFairs.map(async ({ e, verified }) => {
-          // 대조는 요약 전 필드가 있어야 한다 — 목록 조회는 좁혀 와서 쓰지 않는다(화면과 같은 listBoothsFull).
-          const booths = await repo.listBoothsFull(e.id);
-          return { ...fairRef(e), exhibitionId: e.id, count: diffVerified(booths, verified).rows.length };
+        exhibitions.map(async (e) => {
+          const q = await enrichmentQueue(repo, e.id);
+          return { fair: { ...fairRef(e), count: q.forHuman.length, secondary: q.notFound.length }, atLeast: q.atLeast };
         }),
       );
-      return sumFairs(per);
+      return sumFairs(
+        per.map((p) => p.fair),
+        per.some((p) => p.atLeast),
+        "직접 조사",
+      );
     }),
-    graphP,
+    safely(async () =>
+      sumFairs(await Promise.all(exhibitions.map(async (e) => ({ ...fairRef(e), count: (await verifyQueue(repo, e)).rows.length })))),
+    ),
+    safely(async () => {
+      if (!graph) return { state: "unavailable", reason: "읽지 못했어요" } as QueueCount;
+      const items = await intakeQueue(repo, { today, exhibitions, graph, files: repoFiles });
+      if (!items) return { state: "unavailable", reason: "읽지 못했어요" } as QueueCount;
+      return { state: "ok", count: items.length, notes: items.map((i) => `${i.slug}: ${FILE_KIND_LABEL[i.kind]}`) } as QueueCount;
+    }),
+    safely(async () => ({ state: "ok", count: (await issueGroups(repo)).length }) as QueueCount),
+    safely(async () =>
+      sumFairs(await Promise.all(notEnded.map(async (e) => ({ ...fairRef(e), count: (await dataIssueQueue(repo, e.id)).count })))),
+    ),
   ]);
 
   const brandCountOf = (id: string): number | null =>
@@ -169,21 +131,6 @@ export async function loadAdminToday(
     brandCount: brandCountOf(e.id),
   }));
 
-  // 브랜드 수를 모르면 brands.v1 파일이 반영됐는지도 모른다 — 인입 대기를 세지 않는다.
-  const pendingFiles = repoFiles && graph ? pendingRepoFiles(repoFiles, facts) : null;
-  const intake: QueueCount = pendingFiles
-    ? { state: "ok", count: pendingFiles.length, notes: pendingFileNotes(pendingFiles) }
-    : { state: "unavailable", reason: "읽지 못했어요" };
-
-  const errors: QueueCount = { state: "ok", count: groupIssues(issues).length };
-  const dataIssues = sumFairs(
-    notEnded.map((e) => ({
-      ...fairRef(e),
-      exhibitionId: e.id,
-      count: findBoothEnrichmentGaps(boothsByFair.get(e.id) ?? []).length,
-    })),
-  );
-
   const counts: Record<QueueKey, QueueCount> = {
     articles,
     contacts,
@@ -197,6 +144,5 @@ export async function loadAdminToday(
   return {
     items: buildTodayItems(counts),
     upcoming: upcomingFairs({ fairs: facts, files: repoFiles ?? [], floorplanSlugs, today }),
-    pendingFiles,
   };
 }

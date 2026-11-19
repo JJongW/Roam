@@ -73,6 +73,15 @@ describe("깔때기 숫자", () => {
     expect(f.flags).toEqual({ overdue: 1, "reply-unprocessed": 1, "request-open": 0 });
     expect(f.noHandle).toBe(3);
     expect(f.readOnly).toBe(1);
+    // 할 일 있는 브랜드 수는 줄 단위다(표시 합과 다를 수 있다). 관리자 홈 숫자가 이것이다.
+    expect(f.todo).toBe(2);
+  });
+
+  it("한 브랜드에 표시가 둘이면 할 일은 한 곳으로 센다", () => {
+    const row = { ...buildRow(src(), T), flags: ["overdue", "request-open"] as const };
+    const f = funnel([{ ...row, flags: [...row.flags] }]);
+    expect(f.todo).toBe(1);
+    expect(f.flags.overdue + f.flags["request-open"]).toBe(2);
   });
 });
 

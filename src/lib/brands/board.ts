@@ -213,6 +213,9 @@ export interface Funnel {
   total: number;
   byStatus: Record<BrandContactStatus, number>;
   flags: Record<ActionFlag, number>;
+  /** 할 일 표시가 하나라도 붙은 브랜드 수. 한 브랜드가 표시를 여럿 가질 수 있어 flags 합과 다르다.
+   *  관리자 홈의 "브랜드 연락 할 일" 숫자가 이것이다. */
+  todo: number;
   noHandle: number;
   readOnly: number;
 }
@@ -222,13 +225,15 @@ export function funnel(rows: BoardRow[]): Funnel {
   const flags: Record<ActionFlag, number> = { overdue: 0, "reply-unprocessed": 0, "request-open": 0 };
   let noHandle = 0;
   let readOnly = 0;
+  let todo = 0;
   for (const r of rows) {
     byStatus[r.status]++;
+    if (r.flags.length > 0) todo++;
     for (const f of r.flags) flags[f]++;
     if (!r.handle && !r.email) noHandle++;
     if (!r.writable) readOnly++;
   }
-  return { total: rows.length, byStatus, flags, noHandle, readOnly };
+  return { total: rows.length, byStatus, flags, todo, noHandle, readOnly };
 }
 
 export interface BoardFilter {

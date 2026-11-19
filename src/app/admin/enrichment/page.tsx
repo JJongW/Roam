@@ -4,50 +4,24 @@ import { AdminFairHeader } from "@/components/admin/admin-fair-header";
 import { CandidateQueue } from "@/components/admin/candidate-queue";
 import { CalibrationCard } from "@/components/admin/calibration-card";
 import { calibration } from "@/lib/enrichment/calibration";
-import {
-  reviewPolicy,
-  exhibitionTrust,
-  exhaustedBooths,
-  MAX_DRAFT_ROUNDS,
-} from "@/lib/enrichment/review-policy";
+import { exhibitionTrust, MAX_DRAFT_ROUNDS } from "@/lib/enrichment/review-policy";
+import { enrichmentQueue } from "@/lib/admin/queues";
 
 /** 검수 큐. 초안은 여기서 승인해야 booth_enrichment로 간다. */
 export default async function AdminEnrichmentPage() {
   const repo = await getRepository();
   const { exhibitions, exhibition } = await getAdminFairScope();
 
-  const candidates = exhibition
-    ? await repo.listEnrichmentCandidates({
-        exhibitionId: exhibition.id,
-        status: "pending",
-        limit: 100,
-      })
-    : [];
-  // 보정 표는 **판단된 것 전부**를 봐야 한다 — pending만으론 승인률이 안 나온다.
-  const reviewed = exhibition
-    ? await repo.listEnrichmentCandidates({
-        exhibitionId: exhibition.id,
-        limit: 1000,
-      })
-    : [];
+  // 큐 숫자는 관리자 홈과 같은 함수로 센다(lib/admin/queues.ts). 0.60 아래나 근거 못 찾은 초안은
+  // 사람 큐에 올리지 않고 직접 조사할 목록(notFound)으로 따로 보여 준다.
+  const q = exhibition ? await enrichmentQueue(repo, exhibition.id) : null;
+  const reviewed = q?.reviewed ?? [];
   const cal = calibration(reviewed);
-  // 이 전시를 믿기로 했나. 아직이면 엄격한 문턱으로 판정해 큐를 보여준다 —
-  // 화면과 실제 반영이 다른 문턱을 쓰면 "눌러도 안 줄어드는" 버튼이 또 생긴다.
-  const trust = exhibitionTrust(reviewed);
-  // 상한까지 썼는데 근거를 못 찾은 부스 — 기계는 손을 뗐고 사람이 직접 찾을 목록이다.
-  const giveUp = exhaustedBooths(reviewed);
-  // 0.60 아래는 사람 큐에 올리지 않는다 — 근거를 못 찾은 글은 검수자가 봐도
-  // 할 게 없다. 기계가 세 각도로 다시 찾고도 못 찾았다는 뜻이라, 사람이
-  // **직접 조사할 목록**으로 따로 보여준다.
-  const forHuman = candidates.filter(
-    (c) => reviewPolicy(c.confidence, c.issues, trust.policy).decision !== "redraft",
-  );
-  const notFound = candidates.filter(
-    (c) => reviewPolicy(c.confidence, c.issues, trust.policy).decision === "redraft",
-  );
-  const autoPassCount = forHuman.filter(
-    (c) => reviewPolicy(c.confidence, c.issues, trust.policy).wouldAutoPass,
-  ).length;
+  const trust = q?.trust ?? exhibitionTrust([]);
+  const giveUp = q?.giveUp ?? new Set<string>();
+  const forHuman = q?.forHuman ?? [];
+  const notFound = q?.notFound ?? [];
+  const autoPassCount = q?.autoPassCount ?? 0;
 
   // 진행률은 **전 필드를 가져오는 조회**로 센다 — listBoothsByExhibitionId는
   // 컬럼을 좁혀서 enrichment가 늘 비어 보인다("없음"과 "비어 있음"의 그 함정).
@@ -89,8 +63,8 @@ export default async function AdminEnrichmentPage() {
           </div>
           <p className="mt-2 text-xs text-muted-foreground">
             시설 {booths.length - exhibitors.length}곳은 참가사가 아니라 셈에서 뺐어요.
-            남은 {exhibitors.length - filled}곳, 검수 대기 {forHuman.length}건
-            {notFound.length > 0 && `, 못 찾음 ${notFound.length}건`}
+            남은 {exhibitors.length - filled}곳, 검수 대기 {forHuman.length}건{q?.atLeast ? " 이상" : ""}
+            {notFound.length > 0 && `, 직접 조사 ${notFound.length}건`}
           </p>
         </div>
       )}
@@ -99,7 +73,7 @@ export default async function AdminEnrichmentPage() {
       {notFound.length > 0 && (
         <div className="rounded-2xl border border-warning/40 bg-warning/5 p-4">
           <p className="text-sm font-semibold">
-            기계가 못 찾은 곳 {notFound.length}곳
+            직접 조사 {notFound.length}곳, 기계가 못 찾은 곳
           </p>
           <p className="mt-1 text-xs text-muted-foreground">
             기계가 {MAX_DRAFT_ROUNDS}번(각 세 각도) 다시 찾아도 근거를 못 댄 곳이에요.

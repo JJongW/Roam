@@ -1,4 +1,5 @@
 import { getRepository } from "@/lib/repositories";
+import { pendingLinkCandidates } from "@/lib/admin/queues";
 import { BrandTabs } from "@/components/admin/brands/brand-tabs";
 
 /**
@@ -7,7 +8,8 @@ import { BrandTabs } from "@/components/admin/brands/brand-tabs";
  */
 export default async function BrandsLayout({ children }: { children: React.ReactNode }) {
   const repo = await getRepository();
-  const pending = (await repo.listExhibitorLinkCandidates("pending")).length;
+  // 관리자 홈의 "브랜드 확인 대기"와 같은 함수다(lib/admin/queues.ts).
+  const pending = (await pendingLinkCandidates(repo)).length;
   return (
     <div className="space-y-5">
       <header className="space-y-3">

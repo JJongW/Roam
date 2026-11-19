@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { FairPortfolioLink } from "@/components/admin/fair-portfolio-link";
-import { needsAction, type QueueKey, type TodayItem } from "@/lib/admin/today";
+import { needsAction, type FairCount, type QueueKey, type TodayItem } from "@/lib/admin/today";
 import { cn } from "@/lib/utils";
 
 const ICON: Record<QueueKey, LucideIcon> = {
@@ -36,14 +36,25 @@ const TONE = {
 /** 박람회별 줄은 이만큼만 보이고 나머지는 "N곳 더"로 접는다. */
 const MAX_FAIRS = 3;
 
+function secondaryLabel(item: TodayItem): string {
+  return item.count.state === "ok" ? (item.count.secondary?.label ?? "") : "";
+}
+
 /** 박람회 하나를 보는 큐. 연락 현황은 `?fair=`로 고르고, 나머지는 선택기와 같은 쿠키로 고른다. */
-function FairLine({ item, fair }: { item: TodayItem; fair: { exhibitionId: string; slug: string; name: string; count: number } }) {
+function FairLine({ item, fair }: { item: TodayItem; fair: FairCount }) {
   const cls =
     "press -mx-1.5 flex items-center justify-between gap-2 rounded-md px-1.5 py-1 text-xs hover:bg-secondary active:bg-card-pressed";
   const body = (
     <>
       <span className="min-w-0 truncate text-muted-foreground">{fair.name}</span>
-      <span className="shrink-0 font-semibold tabular">{fair.count}</span>
+      <span className="shrink-0 tabular">
+        <span className="font-semibold">{fair.count}</span>
+        {(fair.secondary ?? 0) > 0 && (
+          <span className="ml-1.5 text-muted-foreground">
+            {secondaryLabel(item)} {fair.secondary}
+          </span>
+        )}
+      </span>
     </>
   );
   if (item.key === "contacts") {
@@ -84,6 +95,11 @@ function QueueCard({ item }: { item: TodayItem }) {
       <p className={cn("mt-3 text-3xl font-extrabold tabular", tone.text)}>
         {c.count}
         <span className="ml-0.5 text-base font-bold">건{c.atLeast ? " 이상" : ""}</span>
+        {c.secondary && c.secondary.count > 0 && (
+          <span className="ml-2 text-sm font-semibold text-muted-foreground">
+            {c.secondary.label} {c.secondary.count}
+          </span>
+        )}
       </p>
     ) : (
       <p className="mt-3 text-sm font-semibold text-muted-foreground">없어요</p>
