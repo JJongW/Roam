@@ -23,7 +23,7 @@ export const mlmExhibition: Exhibition = {
   name: "2026 마곡리빙마켓",
   venue: "코엑스 마곡 컨벤션센터 1층",
   description:
-    "리빙·푸드·공예 브랜드 138곳이 모이는 마곡리빙마켓. Home & Deco, Food & Taste, Space & Style, Hobby & Play 네 구역으로 나뉘고, 공식 부스배치도를 그대로 옮겨 실제 위치로 안내합니다.",
+    "리빙, 푸드, 공예 브랜드 138곳이 모이는 마곡리빙마켓. Home & Deco, Food & Taste, Space & Style, Hobby & Play 네 구역으로 나뉘고, 공식 부스배치도를 그대로 옮겨 실제 위치로 안내합니다.",
   startDate: "2026-09-10",
   endDate: "2026-09-13",
   coverImageUrl: "/booths/magok-livingmarket-2026/livingmarket_poster.png",
@@ -31,11 +31,11 @@ export const mlmExhibition: Exhibition = {
   mapWidth: mlmFloor.width,
   mapHeight: mlmFloor.height,
   tips: {
-    transportation: "지하철 5호선 발산역·9호선 마곡나루역에서 도보. 코엑스 마곡 컨벤션센터 1층입니다.",
+    transportation: "지하철 5호선 발산역, 9호선 마곡나루역에서 도보. 코엑스 마곡 컨벤션센터 1층입니다.",
     parking: "건물 주차장 이용. 대중교통을 권장합니다.",
     ticket: "현장 무료 입장.",
     // 관람시간은 요일마다 다르다 — 주말이 한 시간 일찍 닫는다.
-    guide: "9/10(목)·9/11(금) 10:30–19:00, 9/12(토)·9/13(일) 10:30–18:00. 서측·동측 두 출입구가 있고 가운데 가든라운지에서 쉴 수 있습니다.",
+    guide: "9/10(목)과 9/11(금) 10:30–19:00, 9/12(토)와 9/13(일) 10:30–18:00. 서측, 동측 두 출입구가 있고 가운데 가든라운지에서 쉴 수 있습니다.",
   },
   organizerId: "org_magok_livingmarket",
   createdAt: "2026-09-07T00:00:00.000Z",
@@ -70,7 +70,7 @@ export const mlmBooths: Booth[] = (mlmFloor.booths as MlmFloorBooth[]).map((b) =
     // 138곳 중 81곳은 주최 사이트에도 소개가 없다 — 이름 말고는 근거가 없는
     // 상태 그대로 둔다. 지어내면 근거 카드가 거짓을 말한다.
     company: cat.name,
-    description: `${b.name} · 부스 ${b.code}`,
+    description: `${b.name} 부스 ${b.code}`,
     longDescription: `${b.name}의 부스입니다. 부스 번호 ${b.code}, ${cat.name} 구역.`,
     images: [],
     logoUrl: undefined,

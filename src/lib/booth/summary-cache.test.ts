@@ -8,7 +8,7 @@ describe("prebuiltSummary — 미리 만들어 둔 요약을 찾는다", () => {
   it("운영 DB의 소개글로 요약을 찾는다", () => {
     const hit = prebuiltSummary("Cafe 빈브라더스", BEANBROTHERS);
     expect(hit?.summary).toBe(
-      "싱글 오리진 원두와 드립백, 구독 서비스를 제공합니다.",
+      "싱글 오리진 원두와 드립백, 구독 서비스를 제공해요.",
     );
   });
 

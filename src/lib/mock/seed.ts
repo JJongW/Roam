@@ -37,28 +37,28 @@ export const categories: Category[] = [
   {
     id: "cat_children",
     slug: "children",
-    name: "아동·그림책",
+    name: "아동, 그림책",
     color: "#ff8a3d",
     icon: "Blocks",
   },
   {
     id: "cat_humanities",
     slug: "humanities",
-    name: "인문·사회",
+    name: "인문, 사회",
     color: "#3182f6",
     icon: "Landmark",
   },
   {
     id: "cat_art",
     slug: "art",
-    name: "예술·디자인",
+    name: "예술, 디자인",
     color: "#8b5cf6",
     icon: "Palette",
   },
   {
     id: "cat_science",
     slug: "science",
-    name: "과학·기술",
+    name: "과학, 기술",
     color: "#15c47e",
     icon: "FlaskConical",
   },
@@ -79,9 +79,9 @@ export const exhibition: Exhibition = {
   id: "exh_sibf_2026",
   slug: "sibf-2026",
   name: "2026 서울국제도서전",
-  venue: "코엑스 A·B1홀, 서울 (COEX Hall A & B1)",
+  venue: "코엑스 A홀, B1홀, 서울 (COEX Hall A & B1)",
   description:
-    "‘한 걸음(One Small Step)’을 주제로 열리는 국내 최대 규모의 책 축제. A홀·B1홀에 국내외 출판사 부스가 들어섭니다. 공식 부스배치도를 그대로 옮겨 실제 위치·크기로 길을 안내해요.",
+    "‘한 걸음(One Small Step)’을 주제로 열리는 국내 최대 규모의 책 축제. A홀, B1홀에 국내외 출판사 부스가 들어섭니다. 공식 부스배치도를 그대로 옮겨 실제 위치와 크기로 길을 안내해요.",
   startDate: "2026-06-24",
   endDate: "2026-06-28",
   coverImageUrl:
@@ -91,13 +91,13 @@ export const exhibition: Exhibition = {
   mapHeight: floorplan.height,
   tips: {
     transportation:
-      "지하철 2호선 삼성역 5·6번 출구 또는 9호선 봉은사역에서 코엑스로 연결. A·B1홀은 코엑스 1층입니다.",
+      "지하철 2호선 삼성역 5, 6번 출구 또는 9호선 봉은사역에서 코엑스로 연결. A홀, B1홀은 코엑스 1층입니다.",
     parking:
       "코엑스 지하주차장 이용. 도서전 기간 혼잡하니 대중교통을 권장합니다.",
     ticket:
       "온라인 예매 및 현장 구매. 단체 티켓 신청 마감 6/8. 문의 sibf@sibf.kr / 02-702-0670(내선 4254).",
     guide:
-      "운영시간 11:00–20:00. 주제 강연, 기획 전시, 작가 사인회·낭독회, 해외관을 즐겨보세요.",
+      "운영시간 11:00–20:00. 주제 강연, 기획 전시, 작가 사인회, 낭독회, 해외관을 즐겨보세요.",
   },
   organizerId: "org_sibf",
   createdAt: "2026-01-02T00:00:00.000Z",
@@ -173,7 +173,7 @@ export const booths: Booth[] = floorplan.booths.map((b) => {
   // Facility slots (lounge/stage/aux) aren't exhibitors — no participant blurb.
   const longDescription =
     kind === "facility"
-      ? `${name} · ${b.code}. 참가사 부스가 아닌 행사장 부대 공간이에요.`
+      ? `${name} ${b.code}. 참가사 부스가 아닌 행사장 부대 공간이에요.`
       : `${name}의 부스입니다. 부스 번호 ${b.code}.${
           catKo ? ` 분야: ${catKo}.` : ""
         } 현장에서 신간 전시와 굿즈, 사인회를 만나볼 수 있어요. 2026 서울국제도서전 참가사입니다.`;
@@ -218,7 +218,7 @@ export const booths: Booth[] = floorplan.booths.map((b) => {
     name,
     company: companyLabel,
     aliases: aliasList.length ? aliasList : undefined,
-    description: `${name} · 부스 ${b.code}`,
+    description: `${name} 부스 ${b.code}`,
     longDescription,
     images: [],
     logoUrl: undefined,

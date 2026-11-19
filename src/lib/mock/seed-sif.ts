@@ -85,7 +85,7 @@ export const sifExhibition: Exhibition = {
   name: "2026 서울일러스트레이션페어",
   venue: "코엑스 C홀, 서울 (COEX Hall C)",
   description:
-    "‘평행우주의 만남(V.21)’을 주제로 열리는 국내 최대 규모의 일러스트레이션 페어. 국내외 일러스트레이터·창작 브랜드 부스가 코엑스 C홀에 들어섭니다. 공식 부스배치도를 그대로 옮겨 실제 위치로 안내하고, 관심 가는 작가·부스를 골라 둘러봐요.",
+    "‘평행우주의 만남(V.21)’을 주제로 열리는 국내 최대 규모의 일러스트레이션 페어. 국내외 일러스트레이터, 창작 브랜드 부스가 코엑스 C홀에 들어섭니다. 공식 부스배치도를 그대로 옮겨 실제 위치로 안내하고, 관심 가는 작가, 부스를 골라 둘러봐요.",
   startDate: "2026-07-30",
   endDate: "2026-08-02",
   coverImageUrl: "/sif-2026-cover.webp",
@@ -94,12 +94,12 @@ export const sifExhibition: Exhibition = {
   mapHeight: sifFloor.height,
   tips: {
     transportation:
-      "지하철 2호선 삼성역·9호선 봉은사역에서 코엑스 연결. C홀은 코엑스 1층입니다.",
+      "지하철 2호선 삼성역, 9호선 봉은사역에서 코엑스 연결. C홀은 코엑스 1층입니다.",
     parking:
       "코엑스 지하주차장 이용. 페어 기간 혼잡하니 대중교통을 권장합니다.",
     ticket: "온라인 예매 및 현장 구매.",
     guide:
-      "국내·해외 작가와 창작 브랜드 부스, 굿즈, 신작을 만나보세요. 관심 부스를 골라두면 지도에서 모아볼 수 있어요.",
+      "국내, 해외 작가와 창작 브랜드 부스, 굿즈, 신작을 만나보세요. 관심 부스를 골라두면 지도에서 모아볼 수 있어요.",
   },
   organizerId: "org_sif",
   createdAt: "2026-01-05T00:00:00.000Z",
@@ -163,7 +163,7 @@ export const sifBooths: Booth[] = (sifFloor.booths as SifFloorBooth[]).map(
       kind: "exhibitor" as const,
       name: b.name,
       company: cat.name,
-      description: `${b.name} · 부스 ${b.code}`,
+      description: `${b.name} 부스 ${b.code}`,
       longDescription: `${b.name}의 부스입니다. 부스 번호 ${b.code}. 2026 서울일러스트레이션페어 참가 ${cat.name}입니다.`,
       images,
       logoUrl: m?.logo ?? undefined,
