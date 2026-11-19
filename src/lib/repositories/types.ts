@@ -18,6 +18,9 @@ import type {
   ChangeRecord,
   EnrichmentCandidate,
   Job,
+  Article,
+  ArticleInput,
+  ArticleStatus,
   CommunityPost,
   DeletePostResult,
   ReportResult,
@@ -300,6 +303,26 @@ export interface Repository {
     type?: string;
     limit?: number;
   }): Promise<Job[]>;
+
+  // 아티클(0070) — 운영자와 워커 전용, 서비스 롤. 공개 API는 approved만 부른다.
+  /** 최근 것 먼저(createdAt 내림차순). status를 주면 그 상태만. */
+  listArticles(opts?: { status?: ArticleStatus[]; limit?: number }): Promise<Article[]>;
+  getArticle(id: string): Promise<Article | null>;
+  /** draft로 만든다. 같은 주제(subjectKey)의 draft나 approved가 이미 있으면 만들지 않고 null
+   *  (DB의 부분 unique 인덱스와 같은 규칙). */
+  createArticle(input: ArticleInput): Promise<Article | null>;
+  /**
+   * 승인 또는 반려. **draft일 때만** 바꾼다(compare-and-set) — 슬랙 버튼과 링크를 두 번
+   * 눌러도, 둘이 동시에 와도 한 번만 바뀐다. 이미 결정된 행이면 그 행과 함께 not-draft.
+   */
+  decideArticle(
+    id: string,
+    decision: { status: "approved" | "rejected"; actor: string | null; reason?: string | null },
+  ): Promise<
+    | { ok: true; article: Article }
+    | { ok: false; reason: "not-found" }
+    | { ok: false; reason: "not-draft"; article: Article }
+  >;
 
   /** 변경 이력 적재. **실패해도 도메인 쓰기를 막지 않는다**(loggedWrite) —
    *  900부스 인입이 이력 한 줄 때문에 통째로 멈추면 도구로서 못 쓴다. 대신

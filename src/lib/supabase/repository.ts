@@ -41,6 +41,9 @@ import type {
   ChangeRecord,
   EnrichmentCandidate,
   Job,
+  Article,
+  ArticleInput,
+  ArticleStatus,
   CommunityPost,
   DeletePostResult,
   ReportResult,
@@ -367,6 +370,29 @@ function mapCategory(r: Row): Category {
 // lean. mapBooth defaults the omitted fields to "" / [].
 const BOOTH_LIST_COLS =
   "id,exhibition_id,hall_id,category_id,code,kind,name,company,aliases,description,images,logo_url,instagram_url,website_url,tags,x,y,popularity,created_at";
+
+/** article 행 → Article. 날짜 칸(generated_for)은 date라 'YYYY-MM-DD'로 온다. */
+function mapArticle(r: Row): Article {
+  return {
+    id: str(r.id),
+    kind: str(r.kind) as Article["kind"],
+    status: str(r.status) as Article["status"],
+    title: str(r.title),
+    excerpt: str(r.excerpt),
+    body: (Array.isArray(r.body) ? r.body : []) as Article["body"],
+    sources: (Array.isArray(r.sources) ? r.sources : []) as Article["sources"],
+    gate: (r.gate ?? { ok: false, writer: "", issues: ["게이트 기록 없음"], rejectedAttempts: [], checkedAt: "" }) as Article["gate"],
+    subjectKey: str(r.subject_key),
+    exhibitorIds: strArr(r.exhibitor_ids),
+    exhibitionIds: strArr(r.exhibition_ids),
+    generatedFor: str(r.generated_for).slice(0, 10),
+    decidedBy: (r.decided_by as string | null) ?? null,
+    decidedAt: (r.decided_at as string | null) ?? null,
+    rejectReason: (r.reject_reason as string | null) ?? null,
+    createdAt: str(r.created_at),
+    updatedAt: str(r.updated_at),
+  };
+}
 
 function mapJob(r: Row): Job {
   return {
@@ -2067,6 +2093,86 @@ export class SupabaseRepository implements Repository {
     const { data, error } = await q;
     if (error) throw new Error(`잡 조회 실패: ${error.message}`);
     return (data ?? []).map((r) => mapJob(r as Row));
+  }
+
+  // 아티클(0070) — 서비스 롤 전용(정책 없음 = anon 차단). 공개 API도 이 길로 approved만 읽는다.
+  async listArticles(opts?: { status?: ArticleStatus[]; limit?: number }): Promise<Article[]> {
+    const db = createServiceClient();
+    let q = db
+      .from("article")
+      .select("*")
+      .order("created_at", { ascending: false })
+      .limit(opts?.limit ?? 200);
+    if (opts?.status) q = q.in("status", opts.status);
+    const { data, error } = await q;
+    // 실패를 빈 목록으로 돌리지 않는다 — "초안 없음"과 "표 없음"이 같아 보이면 안 된다(CLAUDE.md).
+    if (error) throw new Error(`아티클 조회 실패: ${error.message}`);
+    return (data ?? []).map((r) => mapArticle(r as Row));
+  }
+
+  async getArticle(id: string): Promise<Article | null> {
+    const db = createServiceClient();
+    const { data, error } = await db.from("article").select("*").eq("id", id).maybeSingle();
+    if (error) throw new Error(`아티클 조회 실패: ${error.message}`);
+    return data ? mapArticle(data as Row) : null;
+  }
+
+  async createArticle(input: ArticleInput): Promise<Article | null> {
+    const db = createServiceClient();
+    const at = now();
+    const res = await db
+      .from("article")
+      .insert({
+        id: uid("art"),
+        kind: input.kind,
+        status: "draft",
+        title: input.title,
+        excerpt: input.excerpt,
+        body: input.body,
+        sources: input.sources,
+        gate: input.gate,
+        subject_key: input.subjectKey,
+        exhibitor_ids: input.exhibitorIds,
+        exhibition_ids: input.exhibitionIds,
+        generated_for: input.generatedFor,
+        created_at: at,
+        updated_at: at,
+      })
+      .select("*")
+      .single();
+    // 23505 = 같은 주제의 draft나 approved가 이미 있다(article_open_subject_uq).
+    if (res.error?.code === "23505") return null;
+    return mapArticle(wrote(res, "아티클 저장") as Row);
+  }
+
+  async decideArticle(
+    id: string,
+    decision: { status: "approved" | "rejected"; actor: string | null; reason?: string | null },
+  ): Promise<
+    | { ok: true; article: Article }
+    | { ok: false; reason: "not-found" }
+    | { ok: false; reason: "not-draft"; article: Article }
+  > {
+    const db = createServiceClient();
+    const at = now();
+    // status = 'draft' 조건이 compare-and-set이다. 두 번 눌러도 한 번만 바뀐다.
+    const res = await db
+      .from("article")
+      .update({
+        status: decision.status,
+        decided_by: decision.actor,
+        decided_at: at,
+        reject_reason: decision.status === "rejected" ? (decision.reason ?? null) : null,
+        updated_at: at,
+      })
+      .eq("id", id)
+      .eq("status", "draft")
+      .select("*");
+    const rows = maybeWrote(res, "아티클 결정") as Row[] | null;
+    if (rows && rows.length > 0) return { ok: true, article: mapArticle(rows[0]) };
+    const cur = await this.getArticle(id);
+    if (!cur) return { ok: false, reason: "not-found" };
+    return { ok: false, reason: "not-draft", article: cur };
   }
 
   async recordChange(entry: ChangeEntry): Promise<void> {

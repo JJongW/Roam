@@ -1023,3 +1023,74 @@ export interface Paginated<T> {
   data: T[];
   nextCursor: string | null;
 }
+
+// --- 아티클(0070) -------------------------------------------------------------
+// 브랜드 아티클 초안 → Ted 승인 → 공개 API. 설계: docs/decisions/2026-11-19_브랜드-아티클-초안-파이프라인.md
+
+export const ARTICLE_KINDS = ["brand_intro", "fair_roundup"] as const;
+/** brand_intro = 숨은 브랜드 하나 소개, fair_roundup = 박람회 참가 브랜드 모음. */
+export type ArticleKind = (typeof ARTICLE_KINDS)[number];
+
+export const ARTICLE_STATUSES = ["draft", "approved", "rejected"] as const;
+/** draft → approved(공개 API에 나감) | rejected(그 주제는 다음 초안에서 뺀다). */
+export type ArticleStatus = (typeof ARTICLE_STATUSES)[number];
+
+/**
+ * 아티클이 기대는 출처 하나. 본문 문장은 이 id로만 사실을 가리킨다.
+ * - profile_field: brand_profile_field 한 칸(확인된 상태만)
+ * - exhibition: 행사 행(이름, 날짜, 장소)
+ * - participation: 브랜드 × 행사 참가 사실
+ * - booth: 부스 번호
+ */
+export interface ArticleSource {
+  id: string;
+  kind: "profile_field" | "exhibition" | "participation" | "booth";
+  /** 사람이 읽는 이름. 예: "하치 공식 소개(공식 자료)" */
+  label: string;
+  /** 원래 출처(URL이나 연락 기록 설명). 칸의 sources 그대로. */
+  origin: string[];
+  /** 브랜드나 주최 측이 직접 쓴 글이면 true. 이 글은 고치지 않고 인용으로만 쓴다(§1, 11-09). */
+  brandWritten?: boolean;
+  /** 사실 원문. 인용과 사실 대조(gate)에 쓴다. */
+  text: string;
+}
+
+/** 본문 한 덩어리. paragraph는 Roam이 쓴 문장(해요체 게이트 대상), quote는 브랜드 원문 그대로. */
+export type ArticleBlock =
+  | { type: "paragraph"; text: string; sourceIds: string[] }
+  | { type: "heading"; text: string; sourceIds: string[] }
+  | { type: "quote"; text: string; sourceId: string; attribution: string };
+
+export interface ArticleGate {
+  ok: boolean;
+  /** 어떤 글쓴이가 만든 판본이 통과했나. */
+  writer: string;
+  issues: string[];
+  /** 통과하지 못하고 버린 판본의 문제(예: LLM 판본 실패 → 틀 판본으로). */
+  rejectedAttempts: { writer: string; issues: string[] }[];
+  checkedAt: string;
+}
+
+export interface Article {
+  id: string;
+  kind: ArticleKind;
+  status: ArticleStatus;
+  title: string;
+  excerpt: string;
+  body: ArticleBlock[];
+  sources: ArticleSource[];
+  gate: ArticleGate;
+  /** 같은 주제를 두 번 내지 않는 열쇠. `brand:<exhibitorId>` | `fair:<exhibitionId>`. */
+  subjectKey: string;
+  exhibitorIds: string[];
+  exhibitionIds: string[];
+  /** 이 초안을 만든 날(KST, YYYY-MM-DD). 하루 한 편. */
+  generatedFor: string;
+  decidedBy: string | null;
+  decidedAt: string | null;
+  rejectReason: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type ArticleInput = Omit<Article, "id" | "status" | "decidedBy" | "decidedAt" | "rejectReason" | "createdAt" | "updatedAt">;

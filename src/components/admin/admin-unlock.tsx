@@ -22,7 +22,10 @@ export function AdminUnlock({ useGoogle }: { useGoogle: boolean }) {
     if (loading) return;
     setLoading(true);
     setError("");
-    const redirectTo = `${window.location.origin}/auth/callback?next=/admin`;
+    // 슬랙 링크(/admin/articles/<id>?action=…)로 왔으면 로그인 뒤 그 화면으로 돌아간다.
+    const here = window.location.pathname + window.location.search;
+    const next = here.startsWith("/admin") ? here : "/admin";
+    const redirectTo = `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`;
     try {
       const { error: oauthError } = await createClient().auth.signInWithOAuth({
         provider: "google",
