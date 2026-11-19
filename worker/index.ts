@@ -21,7 +21,7 @@ import { runDraftBatch } from "@/lib/enrichment/run-draft";
 import { runBrandProfileDraft } from "@/lib/brands/draft";
 import { brandDraftDeps } from "@/lib/brands/draft-llm";
 import { BRAND_DRAFT_CHUNK, BRAND_DRAFT_JOB } from "@/lib/brands/jobs";
-import { generateDailyArticle } from "@/lib/articles/generate";
+import { generateArticle } from "@/lib/articles/generate";
 import { ARTICLE_DRAFT_JOB } from "@/lib/articles/jobs";
 import { articleLlmWriter } from "@/lib/articles/llm";
 import type { Job } from "@/lib/types";
@@ -77,11 +77,11 @@ const HANDLERS: Record<string, Handler> = {
     if (ids.length > 0 && done.length === 0) throw new Error(`브랜드 ${ids.length}곳 모두 실패: ${failures[0]?.message}`);
     return { drafted: done.length, failures, results: done };
   },
-  // 아티클 초안 한 편(0070). 매일 편은 점검(sweep.ts)이 만들고, 이 잡은 관리자 화면의 "새 초안"이 넣는다.
+  // 아티클 초안 한 편(0070). 주간 자동 편은 점검(sweep.ts)이 만들고, 이 잡은 관리자 화면의 "새 초안"이 넣는다(주간 셈 밖).
   // 게이트를 못 넘은 것은 잡 실패가 아니다 — 재시도해도 같은 사실이라 결과에 남기고 끝낸다.
   async [ARTICLE_DRAFT_JOB](job, { repo }) {
     const p = job.payload as { kind?: "brand_intro" | "fair_roundup" };
-    const r = await generateDailyArticle(repo, { force: true, kind: p.kind, llm: articleLlmWriter() });
+    const r = await generateArticle(repo, { force: true, kind: p.kind, llm: articleLlmWriter() });
     return r.status === "created"
       ? { status: r.status, articleId: r.article.id, subjectKey: r.article.subjectKey, writer: r.article.gate.writer }
       : { status: r.status, ...(r.status === "gate-failed" ? { attempts: r.attempts } : {}) };

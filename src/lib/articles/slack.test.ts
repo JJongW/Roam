@@ -46,6 +46,22 @@ describe("매일 보고 — 적체 아래 아티클 칸", () => {
     expect(composeDailyReport(formatBacklog(empty, APP), formatArticleSection({ drafts: [] }, { appUrl: APP }))).toBeNull();
   });
 
+  it("초안이 없는 요일엔 다음 초안 날만으로 칸을 만들지 않는다(소음 없음)", () => {
+    expect(formatArticleSection({ drafts: [], nextDraftOn: "2026-11-23" }, { appUrl: APP })).toBeNull();
+  });
+
+  it("승인 대기 초안이 있으면 다음 초안 날을 한 줄 붙인다", () => {
+    const s = formatArticleSection({ drafts: [draft], nextDraftOn: "2026-11-23" }, { appUrl: APP })!;
+    expect(s).toContain("다음 초안은 11월 23일 월요일에 만들어요.");
+    expect(s).not.toMatch(/[·—]/);
+  });
+
+  it("못 만든 이유가 있으면 다음 초안 날 대신 그 이유를 붙인다", () => {
+    const s = formatArticleSection({ drafts: [draft], note: "이번 주 초안을 아직 만들지 못했어요.", nextDraftOn: "2026-11-23" }, { appUrl: APP })!;
+    expect(s).toContain("이번 주 초안을 아직 만들지 못했어요.");
+    expect(s).not.toContain("다음 초안은");
+  });
+
   it("초안이 없어도 실패 알림은 한 줄 나간다", () => {
     const s = formatArticleSection({ drafts: [], note: "아티클 초안 만들기가 실패했어요: x" }, { appUrl: APP })!;
     expect(s).toContain("승인 대기 0편");

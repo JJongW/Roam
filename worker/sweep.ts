@@ -2,7 +2,8 @@
  * 검수 적체 점검 + 아티클 초안 — launchd(kr.roam.sweep)가 하루 한 번(09:30) 부른다.
  * 집계는 `@/lib/admin/backlog`, 아티클은 `@/lib/articles/*`에 있고 여기는 실행·발송만 한다.
  *
- * 순서: ① 오늘의 아티클 초안을 만든다(하루 한 편, draft만, 공개 안 함) ② 적체를 센다
+ * 순서: ① 이번 주 아티클 초안이 아직 없으면 만든다(한 주에 한 편, 월요일 KST. 월요일을 놓치면
+ * 그 주의 다음 점검이 따라잡는다. draft만, 공개 안 함. 2026-11-19 Ted가 하루 한 편에서 바꿈) ② 적체를 센다
  * ③ 적체 보고 아래에 승인 대기 초안을 붙여 슬랙으로 보낸다. 적체가 없어도 승인 대기 초안이
  * 있으면 보낸다(2026-11-19 Ted: "슬랙에 지금 이미 보고하고 있는 내용 하단에 포함시켜서 매일").
  * 초안 만들기가 실패해도 적체 보고는 나간다.
@@ -20,9 +21,11 @@ loadEnv();
 process.env.ROAM_WORKER = "1";
 import { getRepository } from "@/lib/repositories";
 import { collectBacklog, formatBacklog, DEFAULT_STALE_DAYS } from "@/lib/admin/backlog";
-import { generateDailyArticle, generationNote, type GenerateResult } from "@/lib/articles/generate";
+import { generateArticle, generationNote, type GenerateResult } from "@/lib/articles/generate";
 import { articleLlmWriter } from "@/lib/articles/llm";
 import { composeDailyReport, formatArticleSection, heroImage, slackPayload } from "@/lib/articles/slack";
+import { autoDraftEnabled, nextWeekStart } from "@/lib/articles/schedule";
+import { todayISO } from "@/lib/exhibition/current";
 import type { Article } from "@/lib/types";
 
 const STALE_DAYS = Number(process.env.SWEEP_STALE_DAYS ?? DEFAULT_STALE_DAYS);
@@ -32,19 +35,20 @@ function log(msg: string, extra?: Record<string, unknown>) {
   console.log(JSON.stringify({ t: new Date().toISOString(), msg, ...extra }));
 }
 
-/** ARTICLE_DAILY=0이면 초안을 만들지 않는다(보고는 그대로). */
-const ARTICLE_DAILY = process.env.ARTICLE_DAILY !== "0";
+/** ARTICLE_WEEKLY=0(옛 이름 ARTICLE_DAILY=0도)이면 초안을 만들지 않는다(보고는 그대로). */
+const ARTICLE_AUTO = autoDraftEnabled(process.env);
 
-async function draftArticle(repo: Awaited<ReturnType<typeof getRepository>>): Promise<string | null> {
-  if (!ARTICLE_DAILY) return null;
+async function draftArticle(repo: Awaited<ReturnType<typeof getRepository>>, today: string): Promise<string | null> {
+  if (!ARTICLE_AUTO) return null;
   try {
-    const r: GenerateResult = await generateDailyArticle(repo, { llm: articleLlmWriter() });
+    const r: GenerateResult = await generateArticle(repo, { today, llm: articleLlmWriter() });
     log("아티클 초안", {
       status: r.status,
       ...(r.status === "created" ? { id: r.article.id, subject: r.article.subjectKey, writer: r.article.gate.writer } : {}),
       ...(r.status === "gate-failed" ? { attempts: r.attempts } : {}),
     });
     // 고를 주제가 없는 날은 조용히 — 그것만으로 매일 알림이 오면 소음이 된다.
+    // 이번 주 편이 이미 있는 날(exists)도 generationNote가 null이라 아무 줄도 붙지 않는다.
     return r.status === "no-subject" ? null : generationNote(r);
   } catch (e) {
     const message = e instanceof Error ? e.message : String(e);
@@ -55,13 +59,14 @@ async function draftArticle(repo: Awaited<ReturnType<typeof getRepository>>): Pr
 
 async function main() {
   const repo = await getRepository();
-  const note = await draftArticle(repo);
+  const today = todayISO();
+  const note = await draftArticle(repo, today);
 
   const backlog = await collectBacklog(repo, { staleDays: STALE_DAYS });
   log("점검 완료", { ...backlog });
 
   let drafts: Article[] = [];
-  if (ARTICLE_DAILY) {
+  if (ARTICLE_AUTO) {
     try {
       drafts = await repo.listArticles({ status: ["draft"], limit: 20 });
     } catch (e) {
@@ -74,7 +79,10 @@ async function main() {
   const appUrl = process.env.SLACK_LINK_BASE_URL ?? "https://roam.ai.kr";
   const text = composeDailyReport(
     formatBacklog(backlog, appUrl),
-    formatArticleSection({ drafts, note }, { appUrl, linkSecret: process.env.ARTICLE_LINK_SECRET || undefined }),
+    formatArticleSection(
+      { drafts, note, nextDraftOn: ARTICLE_AUTO ? nextWeekStart(today) : null },
+      { appUrl, linkSecret: process.env.ARTICLE_LINK_SECRET || undefined },
+    ),
   );
   if (!text) {
     log("적체도 승인 대기 초안도 없음 — 보내지 않음");

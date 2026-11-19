@@ -1,7 +1,8 @@
-// 하루 한 편 아티클 초안 — 고르고(select), 쓰고(LLM 또는 틀), 게이트를 넘은 판본만 draft로 저장한다.
+// 아티클 초안 — 고르고(select), 쓰고(LLM 또는 틀), 게이트를 넘은 판본만 draft로 저장한다.
 //
-// 워커의 검수 적체 점검(worker/sweep.ts, 매일 09:30)이 보고 직전에 부르고, 관리자 화면의
-// "새 초안" 버튼은 잡 큐(article_draft)로 워커에 맡긴다. 실행 위치가 달라도 이 함수 하나다.
+// 워커의 검수 적체 점검(worker/sweep.ts, 매일 09:30)이 보고 직전에 부르고, 자동 편은 한 주에 한 편이다
+// (월요일 KST, 놓치면 그 주 안에서 따라잡기. schedule.ts). 관리자 화면의 "새 초안" 버튼은 잡 큐
+// (article_draft)로 워커에 맡기고 주간 셈과 상관없이 만든다(force). 실행 위치가 달라도 이 함수 하나다.
 //
 // 아무것도 공개하지 않는다. 저장은 draft뿐이고, 공개는 Ted의 승인(decision.ts)만 한다.
 import type { Repository } from "@/lib/repositories/types";
@@ -12,6 +13,7 @@ import { checkArticle } from "./gate";
 import { pickCandidates, type Candidate } from "./select";
 import { PHOTO_FIELD_STATUSES, type World } from "./facts";
 import { getOutreachStore, subjectsFromGraph } from "@/lib/brands/outreach-store";
+import { autoDraftThisWeek } from "./schedule";
 
 /**
  * LLM 글쓴이가 돌려주는 판본. 인용은 출처 id만 받고 글은 원문에서 채운다(한 글자도 못 바꾸게).
@@ -27,7 +29,7 @@ export type LlmWriter = (input: { template: Draft }) => Promise<LlmDraft>;
 export interface GenerateOptions {
   /** KST YYYY-MM-DD. 기본은 오늘. */
   today?: string;
-  /** 오늘 이미 만든 편이 있어도 하나 더(관리자 "새 초안"). */
+  /** 이번 주 자동 편이 있어도 하나 더(관리자 "새 초안"). 이렇게 만든 편은 주간 셈에 들어가지 않는다. */
   force?: boolean;
   kind?: ArticleKind;
   /** 없으면 틀 글쓴이만. */
@@ -136,11 +138,12 @@ const gateOf = (d: Draft) =>
     derivedNumbers: d.derivedNumbers,
   });
 
-export async function generateDailyArticle(repo: Repository, opts: GenerateOptions = {}): Promise<GenerateResult> {
+export async function generateArticle(repo: Repository, opts: GenerateOptions = {}): Promise<GenerateResult> {
   const today = opts.today ?? todayISO();
   const articles = await repo.listArticles({ limit: 1000 });
   if (!opts.force && !opts.dryRun) {
-    const done = articles.find((a) => a.generatedFor === today);
+    // 이번 주 자동 편이 이미 있으면 만들지 않는다. 월요일이 아니어도 없으면 만든다(놓친 월요일 따라잡기).
+    const done = autoDraftThisWeek(articles, today);
     if (done) return { status: "exists", article: done };
   }
 
@@ -175,7 +178,14 @@ export async function generateDailyArticle(repo: Repository, opts: GenerateOptio
         attempts.push({ subjectKey: picked.subjectKey, writer: draft.writer, issues: g.issues });
         continue;
       }
-      const gate: ArticleGate = { ok: true, writer: draft.writer, issues: [], rejectedAttempts: rejected, checkedAt: new Date().toISOString() };
+      const gate: ArticleGate = {
+        ok: true,
+        writer: draft.writer,
+        issues: [],
+        rejectedAttempts: rejected,
+        checkedAt: new Date().toISOString(),
+        origin: opts.force ? "manual" : "schedule",
+      };
       if (opts.dryRun) return { status: "dry-run", draft, gate, tried: i + 1 };
       const article = await repo.createArticle({
         kind: draft.kind,
@@ -206,9 +216,9 @@ export function generationNote(r: GenerateResult | { status: "error"; message: s
     case "dry-run":
       return null;
     case "no-subject":
-      return "오늘은 새 초안을 만들지 않았어요. 허락 받은 사진과 확인된 사실이 함께 있는 새 주제가 없어요.";
+      return "이번 주 초안을 아직 만들지 못했어요. 허락 받은 사진과 확인된 사실이 함께 있는 새 주제가 없어요.";
     case "gate-failed":
-      return `오늘은 새 초안을 만들지 않았어요. 후보 ${new Set(r.attempts.map((a) => a.subjectKey)).size}곳이 모두 말투나 근거 검사를 넘지 못했어요.`;
+      return `이번 주 초안을 아직 만들지 못했어요. 후보 ${new Set(r.attempts.map((a) => a.subjectKey)).size}곳이 모두 말투나 근거 검사를 넘지 못했어요. 내일 점검에서 다시 해 볼게요.`;
     case "error":
       return `아티클 초안 만들기가 실패했어요: ${r.message.slice(0, 200)}`;
   }

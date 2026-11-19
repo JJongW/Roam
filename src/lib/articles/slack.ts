@@ -6,6 +6,7 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 import type { Article } from "@/lib/types";
 import { articleAdminUrl } from "./signed-link";
+import { koreanDay } from "./schedule";
 
 /** 슬랙 mrkdwn 이스케이프(&, <, >). 링크 문법과 섞이지 않게. */
 export function slackEscape(s: string): string {
@@ -15,8 +16,13 @@ export function slackEscape(s: string): string {
 export interface ArticleReportInput {
   /** 승인을 기다리는 초안. 최신 것 먼저. 첫 편을 크게 보여 준다. */
   drafts: Pick<Article, "id" | "title" | "excerpt" | "sources" | "kind" | "generatedFor" | "hero">[];
-  /** 오늘 생성이 실패했거나 고를 주제가 없었을 때 한 줄. */
+  /** 이번 주 생성이 실패했거나 고를 주제가 없었을 때 한 줄. */
   note?: string | null;
+  /**
+   * 다음 자동 초안을 만드는 날(KST YYYY-MM-DD, 월요일). 승인 대기 초안이 있을 때만 한 줄로 붙인다.
+   * 기다리는 초안이 없는 날엔 아티클 칸 자체가 없다(초안이 없는 요일마다 알리면 소음이다).
+   */
+  nextDraftOn?: string | null;
 }
 
 export interface ReportLinks {
@@ -75,6 +81,7 @@ export function formatArticleSection(input: ArticleReportInput, links: ReportLin
   }
   if (rest.length) lines.push(`이전 초안 ${rest.length}편도 기다리고 있어요. <${app}/admin/articles|목록 열기>`);
   if (input.note) lines.push(slackEscape(input.note));
+  else if (top && input.nextDraftOn) lines.push(`다음 초안은 ${koreanDay(input.nextDraftOn)}에 만들어요.`);
   return lines.join("\n");
 }
 
