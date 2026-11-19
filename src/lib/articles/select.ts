@@ -5,8 +5,10 @@
 // - 이미 다룬 주제(초안, 승인, 반려 모두)는 다시 고르지 않는다. 반려한 주제를 피하는 것도 이 규칙이다.
 // - 사실이 넉넉한 주제만: 브랜드는 확인된 소개 원문과 참가 사실이 있어야 하고,
 //   박람회는 앞으로 열리거나 열리는 중이고 소개 원문이 확인된 참가 브랜드가 셋 이상이어야 한다.
+// - 사진은 필수다(2026-11-19 Ted). 브랜드 소개는 그 회차에 허락 받은 사진이 한 장 이상(대표 사진),
+//   모음은 허락 받은 사진이 있는 브랜드만 담고, 그런 곳이 셋이 안 되면 그 박람회를 건너뛴다(facts.ts 사진 허락).
 import type { Article, ArticleKind } from "@/lib/types";
-import { brandFacts, indexFields, type BrandFacts, type ExhibitionLite, type World } from "./facts";
+import { brandFacts, indexFields, introParticipation, permittedPhotos, type BrandFacts, type ExhibitionLite, type World } from "./facts";
 
 /** 소개 원문이 이보다 짧으면 한 편을 받칠 사실이 아니다. */
 export const MIN_INTRO_CHARS = 40;
@@ -64,7 +66,15 @@ function brandOrder(today: string) {
   };
 }
 
-const hasEnoughForIntro = (b: BrandFacts) => !!b.intro && b.intro.original.length >= MIN_INTRO_CHARS && b.participations.length > 0;
+const hasEnoughForIntro = (b: BrandFacts) =>
+  !!b.intro &&
+  b.intro.original.length >= MIN_INTRO_CHARS &&
+  b.participations.length > 0 &&
+  permittedPhotos(b, introParticipation(b)?.participantId).length > 0;
+
+/** 그 박람회 회차에 허락 받은 사진이 있나. */
+export const hasFairPhoto = (b: BrandFacts, exhibitionId: string) =>
+  permittedPhotos(b, b.participations.find((p) => p.exhibitionId === exhibitionId)?.participantId).length > 0;
 
 export function brandCandidates(world: World, covered: Set<string>): Candidate[] {
   const byId = indexFields(world.fields);
@@ -87,7 +97,7 @@ export function fairCandidates(world: World, covered: Set<string>): Candidate[] 
     const participants = world.graph.participants.filter((p) => p.exhibitionId === exhibition.id);
     const brands = [...new Set(participants.map((p) => p.exhibitorId))]
       .map((id) => brandFacts(world, id, byId))
-      .filter((b): b is BrandFacts => !!b && !!b.intro && !!leadQuote(b.intro.original))
+      .filter((b): b is BrandFacts => !!b && !!b.intro && !!leadQuote(b.intro.original) && hasFairPhoto(b, exhibition.id))
       .sort((a, b) => {
         const seen = (x: BrandFacts) => (covered.has(subjectKeyOf.brand(x.exhibitorId)) ? 1 : 0);
         return seen(a) - seen(b) || brandOrder(world.today)(a, b);
@@ -126,4 +136,50 @@ export function pickCandidates(
   return kindOrder(articles, opts.kind).flatMap((k) =>
     (k === "brand_intro" ? brandCandidates(world, covered) : fairCandidates(world, covered)).slice(0, limit),
   );
+}
+
+/** 사진 조건에서 몇 곳이 걸러지나. 드라이런과 보고에 쓴다(숫자를 지어내지 않게 실제로 센다). */
+export interface PhotoCoverage {
+  brands: number;
+  /** 확인된 소개 원문이 40자 이상이고 참가 사실이 있는 곳(사진 빼고 소개 조건을 넘는 곳). */
+  introReady: number;
+  /** 대표 사진 칸이 있는 곳(상태 무관). */
+  photoFieldAny: number;
+  /** 대표 사진 칸을 사람이 확인한 곳(reviewed, artist_confirmed). */
+  photoFieldConfirmed: number;
+  /** 어느 회차든 사진 허락(granted, partial + 사진 토큰)이 있는 곳. */
+  photoGranted: number;
+  /** 사진까지 갖춰 브랜드 소개 후보가 되는 곳. */
+  introQualified: number;
+  /** 앞으로 열리는 박람회마다: 모음 후보 브랜드 수(소개 인용 + 사진)와 후보가 되는지. */
+  fairs: { exhibitionId: string; name: string; withQuote: number; withQuoteAndPhoto: number; qualifies: boolean }[];
+}
+
+export function photoCoverage(world: World): PhotoCoverage {
+  const byId = indexFields(world.fields);
+  const all = world.graph.exhibitors.map((e) => brandFacts(world, e.id, byId)).filter((b): b is BrandFacts => !!b);
+  const introReady = all.filter((b) => !!b.intro && b.intro.original.length >= MIN_INTRO_CHARS && b.participations.length > 0);
+  const fairs = world.exhibitions
+    .filter((e) => e.endDate.slice(0, 10) >= world.today)
+    .map((e) => {
+      const ids = new Set(world.graph.participants.filter((p) => p.exhibitionId === e.id).map((p) => p.exhibitorId));
+      const withQuote = all.filter((b) => ids.has(b.exhibitorId) && !!b.intro && !!leadQuote(b.intro.original));
+      const withPhoto = withQuote.filter((b) => hasFairPhoto(b, e.id));
+      return {
+        exhibitionId: e.id,
+        name: e.name,
+        withQuote: withQuote.length,
+        withQuoteAndPhoto: withPhoto.length,
+        qualifies: withPhoto.length >= ROUNDUP_MIN,
+      };
+    });
+  return {
+    brands: all.length,
+    introReady: introReady.length,
+    photoFieldAny: new Set(world.fields.filter((f) => f.field === "photos" && f.exhibitorId).map((f) => f.exhibitorId)).size,
+    photoFieldConfirmed: all.filter((b) => !!b.photoField).length,
+    photoGranted: all.filter((b) => b.participations.some((p) => p.photoGrant)).length,
+    introQualified: introReady.filter(hasEnoughForIntro).length,
+    fairs,
+  };
 }

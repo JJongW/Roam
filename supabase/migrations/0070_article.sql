@@ -10,8 +10,14 @@
 -- approved뿐이다(공개 API GET /api/articles). 승인 없이는 아무것도 공개되지 않는다.
 --
 --   kind            : brand_intro(브랜드 하나 소개) | fair_roundup(박람회 참가 브랜드 모음)
---   body            : 블록 배열. paragraph와 heading은 Roam이 쓴 문장(해요체 게이트를 지남),
---                     quote는 브랜드나 주최 측이 쓴 원문 그대로(고치지 않음, 출처 id가 붙음)
+--   hero            : 대표 사진 {path, alt, credit, scope, sourceId, permissionId}. 필수 —
+--                     2026-11-19 Ted "아티클에 사진은 당연하게 넣어야 하고". 허락 받은 사진만 들어온다:
+--                     대표 사진 칸(brand_profile_field photos)을 사람이 확인했고(reviewed, artist_confirmed)
+--                     그 박람회 회차 연락이 허락(granted, partial)이며 허락 범위에 account-photo나
+--                     sent-photo가 있을 때. 긁어 온 사진, 주최 측 공개 사진만 있는 브랜드는 아티클이 되지 않는다
+--   body            : 블록 배열. Figma 아티클 화면과 맞춘 다섯 가지:
+--                     text(Roam이 쓴 문단, 해요체 게이트), quote(브랜드나 주최 측 원문 그대로),
+--                     photo, photo-group(허락 받은 사진), brand-card(모음의 브랜드 한 곳, 사진 필수)
 --   sources         : 본문이 기대는 출처 목록. 확인된 칸(collected, reviewed, artist_confirmed),
 --                     행사 행, 참가 사실, 부스만 들어간다
 --   gate            : 저장 직전 게이트 결과. ok=false인 판본은 저장하지 않는다(fail closed)
@@ -33,6 +39,11 @@ create table if not exists article (
   status         text not null default 'draft' check (status in ('draft', 'approved', 'rejected')),
   title          text not null check (length(title) between 1 and 120),
   excerpt        text not null check (length(excerpt) between 1 and 400),
+  hero           jsonb not null check (
+                   jsonb_typeof(hero) = 'object'
+                   and length(coalesce(hero ->> 'path', '')) > 0
+                   and length(coalesce(hero ->> 'permissionId', '')) > 0
+                 ),
   body           jsonb not null check (jsonb_typeof(body) = 'array'),
   sources        jsonb not null default '[]'::jsonb check (jsonb_typeof(sources) = 'array'),
   gate           jsonb not null,

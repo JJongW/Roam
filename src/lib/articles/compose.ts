@@ -3,8 +3,18 @@
 // LLM 글쓴이가 없거나 게이트를 못 넘으면 이 판본을 쓴다. 문장이 단단한 대신 담백하다.
 // 화자는 Roam(에디터)이다. 로미가 아니라서 "제가"를 쓰지 않고, 추천하거나 취향을 아는 척하지 않는다
 // (00_brand-rules §5, 02_voice-tone §7-1, 메모 romi-companion-not-recommender).
-import type { ArticleBlock, ArticleKind, ArticleSource } from "@/lib/types";
-import { brandSources, exhibitionSource, indexFields, sourceIdOf, uniqueSources, type BrandFacts, type Participation } from "./facts";
+import type { ArticleBlock, ArticleKind, ArticlePhoto, ArticleSource } from "@/lib/types";
+import {
+  brandSources,
+  exhibitionSource,
+  indexFields,
+  introParticipation,
+  permittedPhotos,
+  sourceIdOf,
+  uniqueSources,
+  type BrandFacts,
+  type Participation,
+} from "./facts";
 import { josa, koreanDateRange } from "./korean";
 import { leadQuote, type Candidate } from "./select";
 import type { ProfileField } from "@/lib/types";
@@ -15,6 +25,8 @@ export interface Draft {
   subjectKey: string;
   title: string;
   excerpt: string;
+  /** 대표 사진. 허락 받은 사진이 없으면 후보가 되지 않으므로 늘 있다. */
+  hero: ArticlePhoto;
   body: ArticleBlock[];
   sources: ArticleSource[];
   /** 고유명사(브랜드, 행사, 장소, 부스 번호, 품목). 게이트가 말투 검사에서 가린다. */
@@ -51,6 +63,11 @@ export function composeBrandIntro(c: Extract<Candidate, { kind: "brand_intro" }>
   const past = b.participations.filter((p) => !p.upcoming);
   const next = up[0];
   const body: ArticleBlock[] = [];
+  // 사진: 고른 회차(introParticipation)에 허락 받은 것만. 첫 장이 대표 사진, 그다음 두 장까지 본문에.
+  const photos = permittedPhotos(b, introParticipation(b)?.participantId);
+  if (!photos.length) throw new Error(`${b.exhibitorId}: 허락 받은 사진이 없어요`);
+  const [hero, ...more] = photos;
+  const inline = more.slice(0, 2);
 
   // 1. 어디서 만날 수 있는 브랜드인가(참가 사실).
   const lead: string[] = [];
@@ -66,27 +83,23 @@ export function composeBrandIntro(c: Extract<Candidate, { kind: "brand_intro" }>
     lead.push(`${named(b.name, "topic")} ${list(past.map((p) => p.exhibition.name))}에 참가했던 브랜드예요.`);
     leadIds.push(...past.map((p) => sourceIdOf.participation(p.participantId)));
   }
-  body.push({ type: "paragraph", text: lead.join(" "), sourceIds: leadIds });
+  body.push({ type: "text", text: lead.join(" "), sourceIds: leadIds });
 
   if (next) {
     const f = fairLine(next);
     const booth = next.boothCode && next.boothId ? ` ${next.exhibition.name}에서는 ${next.boothCode} 부스에 있어요.` : "";
     body.push({
-      type: "paragraph",
+      type: "text",
       text: f.text + booth,
       sourceIds: [...f.sourceIds, ...(next.boothId && next.boothCode ? [sourceIdOf.booth(next.boothId)] : [])],
     });
   }
 
   // 2. 브랜드가 직접 쓴 소개. 고치지 않고 그대로 인용한다.
-  if (b.intro) {
-    body.push({ type: "heading", text: "브랜드가 직접 쓴 소개", sourceIds: [b.intro.sourceId] });
-    body.push({ type: "quote", text: b.intro.original, sourceId: b.intro.sourceId, attribution: `${b.name} 공식 소개 원문` });
-  }
-  if (b.whyMake) {
-    body.push({ type: "heading", text: "왜 만드는지 물었어요", sourceIds: [b.whyMake.sourceId] });
-    body.push({ type: "quote", text: b.whyMake.original, sourceId: b.whyMake.sourceId, attribution: `${b.name} 작가의 답` });
-  }
+  if (b.intro) body.push({ type: "quote", text: b.intro.original, sourceId: b.intro.sourceId, attribution: `${b.name} 공식 소개 원문` });
+  if (inline.length === 1) body.push({ type: "photo", photo: inline[0] });
+  if (inline.length > 1) body.push({ type: "photo-group", photos: inline });
+  if (b.whyMake) body.push({ type: "quote", text: b.whyMake.original, sourceId: b.whyMake.sourceId, attribution: `${b.name} 작가의 답` });
 
   // 3. 확인된 칸.
   const facts: { text: string; id: string }[] = [];
@@ -100,10 +113,7 @@ export function composeBrandIntro(c: Extract<Candidate, { kind: "brand_intro" }>
     });
   const link = linkLine(b);
   if (link && b.links) facts.push({ text: link, id: b.links.sourceId });
-  if (facts.length) {
-    body.push({ type: "heading", text: "확인된 정보", sourceIds: facts.map((f) => f.id) });
-    body.push({ type: "paragraph", text: facts.map((f) => f.text).join(" "), sourceIds: facts.map((f) => f.id) });
-  }
+  if (facts.length) body.push({ type: "text", text: facts.map((f) => f.text).join(" "), sourceIds: facts.map((f) => f.id) });
 
   const sources = uniqueSources([
     ...brandSources(b, byId),
@@ -116,6 +126,7 @@ export function composeBrandIntro(c: Extract<Candidate, { kind: "brand_intro" }>
     subjectKey: c.subjectKey,
     title: next ? `${next.exhibition.name}에서 만나는 ${b.name}` : `${titleFair.exhibition.name}에 참가했던 ${b.name}`,
     excerpt,
+    hero,
     body,
     sources,
     protectedTerms: protectedTerms([b]),
@@ -142,12 +153,12 @@ export function composeFairRoundup(c: Extract<Candidate, { kind: "fair_roundup" 
   const body: ArticleBlock[] = [];
   const venue = e.venue ? ` ${e.venue}에서` : "";
   body.push({
-    type: "paragraph",
+    type: "text",
     text: `${named(e.name, "topic")} ${koreanDateRange(e.startDate, e.endDate)}${venue} 열려요.`,
     sourceIds: [exSource.id],
   });
   body.push({
-    type: "paragraph",
+    type: "text",
     text: `Roam에 등록된 참가 브랜드는 ${c.participantCount}곳이에요. 그중 ${c.brands.length}곳을 브랜드가 직접 쓴 소개와 함께 모았어요.`,
     sourceIds: [exSource.id, ...c.brands.map((b) => b.intro!.sourceId)],
   });
@@ -159,28 +170,35 @@ export function composeFairRoundup(c: Extract<Candidate, { kind: "fair_roundup" 
     for (const b of withItems) for (const it of new Set(b.items!.values)) count.set(it, (count.get(it) ?? 0) + 1);
     const top = [...count.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 3).map(([k]) => k);
     body.push({
-      type: "paragraph",
+      type: "text",
       text: `품목이 확인된 ${withItems.length}곳에서 많이 나온 품목은 ${list(top)} 순이에요.`,
       sourceIds: withItems.map((b) => b.items!.sourceId),
     });
   }
 
+  // 브랜드마다 카드 하나(이름, 부스, 품목, 사진)와 소개 원문 첫 문장. 사진 없는 브랜드는 select가 이미 뺐다.
+  let hero: ArticlePhoto | undefined;
   for (const b of c.brands) {
     const p = b.participations.find((x) => x.exhibitionId === e.id);
-    body.push({ type: "heading", text: b.name, sourceIds: p ? [sourceIdOf.participation(p.participantId)] : [b.intro!.sourceId] });
+    const photos = permittedPhotos(b, p?.participantId);
+    if (!p || !photos.length) throw new Error(`${b.exhibitorId}: ${e.id} 회차에 허락 받은 사진이 없어요`);
+    // 대표 사진은 첫 브랜드의 둘째 장(카드와 같은 사진이 두 번 나오지 않게), 한 장뿐이면 그 장.
+    hero ??= photos[1] ?? photos[0];
+    const ids = [sourceIdOf.participation(p.participantId)];
+    if (p.boothCode && p.boothId) ids.push(sourceIdOf.booth(p.boothId));
+    if (b.items) ids.push(b.items.sourceId);
+    body.push({
+      type: "brand-card",
+      exhibitorId: b.exhibitorId,
+      name: b.name,
+      ...(p.boothCode && p.boothId ? { boothCode: p.boothCode } : {}),
+      ...(b.items ? { items: b.items.values } : {}),
+      photo: photos[0],
+      sourceIds: ids,
+    });
     body.push({ type: "quote", text: leadQuote(b.intro!.original)!, sourceId: b.intro!.sourceId, attribution: `${b.name} 공식 소개 원문에서` });
-    const extra: string[] = [];
-    const ids: string[] = [];
-    if (p?.boothCode && p.boothId) {
-      extra.push(`${p.boothCode} 부스에 있어요.`);
-      ids.push(sourceIdOf.booth(p.boothId));
-    }
-    if (b.items) {
-      extra.push(`확인된 품목은 ${named(list(b.items.values), "copula")}.`);
-      ids.push(b.items.sourceId);
-    }
-    if (extra.length) body.push({ type: "paragraph", text: extra.join(" "), sourceIds: ids });
   }
+  if (!hero) throw new Error(`${e.id}: 대표 사진이 없어요`);
 
   const sources = uniqueSources([exSource, ...c.brands.flatMap((b) => brandSources(b, byId))]);
   return {
@@ -189,6 +207,7 @@ export function composeFairRoundup(c: Extract<Candidate, { kind: "fair_roundup" 
     // "참가 브랜드 5곳"은 다섯 곳만 나오는 것처럼 읽힌다. 고른 일부라는 걸 제목에서 밝힌다.
     title: `${e.name} 참가 브랜드 중 ${c.brands.length}곳`,
     excerpt: excerptOf(body),
+    hero,
     body,
     sources,
     protectedTerms: [...protectedTerms(c.brands), e.name, e.venue].filter(Boolean),
@@ -204,11 +223,11 @@ export const EXCERPT_MAX = 300;
 export function excerptOf(body: ArticleBlock[]): string {
   const out: string[] = [];
   for (const b of body) {
-    if (b.type !== "paragraph") continue;
+    if (b.type !== "text") continue;
     if (out.length === 2 || [...out, b.text].join(" ").length > EXCERPT_MAX) break;
     out.push(b.text);
   }
-  return out.join(" ") || (body.find((b) => b.type === "paragraph")?.text.slice(0, EXCERPT_MAX) ?? "");
+  return out.join(" ") || ((body.find((b) => b.type === "text") as { text: string } | undefined)?.text.slice(0, EXCERPT_MAX) ?? "");
 }
 
 export function protectedTerms(brands: BrandFacts[]): string[] {

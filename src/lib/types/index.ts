@@ -1044,7 +1044,11 @@ export type ArticleStatus = (typeof ARTICLE_STATUSES)[number];
  */
 export interface ArticleSource {
   id: string;
-  kind: "profile_field" | "exhibition" | "participation" | "booth";
+  /**
+   * photo: 브랜드 프로필 대표 사진 칸(사람이 허락 범위를 붙이고 확인한 것). text = 사진 경로 줄 목록.
+   * permission: 그 박람회 회차의 사진 허락(brand_contact 또는 participant_permission, 허락 또는 일부 허락).
+   */
+  kind: "profile_field" | "exhibition" | "participation" | "booth" | "photo" | "permission";
   /** 사람이 읽는 이름. 예: "하치 공식 소개(공식 자료)" */
   label: string;
   /** 원래 출처(URL이나 연락 기록 설명). 칸의 sources 그대로. */
@@ -1055,11 +1059,45 @@ export interface ArticleSource {
   text: string;
 }
 
-/** 본문 한 덩어리. paragraph는 Roam이 쓴 문장(해요체 게이트 대상), quote는 브랜드 원문 그대로. */
+/**
+ * 아티클 사진 한 장. 허락 받은 사진만 들어온다(lib/articles/facts.ts permittedPhotos).
+ * path는 앱 기준 경로("/…")나 https 주소. 화면은 그대로 img src로 쓴다.
+ */
+export interface ArticlePhoto {
+  path: string;
+  /** 대체 글(Roam이 쓴 라벨). */
+  alt: string;
+  /** 사진 표기. 예: "사진 하치" */
+  credit: string;
+  /** 사람이 붙인 허락 범위 원문(대표 사진 칸의 scope). */
+  scope: string;
+  /** 대표 사진 칸 출처 id(kind photo). */
+  sourceId: string;
+  /** 그 회차 사진 허락 출처 id(kind permission). */
+  permissionId: string;
+}
+
+/**
+ * 본문 한 덩어리. Figma 아티클 화면과 1:1로 맞추려고 다섯 가지만 둔다.
+ * - text: Roam이 쓴 문단(해요체 게이트 대상)
+ * - quote: 브랜드나 주최 측 원문 그대로
+ * - photo, photo-group: 허락 받은 사진 한 장, 두세 장
+ * - brand-card: 모음 글의 브랜드 한 곳(이름, 부스, 품목, 사진). 사진 없는 브랜드는 카드가 되지 않는다
+ */
 export type ArticleBlock =
-  | { type: "paragraph"; text: string; sourceIds: string[] }
-  | { type: "heading"; text: string; sourceIds: string[] }
-  | { type: "quote"; text: string; sourceId: string; attribution: string };
+  | { type: "text"; text: string; sourceIds: string[] }
+  | { type: "quote"; text: string; sourceId: string; attribution: string }
+  | { type: "photo"; photo: ArticlePhoto }
+  | { type: "photo-group"; photos: ArticlePhoto[] }
+  | {
+      type: "brand-card";
+      exhibitorId: string;
+      name: string;
+      boothCode?: string;
+      items?: string[];
+      photo: ArticlePhoto;
+      sourceIds: string[];
+    };
 
 export interface ArticleGate {
   ok: boolean;
@@ -1077,6 +1115,8 @@ export interface Article {
   status: ArticleStatus;
   title: string;
   excerpt: string;
+  /** 대표 사진. 없으면 저장하지 않는다(2026-11-19 Ted "아티클에 사진은 당연하게"). */
+  hero: ArticlePhoto;
   body: ArticleBlock[];
   sources: ArticleSource[];
   gate: ArticleGate;
