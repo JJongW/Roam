@@ -9,10 +9,11 @@
 --     같은 박람회를 두 번 알리지 않는다. 잡이 두 번 돌아도 insert가 충돌로 빠진다.
 --   - 푸시는 하루에 한 번으로 묶는다. 같이 나간 줄은 batch_id가 같다(하나면 그 브랜드, 여럿이면 목록).
 --   - 기기가 없거나 푸시가 안 나가도 줄은 남긴다(status no_device). 알림함이 이 표를 읽는다.
---   - status: queued(조용한 시간이거나 아직 안 보냄) | sent | failed | no_device | expired(보내기 전에 박람회가 끝남)
+--   - status: queued(조용한 시간이거나 아직 안 보냄) | sent | failed | no_device | muted | expired(보내기 전에 박람회가 끝남)
+--   - muted: 브랜드 알림을 끈 사람. 푸시는 없고 알림함엔 보인다(2026-11-19 Ted, UI 18 질문 6).
 --   - 알림함은 queued를 보여 주지 않는다. 푸시와 알림함이 같은 순간에 생기게.
 --
--- [2] notification_pref — 서버가 아는 알림 끄기. 줄이 없으면 켜짐.
+-- [2] notification_pref — 서버가 아는 알림 끄기. 줄이 없으면 켜짐. 끄면 푸시만 멈추고 알림함 줄은 계속 생긴다.
 --   iOS PushToggleRow(brand_appear)는 지금 기기(UserDefaults)에만 저장한다. 서버로 올리는 건
 --   Roam-ios 따로 작업(PUT /api/me/notification-prefs). 그 전까지는 아무도 꺼진 상태가 아니다.
 --
@@ -34,7 +35,7 @@ create table if not exists notification_log (
   dedupe_key    text not null unique,
   batch_id      text,
   status        text not null default 'queued'
-                check (status in ('queued', 'sent', 'failed', 'no_device', 'expired')),
+                check (status in ('queued', 'sent', 'failed', 'no_device', 'muted', 'expired')),
   error         text,
   created_at    timestamptz not null default now(),
   sent_at       timestamptz,

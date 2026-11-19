@@ -92,11 +92,11 @@ console.log(`  기준: ${r.since} 뒤에 생긴 참가 / 지금 ${r.now} (보내
 if (missingTables.size) console.log(`  ! 0071 미적용으로 보여요. 알림 표는 비어 있다고 봤어요(${[...missingTables].join(", ")})`);
 console.log(
   `  새 참가 ${r.match.participations}건, 그 브랜드 하트 ${r.match.hearts}개 → 후보 ${r.match.candidates}줄, ` +
-    `새로 넣을 줄 ${r.match.inserted}, 이미 있음 ${r.match.duplicate}, 끈 사람 ${r.match.skipped.opted_out}, 참가 뒤 하트 ${r.match.skipped.hearted_after}`,
+    `새로 넣을 줄 ${r.match.inserted}, 이미 있음 ${r.match.duplicate}, 그중 알림 끈 사람(알림함만) ${r.match.muted}, 참가 뒤 하트 ${r.match.skipped.hearted_after}`,
 );
 const d = r.deliver;
 console.log(
-  `  보내기: 대기 ${d.queuedBefore}줄 → 푸시 ${d.planned.length}명, 기기 없음 ${d.noDeviceRows}줄, 끝난 박람회 ${d.expiredRows}줄, ` +
+  `  보내기: 대기 ${d.queuedBefore}줄 → 푸시 ${d.planned.length}명, 알림 끔(알림함만) ${d.mutedRows}줄, 기기 없음 ${d.noDeviceRows}줄, 끝난 박람회 ${d.expiredRows}줄, ` +
     `남김 ${d.heldRows}줄${d.heldReason ? `(${d.heldReason})` : ""}`,
 );
 for (const n of r.preview) console.log(`  · 알림함 ${short(n.userId)}  ${n.title} / ${n.body}`);

@@ -84,29 +84,31 @@ describe("고르기", () => {
     { userId: "u1", exhibitorId: "b", createdAt: "2026-11-01T00:00:00Z" },
   ];
 
-  it("새 참가 × 하트, 끈 사람과 참가 뒤 하트는 뺀다", () => {
+  it("새 참가 × 하트, 참가 뒤 하트만 뺀다(끈 사람도 고른다, 알림함용)", () => {
     const { rows, skipped } = matchBrandAppear({
       participations: [part({ exhibitorId: "a", booth: { id: "booth-a", name: "A" } }), part({ exhibitorId: "b" })],
       hearts,
-      optedOut: new Set(["u2"]),
       brandNames: { a: "모모상점", b: "오브제하우스" },
     });
-    expect(rows.map((r) => r.dedupeKey)).toEqual([dedupeKey("u1", "a", "ex-1"), dedupeKey("u1", "b", "ex-1")]);
+    expect(rows.map((r) => r.dedupeKey)).toEqual([
+      dedupeKey("u1", "a", "ex-1"),
+      dedupeKey("u2", "a", "ex-1"),
+      dedupeKey("u1", "b", "ex-1"),
+    ]);
     expect(rows[0]).toMatchObject({
       kind: "brand_appear",
       title: "모모상점이 새해준비상점에 나와요",
       payload: { exhibitorId: "a", boothId: "booth-a", slug: "newyear-store-2026" },
     });
-    expect(rows[1].payload).not.toHaveProperty("boothId");
+    expect(rows[2].payload).not.toHaveProperty("boothId");
     expect(skipped).toEqual([
-      { userId: "u2", exhibitorId: "a", exhibitionId: "ex-1", reason: "opted_out" },
       { userId: "u3", exhibitorId: "a", exhibitionId: "ex-1", reason: "hearted_after" },
     ]);
   });
 
   it("같은 (사용자, 브랜드, 박람회)는 한 번만", () => {
     const p = part({ exhibitorId: "a" });
-    const { rows } = matchBrandAppear({ participations: [p, { ...p, participantId: "dup" }], hearts: hearts.slice(0, 1), optedOut: new Set(), brandNames: {} });
+    const { rows } = matchBrandAppear({ participations: [p, { ...p, participantId: "dup" }], hearts: hearts.slice(0, 1), brandNames: {} });
     expect(rows).toHaveLength(1);
     expect(rows[0].title).toBe("a 표기가 새해준비상점에 나와요"); // 브랜드 이름이 없으면 참가 표기 이름
   });

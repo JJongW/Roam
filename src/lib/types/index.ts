@@ -450,8 +450,9 @@ export interface UpcomingParticipation {
 
 /** 알림 종류(0071). 지금은 브랜드 알림 하나. iOS PushPref.brandAppear와 같은 이름. */
 export type NotificationKind = "brand_appear";
-/** queued: 아직 안 보냄(조용한 시간, APNs 미설정, 일시 오류) · sent · failed · no_device(기기 없음, 알림함엔 보임) · expired(보내기 전에 박람회가 끝남) */
-export type NotificationStatus = "queued" | "sent" | "failed" | "no_device" | "expired";
+/** queued: 아직 안 보냄(조용한 시간, APNs 미설정, 일시 오류), sent, failed, no_device(기기 없음, 알림함엔 보임),
+ *  muted(브랜드 알림을 끔, 푸시 없이 알림함엔 보임, 11-19 Ted), expired(보내기 전에 박람회가 끝남) */
+export type NotificationStatus = "queued" | "sent" | "failed" | "no_device" | "muted" | "expired";
 
 /** 알림 한 줄(0071) = (사용자, 브랜드, 박람회) 하나. 푸시는 batchId로 하루 한 번 묶인다. */
 export interface NotificationLog {

@@ -1,8 +1,9 @@
 // 브랜드 알림 "하트 남긴 브랜드가 다음 박람회에 나와요" — 순수 규칙(고르기, 묶기, 문구, 페이로드).
 // 저장소와 APNs는 run-brand-appear.ts가 붙인다. 결정 기록: docs/decisions/2026-11-19_브랜드-알림-서버.md
 //
-// - 고르기: 새로 생긴 참가 × 그 브랜드에 하트를 남긴 사용자. 끈 사람과, 참가가 생긴 뒤에 하트를
-//   남긴 사람(그 박람회를 보고 남긴 하트)은 뺀다.
+// - 고르기: 새로 생긴 참가 × 그 브랜드에 하트를 남긴 사용자. 참가가 생긴 뒤에 하트를 남긴 사람(그
+//   박람회를 보고 남긴 하트)은 뺀다. 브랜드 알림을 끈 사람도 고른다 — 푸시만 없고 알림함엔 보인다
+//   (11-19 Ted, UI 18 질문 6). 끔은 보내기 단계가 그때의 설정으로 가른다(status muted).
 // - 한 줄 = (사용자, 브랜드, 박람회). dedupe_key로 다시 알리지 않는다.
 // - 푸시는 사용자마다 하루 한 번: 하나면 그 브랜드, 여럿이면 목록(iOS PushLanding, 11-13).
 // - 보내는 시간은 한국 시각 10시부터 20시 전까지. 그 밖이면 줄만 쌓아 둔다(queued).
@@ -91,8 +92,6 @@ export interface BrandAppearItem {
 export interface MatchInput {
   participations: NewParticipation[];
   hearts: BrandHeart[];
-  /** 브랜드 알림을 끈 사용자. */
-  optedOut: Set<string>;
   /** exhibitor id → 브랜드 이름(canonical_name). 없으면 참가 표기 이름. */
   brandNames: Record<string, string>;
 }
@@ -101,7 +100,7 @@ export interface MatchSkip {
   userId: string;
   exhibitorId: string;
   exhibitionId: string;
-  reason: "opted_out" | "hearted_after";
+  reason: "hearted_after";
 }
 
 /** 새 참가 × 하트 → 넣을 줄. 같은 (사용자, 브랜드, 박람회)는 한 번만. */
@@ -121,10 +120,6 @@ export function matchBrandAppear(input: MatchInput): { rows: NotificationInsert[
       if (seen.has(key)) continue;
       seen.add(key);
       const base = { userId: h.userId, exhibitorId: p.exhibitorId, exhibitionId: p.exhibition.id };
-      if (input.optedOut.has(h.userId)) {
-        skipped.push({ ...base, reason: "opted_out" });
-        continue;
-      }
       // 참가가 생긴 뒤에 남긴 하트는 그 박람회 명단을 보고 남긴 것이다. 이미 아는 소식이라 알리지 않는다.
       if (h.createdAt > p.createdAt) {
         skipped.push({ ...base, reason: "hearted_after" });

@@ -1,7 +1,8 @@
 // 브랜드 알림 잡 — 저장소와 보내기를 붙인다. Vercel Cron(/api/cron/brand-appear)과 드라이런이 부른다.
 //
 // ① 고르기: 지난번 뒤에 생긴 참가 × 하트 → notification_log에 queued로 넣는다(dedupe_key로 중복은 빠진다).
-// ② 보내기: 보내도 되는 시간(한국 10~20시)이면 queued를 사용자마다 하나로 묶어 보낸다.
+// ② 보내기: 브랜드 알림을 끈 사람의 줄은 시간과 상관없이 바로 muted(푸시 없음, 알림함엔 보임, 11-19 Ted).
+//    나머지는 보내도 되는 시간(한국 10~20시)이면 queued를 사용자마다 하나로 묶어 보낸다.
 //    - 박람회가 이미 끝난 줄은 expired.
 //    - 기기가 없으면 no_device(알림함엔 보인다).
 //    - 오늘 이미 받은 사람은 내일로 남긴다(하루 한 번).
@@ -55,16 +56,19 @@ export interface RunReport {
     participations: number;
     hearts: number;
     candidates: number;
+    /** 후보 중 브랜드 알림을 끈 사람의 줄(알림함에만 간다). */
+    muted: number;
     /** dedupe_key가 새로 들어간(드라이런이면 들어갈) 줄. */
     inserted: number;
     duplicate: number;
-    skipped: { opted_out: number; hearted_after: number };
+    skipped: { hearted_after: number };
   };
   deliver: {
     queuedBefore: number;
     sentUsers: number;
     sentRows: number;
     noDeviceRows: number;
+    mutedRows: number;
     expiredRows: number;
     failedRows: number;
     heldRows: number;
@@ -95,7 +99,8 @@ export async function runBrandAppear(repo: Repository, opts: RunOptions = {}): P
     userIds.length ? repo.listNotificationOptOuts(BRAND_APPEAR, userIds) : Promise.resolve([]),
     exhibitorIds.length ? repo.getExhibitorNames(exhibitorIds) : Promise.resolve({}),
   ]);
-  const { rows, skipped } = matchBrandAppear({ participations, hearts, optedOut: new Set(optOuts), brandNames });
+  const { rows, skipped } = matchBrandAppear({ participations, hearts, brandNames });
+  const mutedNow = new Set(optOuts);
 
   let insertedRows: NotificationLog[] = [];
   let preview: NotificationInsert[] = [];
@@ -128,10 +133,10 @@ export async function runBrandAppear(repo: Repository, opts: RunOptions = {}): P
       participations: participations.length,
       hearts: hearts.length,
       candidates: rows.length,
+      muted: rows.filter((r) => mutedNow.has(r.userId)).length,
       inserted: insertedCount,
       duplicate: rows.length - insertedCount,
       skipped: {
-        opted_out: skipped.filter((s) => s.reason === "opted_out").length,
         hearted_after: skipped.filter((s) => s.reason === "hearted_after").length,
       },
     },
@@ -143,14 +148,16 @@ export async function runBrandAppear(repo: Repository, opts: RunOptions = {}): P
 
 async function deliverQueued(
   repo: Repository,
-  queued: NotificationLog[],
+  pending: NotificationLog[],
   opts: { now: Date; sender: PushSender | null; dryRun: boolean },
 ): Promise<RunReport["deliver"]> {
+  let queued = pending;
   const out: RunReport["deliver"] = {
     queuedBefore: queued.length,
     sentUsers: 0,
     sentRows: 0,
     noDeviceRows: 0,
+    mutedRows: 0,
     expiredRows: 0,
     failedRows: 0,
     heldRows: 0,
@@ -161,6 +168,22 @@ async function deliverQueued(
   if (queued.length === 0) return out;
   const nowIso = opts.now.toISOString();
   const today = kstDay(opts.now);
+
+  // 끈 사람: 보내는 시점의 설정으로 가른다. 푸시가 없으니 조용한 시간과 하루 한 번 제한도 없다.
+  const optOuts = new Set(
+    await repo.listNotificationOptOuts(BRAND_APPEAR, [...new Set(queued.map((n) => n.userId))]),
+  );
+  const muted = queued.filter((n) => optOuts.has(n.userId) && itemOf(n).endDate >= today);
+  if (muted.length) {
+    if (!opts.dryRun) {
+      const byUser = new Map<string, string[]>();
+      for (const n of muted) byUser.set(n.userId, [...(byUser.get(n.userId) ?? []), n.id]);
+      for (const ids of byUser.values()) await repo.updateNotifications(ids, { status: "muted", batchId: randomUUID() });
+    }
+    out.mutedRows = muted.length;
+    queued = queued.filter((n) => !muted.includes(n));
+    if (queued.length === 0) return out;
+  }
 
   if (!inSendWindow(opts.now)) {
     out.heldRows = queued.length;

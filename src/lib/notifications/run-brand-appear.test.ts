@@ -207,14 +207,36 @@ describe("브랜드 알림 잡", () => {
     expect(logs()[0]).toMatchObject({ status: "queued", error: "ServiceUnavailable" });
   });
 
-  it("알림을 끈 사람과 참가가 생긴 뒤 하트를 남긴 사람은 고르지 않는다", async () => {
+  it("참가가 생긴 뒤 하트를 남긴 사람은 고르지 않는다", async () => {
+    await addParticipation("ex-a", "모모상점");
+    heart(u2, "ex-a", "2026-11-19T01:30:00.000Z");
+    const r = await runBrandAppear(repo, { now: DAY, sender: fakeSender() });
+    expect(r.match).toMatchObject({ candidates: 0, skipped: { hearted_after: 1 } });
+    expect(logs()).toHaveLength(0);
+  });
+
+  it("알림을 끈 사람은 푸시 없이 알림함에만(muted), 조용한 시간에도 바로", async () => {
     await addParticipation("ex-a", "모모상점");
     heart(u1, "ex-a");
-    heart(u2, "ex-a", "2026-11-19T01:30:00.000Z");
+    heart(u2, "ex-a");
+    await device(u1, "tok-1");
+    await device(u2, "tok-2");
     await repo.setNotificationPref(u1, "brand_appear", false);
-    const r = await runBrandAppear(repo, { now: DAY, sender: fakeSender() });
-    expect(r.match).toMatchObject({ candidates: 0, skipped: { opted_out: 1, hearted_after: 1 } });
-    expect(logs()).toHaveLength(0);
+    const sender = fakeSender();
+
+    const night = await runBrandAppear(repo, { now: NIGHT, sender });
+    expect(night.match).toMatchObject({ candidates: 2, inserted: 2, muted: 1 });
+    expect(night.deliver).toMatchObject({ mutedRows: 1, heldRows: 1 });
+    expect(logs().find((n) => n.userId === u1)?.status).toBe("muted");
+    expect((await repo.listNotifications(u1, BEFORE)).map((n) => n.title)).toEqual(["모모상점이 새해준비상점에 나와요"]);
+
+    await runBrandAppear(repo, { now: NEXT_DAY, sender });
+    expect(sender.sent.map((s) => s.target.token)).toEqual(["tok-2"]);
+    // 다시 돌려도 dedupe로 다시 생기지 않는다.
+    await repo.setJobCursor(BRAND_APPEAR_JOB, BEFORE);
+    const again = await runBrandAppear(repo, { now: NEXT_DAY, sender });
+    expect(again.match).toMatchObject({ inserted: 0, duplicate: 2 });
+    expect(logs()).toHaveLength(2);
   });
 
   it("보내기 전에 박람회가 끝나면 expired", async () => {
