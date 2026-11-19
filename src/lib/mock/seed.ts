@@ -81,7 +81,7 @@ export const exhibition: Exhibition = {
   name: "2026 서울국제도서전",
   venue: "코엑스 A홀, B1홀, 서울 (COEX Hall A & B1)",
   description:
-    "‘한 걸음(One Small Step)’을 주제로 열리는 국내 최대 규모의 책 축제. A홀, B1홀에 국내외 출판사 부스가 들어섭니다. 공식 부스배치도를 그대로 옮겨 실제 위치와 크기로 길을 안내해요.",
+    "‘한 걸음(One Small Step)’을 주제로 열리는 국내 최대 규모의 책 축제. A홀, B1홀에 국내외 출판사 부스가 들어서요. 공식 부스배치도를 그대로 옮겨 실제 위치와 크기로 길을 안내해요.",
   startDate: "2026-06-24",
   endDate: "2026-06-28",
   coverImageUrl:
@@ -91,9 +91,9 @@ export const exhibition: Exhibition = {
   mapHeight: floorplan.height,
   tips: {
     transportation:
-      "지하철 2호선 삼성역 5, 6번 출구 또는 9호선 봉은사역에서 코엑스로 연결. A홀, B1홀은 코엑스 1층입니다.",
+      "지하철 2호선 삼성역 5, 6번 출구 또는 9호선 봉은사역에서 코엑스로 연결. A홀, B1홀은 코엑스 1층이에요.",
     parking:
-      "코엑스 지하주차장 이용. 도서전 기간 혼잡하니 대중교통을 권장합니다.",
+      "코엑스 지하주차장 이용. 도서전 기간 혼잡하니 대중교통을 권장해요.",
     ticket:
       "온라인 예매 및 현장 구매. 단체 티켓 신청 마감 6/8. 문의 sibf@sibf.kr / 02-702-0670(내선 4254).",
     guide:

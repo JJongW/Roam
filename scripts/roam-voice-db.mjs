@@ -1,8 +1,14 @@
-// 운영 DB의 Roam 문구를 PR #176과 같게 맞춘다: 가운뎃점(·) 제거, 마곡 Roam summary 59건 해요체.
+// 운영 DB의 Roam 문구를 레포와 같게 맞춘다.
+// - PR #176: 가운뎃점(·) 제거, 마곡 Roam summary 59건 해요체(2026-11-19 적용함).
+// - 후속(fix/roam-voice-followup): 네 행사의 소개와 안내(description, tips)의 합니다체,
+//   SIBF와 마곡 recommendation_reasons, 마곡 timing, SIBF conversation_prompts의 반말을
+//   해요체로. 바꿀 값은 `roam-voice-followup.json`에 있고, 운영 값이 그 파일의 before
+//   (레포의 바꾸기 전 값)와 **같을 때만** 바꾼다. 다르면 누가 고친 값이라 skipped로 둔다.
+// 이미 적용한 #176 몫은 다시 돌려도 바꿀 칸이 0이라 그대로 한 번 더 돌려도 된다.
 //
 //   node scripts/roam-voice-db.mjs                 # 드라이런: 바꿀 칸만 계산해 diff 파일로 쓴다
 //   node scripts/roam-voice-db.mjs --apply         # 백업 → 적용 → 다시 읽어 확인
-//   node scripts/roam-voice-db.mjs --diff <경로>    # diff 파일 위치(기본 /tmp/db-voice-diff.json)
+//   node scripts/roam-voice-db.mjs --diff <경로>    # diff 파일 위치(기본은 아래 DEFAULT_DIFF)
 //
 // 2026-11-18 Ted 결정. 브랜드나 주최 원문은 건드리지 않는다(브랜드 규칙 §1):
 // - booth_enrichment.summary는 SIBF(Roam 저작)와 마곡 Roam 59건만. 하우스 아카이브와
@@ -21,7 +27,8 @@ import { createClient } from "@supabase/supabase-js";
 
 const APPLY = process.argv.includes("--apply");
 const diffArg = process.argv.indexOf("--diff");
-const DIFF_PATH = diffArg > 0 ? process.argv[diffArg + 1] : "/tmp/db-voice-diff.json";
+const DEFAULT_DIFF = "/Users/sinjong-won/.claude/jobs/1b54bc24/tmp/db-voice-diff-2.json";
+const DIFF_PATH = diffArg > 0 ? process.argv[diffArg + 1] : DEFAULT_DIFF;
 
 /** worktree에서 돌리면 .env가 없으니 본 체크아웃(git common dir의 부모)의 .env를 쓴다. 값은 읽기만 한다. */
 function findEnvPath() {
@@ -72,7 +79,42 @@ function undotDeep(v) {
   return v;
 }
 const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
-const HAMNIDA = /(습니다|입니다|합니다|됩니다)(?=[.!?,\s]|$)/;
+/** jsonb는 객체 키 순서를 바꿔 돌려준다. 키를 정렬해 비교한다(배열 순서는 본다). */
+const canon = (v) =>
+  Array.isArray(v) ? v.map(canon) : v && typeof v === "object" ? Object.fromEntries(Object.keys(v).sort().map((k) => [k, canon(v[k])])) : v;
+const sameValue = (a, b) => JSON.stringify(canon(a ?? null)) === JSON.stringify(canon(b ?? null));
+/** 합니다체 문장 끝. `들어섭니다`처럼 받침 ㅂ이 붙는 꼴까지 `니다`로 본다. */
+const HAMNIDA = /[가-힣]니다(?=[.!?,\s]|$)/;
+// 반말 문장 끝. src/lib/booth/roam-data-voice.test.ts의 검사와 같다.
+const BANMAL_END =
+  /(?:[가-힣]야|거든|잖아|구나|있어|없어|좋아|많아|않아|같아|알아|남아|싫어|넓어|물어|워|[해돼봐와줘져여려혀싸나지네]|[가-힣]다)$/;
+const NOUN_ENDINGS = /(까지|관하여|챌린지|무가지|하나|올해|분야|이미지|패키지)$/;
+const QUOTED = /'[^']*'|"[^"]*"|“[^”]*”|‘[^’]*’|「[^」]*」|『[^』]*』|〈[^〉]*〉|《[^》]*》/g;
+function banmalEndings(text) {
+  return String(text)
+    .replace(QUOTED, "")
+    .split(/[.!?…]+/)
+    .map((s) => s.replace(/[\s"'“”‘’)\]」』>〉》]+$/u, "").trim())
+    .filter(Boolean)
+    .map((s) => s.split(/\s+/).pop() ?? "")
+    .filter((w) => /[가-힣]$/.test(w) && BANMAL_END.test(w) && !NOUN_ENDINGS.test(w));
+}
+/** 값 안 모든 문자열. */
+const texts = (v) =>
+  typeof v === "string" ? [v] : Array.isArray(v) ? v.flatMap(texts) : v && typeof v === "object" ? Object.values(v).flatMap(texts) : [];
+const voiceProblems = (v) =>
+  texts(v).flatMap((t) => [...(HAMNIDA.test(t) ? ["합니다체"] : []), ...banmalEndings(t).map((w) => `반말 '${w}'`)]);
+
+/**
+ * 공식 참가사 이름에 든 가운뎃점. 브랜드가 정한 표기라 원문 그대로 둔다(§1). 검증에서
+ * 이 이름은 빼고 가운뎃점을 본다. 지난 실행(2026-11-19)이 이 둘 때문에만 1로 끝났다.
+ */
+const OFFICIAL_NAMES_WITH_DOT = ["동아시아·허블", "Strawberry Club·草莓烟"];
+const withoutOfficialNames = (text, row) =>
+  [...OFFICIAL_NAMES_WITH_DOT, ...(typeof row?.name === "string" && row.name.includes("·") ? [row.name] : [])].reduce(
+    (t, n) => t.split(n).join(""),
+    text,
+  );
 
 /** 행사별로 손대는 enrichment Roam 칸. */
 const ROAM_ENRICHMENT = [
@@ -94,6 +136,22 @@ const ENRICHMENT_SCOPE = {
 const EXHIBITION_SCOPE = new Set(["sibf-2026", "sif-2026", "house-archive-2026", "magok-livingmarket-2026"]);
 const SIBF_CATEGORY = { "아동·그림책": "아동, 그림책", "인문·사회": "인문, 사회", "예술·디자인": "예술, 디자인", "과학·기술": "과학, 기술" };
 const MAGOK_59 = JSON.parse(readFileSync(new URL("./roam-voice-magok-59.json", import.meta.url), "utf8"));
+/** 후속 몫: { exhibitions: {slug: {field: {before, after}}}, enrichment: {slug: {code: {field: {before, after}}}} } */
+const FOLLOWUP = JSON.parse(readFileSync(new URL("./roam-voice-followup.json", import.meta.url), "utf8"));
+
+/**
+ * 후속 표 한 칸을 계획에 넣는다. 지금 값(앞 단계에서 바꿀 값이 있으면 그 값)이 표의
+ * before와 같을 때만 바꾸고, 이미 after면 넘기고, 둘 다 아니면 skipped에 남긴다.
+ */
+function applyFollowup(ch, row, field, entry, skipped, ctx) {
+  const current = ch[field]?.after ?? row[field];
+  if (sameValue(current, entry.after)) return;
+  if (sameValue(current, entry.before)) {
+    ch[field] = { before: row[field], after: entry.after };
+    return;
+  }
+  skipped.push({ ...ctx, field, reason: "레포의 바꾸기 전 값과 달라 둠", db: row[field] });
+}
 
 async function all(sb, table, cols, filter) {
   const out = [];
@@ -111,8 +169,9 @@ async function all(sb, table, cols, filter) {
 async function plan(sb) {
   const plans = [];
   const skipped = [];
-  const push = (table, keyCol, row, changes) => {
-    if (Object.keys(changes).length) plans.push({ table, keyCol, key: row[keyCol], row, changes });
+  const remaining = [];
+  const push = (table, keyCol, row, changes, extra = {}) => {
+    if (Object.keys(changes).length) plans.push({ table, keyCol, key: row[keyCol], row, changes, ...extra });
   };
 
   const exhibitions = await all(sb, "exhibition", "*");
@@ -126,6 +185,8 @@ async function plan(sb) {
       const after = undotDeep(e[f]);
       if (!same(after, e[f])) ch[f] = { before: e[f], after };
     }
+    for (const [f, entry] of Object.entries(FOLLOWUP.exhibitions[e.slug] ?? {}))
+      applyFollowup(ch, e, f, entry, skipped, { table: "exhibition", key: e.id, slug: e.slug });
     push("exhibition", "id", e, ch);
   }
 
@@ -151,11 +212,19 @@ async function plan(sb) {
 
   // 4) booth_enrichment — 행사별 Roam 칸
   const enrich = await all(sb, "booth_enrichment", "*");
+  const seenFollowup = new Set();
   for (const e of enrich) {
     const booth = boothById[e.booth_id];
     const slug = booth && slugOf[booth.exhibition_id];
     const fields = ENRICHMENT_SCOPE[slug];
-    if (!fields) continue;
+    if (!fields) {
+      // 레포에 원천이 없는 행사의 Roam 문장 칸은 바꾸지 않고 남은 말투만 센다(보고용).
+      for (const f of ["recommendation_reasons", "timing", "conversation_prompts", "roam_interpretation"]) {
+        const issues = voiceProblems(e[f]);
+        if (issues.length) remaining.push({ slug: slug ?? null, code: booth?.code ?? null, key: e.booth_id, field: f, issues, db: e[f] });
+      }
+      continue;
+    }
     const ch = {};
     for (const f of fields) {
       const after = undotDeep(e[f]);
@@ -167,9 +236,25 @@ async function plan(sb) {
       if (e.summary === before || e.summary === undot(before)) ch.summary = { before: e.summary, after };
       else if (e.summary !== after) skipped.push({ table: "booth_enrichment", key: e.booth_id, code: booth.code, reason: "summary가 레포의 바꾸기 전 값과 달라 둠", db: e.summary });
     }
-    push("booth_enrichment", "booth_id", e, ch);
+    const follow = FOLLOWUP.enrichment[slug]?.[booth.code];
+    if (follow) {
+      seenFollowup.add(`${slug}|${booth.code}`);
+      for (const [f, entry] of Object.entries(follow))
+        applyFollowup(ch, e, f, entry, skipped, { table: "booth_enrichment", key: e.booth_id, slug, code: booth.code });
+    }
+    push("booth_enrichment", "booth_id", e, ch, { slug, code: booth.code });
   }
-  return { plans, skipped };
+  // 표에 있는데 운영에 enrichment 행이 없는 부스. 새로 만들지 않고 알린다.
+  for (const [slug, byCode] of Object.entries(FOLLOWUP.enrichment))
+    for (const code of Object.keys(byCode))
+      if (!seenFollowup.has(`${slug}|${code}`)) skipped.push({ table: "booth_enrichment", slug, code, reason: "운영에 이 부스의 enrichment 행이 없음" });
+  return { plans, skipped, remaining };
+}
+
+function byField(plans) {
+  const s = {};
+  for (const p of plans) for (const f of Object.keys(p.changes)) s[`${p.table}.${f}`] = (s[`${p.table}.${f}`] ?? 0) + 1;
+  return s;
 }
 
 function summarize(plans) {
@@ -184,7 +269,7 @@ function summarize(plans) {
 
 const { url, key } = loadSupabaseCreds();
 const sb = createClient(url, key, { auth: { persistSession: false } });
-const { plans, skipped } = await plan(sb);
+const { plans, skipped, remaining } = await plan(sb);
 const counts = summarize(plans);
 writeFileSync(
   DIFF_PATH,
@@ -192,7 +277,9 @@ writeFileSync(
     {
       createdAt: new Date().toISOString(),
       counts,
+      byField: byField(plans),
       skipped,
+      remaining,
       diffs: plans.flatMap((p) =>
         Object.entries(p.changes).map(([field, { before, after }]) => ({ table: p.table, id: p.key, field, before, after })),
       ),
@@ -203,7 +290,10 @@ writeFileSync(
 );
 console.log("diff:", DIFF_PATH);
 console.log("counts:", JSON.stringify(counts));
+console.log("byField:", JSON.stringify(byField(plans)));
 console.log("skipped:", skipped.length);
+for (const x of skipped.slice(0, 20)) console.log(" -", x.table, x.slug ?? "", x.code ?? x.key, x.field ?? "", x.reason);
+console.log("remaining(다른 행사, 안 바꿈):", remaining.length);
 
 if (!APPLY) {
   console.log("드라이런이에요. 적용하려면 --apply");
@@ -246,9 +336,13 @@ for (const p of plans) {
   const now = data[0];
   for (const [f, { after }] of Object.entries(p.changes)) {
     if (!same(now[f], after)) problems.push(`${p.table} ${p.key}.${f}: 기대값과 다름`);
-    const text = JSON.stringify(now[f]);
+    const text = withoutOfficialNames(JSON.stringify(now[f]), now);
     if (text.includes("·")) problems.push(`${p.table} ${p.key}.${f}: 가운뎃점 남음`);
     if (p.table === "booth_enrichment" && f === "summary" && HAMNIDA.test(now[f] ?? "")) problems.push(`${p.table} ${p.key}.summary: 합니다체 남음`);
+    // 후속 표로 바꾼 칸은 합니다체와 반말이 없어야 한다.
+    const followed =
+      p.table === "exhibition" ? FOLLOWUP.exhibitions[p.row.slug]?.[f] : FOLLOWUP.enrichment[p.slug]?.[p.code]?.[f];
+    if (followed) for (const v of voiceProblems(now[f])) problems.push(`${p.table} ${p.key}.${f}: ${v} 남음`);
   }
   for (const [f, v] of Object.entries(p.row)) {
     if (f in p.changes || f === "updated_at") continue;
