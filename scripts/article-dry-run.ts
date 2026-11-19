@@ -1,11 +1,12 @@
 /**
- * 아티클 초안 드라이런 — 레포 데이터(brands.v1 파일)만으로, 운영 DB 없이 하루치 초안과 슬랙 보고를 만든다.
+ * 아티클 초안 드라이런 — 레포 데이터(brands.v1 파일)만으로, 운영 DB 없이 날마다의 점검(초안과 슬랙 보고)을 흉내 낸다.
  *
  *   npm run article:dry-run -- --out <폴더> --brands <brands.v1.json> [--brands …] \
  *     --fair '<행사 JSON>' [--fair …] [--today 2026-11-19] [--days 2]
  *
  *   행사 JSON: {"slug","name","venue","startDate","endDate"} — 공식 출처로 확인한 값만 넣는다.
- *   --days N: N일을 이어 돌린다(종류가 돌아가는지 본다). 날마다 초안 하나와 슬랙 글을 남긴다.
+ *   --days N: N일을 이어 돌린다. 날마다 슬랙 글을 남기고, 초안은 만든 날에만 남긴다. 자동 편은 한 주에
+ *     한 편(월요일, 그 주에 없으면 따라잡기. src/lib/articles/schedule.ts)이라 종류가 돌아가는지 보려면 8일 이상.
  *   --simulate-photo-permission N: **가짜 허락 시뮬레이션.** 사진 칸이 있는 앞 N곳의 대표 사진 칸을
  *     reviewed로, 그 회차 허락을 granted + account-photo로 목 저장소에만 바꾼다. 사진이 들어간 글 모양을
  *     보려는 것뿐이고 실제 허락이 아니다. 산출 파일 이름이 `sim-`으로 시작한다.
@@ -40,7 +41,8 @@ async function main() {
   const { brandsFileSchema } = await import("@/lib/intake/brands-schema");
   const { planBrandsFromRepository, applyBrandsPlan } = await import("@/lib/intake/brands-apply");
   const { exhibitionInputSchema } = await import("@/lib/schemas");
-  const { generateDailyArticle, generationNote } = await import("@/lib/articles/generate");
+  const { generateArticle, generationNote } = await import("@/lib/articles/generate");
+  const { nextWeekStart } = await import("@/lib/articles/schedule");
   const { collectBacklog, formatBacklog } = await import("@/lib/admin/backlog");
   const { composeDailyReport, formatArticleSection, heroImage, slackPayload } = await import("@/lib/articles/slack");
   const { loadWorld } = await import("@/lib/articles/generate");
@@ -79,14 +81,14 @@ async function main() {
   const appUrl = "https://roam.ai.kr";
   for (let d = 0; d < days; d++) {
     const day = new Date(Date.parse(today) + d * 86_400_000).toISOString().slice(0, 10);
-    const r = await generateDailyArticle(repo, { today: day });
+    const r = await generateArticle(repo, { today: day });
     console.log(`${day}: ${r.status}${r.status === "created" ? ` ${r.article.kind} ${r.article.subjectKey} (후보 ${r.tried}번째)` : ""}`);
     if (r.status === "gate-failed") console.log(JSON.stringify(r.attempts, null, 2));
     const drafts = await repo.listArticles({ status: ["draft"] });
     const backlog = await collectBacklog(repo);
     const text = composeDailyReport(
       formatBacklog(backlog, appUrl),
-      formatArticleSection({ drafts, note: generationNote(r) }, { appUrl, linkSecret: "dry-run-secret", now: Date.parse(`${day}T00:30:00Z`) }),
+      formatArticleSection({ drafts, note: generationNote(r), nextDraftOn: nextWeekStart(day) }, { appUrl, linkSecret: "dry-run-secret", now: Date.parse(`${day}T00:30:00Z`) }),
     );
     if (r.status === "created") {
       const a = r.article;

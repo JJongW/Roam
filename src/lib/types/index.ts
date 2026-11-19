@@ -1144,6 +1144,11 @@ export interface ArticleGate {
   /** 통과하지 못하고 버린 판본의 문제(예: LLM 판본 실패 → 틀 판본으로). */
   rejectedAttempts: { writer: string; issues: string[] }[];
   checkedAt: string;
+  /**
+   * 누가 만들게 했나. "schedule" = 점검의 주간 자동 편, "manual" = 관리자 "새 초안".
+   * 0070엔 칸이 없어 gate jsonb에 둔다(마이그레이션 없이). 11-19 이전 행엔 없다(자동으로 본다).
+   */
+  origin?: "schedule" | "manual";
 }
 
 export interface Article {
@@ -1161,7 +1166,7 @@ export interface Article {
   subjectKey: string;
   exhibitorIds: string[];
   exhibitionIds: string[];
-  /** 이 초안을 만든 날(KST, YYYY-MM-DD). 하루 한 편. */
+  /** 이 초안을 만든 날(KST, YYYY-MM-DD). 자동 편은 한 주에 한 편(`articles/schedule.ts`). */
   generatedFor: string;
   decidedBy: string | null;
   decidedAt: string | null;
