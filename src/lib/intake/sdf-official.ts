@@ -25,10 +25,38 @@ export interface SdfDetail {
   introKo: string | null;
   instagramUrl: string | null;
   websiteUrl: string | null;
+  /** 상세 사진 칸의 원본 주소. brands.v1 photos에는 넣지 않는다(허락 범위를 사람이 붙인다). 원본 기록용. */
+  imageUrls: string[];
 }
 
 /** 행사장 밖 프로그램. 이 참가 구분은 명단에서 뺀다. */
 export const SDF_OFFSITE_TERMS = ["서울디자인스팟"];
+
+/**
+ * 참가 구분(exhibition_term) slug → 이름. 목록 화면의 `?_sdf_category=<slug>`가 이 slug다.
+ * term id(2026-11-19 /wp-json/wp/v2/exhibition_term): 01-design-brand=5, 02-young-design=18,
+ * 03-design-specialist=31, 04-designspot=19. id는 사이트 값이라 스크립트가 매번 slug로 다시 찾는다.
+ */
+export const SDF_TERM_SLUGS: Record<string, string> = {
+  "01-design-brand": "디자인브랜드",
+  "02-young-design": "영 디자이너 프로모션",
+  "03-design-specialist": "디자인 스페셜리스트",
+  "04-designspot": "서울디자인스팟",
+};
+
+/**
+ * 2025년부터 쓰는 전시 구역형 분야(exhibition_type). 한 브랜드에 분야가 여럿 붙으면 이 구역을 먼저 고른다.
+ * 나머지(리빙, 디자인제품, 패션 등)는 옛 품목 분류라, 구역이 없을 때만 쓴다.
+ */
+export const SDF_ZONE_TYPES = [
+  "디자인&크래프트 무브먼트",
+  "그래픽 컬처",
+  "뉴 아틀리에",
+  "디자인 엔진",
+  "브랜드 유니버스",
+  "디자인&ESG",
+  "디자인&테크",
+];
 
 const ENTITIES: Record<string, string> = { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'", nbsp: " ", "#039": "'" };
 export function decodeEntities(s: string): string {
@@ -54,11 +82,16 @@ export function parseSdfDetail(html: string): SdfDetail {
   const ig = links.find((l) => l.cls.includes("instagram") || isIg(l.url))?.url ?? null;
   const web = links.find((l) => !isIg(l.url) && /^https?:\/\//i.test(l.url))?.url ?? null;
   const nameEn = en ? stripTags(en) : "";
+  const imgStart = html.indexOf('class="sdf-exhibitor-images"');
+  const imgEnd = imgStart < 0 ? -1 : html.indexOf("</div>", imgStart);
+  const imgHtml = imgStart < 0 ? "" : html.slice(imgStart, imgEnd > imgStart ? imgEnd : undefined);
+  const imageUrls = [...imgHtml.matchAll(/<img[^>]*\ssrc="([^"]+)"/g)].map((m) => decodeEntities(m[1]).trim());
   return {
     nameEn: nameEn || null,
     introKo: paragraphs.length ? paragraphs.join("\n") : null,
     instagramUrl: ig ? normalizeUrl(ig) : null,
     websiteUrl: web ? normalizeUrl(web) : null,
+    imageUrls,
   };
 }
 
@@ -82,11 +115,23 @@ export interface BuildInput {
   sourceUrl: string;
   collectedAt: string;
   note?: string;
+  /** 주면 이 참가 구분(이름)이 붙은 줄만 넣는다. 나머지는 outOfScope로 돌려준다. */
+  onlyTerms?: string[];
+}
+
+/** 분야가 여럿이면 구역형 분야를 먼저, 없으면 첫 분야, 그것도 없으면 참가 구분. */
+export function pickSdfCategory(types: string[], terms: string[]): string | undefined {
+  return (types.find((t) => SDF_ZONE_TYPES.includes(t)) ?? types[0] ?? terms[0])?.slice(0, 60);
 }
 
 /** 명단 → brands.v1. 서울디자인스팟은 빼고, 뺀 수를 같이 돌려준다. 결과는 스키마로 검사한다. */
-export function buildSdfBrandsFile(input: BuildInput): { file: BrandsFile; excluded: { id: number; name: string; term: string }[] } {
+export function buildSdfBrandsFile(input: BuildInput): {
+  file: BrandsFile;
+  excluded: { id: number; name: string; term: string }[];
+  outOfScope: { id: number; name: string; terms: string[] }[];
+} {
   const excluded: { id: number; name: string; term: string }[] = [];
+  const outOfScope: { id: number; name: string; terms: string[] }[] = [];
   const brands: BrandsFileBrand[] = [];
   for (const r of input.rows) {
     const name = stripTags(r.title.rendered);
@@ -96,10 +141,14 @@ export function buildSdfBrandsFile(input: BuildInput): { file: BrandsFile; exclu
       excluded.push({ id: r.id, name, term: offsite });
       continue;
     }
+    if (input.onlyTerms && !terms.some((t) => input.onlyTerms!.includes(t))) {
+      outOfScope.push({ id: r.id, name, terms });
+      continue;
+    }
     if (!name) continue;
     const d = input.details.get(r.id);
     const types = r.exhibition_type.map((i) => input.typeNames.get(i)).filter((x): x is string => !!x);
-    const category = (types[0] ?? terms[0])?.slice(0, 60);
+    const category = pickSdfCategory(types, terms);
     const b: BrandsFileBrand = {
       key: `sdf-${r.id}`,
       name: name.slice(0, 120),
@@ -118,5 +167,5 @@ export function buildSdfBrandsFile(input: BuildInput): { file: BrandsFile; exclu
     source: { url: input.sourceUrl, collectedAt: input.collectedAt, ...(input.note ? { note: input.note.slice(0, 500) } : {}) },
     brands,
   });
-  return { file, excluded };
+  return { file, excluded, outOfScope };
 }

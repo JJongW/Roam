@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildSdfBrandsFile, parseSdfDetail, type SdfRestExhibitor } from "./sdf-official";
+import { buildSdfBrandsFile, parseSdfDetail, pickSdfCategory, type SdfRestExhibitor } from "./sdf-official";
 
 // 2025 상세 페이지(seoul.designfestival.co.kr/exhibitor/jogakmoeum/)의 모양을 줄였다.
 const DETAIL = `<article class="sdf-page-frame sdf-exhibitor">
@@ -22,11 +22,12 @@ describe("SDF 상세 읽기", () => {
       introKo: "과거와 현재를 담은 을지로의 아늑한 공간, 조각모음.\n취향과 취미의 조각을 모아\n작은 이야기를 전하는 소품 숍이다.",
       instagramUrl: "https://www.instagram.com/jogakmoeum_vol.1",
       websiteUrl: "https://jogak.example/",
+      imageUrls: ["https://x/a.png"],
     });
   });
 
   it("칸이 없으면 null이에요", () => {
-    expect(parseSdfDetail("<html></html>")).toEqual({ nameEn: null, introKo: null, instagramUrl: null, websiteUrl: null });
+    expect(parseSdfDetail("<html></html>")).toEqual({ nameEn: null, introKo: null, instagramUrl: null, websiteUrl: null, imageUrls: [] });
   });
 });
 
@@ -75,5 +76,31 @@ describe("SDF 명단 → brands.v1", () => {
     expect(() =>
       buildSdfBrandsFile({ rows: [], termNames, typeNames, details: new Map(), exhibitionSlug: "sdf-2026", sourceUrl: "https://x.example", collectedAt: "2026-11-17" }),
     ).toThrow();
+  });
+
+  it("참가 구분을 고르면 그 구분만 넣고 나머지는 outOfScope로 돌려줘요", () => {
+    const names = new Map([...termNames, [18, "영 디자이너 프로모션"]]);
+    const { file, outOfScope } = buildSdfBrandsFile({
+      rows: [row(1, "모스", 16, [30]), row(4, "육주영", 18), row(2, "조각모음", 19)],
+      termNames: names,
+      typeNames,
+      details: new Map(),
+      exhibitionSlug: "sdf-2026",
+      sourceUrl: "https://x.example",
+      collectedAt: "2026-11-19",
+      onlyTerms: ["디자인브랜드"],
+    });
+    expect(file.brands.map((b) => b.key)).toEqual(["sdf-1"]);
+    expect(outOfScope).toEqual([{ id: 4, name: "육주영", terms: ["영 디자이너 프로모션"] }]);
+  });
+});
+
+describe("SDF 분류 고르기", () => {
+  it("분야가 여럿이면 구역형 분야를 먼저 골라요", () => {
+    expect(pickSdfCategory(["리빙", "아트&크래프트", "디자인&크래프트 무브먼트"], ["디자인브랜드"])).toBe("디자인&크래프트 무브먼트");
+  });
+  it("구역이 없으면 첫 분야, 분야도 없으면 참가 구분이에요", () => {
+    expect(pickSdfCategory(["리빙", "아트&크래프트"], ["디자인브랜드"])).toBe("리빙");
+    expect(pickSdfCategory([], ["디자인브랜드"])).toBe("디자인브랜드");
   });
 });

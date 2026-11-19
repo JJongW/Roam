@@ -1,0 +1,1382 @@
+{
+  "version": "brands.v1",
+  "exhibitionSlug": "sdf-2026",
+  "source": {
+    "url": "https://seoul.designfestival.co.kr/wp-json/wp/v2/exhibitor?exhibition_year=37",
+    "collectedAt": "2026-11-19",
+    "note": "서울디자인페스티벌 2026 공식 참가브랜드 중 디자인브랜드(01-design-brand)만 넣었어요(WP REST + 상세 페이지). 서울디자인스팟은 행사장 밖 프로그램이라 뺐어요. 부스 번호는 사이트에 없어요"
+  },
+  "brands": [
+    {
+      "key": "sdf-20153",
+      "name": "초록동색",
+      "aliases": [
+        "chorokdongsaek"
+      ],
+      "websiteUrl": "http://www.chorokdongsaek.com/",
+      "intro": {
+        "text": "공간에 들어서는 순간, 우리 브랜드의 세계에 들어왔다고 느끼게 하고 싶다면.\n회의에서 나온 콘셉트가 실제 공간으로 구현된 모습을 보고 싶다면.\n“저희 바쁘니까, 팝업·행사 공간은 믿고 맡길게요.”\n그런 파트너를 찾고 있다면, 여기 초록동색 입니다.\n초록동색은 브랜드의 이야기를 공간으로 풀어내는 공간 연출 스튜디오입니다. 영화미술과 세트 제작 경험을 바탕으로 기획·디자인부터 제작·설치까지 함께합니다.\n공간 전체부터 손이 닿는 소품 하나까지 이야기의 앞뒤를 맞춥니다. 작은 디테일이 모여 하나의 장면이 되고, 방문객이 그 안에 자연스럽게 들어와 브랜드를 경험하도록 만듭니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/chorokdongsaek/"
+      },
+      "category": "브랜드 유니버스"
+    },
+    {
+      "key": "sdf-20157",
+      "name": "IDDAT",
+      "category": "디자인 엔진"
+    },
+    {
+      "key": "sdf-20163",
+      "name": "쎄르페",
+      "aliases": [
+        "SSERPE"
+      ],
+      "instagramUrl": "http://www.instagram.com/sserpe_official",
+      "websiteUrl": "http://www.thesserpe.com/",
+      "intro": {
+        "text": "스트릿 감성과 방랑자의 자유로운 감성을 결합한 베가본드 웨어",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/sserpe-3/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20167",
+      "name": "리베르떼코",
+      "aliases": [
+        "Liberteco"
+      ],
+      "instagramUrl": "https://www.instagram.com/liberte_living/",
+      "websiteUrl": "https://liberteliving.co.kr/",
+      "intro": {
+        "text": "리베르떼코(LIBERTECO)는 ‘오래도록 머무는 취향’을 모토로, 빈티지의 낭만과 현대적인 감각을 조화롭게 담아내는 라이프스타일 브랜드입니다.\n시간이 흘러도 변하지 않는 아름다움과 일상 속 작은 오브제가 주는 특별한 가치를 소중히 생각합니다.\n벽시계, 주얼리박스, 키친웨어, 홈데코 소품 등 다양한 리빙 제품을 직접 기획하고 디자인하며, 감각적인 컬러와 섬세한 디테일로 리베르떼코만의 소프트 빈티지 스타일을 선보입니다.\n단순히 공간을 채우는 물건을 넘어, 오래도록 곁에 두고 싶은 취향과 이야기가 담긴 일상을 제안합니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/liberteco/"
+      },
+      "category": "리빙"
+    },
+    {
+      "key": "sdf-20171",
+      "name": "전산정물(電算靜物)",
+      "aliases": [
+        "Digital Still Life"
+      ],
+      "instagramUrl": "https://www.instagram.com/pie_in__the___sky",
+      "websiteUrl": "http://www.kimseonggohn.com/",
+      "intro": {
+        "text": "컴퓨터라는 디지털 도구는 나에게 아날로그 회화를 보완하는 매개체다. 선을 정확하게 다루는 디자이너의 습관은 자연스럽게 회화에도 투영된다. 붓의 흔적과 흐릿한 경계에서 회화적 매력을 찾는 방식과 달리, 나는 정확한 선과 형태를 바탕으로 한 회화를 추구한다.\n산업디자인을 전공한 경험을 바탕으로 아름다움과 상징성을 지닌 산업제품을 회화의 대상으로 삼는다. 제품을 3D로 모델링하고 다양한 시점과 각도를 탐색해 가장 아름다운 조형적 순간을 찾아낸다. 이를 2차원의 정물로 구성한 뒤 캔버스에 옮겨 색채를 입힌다. 디지털의 정확성을 아날로그 회화의 언어로 전환하는 과정이다.\n이러한 작업의 조형적 배경에는 동서양의 정물화 전통이 자리한다. 한국 전통회화의 문방사우(文房四友)와 책가도(冊架圖)는 사물의 배치와 관계, 공간의 구성만으로 독자적인 미감을 형성해 왔다. 특히 책과 문방구, 도자기 등 일상적 기물에 담긴 상징성과 조형적 질서는 오늘날 산업제품을 회화의 대상으로 바라보는 나의 시선과도 맞닿아 있다.\n서양 회화에서는 조르조 모란디(Giorgio Morandi, 1890–1964)의 절제된 색감과 정물 구성, 데이비드 호크니(David Hockney, 1937–2026) 초기 회화의 조형적 구도와 공간 구성에 주목해 왔다. 마이클 크레이그 마틴(Michael Craig-Martin, 1941– )의 사물에 대한 시각적 해석에서도 접점을 발견한다. 그러나 나의 작업은 이러한 조형적 접근을 바탕으로 보다 회화적인 색채와 표면의 감각을 추구한다.\n디자인과 회화의 경계를 넘나드는 시도는 국내외에서 다양하게 이루어져 왔다. 나탈리 뒤 파스키에(Nathalie Du Pasquier, 1957– )의 작업 역시 사물의 비정형적 배열과 색채, 기하학적 구성을 통해 독자적인 조형미를 제안한다. 나의 작업은 즉흥적인 감성이나 우연한 붓 터치보다는 의도적이고 체계적인 디자인 언어를 바탕으로 한다. 대량생산 제품에 내재된 아름다움을 정물화의 형식으로 재해석하고, 이를 회화의 영역으로 확장하고자 한다.\n내가 주목하는 또 하나의 대상은 서울의 색이다. 맑고 선명한 날보다 흐리고 뿌연 날이 익숙한 도시. 인공물로 가득한 서울에는 특유의 회색빛 정서가 있다. 뿌연 대기의 색, 황토빛 황사, 도시를 감싸는 먼지의 색. 이러한 미묘하고 다채로운 색채를 화면에 담고자 한다.\n산업제품에서 아름다움을 발견하고, 디지털의 정확성을 거쳐 회화로 표현하는 일. 이는 사물의 재현을 넘어 우리가 살아가는 도시와 시대의 감수성을 그리는 작업이다. 대량생산된 사물의 보편적 아름다움을 통해 새로운 디자인 회화의 가능성을 탐색한다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/digital-still-life/"
+      },
+      "category": "디자인 엔진"
+    },
+    {
+      "key": "sdf-20177",
+      "name": "홍익대학교산업디자인",
+      "aliases": [
+        "HID"
+      ],
+      "instagramUrl": "https://www.instagram.com/hongik.id.degreeshow?dlrf=MTdoZjhkMHhlOWVhaw==",
+      "intro": {
+        "text": "이번전시는 홍익대학교 산업디자인학과의 2026 졸업작품 Selective 전시이다.\n\"COEXIST 공존 共存 : 관계의 재구성을 통한 새로운 디자인의 가능성\"\n사람과 기술, 사물과 환경의 경계가 끊임없이 변화하는 시대, 디자인은 새로운 관계와 상호작용을 통해 공존의 가능성을 탐색한다.\n이번 COEXIST 전시는 제품, 운송, 모빌리티, 인터랙션 디자인 분야에서 선별된 작품들을 선보인다. 미래 로봇, 지능형 가전, AI 글래스, 인터랙티브 미디어와 공간 경험에 이르기까지 다양한 디자인적 시도와 이야기를 담아낸다.\n이를 통해 새로운 기술이 관계를 변화시키고, 일상의 경험을 재구성하며, 미래의 공존을 위한 새로운 가능성을 만들어가는 과정을 조명한다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/hid/"
+      },
+      "category": "디자인 엔진"
+    },
+    {
+      "key": "sdf-20183",
+      "name": "공예디자인 전문인력",
+      "aliases": [
+        "CRAFT DESIGN"
+      ],
+      "instagramUrl": "https://www.instagram.com/gidp_gwangju",
+      "websiteUrl": "https://www.gdc.or.kr/",
+      "intro": {
+        "text": "광주디자인진흥원이 운영하는 「2026 공예·디자인산업 전문인력양성사업」의 전문심화과정에 참여한 예비 창작자들의 제품을 선보입니다.\n금속, 도자, 섬유, 시각디자인 등 다양한 분야의 교육생들이 전문 교육과 시제품 제작을 통해 구현한 결과물을 소개하며 창의적인 아이디어와 제작기술을 바탕으로 공예·디자인의 새로운 가능성을 제안합니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/craft-design/"
+      },
+      "category": "리빙"
+    },
+    {
+      "key": "sdf-20185",
+      "name": "포니정디자인아카데미",
+      "aliases": [
+        "PCDA by FOMA"
+      ],
+      "intro": {
+        "text": "포니정 디자인 아카데미는 포니정재단의 후원과 자동차디자인미술관 FOMA의 전문성을 바탕으로 디자인 인재를 양성하는 장학 교육 프로그램입니다.\n2026년 5기는 정해진 답을 찾기보다 스스로 질문을 발견하고 탐구하는 디자인의 본질에 집중했습니다.\n참여 디자이너들은 재료를 직접 다루며 물성과 구조를 이해하고, 반복 실험과 실패를 통해 생각을 구체적인 형태로 발전시켰습니다. 빠른 결과보다 관찰과 탐구의 과정에 주목하며, 서로 다른 생각과 경험을 하나의 작업으로 연결했습니다.\n이번 서울디자인페스티벌에서는 자연물의 흔적을 재료로 탐구한 스툴, 소리와 공간의 관계를 실험한 행잉 오브제, 자연의 구조와 원리를 관찰한 나비 구조물 등 세 가지 팀 프로젝트를 선보입니다.\n완성된 작품과 함께 그 이면의 질문, 실험, 시행착오의 과정을 공유하며 디자인이 만들어지는 또 다른 방식을 보여주고자 합니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/pcda-by-foma/"
+      },
+      "category": "디자인 엔진"
+    },
+    {
+      "key": "sdf-20191",
+      "name": "별빛청하",
+      "aliases": [
+        "Starlight Chungha"
+      ],
+      "intro": {
+        "text": "깔끔한 청하에 화이트 와인과 탄산을 더해 더욱 산뜻한 No.1 스파클링 청주, 별빛청하\n별빛청하는 은은하게 반짝이는 별빛처럼 일상 속 평범한 순간을 특별하게 물들이고 색다른 즐거움을 선사합니다.\n이번 박람회에서 낭만적인 별빛 아래, 새로워진 별빛청하와 함께 휴식의 시간을 경험해 보세요.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/starlight-chungha/"
+      },
+      "category": "브랜드 유니버스"
+    },
+    {
+      "key": "sdf-20199",
+      "name": "냅스앤나이브스",
+      "aliases": [
+        "napsandknives"
+      ],
+      "instagramUrl": "https://www.instagram.com/napsandknives/?hl=ko",
+      "websiteUrl": "https://www.napsandknives.com/",
+      "intro": {
+        "text": "‘흔적’을 주제로 제작한 데일밴드입니다. 세상의 모든 것은 흔적을 남기고, 그 흔적은 곧 존재의 증거가 됩니다. 데일밴드는 상처와 흔적을 가리기 위한 도구이지만, 역설적으로 그 위에 또 다른 흔적을 새겼습니다. 가리려 해도 완전히 사라지지 않는 흔적처럼, 모든 존재는 저마다의 흔적을 남긴다는 의미를 담았습니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/napsandknives/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20201",
+      "name": "전진문화사",
+      "aliases": [
+        "JEONJINMOONHWASA"
+      ],
+      "intro": {
+        "text": "전진문화사는 문화와 예술로 공간의 가능성을 모색하며, 일상의 다정한 시선과 아날로그적 취향을 기록하고 기획합니다. 이번 프로젝트에서는 각자의 영역에서 시각 문화를 다뤄온 두 창작자가 전진문화사 팀으로 뭉쳐, 그림과 오브제로 채운 유쾌한 전시를 선보입니다.\n거창한 예술적 명분 대신 ‘좋아하는 것을 그리는 즐거움’이라는 본질에 집중했습니다. 일상의 풍경을 특유의 평면적 화풍으로 그려온 회화 작가와 15년의 문화기획자 생활 끝에 다시 그림을 시작한 이가 각자의 애정 어린 시선을 모았습니다. 고양이와 해산물(식재료), 그 접점에 놓인 정어리 캔까지. AI가 매끈한 이미지를 쏟아내는 시대, 투박하지만 온기 있는 손의 흔적과 디지털이 흉내 낼 수 없는 다정한 인간미를 이 작은 식탁에서 취향이 닿는 이들과 나눕니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/jeonjinmoonhwasa/"
+      },
+      "category": "그래픽 컬처"
+    },
+    {
+      "key": "sdf-20203",
+      "name": "폴린루이즈 스튜디오",
+      "aliases": [
+        "pauLiNe LouiSe"
+      ],
+      "instagramUrl": "https://www.instagram.com/paulinelouise.studio/",
+      "websiteUrl": "https://tender-fabric-049789.framer.app/",
+      "intro": {
+        "text": "폴린루이즈 스튜디오는 디지털 공예를 바탕으로 일상적인 사물에 새로운 형태와 감각을 부여하는 오브제 스튜디오입니다. 익숙하면서도 낯선 조형을 통해 현실과 비현실이 교차하는 장면을 만들며, 그 경계를 사유해 보는 즐거움을 전하고자 합니다.\n폴린루이즈의 오브제와 함께하는 시간이 일상을 바라보는 새로운 시각과 영감을 얻는 시간이 되길 바랍니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/pauline-louise/"
+      },
+      "category": "리빙"
+    },
+    {
+      "key": "sdf-20205",
+      "name": "토소",
+      "aliases": [
+        "TOSO"
+      ],
+      "instagramUrl": "https://www.instagram.com/toso.kr/",
+      "websiteUrl": "https://toso.kr/",
+      "intro": {
+        "text": "문화 유산을 보며 옛사람들의 삶과 멋을 막 상상해 봅니다. 토소는 박물관 안에 전시 돼 있는 유물의 형상에 위트와 현대적 쓰임을 덧붙인, 선물하기 좋은 소품을 만들고 있습니다. 국중박 뮷즈 샵 등에 입점해 있습니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/toso/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20207",
+      "name": "레드이어스클럽",
+      "aliases": [
+        "RedEarsClub"
+      ],
+      "instagramUrl": "https://www.instagram.com/redearsclub/",
+      "websiteUrl": "https://www.soshyety.shop/",
+      "intro": {
+        "text": "레드이어스클럽은 ‘귀가 빨개지는 순간’을 다정하게 바라보는 캐릭터 IP 브랜드입니다. 빨개진 귀를 헤드셋으로 가린 고양이 ‘레코’와 까칠한 척하지만 다정한 고슴도치 ‘마이티’를 통해, 내향인과 직장인, 사회초년생들이 사회생활 속에서 느끼는 긴장과 회복의 순간을 이야기합니다.\n캐릭터의 표정과 공감 문구를 스티커, 메모패드, 키링, 마우스패드, 맥세이프 카드포켓, 휴대폰 케이스 등 일상에서 사용하는 제품에 담습니다. 가방과 휴대폰, 책상 위에서 만나는 작은 친구들이 각자의 속도로 하루를 보내는 사람들에게 유쾌한 응원이 되기를 바랍니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/redearsclub/"
+      },
+      "category": "그래픽 컬처"
+    },
+    {
+      "key": "sdf-20209",
+      "name": "리즘",
+      "aliases": [
+        "-rysm"
+      ],
+      "instagramUrl": "https://www.instagram.com/rysm_is_here/",
+      "websiteUrl": "https://www.rysmstudio.com/",
+      "intro": {
+        "text": "리즘은 텍스타일 디자인을 통해 자연과 일상의 은은한 색채를 담아냅니다. 리즘만의 고유한 컬러 매치로, 평범한 옷차림에도 기분 좋은 특별함을 안겨줄 아이템들을 제안합니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/rysm/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20213",
+      "name": "보석공방 리페어링",
+      "aliases": [
+        "REPAIRING"
+      ],
+      "intro": {
+        "text": "리페어링은 보석의 대중화를 지향합니다.\n리페어링은 저희 제품이 아닌 타사 제품의 AS도 지원합니다.\n리페어링은 인간이 아름다움을 탐구하고 추구하는 본성을 탐구합니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/repairing/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20215",
+      "name": "노톤",
+      "aliases": [
+        "note on"
+      ],
+      "instagramUrl": "https://www.instagram.com/noteon.kr/",
+      "websiteUrl": "https://smartstore.naver.com/note_on",
+      "intro": {
+        "text": "노톤 순면 사쉐는 계절의 향을 담은 순면 주머니로, 옷장과 침실 등 일상의 공간에 은은한 계절감을 더합니다. 100% 순면의 부드러운 촉감과 자연스러운 질감이 공간에 따뜻함을 전하며, 내용물을 리필해 오래 사용할 수 있도록 만들었습니다. 사계절의 감성을 담은 패키지 4종은 친환경 소재를 적용해 지속 가능성을 고려했습니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/note-on/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20219",
+      "name": "타입 매터리얼",
+      "aliases": [
+        "Type Material"
+      ],
+      "instagramUrl": "https://www.instagram.com/nutype.info/",
+      "intro": {
+        "text": "«타입 매터리얼 Type Material»은 타입(Type)과 매터리얼(Material), 두 가지 결과물이 만들어지는 과정을 살펴보며 디지털 글자가 물질적 형태로 전환되는 과정을 조명하는 전시입니다. 글자의 형태를 구성하는 디지털 데이터에서 실제 제품에 이르기까지, 타입이 설계되고 물성을 지닌 결과물로 확장되는 과정을 타입, 매터리얼라이제이션, 매터리얼 세 단계로 나누어 보여줍니다.\n디지털 환경에서 설계된 글자는 조판과 제작을 거치며 서로 다른 형태와 물성을 획득합니다. 관람객은 하나의 글자에서 조판된 형태, 그리고 실제 제품에 이르기까지 각 단계에서 달라지는 글자의 인상과 표현 방식을 비교하고 경험할 수 있습니다. «타입 매터리얼»은 글자를 읽히는 정보인 동시에 물성을 지닌 조형적 대상으로 바라보며, 타입 디자인의 표현 가능성을 디지털 화면 너머로 확장합니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/type-material/"
+      },
+      "category": "그래픽 컬처"
+    },
+    {
+      "key": "sdf-20221",
+      "name": "모쓰 스튜디오",
+      "aliases": [
+        "MOTHW studio"
+      ],
+      "instagramUrl": "https://www.instagram.com/mothw.studio",
+      "websiteUrl": "https://mothwstudio.com/",
+      "intro": {
+        "text": "흘러가는 일상 속, 소중한 순간을 기록하고 간직하세요.\n시간은 쉼 없이 흐르고, 하루하루는 금세 지나가 버립니다. 그 안에서 우리가 놓치고 있는 건, 사소하지만 특별한 순간들 입니다.\n이 캘린더는 단순한 날짜 표시 도구가 아니라, 당신의 하루와 한 달을 기억하는 작은 기록 저장소입니다.\n매일, 매달 다른 55개의 이미지와 그리고 나에게 보내는 편지로 시간이 쌓일수록 나만의 이야기 책이 완성 됩니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/mothw-studio/"
+      },
+      "category": "그래픽 컬처"
+    },
+    {
+      "key": "sdf-20223",
+      "name": "아렐레이",
+      "aliases": [
+        "RLA [;arelei]"
+      ],
+      "instagramUrl": "https://www.instagram.com/",
+      "websiteUrl": "https://www.rla.kr/",
+      "intro": {
+        "text": "RLA [;arelei] l 아렐레이는 언제 어디서나 어떠한 의복과도 어우러지는 미니멀함을 추구하며, 간결한 선과 독특한 소재로 디자인해 일상에 경쾌함을 더해줄 제품을 전개합니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/rla-arelei/"
+      },
+      "category": "디자인제품"
+    },
+    {
+      "key": "sdf-20225",
+      "name": "무나니스트",
+      "aliases": [
+        "munanist"
+      ],
+      "instagramUrl": "https://www.instagram.com/munan_ist/",
+      "websiteUrl": "http://munanist.com/",
+      "intro": {
+        "text": "무나니스트는 ‘무난함’을 하나의 태도로 바라보는 라이프스타일 브랜드입니다. 우리에게 무난함이란 흔들리면서도 무너지지 않고 스스로의 균형을 지켜내는 경험입니다.\n불안 속에서도 다정함을 선택하기 위해, 익숙한 생활소품에 작은 행동의 힌트를 담습니다.\n이번 전시에서는 식물을 돌보는 일상에서 발견한 이야기를 담은 마그넷, 스티커, 엽서를 비롯해 무나니스트의 다양한 디자인 소품을 선보입니다.\n작은 힌트를 발견하고 다시 움직이는 경험이 쌓여, 스스로를 믿는 힘이 되기를 바랍니다.\n열쇠는 사실 우리 안에 이미 있어요. 같이 찾아볼까요?",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/munanist/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20229",
+      "name": "문화도시통영",
+      "aliases": [
+        "CulturecityTongyeong"
+      ],
+      "instagramUrl": "https://www.instagram.com/culturecity_tongyeong/",
+      "websiteUrl": "https://tycc.or.kr/",
+      "intro": {
+        "text": "통영은 오랜 시간 바다와 함께 살아오며, 삶의 필요에서 비롯된 기술을 예술의 경지로 끌어올린 도시입니다. 나전, 옻칠, 소목, 누비 등 통영 공예는 단순한 생활 도구를 넘어 세대를 이어온 손의 기억이자 지역의 정체성, 그 자체입니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/culturecitytongyeong/"
+      },
+      "category": "아트&크래프트"
+    },
+    {
+      "key": "sdf-20233",
+      "name": "커브서울",
+      "aliases": [
+        "KOVE SEOUL"
+      ],
+      "instagramUrl": "https://www.instagram.com/kove_seoul/",
+      "websiteUrl": "https://kove-seoul.com/",
+      "intro": {
+        "text": "커브서울은 한국 고유의 문화와 정서를 일상복으로 재해석한 데일리웨어 브랜드입니다.\n옷은 입는 순간의 경험에서 완성됩니다. 자연스러운 움직임, 피부에 닿는 감촉, 쓰임에 맞는 소재. 커브서울은 상품이 지녀야 할 본질을 생각하며, 오래 입을수록 그 가치를 느낄 수 있는 옷을 만듭니다.\n시간이 지나도 손이 가는 옷, 익숙해질수록 애착이 가는 옷을 지향합니다. 환경을 고려한 소재를 선택하고, 남은 원단을 다시 활용하며, 기존의 옷에 새로운 쓰임을 더합니다. 이러한 실천을 통해 자연에 남기는 흔적을 줄여가고자 합니다.\n커브서울은 한국적 아름다움을 전하며, 일상의 순간을 함께하는 브랜드가 되고자 합니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/kove-seoul/"
+      },
+      "category": "패션"
+    },
+    {
+      "key": "sdf-20235",
+      "name": "킵잇인어셋",
+      "aliases": [
+        "Keep It in a Set"
+      ],
+      "instagramUrl": "https://www.instagram.com/keepitinaset/",
+      "websiteUrl": "https://keepitinaset.com/",
+      "intro": {
+        "text": "킵잇인어셋(KEEP IT IN A SET)의 제품들은 직관적입니다. 여러 카테고리의 아이템을 다루지만, 각각의 아이템들이 자기만의 색감과 특징적인 디테일을 가지고 있습니다. 킵잇인어셋의 아이템으로 스타일을 완성시키는 즐거움을 느껴보시길 바랍니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/keep-it-in-a-set/"
+      },
+      "category": "F&B"
+    },
+    {
+      "key": "sdf-20237",
+      "name": "마시멜로트램펄린",
+      "aliases": [
+        "marshmallowtrampolin"
+      ],
+      "instagramUrl": "https://www.instagram.com/marshmallowtrampoline/",
+      "websiteUrl": "https://www.marshmallowtrampoline.com/",
+      "intro": {
+        "text": "한 땀씩 촘촘히, 좋아하는 것을 손으로 채워가는 시간. 반짝였던 순간에 실로 수를 놓아 느리지만 단단하게 기억의 조각을 담아내는 제품을 선보인다. 같은 십자수 모티프의 베개커버 등 신제품을 통해, 직접 만지고 고르는 즐거움을 일상의 침구로 이어간다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/marshmallowtrampolin/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20239",
+      "name": "패턴플로우",
+      "aliases": [
+        "Patternflow"
+      ],
+      "instagramUrl": "https://www.instagram.com/patternflow.work/",
+      "websiteUrl": "https://patternflow.work/",
+      "intro": {
+        "text": "손가락으로 노브를 돌려 실시간으로 생성되는 패턴을 연주할 수 있습니다. 인터랙티브 미디어아트의 대중화를 위한 오픈소스 하드웨어 프로젝트입니다. 만드는 데에 필요한 모든 자료와 가이드가 공개되어 있으며, AI를 활용하여 자신만의 패턴을 만들고 공유할 수 있습니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/patternflow/"
+      },
+      "category": "디자인&테크"
+    },
+    {
+      "key": "sdf-20241",
+      "name": "언더띵",
+      "aliases": [
+        "UnderThing."
+      ],
+      "instagramUrl": "https://www.instagram.com/underthing_official",
+      "websiteUrl": "https://www.underthing.kr/",
+      "intro": {
+        "text": "언더띵은 보이지 않는 곳에 가장 솔직한 취향과 아름다움이 존재한다고 믿는 언더웨어/홈웨어 브랜드입니다.\n사랑스러운 디테일과 빈티지한 감성, 위트 있는 디자인을 통해 여성스러움의 다양한 모습을 표현합니다. 과장되지 않은 섹시함과 자유로운 자기표현을 바탕으로 한 란제리와\n라운지웨어를 선보입니다.\n언더띵은 속옷을 단순한 의복을 넘어, 자신만의 취향과 태도를 드러내는 가장 개인적인 방식으로 제안합니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/underthing/"
+      },
+      "category": "디자인제품"
+    },
+    {
+      "key": "sdf-20243",
+      "name": "그로토서울",
+      "aliases": [
+        "Grotto Seoul"
+      ],
+      "instagramUrl": "https://www.instagram.com/grotto.seoul.kr/",
+      "websiteUrl": "https://grotto.seoul.kr/",
+      "intro": {
+        "text": "그로토서울(GROTTO SEOUL)은 반려동물과 함께하는 일상에 편안함과 감각적인 디자인을 더하는 반려동물 용품 브랜드입니다.\n일상 속에서 자연스럽게 어우러지는 디자인과 실용적인 기능을 바탕으로, 반려동물과 보호자 모두에게 편안하고 안정감 있는 경험을 제안합니다.\n작은 디테일에도 그로토서울만의 감각을 담아, 함께하는 모든 순간이 더욱 특별하고 아늑해질 수 있도록 만듭니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/grotto-seoul/"
+      },
+      "category": "디자인제품"
+    },
+    {
+      "key": "sdf-20245",
+      "name": "에브랩",
+      "aliases": [
+        "evelab"
+      ],
+      "instagramUrl": "https://www.instagram.com/evelab.studio?igsh=MWR6dHg3ZnVid2Z4OA%3D%3D&utm_source=qr",
+      "websiteUrl": "https://smartstore.naver.com/evelab",
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20251",
+      "name": "손끋비",
+      "aliases": [
+        "sonkkeutbee"
+      ],
+      "instagramUrl": "https://www.instagram.com/sonkkeutbee",
+      "websiteUrl": "https://www.sonkkeutbee.co.kr/",
+      "intro": {
+        "text": "손끋비는 벌이 남긴 자연의 선물을 일상의 가치로 이어가는 친환경 라이프스타일 브랜드입니다.국내 양봉장에서 버려지는 꿀벌 벌집 밀랍을 활용해 밀랍랩, 밀랍백, 밀랍초 등 자연의 소재를 담은 제품을 만듭니다.일회용 비닐과 플라스틱 포장을 대신할 수 있는 지속가능한 생활용품을 연구하며, 작은 실천이 일상의 자연스러운 습관이 되도록 제안합니다.또한 꿀벌과 생태계의 소중함을 알리는 체험 프로그램과 환경교육, 전시 및 캠페인을 통해 사람과 자연이 함께 살아가는 방법을 나눕니다.제품을 만드는 일에서 그치지 않고, 판매 수익의 일부를 매년 10월 꿀벌 생태계 조성과 환경 캠페인에 사용하며 선한 영향력을 이어갑니다.\n벌이 지난 자리로 이롭게.\n기분 좋은 불편함, 손끋비.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/sonkkeutbee-4/"
+      },
+      "category": "디자인&ESG"
+    },
+    {
+      "key": "sdf-20253",
+      "name": "린다 프로",
+      "aliases": [
+        "LINDA PRO"
+      ],
+      "instagramUrl": "https://www.instagram.com/linda_pro_design/",
+      "websiteUrl": "https://www.lindapro.cz/",
+      "intro": {
+        "text": "린다 프로(LINDA PRO)는 체코의 아티스트이자 디자이너인 린다 프로하스코바(Linda Procházka)가 설립한 프라하 기반의 컬렉터블 글라스 아트 및 디자인 브랜드입니다. 전통적인 보헤미안 유리 공예에 현대 미술과 패션을 접목하여 상징적인 유리 핸드백부터 한정판 예술 작품까지 조형적인 크리스털 오브제를 선보입니다. 그녀의 작품은 세계 여러 나라에서 전시되었으며, 2025년 HKDA 글로벌 디자인 어워드를 수상했습니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/linda-pro/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20255",
+      "name": "고체가글 키들",
+      "aliases": [
+        "KEEDLE"
+      ],
+      "instagramUrl": "https://www.instagram.com/keedle.official/",
+      "websiteUrl": "https://keedle.co.kr/",
+      "intro": {
+        "text": "치과의사와 조향사인 두 자매가 함께 만든 프리미엄 고체 가글입니다. 한 알씩 개별 포장되어 파우치나 주머니에 넣어 어디서든 가볍게 사용할 수 있습니다. 무방부제·무알코올에 천연유래 계면활성제를 사용해 입마름 없이 순합니다. 레몬·민트·자스민 세 가지 향으로 일상의 구강 관리를 작은 감각의 리추얼로 바꿉니다. 이번 전시에서는 보자기와 노리개로 감싼 선물세트와 브랜드 캐릭터 키링 굿즈를 처음 선보입니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/keedle/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20257",
+      "name": "소슬히",
+      "aliases": [
+        "soseuly"
+      ],
+      "instagramUrl": "https://www.instagram.com/soseuly_?vrfl=MWF1NWpkZTFmaHFwaQ%3D%3D&utm_source=qr",
+      "intro": {
+        "text": "전통이 지닌 고유한 감각을 발견하여,  오늘의 생활 방식과 취향 안에서 새로운 쓰임으로 풀어내는 브랜드 입니다. 오브제와 생활소품, 굿즈, DIY 키트 등 전통의 요소를 현대적인 감각으로 재해석하여 만들어진 제품들 입니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/soseuly/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20265",
+      "name": "드로잉데이",
+      "aliases": [
+        "DRAWINGDAY"
+      ],
+      "instagramUrl": "https://www.instagram.com/drawingday.kr/",
+      "intro": {
+        "text": "드로잉데이는 좋아하는 강아지 한 마리를 세상에서 가장 귀엽게 그리고 싶은 마음에서 시작됐습니다.\n바비와 함께하는 소소한 일상을 그림으로 담아내며, 누군가의 하루에 작은 즐거움을 더하고자 합니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/drawingday/"
+      },
+      "category": "그래픽 컬처"
+    },
+    {
+      "key": "sdf-20267",
+      "name": "희다가든",
+      "aliases": [
+        "Heedagarden"
+      ],
+      "instagramUrl": "https://www.instagram.com/heedagarden/",
+      "websiteUrl": "https://heedagarden.com/",
+      "intro": {
+        "text": "삶은 나만의 정원을 가꾸는 일. 희다가든은 직접 그린 러프한 그림들을 일상 속에 사용할 수 있는 소품에 담아 각자의 삶과 취향이 자라나는 공간을 제안하는 아트 브랜드입니다.\n이곳의 정원은 기억과 감정, 그리고 시간이 겹겹이 쌓이며 자신만의 모습으로 가꾸어지는 하나의 세계를 의미합니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/heedagarden/"
+      },
+      "category": "그래픽 컬처"
+    },
+    {
+      "key": "sdf-20269",
+      "name": "어녹",
+      "aliases": [
+        "AUNOG"
+      ],
+      "instagramUrl": "https://www.instagram.com/aunog_official/",
+      "websiteUrl": "http://www.aunog.com/",
+      "intro": {
+        "text": "AUNOG(어녹)은 서사를 조형화하는 브랜드입니다.\n이야기 속 장면과 의미를 제품의 형태와 쓰임으로 풀어내고, 그 안에 담긴 이야기를 통해 익숙한 일상에 특별한 감정을 더하고자 합니다.\n서울디자인페스티벌 2026을 통해 브랜드를 공식 론칭하며, 첫 제품으로 사이드 테이블 ‘Narcissus’를 선보입니다.\n사이드 테이블 ‘Narcissus’는 그리스 신화의 나르키소스가 연못에 비친 자신을 바라보는 장면에서 출발하였습니다.\n테이블 상판의 거울은 목표를 향해 나아가는 과정에서 잊기 쉬운 현재의 자신에게 시선을 머물게 합니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/aunog/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20275",
+      "name": "도깨비 화방",
+      "aliases": [
+        "Dokkaebi atelier"
+      ],
+      "intro": {
+        "text": "도깨비 화방은 한국의 골목과 오래된 가게, 계절마다 달라지는 일상의 풍경에 작은 상상을 더해 이야기를 그리는 일러스트 브랜드입니다. 도깨비 무루와 고양이 친구들의 여정을 통해 익숙한 하루 속에서 지나쳤던 다정함과 각자의 모습을 다시 발견하는 이야기를 전합니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/dokkaebi-atelier/"
+      },
+      "category": "그래픽 컬처"
+    },
+    {
+      "key": "sdf-20279",
+      "name": "석철목",
+      "aliases": [
+        "sukchulmok"
+      ],
+      "instagramUrl": "https://www.instagram.com/sukchulmok/",
+      "websiteUrl": "http://www.sukchulmok.com/",
+      "intro": {
+        "text": "주요 프로젝트 및 전시\n• 명륜 소굴 (2026)\n• 抱田집(2025)\n• 8323 , layers of space (2023)\n• parconido bakery cafe (2022)\n•CURVING BLOCK (2022)\n• 전시 및 가구 작업\n• Floating Gravity +浮地 (SDF2026)\n• Floating Gravity (BDF2026)\n• sukchulmok Booth (BDF2026 / SDF2026)\n• GHOST BARSTAIRS (2026)\n• 실험 가구 시리즈: mok-04, chul-02, scm-01 등",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/sukchulmok/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20297",
+      "name": "메탈플레이어 박현종",
+      "aliases": [
+        "Park Hyun Jong"
+      ],
+      "instagramUrl": "https://www.instagram.com/jong_metalplayer/",
+      "intro": {
+        "text": "모든 것들에는 '사이'가 있습니다.\n공간과 사람, 가구, 보이지 않는 것들 사이에는 수많은 간격이 존재하며,\n그 사적인 간격들이 삶의 다양성이자 아름다움이라고 생각합니다.\n이번 가구들은 질서와 무질서 사이의 역동을 나타내며,\n질서와 무질서가 서로 충돌하고 겹쳐지며 움직임이 잦아드는 순간을 담아낸\n메탈 플레이어 박현종의 질서를 보여줍니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/park-hyun-jong/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20299",
+      "name": "삭스미스",
+      "aliases": [
+        "SOCKSMITH"
+      ],
+      "instagramUrl": "https://www.instagram.com/socksmithkorea/",
+      "websiteUrl": "https://www.socksmith.kr/",
+      "intro": {
+        "text": "SOCKSMITH는 2007년, 미국 캘리포니아 산타크루즈 중심부에서\nEllen과 Eric Gil로부터 시작되었습니다.\nSOCKSMITH는 개성과 자기 표현에 대한 사랑으로 탄생했습니다.\n자기 표현이 진정한 아름다움이라는 원칙에 기초하여\n유니크한 디자인의 퀄리티 좋은 양말을 제공합니다.\n개인의 개성을 잃지 말라는 지속적인 알람 역할을 하기 위해\n지금도 SOCKSMITH는 노력합니다.\nSOCKSMITH의 핵심가치는\n\"삶은 지루한 양말을 신기에는 너무 짧다.\" 입니다.\n이것이 SOCKSMITH가 추구하는 길입니다.\n#No Boring Socks",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/socksmith/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20315",
+      "name": "해비터스",
+      "aliases": [
+        "Habit-Us"
+      ],
+      "instagramUrl": "https://www.instagram.com/habitus.kr",
+      "websiteUrl": "https://habit-us.kr/",
+      "intro": {
+        "text": "해비터스는 '익숙하지만 소외된 아름다움'에 주목하며, 일상의 배경에 머물렀던 소재에 새로운 쓰임과 형태를 더합니다. 한국의 참숯을 주재료로 통숯을 조각하듯 깎고 다듬어 소재 고유의 질감과 결을 살립니다. 대표작 '숯자기'는 한국의 전통 기물을 숯으로 옮겨낸 오브제 시리즈로, 부드러운 곡선과 독특한 질감이 어우러집니다. 숯 본연의 탈취 기능에 다양한 쓰임을 더해 감상과 사용을 아우르는 생활 기물을 만들며, 소재의 아름다움과 기능을 일상에서 가까이 경험하는 공예를 제안합니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/habit-us/"
+      },
+      "category": "디자인&ESG"
+    },
+    {
+      "key": "sdf-20317",
+      "name": "술술레시피",
+      "aliases": [
+        "SULSUL RECIPE"
+      ],
+      "instagramUrl": "https://www.instagram.com/sulsul_recipe/",
+      "websiteUrl": "https://www.sulsulrecipe.com/",
+      "intro": {
+        "text": "술술레시피는 한국의 전통 부적에 담긴 소망과 상징을 현대적인 타이포그래피와 디자인으로 재해석한 아트굿즈 브랜드입니다.\n전통 부적의 문자와 길상 문양을 조화롭게 결합하여, 일상에서 소장하고 선물할 수 있는 특별한 디자인 제품을 선보입니다.\n건강, 행복, 사랑, 성공 등 저마다의 간절한 바람을 담아 소중한 사람에게 따뜻한 응원의 마음을 전합니다.\n간절한 소망은 반드시 빛을 만납니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/sulsul-recipe-2/"
+      },
+      "category": "그래픽 컬처"
+    },
+    {
+      "key": "sdf-20323",
+      "name": "힙부즈",
+      "aliases": [
+        "HIPBUZ"
+      ],
+      "instagramUrl": "https://www.instagram.com/hipbuz_",
+      "websiteUrl": "https://onlymoment.kr/",
+      "intro": {
+        "text": "[힙부즈 HIPBUZ - 힙스터 부처님]은 콘텐츠 기업 어프로치(Approach)의 첫번째 콘텐츠IP 브랜드로 '21세기에 오게 된 부처님은 어떤 모습일까?'를 상상하면서 석가모니 부처를 모티브로 직접 그린 캐릭터 및 일러스트를 선보이고 있습니다.\n힙부즈는 어느 날, 보리수 나무 아래에서 눈을 감고 명상을 하던 중,현대를 살아가는 중생들의 염원에 의해 21세기에서 눈을 뜨게 되었고, 지금을 살아가는 현대인들과 동일한 생활을 하면서 ‘요즘 세상에 맞는 깨달음이란 무엇일까?’를 끊임없이 고민하며, 사람들의 번뇌를 해결해주고자 일상 속 깨달음을 주는 캐릭터입니다.\n힙부즈는 SNS를 통해 자체 세계관 컷툰을 지속 발행하며 세계관을 탄탄하게 정립해 가고 있고, 특정 종교에 국한된 것이 아닌 마음챙김, 마인드풀니스 등 삶의 유쾌함과 다정한 위로가 필요한 사람들이 쉽게 접근할 수 있는 일러스트 및 캐릭터 콘텐츠와 굿즈를 선보이며 많은 사람들에게 사랑을 받고 있습니다.\n※ ‘힙부즈 HIPBUZ’는 특정 종교나 종단에 소속되어 있거나 직접적인 관련 없이 ‘힙부즈 HIPBUZ’ 자체로 하나의 콘텐츠입니다.\n※ ‘힙부즈 HIPBUZ’ 및 힙스터 부처님은 국내외 상표권 및 저작권 등록이 되어 있어, 정식 파트너사에 한해 사용을 허가하고 있습니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/hipbuz/"
+      },
+      "category": "그래픽 컬처"
+    },
+    {
+      "key": "sdf-20325",
+      "name": "진주 복숭아주",
+      "aliases": [
+        "JINJU PEACH"
+      ],
+      "intro": {
+        "text": "경남 진주산 복숭아로 만든 로컬 F&B 브랜드 진주도원의 제품입니다. 전통주 '진주 복숭아주'와 '진주 복숭아 스파클링', 술잔과 동결건조 복숭아를 함께 담은 선물세트, 진주산 복숭아를 담은 젤라또 아이스크림 '모모', 복숭아 추출물이 들어간 숙취해소제 '깻나'를 선보입니다. 진주냉면·진주비빔밥·땡초김밥을 그래픽으로 풀어낸 먹거리 티셔츠와 복숭아 향 샤쉐까지, 진주의 자원을 2030 세대가 즐기는 콘텐츠로 재해석했습니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/jinju-peach/"
+      },
+      "category": "브랜드 유니버스"
+    },
+    {
+      "key": "sdf-20329",
+      "name": "무헤헤",
+      "aliases": [
+        "muhehe"
+      ],
+      "instagramUrl": "https://www.instagram.com/3muhehe/",
+      "intro": {
+        "text": "개인 경험과 창의적인 시각을 바탕으로 개성 있는 캐릭터를 제작하며, 각 캐릭터만의 고유한 세계관과 스토리를 구축해 나가고 있습니다.\n주력 상품은 캐릭터 IP 기반으로 굿즈 상품을 제작하고 있습니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/muhehe/"
+      },
+      "category": "디자인제품"
+    },
+    {
+      "key": "sdf-20333",
+      "name": "낼나",
+      "aliases": [
+        "nelna"
+      ],
+      "instagramUrl": "https://www.instagram.com/nelna.shop/",
+      "websiteUrl": "https://nelna.shop/",
+      "intro": {
+        "text": "낼나(nelna)는 ‘성장하는 어른을 위한 요즘 문구’를 만드는 라이프스타일 브랜드입니다. 기록하고, 읽고, 집중하는 시간을 더 즐겁게 만드는 도구를 디자인합니다. 디지털과 아날로그의 경계를 넘나들며, 기능은 물론 일상의 공간에 자연스럽게 어우러지고 오래 곁에 두고 싶은 디자인을 제안합니다. 이번 전시에서는 포커스 온 타이머, 낼나 펜슬, 무궁무진 거치대를 통해 오늘을 살아가는 어른들에게 필요한 새로운 문구의 모습을 보여줍니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/nelna/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20335",
+      "name": "마코",
+      "aliases": [
+        "maco"
+      ],
+      "instagramUrl": "https://www.instagram.com/maco_design/",
+      "websiteUrl": "https://macogroup.kr/",
+      "intro": {
+        "text": "ONDAY는 시니어의 정서적 안정과 편안한 일상을 위해 개발된 인터랙티브 반려 조명입니다. 사용자의 접근을 감지해 다양한 표정으로 반응하고, 시간과 상황에 따라 빛의 색온도와 밝기를 조절하여 일상에 따뜻한 온기를 더합니다. 터치와 모바일 앱을 통한 직관적인 제어는 물론 블루투스 스피커 기능을 결합하여, 단순히 공간을 밝히는 조명을 넘어 사용자와 자연스럽게 교감하는 새로운 반려 조명 경험을 제안합니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/maco/"
+      },
+      "category": "디자인&테크"
+    },
+    {
+      "key": "sdf-20345",
+      "name": "P:AFG뉴함창클럽",
+      "aliases": [
+        "P:AFG NHCB"
+      ],
+      "instagramUrl": "https://www.instagram.com/project__afg/",
+      "intro": {
+        "text": "뉴함창클럽은 경북 상주 함창의 명주와 옹기, 24절기의 풍경을 일상의 물건으로 옮기는 로컬 브랜드입니다. 상주 옹기장 8대손 정웅혁 작가의 커피사발 '숨사발', 함창 명주로 지은 하바마 전선경 작가의 제비 모빌과 버선코 명태 키링, 24절기 심볼을 직자수로 새긴 명주발과 천연염색 삼베 매트, 이방인의 시선으로 담은 함창 풍경 사진을 선보입니다. 자연에서 온 소재와 손의 흔적을 살려 하나하나 조금씩 다른 모습으로 완성했습니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/pafg-nhcb/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20351",
+      "name": "페페하우스",
+      "aliases": [
+        "FEFEHAUS"
+      ],
+      "instagramUrl": "https://www.instagram.com/fefehaus/",
+      "websiteUrl": "https://www.fefehaus.com/",
+      "intro": {
+        "text": "'Found in Everyday'라는 철학을 바탕으로 일상의 장면과 사물을 새로운 형태의 오브제로 제안합니다. 이번 전시에서는 Poetry House, Flower Clock과 신제품을 하나의 공간에 구성하여 FEFEHAUS만의 디자인 언어를 보여줍니다. Custom Zone을 통해 제품을 직접 보고, 선택하고, 경험해보세요.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/fefehaus/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20353",
+      "name": "디자인 윙(한글락)",
+      "aliases": [
+        "DESIGN WING"
+      ],
+      "instagramUrl": "https://www.instagram.com/designwing_/",
+      "websiteUrl": "https://designwing.co.kr/",
+      "intro": {
+        "text": "한글을 담은 디자인젓가락 한글락\n아름다운 한글과 젓가락의 우수성, 디자인 상품으로 담다!\n한글디자인 젓가락의 줄임말, 한글과 함께하는 즐거운 젓가락(樂)의 의미\n-한국어 ‘한글’ 자음형태를 ‘젓가락’에 접목하여 다양한 단어조합으로 재미와 두뇌교육을 더한 디자인 굿즈\n-우리 고유 문화인 한글과 일상 속 젓가락으로 한국인만의 과학적(손재주와 두뇌개발 등) 우수성을 알릴 수 있는 디자인굿즈 상품",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/design-wing/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20357",
+      "name": "디어더스레드",
+      "aliases": [
+        "THE OTHER THREADS"
+      ],
+      "instagramUrl": "https://www.instagram.com/this_is_yeongy/",
+      "intro": {
+        "text": "직접 그리고 작업한 한국 채색화 그림으로 만든 소품들 입니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/the-other-threads/"
+      },
+      "category": "그래픽 컬처"
+    },
+    {
+      "key": "sdf-20359",
+      "name": "셔레이드쇼",
+      "aliases": [
+        "CHARADE SHOW"
+      ],
+      "instagramUrl": "https://www.instagram.com/charadeshow/",
+      "websiteUrl": "https://charadeshow.com/",
+      "intro": {
+        "text": "셔레이드쇼는 고양이의 무료한 일상 뒤 숨겨진 모험을 상상합니다.\n마치 어느 밤 지구를 구하거나 악당의 침공을 막아낸 영웅 이야기처럼요!\n작은 상상력을 더하여 만들어내는 특별한 순간들을 만나보세요.\n셔레이드쇼는 기계자수와 픽셀드로잉처럼 작은 단위를 조합해 그림을 완성하는 표현방식을 가지고 있습니다. 작은 실을 쌓아 큰 형상을 만들어내듯, 작은 힘이 모여 큰 변화를 일으킬 수 있다는 메시지를 담고 있습니다.\n일상에서 흔히 지나치는 것들에게도 가능성과 잠재력을 가지고있다는 메세지를 전합니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/charade-show-2/"
+      },
+      "category": "그래픽 컬처"
+    },
+    {
+      "key": "sdf-20361",
+      "name": "골든올리브",
+      "aliases": [
+        "GOLDEN OLIVE"
+      ],
+      "instagramUrl": "https://www.instagram.com/goldenolive.works/",
+      "websiteUrl": "https://goldenolive.works/",
+      "intro": {
+        "text": "브랜드에도 덕후가 필요합니다. 브랜드를 깊이 이해하고, 작은 디테일까지 집요하게 고민하며, 사람들이 좋아할 경험을 만드는 콘텐츠 디자인 스튜디오, 골든올리브입니다.\n팝업스토어와 전시, 브랜드 행사 및 프로모션의 기획부터 공간 디자인, 제작·시공, 현장 운영까지 전 과정을 진행합니다. 시딩박스와 패키지, 굿즈 및 인쇄물은 물론 모션그래픽, AI 영상, 디지털아트, 인터랙티브 콘텐츠까지 다양한 영역을 넘나들며 브랜드의 이야기를 구현합니다. 골든올리브는 기획에서 끝나지 않고, 디자인에서 멈추지 않습니다. 아이디어가 실제로 구현되고 사람들이 경험하는 순간까지 함께합니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/golden-olive/"
+      },
+      "category": "디자인&테크"
+    },
+    {
+      "key": "sdf-20363",
+      "name": "쁘띠팩토리",
+      "aliases": [
+        "PETIT FACTORY"
+      ],
+      "instagramUrl": "https://www.instagram.com/petitfactory_official/",
+      "websiteUrl": "http://www.petitfactory.net/",
+      "intro": {
+        "text": "쁘띠팩토리는 평범했던 일상에 작은 즐거움을 더하는 캐릭터 라이프스타일 브랜드입니다.\n캐릭터의 세계관을 바탕으로 레트로 무드를 쁘띠팩토리만의 감성과 디자인으로 재해석하여, 일상에 포인트가 되는 컬러와 디자인을 담은 문구·리빙·패션 등 다양한 라이프스타일 상품을 전개합니다. 또한 글로벌 시장에서 캐릭터 라이선스 사업을 전개하고 있습니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/petit-factory/"
+      },
+      "category": "그래픽 컬처"
+    },
+    {
+      "key": "sdf-20365",
+      "name": "킴밍스튜디오",
+      "aliases": [
+        "kimmming-studio"
+      ],
+      "instagramUrl": "https://www.instagram.com/_kimmming",
+      "websiteUrl": "https://kimmming-studio.com/",
+      "intro": {
+        "text": "킴밍스튜디오(kimmming studio)는 일러스트 작가 킴밍(kimmming)이 반려동물의 사랑스러운 일상과 다양한 순간들을 그림으로 표현하는 일러스트 스튜디오입니다. 감각적인 색감과 개성 있는 표현을 통해 친근하고 따뜻한 감성을 담아내며, 일상에 작은 즐거움과 특별한 매력을 더하는 작품을 선보입니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/kimmming-studio/"
+      },
+      "category": "그래픽 컬처"
+    },
+    {
+      "key": "sdf-20367",
+      "name": "클리오 모빌리티",
+      "aliases": [
+        "KLIO MOBILITY"
+      ],
+      "instagramUrl": "https://www.instagram.com/mule_by_kliodesign/",
+      "websiteUrl": "https://www.mulebykliodesign.com/",
+      "intro": {
+        "text": "MULE은 가변형EV 플랫폼을 기반으로 필요에 따라 만들고 고치며 다시 조합할 수 있는 모빌리티입니다. 단순한 구조와 모듈러 디자인, 재활용 소재를 통해 오래 사용할 수 있는 지속 가능한 방식을 제안합니다. 이러한 유연함은 좁은 골목을 달리는 전기자전거부터 일상을 즐거움으로 바꾸는 로드스터까지 다양한 형태로 확장됩니다. 불필요한 요소를 덜어낸 직관적인 조형은MULE 전 모델을 관통하는 공통 디자인 언어입니다. 열린 플랫폼 위에 각자의 라이프스타일을 더해 새로운 이동의 가능성을 만들어갑니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/klio-mobility/"
+      },
+      "category": "디자인&ESG"
+    },
+    {
+      "key": "sdf-20371",
+      "name": "루브",
+      "aliases": [
+        "loov"
+      ],
+      "instagramUrl": "https://www.instagram.com/turn_ur_loov",
+      "intro": {
+        "text": "모든 순간에는 저마다의 리듬이 있고, 매일은 새로운 감정을 가져다줍니다. 어떤 날은 사랑을 위해, 어떤 날은 움직임을 위해, 또 어떤 날은 그저 흐름에 몸을 맡기기 위해 존재합니다. 다섯 가지 색상, 다섯 가지 분위기, 그리고 모든 순간을 나만의 것으로 만들어가는 무한한 방법들. loov.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/loov/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20373",
+      "name": "헤이씨",
+      "aliases": [
+        "heyc"
+      ],
+      "websiteUrl": "https://heyc-story.com/",
+      "intro": {
+        "text": "헤이씨(heyc)는 휠체어 바퀴에 끼우는 커스터마이징 스포크가드입니다. 폐플라스틱을 재활용한 PCR 소재를 가공하여, 현업 작가·디자이너와 협업한 다양한 디자인을 커스텀 제작합니다. 바퀴살에 손이나 물건이 끼이는 것을 막는 안전 기능과 함께, 휠체어 사용자가 자신의 개성을 드러낼 수 있는 패션 아이템이 됩니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/heyc/"
+      },
+      "category": "디자인&ESG"
+    },
+    {
+      "key": "sdf-20375",
+      "name": "몸의표정",
+      "aliases": [
+        "MHOM"
+      ],
+      "instagramUrl": "https://www.instagram.com/mhom_ent",
+      "websiteUrl": "https://mhom-ent.kr/",
+      "category": "그래픽 컬처"
+    },
+    {
+      "key": "sdf-20381",
+      "name": "순간을 아로새기다",
+      "aliases": [
+        "Record the moment"
+      ],
+      "instagramUrl": "https://www.instagram.com/joyyj_",
+      "intro": {
+        "text": "그래피티 아트와 전단지의 형식을 빌려 캘리그라피 작품을 선보입니다. 전단지에서 마음에 드는 다짐 한 문장을 고르고, 사랑, 평화, 행복, 행운을 발견해 보세요.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/record-the-moment/"
+      },
+      "category": "그래픽 컬처"
+    },
+    {
+      "key": "sdf-20385",
+      "name": "오첵",
+      "aliases": [
+        "O-CHECK"
+      ],
+      "instagramUrl": "https://www.instagram.com/ocheckdesigngraphics/",
+      "websiteUrl": "https://www.o-check.net/",
+      "intro": {
+        "text": "평범한 하루의 순간들이 기록을 만나 오래 간직할 이야기가 됩니다.\n오첵은 노트, 다이어리, 앨범, 스티커 등 다양한 기록 도구를 통해 일상을 나만의 방식으로 기록하고 간직하는 경험을 제안합니다.\n이번 전시에서는 ‘일상과 기록을 잇는 오첵’을 컨셉으로, 쓰고 붙이고 모으고 간직하는 다양한 기록의 방식을 오첵의 제품과 공간을 통해 보여줍니다.\n일상의 순간이 기록으로 이어지는 곳, O-CHECK\nRecords for Life",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/o-check/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20387",
+      "name": "컴포지션스튜디오",
+      "aliases": [
+        "composition studio"
+      ],
+      "instagramUrl": "https://www.instagram.com/composition_studio_kr/",
+      "websiteUrl": "https://www.compositionstudio.kr/",
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20393",
+      "name": "무미영",
+      "aliases": [
+        "moomiyeong"
+      ],
+      "instagramUrl": "https://www.instagram.com/moomiyeong?xtok=eTljZnVuOXc3NHRn",
+      "intro": {
+        "text": "《획》은 서예와 한국화에서 오랜 수련과 경험으로 완성되는 붓의 한 획을 가구 디자이너의 시선으로 해석한 작품이다. 평면성과 입체성를 오가며 서화동원(글과 그림은 근원이 같다.) 정신에 '기(器)'를 부여해 서화기동원(글과 그림과 기물)이라는 개념을 새롭게 이야기한다. 붓질에 담긴 정신과 태도를 현대적으로 재해석하고, 작가가 축적해 온 시간과 감각을 하나의 조형에 응축했다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/moomiyeong/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20413",
+      "name": "피스오브토마로우",
+      "aliases": [
+        "PIECE OF TOMORROW"
+      ],
+      "intro": {
+        "text": "피스오브토마로우(Piece of Tomorrow)는 디자인과 기술, 지속가능성을 연결하는 새활용 디자인 브랜드입니다.\n이번 전시에서는 재생 PLA(rPLA) 소재와 3D 프린팅 기술을 활용해 제작한 모듈형 파티션과 다양한 리빙 오브제를 선보입니다.\n전통 창살에서 영감을 받은 십자형 모듈은 꽃 모양의 연결 부품을 통해 자유롭게 결합하고 확장할 수 있으며, 공간과 목적에 따라 새로운 형태로 변화합니다.\n작은 조각들이 모여 하나의 구조를 이루듯, 일상의 작은 실천이 더 나은 내일을 만들 수 있다는 가능성을 이야기합니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/piece-of-tomorrow-2/"
+      },
+      "category": "디자인&ESG"
+    },
+    {
+      "key": "sdf-20415",
+      "name": "눈에뜰",
+      "aliases": [
+        "lunettel"
+      ],
+      "instagramUrl": "https://www.instagram.com/lunettel_eyewear",
+      "websiteUrl": "https://www.lunettel.com/",
+      "intro": {
+        "text": "눈에뜰 lunettel은 프랑스어 안경 lunette와 예술가들의 작업실 atelier의 합성어로\n수제안경과 장신구 돋보기 등 안경관련 제품을\n작품을 만드는 마음으로 디자인, 제작합니다.\n소재는 아세테이트, 물소뿔, 새활용 소재를 사용합니다.\n1996년부터 안경디자이너로 활동하며 전문성을 더 갖추기 위해 안경사 면허증도 취득, 장식성과 기능성을 추구하는 안경관련제품 전문 브랜드입니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/lunettel-2/"
+      },
+      "category": "디자인제품"
+    },
+    {
+      "key": "sdf-20433",
+      "name": "오늑",
+      "aliases": [
+        "ONHEUK"
+      ],
+      "instagramUrl": "https://www.instagram.com/onheuk.official/",
+      "websiteUrl": "https://onheuk.kr/",
+      "intro": {
+        "text": "오늑(ONHEUK)은 한국 전통의 형태와 정서에서 발견한 아름다움을 현대적인 가구와 오브제로 풀어내는 디자인 브랜드입니다. 전통 건축과 사물에 담긴 선과 비례, 구조와 여백을 오늘의 소재와 쓰임으로 재해석합니다.\n먹빛의 고요함을 담은 매트한 블랙 ‘묵흑’과 수작업의 섬세한 질감은 공간을 압도하기보다 은은한 포인트가 되어, 기존의 가구와 다양한 공간에 자연스럽게 어우러집니다. 한국적인 조형과 일상적인 쓰임을 함께 고려한 가구를 합리적인 가격으로 제안하며, 전통의 아름다움을 일상에서 편안하게 누릴 수 있도록 합니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/onheuk-2/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20437",
+      "name": "홍익대 시각디자인과",
+      "aliases": [
+        "Hongik Visual Design"
+      ],
+      "instagramUrl": "https://www.instagram.com/hivcdofficial/",
+      "websiteUrl": "https://sidi.hongik.ac.kr/",
+      "intro": {
+        "text": "홍익대학교 시각디자인전공 「기업적 디자인」 수업에서 제작한 브랜딩 결과물 중 선별한 팀별 작업을 소개합니다. 브랜드가 오늘 사람들과 만나는 방식을 시각 언어로 풀어낸 전시입니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/hongik-visual-design/"
+      },
+      "category": "디자인 엔진"
+    },
+    {
+      "key": "sdf-20439",
+      "name": "카라영 인센스",
+      "aliases": [
+        "KARA YOUNG"
+      ],
+      "instagramUrl": "https://www.instagram.com/karayoung_official",
+      "websiteUrl": "https://www.karayoung.com/",
+      "intro": {
+        "text": "카라영 인센스(KARA YOUNG)는 ‘나를 위로하는 향기로운 쉼’을 제안하는 프리미엄 인센스 브랜드입니다.\n한국 전통 향 문화를 현대적인 감각으로 재해석하고, 천연 한방 재료와 독자적인 기술력을 바탕으로 새로운 향의 경험을 선사합니다.\n조선왕실의 품격을 담은 부용향부터 대한민국 곳곳의 향을 담은 K-클래식, 사군자의 기품과 천년의 매향비를 모티프로 한 밀레니엄 인센스까지. 역사와 문화, 자연과 철학에서 영감을 얻은 다채로운 시리즈를 통해 향에 담긴 고유한 이야기를 전합니다.\n또한 커피박을 활용한 업사이클링 인센스 커피캠퍼, 사상체질을 바탕으로 한 맞춤형 향의 제안, 연기를 줄이고 은은함을 더한 미연향 블랙 인센스 등 전통에 머무르지 않는 창의적인 시도로 인센스의 새로운 가능성을 넓혀가고 있습니다.\n한국전통향연구소 운영을 통해 축적한 전문성을 바탕으로 대한민국 우수문화상품(K-RIBBON)에 2년 연속 선정되었으며, 영국 비건 인증을 획득했습니다.\n48종의 다채로운 향에 담긴 저마다의 이야기를 통해 전통의 깊이와 현대의 감각을 잇고, 바쁜 일상 속 온전히 나에게 집중하는 향기로운 쉼을 선사합니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/kara-young-2/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20443",
+      "name": "아트핸즈",
+      "aliases": [
+        "ARTHANDS"
+      ],
+      "websiteUrl": "http://www.arthands.co.kr/",
+      "intro": {
+        "text": "아트핸즈는 부산의 대표 관광지를 작은 오르골 속에 담아낸 DIY 키트형 관광상품을 선보입니다. 평면으로 놓인 2D 키트 조각들은 사용자의 손을 거쳐 입체적인 3D 오르골로 완성됩니다. 본 전시는 여행지의 풍경과 기억을 직접 조립하고 소장하는 과정을 통해, 부산을 새로운 방식으로 경험하게 합니다. 3D프린팅과 UV인쇄 기반의 제작 과정, 조립 구조, 완성 시제품을 함께 보여주며, 지역의 장소성과 이야기가 체험형 기념품으로 확장될 수 있는 가능성을 제안합니다. 관람객은 완성품뿐 아니라 제품이 만들어지는 흐름까지 확인할 수 있습니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/arthands/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20465",
+      "name": "키쉬케이브",
+      "aliases": [
+        "kishcave"
+      ],
+      "instagramUrl": "https://www.instagram.com/kishcave.zip/",
+      "websiteUrl": "https://kishcave.kr/",
+      "intro": {
+        "text": "핸드 크래프트 기반의 주얼리 피스를 통해 누군가를 위한 작은 소원과 희망과 사랑을 전하는 브랜드",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/kishcave/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20501",
+      "name": "한성자동차 드림그림",
+      "aliases": [
+        "Dream Gream"
+      ],
+      "instagramUrl": "https://www.instagram.com/dream_gream/",
+      "websiteUrl": "https://dream-gream.co.kr/",
+      "intro": {
+        "text": "메르세데스-벤츠 공식 딜러사인 한성자동차는 한국메세나협회와 함께 2012년부터 미술영재 장학사업 ‘드림그림’을 운영하며 미래 예술인들의 꿈과 성장을 지원하고 있습니다.\n‘드림그림’은 예술적 재능과 꿈을 가진 중·고등학생을 선발하여 경제적\n지원뿐만 아니라 전문 아티스트와의 멘토링, 다양한 문화예술 행사 참여 등 차별화된 예술적 경험과 성장의 기회를 제공하는 장학 프로그램입니다.\n드림그림 아티스트 멘토링은 다양한 분야의 전문 예술가에게 새로운 창작 기법을 배우고 자신만의 예술적 세계를 확장해 나가는 프로그램입니다. 장학생들은 각기 다른 다양한 표현 방식에 도전하며, 자신만의 시각과 상상력을 작품에 담아냅니다.\n올해는 우인영, 여래, 서수연, 모스그래픽 등 총 4명의 아티스트와 함께 디지털 일러스트, AI 디지털 콜라주, 페인티드 페이퍼 콜라주, 그래픽 디자인 등 다채로운 멘토링이 진행되었습니다.\n이번 〈드림 에너지 스테이션〉 전시는 그중 여래 작가와 함께한 AI 디지털 콜라주 수업에서 출발합니다. 장학생들은 생성형 AI와 포토샵을 활용해 상상 속 풍경을 시각화한 작품들을 하나의 초현실 세계로 구현합니다. 예술가와의 만남을 통해 발견한 새로운 가능성이 꿈을 향한 에너지로 확장되는 특별한 여정을 만나보세요.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/dream-gream-3/"
+      },
+      "category": "기타"
+    },
+    {
+      "key": "sdf-20531",
+      "name": "피오큐",
+      "aliases": [
+        "poq"
+      ],
+      "instagramUrl": "http://www.instagram.com/poq.kr",
+      "websiteUrl": "http://www.poq.kr/",
+      "intro": {
+        "text": "패턴 브랜드 피오큐는 미래지향적인 그래픽과 고유한 스토리를 결합한 패턴을 창작합니다. 패턴에 담긴 사건, 상황, 생각을 시각적으로 해석하여 단순한 장식을 넘어 하나의 독립적인 작품이자 IP로 발전시킵니다.\n현재 자체 개발한 패턴을 활용해 패션, 리빙, 팬시, 인테리어 등 다양한 제품을 직접 기획·제작·판매하는 D2C 사업을 전개하고 있습니다. 나아가 타 브랜드와의 협업(콜라보)을 통해 피오큐 패턴의 활용 범위를 넓히고, 궁극적으로 다양한 산업에 패턴 IP를 제공하는 라이선싱 사업으로 발전시키고자 합니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/poq-2/"
+      },
+      "category": "브랜드 유니버스"
+    },
+    {
+      "key": "sdf-20545",
+      "name": "쉘랑 코리아",
+      "aliases": [
+        "SHELLANG"
+      ],
+      "instagramUrl": "https://www.instagram.com/shellang_k_official",
+      "websiteUrl": "https://shellang.kr/",
+      "intro": {
+        "text": "쉘랑 코리아의 '모던선비 갓'는 조선시대 선비들이 쓰던 갓을 현대적인 라이프스타일 오브제로 재해석한 디자인 프로젝트입니다. 갓 특유의 곡선과 섬세한 짜임, 은은한 비침을 현대적인 소재와 기술로 구현하고, 이를 무드등과 보틀램프, 패션 액세서리로 확장했습니다. 전통의 형태와 미감을 유지하면서도 오늘날의 공간과 일상에서 새롭게 즐길 수 있는 가능성을 제안합니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/shellang-2/"
+      },
+      "category": "디자인&테크"
+    },
+    {
+      "key": "sdf-20551",
+      "name": "비바로레",
+      "aliases": [
+        "Vivalorre"
+      ],
+      "websiteUrl": "https://vivalorre.com/",
+      "intro": {
+        "text": "브랜드 로고에는 사랑, 고통, 상처, 치유의 이중적인 감정을 상징하는 프랑스 전통 플뢰르 드 리로 장식된 심장을 관통하는 네 개의 단검이 새겨져 있습니다.\n\"지금을 넘어, 경계를 재정의하라\"는 모토에 따라\n비바로레는 단순한 장식을 넘어 감정적이고 예술적인 이야기를 깊이 있게 전달하는 주얼리를 제공합니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/vivalorre/"
+      },
+      "category": "디자인제품"
+    },
+    {
+      "key": "sdf-20557",
+      "name": "대구대 산업디자인",
+      "aliases": [
+        "DID"
+      ],
+      "instagramUrl": "https://www.instagram.com/_du_did_/",
+      "websiteUrl": "http://didshow.daegu.ac.kr/",
+      "intro": {
+        "text": "대구대학교 산업디자인학과는 새로운 관점과 실험을 통해 디자인의 가능성을 탐구합니다. 학생들은 일상의 작은 발견부터 사회와 산업의 변화까지 다양한 현상을 관찰하고, 자신만의 질문과 해석을 바탕으로 새로운 가치를 제안합니다. 창의적 사고와 실질적인 구현 능력을 결합한 프로젝트 중심 교육을 통해 아이디어를 구체적인 결과물로 발전시킵니다. 이번 전시에서는 학생들만의 독창적인 시선과 디자인에 대한 고민, 그리고 새로운 디자인의 가능성을 선보입니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/did/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20559",
+      "name": "피그랩",
+      "aliases": [
+        "PIGLAB"
+      ],
+      "instagramUrl": "https://www.instagram.com/piglab.official/",
+      "websiteUrl": "https://www.pig-lab.com/",
+      "intro": {
+        "text": "피그랩은 자연 속 작은 생명의 모습과 특징을 일상의 생활도구로 옮깁니다. 달팽이 언박싱 커터, 거북이 보틀 오프너, 딱따구리의 숲 연필꽂이, 하프물범 캡 오프너 등 귀여운 형태 안에 매일 쓰는 기능을 담았습니다. 폐목재, 폐어망 등 재활용 소재와 그곳에 사는 생명의 이야기를 연결해, 쓰는 동안 작은 존재의 이야기를 자연스럽게 발견하게 합니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/piglab-2/"
+      },
+      "category": "디자인&ESG"
+    },
+    {
+      "key": "sdf-20561",
+      "name": "(재)광명문화재단",
+      "aliases": [
+        "Gwangmyeong C.F."
+      ],
+      "instagramUrl": "https://www.instagram.com/gmcf.official?utm_source=ig_web_button_share_sheet&xtok=ZDNlZDc0MzIxNw==",
+      "intro": {
+        "text": "모락모락 온기가 피는 활동, 모여서 즐거운(樂) 모락빛 광명입니다.\n'모락빛 광명'은 광명 생활문화 공간 운영자들이 모여 도시를 섬세하게 관찰하고 감수성을 더해 만든 광명 생활문화 공간브랜드입니다.\n당신의 취향에 맞는 공간을 발견해보세요!",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/gwangmyeong-c-f/"
+      },
+      "category": "디자인제품"
+    },
+    {
+      "key": "sdf-20577",
+      "name": "보킷",
+      "aliases": [
+        "BOKIT"
+      ],
+      "instagramUrl": "https://www.instagram.com/bokit.official/",
+      "websiteUrl": "https://bokit.co.kr/",
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20579",
+      "name": "김토끼 요가",
+      "aliases": [
+        "KIMTOKKI YOGA"
+      ],
+      "instagramUrl": "https://www.instagram.com/kimtokki_yoga",
+      "websiteUrl": "https://litt.ly/kimtokki_yoga",
+      "intro": {
+        "text": "요가, 디자인이 되다.\n‘김토끼 요가’는 요가를 삶의 감각과 태도로 바라보며,\n요가의 움직임을 디자인으로 재해석하는 라이프스타일 브랜드다.\n691개의 요가 자세를 기록한 아카이브 책부터 다양한 요가 오브제와 콘텐츠까지\n요가를 일상 속에서, 그리고 삶의 모든 순간에서 즐길 수 있는 새로운 방식을 제안한다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/kimtokki-yoga/"
+      },
+      "category": "브랜드 유니버스"
+    },
+    {
+      "key": "sdf-20587",
+      "name": "비주얼스토리텔러",
+      "aliases": [
+        "Visualstoryteller"
+      ],
+      "instagramUrl": "https://www.instagram.com/visualstoryteller",
+      "websiteUrl": "https://www.visteller.com/",
+      "intro": {
+        "text": "비주얼스토리텔러는 복잡한 역사와 문화를 한 장의 이미지로 풀어내는 디자인 브랜드입니다.\n깊이 있는 자료 조사와 시각적 구조 설계를 바탕으로, 누구나 쉽고 흥미롭게 이해할 수 있는 콘텐츠를 만듭니다. 조선왕조와 대한민국 근대사, 전쟁사, 위스키와 커피의 역사까지 다양한 이야기를 포스터와 책, 아트상품으로 선보입니다.\n정보를 단순히 나열하는 데 그치지 않고, 시대의 흐름과 핵심 장면을 하나의 화면 안에 유기적으로 엮어냅니다. 교육적 가치와 인테리어 오브제로서의 미감을 함께 담아, 오래 두고 소장하고 싶은 디자인을 지향합니다.\n비주얼스토리텔러는 '한 장으로 보는 이야기'를 통해 지식과 일상, 역사와 디자인을 잇습니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/visualstoryteller/"
+      },
+      "category": "그래픽 컬처"
+    },
+    {
+      "key": "sdf-20591",
+      "name": "오아서",
+      "aliases": [
+        "OASE©"
+      ],
+      "instagramUrl": "https://www.instagram.com/designstudio.oase/",
+      "websiteUrl": "https://www.studio-oase.net/",
+      "intro": {
+        "text": "버벌 브랜딩부터 브랜드 디자인, 패키지 디자인, 웹 디자인, VMD 디자인, 촬영 등\n브랜드의 A-Z를 함께 합니다.\n오아서가 브랜딩 과정에서 느낄 수 있는 막막함과 혼란,\n그리고 정체성에 대한 갈증을 해소하는 하나의 해답이 되기를 바랍니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/oase/"
+      },
+      "category": "그래픽 컬처"
+    },
+    {
+      "key": "sdf-20593",
+      "name": "인오프",
+      "aliases": [
+        "inoff"
+      ],
+      "instagramUrl": "https://www.instagram.com/inoff_design_?rpxt=MXByYmRjMDVucXU0Zg%3D%3D",
+      "websiteUrl": "https://www.behance.net/inoff_design",
+      "intro": {
+        "text": "베르 제로닷 오오는 아직 정의되지 않은 가능성을 입는다. 브랜드가 만들어 내는 모든 기록은 다음 버전을 위한 시작점이며, 끊임없는 변화 속에서 새로운 의미를 만들어 간다. 그래픽이 제품의 형태를 만나고, 제품이 이미지로 다시 확장되는 과정을 통해 하나의 아이디어가 여러 버전으로 변주되는 모습을 보여준다. 완성은 끝이 아니라 다음 버전을 시작하기 위한 하나의 지점이며, 이 전시는 그 지점들이 쌓여 만들어지는 브랜드의 변화 과정을 기록한다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/inoff-4/"
+      },
+      "category": "브랜드 유니버스"
+    },
+    {
+      "key": "sdf-20595",
+      "name": "랩스보",
+      "aliases": [
+        "wraps boh"
+      ],
+      "instagramUrl": "https://www.instagram.com/wrapsboh_official/",
+      "websiteUrl": "https://wrapsboh.com/",
+      "intro": {
+        "text": "랩스보는 우리나라의 전통문화유산에서 영감을 얻어 오늘의 일상에 어울리는 디자인으로 펼쳐내는 브랜드입니다. 각 시대의 보물에 담긴 아름다움과 이야기를 오늘의 디자인 언어로 들려드립니다. 향기와 생활 오브제를 통해 한국의 문화를 편안하고 따뜻하게 경험하고, 소중한 이에게 마음을 전하는 방식을 제안합니다.\n국립중앙박물관을 비롯하여 각 궁궐과 공항, 대형 서점등에서 많은 사랑을 받고 있으며 대표 상품으로 랩스보 모시 사쉐 방향제와 보물 가제수건 선물세트가 있습니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/wraps-boh/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20597",
+      "name": "이혜용",
+      "aliases": [
+        "Lee Hye Yong"
+      ],
+      "instagramUrl": "https://www.instagram.com/lhy.ceramic?rpxt=czNvNDF4OXZ0MnFy&utm_source=qr",
+      "websiteUrl": "https://lhyceramic.myportfolio.com/",
+      "intro": {
+        "text": "조선시대 전통 모자는 그 시대의 미감을 고스란히 담은 문화유산입니다.오래된 아름다움을 오늘의 감각으로 재해석하는 것, 그것이 이 작업의 출발점입니다.뚜껑과 몸체가 맞물려 하나의 형태를 이루는 합(盒)처럼, 제 작업은 전통의 형태와 동시대의 감각을 한데 담아냅니다. 흙으로 빚은 형태 안에서 전통은 다시 숨을 쉬고, 과거와 현재는 자연스럽게 합(合)을 이룹니다.화려하지 않아도 오래 곁에 두고 싶은 것들처럼, 아름다움이 누군가의 일상 안에 자연스럽게 머물기를 바랍니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/lee-hye-yong-2/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20601",
+      "name": "깃듦",
+      "aliases": [
+        "Gitdeum"
+      ],
+      "intro": {
+        "text": "깃듦의 고리스카프는 전통 한복의 깃과 한국적인 색감을 현대적으로 재해석한 해리티지 패션상품입니다. 간편한 고리형구조로 실용서을 높였으며, 전통성과 디자인성을 인정받아 2026년 대한민국 우수문화상품으로 지정되었습니다",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/gitdeum/"
+      },
+      "category": "패션"
+    },
+    {
+      "key": "sdf-20603",
+      "name": "알루에티",
+      "aliases": [
+        "Alouettee"
+      ],
+      "intro": {
+        "text": "알루에티는 전통과 현대의 미감을 조화롭게 담아 다채로운 색과 소재로 장신구를 만듭니다. 독창적인 와이어 소잉 기법과 손으로 제작한 체인을 통해 일상의 주얼리부터 예술적인 아트피스까지 선보입니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/alouettee/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20607",
+      "name": "더리호",
+      "aliases": [
+        "TheLeeHo"
+      ],
+      "instagramUrl": "https://www.instagram.com/the_leeho?cplk=bXcxOGJpMTdwN3k=",
+      "intro": {
+        "text": "브랜드 더리호는 한폭의 화려한 한국화 채색 작품에서 출발한 패브릭 브랜드이다.\n작가가 직접 그려낸 현대적인 한국화의 깊이 있는 감성을 담아, 일률적인 그래픽 패턴에서 벗어난 클래식하고 감각적인 디자인을 선보인다.\n세상에 단 하나뿐인 작품 같은 패브릭으로, 고급스럽고 세련된 감성을 전한다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/theleeho/"
+      },
+      "category": "패션"
+    },
+    {
+      "key": "sdf-20613",
+      "name": "미노",
+      "aliases": [
+        "MINO"
+      ],
+      "instagramUrl": "https://www.instagram.com/ado_mino_official/",
+      "websiteUrl": "https://ado-mino.com/",
+      "intro": {
+        "text": "**MINO | 미노**\n미노는 한국의 매듭 공예를 현대적인 감각으로 풀어내는 핸드메이드 디자이너 브랜드입니다.\n하나의 매듭에서 시작된 선은 손끝을 거쳐 유니크한 가방으로 완성됩니다. 미노는 매듭의 구조와 색의 조화를 끊임없이 연구하며, 독창적인 디자인의 가방과 패션 액세서리를 선보입니다.\n300여 가지의 색상과 다양한 디자인을 바탕으로 각자의 취향과 개성을 담은 제품을 제안합니다. 특별한 디자인으로 나만의 스타일을 완성하는 가방, 그것이 미노가 만들어가는 이야기입니다.\n'One of a kind, just for you.'\n오직 당신을 위한, 세상에 단 하나뿐인 가방.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/mino/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20623",
+      "name": "메멜트",
+      "aliases": [
+        "MEMELT"
+      ],
+      "instagramUrl": "https://www.instagram.com/memelt_dessert",
+      "websiteUrl": "https://smartstore.naver.com/memelt",
+      "intro": {
+        "text": "'크림치즈는 왜 베이글에만 발라 먹을까?'라는 생각에서\n시작된 메멜트는\n2016년도부터 크림치즈만을 판매한 크림치즈 전문점입니다.\n메멜트의 크림치즈는 수작업으로 원재료의 맛을 살려 조리해\n인위적이지 않고 신선한 맛을 자랑합니다.\n그동안 빵을 먹기 위해 크림치즈를 구입하셨나요?\n이제 크림치즈를 먹기 위해 냉장고 문을 열게 되실 거예요.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/memelt-2/"
+      },
+      "category": "F&B"
+    },
+    {
+      "key": "sdf-20625",
+      "name": "푸러블",
+      "aliases": [
+        "PoohLovel"
+      ],
+      "instagramUrl": "https://www.instagram.com/poohlovel_official/",
+      "websiteUrl": "https://akei.shop/",
+      "intro": {
+        "text": "푸러블은 포근한 곰돌이 캐릭터와 함께 일상 속 작은 즐거움을 전하는 리빙 브랜드입니다. 세탁의 산뜻함과 깨끗함을 담은 다양한 생활용품을 선보이며, 실용적인 기능에 따뜻하고 친근한 감성을 더했습니다. 매일 사용하는 제품을 통해 평범한 하루가 조금 더 편안하고 즐거워지는 경험을 제안합니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/poohlovel/"
+      },
+      "category": "그래픽 컬처"
+    },
+    {
+      "key": "sdf-20631",
+      "name": "더트프로젝트",
+      "aliases": [
+        "DUITPROJECT"
+      ],
+      "instagramUrl": "https://www.instagram.com/duitproject.kr/",
+      "websiteUrl": "https://www.duitproject.kr/",
+      "intro": {
+        "text": "서로 다른 시각과 취향에서 출발한 이번 컬렉션은 익숙한 형식에 새로운 이미지를 더하고, 소재와 컬러, 그래픽과 레이아웃을 다채로운 방식으로 풀어냈습니다.\n이미지와 문장이 어우러진 에디토리얼한 구성부터 절제된 타이포그래피와 소재의 질감을 강조한 디자인, 자유로운 형식의 잡지를 연상시키는 구성까지 각각의 제품은 서로 다른 인상을 지니면서도 더트프로젝트만의 감각을 공유합니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/duitproject-2/"
+      },
+      "category": "그래픽"
+    },
+    {
+      "key": "sdf-20637",
+      "name": "애디터블",
+      "aliases": [
+        "additable"
+      ],
+      "instagramUrl": "https://www.instagram.com/additable/",
+      "websiteUrl": "https://www.additable.shop/",
+      "intro": {
+        "text": "GLOWAVE는 자연에서 영감을 받은 유기적 곡선과 볼륨을 담은 감성 조명입니다.\nPETG 소재의 광택과 투명감을 극대화하여, 빛과 형태가 어우러지는 조형미를 제공합니다.\n커튼월(Curtain Wall) 건축물에서 착안한 Ribbed Glass 구조를 적용하여 빛이\n자연스럽게 퍼지며 공간을 감싸도록 설계하고, 내구성 또한 강화했습니다.\n친환경 PETG 필라멘트 사용과 자원을 낭비하지 않는 적층제조(Additive Manufacturing)\n방식으로 생산과정에서 에너지와 소재 낭비를 최소화한 지속가능한 제품입니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/additable-2/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20641",
+      "name": "담다패키지",
+      "aliases": [
+        "Damda Package"
+      ],
+      "instagramUrl": "https://www.instagram.com/damda.package/",
+      "websiteUrl": "https://p-damda.com/",
+      "intro": {
+        "text": "담다패키지가 이번 SDF에서 하나의 ‘마트’가 되어 관람객을 맞이합니다.\n상품을 고르는 순간부터 집으로 돌아와 박스를 여는 순간까지, 우리의 일상 곳곳에는 패키지가 함께합니다. 단순히 제품을 보호하는 역할을 넘어, 브랜드가 고객에게 건네는 첫인상이자 특별한 경험이 되는 포장. 가장 일상적인 소비 공간인 마트에서 패키지가 지닌 새로운 가치를 경험해 보세요.\n실험적인 구조의 패키지부터 조명을 활용한 화려한 패키지까지, 다양한 패키지를 직접 만나볼 수 있습니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/damda-package-2/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-20651",
+      "name": "김종필안경",
+      "aliases": [
+        "Zonefeel Eyewear"
+      ],
+      "instagramUrl": "https://www.instagram.com/designshower_atelier/",
+      "websiteUrl": "https://designshower.com/",
+      "intro": {
+        "text": "세상에 단 하나뿐인 수제안경.\n대한민국 1세대 안경디자이너 김종필의 손으로 직접 디자인하고 만드는 수제안경입니다.\n당신의 얼굴을, 일상을, 인생을 예술로 만드는 오브제!",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/zonefeel-eyewear-3/"
+      },
+      "category": "디자인&크래프트 무브먼트"
+    },
+    {
+      "key": "sdf-22058",
+      "name": "부산 브랜드숍",
+      "aliases": [
+        "BigShop"
+      ],
+      "intro": {
+        "text": "부산의 바다, 도시 풍경, 문화와 캐릭터를 담은 감각적인 디자인 굿즈를 소개합니다.\n부산 지역 디자인기업과 도시브랜드 파트너스가 선보이는 라이프스타일 소품부터 캐릭터 상품까지, 부산만의 개성과 이야기가 담긴 다양한 상품을 만나보세요.\n「부산 취향상점 – 부산 좀 담아갈래?」에서 나만의 취향으로 부산을 발견하고, 일상 속에 작은 부산을 담아가세요.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/bigshop/"
+      },
+      "category": "브랜드 유니버스"
+    },
+    {
+      "key": "sdf-22717",
+      "name": "로컬바이로컬",
+      "aliases": [
+        "localxlocal"
+      ],
+      "intro": {
+        "text": "삼락동의 풍경을 일상으로 들이는 것.\n낙동강을 따라 피어나는 벚꽃과 갈대,마을에 옹기종기 이어진 집과 도시의 선을 담아삼락동만의 풍경을 하나의 패턴으로 그려냈습니다.\n가포행복마을 공동체 주민들과 함께 지역의 이야기를 발견하고,그 안에서 찾은 형태와 색을 현대적인 텍스타일 패턴으로 재해석했습니다.완성된 패턴은 편안한 파자마에 담아익숙한 동네의 풍경을 새로운 라이프스타일로 제안합니다.\n지역의 기억과 주민의 손길에서 시작된 로컬 패턴이당신의 가장 편안한 순간에 자연스럽게 스며듭니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/localxlocal/"
+      },
+      "category": "기타"
+    }
+  ]
+}
