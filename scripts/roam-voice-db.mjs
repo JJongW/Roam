@@ -13,15 +13,32 @@
 //
 // 되돌리기: node scripts/restore-roam-voice.mjs data/intake/_backup/roam-voice-before-<ISO>.json
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { existsSync as existsSyncEnv } from "node:fs";
+import { execFileSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
 import { createClient } from "@supabase/supabase-js";
 
 const APPLY = process.argv.includes("--apply");
 const diffArg = process.argv.indexOf("--diff");
 const DIFF_PATH = diffArg > 0 ? process.argv[diffArg + 1] : "/tmp/db-voice-diff.json";
 
+/** worktree에서 돌리면 .env가 없으니 본 체크아웃(git common dir의 부모)의 .env를 쓴다. 값은 읽기만 한다. */
+function findEnvPath() {
+  const local = fileURLToPath(new URL("../.env", import.meta.url));
+  if (existsSyncEnv(local)) return local;
+  const common = execFileSync("git", ["rev-parse", "--path-format=absolute", "--git-common-dir"], {
+    cwd: fileURLToPath(new URL(".", import.meta.url)),
+    encoding: "utf8",
+  }).trim();
+  const main = join(dirname(common), ".env");
+  if (existsSyncEnv(main)) return main;
+  throw new Error(".env를 찾지 못했어요(이 체크아웃과 본 체크아웃 모두)");
+}
+
 /** 이 스크립트는 node로 직접 돌아 Next.js의 .env 자동 로드를 못 받는다. 값은 출력하지 않는다. */
 function loadSupabaseCreds() {
-  const text = readFileSync(new URL("../.env", import.meta.url), "utf8");
+  const text = readFileSync(findEnvPath(), "utf8");
   const get = (name) =>
     text.match(new RegExp(`^${name}=(.*)$`, "m"))?.[1]?.trim().replace(/^["']|["']$/g, "");
   const url = get("NEXT_PUBLIC_SUPABASE_URL");

@@ -3,6 +3,10 @@
 //   node scripts/restore-roam-voice.mjs data/intake/_backup/roam-voice-before-<ISO>.json          # 드라이런
 //   node scripts/restore-roam-voice.mjs data/intake/_backup/roam-voice-before-<ISO>.json --apply
 import { readFileSync } from "node:fs";
+import { existsSync as existsSyncEnv } from "node:fs";
+import { execFileSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
 import { createClient } from "@supabase/supabase-js";
 
 const file = process.argv[2];
@@ -12,8 +16,21 @@ if (!file) {
 }
 const APPLY = process.argv.includes("--apply");
 
+/** worktree에서 돌리면 .env가 없으니 본 체크아웃(git common dir의 부모)의 .env를 쓴다. 값은 읽기만 한다. */
+function findEnvPath() {
+  const local = fileURLToPath(new URL("../.env", import.meta.url));
+  if (existsSyncEnv(local)) return local;
+  const common = execFileSync("git", ["rev-parse", "--path-format=absolute", "--git-common-dir"], {
+    cwd: fileURLToPath(new URL(".", import.meta.url)),
+    encoding: "utf8",
+  }).trim();
+  const main = join(dirname(common), ".env");
+  if (existsSyncEnv(main)) return main;
+  throw new Error(".env를 찾지 못했어요(이 체크아웃과 본 체크아웃 모두)");
+}
+
 function loadSupabaseCreds() {
-  const text = readFileSync(new URL("../.env", import.meta.url), "utf8");
+  const text = readFileSync(findEnvPath(), "utf8");
   const get = (name) =>
     text.match(new RegExp(`^${name}=(.*)$`, "m"))?.[1]?.trim().replace(/^["']|["']$/g, "");
   const url = get("NEXT_PUBLIC_SUPABASE_URL");
