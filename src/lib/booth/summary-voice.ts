@@ -34,7 +34,8 @@ const IRREGULAR: [string, string][] = [
   ["왔습니다", "왔어요"],
 ];
 
-function toHaeyoWord(word: string): string | null {
+/** 합니다체 낱말 하나를 해요체로. 모르는 꼴이면 null. */
+export function toHaeyoWord(word: string): string | null {
   for (const [from, to] of IRREGULAR) {
     if (word.endsWith(from)) return word.slice(0, -from.length) + to;
   }

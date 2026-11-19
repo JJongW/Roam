@@ -6,6 +6,7 @@ import {
   missingFields,
 } from "@/lib/enrichment/draft-prompt";
 import { gradeCandidate } from "@/lib/enrichment/quality-gate";
+import { enforceDraftVoice, voiceDroppedIssue } from "@/lib/enrichment/draft-voice";
 import { exhibitionLessons, rejectionsByBooth } from "@/lib/enrichment/lessons";
 import {
   reviewPolicy,
@@ -139,10 +140,14 @@ export async function runDraftBatch(
         if (!payload) continue;
 
         // 요청하지 않은 필드는 버린다 — 사람이 쓴 값을 초안이 덮을 자리를 안 만든다.
-        const kept = Object.fromEntries(
-          Object.entries(payload).filter(([k]) => missing.includes(k)),
-        ) as BoothEnrichmentPatch;
-        const report = gradeCandidate({
+        // 그다음 말투 문을 지난다. 해요체로 못 맞춘 문장은 여기서 빠진다(브랜드 규칙 §5).
+        const voiced = enforceDraftVoice(
+          Object.fromEntries(
+            Object.entries(payload).filter(([k]) => missing.includes(k)),
+          ) as BoothEnrichmentPatch,
+        );
+        const kept = voiced.payload;
+        const graded = gradeCandidate({
           payload: kept,
           sources,
           booth: { ...booth, categoryName: categoryName.get(booth.categoryId) },
@@ -152,6 +157,13 @@ export async function runDraftBatch(
           hadMaterial: Boolean(booth.description || booth.enrichment?.summary),
           organizerMaterial: Boolean(booth.description),
         });
+        const dropIssue = voiceDroppedIssue(voiced.dropped);
+        const report = dropIssue
+          ? {
+              confidence: Math.max(0, graded.confidence - dropIssue.weight),
+              issues: [...graded.issues, dropIssue],
+            }
+          : graded;
         if (!best || report.confidence > best.report.confidence) {
           best = { payload: kept, sources, report };
         }
@@ -272,9 +284,10 @@ export async function autoPassPending(
     const policy = reviewPolicy(c.confidence, c.issues, trust.policy);
     if (policy.decision !== "auto_pass") continue;
     try {
+      // 이 문 전에 적재된 대기 초안도 있다. 반영 직전에 한 번 더 말투를 맞춘다.
       await repo.upsertBoothEnrichment(
         c.boothId,
-        c.payload as BoothEnrichmentPatch,
+        enforceDraftVoice(c.payload as BoothEnrichmentPatch).payload,
         {
           source: "drafter",
           actor: opts.actor,

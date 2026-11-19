@@ -2,6 +2,7 @@ import { z } from "zod";
 import { getUserId, ok, parseBody, requireAdmin } from "@/lib/api/http";
 import { getRepository } from "@/lib/repositories";
 import { reviewPolicy, exhibitionTrust } from "@/lib/enrichment/review-policy";
+import { enforceDraftVoice } from "@/lib/enrichment/draft-voice";
 import type { BoothEnrichmentPatch } from "@/lib/schemas";
 
 const bodySchema = z.object({
@@ -53,7 +54,8 @@ export async function POST(req: Request) {
     try {
       await repo.upsertBoothEnrichment(
         c.boothId,
-        c.payload as BoothEnrichmentPatch,
+        // 말투 문(브랜드 규칙 §5). 문이 생기기 전에 적재된 초안도 여기서 맞춘다.
+        enforceDraftVoice(c.payload as BoothEnrichmentPatch).payload,
         {
           source: "drafter",
           actor,

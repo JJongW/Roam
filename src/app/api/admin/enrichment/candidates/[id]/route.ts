@@ -1,7 +1,8 @@
 import { z } from "zod";
 import { getUserId, notFound, ok, parseBody, requireAdmin } from "@/lib/api/http";
 import { getRepository } from "@/lib/repositories";
-import { boothEnrichmentPatchSchema } from "@/lib/schemas";
+import { boothEnrichmentPatchSchema, type BoothEnrichmentPatch } from "@/lib/schemas";
+import { enforceDraftVoice } from "@/lib/enrichment/draft-voice";
 
 type Ctx = { params: Promise<{ id: string }> };
 
@@ -69,7 +70,10 @@ export async function POST(req: Request, { params }: Ctx) {
     return ok({ applied: false });
   }
 
-  const payload = parsed.data.edited ?? candidate.payload;
+  // 사람이 고친 값은 그대로 쓴다. 고치지 않은 초안만 말투 문을 지난다(브랜드 규칙 §5).
+  const payload =
+    parsed.data.edited ??
+    enforceDraftVoice(candidate.payload as BoothEnrichmentPatch).payload;
   await repo.upsertBoothEnrichment(
     candidate.boothId,
     payload as Parameters<typeof repo.upsertBoothEnrichment>[1],
