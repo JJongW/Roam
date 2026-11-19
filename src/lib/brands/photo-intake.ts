@@ -72,8 +72,17 @@ export type PhotoManifest = z.infer<typeof photoManifestSchema>;
 export type PhotoTeam = PhotoManifest["teams"][number];
 
 /** 저장소 열쇠. 내용 해시로 지어 같은 사진은 다시 돌려도 같은 자리다. */
-export function storageKey(slug: string, exhibitorId: string, p: { file: string; sha256: string }): string {
-  const ext = (p.file.split(".").pop() ?? "jpg").toLowerCase().replace("jpeg", "jpg");
+/**
+ * 이보다 큰 원본은 올리기 전에 줄인다(긴 변 RESIZE.maxEdge, JPEG 품질 RESIZE.quality). 디스크 원본은 그대로 둔다.
+ * 고토 PNG 두 장이 8.5MB대다. 앱 사진 칸(3:4 넘김)에 그 크기는 필요 없다.
+ */
+export const RESIZE_OVER_BYTES = 8_000_000;
+export const RESIZE = { maxEdge: 2400, quality: 85 } as const;
+export const needsResize = (p: { bytes: number }) => p.bytes > RESIZE_OVER_BYTES;
+
+/** 저장소 열쇠. 원본 내용 해시로 지어 같은 사진은 다시 돌려도 같은 자리다. 줄여 올리는 사진은 .jpg. */
+export function storageKey(slug: string, exhibitorId: string, p: { file: string; sha256: string; bytes?: number }): string {
+  const ext = p.bytes !== undefined && needsResize({ bytes: p.bytes }) ? "jpg" : (p.file.split(".").pop() ?? "jpg").toLowerCase().replace("jpeg", "jpg");
   return `${slug}/${exhibitorId}/${p.sha256.slice(0, 16)}.${ext}`;
 }
 
@@ -113,7 +122,7 @@ export interface TeamPlan {
   name: string;
   exhibitorId: string | null;
   participantId: string | null;
-  uploads: { file: string; key: string; url: string; contentType: string; bytes: number }[];
+  uploads: { file: string; key: string; url: string; contentType: string; bytes: number; resize: boolean }[];
   photosField: { action: "fill" | "same" | "conflict" | "none"; value: { path: string; scope: string }[]; current?: unknown };
   permission: {
     action: "write" | "same" | "conflict" | "no-participant" | "no-exhibition" | "skip";
@@ -172,7 +181,8 @@ export function planPhotoIntake(input: PlanInput): TeamPlan[] {
     const uploads = exhibitorId
       ? chosen.map((p) => {
           const key = storageKey(manifest.exhibitionSlug, exhibitorId!, p);
-          return { file: p.file, key, url: input.publicUrl(key), contentType: contentType(p.file), bytes: p.bytes };
+          const resize = needsResize(p);
+          return { file: p.file, key, url: input.publicUrl(key), contentType: resize ? "image/jpeg" : contentType(p.file), bytes: p.bytes, resize };
         })
       : [];
     const value = uploads.map((u) => ({ path: u.url, scope: t.scope }));

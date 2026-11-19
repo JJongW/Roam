@@ -1,0 +1,1163 @@
+{
+  "version": "brands.v1",
+  "exhibitionSlug": "moongu-2026-winter",
+  "source": {
+    "url": "https://comicw.net/moongu/booth_map.php?fare_id=36",
+    "collectedAt": "2026-11-19",
+    "note": "코믹월드 공식 행사장 배치도의 확정 부스번호 목록(242개 부스)과 부스컷 목록(요일). 인스타는 Roam-design permissions.csv의 확인된 값만. 부스 번호와 요일은 옆 파일 data/booths/moongu-2026-winter.json"
+  },
+  "brands": [
+    {
+      "key": "moongu-2026-winter-g3778",
+      "name": "퐁시리",
+      "participationType": "문구B"
+    },
+    {
+      "key": "moongu-2026-winter-ba02-6e6477",
+      "name": "MimiU"
+    },
+    {
+      "key": "moongu-2026-winter-g3789",
+      "name": "김당고",
+      "participationType": "문구B"
+    },
+    {
+      "key": "moongu-2026-winter-ba04-7da797",
+      "name": "말랑별 원정대"
+    },
+    {
+      "key": "moongu-2026-winter-bb01-d619a1",
+      "name": "멜핀이네"
+    },
+    {
+      "key": "moongu-2026-winter-g4016",
+      "name": "에브리데이썬데이",
+      "participationType": "문구B"
+    },
+    {
+      "key": "moongu-2026-winter-g3730",
+      "name": "@OJOUSHIKA",
+      "participationType": "문구B"
+    },
+    {
+      "key": "moongu-2026-winter-g3873",
+      "name": "엔칸토",
+      "participationType": "문구B"
+    },
+    {
+      "key": "moongu-2026-winter-g4077",
+      "name": "분홍배연구소",
+      "participationType": "문구B"
+    },
+    {
+      "key": "moongu-2026-winter-bc03-4f547a",
+      "name": "띵띵이클럽"
+    },
+    {
+      "key": "moongu-2026-winter-g3526",
+      "name": "보그 (Error)",
+      "participationType": "문구B"
+    },
+    {
+      "key": "moongu-2026-winter-g3572",
+      "name": "나인나인",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ca03-fae43a",
+      "name": "메리타드"
+    },
+    {
+      "key": "moongu-2026-winter-g3591",
+      "name": "홍시",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ca07-54f555",
+      "name": "스튜디오 니모"
+    },
+    {
+      "key": "moongu-2026-winter-ca09-813cc5",
+      "name": "말랑한친구들"
+    },
+    {
+      "key": "moongu-2026-winter-ca11-9caad0",
+      "name": "졸니온더트립"
+    },
+    {
+      "key": "moongu-2026-winter-ca13-5dcbac",
+      "name": "설깜먕!"
+    },
+    {
+      "key": "moongu-2026-winter-g3531",
+      "name": "후루룩우동 스튜디오",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3559",
+      "name": "로로 아틀리에",
+      "instagramUrl": "https://www.instagram.com/roro_house_atelier/",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cb05-41bfc6",
+      "name": "마봉이"
+    },
+    {
+      "key": "moongu-2026-winter-g3717",
+      "name": "Aurita",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3615",
+      "name": "트윙클타임",
+      "exhibitorId": "exr_v16214k5mwa3kizf",
+      "instagramUrl": "https://www.instagram.com/ttwinklettime/",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3629",
+      "name": "슬퍼하지마 노농이",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cb13-782b0b",
+      "name": "은빛길"
+    },
+    {
+      "key": "moongu-2026-winter-g3528",
+      "name": "별빛다움",
+      "exhibitorId": "exr_xlyykdxrmwa3kizf",
+      "instagramUrl": "https://www.instagram.com/starlight_daum/",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cc01-d3a960",
+      "name": "휴더휴먼"
+    },
+    {
+      "key": "moongu-2026-winter-g4394",
+      "name": "탄산클럽",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4018",
+      "name": "은비",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3584",
+      "name": "Odd Tail",
+      "exhibitorId": "exr_lsn0bmevmwa3kizf",
+      "instagramUrl": "https://www.instagram.com/odd_tail/",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3566",
+      "name": "멜로드림",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4392",
+      "name": "COMMON",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3544",
+      "name": "유코의 행운공방",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cc15-f7d214",
+      "name": "다린"
+    },
+    {
+      "key": "moongu-2026-winter-cd01-abe4c5",
+      "name": "플러피피"
+    },
+    {
+      "key": "moongu-2026-winter-g4349",
+      "name": "보키다락방",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3631",
+      "name": "뜨리오 스튜디오",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cd07-ab4f05",
+      "name": "나신"
+    },
+    {
+      "key": "moongu-2026-winter-cd09-c65eca",
+      "name": "아리웍스"
+    },
+    {
+      "key": "moongu-2026-winter-g3461",
+      "name": "보트리와 아호리",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4399",
+      "name": "그쳊",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cd15-231276",
+      "name": "코코챠요나"
+    },
+    {
+      "key": "moongu-2026-winter-cd15-e93970",
+      "name": "서녁문방구"
+    },
+    {
+      "key": "moongu-2026-winter-ce01-38513b",
+      "name": "솔가"
+    },
+    {
+      "key": "moongu-2026-winter-ce03-af2cea",
+      "name": "흰종이에달이스치운다"
+    },
+    {
+      "key": "moongu-2026-winter-g3735",
+      "name": "다라코",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4092",
+      "name": "모구샵",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ce09-f612bd",
+      "name": "부스러기하우스"
+    },
+    {
+      "key": "moongu-2026-winter-ce11-aa446a",
+      "name": "더 실"
+    },
+    {
+      "key": "moongu-2026-winter-ce13-042870",
+      "name": "베이시 베이시"
+    },
+    {
+      "key": "moongu-2026-winter-g4216",
+      "name": "그림이좋아 송미영",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3502",
+      "name": "푸링 상점",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3844",
+      "name": "째꾸랜드",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cf03-d801b5",
+      "name": "ㅁㅋㅁㅋ"
+    },
+    {
+      "key": "moongu-2026-winter-g3618",
+      "name": "라즈베리행성",
+      "instagramUrl": "https://www.instagram.com/beyond_thecosmo_/",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3493",
+      "name": "피카링스튜디오",
+      "instagramUrl": "https://www.instagram.com/pikaringg/",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3463",
+      "name": "핌피빌리지",
+      "instagramUrl": "https://www.instagram.com/pimpi_village/",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cf11-5192aa",
+      "name": "우다 (wooda)"
+    },
+    {
+      "key": "moongu-2026-winter-cf13-66b651",
+      "name": "숲 공방"
+    },
+    {
+      "key": "moongu-2026-winter-g3933",
+      "name": "마황마황 대마황",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cf15-7a605e",
+      "name": "농구하는 하운드"
+    },
+    {
+      "key": "moongu-2026-winter-cg01-96941b",
+      "name": "찹쌀손"
+    },
+    {
+      "key": "moongu-2026-winter-g3360",
+      "name": "방랑민족",
+      "exhibitorId": "exr_4dtzjtgzmwa3kizf",
+      "instagramUrl": "https://www.instagram.com/bangrang23/",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cg05-4fde45",
+      "name": "다롱상점"
+    },
+    {
+      "key": "moongu-2026-winter-g3579",
+      "name": "시즌스토리",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4037",
+      "name": "서안",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cg11-7df0e8",
+      "name": "DuKu sekai"
+    },
+    {
+      "key": "moongu-2026-winter-g3611",
+      "name": "단비스페이스",
+      "instagramUrl": "https://www.instagram.com/danbispace/",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3536",
+      "name": "메모리오브",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3588",
+      "name": "토우 오브제",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3485",
+      "name": "솜솜별",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3578",
+      "name": "미나냥마켓",
+      "instagramUrl": "https://www.instagram.com/mnn_neko/",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ch05-a5da9b",
+      "name": "뿌리별"
+    },
+    {
+      "key": "moongu-2026-winter-g3522",
+      "name": "빵부스러기",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3589",
+      "name": "무찌_8o8",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ch11-f8c847",
+      "name": "마닐랑"
+    },
+    {
+      "key": "moongu-2026-winter-ch13-005130",
+      "name": "뉴클립"
+    },
+    {
+      "key": "moongu-2026-winter-ch15-a20590",
+      "name": "포틴이 올까"
+    },
+    {
+      "key": "moongu-2026-winter-ch15-7fdd16",
+      "name": "햇살이네"
+    },
+    {
+      "key": "moongu-2026-winter-g3837",
+      "name": "오목누니 GuGu",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3949",
+      "name": "코땃쥐",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3568",
+      "name": "푸냐푸냐",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ci04-35e58e",
+      "name": "두야"
+    },
+    {
+      "key": "moongu-2026-winter-g3571",
+      "name": "케슬러신드롬",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ci06-5c3907",
+      "name": "ACCACCR"
+    },
+    {
+      "key": "moongu-2026-winter-g3763",
+      "name": "개암나무마법당",
+      "instagramUrl": "https://www.instagram.com/hazeltreefairy666/",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3460",
+      "name": "푸젤 문방구",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4421",
+      "name": "마나코네",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4036",
+      "name": "BLUE WHALE",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ci11-590eb8",
+      "name": "오포세포"
+    },
+    {
+      "key": "moongu-2026-winter-ci11-3b0e87",
+      "name": "프롬오로라"
+    },
+    {
+      "key": "moongu-2026-winter-g4403",
+      "name": "소낙",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3513",
+      "name": "MUNIL",
+      "exhibitorId": "exr_ebkvdj05mwa3kizf",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3600",
+      "name": "누꾸",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ci16-4ff84f",
+      "name": "흐무"
+    },
+    {
+      "key": "moongu-2026-winter-cj01-15b48b",
+      "name": "희피빌리지"
+    },
+    {
+      "key": "moongu-2026-winter-cj02-e7fc0b",
+      "name": "도보게 작업실"
+    },
+    {
+      "key": "moongu-2026-winter-g4398",
+      "name": "티뉴월드",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4373",
+      "name": "도마린집",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4391",
+      "name": "근로기준법준수",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4390",
+      "name": "오밀유밀",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3577",
+      "name": "록달",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3994",
+      "name": "오락가락",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3612",
+      "name": "후유",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3576",
+      "name": "레이린",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3551",
+      "name": "꼬질조작단",
+      "instagramUrl": "https://www.instagram.com/zzozak_._/",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cj11-a259be",
+      "name": "무염가염버터"
+    },
+    {
+      "key": "moongu-2026-winter-g3935",
+      "name": "일식상점",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3562",
+      "name": "몌몸마",
+      "instagramUrl": "https://www.instagram.com/myem0ma/",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3877",
+      "name": "숨숨랜드",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4245",
+      "name": "나른솔솔",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4070",
+      "name": "페코퐁",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3484",
+      "name": "오리는 꽥꽥",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ck03-8bcc20",
+      "name": "ODDOW"
+    },
+    {
+      "key": "moongu-2026-winter-ck04-11b734",
+      "name": "디어 레코더"
+    },
+    {
+      "key": "moongu-2026-winter-g3632",
+      "name": "리본냥",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4095",
+      "name": "UJE STUDIO",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3516",
+      "name": "잠히",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3843",
+      "name": "체리던 겨울 마켓",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4046",
+      "name": "멍마무",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3758",
+      "name": "부옹커플",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ck11-d258ea",
+      "name": "둥굴레 마을"
+    },
+    {
+      "key": "moongu-2026-winter-ck11-77b7ed",
+      "name": "갸루 클럽"
+    },
+    {
+      "key": "moongu-2026-winter-ck12-986121",
+      "name": "호지티티"
+    },
+    {
+      "key": "moongu-2026-winter-g4410",
+      "name": "Bakeycap",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3852",
+      "name": "푸른 궤도",
+      "instagramUrl": "https://www.instagram.com/bsyunny103/",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cl02-7abd91",
+      "name": "가람"
+    },
+    {
+      "key": "moongu-2026-winter-g3457",
+      "name": "재행실험실",
+      "instagramUrl": "https://www.instagram.com/jaehaeng_ing/",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3619",
+      "name": "곰팔이",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3793",
+      "name": "올레볼레",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3965",
+      "name": "찌구별",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3597",
+      "name": "파무파무",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4364",
+      "name": "히치",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cl09-5abdb1",
+      "name": "8.8스튜디오"
+    },
+    {
+      "key": "moongu-2026-winter-g3850",
+      "name": "모람",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3570",
+      "name": "재재",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cl11-289285",
+      "name": "둥이양"
+    },
+    {
+      "key": "moongu-2026-winter-cl12-aefc13",
+      "name": "오와이마켓"
+    },
+    {
+      "key": "moongu-2026-winter-g3699",
+      "name": "쿤: 몽환기록",
+      "instagramUrl": "https://www.instagram.com/kun_draw/",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cm01-0f3a0b",
+      "name": "스타리움"
+    },
+    {
+      "key": "moongu-2026-winter-cm02-af1fb2",
+      "name": "다글다글"
+    },
+    {
+      "key": "moongu-2026-winter-g4402",
+      "name": "아지트",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4383",
+      "name": "지옥의 부스러",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cm05-d75943",
+      "name": "멜로디스티치"
+    },
+    {
+      "key": "moongu-2026-winter-g3614",
+      "name": "김괜찮씨 상점",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3923",
+      "name": "은파루",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cm08-2cab02",
+      "name": "숨"
+    },
+    {
+      "key": "moongu-2026-winter-cm09-19eb21",
+      "name": "김두부"
+    },
+    {
+      "key": "moongu-2026-winter-g3756",
+      "name": "카페피피차차",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3979",
+      "name": "토라",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4355",
+      "name": "plig",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cm12-1887c6",
+      "name": "깃털공"
+    },
+    {
+      "key": "moongu-2026-winter-g3736",
+      "name": "쿠모코모",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3621",
+      "name": "조이집사 작업실",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cn02-62f8de",
+      "name": "딩글몽글"
+    },
+    {
+      "key": "moongu-2026-winter-g3596",
+      "name": "히나타운",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4422",
+      "name": "DSMW",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cn05-4b9340",
+      "name": "댕구"
+    },
+    {
+      "key": "moongu-2026-winter-g4004",
+      "name": "소용",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3480",
+      "name": "찌래",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3675",
+      "name": "히키데이",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3892",
+      "name": "밍숭맹수",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cn10-1df4d7",
+      "name": "SOROTOWN"
+    },
+    {
+      "key": "moongu-2026-winter-g3751",
+      "name": "또로삐",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cn12-0ea158",
+      "name": "폿폿"
+    },
+    {
+      "key": "moongu-2026-winter-g3857",
+      "name": "곰도리무스케이크",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-co01-3f25cc",
+      "name": "얀냥"
+    },
+    {
+      "key": "moongu-2026-winter-co02-e51e61",
+      "name": "끄적끄적 작업실"
+    },
+    {
+      "key": "moongu-2026-winter-co03-867d2e",
+      "name": "mika"
+    },
+    {
+      "key": "moongu-2026-winter-co04-0e92eb",
+      "name": "ST3LAM♡"
+    },
+    {
+      "key": "moongu-2026-winter-g3849",
+      "name": "토마토맛쫀디기",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3741",
+      "name": "하우즈웨더",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-co07-0b7777",
+      "name": "당이네"
+    },
+    {
+      "key": "moongu-2026-winter-co08-12c01d",
+      "name": "라기씨의 대충이런거"
+    },
+    {
+      "key": "moongu-2026-winter-g3575",
+      "name": "올망졸망 하찌상점",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-co10-8f934a",
+      "name": "솔하"
+    },
+    {
+      "key": "moongu-2026-winter-co11-c0a27c",
+      "name": "빙산의 일각"
+    },
+    {
+      "key": "moongu-2026-winter-co12-0b08b4",
+      "name": "녹 NOK"
+    },
+    {
+      "key": "moongu-2026-winter-g4044",
+      "name": "표랑어린",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3514",
+      "name": "도호",
+      "instagramUrl": "https://www.instagram.com/doho.s2/",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cp02-6f8aa6",
+      "name": "문으"
+    },
+    {
+      "key": "moongu-2026-winter-g3590",
+      "name": "모아지",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4385",
+      "name": "이초",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4327",
+      "name": "미니러키",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4328",
+      "name": "NCC",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4165",
+      "name": "닷새",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3835",
+      "name": "푸름푸름",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3458",
+      "name": "모노버니 스토어",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4384",
+      "name": "푹신펀치",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3475",
+      "name": "4U4U",
+      "instagramUrl": "https://www.instagram.com/3v3min_zip/",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3478",
+      "name": "마녀공방",
+      "instagramUrl": "https://www.instagram.com/witchclub108/",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3627",
+      "name": "하니땅",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3613",
+      "name": "송하",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3574",
+      "name": "폴리의 잡화점",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3896",
+      "name": "샘물무아레",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cq06-b1f940",
+      "name": "은담의 보물각"
+    },
+    {
+      "key": "moongu-2026-winter-cq07-d044f3",
+      "name": "체리문데이지"
+    },
+    {
+      "key": "moongu-2026-winter-g3796",
+      "name": "밍라",
+      "instagramUrl": "https://www.instagram.com/mingra_0414_/",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3797",
+      "name": "랩터",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3814",
+      "name": "밥초",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3587",
+      "name": "슈미",
+      "exhibitorId": "exr_b7wsprlhmwa3kizf",
+      "instagramUrl": "https://www.instagram.com/minidiary._.shm/",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cq11-2ce711",
+      "name": "호접몽"
+    },
+    {
+      "key": "moongu-2026-winter-cq12-0bf905",
+      "name": "비딜라잍"
+    },
+    {
+      "key": "moongu-2026-winter-g4304",
+      "name": "세로니의정원",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3533",
+      "name": "꿀꿀이네 꿀단지",
+      "instagramUrl": "https://www.instagram.com/kim_honeybread/",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4047",
+      "name": "배니싱 포인트",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3474",
+      "name": "포르티시모",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3942",
+      "name": "PAYOYO",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cr06-6429f8",
+      "name": "유즈스튜디오"
+    },
+    {
+      "key": "moongu-2026-winter-cr07-999c4c",
+      "name": "HOODY"
+    },
+    {
+      "key": "moongu-2026-winter-cr08-ca45cb",
+      "name": "쑈록"
+    },
+    {
+      "key": "moongu-2026-winter-cr09-762dc2",
+      "name": "악기상점"
+    },
+    {
+      "key": "moongu-2026-winter-g3862",
+      "name": "미애와 주머니곰양이",
+      "instagramUrl": "https://www.instagram.com/misonyeoaehoga/",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3744",
+      "name": "미야우하우스",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cr11-d42f0b",
+      "name": "클레공방"
+    },
+    {
+      "key": "moongu-2026-winter-cr11-403aa9",
+      "name": "최고도 공작소"
+    },
+    {
+      "key": "moongu-2026-winter-g3981",
+      "name": "조래미와 쥐콩이",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cs01-b4e8bb",
+      "name": "동동동그라미"
+    },
+    {
+      "key": "moongu-2026-winter-g3617",
+      "name": "모모또",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3552",
+      "name": "링고멘션",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cs04-cf654d",
+      "name": "체리치즈"
+    },
+    {
+      "key": "moongu-2026-winter-g3553",
+      "name": "조호",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3483",
+      "name": "잉크",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-cs07-de0166",
+      "name": "공사장"
+    },
+    {
+      "key": "moongu-2026-winter-g3867",
+      "name": "함이하우스",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3573",
+      "name": "구산",
+      "exhibitorId": "exr_d0yl2hiwmwa3kizf",
+      "instagramUrl": "https://www.instagram.com/9san93/",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3477",
+      "name": "그린 판타지아",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g4217",
+      "name": "할짝스튜디오",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3601",
+      "name": "뿌딩앤소디",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3696",
+      "name": "호니히",
+      "instagramUrl": "https://www.instagram.com/honi.h9/",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3913",
+      "name": "몽글별",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3622",
+      "name": "사랑의 형태",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3689",
+      "name": "퐁듀월드",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ct03-ff0532",
+      "name": "말랑앤뚠뚠"
+    },
+    {
+      "key": "moongu-2026-winter-g3750",
+      "name": "MerryBlue",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ct05-870581",
+      "name": "파스텔파우"
+    },
+    {
+      "key": "moongu-2026-winter-ct06-187744",
+      "name": "기그컴퍼니"
+    },
+    {
+      "key": "moongu-2026-winter-g4388",
+      "name": "1ntestine",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-g3456",
+      "name": "999MALL",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ct10-4bbbe3",
+      "name": "신화일지"
+    },
+    {
+      "key": "moongu-2026-winter-g3616",
+      "name": "역류",
+      "participationType": "문구C"
+    },
+    {
+      "key": "moongu-2026-winter-ct12-6141eb",
+      "name": "포터메리"
+    }
+  ]
+}

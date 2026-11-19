@@ -98,3 +98,18 @@ describe("isPhotoFile", () => {
     expect(["1.png", "._1.png", "소개.md", "._소개.md", "A.JPG", "x.jpeg"].filter(isPhotoFile)).toEqual(["1.png", "A.JPG", "x.jpeg"]);
   });
 });
+
+describe("큰 사진 줄이기", () => {
+  it("8MB를 넘는 사진은 JPEG로 줄여 올린다(열쇠 .jpg, image/jpeg)", () => {
+    const m = manifest({ photos: [{ file: "5.png", sha256: SHA, bytes: 8_611_376, width: 2160, height: 2700, use: true }] });
+    const d = new Map([["mika99 - odd_tail/5.png", { sha256: SHA, bytes: 8_611_376 }]]);
+    const [p] = planPhotoIntake({ ...base, disk: d, manifest: m, graph: graph(), exhibitionId: null });
+    expect(p.uploads[0]).toMatchObject({ resize: true, contentType: "image/jpeg", key: expect.stringMatching(/\.jpg$/) });
+  });
+  it("작은 PNG는 그대로", () => {
+    const m = manifest({ photos: [{ file: "1.png", sha256: SHA, bytes: 575_898, width: 2160, height: 2700, use: true }] });
+    const d = new Map([["mika99 - odd_tail/1.png", { sha256: SHA, bytes: 575_898 }]]);
+    const [p] = planPhotoIntake({ ...base, disk: d, manifest: m, graph: graph(), exhibitionId: null });
+    expect(p.uploads[0]).toMatchObject({ resize: false, contentType: "image/png", key: expect.stringMatching(/\.png$/) });
+  });
+});

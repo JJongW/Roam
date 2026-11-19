@@ -15,9 +15,10 @@
  */
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { createInterface } from "node:readline/promises";
+import { tmpdir } from "node:os";
 import { config as loadEnv } from "dotenv";
 
 function findEnvPath(): string {
@@ -50,7 +51,7 @@ if (!hasSupabase) {
   console.error("✗ Supabase 자격증명이 없어 mock으로 돌게 돼요. 운영 작업이 아니라 멈춰요");
   process.exit(1);
 }
-const { photoManifestSchema, planPhotoIntake, isPhotoFile, articleReady } = await import("@/lib/brands/photo-intake");
+const { photoManifestSchema, planPhotoIntake, isPhotoFile, articleReady, RESIZE } = await import("@/lib/brands/photo-intake");
 const { parseFieldValue } = await import("@/lib/brands/profile");
 const { createClient } = await import("@supabase/supabase-js");
 
@@ -110,7 +111,7 @@ for (const p of plans) {
   const mark = p.errors.length ? "✗" : articleReady(p) ? "✓" : "·";
   console.log(
     `${mark} ${p.name}: 브랜드 ${p.exhibitorId ?? "?"}, 참가 ${p.participantId ?? "없음"}, 올릴 사진 ${p.uploads.length}장, ` +
-      `사진 칸 ${p.photosField.action}, 허락 ${p.permission.action}${articleReady(p) ? ", 아티클에 쓸 수 있게 됨" : ""}`,
+      `${p.uploads.some((u) => u.resize) ? `(줄여 올림 ${p.uploads.filter((u) => u.resize).length}장) ` : ""}사진 칸 ${p.photosField.action}, 허락 ${p.permission.action}${articleReady(p) ? ", 아티클에 쓸 수 있게 됨" : ""}`,
   );
   for (const e of p.errors) console.log(`    오류 ${e}`);
   for (const w of p.warnings) console.log(`    경고 ${w}`);
@@ -129,6 +130,14 @@ if (answer !== manifest.exhibitionSlug) {
   process.exit(1);
 }
 
+/** 큰 원본을 임시 폴더에 줄여 JPEG로 만든다(macOS sips). 디스크 원본은 건드리지 않는다. */
+const shrinkDir = mkdtempSync(join(tmpdir(), "brand-photos-"));
+function shrink(src: string): Buffer {
+  const outPath = join(shrinkDir, `${createHash("sha256").update(src).digest("hex").slice(0, 12)}.jpg`);
+  execFileSync("sips", ["-s", "format", "jpeg", "-s", "formatOptions", String(RESIZE.quality), "-Z", String(RESIZE.maxEdge), src, "--out", outPath], { stdio: "ignore" });
+  return readFileSync(outPath);
+}
+
 const storage = createClient(supabaseUrl, process.env.SUPABASE_SERVICE_ROLE_KEY!).storage;
 // 앱과 아티클이 img src로 바로 여는 주소라 공개 버킷이다. 이미 있으면 그대로 쓴다.
 const made = await storage.createBucket(manifest.bucket, { public: true });
@@ -143,7 +152,8 @@ for (const p of plans) {
     // 2. 올리기 — 내용 해시 열쇠라 같은 사진이 이미 있으면 그대로 둔다.
     for (const u of p.uploads) {
       const name = findIn(realDir, u.file)!;
-      const { error } = await storage.from(manifest.bucket).upload(u.key, readFileSync(join(realDir, name)), { contentType: u.contentType, upsert: false });
+      const bytes = u.resize ? shrink(join(realDir, name)) : readFileSync(join(realDir, name));
+      const { error } = await storage.from(manifest.bucket).upload(u.key, bytes, { contentType: u.contentType, upsert: false });
       if (error && !/already exists|duplicate/i.test(error.message)) throw new Error(`올리기 실패 ${u.key}: ${error.message}`);
     }
     // 3. 사진 칸
