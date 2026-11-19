@@ -2,8 +2,6 @@ import { describe, expect, it } from "vitest";
 import {
   buildTodayItems,
   countByFair,
-  pendingFileNotes,
-  pendingRepoFiles,
   QUEUE_KEYS,
   sumFairs,
   unavailableFrom,
@@ -11,7 +9,6 @@ import {
   type FairFacts,
   type QueueCount,
   type QueueKey,
-  type RepoFile,
 } from "@/lib/admin/today";
 
 const fairs = [
@@ -43,6 +40,20 @@ describe("countByFair, sumFairs", () => {
       { exhibitionId: "b", slug: "fair-b", name: "나", count: 3 },
     ]);
     expect(c).toEqual({ state: "ok", count: 3, atLeast: undefined, byFair: [{ exhibitionId: "b", slug: "fair-b", name: "나", count: 3 }] });
+  });
+
+  it("두 번째 숫자(직접 조사)를 박람회별로 더하고, 그것만 있는 박람회도 남긴다", () => {
+    const c = sumFairs(
+      [
+        { exhibitionId: "a", slug: "fair-a", name: "가", count: 0, secondary: 2 },
+        { exhibitionId: "b", slug: "fair-b", name: "나", count: 1, secondary: 1 },
+        { exhibitionId: "c", slug: "fair-c", name: "다", count: 0, secondary: 0 },
+      ],
+      false,
+      "직접 조사",
+    );
+    expect(c).toMatchObject({ count: 1, secondary: { label: "직접 조사", count: 3 } });
+    expect(c.state === "ok" && c.byFair?.map((f) => f.slug)).toEqual(["fair-b", "fair-a"]);
   });
 
   it("조회 상한에 걸렸으면 이상으로 표시한다", () => {
@@ -91,25 +102,6 @@ const fact = (over: Partial<FairFacts> & { slug: string }): FairFacts => ({
   boothCount: 0,
   brandCount: 0,
   ...over,
-});
-
-describe("pendingRepoFiles", () => {
-  const files: RepoFile[] = [
-    { kind: "exhibition", path: "data/exhibitions/new.json", slug: "new" },
-    { kind: "brands", path: "data/brands/new.json", slug: "new", size: 140 },
-    { kind: "exhibition", path: "data/exhibitions/live.json", slug: "live" },
-    { kind: "brands", path: "data/brands/live.json", slug: "live", size: 10 },
-    { kind: "booths", path: "data/intake/live.json", slug: "live", size: 10 },
-    { kind: "booths", path: "data/intake/brandonly.json", slug: "brandonly", size: 5 },
-  ];
-  it("운영에 행사가 없거나 비어 있는 파일만 남긴다", () => {
-    const out = pendingRepoFiles(files, [
-      fact({ slug: "live", boothCount: 10, brandCount: 10 }),
-      fact({ slug: "brandonly", boothCount: 0, brandCount: 30 }),
-    ]);
-    expect(out.map((f) => f.path)).toEqual(["data/exhibitions/new.json", "data/brands/new.json", "data/intake/brandonly.json"]);
-    expect(pendingFileNotes(out)).toEqual(["new: 행사, 브랜드", "brandonly: 부스"]);
-  });
 });
 
 describe("upcomingFairs", () => {

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getRepository } from "@/lib/repositories";
+import { articleQueue } from "@/lib/admin/queues";
 import { STATUS_LABEL } from "@/lib/articles/decision";
 import { KIND_LABEL } from "@/lib/articles/slack";
 import { GenerateArticleButton } from "@/components/admin/articles/generate-button";
@@ -11,9 +12,12 @@ export const dynamic = "force-dynamic";
 export default async function AdminArticlesPage() {
   const repo = await getRepository();
   let rows: Article[] = [];
+  let drafts = 0;
+  let atLeast = false;
   let loadError = "";
   try {
-    rows = await repo.listArticles({ limit: 200 });
+    // 관리자 홈의 "아티클 승인 대기"와 같은 함수다(lib/admin/queues.ts).
+    ({ rows, drafts, atLeast } = await articleQueue(repo));
   } catch (e) {
     // 0070 적용 전이면 여기로 온다. 빈 목록으로 위장하지 않는다.
     loadError = e instanceof Error ? e.message : String(e);
@@ -28,6 +32,12 @@ export default async function AdminArticlesPage() {
         <p className="text-sm text-muted-foreground">
           매일 09:30 점검이 초안 한 편을 만들어 슬랙 보고 아래에 붙여요. 승인한 글만 공개 API에 나가요.
         </p>
+        {!loadError && (
+          <p className="text-sm">
+            승인 대기 <b className="tabular">{drafts}편</b>
+            {atLeast && <span className="text-muted-foreground">, 최근 200편까지만 읽었어요</span>}
+          </p>
+        )}
         <GenerateArticleButton />
       </header>
       {loadError && (

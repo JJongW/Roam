@@ -3,6 +3,7 @@
 // 왜 홈 맨 위인가(2026-11-19 Ted 화면 비평): 홈이 지표부터 보여 줘서 "오늘 무엇을 해야 하나"를
 // 화면 맨 아래 오류 카드까지 내려가야 알았다. 숫자를 세는 일은 이미 있는 저장소 함수와
 // 화면 계산을 그대로 쓰고, 여기서는 묶고 순서만 정한다(today-load.ts가 읽는다).
+import type { RepoFile } from "@/lib/intake/queue";
 
 /** 박람회 하나의 대기 건수. 줄을 누르면 그 박람회를 고른 채 큐로 간다. */
 export interface FairCount {
@@ -10,6 +11,8 @@ export interface FairCount {
   slug: string;
   name: string;
   count: number;
+  /** 같은 화면의 두 번째 숫자(초안 검수의 "직접 조사"). 없으면 0으로 본다. */
+  secondary?: number;
 }
 
 /**
@@ -18,7 +21,15 @@ export interface FairCount {
  * - unavailable: 셀 자리가 아직 없다(마이그레이션 전 등). 0으로 위장하지 않는다(CLAUDE.md "없음과 비어 있음").
  */
 export type QueueCount =
-  | { state: "ok"; count: number; atLeast?: boolean; byFair?: FairCount[]; notes?: string[] }
+  | {
+      state: "ok";
+      count: number;
+      atLeast?: boolean;
+      byFair?: FairCount[];
+      notes?: string[];
+      /** 두 번째 숫자와 그 이름. 큐 화면에 같은 이름으로 따로 보이는 것만 쓴다. */
+      secondary?: { label: string; count: number };
+    }
   | { state: "unavailable"; reason: string };
 
 export const QUEUE_KEYS = [
@@ -38,11 +49,11 @@ export const QUEUE_META: Record<QueueKey, { label: string; hint: string; href: s
   articles: { label: "아티클 승인 대기", hint: "승인해야 공개돼요", href: "/admin/articles", tone: "act" },
   contacts: { label: "브랜드 연락 할 일", hint: "답장, 요청, 7일 넘은 무응답", href: "/admin/brands/contacts", tone: "act" },
   brandLinks: { label: "브랜드 확인 대기", hint: "이름만 같은 브랜드", href: "/admin/brands/links", tone: "act" },
-  drafts: { label: "초안 검수 대기", hint: "승인해야 부스에 반영돼요", href: "/admin/enrichment", tone: "act" },
+  drafts: { label: "초안 검수 대기", hint: "사람이 볼 초안, 박람회마다 따로 세요", href: "/admin/enrichment", tone: "act" },
   verify: { label: "대조 검수 대기", hint: "확인한 글과 다른 소개", href: "/admin/verify", tone: "act" },
-  intake: { label: "인입 대기", hint: "레포에 있고 운영에 아직 없는 파일", href: "/admin/intake", tone: "act" },
+  intake: { label: "인입 대기", hint: "끝나지 않은 박람회, 올리면 바뀌는 파일", href: "/admin/intake", tone: "act" },
   errors: { label: "오류", hint: "최근 30일, 묶은 건수", href: "/admin/errors", tone: "error" },
-  dataIssues: { label: "데이터 이슈", hint: "진행 중이거나 다가오는 박람회의 빈 필수 칸", href: "/admin/errors", tone: "warn" },
+  dataIssues: { label: "데이터 이슈", hint: "진행 중이거나 다가오는 박람회, 빈 필수 칸과 기록 어긋남", href: "/admin/errors?tab=data", tone: "warn" },
 };
 
 export interface TodayItem {
@@ -56,7 +67,7 @@ export interface TodayItem {
 
 /** 처리할 게 있는 카드인가. 준비 전과 0은 조용히 둔다. */
 export function needsAction(c: QueueCount): boolean {
-  return c.state === "ok" && c.count > 0;
+  return c.state === "ok" && (c.count > 0 || (c.secondary?.count ?? 0) > 0);
 }
 
 /**
@@ -85,9 +96,18 @@ export function countByFair(
 }
 
 /** 박람회별 건수를 한 큐로 합친다. 0인 박람회는 줄에서 뺀다. */
-export function sumFairs(byFair: FairCount[], atLeast = false): QueueCount {
-  const rows = byFair.filter((f) => f.count > 0).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
-  return { state: "ok", count: rows.reduce((s, f) => s + f.count, 0), atLeast: atLeast || undefined, byFair: rows };
+export function sumFairs(byFair: FairCount[], atLeast = false, secondaryLabel?: string): QueueCount {
+  const rows = byFair
+    .filter((f) => f.count > 0 || (f.secondary ?? 0) > 0)
+    .sort((a, b) => b.count - a.count || (b.secondary ?? 0) - (a.secondary ?? 0) || a.name.localeCompare(b.name));
+  const secondary = rows.reduce((s, f) => s + (f.secondary ?? 0), 0);
+  return {
+    state: "ok",
+    count: rows.reduce((s, f) => s + f.count, 0),
+    atLeast: atLeast || undefined,
+    byFair: rows,
+    ...(secondaryLabel && secondary > 0 ? { secondary: { label: secondaryLabel, count: secondary } } : {}),
+  };
 }
 
 /**
@@ -102,19 +122,8 @@ export function unavailableFrom(err: unknown): QueueCount {
 
 // ─── 다가오는 박람회와 준비 상태 ─────────────────────────────────────────
 
-/** 레포 data/ 아래 인입 파일 하나(행사 행, brands.v1, intake.v1). */
-export interface RepoFile {
-  kind: "exhibition" | "brands" | "booths";
-  /** data/ 아래 경로. 화면과 보고에 그대로 쓴다. */
-  path: string;
-  slug: string;
-  /** data/exhibitions 파일에만 있다. */
-  name?: string;
-  startDate?: string;
-  endDate?: string;
-  /** brands.v1 브랜드 수, intake.v1 부스 수. */
-  size?: number;
-}
+/** 다가오는 박람회 표가 레포 파일에서 쓰는 칸. 파일 읽기는 lib/intake/queue.ts(readRepoFiles)가 한다. */
+export type UpcomingFile = Pick<RepoFile, "kind" | "path" | "slug" | "name" | "startDate" | "endDate" | "size">;
 
 /** 운영에 있는 박람회 하나의 사실. */
 export interface FairFacts {
@@ -126,33 +135,6 @@ export interface FairFacts {
   boothCount: number;
   /** 참가 사실(브랜드) 수. 브랜드 그래프를 못 읽었으면 null. */
   brandCount: number | null;
-}
-
-/**
- * 레포에 있는데 운영에 아직 반영 안 된 인입 파일.
- * - 행사 행 파일: 그 slug의 행사가 운영에 없다
- * - brands.v1: 행사가 없거나 참가 사실이 0
- * - intake.v1: 행사가 없거나 부스가 0
- * 일부만 들어간 경우(부스 몇 곳 빠짐)는 여기서 못 가린다. 그건 인입 미리보기가 본다.
- */
-export function pendingRepoFiles(files: RepoFile[], fairs: FairFacts[]): RepoFile[] {
-  const bySlug = new Map(fairs.map((f) => [f.slug, f]));
-  return files.filter((file) => {
-    const fair = bySlug.get(file.slug);
-    if (!fair) return true;
-    if (file.kind === "exhibition") return false;
-    if (file.kind === "brands") return fair.brandCount === 0;
-    return fair.boothCount === 0;
-  });
-}
-
-const FILE_KIND_LABEL: Record<RepoFile["kind"], string> = { exhibition: "행사", brands: "브랜드", booths: "부스" };
-
-/** 인입 대기 카드에 보일 줄. 박람회 slug마다 어떤 파일이 기다리는지("sdf-2026: 행사, 브랜드"). */
-export function pendingFileNotes(files: RepoFile[]): string[] {
-  const bySlug = new Map<string, RepoFile["kind"][]>();
-  for (const f of files) bySlug.set(f.slug, [...(bySlug.get(f.slug) ?? []), f.kind]);
-  return [...bySlug].map(([slug, kinds]) => `${slug}: ${kinds.map((k) => FILE_KIND_LABEL[k]).join(", ")}`);
 }
 
 export type ReadinessStep = "floorplan" | "registered" | "brands" | "booths" | "brandsUnknown";
@@ -199,7 +181,7 @@ function daysBetween(from: string, to: string): number {
  */
 export function upcomingFairs(input: {
   fairs: FairFacts[];
-  files: RepoFile[];
+  files: UpcomingFile[];
   floorplanSlugs: Set<string>;
   today: string;
   windowDays?: number;

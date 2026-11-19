@@ -359,6 +359,10 @@ export function ContactBoard({
         </div>
       </Card>
 
+      <p className="text-sm text-muted-foreground">
+        할 일 있는 브랜드 <b className="text-foreground tabular-nums">{stats.todo}곳</b>
+        {stats.todo > 0 && ", 한 곳에 표시가 여럿 붙을 수 있어 아래 합과 다를 수 있어요"}
+      </p>
       <div className="grid gap-2 sm:grid-cols-3">
         {(Object.keys(ACTION_FLAG_LABEL) as ActionFlag[]).map((f) => {
           const n = stats.flags[f];

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getRepository } from "@/lib/repositories";
 import { getAdminFairScope } from "@/lib/admin/fair-scope";
 import { AdminFairHeader } from "@/components/admin/admin-fair-header";
-import { diffVerified, loadVerified } from "@/lib/verified";
+import { verifyQueue } from "@/lib/admin/queues";
 import { VerifyQueue, type VerifyRow } from "@/components/admin/verify-queue";
 
 /**
@@ -16,10 +16,9 @@ export default async function AdminVerifyPage() {
   const repo = await getRepository();
   const { exhibitions, exhibition } = await getAdminFairScope();
 
-  const verified = exhibition ? loadVerified(exhibition.slug) : {};
-  const booths = exhibition ? await repo.listBoothsFull(exhibition.id) : [];
-
-  const diff = diffVerified(booths, verified);
+  // 관리자 홈의 "대조 검수 대기"와 같은 함수다(lib/admin/queues.ts).
+  const diff = exhibition ? await verifyQueue(repo, exhibition) : { verified: {}, rows: [], same: 0 };
+  const verified = diff.verified;
   const same = diff.same;
   const rows: VerifyRow[] = diff.rows.map(({ booth: b, current, verified: v }) => ({
     boothId: b.id,
