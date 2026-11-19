@@ -24,6 +24,11 @@ import type {
   AppEventRow,
   PushDevice,
   BrandHeart,
+  NewParticipation,
+  NotificationInsert,
+  NotificationKind,
+  NotificationLog,
+  NotificationStatus,
   UpcomingParticipation,
   NoteWithContext,
   SurveyResponse,
@@ -591,6 +596,24 @@ function mapPushDevice(r: Row): PushDevice {
     createdAt: str(r.created_at),
     lastSeenAt: str(r.last_seen_at),
     revokedAt: optStr(r.revoked_at),
+  };
+}
+
+function mapNotification(r: Row): NotificationLog {
+  return {
+    id: str(r.id),
+    userId: str(r.user_id),
+    kind: str(r.kind) as NotificationKind,
+    title: str(r.title),
+    body: str(r.body),
+    payload: (r.payload ?? {}) as Record<string, unknown>,
+    dedupeKey: str(r.dedupe_key),
+    batchId: optStr(r.batch_id),
+    status: str(r.status) as NotificationStatus,
+    error: optStr(r.error),
+    createdAt: str(r.created_at),
+    sentAt: optStr(r.sent_at),
+    readAt: optStr(r.read_at),
   };
 }
 
@@ -2780,7 +2803,8 @@ export class SupabaseRepository implements Repository {
       "계정 삭제(신호 로그 정리)",
     );
     // 0067, 0068은 cascade지만 적용 전이어도 삭제가 막히지 않게 표가 없으면 건너뛴다.
-    for (const table of ["brand_heart", "push_device"] as const) {
+    // 0071(알림 한 줄, 알림 끄기)도 cascade지만 같은 이유로 직접 지운다.
+    for (const table of ["brand_heart", "push_device", "notification_log", "notification_pref"] as const) {
       const res = await db.from(table).delete().eq("user_id", id);
       if (!isMissingTable(res.error)) loggedWrite(res, `계정 삭제(${table} 정리)`);
     }
@@ -3107,6 +3131,220 @@ export class SupabaseRepository implements Repository {
         };
       })
       .sort((a, b) => a.exhibition.startDate.localeCompare(b.exhibition.startDate));
+  }
+
+  // --- notifications (0071) -----------------------------------------------
+  // 전부 서비스 롤. 세 표 다 RLS만 켜고 정책이 없다(0067과 같음).
+
+  async listParticipationsCreatedSince(sinceIso: string, today: string): Promise<NewParticipation[]> {
+    const db = createServiceClient();
+    const parts = await readAll<Row>(
+      (from, to) =>
+        db
+          .from("exhibition_participant")
+          .select("id, exhibitor_id, display_name, status, created_at, exhibition:exhibition_id(id, slug, name, start_date, end_date)")
+          .gt("created_at", sinceIso)
+          .neq("status", "withdrawn")
+          .order("created_at", { ascending: true })
+          .range(from, to),
+      "새 참가",
+    );
+    const live = parts.filter((p) => {
+      const e = p.exhibition as Row | null;
+      return e && str(e.end_date) >= today;
+    });
+    if (live.length === 0) return [];
+    const asg = await inChunks<Row>(
+      live.map((p) => str(p.id)),
+      "새 참가 부스",
+      (slice) =>
+        db
+          .from("booth_participant")
+          .select("participant_id, booth:booth_id(id, code, name)")
+          .eq("role", "primary")
+          .in("participant_id", slice),
+    );
+    const boothByPart = new Map(asg.map((a) => [str(a.participant_id), a.booth as Row | null]));
+    return live.map((p) => {
+      const e = p.exhibition as Row;
+      const b = boothByPart.get(str(p.id));
+      return {
+        participantId: str(p.id),
+        exhibitorId: str(p.exhibitor_id),
+        displayName: str(p.display_name),
+        createdAt: str(p.created_at),
+        exhibition: {
+          id: str(e.id),
+          slug: str(e.slug),
+          name: str(e.name),
+          startDate: str(e.start_date),
+          endDate: str(e.end_date),
+        },
+        booth: b ? { id: str(b.id), code: optStr(b.code), name: str(b.name) } : undefined,
+      };
+    });
+  }
+
+  async listBrandHeartsForExhibitors(exhibitorIds: string[]): Promise<BrandHeart[]> {
+    const db = createServiceClient();
+    const rows = await inChunks<Row>(exhibitorIds, "브랜드 하트(브랜드별)", (slice) =>
+      db.from("brand_heart").select("*").in("exhibitor_id", slice),
+    );
+    return rows.map(mapBrandHeart);
+  }
+
+  async listActivePushDevices(userIds: string[]): Promise<PushDevice[]> {
+    const db = createServiceClient();
+    const rows = await inChunks<Row>(userIds, "기기 토큰", (slice) =>
+      db.from("push_device").select("*").in("user_id", slice).is("revoked_at", null),
+    );
+    return rows.map(mapPushDevice);
+  }
+
+  async getNotificationPrefs(userId: string): Promise<Partial<Record<NotificationKind, boolean>>> {
+    const db = createServiceClient();
+    const { data, error } = await db.from("notification_pref").select("kind, enabled").eq("user_id", userId);
+    if (error) throw new Error(`알림 설정 조회 실패: ${error.message}`);
+    return Object.fromEntries(((data ?? []) as Row[]).map((r) => [str(r.kind), r.enabled === true]));
+  }
+
+  async setNotificationPref(userId: string, kind: NotificationKind, enabled: boolean): Promise<void> {
+    const db = createServiceClient();
+    wrote(
+      await db
+        .from("notification_pref")
+        .upsert({ user_id: userId, kind, enabled, updated_at: now() }, { onConflict: "user_id,kind" })
+        .select("user_id"),
+      "알림 설정 저장",
+    );
+  }
+
+  async listNotificationOptOuts(kind: NotificationKind, userIds: string[]): Promise<string[]> {
+    const db = createServiceClient();
+    const rows = await inChunks<Row>(userIds, "알림 끔", (slice) =>
+      db.from("notification_pref").select("user_id").eq("kind", kind).eq("enabled", false).in("user_id", slice),
+    );
+    return rows.map((r) => str(r.user_id));
+  }
+
+  async listExistingNotificationKeys(keys: string[]): Promise<string[]> {
+    const db = createServiceClient();
+    const rows = await inChunks<Row>(keys, "알림 키", (slice) =>
+      db.from("notification_log").select("dedupe_key").in("dedupe_key", slice),
+    );
+    return rows.map((r) => str(r.dedupe_key));
+  }
+
+  async insertNotifications(rows: NotificationInsert[]): Promise<NotificationLog[]> {
+    if (rows.length === 0) return [];
+    const db = createServiceClient();
+    const at = now();
+    // ignoreDuplicates = on conflict (dedupe_key) do nothing. 돌려받는 줄은 실제로 들어간 것뿐이다.
+    const res = await db
+      .from("notification_log")
+      .upsert(
+        rows.map((r) => ({
+          user_id: r.userId,
+          kind: r.kind,
+          title: r.title,
+          body: r.body,
+          payload: r.payload,
+          dedupe_key: r.dedupeKey,
+          status: "queued",
+          created_at: at,
+        })),
+        { onConflict: "dedupe_key", ignoreDuplicates: true },
+      )
+      .select("*");
+    return ((maybeWrote(res, "알림 저장") ?? []) as Row[]).map(mapNotification);
+  }
+
+  async listQueuedNotifications(kind: NotificationKind): Promise<NotificationLog[]> {
+    const db = createServiceClient();
+    const rows = await readAll<Row>(
+      (from, to) =>
+        db
+          .from("notification_log")
+          .select("*")
+          .eq("kind", kind)
+          .eq("status", "queued")
+          .order("created_at", { ascending: true })
+          .range(from, to),
+      "보낼 알림",
+    );
+    return rows.map(mapNotification);
+  }
+
+  async updateNotifications(
+    ids: string[],
+    patch: { status: NotificationStatus; batchId?: string; sentAt?: string; error?: string | null },
+  ): Promise<void> {
+    if (ids.length === 0) return;
+    const db = createServiceClient();
+    const body: Row = { status: patch.status };
+    if (patch.batchId !== undefined) body.batch_id = patch.batchId;
+    if (patch.sentAt !== undefined) body.sent_at = patch.sentAt;
+    if (patch.error !== undefined) body.error = patch.error;
+    for (let i = 0; i < ids.length; i += IN_CHUNK) {
+      maybeWrote(
+        await db.from("notification_log").update(body).in("id", ids.slice(i, i + IN_CHUNK)).select("id"),
+        "알림 상태 고치기",
+      );
+    }
+  }
+
+  async listUsersSentSince(kind: NotificationKind, userIds: string[], sinceIso: string): Promise<string[]> {
+    const db = createServiceClient();
+    const rows = await inChunks<Row>(userIds, "오늘 보낸 알림", (slice) =>
+      db
+        .from("notification_log")
+        .select("user_id")
+        .eq("kind", kind)
+        .eq("status", "sent")
+        .gte("sent_at", sinceIso)
+        .in("user_id", slice),
+    );
+    return [...new Set(rows.map((r) => str(r.user_id)))];
+  }
+
+  async listNotifications(userId: string, sinceIso: string): Promise<NotificationLog[]> {
+    const db = createServiceClient();
+    const { data, error } = await db
+      .from("notification_log")
+      .select("*")
+      .eq("user_id", userId)
+      .neq("status", "queued")
+      .gte("created_at", sinceIso)
+      .order("created_at", { ascending: false })
+      .limit(200);
+    if (error) throw new Error(`알림함 조회 실패: ${error.message}`);
+    return ((data ?? []) as Row[]).map(mapNotification);
+  }
+
+  async markNotificationsRead(userId: string, ids: string[] | "all"): Promise<number> {
+    const db = createServiceClient();
+    let q = db.from("notification_log").update({ read_at: now() }).eq("user_id", userId).is("read_at", null);
+    if (ids !== "all") {
+      if (ids.length === 0) return 0;
+      q = q.in("id", ids);
+    }
+    const rows = maybeWrote(await q.select("id"), "알림 읽음");
+    return rows?.length ?? 0;
+  }
+
+  async getJobCursor(job: string): Promise<string | null> {
+    const db = createServiceClient();
+    const { data, error } = await db.from("notification_job_cursor").select("last_run_at").eq("job", job).maybeSingle();
+    if (error) throw new Error(`잡 기준 시각 조회 실패: ${error.message}`);
+    return data ? str((data as Row).last_run_at) : null;
+  }
+
+  async setJobCursor(job: string, at: string): Promise<void> {
+    const db = createServiceClient();
+    wrote(
+      await db.from("notification_job_cursor").upsert({ job, last_run_at: at }, { onConflict: "job" }).select("job"),
+      "잡 기준 시각 저장",
+    );
   }
 
   async upsertNote(

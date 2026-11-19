@@ -35,6 +35,11 @@ import type {
   AppEventRow,
   PushDevice,
   BrandHeart,
+  NewParticipation,
+  NotificationInsert,
+  NotificationKind,
+  NotificationLog,
+  NotificationStatus,
   UpcomingParticipation,
   NoteWithContext,
   SurveyResponse,
@@ -157,6 +162,10 @@ interface Store {
   brandHearts: BrandHeart[];
   /** 0070 — 아티클. */
   articles: Article[];
+  /** 0071 — 알림 한 줄, 알림 끄기, 잡 기준 시각. */
+  notificationLogs: NotificationLog[];
+  notificationPrefs: { userId: string; kind: NotificationKind; enabled: boolean }[];
+  jobCursors: Record<string, string>;
 }
 
 // Persist across HMR / route invocations in a single Node process.
@@ -222,6 +231,9 @@ function buildStore(): Store {
     pushDevices: [],
     brandHearts: [],
     articles: [],
+    notificationLogs: [],
+    notificationPrefs: [],
+    jobCursors: {},
   };
 }
 
@@ -431,6 +443,7 @@ export class MockRepository implements Repository {
         exhibitionId: p.exhibitionId,
         displayName: p.displayName,
         ...(p.aliases?.length ? { aliases: [...p.aliases] } : {}),
+        createdAt: now(),
       });
     }
     for (const a of plan.assignments) gph.assignments.push({ boothId: a.boothId, participantId: pt(a.participantRef), role: a.role });
@@ -1653,6 +1666,8 @@ export class MockRepository implements Repository {
     s.bookmarks = s.bookmarks.filter((b) => b.userId !== id);
     s.brandHearts = s.brandHearts.filter((h) => h.userId !== id);
     s.pushDevices = s.pushDevices.filter((d) => d.userId !== id);
+    s.notificationLogs = s.notificationLogs.filter((n) => n.userId !== id);
+    s.notificationPrefs = s.notificationPrefs.filter((p) => p.userId !== id);
     for (const a of s.analytics) if (a.userId === id) a.userId = null;
     return true;
   }
@@ -1873,6 +1888,140 @@ export class MockRepository implements Repository {
       });
     }
     return out.sort((a, b) => a.exhibition.startDate.localeCompare(b.exhibition.startDate));
+  }
+
+  // --- notifications (0071) -----------------------------------------------
+
+  async listParticipationsCreatedSince(sinceIso: string, today: string): Promise<NewParticipation[]> {
+    const st = store();
+    const gph = st.exhibitorGraph;
+    const out: NewParticipation[] = [];
+    for (const p of gph.participants) {
+      if (!p.createdAt || p.createdAt <= sinceIso) continue;
+      const e = st.exhibitions.find((x) => x.id === p.exhibitionId);
+      if (!e || e.endDate < today) continue;
+      const a = gph.assignments.find((x) => x.participantId === p.id && x.role === "primary");
+      const b = a && st.booths.find((x) => x.id === a.boothId);
+      out.push({
+        participantId: p.id,
+        exhibitorId: p.exhibitorId,
+        displayName: p.displayName,
+        createdAt: p.createdAt,
+        exhibition: { id: e.id, slug: e.slug, name: e.name, startDate: e.startDate, endDate: e.endDate },
+        booth: b ? { id: b.id, code: b.code, name: b.name } : undefined,
+      });
+    }
+    return out.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+  }
+
+  async listBrandHeartsForExhibitors(exhibitorIds: string[]): Promise<BrandHeart[]> {
+    const want = new Set(exhibitorIds);
+    return store().brandHearts.filter((h) => want.has(h.exhibitorId)).map((h) => ({ ...h }));
+  }
+
+  async listActivePushDevices(userIds: string[]): Promise<PushDevice[]> {
+    const want = new Set(userIds);
+    return store()
+      .pushDevices.filter((d) => d.userId != null && want.has(d.userId) && !d.revokedAt)
+      .map((d) => ({ ...d }));
+  }
+
+  async getNotificationPrefs(userId: string): Promise<Partial<Record<NotificationKind, boolean>>> {
+    return Object.fromEntries(
+      store().notificationPrefs.filter((p) => p.userId === userId).map((p) => [p.kind, p.enabled]),
+    );
+  }
+
+  async setNotificationPref(userId: string, kind: NotificationKind, enabled: boolean): Promise<void> {
+    const st = store();
+    const have = st.notificationPrefs.find((p) => p.userId === userId && p.kind === kind);
+    if (have) have.enabled = enabled;
+    else st.notificationPrefs.push({ userId, kind, enabled });
+  }
+
+  async listNotificationOptOuts(kind: NotificationKind, userIds: string[]): Promise<string[]> {
+    const want = new Set(userIds);
+    return store()
+      .notificationPrefs.filter((p) => p.kind === kind && !p.enabled && want.has(p.userId))
+      .map((p) => p.userId);
+  }
+
+  async listExistingNotificationKeys(keys: string[]): Promise<string[]> {
+    const have = new Set(store().notificationLogs.map((n) => n.dedupeKey));
+    return keys.filter((k) => have.has(k));
+  }
+
+  async insertNotifications(rows: NotificationInsert[]): Promise<NotificationLog[]> {
+    const st = store();
+    const have = new Set(st.notificationLogs.map((n) => n.dedupeKey));
+    const out: NotificationLog[] = [];
+    for (const r of rows) {
+      if (have.has(r.dedupeKey)) continue;
+      have.add(r.dedupeKey);
+      const n: NotificationLog = { ...r, id: uid("ntf"), status: "queued", createdAt: now() };
+      st.notificationLogs.push(n);
+      out.push({ ...n });
+    }
+    return out;
+  }
+
+  async listQueuedNotifications(kind: NotificationKind): Promise<NotificationLog[]> {
+    return store()
+      .notificationLogs.filter((n) => n.kind === kind && n.status === "queued")
+      .map((n) => ({ ...n }));
+  }
+
+  async updateNotifications(
+    ids: string[],
+    patch: { status: NotificationStatus; batchId?: string; sentAt?: string; error?: string | null },
+  ): Promise<void> {
+    const want = new Set(ids);
+    for (const n of store().notificationLogs) {
+      if (!want.has(n.id)) continue;
+      n.status = patch.status;
+      if (patch.batchId !== undefined) n.batchId = patch.batchId;
+      if (patch.sentAt !== undefined) n.sentAt = patch.sentAt;
+      if (patch.error !== undefined) n.error = patch.error ?? undefined;
+    }
+  }
+
+  async listUsersSentSince(kind: NotificationKind, userIds: string[], sinceIso: string): Promise<string[]> {
+    const want = new Set(userIds);
+    return [
+      ...new Set(
+        store()
+          .notificationLogs.filter((n) => n.kind === kind && n.status === "sent" && want.has(n.userId) && (n.sentAt ?? "") >= sinceIso)
+          .map((n) => n.userId),
+      ),
+    ];
+  }
+
+  async listNotifications(userId: string, sinceIso: string): Promise<NotificationLog[]> {
+    return store()
+      .notificationLogs.filter((n) => n.userId === userId && n.status !== "queued" && n.createdAt >= sinceIso)
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+      .slice(0, 200)
+      .map((n) => ({ ...n }));
+  }
+
+  async markNotificationsRead(userId: string, ids: string[] | "all"): Promise<number> {
+    const want = ids === "all" ? null : new Set(ids);
+    const at = now();
+    let count = 0;
+    for (const n of store().notificationLogs) {
+      if (n.userId !== userId || n.readAt || (want && !want.has(n.id))) continue;
+      n.readAt = at;
+      count++;
+    }
+    return count;
+  }
+
+  async getJobCursor(job: string): Promise<string | null> {
+    return store().jobCursors[job] ?? null;
+  }
+
+  async setJobCursor(job: string, at: string): Promise<void> {
+    store().jobCursors[job] = at;
   }
 
   async listNotesByBoothIds(boothIds: string[]): Promise<BoothNote[]> {

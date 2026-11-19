@@ -56,7 +56,12 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
   설계 `docs/superpowers/specs/2026-10-02-cross-exhibition-brand-design.md`.
 - **커뮤니티는 웹에서 뺐다.** API(`/api/exhibitions/[slug]/community`·`/api/community/*`)와 `community_post`
   테이블은 iOS가 써서 남겨 둔다 — iOS에서도 빼면 그때 정리.
-- 푸시(FCM)는 키 미설정이라 비활성. iOS APNs 토큰은 `push_device`(0067)에 저장만 한다(보내기 없음).
+- 웹 푸시(FCM)는 키 미설정이라 비활성. iOS APNs 토큰은 `push_device`(0067).
+- **브랜드 알림(iOS APNs)**: Vercel Cron `/api/cron/brand-appear`(매일 한국 10시대)가 새 참가 × 브랜드 하트를 골라
+  `notification_log`(0071)에 넣고, 한국 10~20시에만 사용자마다 하루 한 번 묶어 보낸다. 한 줄 = (사용자, 브랜드, 박람회),
+  `dedupe_key` unique라 다시 알리지 않는다. 기기가 없거나 브랜드 알림을 꺼도(muted, 11-19 Ted) 줄은 남아 알림함(`/api/me/notifications`)에 보인다.
+  푸시 userInfo의 kind는 **"brand"**(iOS `PushLanding`)라 설정 이름 "brand_appear"와 다르다. APNs 키가 없으면 보내지 않고 queued로 둔다.
+  드라이런 `npm run brand-appear:dry-run -- --days 30`(운영 읽기만). `docs/decisions/2026-11-19_브랜드-알림-서버.md`.
   브랜드 알림 대상은 `user_id`가 있는 토큰뿐(2026-11-17).
 - **부스 노트 규칙은 `lib/notes/apply.ts` 한 곳**: 다녀왔어요(`visited_at`)는 평가와 따로, 하트는
   `hearted_at` + 옛 interest(must·curious=하트)를 함께 맞춘다. 브랜드 하트는 `brand_heart`(0068)로 따로.
