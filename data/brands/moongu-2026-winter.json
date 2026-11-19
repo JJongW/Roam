@@ -74,7 +74,8 @@
     },
     {
       "key": "moongu-2026-winter-ca07-54f555",
-      "name": "스튜디오 니모"
+      "name": "스튜디오 니모",
+      "exhibitorId": "exr_1vweopymmupq9q25"
     },
     {
       "key": "moongu-2026-winter-ca09-813cc5",
@@ -191,7 +192,8 @@
     },
     {
       "key": "moongu-2026-winter-cd09-c65eca",
-      "name": "아리웍스"
+      "name": "아리웍스",
+      "exhibitorId": "exr_zu7as4k2mupq9q24"
     },
     {
       "key": "moongu-2026-winter-g3461",
@@ -217,7 +219,8 @@
     },
     {
       "key": "moongu-2026-winter-ce03-af2cea",
-      "name": "흰종이에달이스치운다"
+      "name": "흰종이에달이스치운다",
+      "exhibitorId": "exr_v4nzrhasmupq9q24"
     },
     {
       "key": "moongu-2026-winter-g3735",
@@ -284,7 +287,8 @@
     },
     {
       "key": "moongu-2026-winter-cf13-66b651",
-      "name": "숲 공방"
+      "name": "숲 공방",
+      "exhibitorId": "exr_w4dnybl6mwa3huon"
     },
     {
       "key": "moongu-2026-winter-g3933",
@@ -530,7 +534,8 @@
     {
       "key": "moongu-2026-winter-g3877",
       "name": "숨숨랜드",
-      "participationType": "문구C"
+      "participationType": "문구C",
+      "exhibitorId": "exr_uis2qm3nmwa3huom"
     },
     {
       "key": "moongu-2026-winter-g4245",
@@ -558,7 +563,8 @@
     {
       "key": "moongu-2026-winter-g3632",
       "name": "리본냥",
-      "participationType": "문구C"
+      "participationType": "문구C",
+      "exhibitorId": "exr_zkqkzurzmwa3huom"
     },
     {
       "key": "moongu-2026-winter-g4095",
@@ -714,7 +720,8 @@
     {
       "key": "moongu-2026-winter-g3756",
       "name": "카페피피차차",
-      "participationType": "문구C"
+      "participationType": "문구C",
+      "exhibitorId": "exr_ichyzvwgmupq9q24"
     },
     {
       "key": "moongu-2026-winter-g3979",
@@ -1121,7 +1128,8 @@
     },
     {
       "key": "moongu-2026-winter-ct03-ff0532",
-      "name": "말랑앤뚠뚠"
+      "name": "말랑앤뚠뚠",
+      "exhibitorId": "exr_96vo3v7lmupq9q25"
     },
     {
       "key": "moongu-2026-winter-g3750",
