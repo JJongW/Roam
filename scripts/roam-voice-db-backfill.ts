@@ -27,55 +27,18 @@
  *
  * 되돌리기: node scripts/restore-roam-voice.mjs data/intake/_backup/roam-voice-backfill-before-<ISO>.json [--apply]
  */
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from "node:fs";
-import { execFileSync } from "node:child_process";
+import { writeFileSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { dirname, join } from "node:path";
+import { join } from "node:path";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { toHaeyoValue } from "@/lib/booth/roam-voice";
+import { loadSupabaseCreds, sameValue } from "./roam-voice-db-helpers";
 
 const APPLY = process.argv.includes("--apply");
 const diffArg = process.argv.indexOf("--diff");
 const DEFAULT_DIFF = "/Users/sinjong-won/.claude/jobs/1b54bc24/tmp/db-voice-diff-3.json";
 const DIFF_PATH = diffArg > 0 ? process.argv[diffArg + 1] : DEFAULT_DIFF;
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
-
-/** worktree에서 돌리면 .env가 없으니 본 체크아웃(git common dir의 부모)의 .env를 쓴다. 값은 읽기만 한다. */
-function findEnvPath(): string {
-  const local = join(ROOT, ".env");
-  if (existsSync(local)) return local;
-  const common = execFileSync("git", ["rev-parse", "--path-format=absolute", "--git-common-dir"], {
-    cwd: ROOT,
-    encoding: "utf8",
-  }).trim();
-  const main = join(dirname(common), ".env");
-  if (existsSync(main)) return main;
-  throw new Error(".env를 찾지 못했어요(이 체크아웃과 본 체크아웃 모두)");
-}
-
-/** vite-node로 돌아 Next.js의 .env 자동 로드를 못 받는다. 값은 출력하지 않는다. */
-function loadSupabaseCreds(): { url: string; key: string } {
-  const text = readFileSync(findEnvPath(), "utf8");
-  const get = (name: string) =>
-    text.match(new RegExp(`^${name}=(.*)$`, "m"))?.[1]?.trim().replace(/^["']|["']$/g, "");
-  const url = get("NEXT_PUBLIC_SUPABASE_URL");
-  const key = get("SUPABASE_SERVICE_ROLE_KEY");
-  if (!url || !key) throw new Error(".env에 Supabase URL 또는 서비스 키가 없어요");
-  return { url, key };
-}
-
-/** jsonb는 객체 키 순서를 바꿔 돌려준다. 키를 정렬해 비교한다(배열 순서는 본다). */
-const canon = (v: unknown): unknown =>
-  Array.isArray(v)
-    ? v.map(canon)
-    : v && typeof v === "object"
-      ? Object.fromEntries(
-          Object.keys(v)
-            .sort()
-            .map((k) => [k, canon((v as Record<string, unknown>)[k])]),
-        )
-      : v;
-const sameValue = (a: unknown, b: unknown) => JSON.stringify(canon(a ?? null)) === JSON.stringify(canon(b ?? null));
 
 const ENRICHMENT_FIELDS = [
   "roam_interpretation",
@@ -182,7 +145,7 @@ function tally(plans: Plan[], review: Review[]) {
   return { rows: plans.length, fields, review: review.length, byField, bySlug };
 }
 
-const { url, key } = loadSupabaseCreds();
+const { url, key } = loadSupabaseCreds(ROOT);
 const sb = createClient(url, key, { auth: { persistSession: false } });
 const { plans, review } = await plan(sb);
 const counts = tally(plans, review);
