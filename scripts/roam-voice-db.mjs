@@ -335,7 +335,7 @@ for (const p of plans) {
   }
   const now = data[0];
   for (const [f, { after }] of Object.entries(p.changes)) {
-    if (!same(now[f], after)) problems.push(`${p.table} ${p.key}.${f}: 기대값과 다름`);
+    if (!sameValue(now[f], after)) problems.push(`${p.table} ${p.key}.${f}: 기대값과 다름`);
     const text = withoutOfficialNames(JSON.stringify(now[f]), now);
     if (text.includes("·")) problems.push(`${p.table} ${p.key}.${f}: 가운뎃점 남음`);
     if (p.table === "booth_enrichment" && f === "summary" && HAMNIDA.test(now[f] ?? "")) problems.push(`${p.table} ${p.key}.summary: 합니다체 남음`);
@@ -346,7 +346,7 @@ for (const p of plans) {
   }
   for (const [f, v] of Object.entries(p.row)) {
     if (f in p.changes || f === "updated_at") continue;
-    if (!same(now[f], v)) problems.push(`${p.table} ${p.key}.${f}: 손대지 않은 칸이 바뀜`);
+    if (!sameValue(now[f], v)) problems.push(`${p.table} ${p.key}.${f}: 손대지 않은 칸이 바뀜`);
   }
 }
 console.log(`적용 ${plans.length - failed}/${plans.length}행, 확인 문제 ${problems.length}건`);
