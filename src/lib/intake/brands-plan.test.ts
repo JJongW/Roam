@@ -210,3 +210,17 @@ describe("planBrands", () => {
     expect(bad.warnings.some((w) => w.includes("photos"))).toBe(true);
   });
 });
+
+describe("planBrands 참가 구분", () => {
+  it("participationType은 참가 사실 metadata에만 남는다", () => {
+    const plan = run({
+      file: file([{ key: "yuk", name: "육주영", category: "그래픽 컬처", participationType: "영 디자이너 프로모션" }]),
+    });
+    expect(plan.exhibitorPlan.participants[0].metadata).toMatchObject({
+      brandKey: "yuk",
+      category: "그래픽 컬처",
+      participationType: "영 디자이너 프로모션",
+    });
+    expect(plan.exhibitorPlan.exhibitors[0].metadata).not.toHaveProperty("participationType");
+  });
+});

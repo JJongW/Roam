@@ -20,11 +20,17 @@ export const BRANDS_INTAKE_ACTOR = "system:brands-intake";
 export async function planBrandsFromRepository(
   repo: Repository,
   file: BrandsFile,
+  /**
+   * missingExhibition: "brands-only"면 행사 행이 아직 없어도 멈추지 않고 참가 사실 없이 브랜드 판정만 세운다.
+   * 읽기 전용 미리보기(scripts/brands-dry-run.ts)만 쓴다. 적용 경로(/api/admin/intake)는 늘 행사를 요구한다.
+   */
+  opts: { missingExhibition?: "error" | "brands-only" } = {},
 ): Promise<{ ok: true; plan: BrandsPlan } | { ok: false; message: string }> {
   let exhibitionId: string | null = null;
   if (file.exhibitionSlug) {
     exhibitionId = await repo.getExhibitionIdBySlug(file.exhibitionSlug);
-    if (!exhibitionId) return { ok: false, message: `행사를 찾을 수 없어요: ${file.exhibitionSlug}` };
+    if (!exhibitionId && opts.missingExhibition !== "brands-only")
+      return { ok: false, message: `행사를 찾을 수 없어요: ${file.exhibitionSlug}` };
   }
   const exhibitions = await repo.listExhibitions({ limit: 200 });
   // 신원 키는 부스 링크에서도 온다 — 전 필드 조회(listBoothsFull)를 쓴다(CLAUDE.md "없음 ≠ 비어 있음").

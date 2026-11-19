@@ -45,6 +45,11 @@ export const brandsFileBrandSchema = z
       .optional(),
     /** 이 행사에서의 분류(주최 표기). 참가 사실 metadata.category로만 남는다. */
     category: z.string().trim().min(1).max(60).optional(),
+    /**
+     * 이 행사에서의 참가 구분(주최 표기, 예: 서울디자인페스티벌 "디자인브랜드", "영 디자이너 프로모션").
+     * 개인 작가와 브랜드를 나중에 앱이 가를 수 있게 참가 사실 metadata.participationType로만 남긴다.
+     */
+    participationType: z.string().trim().min(1).max(60).optional(),
   })
   .strict();
 export type BrandsFileBrand = z.infer<typeof brandsFileBrandSchema>;
