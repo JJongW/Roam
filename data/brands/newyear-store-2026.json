@@ -3,8 +3,8 @@
   "exhibitionSlug": "newyear-store-2026",
   "source": {
     "url": "https://www.newyear-store.com/program/brands",
-    "collectedAt": "2026-11-09",
-    "note": "주최 측 공식 사이트 브랜드 소개 원문. 인스타는 다른 행사 기록, 브랜드 소개글, 네이버 검색(영문 이름 일치)으로 확인한 46곳만"
+    "collectedAt": "2026-11-19",
+    "note": "주최 측 공식 사이트 브랜드 소개 원문. 인스타는 다른 행사 기록, 브랜드 소개글, 네이버 검색(영문 이름 일치)으로 확인한 46곳만. 2026-11-19 다시 대조해 새로 올라온 11곳(ny-285, ny-296, ny-301, ny-304~311)을 더하고 ny-261 이름을 사이트 표기 어떤우주로 고침. 사이트에서 빠진 ny-200 fabric은 Ted 판단 전이라 둠"
   },
   "brands": [
     {
@@ -884,10 +884,10 @@
     },
     {
       "key": "ny-261",
-      "name": "어떤웅주",
+      "name": "어떤우주",
       "company": "어떤우주",
       "aliases": [
-        "어떤우주"
+        "어떤웅주"
       ],
       "instagramUrl": "https://www.instagram.com/et.uju.book/",
       "intro": {
@@ -6085,6 +6085,309 @@
         }
       ],
       "category": "새해 도서전"
+    },
+    {
+      "key": "ny-285",
+      "name": "뷰릿",
+      "company": "파인유얼뷰티",
+      "aliases": [
+        "beaurit",
+        "파인유얼뷰티"
+      ],
+      "intro": {
+        "text": "뷰릿은 여성들이 집에서 건강한 아름다움을 가꿀 수 있도록 돕는 홈필라테스 브랜드입니다.\n창업자 별쌤이 현존하는 수십가지 치료법과 운동법을 거치며 쌓아온 14년의 노하우, 그리고 3만 5천여 명의 피드백이 모여 뷰릿이 되었습니다. 홈필라테스와 홈마사지로 집에서도 즐겁게 내 몸을 케어할 수 있도록, 진심을 담은 제품과 콘텐츠를 만듭니다. 뷰릿과 함께하는 하루가, 나를 사랑하고 성장시키는 시간이 되기를 바랍니다.",
+        "status": "collected",
+        "source": "https://www.newyear-store.com/program/brands (브랜드 285)"
+      },
+      "photos": [
+        {
+          "path": "/booths/newyear-store-2026/NY285_1.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY285_2.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY285_3.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        }
+      ],
+      "category": "취미/웰니스"
+    },
+    {
+      "key": "ny-296",
+      "name": "한포매실",
+      "company": "주식회사미오기",
+      "aliases": [
+        "HANPOMASIL",
+        "주식회사미오기"
+      ],
+      "intro": {
+        "text": "새로운 한 해, 건강한 일상을 위한 작은 습관을 선물하세요.\n우리 전통 매실의 가치를 오늘의 일상에 맞게 새롭게 담아내는 브랜드, 미오기(MIOKI)입니다.\n미오기는 건강한 먹거리를 고민하고, 버려지는 자원에 새로운 가치를 더하며 사람과 환경이 함께 건강해지는 내일을 만들어갑니다.\n소중한 사람에게 전하는 따뜻한 마음부터 나를 위한 건강한 한 포까지.\n2027년에도 오늘을 잘 먹고, 내일을 더 건강하게.\n미오기가 여러분의 새로운 시작을 함께하겠습니다.",
+        "status": "collected",
+        "source": "https://www.newyear-store.com/program/brands (브랜드 296)"
+      },
+      "photos": [
+        {
+          "path": "/booths/newyear-store-2026/NY296_1.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY296_2.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY296_3.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        }
+      ],
+      "category": "생활/건강"
+    },
+    {
+      "key": "ny-301",
+      "name": "매실매실",
+      "company": "로브콜",
+      "aliases": [
+        "MAESILMAESIL",
+        "로브콜"
+      ],
+      "intro": {
+        "text": "히히, 올해도 잘 소화하셨나요?\n\n해야 할 일도, 챙겨야 할 사람도, 지켜야 할 약속도 참 많았던 한 해.\n\n빼곡한 일정도, 맡은 역할도, 소중한 관계도 모두 잘 소화하셨길 바라요.\n\n우리는 맛있는 음식뿐 아니라 매일 참 많은 것들을 소화하며 살아가잖아요.\n\n더부룩하고 속상할 때, 소중한 누군가가 챙겨주던 매실 한 잔처럼. 매실매실은 우리에게 익숙한 한국의 매실을 언제 어디서나 간편하게 즐길 수 있도록 새롭게 담아냈어요.\n\n다가오는 새해에는 맛있는 음식도, 새로운 도전도, 소중한 사람들과의 시간도 술술 잘 소화하시길!\n\n새해에도 매일매일, 매실매실!",
+        "status": "collected",
+        "source": "https://www.newyear-store.com/program/brands (브랜드 301)"
+      },
+      "photos": [
+        {
+          "path": "/booths/newyear-store-2026/NY301_1.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY301_2.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY301_3.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        }
+      ],
+      "category": "취미/웰니스"
+    },
+    {
+      "key": "ny-304",
+      "name": "제이케이엠디자인",
+      "aliases": [
+        "JKMDESIGN"
+      ],
+      "intro": {
+        "text": "JKM591은 브랜드 커뮤니케이션 디자인 회사에서 만든 디자이너스 브랜드입니다.\n\n20여 년간 많은 상품의 브랜딩을 하며 '나'를 브랜딩 할 수 있는 브랜드를 만들고 싶다는 고민 끝에\n'Design My History'라는 다이어리 브랜드가 탄생했습니다.\n\n\n\n'Just Keep Moving' 그냥 계속해 보라는 뜻을 담은 JKM과 다섯 손가락으로 할 수 있는 것 중에 가장 최고라는 의미를 담은 591.\nJKM591은 사용자가 나의 이야기를 담는 순간, 세상에 하나뿐인 진정한 가치를 지닌 의미 있는 물건이 된다는 뜻을 지닙니다.\n\n\n\nJust Keep Moving\n\n이루고 싶은 것이 있다면, 그냥 계속해보세요.\n\nJKM591이 마음을 움직이는 컨텐츠와 디자인 시스템으로 당신의 여정에 언제나 함께 하겠습니다.",
+        "status": "collected",
+        "source": "https://www.newyear-store.com/program/brands (브랜드 304)"
+      },
+      "photos": [
+        {
+          "path": "/booths/newyear-store-2026/NY304_1.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY304_2.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY304_3.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        }
+      ],
+      "category": "새해 문구전"
+    },
+    {
+      "key": "ny-305",
+      "name": "키므 & 더로바",
+      "company": "토브",
+      "aliases": [
+        "Kymu & THE LOVA",
+        "토브"
+      ],
+      "intro": {
+        "text": "새로운 시작이 꼭 거창할 필요는 없으니까요.\n\n나를 아끼는 작은 순간들이 모여 더 빛나는 일상을 만듭니다. 다가오는 2027년, 나를 위한 좋은 선택과 기분 좋은 변화를 키므와 더로바가 함께 응원합니다.",
+        "status": "collected",
+        "source": "https://www.newyear-store.com/program/brands (브랜드 305)"
+      },
+      "photos": [
+        {
+          "path": "/booths/newyear-store-2026/NY305_1.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY305_2.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        }
+      ],
+      "category": "생활/건강"
+    },
+    {
+      "key": "ny-306",
+      "name": "위올",
+      "aliases": [
+        "ouior"
+      ],
+      "intro": {
+        "text": "위올 ouior은 작은 취향으로 일상에 큰 행복을 더하는 브랜드입니다.",
+        "status": "collected",
+        "source": "https://www.newyear-store.com/program/brands (브랜드 306)"
+      },
+      "photos": [
+        {
+          "path": "/booths/newyear-store-2026/NY306_1.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY306_2.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY306_3.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        }
+      ],
+      "category": "새해 문구전"
+    },
+    {
+      "key": "ny-307",
+      "name": "소모보울X둥지얌",
+      "company": "소모보울 X 둥지얌",
+      "aliases": [
+        "somobowl X Doongjiyam",
+        "소모보울 X 둥지얌"
+      ],
+      "intro": {
+        "text": "소모보울 X 둥지얌\n\n[소모보울] 나만의 취향으로, 나만의 한 해를 ! 따뜻한 패브릭 도구와 함께 취향을 담아보세요.\n[둥지얌] 허~둥지~둥 살아갈 우리의 새해를 위한 상점!",
+        "status": "collected",
+        "source": "https://www.newyear-store.com/program/brands (브랜드 307)"
+      },
+      "photos": [
+        {
+          "path": "/booths/newyear-store-2026/NY307_1.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY307_2.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY307_3.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        }
+      ],
+      "category": "새해 문구전"
+    },
+    {
+      "key": "ny-308",
+      "name": "파삭",
+      "aliases": [
+        "PASAAC"
+      ],
+      "intro": {
+        "text": "좋은 일이 있길 바라는 마음은 그대로, 즐기는 방법은 더 가볍고 새롭게! 모든 감각을 깨우는 세상에 없던 동결건조 K-디저트 크리에이터 아누누의 브랜드, 파삭입니다. 달콤한 파삭이 여러분의 새해를 함께 응원합니다.",
+        "status": "collected",
+        "source": "https://www.newyear-store.com/program/brands (브랜드 308)"
+      },
+      "photos": [
+        {
+          "path": "/booths/newyear-store-2026/NY308_1.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY308_2.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY308_3.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        }
+      ],
+      "category": "취미/웰니스"
+    },
+    {
+      "key": "ny-309",
+      "name": "티무드 연남",
+      "aliases": [
+        "TEA MOOD"
+      ],
+      "intro": {
+        "text": "오늘의 기분은 어떤 맛일까요?\n\n설레는 날, 위로가 필요한 날, 여유를 즐기고 싶은 날. 티무드 연남은 오늘의 기분과 취향을 차에 담는 티 블렌딩 브랜드입니다.\n\n티무드 연남은 오늘의 기분과 취향을 차에 담는 티 블렌딩 브랜드입니다. 연남동에서는 다양한 재료를 직접 찾아 계량하고 섞으며 나만의 차를 만드는 특별한 경험을 전하고 있어요.\n\n이번 새해 준비상점에서는 간단한 취향 테스트로 나에게 어울리는 차를 발견해 볼 수 있어요. 새해에는 차 한 잔과 함께 나의 취향에 집중하는 시간을 선물해 보세요.",
+        "status": "collected",
+        "source": "https://www.newyear-store.com/program/brands (브랜드 309)"
+      },
+      "photos": [
+        {
+          "path": "/booths/newyear-store-2026/NY309_1.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY309_2.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY309_3.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        }
+      ],
+      "category": "취미/웰니스"
+    },
+    {
+      "key": "ny-310",
+      "name": "일루",
+      "aliases": [
+        "ILLU"
+      ],
+      "intro": {
+        "text": "일루(ILLU)는 마음까지 따뜻해지는 선물 같은 패브릭을 만드는 핸드메이드 브랜드입니다.\n일상의 작은 순간에 오래 머물 수 있는 따뜻한 물건을 만들고 평범한 하루에 소소한 기쁨을 더하고자 합니다.\n일루의 바구니에 물건을 하나씩 담아 가듯 새로운 다짐과 작은 행복도 차곡차곡 모아갈 수 있기를 바랍니다.",
+        "status": "collected",
+        "source": "https://www.newyear-store.com/program/brands (브랜드 310)"
+      },
+      "photos": [
+        {
+          "path": "/booths/newyear-store-2026/NY310_1.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY310_2.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY310_3.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        }
+      ],
+      "category": "취미/웰니스"
+    },
+    {
+      "key": "ny-311",
+      "name": "네츄럴굿띵스",
+      "aliases": [
+        "NGT"
+      ],
+      "intro": {
+        "text": "NGT는 건강을 몸과 마음이 편안한 상태로 바라보는 웰니스 브랜드예요. 정원을 가꿀 때 흙부터 살피듯, 몸의 기반부터 차근히 돌보는 방법을 제안합니다. 새로운 시작을 위해 꼭 거창한 계획과 행동이 필요한 건 아닐 거예요. 꾸준히 나를 챙기는 작은 손길부터 시작해 보면 어떨까요? 이번 새해 준비상점에서 나에게 맞는 건강한 루틴을 발견해 보세요. 🌿🌱Garden your wellness",
+        "status": "collected",
+        "source": "https://www.newyear-store.com/program/brands (브랜드 311)"
+      },
+      "photos": [
+        {
+          "path": "/booths/newyear-store-2026/NY311_1.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY311_2.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY311_3.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        }
+      ],
+      "category": "취미/웰니스"
     }
   ]
 }
