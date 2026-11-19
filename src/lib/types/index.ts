@@ -448,6 +448,40 @@ export interface UpcomingParticipation {
   booth?: { id: string; code?: string; name: string };
 }
 
+/** 알림 종류(0071). 지금은 브랜드 알림 하나. iOS PushPref.brandAppear와 같은 이름. */
+export type NotificationKind = "brand_appear";
+/** queued: 아직 안 보냄(조용한 시간, APNs 미설정, 일시 오류) · sent · failed · no_device(기기 없음, 알림함엔 보임) · expired(보내기 전에 박람회가 끝남) */
+export type NotificationStatus = "queued" | "sent" | "failed" | "no_device" | "expired";
+
+/** 알림 한 줄(0071) = (사용자, 브랜드, 박람회) 하나. 푸시는 batchId로 하루 한 번 묶인다. */
+export interface NotificationLog {
+  id: string;
+  userId: string;
+  kind: NotificationKind;
+  title: string;
+  body: string;
+  payload: Record<string, unknown>;
+  dedupeKey: string;
+  batchId?: string;
+  status: NotificationStatus;
+  error?: string;
+  createdAt: string;
+  sentAt?: string;
+  readAt?: string;
+}
+
+export type NotificationInsert = Pick<NotificationLog, "userId" | "kind" | "title" | "body" | "payload" | "dedupeKey">;
+
+/** 새로 생긴 참가 한 줄(브랜드 알림의 재료). 부스 배정 전이면 booth가 없다. */
+export interface NewParticipation {
+  participantId: string;
+  exhibitorId: string;
+  displayName: string;
+  createdAt: string;
+  exhibition: { id: string; slug: string; name: string; startDate: string; endDate: string };
+  booth?: { id: string; code?: string; name: string };
+}
+
 /** 마이페이지와 내보내기용 — 노트에 부스, 박람회, 브랜드를 붙인 것. */
 export interface NoteWithContext extends BoothNote {
   booth: {
@@ -600,6 +634,8 @@ export interface ExhibitorGraph {
     displayName: string;
     /** exhibition_participant.aliases — 같은 행사 부스 이름 맞추기에 쓴다. */
     aliases?: string[];
+    /** exhibition_participant.created_at — 브랜드 알림이 "새로 생긴 참가"를 고를 때 쓴다(0071). */
+    createdAt?: string;
   }[];
   assignments: { boothId: string; participantId: string; role: "primary" | "co_exhibitor" }[];
   candidates: { boothId: string; exhibitorId: string; status: string }[];

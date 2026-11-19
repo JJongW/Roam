@@ -21,7 +21,8 @@
     "tokens:check": "node scripts/tokens-sync.mjs --check",
     "intake:backup": "vite-node -c worker/vite.config.ts scripts/intake-backup.ts --",
     "sdf:watch": "node scripts/sdf-floorplan-watch.mjs",
-    "intake:dry-run": "vite-node -c worker/vite.config.ts scripts/intake-dry-run.ts --"
+    "intake:dry-run": "vite-node -c worker/vite.config.ts scripts/intake-dry-run.ts --",
+    "brand-appear:dry-run": "vite-node -c worker/vite.config.ts scripts/brand-appear-dry-run.ts --"
   },
   "dependencies": {
     "@google/genai": "^2.8.0",

@@ -330,6 +330,17 @@ export const brandHeartSyncSchema = z.object({
   exhibitorIds: z.array(z.string().min(1).max(100)).min(1).max(500),
 });
 
+/** 알림함 읽음 표시(0071). ids 또는 all. */
+export const notificationReadSchema = z.union([
+  z.object({ ids: z.array(z.string().min(1).max(100)).min(1).max(200) }),
+  z.object({ all: z.literal(true) }),
+]);
+
+/** 알림 켜고 끄기(0071). iOS 설정 토글(PushPref)과 같은 이름. 지금은 brand_appear만 서버가 쓴다. */
+export const notificationPrefsSchema = z.object({
+  brand_appear: z.boolean(),
+});
+
 export const pushUnsubscribeSchema = z.object({ token: z.string().min(1).max(400) });
 
 export const loginSchema = z.object({

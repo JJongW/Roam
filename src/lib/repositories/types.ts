@@ -6,6 +6,11 @@ import type {
   PushDevice,
   BrandHeart,
   UpcomingParticipation,
+  NewParticipation,
+  NotificationInsert,
+  NotificationKind,
+  NotificationLog,
+  NotificationStatus,
   NoteWithContext,
   SurveyResponse,
   Booth,
@@ -528,6 +533,36 @@ export interface Repository {
   getExhibitorNames(exhibitorIds: string[]): Promise<Record<string, string>>;
   /** 이 브랜드들의 참가 중 박람회가 아직 안 끝난 것(end_date >= today). 부스 없는 참가도 포함. */
   listUpcomingParticipations(exhibitorIds: string[], today: string): Promise<UpcomingParticipation[]>;
+
+  // notifications (0071) — 브랜드 알림. 전부 서비스 롤(잡과 /api/me/notifications가 로그인 확인 뒤 부른다).
+  /** sinceIso 뒤에 생긴 참가 중 박람회가 아직 안 끝난 것(end_date >= today), withdrawn 제외. 부스 없는 참가 포함. */
+  listParticipationsCreatedSince(sinceIso: string, today: string): Promise<NewParticipation[]>;
+  /** 이 브랜드들에 남긴 모든 사용자의 브랜드 하트(잡 전용). */
+  listBrandHeartsForExhibitors(exhibitorIds: string[]): Promise<BrandHeart[]>;
+  /** 계정에 묶이고 끊기지 않은 기기 토큰. */
+  listActivePushDevices(userIds: string[]): Promise<PushDevice[]>;
+  /** 내 알림 설정. 줄이 없는 종류는 빠진다(= 켜짐). */
+  getNotificationPrefs(userId: string): Promise<Partial<Record<NotificationKind, boolean>>>;
+  setNotificationPref(userId: string, kind: NotificationKind, enabled: boolean): Promise<void>;
+  /** 이 종류를 끈 사용자(userIds 중). */
+  listNotificationOptOuts(kind: NotificationKind, userIds: string[]): Promise<string[]>;
+  /** 이미 있는 dedupe_key(keys 중). 드라이런이 "새로 생길 줄"을 셀 때 쓴다. */
+  listExistingNotificationKeys(keys: string[]): Promise<string[]>;
+  /** 넣는다. dedupe_key가 이미 있으면 조용히 건너뛰고, 실제로 들어간 줄만 돌려준다. */
+  insertNotifications(rows: NotificationInsert[]): Promise<NotificationLog[]>;
+  listQueuedNotifications(kind: NotificationKind): Promise<NotificationLog[]>;
+  updateNotifications(
+    ids: string[],
+    patch: { status: NotificationStatus; batchId?: string; sentAt?: string; error?: string | null },
+  ): Promise<void>;
+  /** sinceIso 뒤에 이 종류 푸시를 실제로 받은(status sent) 사용자. 하루 한 번 묶기에 쓴다. */
+  listUsersSentSince(kind: NotificationKind, userIds: string[], sinceIso: string): Promise<string[]>;
+  /** 알림함: 내 줄 중 sinceIso 뒤, queued 빼고, 최신순. */
+  listNotifications(userId: string, sinceIso: string): Promise<NotificationLog[]>;
+  /** 읽음 표시. ids가 "all"이면 안 읽은 내 줄 전부. 고친 줄 수. */
+  markNotificationsRead(userId: string, ids: string[] | "all"): Promise<number>;
+  getJobCursor(job: string): Promise<string | null>;
+  setJobCursor(job: string, at: string): Promise<void>;
   /** 부스 하나(가벼운 조회 — 목록 컬럼 + enrichment). getBoothDetail과 달리
    *  리뷰·이벤트·웰컴키트는 안 읽는다. 반응 판정 시 확신도 대조에 쓴다. */
   getBooth(id: string): Promise<Booth | null>;
