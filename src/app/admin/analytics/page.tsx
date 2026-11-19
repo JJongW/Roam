@@ -12,6 +12,13 @@ import { onboardingValueBreakdown } from "@/lib/admin/journey-funnel";
 import { uiClickBreakdown } from "@/lib/admin/ui-click-breakdown";
 import { crossTasteBehavior } from "@/lib/admin/taste-behavior";
 import { TasteBehaviorCross } from "@/components/admin/taste-behavior-cross";
+import { listExhibitionsCached } from "@/lib/repositories/cached";
+import { loadFairBundles } from "@/lib/admin/fair-bundles";
+import { buildGlobalOverview } from "@/lib/admin/global-overview";
+import { learningCurve } from "@/lib/memory/learning-curve";
+import { tasteDrift } from "@/lib/admin/taste-drift";
+import { TasteDriftCard } from "@/components/admin/taste-drift-card";
+import { LearningCurveCard } from "@/components/admin/learning-curve-card";
 
 export const metadata = { title: "분석" };
 
@@ -32,6 +39,7 @@ export default async function AnalyticsPage() {
     signals,
     analyticsEvents,
     brains,
+    reference,
   ] = await Promise.all([
     repo.analyticsHeatmap(exhibition.id),
     repo.analyticsPopular(exhibition.id, 8),
@@ -41,6 +49,7 @@ export default async function AnalyticsPage() {
     repo.listExhibitionSignals(exhibition.id),
     repo._allAnalytics!(exhibition.id),
     repo.listUserBrains(),
+    loadReferenceMetrics(),
   ]);
   const names = Object.fromEntries(booths.map((b) => [b.id, b.name]));
   const onboardingValues = onboardingValueBreakdown(signals);
@@ -90,7 +99,7 @@ export default async function AnalyticsPage() {
 
       <AdminSection
         title="온보딩에서 고른 가치"
-        description="문항별 클릭이 아니라 온보딩을 마칠 때 확정한 가치 기준 — 앱 최초진입과 행사별 온보딩 합산"
+        description="문항별 클릭이 아니라 온보딩을 마칠 때 고른 가치예요. 앱 첫 진입과 행사별 온보딩을 합쳤어요"
       >
         <OnboardingValueChart data={onboardingValues} />
       </AdminSection>
@@ -101,6 +110,43 @@ export default async function AnalyticsPage() {
       >
         <UiClickChart data={uiClicks} />
       </AdminSection>
+
+      {/* 2026-11-19 홈에서 옮겨 옴. 로직은 그대로 두고 자리만 바꿨다. 로미가 동행자로 바뀐(11-08) 뒤로
+          추천 정확도와 온보딩에서 확정한 가치는 머리 지표가 아니다(브랜드 규칙 §3, §5). */}
+      <section className="space-y-6 border-t border-border pt-8" aria-labelledby="reference-metrics-title">
+        <div>
+          <h2 id="reference-metrics-title" className="text-lg font-extrabold">
+            참고 지표
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            예전 추천 방향을 재던 지표예요. 고른 행사가 아니라 전체 행사를 합산해요.
+          </p>
+        </div>
+        <LearningCurveCard curve={reference.curve} />
+        <AdminSection
+          title="온보딩에서 고른 가치 (전체 합산)"
+          description={`전체 행사 합산, 두 행사 이상에 반응한 사용자 ${reference.overview.multiExhibitionUsers}/${reference.overview.activeUsers}명`}
+        >
+          <OnboardingValueChart data={reference.overview.values} />
+        </AdminSection>
+        <TasteDriftCard drift={reference.drift} />
+      </section>
     </div>
   );
+}
+
+/** 참고 지표(전체 행사 합산). 옛 홈과 같은 계산이다. */
+async function loadReferenceMetrics() {
+  const repo = await getRepository();
+  const [{ data: exhibitions }, users, judgments] = await Promise.all([
+    listExhibitionsCached(),
+    repo.listUsers(),
+    repo.listJudgmentsForCurve(),
+  ]);
+  const bundles = await loadFairBundles(repo, exhibitions);
+  const overview = buildGlobalOverview(
+    users,
+    bundles.map((b) => ({ exhibition: b.exhibition, boothCount: b.booths.length, signals: b.signals })),
+  );
+  return { curve: learningCurve(judgments), overview, drift: tasteDrift(bundles) };
 }

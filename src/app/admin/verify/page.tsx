@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getRepository } from "@/lib/repositories";
 import { getAdminFairScope } from "@/lib/admin/fair-scope";
 import { AdminFairHeader } from "@/components/admin/admin-fair-header";
-import { loadVerified, sameText } from "@/lib/verified";
+import { diffVerified, loadVerified } from "@/lib/verified";
 import { VerifyQueue, type VerifyRow } from "@/components/admin/verify-queue";
 
 /**
@@ -19,26 +19,16 @@ export default async function AdminVerifyPage() {
   const verified = exhibition ? loadVerified(exhibition.slug) : {};
   const booths = exhibition ? await repo.listBoothsFull(exhibition.id) : [];
 
-  const rows: VerifyRow[] = [];
-  let same = 0;
-  for (const b of booths) {
-    const v = b.code ? verified[b.code] : undefined;
-    if (!v?.summary) continue;
-    const current = b.enrichment?.summary ?? "";
-    // 같은 말이면 볼 게 없다. 운영이 비어 있으면 인입이 이미 채웠거나 채울 자리다.
-    if (!current || sameText(current, v.summary)) {
-      same++;
-      continue;
-    }
-    rows.push({
-      boothId: b.id,
-      code: b.code ?? "",
-      name: b.name,
-      // 대조는 요약만이 아니라 초안 전체로 한다.
-      current: { ...(b.enrichment ?? {}), summary: current },
-      verified: v,
-    });
-  }
+  const diff = diffVerified(booths, verified);
+  const same = diff.same;
+  const rows: VerifyRow[] = diff.rows.map(({ booth: b, current, verified: v }) => ({
+    boothId: b.id,
+    code: b.code ?? "",
+    name: b.name,
+    // 대조는 요약만이 아니라 초안 전체로 한다.
+    current: { ...(b.enrichment ?? {}), summary: current },
+    verified: v,
+  }));
   rows.sort(
     (a, b) =>
       Number(Boolean(b.verified.instagram)) - Number(Boolean(a.verified.instagram)) ||
