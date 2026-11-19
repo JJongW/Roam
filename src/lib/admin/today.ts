@@ -42,7 +42,7 @@ export const QUEUE_META: Record<QueueKey, { label: string; hint: string; href: s
   verify: { label: "대조 검수 대기", hint: "확인한 글과 다른 소개", href: "/admin/verify", tone: "act" },
   intake: { label: "인입 대기", hint: "레포에 있고 운영에 아직 없는 파일", href: "/admin/intake", tone: "act" },
   errors: { label: "오류", hint: "최근 30일, 묶은 건수", href: "/admin/errors", tone: "error" },
-  dataIssues: { label: "데이터 이슈", hint: "열려 있거나 다가오는 박람회, 필수 칸 빔", href: "/admin/errors", tone: "warn" },
+  dataIssues: { label: "데이터 이슈", hint: "진행 중이거나 다가오는 박람회의 빈 필수 칸", href: "/admin/errors", tone: "warn" },
 };
 
 export interface TodayItem {
@@ -155,13 +155,14 @@ export function pendingFileNotes(files: RepoFile[]): string[] {
   return [...bySlug].map(([slug, kinds]) => `${slug}: ${kinds.map((k) => FILE_KIND_LABEL[k]).join(", ")}`);
 }
 
-export type ReadinessStep = "floorplan" | "registered" | "brands" | "booths";
+export type ReadinessStep = "floorplan" | "registered" | "brands" | "booths" | "brandsUnknown";
 
 export const READINESS_NOTE: Record<ReadinessStep | "ready", string> = {
   floorplan: "배치도 대기",
   registered: "행사 등록 대기",
   brands: "브랜드 인입 대기",
   booths: "부스 인입 대기",
+  brandsUnknown: "브랜드 확인 필요",
   ready: "준비됨",
 };
 
@@ -258,5 +259,7 @@ function readinessNext(r: Omit<UpcomingFair, "next" | "note">): ReadinessStep | 
   // 브랜드 그래프를 못 읽었으면(null) 모르는 것이라 막지 않는다.
   if (r.brands && r.brands.count === 0) return "brands";
   if (r.booths === 0) return "booths";
+  // 다른 단계는 끝났어도 브랜드 수를 모르면 준비됐다고 말하지 않는다.
+  if (!r.brands) return "brandsUnknown";
   return "ready";
 }

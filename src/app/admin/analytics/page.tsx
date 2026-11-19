@@ -99,7 +99,7 @@ export default async function AnalyticsPage() {
 
       <AdminSection
         title="온보딩에서 고른 가치"
-        description="문항별 클릭이 아니라 온보딩을 마칠 때 확정한 가치 기준 — 앱 최초진입과 행사별 온보딩 합산"
+        description="문항별 클릭이 아니라 온보딩을 마칠 때 고른 가치예요. 앱 첫 진입과 행사별 온보딩을 합쳤어요"
       >
         <OnboardingValueChart data={onboardingValues} />
       </AdminSection>
@@ -124,8 +124,8 @@ export default async function AnalyticsPage() {
         </div>
         <LearningCurveCard curve={reference.curve} />
         <AdminSection
-          title="취향 지형"
-          description={`온보딩에서 고른 가치, 전체 행사 합산, 두 곳 이상 방문 ${reference.overview.multiExhibitionUsers}/${reference.overview.activeUsers}명`}
+          title="온보딩에서 고른 가치 (전체 합산)"
+          description={`전체 행사 합산, 두 행사 이상에 반응한 사용자 ${reference.overview.multiExhibitionUsers}/${reference.overview.activeUsers}명`}
         >
           <OnboardingValueChart data={reference.overview.values} />
         </AdminSection>

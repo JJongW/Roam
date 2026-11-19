@@ -132,9 +132,21 @@ function QueueCard({ item }: { item: TodayItem }) {
   );
 }
 
-/** 관리자 홈 맨 위. 처리할 게 있는 카드가 앞, 0과 준비 전은 뒤에 조용히 둔다. */
+/**
+ * 관리자 홈 맨 위. 할 일이 있는 큐만 카드로 띄우고, 0과 준비 전은 한 줄로 접어 조용히 둔다
+ * (빈 카드가 큰 칸을 차지하면 할 일이 있는 카드가 묻힌다).
+ */
 export function TodayQueue({ items }: { items: TodayItem[] }) {
   const open = items.filter((i) => needsAction(i.count));
+  const quiet = items.filter((i) => i.count.state === "ok" && i.count.count === 0);
+  // 못 센 큐는 "할 일 없음"에 넣지 않는다. 세지 못한 것을 없다고 말하면 사실보다 크다.
+  const unknown = items.filter((i) => i.count.state === "unavailable");
+  const summary =
+    open.length > 0
+      ? `${open.length}개 항목에 할 일이 있어요`
+      : unknown.length > 0
+        ? `센 곳에는 처리할 게 없어요. ${unknown.length}개는 아직 못 셌어요`
+        : "지금은 처리할 게 없어요";
   return (
     <section className="space-y-3" aria-labelledby="today-queue-title">
       <div className="flex items-baseline justify-between gap-3">
@@ -142,16 +154,39 @@ export function TodayQueue({ items }: { items: TodayItem[] }) {
           처리할 것
         </h2>
         <p className="text-sm text-muted-foreground">
-          {open.length > 0 ? `${open.length}곳에 할 일이 있어요` : "오늘은 처리할 게 없어요"}
+          {summary}
         </p>
       </div>
-      <ul className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        {items.map((item) => (
-          <li key={item.key}>
-            <QueueCard item={item} />
-          </li>
-        ))}
-      </ul>
+      {open.length > 0 && (
+        <ul className="grid grid-cols-1 items-start gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {open.map((item) => (
+            <li key={item.key}>
+              <QueueCard item={item} />
+            </li>
+          ))}
+        </ul>
+      )}
+      <QuietLine title="할 일 없음" items={quiet} />
+      <QuietLine title="아직 못 셈" items={unknown} />
     </section>
+  );
+}
+
+/** 0이거나 못 센 큐를 한 줄로 접는다. 못 센 큐는 이유(준비 전 등)를 붙인다. */
+function QuietLine({ title, items }: { title: string; items: TodayItem[] }) {
+  if (items.length === 0) return null;
+  return (
+    <p className="flex flex-wrap items-baseline gap-x-1 gap-y-1 text-sm text-muted-foreground">
+      <span className="font-semibold">{title}:</span>
+      {items.map((item, i) => (
+        <span key={item.key}>
+          <Link href={item.href} className="underline-offset-2 hover:underline">
+            {item.label}
+            {item.count.state === "unavailable" && `(${item.count.reason})`}
+          </Link>
+          {i < items.length - 1 && ","}
+        </span>
+      ))}
+    </p>
   );
 }

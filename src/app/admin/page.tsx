@@ -83,7 +83,7 @@ export default async function AdminOverviewPage() {
       href: "/admin/accounts",
     },
     {
-      label: "두 곳 이상 방문한 사용자 비율",
+      label: "두 행사 이상에 반응을 남긴 사용자 비율",
       sub: `활성 사용자 ${overview.activeUsers}명 중 ${overview.multiExhibitionUsers}명`,
       value: `${Math.round(overview.multiExhibitionRatio * 100)}%`,
       icon: Repeat,
@@ -165,7 +165,7 @@ export default async function AdminOverviewPage() {
                       </p>
                     </div>
                     <div className="shrink-0 text-right">
-                      <p className="text-sm font-bold tabular">방문자 {p.visitorCount}</p>
+                      <p className="text-sm font-bold tabular">반응한 사용자 {p.visitorCount}</p>
                       <p className="text-xs text-muted-foreground tabular">부스 {p.boothCount}</p>
                     </div>
                     <ChevronRight className="size-4 shrink-0 text-muted-foreground" />

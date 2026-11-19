@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Check, ChevronRight, Minus } from "lucide-react";
+import { Check, ChevronRight, Circle, HelpCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Chip } from "@/components/ui/chip";
 import { FairPortfolioLink } from "@/components/admin/fair-portfolio-link";
@@ -10,10 +10,18 @@ function dday(n: number): string {
   return n === 0 ? "오늘 시작" : `${n}일 뒤`;
 }
 
-function Mark({ ok, label }: { ok: boolean; label: string }) {
+/** 됨(체크), 아직(빈 원), 모름(물음표). 모르는 것을 됨이나 아직으로 보이지 않는다. */
+function Mark({ ok, label }: { ok: boolean | null; label: string }) {
   return (
     <span className={cn("inline-flex items-center gap-1", ok ? "text-foreground" : "text-muted-foreground")}>
-      {ok ? <Check className="size-3.5 text-success" aria-hidden /> : <Minus className="size-3.5" aria-hidden />}
+      {ok === null ? (
+        <HelpCircle className="size-3.5" aria-hidden />
+      ) : ok ? (
+        <Check className="size-3.5 text-success" aria-hidden />
+      ) : (
+        <Circle className="size-3 text-muted-foreground/60" aria-hidden />
+      )}
+      <span className="sr-only">{ok === null ? "모름 " : ok ? "있음 " : "없음 "}</span>
       {label}
     </span>
   );
@@ -22,7 +30,7 @@ function Mark({ ok, label }: { ok: boolean; label: string }) {
 function Row({ fair }: { fair: UpcomingFair }) {
   const ready = fair.next === "ready";
   const brands =
-    fair.brands === null ? "브랜드 모름" : `브랜드 ${fair.brands.count}${fair.brands.fromFile ? "(파일)" : ""}`;
+    fair.brands === null ? "브랜드 모름" : fair.brands.fromFile ? `파일 기준 브랜드 ${fair.brands.count}` : `브랜드 ${fair.brands.count}`;
   const body = (
     <>
       <div className="min-w-0 flex-1 md:grid md:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)_minmax(0,1.6fr)_auto] md:items-center md:gap-4">
@@ -36,7 +44,7 @@ function Row({ fair }: { fair: UpcomingFair }) {
         <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1 text-xs md:mt-0 tabular">
           <Mark ok={fair.registered} label="행사 등록" />
           <Mark ok={fair.floorplan} label="배치도" />
-          <Mark ok={!!fair.brands && fair.brands.count > 0 && !fair.brands.fromFile} label={brands} />
+          <Mark ok={fair.brands === null ? null : fair.brands.count > 0 && !fair.brands.fromFile} label={brands} />
           <Mark ok={fair.booths > 0} label={`부스 ${fair.booths}`} />
         </div>
         <div className="mt-2 md:mt-0 md:justify-self-end">

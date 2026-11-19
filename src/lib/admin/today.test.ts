@@ -177,4 +177,14 @@ describe("upcomingFairs", () => {
     expect(f.brands).toBeNull();
     expect(f.note).toBe("부스 인입 대기");
   });
+
+  it("다른 단계가 다 끝나도 브랜드 수를 모르면 준비됨이라 하지 않는다", () => {
+    const [f] = upcomingFairs({
+      fairs: [fact({ slug: "ready", startDate: "2026-12-01", boothCount: 5, brandCount: null })],
+      files: [],
+      floorplanSlugs,
+      today,
+    });
+    expect(f.note).toBe("브랜드 확인 필요");
+  });
 });
