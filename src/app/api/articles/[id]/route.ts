@@ -1,6 +1,6 @@
 import { notFound, ok, withErrorBoundary } from "@/lib/api/http";
 import { getRepository } from "@/lib/repositories";
-import { publicArticle } from "@/lib/articles/decision";
+import { isPublishable, publicArticle } from "@/lib/articles/decision";
 
 type Ctx = { params: Promise<{ id: string }> };
 
@@ -10,7 +10,7 @@ export async function GET(req: Request, { params }: Ctx) {
     const { id } = await params;
     const repo = await getRepository();
     const a = await repo.getArticle(id);
-    if (!a || a.status !== "approved") return notFound("아티클을 찾을 수 없어요");
+    if (!a || !isPublishable(a)) return notFound("아티클을 찾을 수 없어요");
     return ok({ article: publicArticle(a) });
   });
 }

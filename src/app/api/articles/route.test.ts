@@ -73,6 +73,57 @@ describe("공개 API — 승인된 것만", () => {
   });
 });
 
+describe("앱이 읽는 모양(UI 17, 11-20)", () => {
+  it("photos는 맨 위 사진 넘김이고 허락 받은 사진만, exhibitorIds로 여러 브랜드를 한 번에 거른다", async () => {
+    await DECIDE(post({ action: "approve" }), ctx(id));
+    const list = (await (await LIST(new Request("http://localhost/api/articles?exhibitorIds=other,ex_hachi"))).json()).data.articles;
+    expect(list).toHaveLength(1);
+    expect(list[0].photos).toEqual([{ path: "/articles/hachi_1.webp", alt: "하치 사진 1", credit: "사진 하치" }]);
+    expect((await (await LIST(new Request("http://localhost/api/articles?exhibitorIds=a,b"))).json()).data.articles).toEqual([]);
+    const tooMany = Array.from({ length: 51 }, (_, i) => `e${i}`).join(",");
+    expect((await LIST(new Request(`http://localhost/api/articles?exhibitorIds=${tooMany}`))).status).toBe(400);
+  });
+
+  it("허락 기록이 글 안에 없는 사진만 남은 글은 승인돼도 나가지 않는다", async () => {
+    const repo = await getRepository();
+    const noPerm = (await repo.createArticle({
+      ...input,
+      subjectKey: "brand:ex_noperm",
+      exhibitorIds: ["ex_noperm"],
+      sources: input.sources.filter((s) => s.kind !== "permission"),
+    }))!;
+    await DECIDE(post({ action: "approve" }), ctx(noPerm.id));
+    expect((await (await LIST(new Request("http://localhost/api/articles?exhibitorId=ex_noperm"))).json()).data.articles).toEqual([]);
+    expect((await ONE(new Request("http://localhost/x"), ctx(noPerm.id))).status).toBe(404);
+  });
+
+  it("모음 글: 브랜드 카드마다 사진 넘김과 부스 id, Roam 한 줄이 나가고 허락 없는 카드는 빠진다", async () => {
+    const repo = await getRepository();
+    const ph = (n: number, perm = "perm:1") => ({ ...input.hero, path: `/articles/b_${n}.webp`, permissionId: perm });
+    const r = (await repo.createArticle({
+      ...input,
+      kind: "fair_roundup",
+      subjectKey: "fair:exh_ny",
+      hero: ph(2),
+      body: [
+        { type: "text", text: "새해 준비상점이 열려요.", sourceIds: ["pt:1"] },
+        { type: "brand-card", exhibitorId: "ex_a", name: "가", boothCode: "A1", boothId: "booth_a", items: ["컵"], photo: ph(1), photos: [ph(1), ph(2)], note: "확인된 품목은 컵이에요.", sourceIds: ["pt:1"] },
+        { type: "quote", text: "하치", sourceId: "pt:1", attribution: "가 공식 소개 원문에서" },
+        { type: "brand-card", exhibitorId: "ex_b", name: "나", photo: ph(3, "perm:missing"), sourceIds: ["pt:1"] },
+      ],
+    }))!;
+    await DECIDE(post({ action: "approve" }), ctx(r.id));
+    const one = (await (await ONE(new Request("http://localhost/x"), ctx(r.id))).json()).data.article;
+    const cards = one.body.filter((b: { type: string }) => b.type === "brand-card");
+    expect(cards).toHaveLength(1);
+    expect(cards[0]).toMatchObject({ exhibitorId: "ex_a", boothId: "booth_a", note: "확인된 품목은 컵이에요." });
+    expect(cards[0].photos.map((p: { path: string }) => p.path)).toEqual(["/articles/b_1.webp", "/articles/b_2.webp"]);
+    expect(JSON.stringify(cards[0])).not.toContain("permissionId");
+    // 맨 위 사진 넘김은 브랜드마다 첫 장.
+    expect(one.photos.map((p: { path: string }) => p.path)).toEqual(["/articles/b_1.webp"]);
+  });
+});
+
 describe("관리자 결정 API", () => {
   it("운영자가 아니면 401", async () => {
     auth.admin = false;

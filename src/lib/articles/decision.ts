@@ -42,15 +42,25 @@ export const STATUS_LABEL: Record<ArticleStatus, string> = {
   rejected: "반려됨",
 };
 
-/** 공개 API가 내보내는 모양. 게이트 기록, 결정한 사람, 반려 이유는 내보내지 않는다. */
+/**
+ * 공개 API가 내보내는 모양. 게이트 기록, 결정한 사람, 반려 이유는 내보내지 않는다.
+ *
+ * 사진은 허락 기록이 글 안에 있는 것만 내보낸다(사진 칸 출처 + 그 회차 사진 허락 출처). 게이트가 저장 전에
+ * 이미 막지만, 공개 길에서 한 번 더 거른다 — 허락 없는 사진이 앱과 웹에 나가는 일은 되돌릴 수 없다.
+ *
+ * photos: 글 맨 위 사진 넘김(앱 UI 17 H-A, 11-19). 브랜드 이야기는 대표 사진 + 본문 사진,
+ * 박람회 모음은 브랜드마다 첫 장. 한 장도 남지 않으면 그 글은 공개 목록에서 빠진다(isPublishable).
+ */
 export function publicArticle(a: Article) {
+  const ok = permittedIn(a);
   return {
     id: a.id,
     kind: a.kind,
     title: a.title,
     excerpt: a.excerpt,
-    hero: publicPhoto(a.hero),
-    body: a.body.map(publicBlock),
+    hero: ok(a.hero) ? publicPhoto(a.hero) : null,
+    photos: leadPhotos(a).filter(ok).map(publicPhoto),
+    body: a.body.map((b) => publicBlock(b, ok)).filter((b): b is NonNullable<typeof b> => b !== null),
     // 허락 기록(연락 상태와 허락 범위)은 내부 정보라 내보내지 않는다. 사진의 permissionId도 지운다.
     sources: a.sources
       .filter((s) => s.kind !== "permission")
@@ -61,14 +71,62 @@ export function publicArticle(a: Article) {
   };
 }
 
+/** 공개 목록과 한 편 조회에 낼 수 있나: 승인됐고, 허락 받은 사진이 한 장 이상 남는다(사진 필수, 11-19). */
+export function isPublishable(a: Article): boolean {
+  return a.status === "approved" && leadPhotos(a).some(permittedIn(a));
+}
+
+/** 사진 하나가 이 글 안의 허락 기록으로 뒷받침되나. */
+function permittedIn(a: Article): (p: ArticlePhoto | null | undefined) => p is ArticlePhoto {
+  const kinds = new Map(a.sources.map((s) => [s.id, s.kind]));
+  return (p): p is ArticlePhoto => !!p && kinds.get(p.sourceId) === "photo" && kinds.get(p.permissionId) === "permission";
+}
+
+function leadPhotos(a: Article): ArticlePhoto[] {
+  const out: ArticlePhoto[] = [];
+  const add = (p: ArticlePhoto | undefined) => {
+    if (p && !out.some((x) => x.path === p.path)) out.push(p);
+  };
+  if (a.kind === "fair_roundup") {
+    for (const b of a.body) if (b.type === "brand-card") add(b.photos?.[0] ?? b.photo);
+    if (!out.length) add(a.hero);
+    return out;
+  }
+  add(a.hero);
+  for (const b of a.body) {
+    if (b.type === "photo") add(b.photo);
+    if (b.type === "photo-group") b.photos.forEach(add);
+  }
+  return out;
+}
+
 /** 공개용 사진: 경로, 대체 글, 표기만. 허락 범위 원문과 출처 id는 내부용이다. */
 export function publicPhoto(p: ArticlePhoto) {
   return { path: p.path, alt: p.alt, credit: p.credit };
 }
 
-function publicBlock(b: ArticleBlock) {
-  if (b.type === "photo") return { type: b.type, photo: publicPhoto(b.photo) };
-  if (b.type === "photo-group") return { type: b.type, photos: b.photos.map(publicPhoto) };
-  if (b.type === "brand-card") return { ...b, photo: publicPhoto(b.photo) };
+function publicBlock(b: ArticleBlock, ok: (p: ArticlePhoto | null | undefined) => p is ArticlePhoto) {
+  if (b.type === "photo") return ok(b.photo) ? { type: b.type, photo: publicPhoto(b.photo) } : null;
+  if (b.type === "photo-group") {
+    const photos = b.photos.filter(ok);
+    return photos.length ? { type: b.type, photos: photos.map(publicPhoto) } : null;
+  }
+  if (b.type === "brand-card") {
+    const photos = (b.photos?.length ? b.photos : [b.photo]).filter(ok);
+    // 사진 없는 브랜드는 모음에 넣지 않는다(11-19). 허락이 빠진 카드는 카드째 뺀다.
+    if (!photos.length) return null;
+    return {
+      type: b.type,
+      exhibitorId: b.exhibitorId,
+      name: b.name,
+      ...(b.boothCode ? { boothCode: b.boothCode } : {}),
+      ...(b.boothId ? { boothId: b.boothId } : {}),
+      ...(b.items ? { items: b.items } : {}),
+      ...(b.note ? { note: b.note } : {}),
+      photo: publicPhoto(photos[0]),
+      photos: photos.map(publicPhoto),
+      sourceIds: b.sourceIds,
+    };
+  }
   return b;
 }

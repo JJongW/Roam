@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { checkArticle } from "./gate";
 import { brandFacts, displayBrandName, permittedPhotos } from "./facts";
 import { composeTemplate } from "./compose";
 import { kindOrder, leadQuote, photoCoverage, pickCandidates } from "./select";
@@ -106,7 +107,7 @@ describe("사진 — 허락 받은 사진만(2026-11-19 Ted)", () => {
     const w = world();
     const hachi = brandFacts(w, "ex_hachi")!;
     expect(permittedPhotos(hachi, "pt_hachi_ny").map((p) => p.path)).toEqual(photos("hachi").map((p) => p.path));
-    expect(permittedPhotos(hachi, "pt_hachi_ny")[0]).toMatchObject({ credit: "사진 하치", permissionId: "perm:pt_hachi_ny" });
+    expect(permittedPhotos(hachi, "pt_hachi_ny")[0]).toMatchObject({ credit: "사진 하치 제공", permissionId: "perm:pt_hachi_ny" });
     // 지난 회차엔 허락이 없다 — 허락은 회차마다 따로.
     expect(permittedPhotos(brandFacts(w, "ex_gusan")!, "pt_gusan_old")).toEqual([]);
   });
@@ -160,6 +161,27 @@ describe("사진 — 허락 받은 사진만(2026-11-19 Ted)", () => {
     expect(d.body.some((b) => b.type === "text" && b.text === "참가 브랜드 가운데 3곳을 브랜드가 직접 쓴 소개와 함께 모았어요.")).toBe(true);
     // 대표 사진은 첫 브랜드의 둘째 장(카드와 겹치지 않게).
     expect(d.hero.path).toBe("/articles/test/hachi_2.webp");
+  });
+
+  it("모음(M-A): 브랜드 카드에 허락 받은 사진 전부(첫 장 = photo), 부스 id, 확인된 품목만 쓴 Roam 한 줄", () => {
+    const w = world();
+    const c = pickCandidates(w, [], { kind: "fair_roundup" })[0];
+    const d = composeTemplate(c, w.fields);
+    const cards = d.body.flatMap((b) => (b.type === "brand-card" ? [b] : []));
+    const hachi = cards.find((b) => b.exhibitorId === "ex_hachi")!;
+    expect(hachi.photos?.[0]).toEqual(hachi.photo);
+    expect(hachi.photos!.length).toBeGreaterThan(1);
+    expect(hachi.photos!.every((p) => p.permissionId.startsWith("perm:"))).toBe(true);
+    expect(hachi.photo.credit).toBe("사진 하치 제공");
+    for (const card of cards) {
+      expect(Boolean(card.boothId)).toBe(Boolean(card.boothCode));
+      if (card.items) {
+        expect(card.note?.startsWith(`확인된 품목은 ${card.items.join(", ")}`)).toBe(true);
+        expect(card.note?.endsWith("요.")).toBe(true);
+      } else expect(card.note).toBeUndefined();
+    }
+    // 게이트가 새 칸(사진 여러 장, 한 줄)까지 통과시킨다.
+    expect(checkArticle(d).issues).toEqual([]);
   });
 
   it("모음: 사진 있는 브랜드가 셋 미만이면 그 박람회를 건너뛴다", () => {

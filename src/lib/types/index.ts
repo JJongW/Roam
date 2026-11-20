@@ -1108,7 +1108,7 @@ export interface ArticlePhoto {
   path: string;
   /** 대체 글(Roam이 쓴 라벨). */
   alt: string;
-  /** 사진 표기. 예: "사진 하치" */
+  /** 사진 표기. 예: "사진 하치 제공"(Figma UI 17 "사진 {브랜드} 제공") */
   credit: string;
   /** 사람이 붙인 허락 범위 원문(대표 사진 칸의 scope). */
   scope: string;
@@ -1136,7 +1136,16 @@ export type ArticleBlock =
       name: string;
       boothCode?: string;
       items?: string[];
+      /** 첫 장(카드 대표). 옛 행과 관리자 화면이 쓴다. */
       photo: ArticlePhoto;
+      /**
+       * 그 회차에 허락 받은 사진 전부(첫 장 = photo). 앱 M-A 사진 넘김(11-19). 2026-11-20 이전 행엔 없다 — 그땐 [photo].
+       */
+      photos?: ArticlePhoto[];
+      /** 부스가 정해졌으면 그 부스 id. "브랜드 보기"가 부스 상세로 간다. */
+      boothId?: string;
+      /** Roam 한 줄(M-A). 카드 출처(sourceIds)에 있는 사실만, 해요체. 쓸 사실이 없으면 없다. */
+      note?: string;
       sourceIds: string[];
     };
 
