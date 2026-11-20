@@ -174,7 +174,9 @@ export function AuthBootstrap() {
         reason,
         detail: params.get("login_detail"),
       });
-      toast.error(LOGIN_ERROR_MESSAGE[reason] ?? "로그인하지 못했어요. 다시 해 주세요.");
+      // /login은 화면 자체가 5-07(로그인을 마치지 못했어요)로 바뀌므로 토스트를 겹치지 않는다.
+      if (window.location.pathname !== "/login")
+        toast.error(LOGIN_ERROR_MESSAGE[reason] ?? "로그인하지 못했어요. 다시 해 주세요.");
       params.delete("login_error");
       params.delete("login_detail");
       const qs = params.toString();

@@ -1,6 +1,5 @@
 import { Suspense } from "react";
 import { LoginForm } from "./login-form";
-import { LegalLinks } from "@/components/common/legal-links";
 
 export const metadata = {
   // 루트 레이아웃 템플릿이 "%s | Roam"이라 여기에 " | Roam"을 또 붙이면
@@ -9,17 +8,13 @@ export const metadata = {
 };
 
 /**
- * Dedicated login gate. The whole visitor app is behind auth (see
- * src/middleware.ts); unauthenticated requests are redirected here with a
- * `next` param (see src/proxy.ts). Suspense wraps the form (useSearchParams).
+ * 로그인 화면(UI 5-04, 실패는 5-07). 로그인이 필요한 경로에서 proxy.ts가 `next`를 붙여 이리로 보내고,
+ * 하트 뒤 로그인 제안(5-02)의 "로그인"도 이리로 온다. Suspense는 useSearchParams 때문이다.
  */
 export default function LoginPage() {
   return (
-    <main className="flex min-h-dvh flex-col items-center justify-center px-6">
-      <Suspense>
-        <LoginForm />
-      </Suspense>
-      <LegalLinks className="mt-8 pb-safe" />
-    </main>
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   );
 }

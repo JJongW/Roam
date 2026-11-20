@@ -1,41 +1,73 @@
 "use client";
 
-import { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { ApiClientError } from "@/lib/api/client";
 import { createClient } from "@/lib/supabase/client";
 import { hasSupabase } from "@/lib/env";
-import { useAuthStore } from "@/lib/stores/auth";
+import { clearLoginStarted, markLoginStarted, useAuthStore } from "@/lib/stores/auth";
 import { GoogleIcon } from "@/components/auth/google-icon";
-import { Button } from "@/components/ui/button";
+import { RomiAvatar } from "@/components/v2/romi-avatar";
+import { LegalLinks } from "@/components/common/legal-links";
+import { hasNavigatedInApp } from "@/components/common/nav-tracker";
 import { Input } from "@/components/ui/input";
 import { Field } from "@/components/ui/field";
 import { useT } from "@/lib/i18n/provider";
+import { label, system } from "@/lib/copy/v1";
+import { SCREEN, track } from "@/lib/analytics/app-track";
 
 /** Only same-origin relative paths are honored as the post-login destination. */
 function safeNext(raw: string | null): string {
   return raw && raw.startsWith("/") && !raw.startsWith("//") ? raw : "/";
 }
 
+/**
+ * UI 5-04 로그인(Figma 2995:3537)과 5-07 로그인이 안 됐을 때(2995:4021).
+ *
+ * - 로그인은 입장 조건이 아니다(브랜드 규칙 §4). "로그인 없이 둘러보기"로 언제든 돌아간다(5-06).
+ * - 웹의 실제 방식만 둔다. 운영(Supabase 있음)은 Google 하나다(iOS는 Apple). 닉네임 무비번 가입은 계정 진위를
+ *   확인할 수 없어 운영에서 숨기고, Supabase 키가 없는 로컬(mock)에서만 닉네임 칸을 둔다(닉네임 로그인 자체는
+ *   기존 계정 때문에 보류 중이라 지우지 않는다, CLAUDE.md 로그인 게이트).
+ * - Google 창에서 사용자가 취소하면(`login_error=denied`) 실패가 아니라 그냥 첫 화면이다(5-07 상태 규칙).
+ *   그 밖의 실패(교환 실패 등)는 5-07. 이유는 보여 주지 않고 콘솔과 서버 로그에만 남긴다.
+ * - 시트가 아니라 페이지다. 로그인이 필요한 주소로 바로 온 사람도 같은 화면을 봐야 해서 주소가 필요하다.
+ *   대신 내용을 화면 아래(엄지 닿는 자리)에 시트처럼 모았다.
+ */
 export function LoginForm() {
   const t = useT();
-  const next = safeNext(useSearchParams().get("next"));
+  const router = useRouter();
+  const params = useSearchParams();
+  const next = safeNext(params.get("next"));
   const login = useAuthStore((s) => s.login);
+  const source = params.get("from") ?? (params.get("next") ? "gate" : "direct");
 
+  // 첫 렌더의 실패 이유를 붙잡아 둔다(AuthBootstrap이 주소에서 지운다).
+  const [returned] = useState(() => params.get("login_error"));
+  const [failed, setFailed] = useState(!!returned && returned !== "denied");
   const [nickname, setNickname] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    track("screen_view", { screen: SCREEN.loginSheet, props: { source } });
+    if (returned) clearLoginStarted();
+    if (returned === "denied")
+      track("login_skip", { screen: SCREEN.loginSheet, props: { source, kind: "google_cancel" } });
+    else if (returned)
+      track("login_fail", { screen: SCREEN.loginSheet, props: { source, reason: returned } });
+    // 열릴 때 한 번
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // 실패해도 브라우저는 그대로 있는다 — signInWithOAuth가 성공하면 리디렉트로 화면이
-  // 떠나므로, 여기 도달했다는 건 곧 실패했다는 뜻이다. 예전엔 반환값을 통째로 버려서
-  // (provider 미설정·redirect_to 거부·네트워크 단절) 버튼을 눌러도 아무 일도 일어나지
-  // 않았고, 사용자는 물론 우리도 원인을 알 수 없었다.
+  // 떠나므로, 여기 도달했다는 건 곧 실패했다는 뜻이다.
   async function google() {
     if (busy) return;
     setBusy(true);
     setError(null);
     const redirectTo = `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`;
+    markLoginStarted(source);
     try {
       const { error: oauthError } = await createClient().auth.signInWithOAuth({
         provider: "google",
@@ -43,100 +75,125 @@ export function LoginForm() {
       });
       if (oauthError) {
         console.error("[login] signInWithOAuth failed", oauthError);
-        setError(t("login.failed"));
+        track("login_fail", { screen: SCREEN.loginSheet, props: { source, reason: "oauth_start" } });
+        clearLoginStarted();
+        setFailed(true);
         setBusy(false);
       }
       // 성공이면 리디렉트가 시작된다 — busy를 켠 채로 두어 중복 클릭을 막는다.
     } catch (e) {
       console.error("[login] signInWithOAuth threw", e);
-      setError(t("login.failed"));
+      track("login_fail", { screen: SCREEN.loginSheet, props: { source, reason: "oauth_start" } });
+      clearLoginStarted();
+      setFailed(true);
       setBusy(false);
     }
   }
 
   async function submit() {
-    // 재진입 가드 — disabled는 리렌더 뒤에야 걸린다. 빠른 두 번 탭이 같은 요청을
-    // 두 번 보내면 서버에서 409가 나거나(중복) 같은 글이 두 번 올라간다.
+    // 재진입 가드 — disabled는 리렌더 뒤에야 걸린다.
     if (busy) return;
     const name = nickname.trim();
-    if (name.length < 2 || busy) return;
+    if (name.length < 2) return;
     setBusy(true);
     setError(null);
     try {
       await login(name);
-      // Hard navigation so the middleware re-evaluates with the fresh cookie.
+      // 이동한 화면에서 5-05를 띄우게 표시를 남기고, 쿠키를 새로 읽도록 전체 이동한다.
+      markLoginStarted(source);
       window.location.assign(next);
     } catch (e) {
-      setError(
-        e instanceof ApiClientError ? e.error.message : t("login.failed"),
-      );
+      setError(e instanceof ApiClientError ? e.error.message : t("login.failed"));
       setBusy(false);
     }
   }
 
-  return (
-    <div className="w-full max-w-sm">
-      <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold tracking-tight">Roam</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          {t("login.subtitle")}
-        </p>
-        {/* 로그인은 계정 벽이 아니라 기억 설정 — 취향을 다음 전시로 잇는다는 걸 명시. */}
-        <p className="mx-auto mt-2 max-w-[17rem] text-xs leading-relaxed text-muted-foreground/80">
-          {t("login.memoryNote")}
-        </p>
-      </div>
+  // 5-06 로그인 없이 계속: 왔던 곳으로. Google을 돌아온 뒤거나 바로 열었으면 앱 안 뒤로 갈 곳이 없어 홈으로.
+  function skip() {
+    track("login_skip", {
+      screen: SCREEN.loginSheet,
+      props: { source, kind: failed ? "after_fail" : "sheet" },
+    });
+    if (!returned && hasNavigatedInApp()) router.back();
+    else router.push("/");
+  }
 
-      {/* 실사용자를 받는 배포(hasSupabase=true)에서는 신규 가입을 Google 계정으로만
-          받는다 — 닉네임 무비번 가입은 계정 진위를 확인할 방법이 없다. 이미 닉네임
-          으로 만든 계정·세션은 쿠키가 살아있는 한 그대로 로그인 상태를 유지한다
-          (이 폼을 숨긴다고 로그인 API 자체를 지우는 게 아니다). Supabase 키가 없는
-          로컬 개발(mock 모드)만 예외 — 그쪽엔 Google 버튼이 애초에 안 뜨니(아래)
-          닉네임을 남겨야 로컬에서 로그인 자체가 가능하다. */}
-      {hasSupabase ? (
-        <Button
-          variant="outline"
-          size="lg"
-          className="w-full"
-          onClick={google}
-          disabled={busy}
-        >
-          <GoogleIcon />
-          {t("login.google")}
-        </Button>
-      ) : (
-        <div className="space-y-3">
-          <Field error={error}>
-            <Input
-              value={nickname}
-              onChange={(e) => {
-                setNickname(e.target.value);
-                setError(null);
-              }}
-              placeholder={t("login.placeholder")}
-              maxLength={20}
-              autoFocus
-              aria-label={t("login.placeholder")}
-              onKeyDown={(e) => {
-                if (e.nativeEvent.isComposing) return;
-                if (e.key === "Enter") submit();
-              }}
-            />
-          </Field>
-          <Button
-            size="lg"
-            className="w-full"
-            disabled={busy || nickname.trim().length < 2}
-            onClick={submit}
-          >
-            {busy && <Loader2 className="size-5 animate-spin" />}
-            {busy ? t("login.checking") : t("login.submit")}
-          </Button>
-          <p className="text-center text-xs text-muted-foreground">
-            {t("login.noPassword")}
-          </p>
+  return (
+    <main className="flex min-h-dvh flex-col bg-v2-bg-layer-basement font-v2-ui text-v2-fg-neutral">
+      <div className="flex-1" />
+      <div className="mx-auto w-full max-w-[var(--roam-v2-size-content-max-width)] rounded-t-v2-r6 bg-v2-bg-layer-floating px-v2-x4 pb-safe pt-v2-x8">
+        <div className="flex flex-col gap-v2-x6 pb-v2-x4">
+          <div className="flex flex-col gap-v2-x3">
+            {/* 실패는 서비스가 알리는 말이라 로미를 두지 않는다(UI/로미 시트 머리 설명). */}
+            {!failed && <RomiAvatar size="md" />}
+            <div className="flex flex-col gap-v2-x2">
+              <h1 className="whitespace-pre-line text-v2-t7 font-v2-bold tracking-v2-card-title">
+                {failed ? system.loginFailedTitle : system.loginSheetTitle}
+              </h1>
+              <p className="whitespace-pre-line text-v2-t5 font-v2-regular leading-[var(--roam-v2-line-height-t6-5)] tracking-v2-body text-v2-fg-neutral-muted">
+                {failed ? system.loginFailedBody : system.loginSheetBody}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-v2-x1">
+            {hasSupabase ? (
+              <button
+                type="button"
+                onClick={google}
+                disabled={busy}
+                className="flex h-v2-x13 w-full items-center justify-center gap-v2-x2 rounded-v2-r3-5 bg-v2-bg-neutral-solid text-v2-t5 font-v2-medium text-v2-fg-neutral-inverted active:bg-v2-bg-neutral-solid-pressed disabled:opacity-60"
+              >
+                {busy ? (
+                  <Loader2 aria-hidden className="size-[var(--roam-v2-icon-size-md)] animate-spin" />
+                ) : (
+                  <span className="flex size-v2-x6 items-center justify-center rounded-v2-full bg-v2-bg-layer-floating">
+                    <GoogleIcon />
+                  </span>
+                )}
+                {label.googleLogin}
+              </button>
+            ) : (
+              <div className="flex flex-col gap-v2-x2">
+                <Field error={error}>
+                  <Input
+                    value={nickname}
+                    onChange={(e) => {
+                      setNickname(e.target.value);
+                      setError(null);
+                    }}
+                    placeholder={t("login.placeholder")}
+                    maxLength={20}
+                    aria-label={t("login.placeholder")}
+                    onKeyDown={(e) => {
+                      if (e.nativeEvent.isComposing) return;
+                      if (e.key === "Enter") submit();
+                    }}
+                  />
+                </Field>
+                <button
+                  type="button"
+                  onClick={submit}
+                  disabled={busy || nickname.trim().length < 2}
+                  className="flex h-v2-x13 w-full items-center justify-center gap-v2-x2 rounded-v2-r3-5 bg-v2-bg-neutral-solid text-v2-t5 font-v2-medium text-v2-fg-neutral-inverted active:bg-v2-bg-neutral-solid-pressed disabled:opacity-60"
+                >
+                  {busy && <Loader2 aria-hidden className="size-[var(--roam-v2-icon-size-md)] animate-spin" />}
+                  {label.login}
+                </button>
+              </div>
+            )}
+            <button
+              type="button"
+              onClick={skip}
+              className="flex h-v2-x12 w-full items-center justify-center rounded-v2-r2 text-v2-t4 font-v2-medium text-v2-fg-neutral-muted active:bg-v2-bg-transparent-pressed"
+            >
+              {failed ? label.later : label.browseWithoutLogin}
+            </button>
+          </div>
         </div>
-      )}
-    </div>
+        {/* Google OAuth 심사는 로그인 화면에서 개인정보처리방침에 닿기를 요구한다(legal-links.tsx). */}
+        <LegalLinks className="pb-v2-x4 text-v2-t2 text-v2-fg-neutral-muted" />
+      </div>
+    </main>
   );
 }

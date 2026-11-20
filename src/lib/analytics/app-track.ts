@@ -29,6 +29,10 @@ export const APP_EVENT_NAMES = [
   "brand_heart_undo",
   "login_prompt_shown",
   "login_prompt_tap",
+  // UI 5-04~5-07 로그인 화면. 이름은 iOS AnalyticsTaxonomy와 같다.
+  "login_skip",
+  "login_complete",
+  "login_fail",
   "visit_mark",
   "visit_unmark",
   "visit_undo",
@@ -68,6 +72,7 @@ export const SCREEN = {
   boothCard: "UI 4-01",
   boothDetail: "UI 4-02",
   photoViewer: "UI 4-03",
+  loginSheet: "UI 5-04",
   heartUndo: "UI 5-08",
   visitRemembered: "UI 6-03",
   todayVisited: "UI 6-04",

@@ -41,6 +41,9 @@ export async function GET(req: Request) {
     });
     const target = new URL("/login", url.origin);
     target.searchParams.set("login_error", reason);
+    // 5-07에서 다시 해 보면 원래 가려던 곳으로 가도록 next를 이어 준다.
+    const back = url.searchParams.get("next");
+    if (back && back.startsWith("/") && !back.startsWith("//")) target.searchParams.set("next", back);
     if (detail) target.searchParams.set("login_detail", detail.slice(0, 160));
     return NextResponse.redirect(target);
   };
