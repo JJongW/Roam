@@ -111,7 +111,7 @@ export function permittedPhotos(b: BrandFacts, participantId: string | undefined
   return b.photoField.items.map((it, i) => ({
     path: it.path,
     alt: `${b.name} 사진 ${i + 1}`,
-    credit: `사진 ${b.name}`,
+    credit: `사진 ${b.name} 제공`,
     scope: it.scope,
     sourceId: b.photoField!.sourceId,
     permissionId: grant.sourceId,

@@ -134,7 +134,13 @@ export function checkArticle(input: GateInput): GateResult {
     }
     // 사진 대체 글과 표기, 카드 이름은 라벨이다.
     for (const ph of photosOf(b)) for (const t of [ph.alt, ph.credit]) issues.push(...voiceCheck(t, terms, "label"));
-    if (b.type === "brand-card") issues.push(...voiceCheck(b.name, terms, "label"));
+    if (b.type === "brand-card") {
+      issues.push(...voiceCheck(b.name, terms, "label"));
+      if (b.note) {
+        roamTexts.push(b.note);
+        issues.push(...voiceCheck(b.note, terms, "prose"));
+      }
+    }
   }
   if (input.hero) for (const t of [input.hero.alt, input.hero.credit]) issues.push(...voiceCheck(t, terms, "label"));
   // 느낌표는 한 편에 한 번까지(메모 card-news-copy-style, 2026-11-03). 미리보기는 문단을 되풀이하니 빼고 센다.
@@ -172,6 +178,7 @@ export function checkArticle(input: GateInput): GateResult {
       const basis = b.sourceIds.map((id) => sources.get(id)?.text ?? "").join("\n");
       if (b.boothCode && !basis.includes(b.boothCode)) issues.push(`출처에 없는 부스 번호 ${b.boothCode}: ${where}`);
       for (const it of b.items ?? []) if (!basis.includes(it)) issues.push(`출처에 없는 품목 ${it}: ${where}`);
+      if (b.note) grounded(b.note, basis, `${where} Roam 한 줄`);
       return;
     }
     grounded(
@@ -193,7 +200,8 @@ export function checkArticle(input: GateInput): GateResult {
 }
 
 function photosOf(b: ArticleBlock): ArticlePhoto[] {
-  if (b.type === "photo" || b.type === "brand-card") return b.photo ? [b.photo] : [];
+  if (b.type === "photo") return b.photo ? [b.photo] : [];
+  if (b.type === "brand-card") return b.photos?.length ? b.photos : b.photo ? [b.photo] : [];
   if (b.type === "photo-group") return b.photos ?? [];
   return [];
 }

@@ -193,9 +193,13 @@ export function composeFairRoundup(c: Extract<Candidate, { kind: "fair_roundup" 
       type: "brand-card",
       exhibitorId: b.exhibitorId,
       name: b.name,
-      ...(p.boothCode && p.boothId ? { boothCode: p.boothCode } : {}),
+      ...(p.boothCode && p.boothId ? { boothCode: p.boothCode, boothId: p.boothId } : {}),
       ...(b.items ? { items: b.items.values } : {}),
       photo: photos[0],
+      // 앱 M-A는 브랜드마다 사진을 옆으로 넘긴다. 너무 길어지지 않게 다섯 장까지.
+      photos: photos.slice(0, CARD_PHOTOS_MAX),
+      // Roam 한 줄: 확인된 품목만 말한다. 인용과 같은 말을 되풀이하지 않고, 없는 사실을 지어내지 않는다.
+      ...(b.items ? { note: `확인된 품목은 ${named(list(b.items.values), "copula")}.` } : {}),
       sourceIds: ids,
     });
     body.push({ type: "quote", text: leadQuote(b.intro!.original)!, sourceId: b.intro!.sourceId, attribution: `${b.name} 공식 소개 원문에서` });
@@ -219,6 +223,9 @@ export function composeFairRoundup(c: Extract<Candidate, { kind: "fair_roundup" 
     derivedNumbers: [c.brands.length, withItems.length],
   };
 }
+
+/** 모음 글 브랜드 카드 하나에 싣는 사진 수 상한. */
+export const CARD_PHOTOS_MAX = 5;
 
 /** 미리보기 글: 앞 문단을 300자 안에서 두 개까지. 슬랙에서 두세 줄로 읽힌다. */
 export const EXCERPT_MAX = 300;
