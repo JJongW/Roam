@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { Heart } from "lucide-react";
 import { clsx } from "clsx";
 import { useAuthStore } from "@/lib/stores/auth";
@@ -40,7 +39,6 @@ export function BrandRow({
   exhibitionSlug?: string;
   show: Show;
 }) {
-  const router = useRouter();
   const signedIn = useAuthStore((s) => !!s.user);
   const on = useBrandHeartStore((s) => !!s.hearts[exhibitorId]);
   useEffect(() => loadBrandHearts(), []);
@@ -87,9 +85,7 @@ export function BrandRow({
             screen: SCREEN.brandHeartLoginPrompt,
             props: { from: "brand_heart" },
           });
-          router.push(
-            `/login?next=${encodeURIComponent(location.pathname + location.search)}`,
-          );
+          useAuthStore.getState().openLogin("brand_heart");
         },
       });
     }

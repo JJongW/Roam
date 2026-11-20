@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { clsx } from "clsx";
 import { RomiAvatar } from "@/components/v2/romi-avatar";
 import { BottomSheet } from "@/components/map-v2/bottom-sheet";
+import { useAuthStore } from "@/lib/stores/auth";
 import { readRecap, RECAP_MAX, saveRecap } from "@/lib/recap/visit-memory";
 import { dayKo, label, romi, system } from "@/lib/copy/v1";
 import { lenBucket, SCREEN, track } from "@/lib/analytics/app-track";
@@ -129,7 +130,7 @@ export function RecapSheet({
           <Primary
             onClick={() => {
               track("recap_login_choice", { ...ctx(SCREEN.recapLoggedOut), props: { choice: "login" } });
-              location.assign(`/login?next=${encodeURIComponent(location.pathname + location.search)}`);
+              useAuthStore.getState().openLogin("recap");
             }}
           >
             {label.login}

@@ -21,7 +21,7 @@ export function AccountButton() {
 
   if (!user) {
     return (
-      <Button variant="outline" size="sm" onClick={openLogin}>
+      <Button variant="outline" size="sm" onClick={() => openLogin()}>
         <UserRound className="size-4" /> {t("account.login")}
       </Button>
     );

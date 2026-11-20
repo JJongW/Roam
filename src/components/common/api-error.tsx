@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   CalendarClock,
   CloudOff,
@@ -20,7 +20,7 @@ import {
   type ErrorKind,
 } from "@/lib/api/error-kind";
 import { useT } from "@/lib/i18n/provider";
-import { promptLogin } from "@/lib/stores/auth";
+import { promptLogin, useAuthStore } from "@/lib/stores/auth";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -66,7 +66,6 @@ export function ApiErrorState({
 }) {
   const t = useT();
   const router = useRouter();
-  const pathname = usePathname();
   const kind = kindProp ?? errorKindOf(error);
   const { action, ourFault } = ERROR_SHAPE[kind];
   const Icon = ICON[kind];
@@ -76,7 +75,7 @@ export function ApiErrorState({
     action === "retry"
       ? onRetry
       : action === "login"
-        ? () => router.push(`/login?next=${encodeURIComponent(pathname)}`)
+        ? () => useAuthStore.getState().openLogin("api_error")
         : action === "reload"
           ? () => router.refresh()
           : action === "leave"

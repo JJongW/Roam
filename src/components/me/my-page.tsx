@@ -100,12 +100,14 @@ export function MyPage({ fairs, today }: { fairs: MeFair[]; today: string }) {
                 })}
               </p>
               {!user && (
-                <Link
-                  href="/login?next=/me"
+                <button
+                  type="button"
+                  // 지금 화면 위에 로그인 시트(5-04)를 띄운다(11-20 Ted, 페이지 이동 대신).
+                  onClick={() => useAuthStore.getState().openLogin("my_page")}
                   className="flex h-v2-x10 items-center rounded-v2-r2 border border-v2-stroke-neutral-weak bg-v2-bg-layer-floating px-v2-x4 text-v2-t4 font-v2-bold active:bg-v2-bg-neutral-weak"
                 >
                   {label.login}
-                </Link>
+                </button>
               )}
             </div>
           </div>

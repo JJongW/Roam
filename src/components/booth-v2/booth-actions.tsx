@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { useRouter } from "next/navigation";
 import {
   isHearted,
   isVisited,
@@ -53,7 +52,6 @@ export function useBoothSignals({
   /** 다녀왔어요를 켠 직후(되돌리기 말고). 카드는 이걸로 로미 줄(6-03)을 띄운다. 넘기면 스낵바 대신 그쪽이 되돌리기를 맡는다. */
   onVisitMarked?: (before: BoothRecord | undefined) => void;
 }) {
-  const router = useRouter();
   const record = useVisitStore((s) => s.records[boothId]);
   const signedIn = useAuthStore((s) => !!s.user);
   const [snack, setSnack] = useState<SnackbarState | null>(null);
@@ -93,10 +91,8 @@ export function useBoothSignals({
       show({
         message: system.loginPrompt,
         actionLabel: label.login,
-        onAction: () =>
-          router.push(
-            `/login?next=${encodeURIComponent(location.pathname + location.search)}`,
-          ),
+        // 지금 화면 위에 로그인 시트(5-04)를 띄운다(11-20 Ted, 페이지 이동 대신).
+        onAction: () => useAuthStore.getState().openLogin("heart_snackbar"),
       });
     }
   };

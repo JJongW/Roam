@@ -90,7 +90,7 @@ export function BoothPersonalPanel({
           이 기기에 저장돼요.{" "}
           <button
             type="button"
-            onClick={openLogin}
+            onClick={() => openLogin()}
             className="font-semibold text-primary underline-offset-2 hover:underline"
           >
             로그인

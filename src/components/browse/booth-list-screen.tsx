@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import { clsx } from "clsx";
 import { BackButton } from "@/components/v2/back-button";
@@ -221,7 +220,6 @@ function CategoryBooths({
   booths: ListBooth[];
   categoryId: string;
 }) {
-  const router = useRouter();
   const hydrated = useHydrated();
   const records = useVisitStore((s) => s.records);
   const signedIn = useAuthStore((s) => !!s.user);
@@ -256,8 +254,7 @@ function CategoryBooths({
         key: Date.now(),
         message: system.loginPrompt,
         actionLabel: label.login,
-        onAction: () =>
-          router.push(`/login?next=${encodeURIComponent(location.pathname + location.search)}`),
+        onAction: () => useAuthStore.getState().openLogin("heart_snackbar"),
       });
     }
   };
