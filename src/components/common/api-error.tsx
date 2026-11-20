@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import {
+  CalendarClock,
   CloudOff,
   Lock,
   RotateCw,
@@ -36,6 +37,7 @@ const ICON: Record<ErrorKind, LucideIcon> = {
   NOT_FOUND: SearchX,
   CONFLICT: RotateCw,
   UNPROCESSABLE: TriangleAlert,
+  NOT_OPEN: CalendarClock,
   INTERNAL: TriangleAlert,
 };
 

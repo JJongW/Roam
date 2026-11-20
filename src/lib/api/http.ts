@@ -20,6 +20,8 @@ const STATUS: Record<ApiErrorCode, number> = {
   NOT_FOUND: 404,
   CONFLICT: 409,
   UNPROCESSABLE: 422,
+  // CONFLICT와 같은 409지만 뜻이 다르다 — 앱이 "다시 불러오기"가 아니라 "홈으로"를 고르게 코드를 나눈다.
+  NOT_OPEN: 409,
   INTERNAL: 500,
 };
 

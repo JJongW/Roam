@@ -1,6 +1,7 @@
 import { getRepository } from "@/lib/repositories";
 import { created, fail, ok, parseBody, requireAdmin } from "@/lib/api/http";
 import { exhibitionInputSchema } from "@/lib/schemas";
+import { withOpenFields } from "@/lib/exhibition/open-gate";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -9,7 +10,9 @@ export async function GET(req: Request) {
     cursor: searchParams.get("cursor") ?? undefined,
     limit: Number(searchParams.get("limit")) || undefined,
   });
-  return ok(page);
+  // 열 수 없는 박람회도 목록엔 낸다 — 방문객 화면이 흐린 "진행 예정" 줄로 그린다.
+  // openable, availability 칸을 더하기만 한다(옛 앱 디코딩 그대로).
+  return ok({ ...page, data: await withOpenFields(page.data) });
 }
 
 export async function POST(req: Request) {

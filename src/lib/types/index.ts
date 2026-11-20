@@ -1059,6 +1059,8 @@ export type ApiErrorCode =
   | "NOT_FOUND"
   | "CONFLICT"
   | "UNPROCESSABLE"
+  /** 지도에 놓인 부스가 없어 방문객이 열 수 없는 박람회(2026-11-20, lib/exhibition/openable.ts). */
+  | "NOT_OPEN"
   | "INTERNAL";
 
 export interface ApiError {

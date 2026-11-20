@@ -4,7 +4,7 @@ import type { ApiErrorCode } from "@/lib/types";
  * 화면이 **구분해야 하는** 실패의 종류 — 서버 코드 7종 + 네트워크가 없는 경우.
  *
  * `OFFLINE`은 서버가 준 코드가 아니라 클라이언트가 붙인다. `ApiErrorCode`는 HTTP
- * 상태와 1:1인 서버 계약이라 거기에 끼워 넣으면 안 된다(fail()의 STATUS 표).
+ * 상태와 묶인 서버 계약이라(NOT_OPEN만 CONFLICT와 같은 409를 쓴다) 거기에 끼워 넣으면 안 된다(fail()의 STATUS 표).
  */
 export type ErrorKind = ApiErrorCode | "OFFLINE";
 
@@ -41,6 +41,7 @@ export const ERROR_SHAPE: Record<
   NOT_FOUND: { action: "leave", ourFault: false },
   CONFLICT: { action: "reload", ourFault: false },
   UNPROCESSABLE: { action: "fix", ourFault: false },
+  NOT_OPEN: { action: "leave", ourFault: false },
   INTERNAL: { action: "retry", ourFault: true },
 };
 

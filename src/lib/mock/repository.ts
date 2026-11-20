@@ -1,6 +1,7 @@
 import { uid, shortId } from "@/lib/utils";
 import type { ExhibitorPlan, Ref } from "@/lib/exhibitor/plan";
 import { exhibitionIdFor } from "@/lib/exhibition/id";
+import { isBoothPlaced } from "@/lib/exhibition/openable";
 import type { AuditContext, ChangeEntry } from "@/lib/audit/diff";
 import { diffFields } from "@/lib/audit/diff";
 import { AUDIT_SPECS } from "@/lib/audit/entities";
@@ -291,6 +292,15 @@ export class MockRepository implements Repository {
         .sort((a, b) => a.sort - b.sort),
       categories: store().categories.filter((c) => usedCatIds.has(c.id)),
     };
+  }
+
+  async openExhibitionIds(exhibitionIds: string[]): Promise<Set<string>> {
+    const wanted = new Set(exhibitionIds);
+    const open = new Set<string>();
+    for (const b of store().booths) {
+      if (wanted.has(b.exhibitionId) && isBoothPlaced(b)) open.add(b.exhibitionId);
+    }
+    return open;
   }
 
   async getExhibitionIdBySlug(slug: string): Promise<string | null> {

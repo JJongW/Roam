@@ -37,6 +37,19 @@ describe("ExhibitionCard — 상태를 형태로", () => {
     expect(screen.getByText("둘러보기")).toBeInTheDocument();
   });
 
+  it("지도에 놓인 부스가 없으면 흐린 '진행 예정' 행이고 링크가 아니다(2026-11-20)", () => {
+    for (const status of ["ongoing", "upcoming", "ended"] as const) {
+      const { unmount } = render(<ExhibitionCard exhibition={ex} status={status} openable={false} />);
+      const row = screen.getByTestId("exhibition-not-open");
+      expect(row).toHaveAttribute("aria-disabled", "true");
+      expect(row).toHaveAccessibleName("2026 서울국제도서전, 진행 예정");
+      expect(screen.getByText("진행 예정")).toBeInTheDocument();
+      expect(screen.queryByRole("link")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("exhibition-poster")).not.toBeInTheDocument();
+      unmount();
+    }
+  });
+
   it("상태가 달라도 전시 이름은 항상 읽힌다", () => {
     for (const status of ["ongoing", "upcoming", "ended"] as const) {
       const { unmount } = render(

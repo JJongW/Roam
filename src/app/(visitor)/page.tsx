@@ -47,7 +47,14 @@ export default async function HomePage() {
   //  · 예정: 로그인 + 브레인 관심이 있을 때만, 매치(추천·정렬)용으로만. 행이라 신호는 없다.
   //  · 종료: 읽지 않는다. 행으로만 그려지고 추천에서도 빠진다.
   // 전시당 읽기는 최대 한 번 — 같은 배열로 매치와 신호를 둘 다 낸다.
-  const brain = user ? await repo.getUserBrain(user.id) : null;
+  // 지도에 놓인 부스가 없는 박람회는 흐린 "진행 예정" 줄로만 보이고 눌리지 않는다
+  // (2026-11-20 Ted 결정, lib/exhibition/openable.ts). 추천과 신호 계산에서도 뺀다.
+  const [brain, openIds] = await Promise.all([
+    user ? repo.getUserBrain(user.id) : Promise.resolve(null),
+    repo.openExhibitionIds(rawExhibitions.map((ex) => ex.id)),
+  ]);
+  const isOpen = (ex: (typeof rawExhibitions)[number]) => openIds.has(ex.id);
+  const notOpenSlugs = rawExhibitions.filter((ex) => !isOpen(ex)).map((ex) => ex.slug);
   const hasInterest = (brain?.interests.length ?? 0) > 0;
 
   const today = todayISO();
@@ -59,6 +66,7 @@ export default async function HomePage() {
   await Promise.all(
     rawExhibitions.map(async (ex) => {
       const status = statusOf(ex);
+      if (!isOpen(ex)) return;
       if (status === "ended" || (status === "upcoming" && !hasInterest)) return;
       const booths = await repo.listBoothsByExhibitionId(ex.id);
       if (hasInterest) {
@@ -94,7 +102,7 @@ export default async function HomePage() {
 
   // "추천"은 진행중·예정 중에서만 — 이미 끝난 전시를 취향 근거로 추천하는 건
   // 의미가 없다. ongoing을 upcoming보다 먼저 두어 "지금 갈 수 있는 곳"을 우선한다.
-  const top = [...ongoing, ...upcoming][0];
+  const top = [...ongoing, ...upcoming].filter(isOpen)[0];
   const topMatch = top ? matchBySlug.get(top.slug) : undefined;
   const topReason = topMatch ? matchReason(topMatch.matched) : null;
   const topReasonText =
@@ -177,6 +185,7 @@ export default async function HomePage() {
               showBadge={topReason !== null}
               recommendedReason={topStatus === "ongoing" ? topReasonText : null}
               signalsBySlug={signalsBySlug}
+              notOpenSlugs={notOpenSlugs}
             />
             <ExhibitionStatusSection
               title={t("home.statusUpcoming")}
@@ -188,11 +197,13 @@ export default async function HomePage() {
               recommendedReason={
                 topStatus === "upcoming" ? topReasonText : null
               }
+              notOpenSlugs={notOpenSlugs}
             />
             <ExhibitionStatusSection
               title={t("home.statusEnded")}
               status="ended"
               exhibitions={ended}
+              notOpenSlugs={notOpenSlugs}
             />
           </>
         )}

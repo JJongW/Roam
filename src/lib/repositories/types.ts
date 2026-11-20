@@ -108,6 +108,10 @@ export interface Repository {
   /** 전시 slug → id만(전체 상세 없이) — getExhibition()의 halls·categories·booths
    *  병렬조회는 이 용도(클릭 계측 귀속)엔 낭비다. */
   getExhibitionIdBySlug(slug: string): Promise<string | null>;
+  /** 지도에 놓인 부스(좌표가 0,0이 아니고 편의시설이 아님)가 한 곳이라도 있는 행사 id만.
+   *  방문객이 열 수 있는 박람회의 기준(lib/exhibition/openable.ts, 2026-11-20). 읽기가 실패하면
+   *  던진다 — 실패를 "부스 0곳"으로 읽으면 열린 박람회가 통째로 닫혀 보인다. */
+  openExhibitionIds(exhibitionIds: string[]): Promise<Set<string>>;
   createExhibition(input: ExhibitionInput): Promise<Exhibition>;
   updateExhibition(
     id: string,

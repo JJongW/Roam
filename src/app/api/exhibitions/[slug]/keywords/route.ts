@@ -4,6 +4,7 @@ import { notFound, ok } from "@/lib/api/http";
 import { hasGemini, generateJSON } from "@/lib/ai/gemini";
 import type { Category, BoothListItem } from "@/lib/types";
 import keywordCache from "@/lib/keyword-cache.json";
+import { gateFairBySlug } from "@/lib/exhibition/open-gate";
 
 // Precomputed keywords per exhibition (committed) — served instantly so the
 // onboarding never waits on Gemini. Regenerate the file when booths change.
@@ -127,6 +128,9 @@ export async function GET(
   { params }: { params: Promise<{ slug: string }> },
 ) {
   const { slug } = await params;
+  // 지도에 놓인 부스가 없는 박람회는 방문객에게 내주지 않는다(lib/exhibition/open-gate.ts).
+  const gated = await gateFairBySlug(slug);
+  if (gated) return gated;
   const repo = await getRepository();
   const detail = await repo.getExhibition(slug);
   if (!detail) return notFound("행사를 찾을 수 없어요");

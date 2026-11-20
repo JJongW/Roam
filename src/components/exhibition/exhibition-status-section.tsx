@@ -24,6 +24,7 @@ export function ExhibitionStatusSection({
   recommendedReason,
   showBadge,
   signalsBySlug,
+  notOpenSlugs,
 }: {
   title: string;
   status: ExhibitionStatusKind;
@@ -34,6 +35,8 @@ export function ExhibitionStatusSection({
   showBadge?: boolean;
   /** slug → 결정 근거. 진행 중 카드만 쓴다. */
   signalsBySlug?: Record<string, ExhibitionSignals>;
+  /** 지도에 놓인 부스가 없어 열 수 없는 박람회 slug. 흐린 "진행 예정" 줄로 그린다. */
+  notOpenSlugs?: string[];
 }) {
   const t = useT();
   const [expanded, setExpanded] = useState(false);
@@ -71,6 +74,7 @@ export function ExhibitionStatusSection({
               recommended={ex.slug === recommendedSlug && !!showBadge}
               recommendedLabel={recommendedLabel}
               signals={signalsBySlug?.[ex.slug]}
+              openable={!notOpenSlugs?.includes(ex.slug)}
             />
             {ex.slug === recommendedSlug && recommendedReason && (
               <p className="px-1 type-body text-muted-foreground">
