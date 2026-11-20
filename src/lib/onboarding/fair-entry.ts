@@ -145,3 +145,69 @@ export function firstPicks(
   }
   return out.slice(0, 3);
 }
+
+/**
+ * UI 8-04 로미가 고른 곳(K-C, 목록에만). iOS `FairEntry.morePicks`와 같은 규칙.
+ * 고른 사진의 부스 먼저, 그다음 그 분류의 다른 부스를 분류마다 돌아가며. 이유는 확인된 것만 말한다
+ * ("고르신 사진의 부스예요", "고르신 사진의 부스와 같은 문구 분류예요"). 하트 남긴 곳과 "이건 아니에요"는 뺀다.
+ * 사진을 고르지 않았으면 빈 목록이다(설계서 8-04 "건너뛰었으면 R-2와 지도에 켜기 없음").
+ */
+export function morePicks(
+  picked: string[],
+  booths: { id: string; categoryId?: string; kind?: string }[],
+  categoryName: (id: string) => string | undefined,
+  hearted: Set<string>,
+  notThis: Set<string>,
+  limit = 10,
+): FirstPick[] {
+  if (!picked.length) return [];
+  const skip = new Set([...hearted, ...notThis]);
+  const pool = booths.filter((b) => b.kind !== "facility");
+  const out: FirstPick[] = picked
+    .filter((id) => !skip.has(id) && pool.some((b) => b.id === id))
+    .map((boothId) => ({ boothId, reason: reasonPhoto }));
+  const cats = picked
+    .map((id) => pool.find((b) => b.id === id)?.categoryId)
+    .filter((c): c is string => !!c);
+  const sorted = [...pool].sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+  while (out.length < limit) {
+    let added = false;
+    for (const cat of cats) {
+      if (out.length >= limit) break;
+      const next = sorted.find(
+        (b) =>
+          b.categoryId === cat &&
+          !picked.includes(b.id) &&
+          !skip.has(b.id) &&
+          !out.some((p) => p.boothId === b.id),
+      );
+      if (next) {
+        const name = categoryName(cat);
+        out.push({ boothId: next.id, reason: name ? reasonCategory(name) : reasonPhoto });
+        added = true;
+      }
+    }
+    if (!added) break;
+  }
+  return out.slice(0, limit);
+}
+
+/** 8-07 고른 곳을 지도에 켰는지. 오늘만 켜 둔다(다음 날 열면 꺼져 있다). iOS와 같은 키 `roam.picksOnMap.<slug>`. */
+const picksKey = (slug: string) => `roam.picksOnMap.${slug}`;
+
+export function readPicksOnMap(slug: string, today: string): boolean {
+  try {
+    return window.localStorage.getItem(picksKey(slug)) === today;
+  } catch {
+    return false;
+  }
+}
+
+export function writePicksOnMap(slug: string, on: boolean, today: string) {
+  try {
+    if (on) window.localStorage.setItem(picksKey(slug), today);
+    else window.localStorage.removeItem(picksKey(slug));
+  } catch {
+    // 남기지 못하면 다음 열기에 꺼진 채로 시작할 뿐이다.
+  }
+}

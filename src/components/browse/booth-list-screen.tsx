@@ -13,6 +13,13 @@ import { useHydrated } from "@/lib/hooks/use-hydrated";
 import { isHearted, pushNote, useVisitStore } from "@/lib/stores/visit";
 import { useAuthStore } from "@/lib/stores/auth";
 import { label, romi, system } from "@/lib/copy/v1";
+import { entryCopy } from "@/lib/copy/map-entry";
+import {
+  morePicks,
+  readFairState,
+  updateFairState,
+  type FirstPick,
+} from "@/lib/onboarding/fair-entry";
 import { SCREEN, track } from "@/lib/analytics/app-track";
 import {
   byBoothNumber,
@@ -30,8 +37,9 @@ const HEARTS = "hearts";
  * - 맨 위 "하트 남긴 곳"은 하트가 있을 때만. "0곳"이라고 세지 않는다(8-03).
  * - 줄을 누르면 지도에서 그 부스 카드가 열린다(8-02 → 5-01). 줄의 하트는 바로 누를 수 있고,
  *   빼기는 지도 카드와 같은 스낵바 되돌리기(5-08), 첫 하트는 로그인 제안(5-02)을 한 번 띄운다.
- * - 로미가 고른 곳(8-04~8-08)은 웹에 온보딩 답(UI 1)이 아직 없어 두지 않았다. 답 없이 고르면
- *   이유를 지어내게 된다(브랜드 규칙 §5, 설계서 8-04 "건너뛰었으면 R-2 없음").
+ * - 8-04 로미가 골라 봤어요(K-C): 이 박람회 첫 진입(UI 1)에서 사진을 고르셨으면 맨 위 로미 상자 대신
+ *   고른 곳 세 줄(더 보기로 열 줄). 이유는 확인된 것만(고르신 사진의 부스, 같은 분류). 사진을 건너뛰셨으면 없다
+ *   (설계서 8-04 "건너뛰었으면 R-2 없음"). 지도에는 올리지 않는다. 지도에 켜기는 지도 로미 줄(8-06)에서.
  */
 export function BoothListScreen({
   slug,
@@ -104,6 +112,36 @@ export function BoothListScreen({
   // 분류를 열려고 했는데(하트 줄이 비었거나 없는 분류) 보여 줄 게 없으면 8-01로 둔다.
   const waiting = category === HEARTS && heartIds === null;
 
+  // 8-04 로미가 고른 곳. 처음 열 때의 하트로 줄을 고정한다(하트를 누르자마자 줄이 사라지면 되돌리기를 누를 곳이 없다).
+  // "이건 아니에요"를 누른 줄만 바로 뺀다.
+  const [frozenPicks, setFrozenPicks] = useState<FirstPick[] | null>(null);
+  const [dismissed, setDismissed] = useState<string[]>([]);
+  if (hydrated && !group && frozenPicks === null) {
+    const st = readFairState(slug);
+    const catName = new Map(categories.map((c) => [c.id, c.name]));
+    setFrozenPicks(
+      morePicks(
+        st.moodBoothIds,
+        booths,
+        (id) => catName.get(id),
+        new Set(hearted.map((b) => b.id)),
+        new Set(st.notThis),
+      ),
+    );
+  }
+  const picks = (frozenPicks ?? []).filter((p) => !dismissed.includes(p.boothId));
+  const picksShown = (frozenPicks?.length ?? 0) > 0;
+  useEffect(() => {
+    if (!picksShown || !frozenPicks) return;
+    track("romi_pick_shown", {
+      screen: SCREEN.picksList,
+      exhibitionSlug: slug,
+      props: { count: frozenPicks.length, from: "booth_list" },
+    });
+    // 목록을 열 때 한 번
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [picksShown]);
+
   return (
     <div className="min-h-dvh bg-v2-bg-layer-default font-v2-ui text-v2-fg-neutral">
       <div className="mx-auto flex w-full max-w-[var(--roam-v2-size-content-max-width)] flex-col pb-v2-x28">
@@ -124,13 +162,51 @@ export function BoothListScreen({
               <h1 className="text-v2-t7 font-v2-bold tracking-v2-card-title">
                 {label.boothList}
               </h1>
-              <div className="flex items-center gap-v2-x2-5 rounded-v2-r3 bg-v2-bg-neutral-weak p-v2-x3">
-                <RomiAvatar size="md" />
-                <p className="min-w-0 flex-1 whitespace-pre-line text-v2-t4 font-v2-medium">
-                  {romi.boothListIntro(hallsInOrder(hallOrder, booths), booths.length)}
-                </p>
-              </div>
+              {picks.length > 0 ? (
+                <div className="flex items-center gap-v2-x2-5 rounded-v2-r3 bg-v2-bg-neutral-weak p-v2-x3">
+                  <RomiAvatar size="md" />
+                  <p className="min-w-0 flex-1 text-v2-t4 font-v2-medium">{entryCopy.picksHead}</p>
+                  {/* 8-05 답 바꾸기: 웹에서 바꿀 수 있는 답은 1-07 제가 알고 있는 것(고르신 분위기, 오늘)이다. */}
+                  <Link
+                    href={`${mapHref}?romi=known`}
+                    onClick={() =>
+                      track("romi_row_tap", {
+                        screen: SCREEN.picksList,
+                        exhibitionSlug: slug,
+                        props: { row: "change_answer" },
+                      })
+                    }
+                    className="flex min-h-v2-x9 shrink-0 items-center rounded-v2-r2 px-v2-x2 text-v2-t4 font-v2-bold text-v2-fg-brand active:bg-v2-bg-transparent-pressed"
+                  >
+                    {entryCopy.changeAnswer}
+                  </Link>
+                </div>
+              ) : (
+                <div className="flex items-center gap-v2-x2-5 rounded-v2-r3 bg-v2-bg-neutral-weak p-v2-x3">
+                  <RomiAvatar size="md" />
+                  <p className="min-w-0 flex-1 whitespace-pre-line text-v2-t4 font-v2-medium">
+                    {romi.boothListIntro(hallsInOrder(hallOrder, booths), booths.length)}
+                  </p>
+                </div>
+              )}
             </div>
+            {picks.length > 0 && (
+              <PicksBlock
+                slug={slug}
+                picks={picks}
+                booths={booths}
+                onNotThis={(id) => {
+                  updateFairState(slug, (st) => ({ ...st, notThis: [...st.notThis, id] }));
+                  setDismissed((d) => [...d, id]);
+                  track("romi_pick_feedback", {
+                    screen: SCREEN.picksList,
+                    exhibitionSlug: slug,
+                    boothId: id,
+                    props: { choice: "not_this" },
+                  });
+                }}
+              />
+            )}
             <ul className="flex flex-col">
               {hearted.length > 0 && (
                 <ListRow
@@ -208,18 +284,8 @@ function ListRow({
   );
 }
 
-/** 8-02 분류 속 부스 목록. 이름, 홀과 번호, 하트. */
-function CategoryBooths({
-  slug,
-  title,
-  booths,
-  categoryId,
-}: {
-  slug: string;
-  title: string;
-  booths: ListBooth[];
-  categoryId: string;
-}) {
+/** 목록 줄의 하트(8-02, 8-04). 빼기는 5-08 되돌리기, 첫 하트는 5-02 로그인 제안(지도 카드와 한 번을 같이 센다). */
+function useListHearts(slug: string, screen: (typeof SCREEN)[keyof typeof SCREEN]) {
   const hydrated = useHydrated();
   const records = useVisitStore((s) => s.records);
   const signedIn = useAuthStore((s) => !!s.user);
@@ -231,7 +297,7 @@ function CategoryBooths({
     const next = !isHearted(before);
     useVisitStore.getState().setHeart(b.id, next);
     void pushNote(b.id, { heart: true });
-    const base = { screen: SCREEN.boothListCategory, exhibitionSlug: slug, boothId: b.id };
+    const base = { screen, exhibitionSlug: slug, boothId: b.id };
     track(next ? "heart_add" : "heart_remove", { ...base, props: { surface: "list" } });
     if (!next) {
       // 5-08과 같은 되돌리기. 다녀왔어요와 메모는 그대로다(setHeart만 바꾼다).
@@ -258,6 +324,123 @@ function CategoryBooths({
       });
     }
   };
+
+  return { hydrated, records, snack, closeSnack, toggleHeart };
+}
+
+/** 8-04 로미가 골라 봤어요: 세 줄, "고른 곳 더 보기"로 열 줄까지. 줄을 누르면 지도에서 그 부스 카드. */
+function PicksBlock({
+  slug,
+  picks,
+  booths,
+  onNotThis,
+}: {
+  slug: string;
+  picks: FirstPick[];
+  booths: ListBooth[];
+  onNotThis: (boothId: string) => void;
+}) {
+  const { hydrated, records, snack, closeSnack, toggleHeart } = useListHearts(slug, SCREEN.picksList);
+  const [open, setOpen] = useState(false);
+  const byId = new Map(booths.map((b) => [b.id, b]));
+  const shown = picks.slice(0, open ? 10 : 3);
+  return (
+    <div className="flex flex-col">
+      <h2 className="px-v2-x4 pt-v2-x2 text-v2-t3 font-v2-bold text-v2-fg-neutral-muted">
+        {entryCopy.picksSection}
+      </h2>
+      <ul className="flex flex-col">
+        {shown.map((p) => {
+          const b = byId.get(p.boothId);
+          if (!b) return null;
+          return (
+            <li key={b.id} className="flex items-start gap-v2-x3 px-v2-x4 py-v2-x3">
+              <div className="flex min-w-0 flex-1 items-start gap-v2-x3">
+                <Link
+                  href={`/exhibitions/${slug}/map?booth=${b.id}`}
+                  aria-label={b.name}
+                  onClick={() =>
+                    track("booth_list_row_tap", {
+                      screen: SCREEN.picksList,
+                      exhibitionSlug: slug,
+                      boothId: b.id,
+                      props: { category_id: "picks" },
+                    })
+                  }
+                  className="flex shrink-0 rounded-v2-r2 active:bg-v2-bg-layer-default-pressed"
+                >
+                  <Thumb src={b.image} />
+                </Link>
+                <div className="flex min-w-0 flex-1 flex-col items-start gap-v2-x0-5 font-v2-medium">
+                  <Link
+                    href={`/exhibitions/${slug}/map?booth=${b.id}`}
+                    className="flex min-w-0 flex-col gap-v2-x0-5 rounded-v2-r2 active:bg-v2-bg-layer-default-pressed"
+                  >
+                    <span className="truncate text-v2-t5 text-v2-fg-neutral">{b.name}</span>
+                    <span className="text-v2-t3 text-v2-fg-neutral-muted">
+                      {label.hallNumber(b.hall, b.code)}
+                    </span>
+                  </Link>
+                  <span className="pt-v2-x1 text-v2-t3 text-v2-fg-neutral">{p.reason}</span>
+                  <button
+                    type="button"
+                    onClick={() => onNotThis(b.id)}
+                    className="-mx-v2-x1 flex min-h-v2-x9 items-center rounded-v2-r2 px-v2-x1 text-v2-t3 text-v2-fg-neutral-muted underline underline-offset-2 active:bg-v2-bg-transparent-pressed"
+                  >
+                    {entryCopy.notThis}
+                  </button>
+                </div>
+              </div>
+              <HeartButton
+                on={hydrated && isHearted(records[b.id])}
+                onToggle={() => toggleHeart(b)}
+              />
+            </li>
+          );
+        })}
+      </ul>
+      {!open && picks.length > 3 && (
+        <ul className="flex flex-col">
+          <li>
+            <button
+              type="button"
+              onClick={() => setOpen(true)}
+              className="flex w-full items-center gap-v2-x3 p-v2-x4 text-left active:bg-v2-bg-layer-default-pressed"
+            >
+              <span className="min-w-0 flex-1 text-v2-t5 font-v2-medium text-v2-fg-neutral">
+                {entryCopy.morePicks}
+              </span>
+              <ChevronRight aria-hidden className="size-[var(--roam-v2-icon-size-md)] text-v2-fg-neutral-muted" />
+            </button>
+          </li>
+        </ul>
+      )}
+      <hr className="mx-v2-x4 border-v2-stroke-neutral-muted" />
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-20 mx-auto w-full max-w-[var(--roam-v2-size-content-max-width)] px-v2-x4 pb-safe">
+        <div className="pb-v2-x4">
+          <Snackbar state={snack} onClose={closeSnack} className="w-full" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** 8-02 분류 속 부스 목록. 이름, 홀과 번호, 하트. */
+function CategoryBooths({
+  slug,
+  title,
+  booths,
+  categoryId,
+}: {
+  slug: string;
+  title: string;
+  booths: ListBooth[];
+  categoryId: string;
+}) {
+  const { hydrated, records, snack, closeSnack, toggleHeart } = useListHearts(
+    slug,
+    SCREEN.boothListCategory,
+  );
 
   return (
     <>

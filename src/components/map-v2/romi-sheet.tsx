@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, Heart, Images, Library, MapPin, Search } from "lucide-react";
+import { ChevronLeft, ChevronRight, Heart, Library, MapPin, NotebookPen, Palette, Search } from "lucide-react";
 import { RomiAvatar } from "@/components/v2/romi-avatar";
 import { BottomSheet } from "@/components/map-v2/bottom-sheet";
 import { isHearted, isVisited, type BoothRecord } from "@/lib/stores/visit";
@@ -28,7 +28,8 @@ type Page = "main" | "left" | "where" | "known";
 
 /** 1-07 제가 알고 있는 것: 이 박람회에서 직접 고르고 남기신 것만. */
 export interface KnownInfo {
-  pickedCount: number;
+  /** 1-02에서 고르신 사진의 부스 이름. */
+  pickedNames: string[];
   /** 1-04 답. 없으면 아직 안 물었거나 넘김. */
   onSite?: boolean;
   onPickAgain: () => void;
@@ -41,8 +42,8 @@ export interface KnownInfo {
  * - 물어보기 칩: "'X' 가는 길"(UI 9), 이 지도에 있는 편의시설, "지금 어디인지 알려 주기".
  *   칩은 이 박람회에 실제로 있는 것만 보인다(없는 걸 묻게 하지 않는다).
  * - 12-01 맨 아래 "오늘은 여기까지 할게요": 열린 날에만 회고(12-02)로, 아니면 닫기만.
- * - 둘러보기: "부스 목록 보기"(UI 8-01, 11-11 입구는 로미 시트 넷째 줄).
- * - 1-07 "제가 알고 있는 것": 고르신 사진, 오늘(행사장/미리 보는 중), 하트 남긴 곳. 고른 것만 보이고 바꿀 수 있다.
+ * - 둘러보기: "부스 목록 보기"(UI 8-01, 11-11 입구는 로미 시트 넷째 줄), "제가 알고 있는 것"(7-02 다섯째 줄).
+ * - 1-07 "제가 알고 있는 것": 고르신 분위기, 오늘(행사장/미리 보는 중), 하트 남긴 곳. 고른 것만 보이고 바꿀 수 있다.
  * - 10-03 열리기 전에는 설명 줄이 "12월 11일에 열려요. 남기신 하트는 제가 기억하고 있어요."
  * 웹에 없는 기능(로미에게 묻기 입력, 오늘 프로그램)은 줄을 두지 않는다.
  * 남긴 것은 이 박람회 것만이다. 웹은 하트를 남긴 시각이 없어 "오늘"만 가르지 않는다.
@@ -77,8 +78,8 @@ export function RomiSheet({
   onWhereFound: (b: BoothListItem) => void;
   onDoneForToday: () => void;
   onClose: () => void;
-  /** 1-09 "지금 어디인지 알려 주기"는 바로 그 쪽으로 연다. */
-  initialPage?: "main" | "where";
+  /** 1-09 "지금 어디인지 알려 주기"는 바로 그 쪽으로, 8-04 "답 바꾸기"는 1-07로 연다. */
+  initialPage?: "main" | "where" | "known";
   /** 10-03 열리기 전 설명 줄 */
   prefairBody?: string;
   known?: KnownInfo;
@@ -194,9 +195,13 @@ export function RomiSheet({
         <p className="text-v2-t4 font-v2-medium text-v2-fg-neutral-muted">{entryCopy.knownBody}</p>
         <ul className="flex flex-col">
           <KnownRow
-            icon={<Images aria-hidden className="size-[var(--roam-v2-icon-size-md)]" />}
+            icon={<Palette aria-hidden className="size-[var(--roam-v2-icon-size-md)]" />}
             title={entryCopy.pickedMood}
-            sub={known.pickedCount ? entryCopy.picked(known.pickedCount) : entryCopy.notPicked}
+            sub={
+              known.pickedNames.length
+                ? entryCopy.pickedPhotosOf(known.pickedNames.join(", "))
+                : entryCopy.notPicked
+            }
             action={entryCopy.pickAgain}
             onClick={() => {
               track("romi_row_tap", { ...ctx, screen: SCREEN.known, props: { row: "mood_again" } });
@@ -270,17 +275,6 @@ export function RomiSheet({
             {system.leftNothing}
           </p>
         )}
-        {known && (
-          <NavRow
-            title={entryCopy.knownTitle}
-            sub={entryCopy.knownBody}
-            onClick={() => {
-              track("romi_row_tap", { ...ctx, props: { row: "known" } });
-              track("screen_view", { screen: SCREEN.known, exhibitionSlug });
-              setPage("known");
-            }}
-          />
-        )}
       </Section>
 
       <Section title={label.ask}>
@@ -336,6 +330,30 @@ export function RomiSheet({
             className="size-[var(--roam-v2-icon-size-md)] shrink-0 text-v2-fg-neutral-muted"
           />
         </Link>
+        {known && (
+          <button
+            type="button"
+            onClick={() => {
+              track("romi_row_tap", { ...ctx, props: { row: "known" } });
+              track("screen_view", { screen: SCREEN.known, exhibitionSlug });
+              setPage("known");
+            }}
+            className="flex w-full items-center gap-v2-x3 py-v2-x3 text-left active:bg-v2-bg-transparent-pressed"
+          >
+            <NotebookPen
+              aria-hidden
+              className="size-[var(--roam-v2-icon-size-md)] shrink-0 text-v2-fg-neutral"
+            />
+            <span className="flex min-w-0 flex-1 flex-col gap-v2-x0-5 font-v2-medium">
+              <span className="text-v2-t5 text-v2-fg-neutral">{entryCopy.knownTitle}</span>
+              <span className="text-v2-t3 text-v2-fg-neutral-muted">{entryCopy.knownRowSub}</span>
+            </span>
+            <ChevronRight
+              aria-hidden
+              className="size-[var(--roam-v2-icon-size-md)] shrink-0 text-v2-fg-neutral-muted"
+            />
+          </button>
+        )}
       </Section>
 
       <button

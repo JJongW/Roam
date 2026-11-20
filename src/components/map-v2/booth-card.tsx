@@ -23,6 +23,7 @@ import type { BoothRecord } from "@/lib/stores/visit";
  * - 하트는 이름 줄 오른쪽. 하트와 다녀왔어요는 따로다.
  * - 길 안내(UI 9): 열린 날이고 배치도가 있을 때만 "길 안내" 버튼(`onRoute`). 원할 때만 쓰는 도구다(§4).
  * - 9-06 도착하면 위치 줄 아래 "A홀 A13 도착했어요, 천천히 둘러보세요"(`arrivedLine`). 다녀왔어요는 켜지 않는다.
+ * - 8-08 로미가 고른 곳을 지도에 켜 두었을 때 고른 부스면 위치 줄 아래 고른 이유 한 줄(`pickReason`, 확인된 이유만).
  * - 둥글기는 카드 시험값 1(16). iOS V2Radius.card와 같다(Ted 확정 전, 미정).
  */
 export function BoothCardV2({
@@ -34,6 +35,7 @@ export function BoothCardV2({
   onVisitMarked,
   onRoute,
   arrivedLine,
+  pickReason,
   beforeOpen,
 }: {
   booth: BoothListItem;
@@ -45,6 +47,8 @@ export function BoothCardV2({
   onVisitMarked?: (before: BoothRecord | undefined) => void;
   onRoute?: () => void;
   arrivedLine?: string;
+  /** 8-08 고른 이유("고르신 사진의 부스예요."). 고른 곳을 지도에 켰을 때만. */
+  pickReason?: string;
   /** 10-02 열리기 전: 아직 다녀올 수 없으니 다녀왔어요 알약을 두지 않는다. 하트는 미리 남길 수 있다. */
   beforeOpen?: boolean;
 }) {
@@ -144,6 +148,11 @@ export function BoothCardV2({
                 {s.visited && (
                   <span className="text-v2-fg-brand"> {label.visited}</span>
                 )}
+              </p>
+            )}
+            {pickReason && (
+              <p className="text-v2-t3 font-v2-medium text-v2-fg-neutral">
+                {pickReason}
               </p>
             )}
             {arrivedLine && (

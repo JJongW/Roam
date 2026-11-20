@@ -107,6 +107,8 @@ export const V2_FILES = [
   "src/components/auth/login-panel.tsx",
   "src/components/auth/login-sheet.tsx",
   "src/app/login/login-form.tsx",
+  // UI 8 둘러보기(8-01~8-04)
+  "src/components/browse/booth-list-screen.tsx",
 ];
 
 /** 주석을 지운다 — 설명에 예시 값이 들어 있어도 된다. */
