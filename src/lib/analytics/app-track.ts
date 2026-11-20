@@ -40,7 +40,18 @@ export const APP_EVENT_NAMES = [
   "visited_list_open",
   "visited_list_row_tap",
   "romi_sheet_open",
+  "romi_row_tap",
   "route_start",
+  // UI 9 길 안내, 12 회고, 18 알림함. 이름은 iOS AnalyticsTaxonomy와 같다.
+  "nearby_answer",
+  "route_line_drawn",
+  "route_just_go",
+  "booth_arrive",
+  "recap_start",
+  "recap_save",
+  "recap_login_choice",
+  "inbox_open",
+  "inbox_item_open",
 ] as const;
 export type AppEventName = (typeof APP_EVENT_NAMES)[number];
 
@@ -60,8 +71,28 @@ export const SCREEN = {
   brandHeartLoginPrompt: "UI 19-A3",
   brandHeartUndo: "UI 19-A4",
   brandHeartFailed: "UI 19-A5",
+  romiSheet: "UI 7-01",
+  romiLeft: "UI 7-03",
+  routeTarget: "UI 9-01",
+  routeNearby: "UI 9-02",
+  routeDrawn: "UI 9-03",
+  routeArrived: "UI 9-06",
+  recapWrite: "UI 12-02",
+  recapSaved: "UI 12-03",
+  recapLoggedOut: "UI 12-04",
+  inbox: "UI 18-02",
+  inboxEmpty: "UI 18-03",
 } as const;
 export type ScreenId = (typeof SCREEN)[keyof typeof SCREEN];
+
+/** 글 길이 구간(iOS `LengthBucket`과 같은 경계). 글 원문 대신 이것만 보낸다(E 2-1). */
+export function lenBucket(n: number): string {
+  if (n <= 0) return "0";
+  if (n <= 5) return "1-5";
+  if (n <= 20) return "6-20";
+  if (n <= 100) return "21-100";
+  return "100+";
+}
 
 type PropValue = string | number | boolean | null | (string | number)[];
 

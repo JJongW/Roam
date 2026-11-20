@@ -32,3 +32,17 @@ export function hasFinalConsonant(word: string): boolean {
 export function iyeyo(word: string): string {
   return `${word}${hasFinalConsonant(word) ? "이에요" : "예요"}`;
 }
+
+/** "꽃잠" → "꽃잠으로", "돌과풀" → "돌과풀로", "나무" → "나무로"(받침 ㄹ은 "로"). 조사만 돌려준다. */
+export function euroRo(word: string): string {
+  const s = word.trim().replace(/[\s)\]}"'’”.]+$/u, "");
+  const last = s.at(-1);
+  if (!last) return "로";
+  const code = last.charCodeAt(0);
+  if (code >= 0xac00 && code <= 0xd7a3) {
+    const jong = (code - 0xac00) % 28;
+    return jong === 0 || jong === 8 ? "로" : "으로";
+  }
+  if (last === "1" || last === "7" || last === "8" || /l$/i.test(last)) return "로";
+  return hasFinalConsonant(s) ? "으로" : "로";
+}

@@ -9,7 +9,7 @@
 // 알리는 글은 찍는다(2026-11-18 브랜드 검토).
 // 기능이 아직 없는 것은 약속하지 않는다(브랜드 규칙 §4 "확인되지 않았으면 된다고 약속하지 않는다").
 
-import { iyeyo } from "./josa";
+import { euroRo, iyeyo } from "./josa";
 
 export const romi = {
   /** 3-01 "A홀이에요, 같이 둘러봐요" */
@@ -21,6 +21,43 @@ export const romi = {
   visitLaterNote: "어떠셨는지는 나중에 남기셔도 돼요.",
   /** 6-09 다녀온 뒤 상세 위 띠 */
   howWasIt: (name: string) => `‘${name}’, 어떠셨어요?`,
+  // UI 7 로미 시트(R-A). iOS V1Copy.Romi와 같은 문장. 웹은 하트를 남긴 시각이 없어 "오늘 남기신 것"을
+  // 가를 수 없다. 그래서 열린 날에도 "남기신 것"이라고만 한다(iOS sheetBodyEnded와 같은 문장).
+  sheetTitle: "무엇을 같이 할까요?",
+  sheetBody: "남기신 것은 제가 기억하고 있어요.",
+  sheetBodyEmpty: "궁금한 건 물어보시고, 편하게 둘러보셔도 돼요.",
+  /** 지금 어디(9-02와 같은 묻기, 추적 없음) */
+  whereAsk: "지금 가까이 보이는 부스 이름을 알려 주세요",
+  whereBody: "이름을 찾으면 지도에서 그 자리를 보여 드릴게요.",
+  whereFound: (name: string, place: string) =>
+    place ? `‘${name}’ 근처시군요. ${iyeyo(place)}` : `‘${name}’ 근처시군요`,
+  whereNotFound: "그 이름의 부스를 찾지 못했어요",
+  /** 7-05 장소 답(편의시설). 이 박람회 지도에 있는 것만 칩으로 묻는다. */
+  facilityMarked: (facility: string) => `${facility} 자리를 지도에 표시해 뒀어요`,
+  // UI 9 길 안내(11-11: 선은 한 번, 위치는 근처 부스 이름으로 묻기, 다음 한 곳씩)
+  /** 9-01 */
+  routeWhereTo: "어디로 가실까요?",
+  /** 9-02 */
+  routeNearbyAsk: "근처에 어떤 부스가 보이세요?",
+  /** 9-03. 배치도에 축척이 없어 걸리는 시간은 말하지 않는다(iOS와 같음). */
+  routeDrawn: (name: string) => `‘${name}’까지 가는 길을 그렸어요`,
+  routeFromEntrance: (name: string) => `출입구에서 ‘${name}’까지 가는 길을 그렸어요`,
+  routeOnlyPlace: (name: string) => `‘${name}’ 자리를 지도에 표시해 뒀어요`,
+  routeOnTheWay: (name: string) => `가는 길에 하트 남긴 ‘${name}’도 있어요.`,
+  /** 9-04 */
+  routeDirect: (name: string) => `네, ‘${name}’까지 바로 가요`,
+  routeReaskHint: "헷갈리면 근처 부스 이름으로 다시 찾아 드릴게요.",
+  /** 9-05 */
+  routeArriveAsk: "도착하시면 알려 주세요. 그냥 두셔도 괜찮아요.",
+  /** 도착 뒤 다음 한 곳. 권하지 않고 묻기만 한다. */
+  routeNextAsk: (name: string) => `다음은 ‘${name}’${euroRo(name)} 가 볼까요?`,
+  routeNextSkip: "여기서 더 둘러보셔도 괜찮아요.",
+  // UI 12 회고. 웹은 글을 이 브라우저에만 둔다(lib/recap/visit-memory.ts).
+  /** 12-02 */
+  recapAsk: "오늘 어떠셨어요?",
+  recapKeep: "적어 주신 말은 고치지 않고 이 브라우저에 남겨 둘게요.",
+  /** 12-03 */
+  recapSaved: "남겨 주신 말이에요",
 } as const;
 
 export const system = {
@@ -72,8 +109,8 @@ export const system = {
    *  계정으로 올린다(stores/auth.ts syncPendingReactions). */
   loginPrompt: "하트는 이 브라우저에 남아요. 로그인하시면 계정에도 남아요.",
   // UI 19 브랜드 하트(A안, 11-19). iOS V1Copy(Roam-ios #193)와 같은 자리. 웹에서 거짓이 되는 말만 바꿨다
-  // (11-20 브랜드 검토). 브랜드 알림은 iOS 푸시와 iOS 알림함으로만 가고, 웹 계정과 iOS 계정이 이어지는지
-  // 확인되지 않았다. 그래서 웹은 "알려 드려요" 대신 확인된 사실(계정에 남는다)만 말한다(브랜드 규칙 §4).
+  // (11-20 브랜드 검토). 웹은 브라우저 푸시를 보내지 않는다(브랜드 알림은 iOS 푸시, 그리고 웹과 iOS의
+  // 알림함 줄로만 간다). 그래서 웹은 "알려 드려요" 대신 확인된 사실(계정에 남는다)만 말한다(브랜드 규칙 §4).
   /** 19-A1 브랜드 줄 설명, 로그인한 분 */
   brandRowLoggedIn: "브랜드 하트는 계정에 남아요",
   /** 19-A3 브랜드 줄 설명, 로그인 안 한 분 */
@@ -86,6 +123,26 @@ export const system = {
   brandHeartRemoved: (name: string) => `‘${name}’ 브랜드 하트를 뺐어요.`,
   /** 19-A5 */
   brandHeartSaveFailed: "브랜드 하트를 남기지 못했어요.",
+  // UI 7
+  leftNothing: "하트나 다녀온 곳을 남기시면 여기에 모여요.",
+  // UI 9
+  /** 9-06 "A홀 A13 도착했어요, 천천히 둘러보세요" */
+  arrivedLine: (place: string) => `${place} 도착했어요, 천천히 둘러보세요`,
+  // UI 12
+  /** "일러스트페어, 12월 4일" */
+  recapMeta: (fair: string, day: string) => `${fair}, ${day}`,
+  /** 12-04. 글은 계정에 올라가지 않는다(서버에 글 칸이 없다). 하트는 로그인하면 올라간다(stores/auth.ts). */
+  recapDeviceOnly: "이 말은 이 브라우저에만 남아요.\n로그인하시면 하트는 계정에도 남아요.",
+  // UI 18 알림함. iOS V1Copy(18-02, 18-03)와 같은 자리. 웹은 브라우저 푸시를 보내지 않는다(웹 푸시 키 없음).
+  // 그래서 "알려 드리고"를 빼고 알림함에 남는다는 사실만 말한다(브랜드 규칙 §4).
+  /** 18-02 덧붙임 */
+  inboxFooter: "알림은 30일 동안 여기에 남아요. 누르면 그 부스나 박람회 지도로 가요.",
+  /** 18-03. 브랜드 알림 잡은 하트를 남긴 계정마다 줄을 만들고, 기기가 없는 계정(웹만 쓰는 분)의 줄도
+   *  no_device로 알림함에 보인다(lib/notifications/run-brand-appear.ts). 그래서 "여기에 남겨 둘게요"는 사실이다. */
+  inboxEmptyTitle: "아직 받은 알림이 없어요",
+  inboxEmptyBody: "하트 남긴 브랜드가 다음 박람회에 나오면 여기에 남겨 둘게요.",
+  inboxFailed: "알림을 불러오지 못했어요",
+  inboxLoading: "알림을 불러오고 있어요",
 } as const;
 
 export const label = {
@@ -137,6 +194,50 @@ export const label = {
   /** "A홀 A13" */
   hallNumber: (hall?: string | null, code?: string | null) =>
     [hall, code].filter(Boolean).join(" "),
+  /** 알림함 시각, 회고 날짜 */
+  today: "오늘",
+  yesterday: "어제",
+  // UI 7 로미 시트
+  romiSheet: "로미 시트 열기",
+  leftItems: "남긴 것",
+  heartedPlaces: "하트 남긴 곳",
+  visitedPlaces: "다녀온 곳",
+  ask: "물어보기",
+  whereNow: "지금 어디인지 알려 주기",
+  nearbyBoothName: "가까이 보이는 부스 이름",
+  doneForToday: "오늘은 여기까지 할게요",
+  /** "A홀 A13, 하트, 다녀왔어요, 메모" */
+  kindHeart: "하트",
+  kindMemo: "메모",
+  andMore: (n: number) => ` 외 ${n}곳`,
+  /** 7-01 칩 "'꽃잠' 가는 길" */
+  routeTo: (name: string) => `‘${name}’ 가는 길`,
+  askFacility: (facility: string) => `${facility} 어디예요?`,
+  // UI 9
+  route: "길 안내",
+  dontKnow: "잘 모르겠어요",
+  here: "여기예요",
+  startFront: (name: string) => `${name} 앞`,
+  entrance: "출입구",
+  stopBy: "들렀다 갈게요",
+  justGo: "그냥 갈게요",
+  endGuide: "안내 끝내기",
+  otherBoothFront: "다른 부스 앞이에요",
+  arrived: "도착했어요",
+  goTogether: "같이 가요",
+  noThanks: "괜찮아요",
+  // UI 12
+  recapPlaceholder: "떠오르는 대로 적어 주세요",
+  leave: "남기기",
+  placesStat: (n: number) => `${n}곳`,
+  memoStat: (n: number) => `${n}개`,
+  memo: "메모",
+  // UI 18
+  inbox: "알림함",
+  /** 종의 점(읽어 주기). 숫자는 말하지 않는다(18-01A 점 하나). */
+  inboxHasNew: "새 알림 있음",
+  inboxThisWeek: "이번 주",
+  inboxEarlier: "지난 알림",
 } as const;
 
 /** 메모 한 줄 길이(UI/입력 줄, 6-04). 서버는 300자까지 받지만 화면은 50자(설계서 §0-5). */

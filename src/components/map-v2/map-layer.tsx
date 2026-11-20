@@ -29,17 +29,28 @@ const C = (name: string) => `var(--roam-v2-color-${name})`;
 /** 칸끼리 통로가 보이게 안쪽으로 줄이는 폭(도면 단위). v1 엔진과 같은 값. */
 const CELL_GAP = 3;
 
+/** UI 9 길 안내 선. 한 번 그린 선이고 따라 움직이지 않는다(11-11, 추적 없음). */
+export interface RouteOverlay {
+  path: { x: number; y: number }[];
+  /** 출발 자리 이름표("'꽃잠' 앞", "출입구"). */
+  startLabel?: string;
+  /** 가는 곳. 칸 둘레를 길 색으로 두른다. */
+  targetId?: string;
+}
+
 export function MapLayerV2({
   ctx,
   heartIds,
   visitedIds,
   highlightIds,
+  route,
 }: {
   ctx: MapLayerContext;
   heartIds: Set<string>;
   visitedIds?: Set<string>;
   /** 편의시설 칩, 검색 결과처럼 지금 눈에 띄워야 하는 칸. 있으면 나머지는 흐리게. */
   highlightIds?: Set<string> | null;
+  route?: RouteOverlay | null;
 }) {
   const {
     booths,
@@ -150,6 +161,8 @@ export function MapLayerV2({
         );
       })}
 
+      {route && <RouteLine route={route} ctx={ctx} />}
+
       {/* 길잡이 표식: 벽 바깥에 붙여 부스 칸을 덮지 않는다(map-markers.ts). 화장실 칩을 켜면 진하게 남는다. */}
       {floorplan &&
         wcMarkers(floorplan, fitScale).map((m, i) => (
@@ -198,6 +211,93 @@ export function MapLayerV2({
             </text>
           </g>
         ))}
+    </g>
+  );
+}
+
+/**
+ * 길 안내 선(지도 토큰 map-route). 굵기와 이름표는 맞춘 배율에서 화면 px로 읽히는 크기다(출입구 표식과
+ * 같은 규칙). 도착 칸은 둘레만 두르고 칸 색은 그대로 둔다(하트, 다녀온 표시를 가리지 않는다).
+ */
+function RouteLine({ route, ctx }: { route: RouteOverlay; ctx: MapLayerContext }) {
+  const k = ctx.fitScale && ctx.fitScale > 0 ? 1 / ctx.fitScale : 1;
+  const width = 4 * k;
+  const target = route.targetId
+    ? ctx.booths.find((b) => b.id === route.targetId)
+    : undefined;
+  const tg = target ? ctx.geomOf(target) : null;
+  const d = route.path
+    .map((p, i) => `${i ? "L" : "M"}${p.x} ${p.y}`)
+    .join(" ");
+  const start = route.path[0];
+  const font = V2_PX["font-size-t2"] * k;
+  const labelW = route.startLabel ? font * (route.startLabel.length * 0.95 + 1.6) : 0;
+  return (
+    <g pointerEvents="none">
+      {tg && (
+        <rect
+          x={tg.x - tg.w / 2 - width}
+          y={tg.y - tg.h / 2 - width}
+          width={tg.w + width * 2}
+          height={tg.h + width * 2}
+          rx={V2_PX["radius-r1"] + width}
+          fill="none"
+          stroke={C("map-route")}
+          strokeWidth={width * 0.75}
+          transform={tg.rotate ? `rotate(${tg.rotate} ${tg.x} ${tg.y})` : undefined}
+        />
+      )}
+      {route.path.length >= 2 && (
+        <>
+          <path
+            d={d}
+            fill="none"
+            stroke={C("bg-layer-floating")}
+            strokeWidth={width * 2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <path
+            d={d}
+            fill="none"
+            stroke={C("map-route")}
+            strokeWidth={width}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <circle
+            cx={start.x}
+            cy={start.y}
+            r={width * 1.6}
+            fill={C("map-route")}
+            stroke={C("bg-layer-floating")}
+            strokeWidth={width * 0.6}
+          />
+          {route.startLabel && (
+            <g transform={ctx.upright(start.x, start.y)}>
+              <rect
+                x={start.x - labelW / 2}
+                y={start.y - width * 2 - font * 1.9}
+                width={labelW}
+                height={font * 1.7}
+                rx={font * 0.85}
+                fill={C("map-route")}
+              />
+              <text
+                x={start.x}
+                y={start.y - width * 2 - font * 1.05}
+                fontSize={font}
+                textAnchor="middle"
+                dominantBaseline="central"
+                fill={C("fg-on-brand-solid")}
+                className="font-v2-ui font-v2-bold"
+              >
+                {route.startLabel}
+              </text>
+            </g>
+          )}
+        </>
+      )}
     </g>
   );
 }
