@@ -10,7 +10,7 @@ export function daysBetween(a: string, b: string): number {
 
 /** M3, M6이 묻는 기간: 끝나고 14일 안(iOS와 같다). */
 export const VERDICT_ASK_DAYS = 14;
-/** H-B "지난주에 다녀오신 박람회": 끝나고 7일 안. */
+/** H-B "다녀오신 박람회": 끝나고 7일 안. */
 export const LAST_WEEK_DAYS = 7;
 
 /**

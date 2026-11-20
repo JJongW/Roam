@@ -21,7 +21,7 @@ export const homeCopy = {
   heartedFairsTitle: "하트 남긴 브랜드가 나오는 박람회",
   heartedBrands: "하트 남긴 브랜드",
   /** 11-01 H-B */
-  visitedLastWeek: "지난주에 다녀오신 박람회",
+  visitedLastWeek: "다녀오신 박람회",
   /** 11-03 박람회 전체의 끝난 묶음(H-C) */
   fairsWithLeft: "남기신 게 있는 박람회",
   fairsOther: "그 밖의 지난 박람회",
@@ -34,6 +34,6 @@ export const homeCopy = {
   seeInMyPage: "마이페이지에서 다시 볼 수 있어요",
   done: "닫기",
   /** UI 16 오프라인 띠 */
-  offlineMap: "오프라인이에요. 받아 둔 지도를 보여 드려요",
-  offlineHome: "오프라인이에요. 받아 둔 내용을 보여 드려요",
+  offlineMap: "오프라인이에요. 이미 불러온 지도는 계속 볼 수 있어요",
+  offlineHome: "오프라인이에요. 지금 화면은 계속 볼 수 있어요",
 } as const;

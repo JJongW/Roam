@@ -30,7 +30,7 @@ describe("끝난 박람회 입구", () => {
     expect(needsVerdict([group("x", "2026-11-25", ["a"], "ongoing")], () => undefined, TODAY)).toBeNull();
   });
 
-  it("지난주에 다녀오신 박람회는 끝나고 7일 안", () => {
+  it("다녀오신 박람회는 끝나고 7일 안", () => {
     const list = visitedLastWeek([group("a", "2026-11-15", ["x"]), group("b", "2026-11-09", ["y"])], TODAY);
     expect(list.map((g) => g.fair.slug)).toEqual(["a"]);
   });
