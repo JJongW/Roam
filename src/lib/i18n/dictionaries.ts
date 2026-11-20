@@ -75,7 +75,7 @@ const ko = {
     unprocessableTitle: "지금은 이대로 저장할 수 없어요.",
     unprocessableDesc: "형식은 맞는데 조건이 맞지 않아요. 값을 조금 바꿔 주세요.",
     notOpenTitle: "아직 진행 예정인 박람회예요.",
-    notOpenDesc: "부스 배치가 올라오면 열려요.",
+    notOpenDesc: "부스 배치가 올라오면 볼 수 있어요.",
     internalTitle: "지금은 불러올 수 없어요.",
     internalDesc: "잠시 뒤에 다시 해 주세요.",
     actionRetry: "다시 해 보기",
