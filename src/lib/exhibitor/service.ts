@@ -1,7 +1,7 @@
 import type { Repository } from "@/lib/repositories/types";
 import type { Booth, ExhibitorGraph } from "@/lib/types";
 import { brandKeyIdentity, identityKeys } from "./identity";
-import { planExhibitorLinks, type ExhibitorPlan, type ExistingExhibitor } from "./plan";
+import { candidateKeys, planExhibitorLinks, type ExhibitorPlan, type ExistingExhibitor } from "./plan";
 import { planCarryover, type CarryoverItem } from "./carryover";
 import { autoPassPending } from "@/lib/enrichment/run-draft";
 
@@ -36,7 +36,7 @@ export async function planFromRepository(
     participants: graph.participants.map((p) => ({ ...p, hasBooth: withBooth.has(p.id) })),
     assignedBoothIds: new Set(graph.assignments.map((a) => a.boothId)),
     // 판단했든 대기 중이든 이미 낸 후보는 다시 내지 않는다.
-    decidedCandidates: new Set(graph.candidates.map((c) => `${c.boothId}|${c.exhibitorId}`)),
+    decidedCandidates: candidateKeys(graph.candidates),
   });
   return { plan, graph, booths };
 }

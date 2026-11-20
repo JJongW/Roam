@@ -68,12 +68,17 @@ if (raw.version === "brands.v1") {
   const s = plan.summary;
   console.log(
     `brands.v1 ${file.brands.length}곳 → 새 브랜드 ${s.newBrands}, 기존에 이음 ${s.linkedBrands}, 파일 안 묶음 ${s.mergedInFile}, ` +
-      `참가 사실 새로 ${s.participantsToCreate}(이미 ${s.participantsExisting}), 채울 칸 ${s.fieldsToFill}`,
+      `참가 사실 새로 ${s.participantsToCreate}(이미 ${s.participantsExisting}), 채울 칸 ${s.fieldsToFill}, 연결 확인 새로 ${s.candidates}`,
   );
   for (const b of plan.brands.filter((b) => b.matchedBy))
     console.log(`  이음 ${b.key} ${b.name} → ${b.existingName} (${b.matchedBy})${b.kept.length ? `, 이미 있어 둠: ${b.kept.join(",")}` : ""}`);
   for (const b of plan.brands.filter((b) => b.keys.length > 1)) console.log(`  파일 안 묶음 ${b.keys.join(" + ")} → ${b.name}`);
   for (const m of plan.nameMatches) console.log(`  이름만 같음 ${m.key} ${m.name} ↔ ${m.existing.map((e) => `${e.name}(${e.id})`).join(", ")}`);
+  for (const c of plan.exhibitorPlan.candidates) {
+    const pt = "new" in c.participantRef ? `새 참가 ${c.participantRef.new}` : `참가 ${c.participantRef.existing}`;
+    const to = "existing" in c.target ? c.target.existing : c.target.new;
+    console.log(`  연결 확인 ${pt} → ${to} (${c.reason}, 부스 없음)`);
+  }
   for (const e of plan.errors) console.log(`  오류 ${e.key}: ${e.message}`);
   for (const w of plan.warnings) console.log(`  경고 ${w}`);
   report({ file: path, kind: "brands", exhibitionFound: !!exhibitionId, summary: s, brands: plan.brands, nameMatches: plan.nameMatches, errors: plan.errors, warnings: plan.warnings });

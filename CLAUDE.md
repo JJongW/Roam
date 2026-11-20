@@ -48,7 +48,9 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
   "오늘 관람 마치기"(회고, 전시 홈 하단 `FinishVisit` → `POST /api/me/reflect`). 앞 셋은 공개.
 - **부스/이벤트**: `Booth`(code 자연키, kind exhibitor|facility, tags=카테고리 slug, aliases 공동입점), `BoothEvent`.
 - **참가사(행사를 넘는 브랜드)**: `exhibitor` ← `exhibition_participant`(회차별 표기 이름) ← `booth_participant`.
-  인스타·웹 도메인이 겹치면 자동 연결, **이름만 같으면 사람이 확인**(`/admin/verify/brands`).
+  인스타나 웹 도메인이 겹치면 자동 연결, **이름만 같으면 사람이 확인**(`/admin/brands/links`).
+  확인은 **참가 단위**다(`exhibitor_link_candidate.participant_id`, 0073). 부스는 붙는 정보일 뿐이라 부스 없는 참가(brands.v1)도
+  후보가 된다. 새 기능이 브랜드 판단에 부스를 필수로 두면 먼저 의심한다(`docs/decisions/2026-11-20_브랜드-대조는-참가-단위.md`).
   예외 하나: 같은 행사에 부스 없는 참가 사실(브랜드 먼저 인입)과 표기 이름이 같으면 그 참가 사실에 배정한다.
   판정은 `lib/exhibitor/identity.ts` 하나뿐(품질 게이트의 신원 앵커와 공유).
   소개·사진은 참가사에 복사하지 않는다 — 가장 최근 승인 부스가 원천.

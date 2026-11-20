@@ -73,7 +73,7 @@ export function IntakeUploader() {
       if (apply && res.kind === "brands") {
         const a = res.applied!;
         toast.success(
-          `새 브랜드 ${a.createdBrands}, 참가 사실 ${a.createdParticipants}, 채운 칸 ${a.filledFields}${
+          `새 브랜드 ${a.createdBrands}, 참가 사실 ${a.createdParticipants}, 채운 칸 ${a.filledFields}, 연결 확인 ${a.createdCandidates ?? 0}${
             a.failures.length ? `, 실패 ${a.failures.length}` : ""
           }`,
         );

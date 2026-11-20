@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { AtSign, ExternalLink, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { api, ApiClientError } from "@/lib/api/client";
-import type { LinkRow, LinkSide } from "@/lib/brands/links";
+import type { LinkBrand, LinkRow, LinkSide } from "@/lib/brands/links";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/common/states";
@@ -22,8 +22,9 @@ function Side({ s }: { s: LinkSide }) {
         <p className="font-semibold">{s.name}</p>
         <p className="text-xs text-muted-foreground">
           {s.exhibitionName}
-          {s.code ? `, 부스 ${s.code}` : ""}
+          {s.boothId ? (s.code ? `, 부스 ${s.code}` : "") : ", 부스는 아직 없어요"}
         </p>
+        {s.aliases?.length ? <p className="text-xs text-muted-foreground">다른 이름 {s.aliases.join(", ")}</p> : null}
         <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
           {ig && (
             <a href={s.instagramUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-0.5 underline">
@@ -41,6 +42,22 @@ function Side({ s }: { s: LinkSide }) {
         {s.summary && <p className="line-clamp-2 text-sm text-foreground/80">{s.summary}</p>}
       </div>
     </div>
+  );
+}
+
+function BrandLine({ b }: { b: LinkBrand }) {
+  const ig = b.instagramUrl?.replace(/^https?:\/\/(www\.)?instagram\.com\//, "").replace(/\/$/, "");
+  if (!ig && !b.aliases.length) return null;
+  return (
+    <p className="flex flex-wrap gap-x-3 text-xs text-muted-foreground">
+      {ig && (
+        <a href={b.instagramUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-0.5 underline">
+          <AtSign className="size-3" />
+          {ig}
+        </a>
+      )}
+      {b.aliases.length > 0 && <span>다른 이름 {b.aliases.join(", ")}</span>}
+    </p>
   );
 }
 
@@ -97,7 +114,9 @@ export function LinkQueue({ rows, rejectedCount }: { rows: LinkRow[]; rejectedCo
     <div className="space-y-4">
       <p className="text-sm text-muted-foreground">
         인스타나 웹 주소가 같은 곳은 이미 같은 브랜드로 이었어요. 여기는 이름만 같은 짝이에요. 이름이 같아도 다른 곳일 수
-        있어서 나란히 놓고 골라요. 연결 안 함으로 둔 짝은 다시 묻지 않아요{rejectedCount > 0 ? `(지금까지 ${rejectedCount}건)` : ""}.
+        있어서 나란히 놓고 골라요. 부스가 아직 없는 참가도 여기 올라와요. 연결하면 이 참가가 그 브랜드로 옮겨지고, 인입이
+        따로 만든 브랜드는 그 브랜드에 합쳐져요. 연결 안 함으로 둔 짝은 다시 묻지 않아요
+        {rejectedCount > 0 ? `(지금까지 ${rejectedCount}건)` : ""}.
       </p>
 
       <div className="sticky top-14 z-10 flex flex-wrap items-center gap-2 rounded-xl border border-border bg-background/95 p-3 backdrop-blur md:top-0">
@@ -145,10 +164,10 @@ export function LinkQueue({ rows, rejectedCount }: { rows: LinkRow[]; rejectedCo
                     className="mt-1 size-4 accent-primary"
                     checked={on}
                     onChange={() => toggle(r.id)}
-                    aria-label={`${r.booth?.name ?? r.id}를 ${r.target.name}에 잇기 선택`}
+                    aria-label={`${r.subject?.name ?? r.id} 참가를 ${r.target.name}에 잇기 선택`}
                   />
                   <span className="text-sm font-semibold">
-                    {r.booth ? `${r.booth.exhibitionName}의 "${r.booth.name}"` : "이 출전"}을 브랜드 &ldquo;{r.target.name}&rdquo;에 이어도 될까요?
+                    {r.subject ? `${r.subject.exhibitionName}의 "${r.subject.name}" 참가` : "이 참가"}를 브랜드 &ldquo;{r.target.name}&rdquo;에 이어도 될까요?
                   </span>
                 </label>
                 <div className="flex flex-wrap gap-1.5 pl-7">
@@ -160,14 +179,18 @@ export function LinkQueue({ rows, rejectedCount }: { rows: LinkRow[]; rejectedCo
                 </div>
                 <div className="grid gap-4 pl-7 md:grid-cols-2">
                   <div className="space-y-1">
-                    <p className="text-xs font-bold text-muted-foreground">이 출전</p>
-                    {r.booth ? <Side s={r.booth} /> : <p className="text-sm">부스를 찾을 수 없어요</p>}
+                    <p className="text-xs font-bold text-muted-foreground">
+                      이 참가{r.from && r.from.exhibitorId !== r.target.exhibitorId ? `, 지금 브랜드 ${r.from.name}` : ""}
+                    </p>
+                    {r.subject ? <Side s={r.subject} /> : <p className="text-sm">참가를 찾을 수 없어요</p>}
+                    {r.from && <BrandLine b={r.from} />}
                   </div>
                   <div className="space-y-2 md:border-l md:border-border md:pl-4">
                     <p className="text-xs font-bold text-muted-foreground">
                       브랜드 {r.target.name}
                       {r.target.artistName ? `, 작가 ${r.target.artistName}` : ""}, 출전 {r.target.appearances.length}회
                     </p>
+                    <BrandLine b={r.target} />
                     {r.target.appearances.map((s) => (
                       <Side key={s.key} s={s} />
                     ))}

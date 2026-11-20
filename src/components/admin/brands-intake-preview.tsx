@@ -26,12 +26,13 @@ export function BrandsIntakePreview({
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-5">
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-6">
         <Stat label="새 브랜드" value={s.newBrands} />
         <Stat label="기존 브랜드에 이어짐" value={s.linkedBrands} />
         <Stat label={plan.exhibitionId ? "만들 참가 사실" : "참가 사실(행사 없음)"} value={s.participantsToCreate} />
         <Stat label="채울 칸" value={s.fieldsToFill} />
         <Stat label="이름 같은 기존 브랜드" value={plan.nameMatches.length} tone={plan.nameMatches.length ? "warn" : undefined} />
+        <Stat label="연결 확인에 올릴 짝" value={s.candidates ?? 0} tone={s.candidates ? "warn" : undefined} />
       </div>
       <p className="text-sm text-muted-foreground">
         이미 있는 참가 사실 {s.participantsExisting}곳은 건너뛰어요. 파일 안에서 인스타나 사이트가 같아 하나로 묶인 항목은{" "}
@@ -46,7 +47,11 @@ export function BrandsIntakePreview({
       <List
         title={`이름만 같은 기존 브랜드 ${plan.nameMatches.length}건, 합치지 않고 새로 만들어요`}
         tone="warn"
-        note="부스가 들어오면 이 짝이 브랜드 연결 화면(/admin/brands/links)에 후보로 올라와요. 같은 브랜드가 맞으면 거기서 합쳐 주세요."
+        note={
+          plan.exhibitionId
+            ? "적용하면 이 참가가 부스 없이 브랜드 연결 화면(/admin/brands/links)에 바로 올라와요. 같은 브랜드가 맞으면 거기서 연결해 주세요. 새로 만든 브랜드가 기존 브랜드로 합쳐지고 참가도 따라가요."
+            : "행사가 없는 파일이라 참가가 없어 연결 확인에는 올리지 않아요. 같은 브랜드가 맞으면 브랜드 화면에서 합쳐 주세요."
+        }
         rows={plan.nameMatches.map((m) => ({
           key: m.key,
           text: `${m.name} (${m.key})`,
@@ -88,7 +93,8 @@ export function BrandsIntakePreview({
       {applied && (
         <Card className="flex flex-col gap-2 p-5">
           <p className="font-bold">
-            적용했어요. 새 브랜드 {applied.createdBrands}, 참가 사실 {applied.createdParticipants}, 채운 칸 {applied.filledFields}
+            적용했어요. 새 브랜드 {applied.createdBrands}, 참가 사실 {applied.createdParticipants}, 채운 칸 {applied.filledFields}, 연결
+            확인 {applied.createdCandidates ?? 0}
           </p>
           {(applied.staled > 0 || applied.enqueued.brands > 0) && (
             <p className="text-sm text-muted-foreground">

@@ -34,7 +34,7 @@ export async function POST(req: Request) {
         ).size,
       }))
       .filter((x) => x.exhibitions > 1),
-    sampleCandidates: plan.candidates.slice(0, 30).map((c) => ({ booth: name.get(c.boothId), reason: c.reason })),
+    sampleCandidates: plan.candidates.slice(0, 30).map((c) => ({ booth: c.boothId ? name.get(c.boothId) : undefined, reason: c.reason })),
   };
   if (!parsed.data.apply) return ok({ summary, applied: null });
   // 새 출전에 따른 stale까지. 백필은 모든 박람회라 초안 잡은 넣지 않는다(박람회 단위로만,

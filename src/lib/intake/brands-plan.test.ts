@@ -3,6 +3,7 @@ import { brandScopeKey, planBrands, type BrandsPlanInput } from "./brands-plan";
 import { brandsFileSchema, type BrandsFile } from "./brands-schema";
 import { intakeAnyRequestSchema } from "./schema";
 import { brandKeyIdentity } from "@/lib/exhibitor/identity";
+import { candidateKeys } from "@/lib/exhibitor/plan";
 import type { ExhibitorGraph } from "@/lib/types";
 
 const SRC = { url: "https://newyear-store.example/brands", collectedAt: "2026-11-10" };
@@ -208,6 +209,81 @@ describe("planBrands", () => {
     const bad = run({ file: { ...file([]), brands: [{ key: "a", name: "가나다", photos: [{ path: "p", scope: "" }] }] } as BrandsFile });
     expect(bad.fields).toEqual([]);
     expect(bad.warnings.some((w) => w.includes("photos"))).toBe(true);
+  });
+});
+
+describe("planBrands 참가 단위 연결 후보(0073, 2026-11-20 Ted 결정)", () => {
+  // 새해 준비상점(부스 0) ny-311 네츄럴굿띵스 ↔ 하우스 아카이브의 기존 브랜드(인스타 ngt_kr).
+  const ngtGraph: ExhibitorGraph = {
+    ...emptyGraph,
+    exhibitors: [{ id: "exr_ngt", canonicalName: "네츄럴굿띵스", instagramUrl: "https://instagram.com/ngt_kr" }],
+    participants: [{ id: "pt_house", exhibitorId: "exr_ngt", exhibitionId: "exh_house", displayName: "네츄럴굿띵스" }],
+  };
+  const ngtExisting = [{ id: "exr_ngt", keys: ["instagram.com/ngt_kr"], names: ["네츄럴굿띵스"] }];
+  const ngt = file([{ key: "ny-311", name: "네츄럴굿띵스", aliases: ["NGT"] }]);
+
+  it("이름만 같으면 새 브랜드와 참가를 만들고, 그 참가를 부스 없이 후보로 올린다", () => {
+    const plan = run({ file: ngt, graph: ngtGraph, existing: ngtExisting });
+    expect(plan.summary).toMatchObject({ newBrands: 1, participantsToCreate: 1, candidates: 1 });
+    const pk = plan.exhibitorPlan.participants[0].key;
+    expect(plan.exhibitorPlan.candidates).toEqual([
+      { participantRef: { new: pk }, target: { existing: "exr_ngt" }, reason: '이름이 같아요: "네츄럴굿띵스"' },
+    ]);
+    expect(plan.exhibitorPlan.candidates[0]).not.toHaveProperty("boothId");
+    expect(plan.exhibitorPlan.assignments).toEqual([]);
+    expect(plan.nameMatches).toEqual([{ key: "ny-311", name: "네츄럴굿띵스", existing: [{ id: "exr_ngt", name: "네츄럴굿띵스" }] }]);
+  });
+
+  it("다른 이름(영문 이름)만 같아도 후보가 된다", () => {
+    const plan = run({
+      file: file([{ key: "ny-311", name: "네츄럴 굿 띵스 스튜디오", aliases: ["NGT Studio"] }]),
+      graph: { ...ngtGraph, exhibitors: [{ ...ngtGraph.exhibitors[0], aliases: ["NGT Studio"] }] },
+      existing: [{ ...ngtExisting[0], names: ["네츄럴굿띵스", "NGT Studio"] }],
+    });
+    expect(plan.exhibitorPlan.candidates).toEqual([
+      expect.objectContaining({ target: { existing: "exr_ngt" }, reason: '이름이 같아요: "NGT Studio"' }),
+    ]);
+  });
+
+  it("#192가 먼저 올라간 뒤 다시 올려도(파일 키로 찾음) 있는 참가로 후보를 낸다", () => {
+    const keyed: ExhibitorGraph = {
+      ...ngtGraph,
+      exhibitors: [...ngtGraph.exhibitors, { id: "exr_ny311", canonicalName: "네츄럴굿띵스", aliases: ["NGT"], brandKeys: [brandScopeKey(ngt, "ny-311")] }],
+      participants: [...ngtGraph.participants, { id: "pt_ny311", exhibitorId: "exr_ny311", exhibitionId: "exh_ny", displayName: "네츄럴굿띵스" }],
+    };
+    const existing = [
+      ...ngtExisting,
+      { id: "exr_ny311", keys: [brandKeyIdentity(brandScopeKey(ngt, "ny-311"))], names: ["네츄럴굿띵스", "NGT"] },
+    ];
+    const plan = run({ file: ngt, graph: keyed, existing });
+    expect(plan.brands[0]).toMatchObject({ matchedBy: "brandKey", participant: "exists" });
+    expect(plan.exhibitorPlan.exhibitors).toEqual([]);
+    expect(plan.exhibitorPlan.participants).toEqual([]);
+    expect(plan.exhibitorPlan.candidates).toEqual([
+      { participantRef: { existing: "pt_ny311" }, target: { existing: "exr_ngt" }, reason: '이름이 같아요: "네츄럴굿띵스"' },
+    ]);
+    // 이미 낸 짝(대기든 반려든)은 다시 내지 않는다.
+    const again = run({
+      file: ngt,
+      graph: keyed,
+      existing,
+      decidedCandidates: candidateKeys([{ boothId: null, participantId: "pt_ny311", exhibitorId: "exr_ngt" }]),
+    });
+    expect(again.exhibitorPlan.candidates).toEqual([]);
+  });
+
+  it("인스타가 맞거나 사람이 id를 적었으면 후보를 내지 않는다", () => {
+    const byIg = run({ file: file([{ key: "ny-311", name: "네츄럴굿띵스", instagramUrl: "https://instagram.com/ngt_kr" }]), graph: ngtGraph, existing: ngtExisting });
+    expect(byIg.brands[0].matchedBy).toBe("identity");
+    expect(byIg.exhibitorPlan.candidates).toEqual([]);
+    const explicit = run({ file: file([{ key: "ny-311", name: "네츄럴굿띵스", exhibitorId: "exr_ngt" }]), graph: ngtGraph, existing: ngtExisting });
+    expect(explicit.exhibitorPlan.candidates).toEqual([]);
+  });
+
+  it("행사가 없는 파일은 참가가 없어 후보 대신 '이름 같은 기존 브랜드'로만 보여 준다", () => {
+    const plan = run({ file: file([{ key: "ny-311", name: "네츄럴굿띵스" }], null), exhibitionId: null, graph: ngtGraph, existing: ngtExisting });
+    expect(plan.exhibitorPlan.candidates).toEqual([]);
+    expect(plan.nameMatches).toHaveLength(1);
   });
 });
 
