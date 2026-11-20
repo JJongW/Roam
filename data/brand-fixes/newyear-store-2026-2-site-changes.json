@@ -1,0 +1,181 @@
+{
+  "version": "brand-fix.v1",
+  "exhibitionSlug": "newyear-store-2026",
+  "note": "2026-11-20 Ted 결정. 2026-11-19 사이트 대조에서 바뀐 13곳(소개 3, 분류 5, 사진 5)을 사이트 값으로 덮는다. 소개는 브랜드가 쓴 원문 그대로(collected)",
+  "ops": [
+    {
+      "op": "setIntro",
+      "key": "ny-209",
+      "exhibitorId": "exr_zeti05sqmwa3huom",
+      "from": "일기는 나를 돌보기 위해 시작하지만, 어느 순간 ‘꼭 써야 하는 숙제’가 되기도 합니다. 무뿌는 일기를 자꾸 멈추게 되는 사람들을 위해, 기록을 조금 더 가볍고 즐겁게 만드는 방법을 고민합니다.\n\n식물마다 필요한 물과 성장의 속도가 다르듯, 사람마다 돌보고 싶은 마음과 기록의 리듬도 다릅니다. 그래서 무뿌는 매달 나에게 필요한 ‘마음의 씨앗’을 하나 고르고, 작은 기록을 남길 때마다 물을 주듯 마음을 키워가는 한 달 일기 키트를 만들었습니다.\n\n새해에는 완벽하게 채워야 할 일기장 대신, 오늘의 나에게 필요한 씨앗 하나를 골라보세요. 매일 쓰지 않아도 괜찮습니다. 작은 기록 하나도 나를 돌보는 물주기가 될 수 있으니까요.\n\n2027년, 무뿌와 함께 나만의 마음을 천천히 키워보세요.",
+      "to": "https://mooppu.com/  \n무뿌는 일기를 자꾸 멈추게 되는 사람들을 위해, 기록을 조금 더 쉽고 즐겁게 만드는 방법을 고민합니다.\n\n\n\n무뿌는 물뿌리개에서 출발한 이름입니다. 식물마다 필요한 물의 주기와 성장 속도가 다르듯, 사람마다 돌보고 싶은 마음과 기록의 리듬도 다릅니다. 그래서 무뿌는 매달 나에게 필요한 ‘마음의 씨앗’을 하나 고르고, 작은 기록을 남길 때마다 물을 주듯 마음을 키워가는 한 달 일기 키트와 내가 고른 씨앗을 키워가는 디지털 정원을 만들었습니다.\n\n\n\n새해에는 완벽하게 채워야 할 일기장 대신, 오늘의 나에게 필요한 씨앗 하나를 골라보세요.",
+      "source": "https://www.newyear-store.com/program/brands (브랜드 209)"
+    },
+    {
+      "op": "setIntro",
+      "key": "ny-197",
+      "exhibitorId": "exr_3oef7v92mwa3huom",
+      "from": "새해를 준비하는 마음, 한 권의 책이면 충분합니다.\n\n한 해를 잘 살아냈다는 것은 어쩌면 한 권의 책을 통해 잠시 나를 돌아보는 일에서 시작되는지도 모릅니다.\n도서출판 북심은 이번 겨울, 새로운 목표를 세우기보다 내가 무엇을 좋아하고 어떤 삶을 살아가고 싶은지 천천히 생각해보는 시간을 권합니다.\n책을 고르고, 읽고, 마음에 남은 문장을 음미하고, 생각을 글로 남기는 시간. \n그 작은 사유가 다가올 한 해의 방향을 만들어줄지도 모릅니다.\n책을 통해 나를 돌아보고, 삶을 생각하며, 새로운 한 해를 조금 더 따뜻하게 시작할 수 있도록 북심이 함께 하겠습니다.",
+      "to": "새해를 준비하는 마음, 한 권의 책이면 충분합니다.\n한 해를 잘 살아냈다는 것은 어쩌면 한 권의 책을 통해 나를 돌아보는 일부터 시작되는지도 모릅니다.\n\n도서출판 북심은 이번 겨울, 새로운 목표를 세우기보다 내가 무엇을 좋아하고 어떤 삶을 살아가고 싶은지 천천히 생각해보는 시간을 권합니다.\n\n책을 고르고, 마음에 남은 문장을 음미하며 기록으로 남기는 시간이 다가올 한 해의 방향을 만들어줄지도 모릅니다.\n\n북심은 책을 통해 나를 돌아보고, 새로운 한 해를 조금 더 따뜻하게 시작할 수 있도록 함께 하겠습니다.",
+      "source": "https://www.newyear-store.com/program/brands (브랜드 197)"
+    },
+    {
+      "op": "setIntro",
+      "key": "ny-160",
+      "exhibitorId": "exr_340f0bn5mwa3huom",
+      "from": "당신의 행복지수를 높여주는 브랜드, 지니퍼센트.\nJINI%, made to raise your happiness.\n\n‘올해도 고생했어, 내년 잘 보내자’라는 메시지를 담아, 한 해를 잘 마무리하고 새로운 2027년을 나답게 시작할 수 있는 문구·기록 제품을 선보입니다.\n\n나에게 조금 더 너그러워지는 새해, 지니퍼센트가 함께합니다.",
+      "to": "당신의 행복지수를 높여줄 브랜드, 지니퍼센트.\n‘올해도 고생했어, 새해도 잘 보내자’라는 메시지를 담아, 한 해를 잘 마무리하고 2027년을 나답게 시작할 수 있는 문구·기록 제품을 선보입니다.\n나에게 조금 더 너그러워지는 새해, 지니퍼센트가 함께합니다.",
+      "source": "https://www.newyear-store.com/program/brands (브랜드 160)"
+    },
+    {
+      "op": "setCategory",
+      "key": "ny-286",
+      "exhibitorId": "exr_a09d1q1jmwa3huom",
+      "from": "취미/웰니스",
+      "to": "외국어/학습"
+    },
+    {
+      "op": "setCategory",
+      "key": "ny-259",
+      "exhibitorId": "exr_d41xgdh7mwa3huom",
+      "from": "취미/웰니스",
+      "to": "새해 도서전"
+    },
+    {
+      "op": "setCategory",
+      "key": "ny-234",
+      "exhibitorId": "exr_vl9a1dkumwa3huom",
+      "from": "취미/웰니스",
+      "to": "캘린더전"
+    },
+    {
+      "op": "setCategory",
+      "key": "ny-213",
+      "exhibitorId": "exr_ukk1nklzmwa3huom",
+      "from": "외국어/학습",
+      "to": "새해 도서전"
+    },
+    {
+      "op": "setCategory",
+      "key": "ny-80",
+      "exhibitorId": "exr_r570cuxpmwa3huon",
+      "from": "외국어/학습",
+      "to": "새해 도서전"
+    },
+    {
+      "op": "setPhotos",
+      "key": "ny-292",
+      "exhibitorId": "exr_0z69oq7hmwa3huom",
+      "from": [
+        {
+          "path": "/booths/newyear-store-2026/NY292_1.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY292_2.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        }
+      ],
+      "to": [
+        {
+          "path": "/booths/newyear-store-2026/NY292_3.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY292_4.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY292_5.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        }
+      ],
+      "source": "https://www.newyear-store.com/program/brands (브랜드 292)"
+    },
+    {
+      "op": "setPhotos",
+      "key": "ny-243",
+      "exhibitorId": "exr_58ptyx8xmwa3huom",
+      "from": [
+        {
+          "path": "/booths/newyear-store-2026/NY243_1.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        }
+      ],
+      "to": [
+        {
+          "path": "/booths/newyear-store-2026/NY243_2.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY243_3.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY243_4.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        }
+      ],
+      "source": "https://www.newyear-store.com/program/brands (브랜드 243)"
+    },
+    {
+      "op": "setPhotos",
+      "key": "ny-225",
+      "exhibitorId": "exr_i59rkozrmupq9q24",
+      "from": [],
+      "to": [
+        {
+          "path": "/booths/newyear-store-2026/NY225_1.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY225_2.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY225_3.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        }
+      ],
+      "source": "https://www.newyear-store.com/program/brands (브랜드 225)"
+    },
+    {
+      "op": "setPhotos",
+      "key": "ny-209",
+      "exhibitorId": "exr_zeti05sqmwa3huom",
+      "from": [],
+      "to": [
+        {
+          "path": "/booths/newyear-store-2026/NY209_1.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY209_2.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY209_3.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        }
+      ],
+      "source": "https://www.newyear-store.com/program/brands (브랜드 209)"
+    },
+    {
+      "op": "setPhotos",
+      "key": "ny-37",
+      "exhibitorId": "exr_4vv5yzkrmwa3huon",
+      "from": [],
+      "to": [
+        {
+          "path": "/booths/newyear-store-2026/NY37_1.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY37_2.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        }
+      ],
+      "source": "https://www.newyear-store.com/program/brands (브랜드 37)"
+    }
+  ]
+}

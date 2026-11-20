@@ -1,0 +1,14 @@
+{
+  "version": "brand-fix.v1",
+  "exhibitionSlug": "newyear-store-2026",
+  "note": "2026-11-20 Ted 결정. ny-261 사이트 표기가 어떤우주로 바뀌어 운영 이름과 이 행사 표기 이름을 고친다. 옛 표기는 별칭으로 남긴다",
+  "ops": [
+    {
+      "op": "rename",
+      "key": "ny-261",
+      "exhibitorId": "exr_2log74cgmwa3huom",
+      "from": "어떤웅주",
+      "to": "어떤우주"
+    }
+  ]
+}
