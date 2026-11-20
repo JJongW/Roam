@@ -17,6 +17,10 @@ describe("PUBLIC_PATH_PATTERNS", () => {
     expect(isPublic("/exhibitions/sibf-2026/map")).toBe(true);
   });
 
+  it("부스 목록(UI 8 둘러보기)을 공개로 허용", () => {
+    expect(isPublic("/exhibitions/sibf-2026/booths")).toBe(true);
+  });
+
   it("부스 상세를 공개로 허용", () => {
     expect(isPublic("/booths/b_a1406")).toBe(true);
   });

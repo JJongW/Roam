@@ -58,6 +58,17 @@ export const romi = {
   recapKeep: "적어 주신 말은 고치지 않고 이 브라우저에 남겨 둘게요.",
   /** 12-03 */
   recapSaved: "남겨 주신 말이에요",
+  // UI 8 둘러보기(L-B 분류 먼저, 11-11). 부스 목록 머리의 로미 말 상자.
+  /** 8-01 "A홀부터 D홀까지 부스 597곳이 있어요.\n어떤 분류부터 볼까요?" 홀이 하나면 "A홀에", 모르면 홀 없이. */
+  boothListIntro: (halls: string[], n: number) => {
+    const where =
+      halls.length > 1
+        ? `${halls[0]}부터 ${halls[halls.length - 1]}까지 `
+        : halls.length === 1
+          ? `${halls[0]}에 `
+          : "";
+    return `${where}부스 ${n}곳이 있어요.\n어떤 분류부터 볼까요?`;
+  },
 } as const;
 
 export const system = {
@@ -298,6 +309,17 @@ export const label = {
   goTogether: "같이 가요",
   noThanks: "괜찮아요",
   // UI 12
+  // UI 8 둘러보기
+  browse: "둘러보기",
+  boothList: "부스 목록",
+  boothListOpen: "부스 목록 보기",
+  boothListSub: "분류별로 볼 수 있어요",
+  /** 8-01 머리 오른쪽 글자 버튼 */
+  toMap: "지도로 보기",
+  /** 분류가 없는 부스를 모은 줄(Figma 8-01 "그 밖") */
+  otherCategory: "그 밖",
+  /** 8-02 "96곳, 부스 번호 순이에요" */
+  byNumber: (n: number) => `${n}곳, 부스 번호 순이에요`,
   recapPlaceholder: "떠오르는 대로 적어 주세요",
   leave: "남기기",
   placesStat: (n: number) => `${n}곳`,
