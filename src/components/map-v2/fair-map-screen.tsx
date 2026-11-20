@@ -124,10 +124,13 @@ export function FairMapScreen({
   detail,
   booths,
   initialFocusId,
+  initialRoute,
 }: {
   detail: ExhibitionDetail;
   booths: BoothListItem[];
   initialFocusId?: string;
+  /** 부스 상세 "길 안내"(4-02)로 왔으면 그 부스(initialFocusId)로 길 안내(UI 9)를 바로 시작한다. */
+  initialRoute?: boolean;
 }) {
   const slug = detail.exhibition.slug;
   const floorplan = FLOORPLANS[slug];
@@ -225,6 +228,7 @@ export function FairMapScreen({
   const isPrefair = phase === "upcoming";
   const isEnded = phase === "ended";
   const canRoute = isOpenDay && !!floorplan;
+  const routeOnArrival = !!initialRoute && !!initialFocusId && canRoute;
   const [snack, setSnack] = useState<SnackbarState | null>(null);
   const closeSnack = useCallback(() => setSnack(null), []);
 
@@ -351,7 +355,8 @@ export function FairMapScreen({
     const st = readFairState(slug);
     const recs = useVisitStore.getState().records;
     const heartsHere = booths.filter((b) => isHearted(recs[b.id])).length;
-    let step: FairEntryStep = isEnded
+    // 상세에서 길 안내를 누르고 왔으면 사진 고르기나 다시 묻기로 가리지 않는다(누른 일이 먼저다).
+    let step: FairEntryStep = isEnded || routeOnArrival
       ? "none"
       : entryStep(st, { photoCount: moodList.length, heartsHere, today });
     // 1-09는 여는 날부터. 열리기 전은 로미 알약 "아직 열리기 전이에요"로 충분하다(11-17 브랜드 검토).
@@ -653,6 +658,23 @@ export function FairMapScreen({
       attempt: 0,
     });
   };
+
+  // 4-02 상세 "길 안내"로 왔으면 지도가 뜬 뒤 그 부스로 길 안내를 바로 시작한다(9-02 어디서 출발하는지 묻기부터).
+  // 새로 고침으로 다시 시작하지 않게 주소의 route=1은 지운다.
+  const routeStarted = useRef(false);
+  useEffect(() => {
+    if (!routeOnArrival || !hydrated || routeStarted.current || !initialFocusId) return;
+    routeStarted.current = true;
+    try {
+      const u = new URL(window.location.href);
+      u.searchParams.delete("route");
+      window.history.replaceState(window.history.state, "", u.pathname + u.search);
+    } catch {
+      /* 주소를 못 고쳐도 길 안내는 시작한다 */
+    }
+    startRoute(initialFocusId, "booth_detail");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [routeOnArrival, hydrated]);
 
   /** 9-02 답으로 선을 한 번 그린다. null은 "잘 모르겠어요"(출입구에서). */
   const drawRoute = (r: RouteSession, startId: string | null) => {

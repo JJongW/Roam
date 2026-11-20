@@ -52,6 +52,8 @@ export interface BoothDetailV2Props {
   fairEnded?: boolean;
   /** UI 19-A1 브랜드 줄. 부스에 대표 브랜드가 이어져 있을 때만. 이름은 브랜드 이름, 없으면 부스 이름. */
   brand?: { exhibitorId: string; name: string };
+  /** 여는 날이고 배치도가 있으면 아래 바에 "길 안내"(4-02). 누르면 지도로 돌아가 그 부스로 길 안내(UI 9)를 시작한다. */
+  canRoute?: boolean;
 }
 
 /**
@@ -63,7 +65,8 @@ export interface BoothDetailV2Props {
  * - 브랜드가 직접 쓴 소개 원문은 고치지 않는다(브랜드 규칙 §1 예외, 11-09).
  * - 사진을 누르면 4-03 사진 크게 보기(옆으로 넘김, 알약 "2 / 5").
  * - 4-07 "지도에서 보기"는 상세를 쌓지 않고 지도로 바꿔 연다(뒤로 가기가 길어지지 않는다, 11-13).
- * - 길 안내 버튼은 상세에 아직 없다. 길 안내(UI 9)는 지도 카드와 로미 시트에서 시작한다.
+ * - 아래 바 "길 안내"(4-02, 4-04, 4-05, 11-20 Ted): 상세를 닫고 지도로 바꿔 열어 그 부스로 길 안내(UI 9)를 시작한다
+ *   (`/map?booth=<id>&route=1`). 지도 카드와 같은 조건(여는 날, 배치도)일 때만 보인다.
  * - W2: 남기신 것(6-05, 6-07, 6-08), 끝난 박람회의 어떠셨어요 띠(6-09), v1에서 옮긴 이벤트, 웰컴 키트,
  *   다른 행사에서도, 함께 입점한 곳. AI 요약과 후기는 옮기지 않았다(docs/decisions/2026-11-18_웹-디자인-v2-이전-계획.md W2).
  */
@@ -80,6 +83,7 @@ export function BoothDetailV2({
   aliases,
   fairEnded,
   brand,
+  canRoute,
 }: BoothDetailV2Props) {
   const s = useBoothSignals({
     boothId: booth.id,
@@ -290,7 +294,9 @@ export function BoothDetailV2({
               aria-pressed={s.visited}
               onClick={s.toggleVisited}
               className={clsx(
-                "flex min-h-v2-x12 flex-1 items-center justify-center gap-v2-x1-5 rounded-[var(--roam-v2-trial-radius-control-1)] border text-v2-t4 font-v2-bold",
+                "flex min-h-v2-x12 items-center justify-center gap-v2-x1-5 rounded-[var(--roam-v2-trial-radius-control-1)] border text-v2-t4 font-v2-bold",
+                // 길 안내가 있으면 다녀왔어요는 글자만큼, 길 안내가 남은 폭을 쓴다(Figma 4-02).
+                canRoute && mapHref ? "shrink-0 px-v2-x4" : "flex-1",
                 s.visited
                   ? "border-v2-bg-brand-solid bg-v2-bg-brand-solid text-v2-fg-on-brand-solid active:bg-v2-bg-brand-solid-pressed"
                   : "border-v2-stroke-neutral-muted bg-v2-bg-layer-floating text-v2-fg-neutral active:bg-v2-bg-layer-floating-pressed",
@@ -304,6 +310,15 @@ export function BoothDetailV2({
               )}
               {label.visited}
             </button>
+            {canRoute && mapHref && (
+              <button
+                type="button"
+                onClick={() => router.replace(`${mapHref}&route=1`)}
+                className="flex min-h-v2-x12 flex-1 items-center justify-center rounded-[var(--roam-v2-trial-radius-control-1)] bg-v2-bg-brand-solid text-v2-t4 font-v2-bold text-v2-fg-on-brand-solid active:bg-v2-bg-brand-solid-pressed"
+              >
+                {label.route}
+              </button>
+            )}
           </div>
         </div>
       </div>

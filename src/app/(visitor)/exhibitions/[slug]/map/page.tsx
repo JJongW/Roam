@@ -13,7 +13,7 @@ export const metadata = { title: "지도" };
 
 type Props = {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{ booth?: string; skeletonDelay?: string }>;
+  searchParams: Promise<{ booth?: string; route?: string; skeletonDelay?: string }>;
 };
 
 /**
@@ -23,7 +23,7 @@ type Props = {
  */
 export default async function MapPage({ params, searchParams }: Props) {
   const { slug } = await params;
-  const { booth, skeletonDelay } = await searchParams;
+  const { booth, route, skeletonDelay } = await searchParams;
   await devSkeletonDelay(skeletonDelay);
   const repo = await getRepository();
   const detail = await repo.getExhibition(slug);
@@ -46,5 +46,13 @@ export default async function MapPage({ params, searchParams }: Props) {
     );
   }
 
-  return <FairMapScreen detail={detail} booths={booths} initialFocusId={booth} />;
+  // `?booth=<id>&route=1`: 부스 상세 아래 바 "길 안내"(4-02)로 왔다. 지도에서 그 부스로 길 안내(UI 9)를 바로 시작한다.
+  return (
+    <FairMapScreen
+      detail={detail}
+      booths={booths}
+      initialFocusId={booth}
+      initialRoute={!!booth && route === "1"}
+    />
+  );
 }
