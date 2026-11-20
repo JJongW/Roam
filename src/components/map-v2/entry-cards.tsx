@@ -215,6 +215,7 @@ export function FirstPickCard({
   head,
   onHeart,
   onNotThis,
+  onLater,
 }: {
   booth: BoothListItem;
   code?: string;
@@ -224,6 +225,8 @@ export function FirstPickCard({
   head: string;
   onHeart: () => void;
   onNotThis: () => void;
+  /** 로미 줄 오른쪽 "나중에 할게요"(11-20 Figma 3238:21748). 카드를 닫고 지도로. */
+  onLater: () => void;
 }) {
   // 한 줄 소개는 부스 소개(저작 요약 → 브랜드가 쓴 소개글 순, iOS #211과 같다). 시드가 합성한 소개는 쓰지 않고,
   // 없으면 확인된 고른 이유("고르신 사진의 부스예요.")를 쓴다. 소개글은 고치지 않는다(브랜드 규칙 §1 예외).
@@ -239,12 +242,20 @@ export function FirstPickCard({
     >
       <div className="flex items-center gap-v2-x2">
         <RomiAvatar size="md" />
-        <p role="status" aria-live="polite" className="min-w-0 flex-1 truncate text-v2-t3 font-v2-medium text-v2-fg-neutral">
+        <p role="status" aria-live="polite" className="min-w-0 flex-1 text-v2-t3 font-v2-medium text-v2-fg-neutral">
           {head}
         </p>
         <span className="shrink-0 text-v2-t3 font-v2-medium text-v2-fg-neutral-muted">
           {entryCopy.progress(index + 1, total)}
         </span>
+        {/* 글자는 caption 12 Regular, 누르는 자리는 44(iOS FirstPickCard 와 같다). */}
+        <button
+          type="button"
+          onClick={onLater}
+          className="-mx-v2-x2 flex min-h-v2-x11 shrink-0 items-center rounded-v2-r2 px-v2-x2 text-v2-t2 font-v2-regular text-v2-fg-neutral-muted active:bg-v2-bg-transparent-pressed"
+        >
+          {entryCopy.later}
+        </button>
       </div>
       <div className="flex flex-col gap-v2-x1">
         <p className="flex items-baseline gap-v2-x2">

@@ -557,8 +557,9 @@ export function FairMapScreen({
   };
 
   const currentPick = picks[pickIndex];
-  /** 1-05 "하트 남기기", "이건 아니에요". 누르면 다음 곳으로(1-06 머리 줄이 방금 남긴 하트를 말한다). */
-  const pickAction = (action: "heart" | "not_this") => {
+  /** 1-05 "하트 남기기", "이건 아니에요", "나중에 할게요". 앞의 둘은 다음 곳으로(1-06 머리 줄이 방금 남긴 하트를 말한다).
+   *  "나중에 할게요"는 남기는 것 없이 카드를 닫고 지도로(iOS firstPickAction("later")와 같다). */
+  const pickAction = (action: "heart" | "not_this" | "later") => {
     if (!currentPick) return;
     const b = booths.find((x) => x.id === currentPick.boothId);
     if (action === "heart") {
@@ -573,7 +574,7 @@ export function FairMapScreen({
         });
       }
       setPickHead(entryCopy.heartLeft(b?.name ?? ""));
-    } else {
+    } else if (action === "not_this") {
       // 온보딩 답일 뿐, 부스 평가(패스)가 아니다.
       setFairState(
         updateFairState(slug, (s) => ({ ...s, notThis: [...s.notThis, currentPick.boothId] })),
@@ -585,6 +586,11 @@ export function FairMapScreen({
       boothId: currentPick.boothId,
       props: { choice: action, index: pickIndex },
     });
+    if (action === "later") {
+      setPicks([]);
+      firstPicksEnded();
+      return;
+    }
     const next = pickIndex + 1;
     if (next >= picks.length) {
       setPicks([]);
@@ -1027,6 +1033,7 @@ export function FairMapScreen({
       head={pickHead}
       onHeart={() => pickAction("heart")}
       onNotThis={() => pickAction("not_this")}
+      onLater={() => pickAction("later")}
     />
   ) : onsiteAsk ? (
     <EntryCard
