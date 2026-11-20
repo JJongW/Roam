@@ -39,11 +39,17 @@ export async function GET(req: Request) {
       providerErrorDescription: url.searchParams.get("error_description"),
       hasCode: Boolean(code),
     });
-    const target = new URL("/login", url.origin);
-    target.searchParams.set("login_error", reason);
-    // 5-07에서 다시 해 보면 원래 가려던 곳으로 가도록 next를 이어 준다.
     const back = url.searchParams.get("next");
-    if (back && back.startsWith("/") && !back.startsWith("//")) target.searchParams.set("next", back);
+    const safeBack = back && back.startsWith("/") && !back.startsWith("//") ? back : null;
+    // 지금 화면 위 시트(UI 5-04)에서 시작했으면 그 화면으로 돌려보내고 AuthBootstrap이 시트를 5-07로 다시 연다
+    // (11-20 Ted: 로그인은 페이지 이동 대신 시트). 시트는 보고 있던 화면에서만 열리니 그 화면은 열 수 있다.
+    const target =
+      url.searchParams.get("via") === "sheet" && safeBack
+        ? new URL(safeBack, url.origin)
+        : new URL("/login", url.origin);
+    target.searchParams.set("login_error", reason);
+    // /login의 5-07에서 다시 해 보면 원래 가려던 곳으로 가도록 next를 이어 준다.
+    if (target.pathname === "/login" && safeBack) target.searchParams.set("next", safeBack);
     if (detail) target.searchParams.set("login_detail", detail.slice(0, 160));
     return NextResponse.redirect(target);
   };

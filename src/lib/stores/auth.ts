@@ -20,8 +20,12 @@ interface AuthState {
   user: User | null;
   /** false until the initial /api/auth/me check resolves. */
   ready: boolean;
-  /** Controls the global login sheet. */
+  /** 지금 화면 위 로그인 시트(UI 5-04, 5-07, `LoginSheet`)가 열렸는지. */
   loginOpen: boolean;
+  /** 시트를 부른 자리(이벤트 props.source). */
+  loginSource: string;
+  /** Google에서 실패하고 돌아와 다시 연 시트면 그 이유(`login_error`). 있으면 5-07(취소 denied는 5-04). */
+  loginReturned: string | null;
   /** 로그인 계정에 아직 취향(브레인 관심)이 없으면 true — 앱 온보딩을 다시 띄울지
    *  판정하는 서버 신호(AppOnboardingGate가 씀). 비로그인은 이 값 대신
    *  localStorage로 따로 판정한다(계정이 없어 서버에 물을 게 없음). */
@@ -35,7 +39,8 @@ interface AuthState {
   /** 닉네임 버튼(계정 시트)에서 "온보딩 다시 하기" — 로컬 dismiss를 풀고 서버
    *  신호(needsOnboarding)도 다시 세워 AppOnboardingGate가 처음부터 다시 뜨게 한다. */
   restartAppOnboarding: () => void;
-  openLogin: () => void;
+  /** 페이지 이동 없이 지금 화면 위에 로그인 시트를 띄운다. */
+  openLogin: (source?: string, returned?: string | null) => void;
   closeLogin: () => void;
   refresh: () => Promise<void>;
   login: (nickname: string) => Promise<void>;
@@ -106,7 +111,7 @@ export async function syncPendingReactions(): Promise<boolean> {
  * 화면 상태로는 "방금 로그인했다"를 알 수 없다. 탭 단위(sessionStorage)로 남기고, 돌아와 로그인이 확인되면
  * 5-05 "로그인했어요. 남긴 하트는 그대로 있어요."를 한 번 띄운다.
  */
-const LOGIN_STARTED_KEY = "roam.login.started";
+export const LOGIN_STARTED_KEY = "roam.login.started";
 export function markLoginStarted(source: string) {
   try {
     sessionStorage.setItem(LOGIN_STARTED_KEY, source || "login");
@@ -156,6 +161,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   user: null,
   ready: false,
   loginOpen: false,
+  loginSource: "sheet",
+  loginReturned: null,
   needsOnboarding: false,
   setNeedsOnboarding: (v) => set({ needsOnboarding: v }),
   onboardingDismissedBy:
@@ -179,7 +186,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     clearSessionState(APP_ONBOARDING_PHASE_KEY, APP_ONBOARDING_GUIDE_STEP_KEY);
     set({ onboardingDismissedBy: null, needsOnboarding: true });
   },
-  openLogin: () => set({ loginOpen: true }),
+  openLogin: (source = "sheet", returned = null) =>
+    set({ loginOpen: true, loginSource: source, loginReturned: returned }),
   closeLogin: () => set({ loginOpen: false }),
 
   refresh: async () => {
@@ -241,7 +249,7 @@ export function promptLogin(message = "로그인이 필요해요", description?:
     description,
     action: {
       label: "로그인",
-      onClick: () => useAuthStore.getState().openLogin(),
+      onClick: () => useAuthStore.getState().openLogin("toast"),
     },
   });
 }

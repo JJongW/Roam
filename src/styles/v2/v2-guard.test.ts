@@ -103,6 +103,12 @@ export const V2_FILES = [
   "src/components/home/hearted-brands.tsx",
   "src/components/home/verdict-ask.tsx",
   "src/components/common/offline-band.tsx",
+  // UI 5-04, 5-07 로그인 시트(지금 화면 위)와 /login 페이지
+  "src/components/auth/login-panel.tsx",
+  "src/components/auth/login-sheet.tsx",
+  "src/app/login/login-form.tsx",
+  // UI 8 둘러보기(8-01~8-04)
+  "src/components/browse/booth-list-screen.tsx",
 ];
 
 /** 주석을 지운다 — 설명에 예시 값이 들어 있어도 된다. */

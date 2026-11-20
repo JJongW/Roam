@@ -15,6 +15,7 @@ import {
   X,
 } from "lucide-react";
 import { clsx } from "clsx";
+import { useRouter } from "next/navigation";
 import { ExhibitionMap, type MapHandle } from "@/components/map/exhibition-map";
 import { MapLayerV2, type RouteOverlay } from "@/components/map-v2/map-layer";
 import { RomiSheet } from "@/components/map-v2/romi-sheet";
@@ -34,7 +35,10 @@ import {
   entryStep,
   firstPicks as computeFirstPicks,
   moodBooths,
+  morePicks as computeMorePicks,
   readFairState,
+  readPicksOnMap,
+  writePicksOnMap,
   updateFairState,
   type FairEntryStep,
   type FairOnboardingState,
@@ -124,13 +128,20 @@ export function FairMapScreen({
   detail,
   booths,
   initialFocusId,
+  initialRoute,
+  initialRomi,
 }: {
   detail: ExhibitionDetail;
   booths: BoothListItem[];
   initialFocusId?: string;
+  /** 부스 상세 "길 안내"(4-02)로 왔으면 그 부스(initialFocusId)로 길 안내(UI 9)를 바로 시작한다. */
+  initialRoute?: boolean;
+  /** 부스 목록 8-04 "답 바꾸기"로 왔으면 로미 시트를 1-07로 연다. */
+  initialRomi?: "known";
 }) {
   const slug = detail.exhibition.slug;
   const floorplan = FLOORPLANS[slug];
+  const router = useRouter();
   const mapRef = useRef<MapHandle>(null);
   const hydrated = useHydrated();
   const records = useVisitStore((s) => s.records);
@@ -225,6 +236,7 @@ export function FairMapScreen({
   const isPrefair = phase === "upcoming";
   const isEnded = phase === "ended";
   const canRoute = isOpenDay && !!floorplan;
+  const routeOnArrival = !!initialRoute && !!initialFocusId && canRoute;
   const [snack, setSnack] = useState<SnackbarState | null>(null);
   const closeSnack = useCallback(() => setSnack(null), []);
 
@@ -237,11 +249,32 @@ export function FairMapScreen({
   const [picks, setPicks] = useState<FirstPick[]>([]);
   const [pickIndex, setPickIndex] = useState(0);
   const [pickHead, setPickHead] = useState("");
-  const [romiPage, setRomiPage] = useState<"main" | "where">("main");
+  const [romiPage, setRomiPage] = useState<"main" | "where" | "known">("main");
+  // UI 8-06 "제가 고른 곳은 목록에 담아 뒀어요" 줄, 8-07 고른 곳을 지도에 켰는지(오늘만, K-C).
+  const [picksLine, setPicksLine] = useState(false);
+  const [picksOn, setPicksOn] = useState(false);
   // UI 11 M4: 이번에 연 동안 "나중에 할게요"를 눌렀는지, 다 남긴 뒤 고마워요(11-06)를 보이는지.
   const [verdictLater, setVerdictLater] = useState(false);
   const [verdictThanks, setVerdictThanks] = useState(false);
   const decided = useRef(false);
+  // 8-04 로미가 고른 곳: 고르신 사진의 부스와 같은 분류(확인된 이유만). 하트 남긴 곳과 "이건 아니에요"는 뺀다.
+  const morePicks = useMemo(
+    () =>
+      fairState && !isEnded
+        ? computeMorePicks(
+            fairState.moodBoothIds,
+            booths,
+            (id) => catById.get(id)?.name,
+            heartIds,
+            new Set(fairState.notThis),
+          )
+        : [],
+    [fairState, isEnded, booths, catById, heartIds],
+  );
+  const pickReasonOf = useMemo(
+    () => new Map(morePicks.map((p) => [p.boothId, p.reason])),
+    [morePicks],
+  );
   const todayBooths = useMemo(() => {
     if (!hydrated) return [];
     return booths
@@ -314,8 +347,11 @@ export function FairMapScreen({
   );
   const highlightIds = useMemo(() => {
     if (amenity) return new Set(amenityMatches.get(amenity) ?? []);
-    return endedBright;
-  }, [amenity, amenityMatches, endedBright]);
+    if (endedBright) return endedBright;
+    // 8-07: 고른 곳을 켜면 하트와 고른 곳만 밝게, 나머지는 흐리게(37-B).
+    if (picksOn) return new Set([...morePicks.map((p) => p.boothId), ...heartIds]);
+    return null;
+  }, [amenity, amenityMatches, endedBright, picksOn, morePicks, heartIds]);
   const verdictBooth = useMemo(
     () =>
       isEnded && hydrated && !verdictLater ? verdictCandidate(booths, records) : null,
@@ -351,6 +387,28 @@ export function FairMapScreen({
     const st = readFairState(slug);
     const recs = useVisitStore.getState().records;
     const heartsHere = booths.filter((b) => isHearted(recs[b.id])).length;
+    // 아래 setState는 브라우저 저장소(외부 상태)를 읽은 결과다.
+    /* eslint-disable react-hooks/set-state-in-effect */
+    // 8-07 오늘 켜 둔 고른 곳을 되살린다(다음 날이면 꺼져 있다).
+    if (!isEnded) setPicksOn(readPicksOnMap(slug, today));
+    // 8-04 "답 바꾸기"로 왔으면 로미 시트를 1-07로 연다. 새로 고침으로 다시 열지 않게 주소에서 지운다.
+    if (initialRomi === "known" && !isEnded) {
+      setRomiPage("known");
+      setSheet("romi");
+      try {
+        const u = new URL(window.location.href);
+        u.searchParams.delete("romi");
+        window.history.replaceState(window.history.state, "", u.pathname + u.search);
+      } catch {
+        /* 주소를 못 고쳐도 시트는 연다 */
+      }
+    }
+    // 상세에서 길 안내를 누르고 왔으면 사진 고르기나 다시 묻기로 가리지 않는다(누른 일이 먼저다).
+    // 이번 열기는 세지 않아 다음에 지도를 열면 첫 진입 규칙이 그대로 돈다.
+    if (routeOnArrival) {
+      setFairState(st);
+      return;
+    }
     let step: FairEntryStep = isEnded
       ? "none"
       : entryStep(st, { photoCount: moodList.length, heartsHere, today });
@@ -376,7 +434,6 @@ export function FairMapScreen({
       reaskShown: s.reaskShown || step === "reask",
     }));
     // 브라우저 저장소(외부 상태)를 읽은 결과로 첫 화면을 정한다.
-    /* eslint-disable react-hooks/set-state-in-effect */
     setFairState(next);
     setEntry(step);
     if (step === "mood") {
@@ -460,6 +517,45 @@ export function FairMapScreen({
     startFirstPicks(st);
   };
 
+  /** 1-05 세 곳이 끝나면 고른 곳이 더 있을 때 8-06 줄을 한 번(iOS firstPicksEnded). */
+  const firstPicksEnded = () => {
+    const st = readFairState(slug);
+    const recs = useVisitStore.getState().records;
+    const hearted = new Set(booths.filter((b) => isHearted(recs[b.id])).map((b) => b.id));
+    const more = computeMorePicks(
+      st.moodBoothIds,
+      booths,
+      (id) => catById.get(id)?.name,
+      hearted,
+      new Set(st.notThis),
+    );
+    if (!more.length) return;
+    setPicksLine(true);
+    track("romi_pick_shown", {
+      screen: SCREEN.picksLine,
+      exhibitionSlug: slug,
+      props: { count: more.length, from: "map_line" },
+    });
+  };
+
+  /** 8-06 지도에 켜기, 8-07 끄기. 오늘만 켜 둔다. */
+  const setPicksOnMap = (on: boolean) => {
+    setPicksOn(on);
+    setPicksLine(false);
+    writePicksOnMap(slug, on, today);
+    track("romi_pick_map_toggle", {
+      screen: on ? SCREEN.picksLine : SCREEN.picksOnMap,
+      exhibitionSlug: slug,
+      props: { on },
+    });
+  };
+
+  /** 8-06, 8-07 "목록으로 보기": 8-04가 맨 위에 있는 부스 목록. */
+  const openPicksList = () => {
+    setPicksLine(false);
+    router.push(`/exhibitions/${slug}/booths`);
+  };
+
   const currentPick = picks[pickIndex];
   /** 1-05 "하트 남기기", "이건 아니에요". 누르면 다음 곳으로(1-06 머리 줄이 방금 남긴 하트를 말한다). */
   const pickAction = (action: "heart" | "not_this") => {
@@ -492,6 +588,7 @@ export function FairMapScreen({
     const next = pickIndex + 1;
     if (next >= picks.length) {
       setPicks([]);
+      firstPicksEnded();
       return;
     }
     setPickIndex(next);
@@ -653,6 +750,23 @@ export function FairMapScreen({
       attempt: 0,
     });
   };
+
+  // 4-02 상세 "길 안내"로 왔으면 지도가 뜬 뒤 그 부스로 길 안내를 바로 시작한다(9-02 어디서 출발하는지 묻기부터).
+  // 새로 고침으로 다시 시작하지 않게 주소의 route=1은 지운다.
+  const routeStarted = useRef(false);
+  useEffect(() => {
+    if (!routeOnArrival || !hydrated || routeStarted.current || !initialFocusId) return;
+    routeStarted.current = true;
+    try {
+      const u = new URL(window.location.href);
+      u.searchParams.delete("route");
+      window.history.replaceState(window.history.state, "", u.pathname + u.search);
+    } catch {
+      /* 주소를 못 고쳐도 길 안내는 시작한다 */
+    }
+    startRoute(initialFocusId, "booth_detail");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [routeOnArrival, hydrated]);
 
   /** 9-02 답으로 선을 한 번 그린다. null은 "잘 모르겠어요"(출입구에서). */
   const drawRoute = (r: RouteSession, startId: string | null) => {
@@ -970,6 +1084,25 @@ export function FairMapScreen({
       sub={entryCopy.seeInMyPage}
       topRight={{ label: entryCopy.close, onClick: () => setVerdictThanks(false) }}
     />
+  ) : picksOn && morePicks.length > 0 ? (
+    // 8-07 고른 곳을 지도에 켰을 때. 끄면 지도엔 다시 하트만.
+    <RomiCard
+      title={entryCopy.picksOnMap}
+      sub={heartIds.size > 0 ? entryCopy.picksOnMapBody : entryCopy.picksOnMapBodyNoHearts}
+      actions={[{ label: entryCopy.listView, onClick: openPicksList }]}
+      trailing={{ label: entryCopy.turnOff, onClick: () => setPicksOnMap(false) }}
+    />
+  ) : picksLine ? (
+    // 8-06 고른 곳은 목록에만(K-C). 지도엔 하트만 보인다.
+    <RomiCard
+      title={entryCopy.picksListOnly}
+      sub={heartIds.size > 0 ? entryCopy.picksListOnlyBody : entryCopy.picksListOnlyBodyNoHearts}
+      actions={[
+        { label: entryCopy.listView, onClick: openPicksList },
+        { label: entryCopy.turnOnMap, onClick: () => setPicksOnMap(true) },
+      ]}
+      trailing={{ label: label.close, onClick: () => setPicksLine(false) }}
+    />
   ) : verdictBooth ? (
     <VerdictAskMapCard
       key={verdictBooth.id}
@@ -1236,6 +1369,11 @@ export function FairMapScreen({
                   : undefined
               }
               hallName={hallOf(selected)}
+              pickReason={
+                picksOn && !heartIds.has(selected.id)
+                  ? pickReasonOf.get(selected.id)
+                  : undefined
+              }
               categories={[catById.get(selected.categoryId)].filter(
                 (c): c is NonNullable<typeof c> => !!c,
               )}
@@ -1350,7 +1488,9 @@ export function FairMapScreen({
             isEnded || !fairState
               ? undefined
               : {
-                  pickedCount: fairState.moodBoothIds.length,
+                  pickedNames: fairState.moodBoothIds
+                    .map((id) => boothById.get(id)?.name)
+                    .filter((n): n is string => !!n),
                   onSite: fairState.onSite,
                   onPickAgain: () => {
                     setSheet(null);

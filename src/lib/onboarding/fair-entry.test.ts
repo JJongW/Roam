@@ -4,7 +4,10 @@ import {
   entryStep,
   firstPicks,
   moodBooths,
+  morePicks,
   readFairState,
+  readPicksOnMap,
+  writePicksOnMap,
   reasonCategory,
   reasonPhoto,
   updateFairState,
@@ -68,6 +71,46 @@ describe("firstPicks", () => {
   it("하트 남긴 곳과 이건 아니에요는 뺀다", () => {
     const out = firstPicks(["a1", "b1"], list, name, new Set(["a1"]), new Set(["a2"]));
     expect(out.map((p) => p.boothId)).toEqual(["b1", "b2"]);
+  });
+});
+
+describe("morePicks (8-04 K-C)", () => {
+  const list = [
+    booth("a1", "A"),
+    booth("a2", "A"),
+    booth("a3", "A"),
+    booth("b1", "B"),
+    booth("b2", "B"),
+    booth("c1", "C"),
+  ];
+  const name = (c: string) => ({ A: "문구", B: "향" })[c];
+  it("고른 사진의 부스, 그다음 같은 분류를 돌아가며. 다른 분류는 넣지 않는다", () => {
+    expect(morePicks(["a1", "b1"], list, name, new Set(), new Set())).toEqual([
+      { boothId: "a1", reason: reasonPhoto },
+      { boothId: "b1", reason: reasonPhoto },
+      { boothId: "a2", reason: reasonCategory("문구") },
+      { boothId: "b2", reason: reasonCategory("향") },
+      { boothId: "a3", reason: reasonCategory("문구") },
+    ]);
+  });
+  it("사진을 고르지 않았으면 고르지 않는다(이유를 지어내지 않는다)", () => {
+    expect(morePicks([], list, name, new Set(), new Set())).toEqual([]);
+  });
+  it("하트 남긴 곳과 이건 아니에요는 빼고, 수를 넘지 않는다", () => {
+    const out = morePicks(["a1", "b1"], list, name, new Set(["a1"]), new Set(["a2"]), 2);
+    expect(out.map((p) => p.boothId)).toEqual(["b1", "a3"]);
+  });
+});
+
+describe("지도에 켜기(8-07)", () => {
+  beforeEach(() => window.localStorage.clear());
+  it("오늘만 켜져 있다", () => {
+    writePicksOnMap("x", true, TODAY);
+    expect(readPicksOnMap("x", TODAY)).toBe(true);
+    expect(readPicksOnMap("x", "2026-11-21")).toBe(false);
+    expect(window.localStorage.getItem("roam.picksOnMap.x")).toBe(TODAY);
+    writePicksOnMap("x", false, TODAY);
+    expect(readPicksOnMap("x", TODAY)).toBe(false);
   });
 });
 

@@ -53,7 +53,11 @@ export default async function BoothDetailPage({ params, searchParams }: Props) {
   const exhibition = exhibitions?.data.find((e) => e.id === booth.exhibitionId);
   const exhibitionSlug = exhibition?.slug;
   // 끝난 박람회(한국 날짜 기준, 다른 화면과 같은 판정)에서만 평가를 묻는다(6-09).
-  const fairEnded = !!exhibition && exhibitionStatus(exhibition, todayISO()) === "ended";
+  const status = exhibition ? exhibitionStatus(exhibition, todayISO()) : undefined;
+  const fairEnded = status === "ended";
+  // 4-02 아래 바 "길 안내": 지도 화면과 같은 조건(여는 날이고 배치도와 부스 번호가 있을 때)만 둔다.
+  const canRoute =
+    status === "ongoing" && !!exhibitionSlug && !!FLOORPLANS[exhibitionSlug] && !!booth.code;
   const hallName =
     floorplanHallOf(exhibitionSlug ? FLOORPLANS[exhibitionSlug] : undefined, booth.code) ??
     halls.find((h) => h.id === booth.hallId)?.name;
@@ -91,6 +95,7 @@ export default async function BoothDetailPage({ params, searchParams }: Props) {
         }))}
         aliases={booth.aliases}
         fairEnded={fairEnded}
+        canRoute={canRoute}
         brand={
           brandIds?.exhibitorId
             ? { exhibitorId: brandIds.exhibitorId, name: brandIds.exhibitorName || booth.name }

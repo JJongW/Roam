@@ -35,7 +35,8 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
 - **열람은 공개, 로미의 개인화는 로그인.** `app_user` 단일 계정(닉네임 무비번 + Google OAuth).
   신원은 앱 쿠키 `roam_user` — OAuth 콜백(`/auth/callback`)은 Supabase 세션으로 identity만 읽고 `signOut`한다.
   mock 모드엔 Google 버튼 숨김. 설계: `docs/decisions/2026-07-07_google-oauth-login.md`.
-- 게이트 `src/proxy.ts`: `roam_user` 없으면 `/login?next=`로 307.
+- 게이트 `src/proxy.ts`: `roam_user` 없으면 `/login?next=`로 307. 앱 안에서 로그인을 부르는 자리는 페이지를 옮기지 않고
+  `useAuthStore.getState().openLogin(source)`로 지금 화면 위 시트(UI 5-04, `LoginSheet`)를 띄운다. 내용은 `/login`과 같은 `LoginPanel`(11-20 Ted).
   공개 = `/`·`/privacy`·`/terms`·`/survey`(공개 설문, `docs/decisions/2026-10-16_공개-설문-페이지.md`) + 정확 패턴 `/exhibitions/[slug]`·`/exhibitions/[slug]/map`·`/booths/[id]`.
   ⚠️ `/privacy`·`/terms`는 구글 OAuth 심사가 직접 연다 — 막으면 심사 탈락.
   하위 경로는 패턴에 안 걸려 자동으로 로그인 필수. 예외 프리픽스 = `/login`·`/auth`·`/admin`(자체 게이트)·`/api`·정적.

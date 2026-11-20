@@ -6,6 +6,7 @@ import { Check } from "lucide-react";
 import { RomiAvatar } from "@/components/v2/romi-avatar";
 import { ChoiceChip } from "@/components/v2/choice-chip";
 import { BottomSheet } from "@/components/map-v2/bottom-sheet";
+import { hasRealBlurb } from "@/lib/booth/blurb";
 import { entryCopy } from "@/lib/copy/map-entry";
 import { label } from "@/lib/copy/v1";
 import { MOOD_PICK_COUNT } from "@/lib/onboarding/fair-entry";
@@ -224,13 +225,20 @@ export function FirstPickCard({
   onHeart: () => void;
   onNotThis: () => void;
 }) {
+  // 한 줄 소개는 부스 소개(저작 요약 → 브랜드가 쓴 소개글 순, iOS #211과 같다). 시드가 합성한 소개는 쓰지 않고,
+  // 없으면 확인된 고른 이유("고르신 사진의 부스예요.")를 쓴다. 소개글은 고치지 않는다(브랜드 규칙 §1 예외).
+  const summary = booth.enrichment?.summary?.trim();
+  const intro =
+    summary ||
+    (hasRealBlurb(booth.description, booth) ? booth.description.trim() : undefined) ||
+    reason;
   return (
     <section
       aria-label={booth.name}
-      className="pointer-events-auto flex flex-col gap-v2-x3 rounded-v2-r4 border border-v2-stroke-neutral-muted bg-v2-bg-layer-floating p-v2-x4 shadow-v2-s2"
+      className="pointer-events-auto flex flex-col gap-v2-x2 rounded-v2-r4 border border-v2-stroke-neutral-muted bg-v2-bg-layer-floating p-v2-x4 shadow-v2-s2"
     >
       <div className="flex items-center gap-v2-x2">
-        <RomiAvatar size="sm" />
+        <RomiAvatar size="md" />
         <p role="status" aria-live="polite" className="min-w-0 flex-1 truncate text-v2-t3 font-v2-medium text-v2-fg-neutral">
           {head}
         </p>
@@ -239,24 +247,24 @@ export function FirstPickCard({
         </span>
       </div>
       <div className="flex flex-col gap-v2-x1">
-        <p className="flex items-baseline gap-v2-x1-5">
+        <p className="flex items-baseline gap-v2-x2">
           <span className="text-v2-t7 font-v2-bold tracking-v2-card-title text-v2-fg-neutral">{booth.name}</span>
           {code && <span className="text-v2-t3 font-v2-medium text-v2-fg-neutral-muted">{code}</span>}
         </p>
-        <p className="text-v2-t3 font-v2-medium text-v2-fg-neutral-muted">{reason}</p>
+        <p className="truncate text-v2-t3 font-v2-medium text-v2-fg-neutral-muted">{intro}</p>
       </div>
       <div className="flex gap-v2-x2">
         <button
           type="button"
           onClick={onHeart}
-          className="flex min-h-v2-x11 flex-1 items-center justify-center rounded-v2-r2 bg-v2-bg-neutral-weak text-v2-t4 font-v2-bold text-v2-fg-neutral active:bg-v2-bg-transparent-pressed"
+          className="flex min-h-v2-x10 flex-1 items-center justify-center rounded-v2-r2 bg-v2-bg-neutral-weak px-v2-x4 py-v2-x2-5 text-v2-t4 font-v2-bold text-v2-fg-neutral active:bg-v2-bg-transparent-pressed"
         >
           {entryCopy.leaveHeart}
         </button>
         <button
           type="button"
           onClick={onNotThis}
-          className="flex min-h-v2-x11 flex-1 items-center justify-center rounded-v2-r2 border border-v2-stroke-neutral-muted text-v2-t4 font-v2-bold text-v2-fg-neutral active:bg-v2-bg-transparent-pressed"
+          className="flex min-h-v2-x10 flex-1 items-center justify-center rounded-v2-r2 border border-v2-stroke-neutral-muted px-v2-x4 py-v2-x2-5 text-v2-t4 font-v2-bold text-v2-fg-neutral active:bg-v2-bg-transparent-pressed"
         >
           {entryCopy.notThis}
         </button>

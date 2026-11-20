@@ -1,162 +1,56 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Loader2, UserRound } from "lucide-react";
-import { toast } from "sonner";
-import { ApiClientError } from "@/lib/api/client";
-import { createClient } from "@/lib/supabase/client";
-import { hasSupabase } from "@/lib/env";
-import { useAuthStore } from "@/lib/stores/auth";
-import { GoogleIcon } from "@/components/auth/google-icon";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-} from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Field } from "@/components/ui/field";
-import { useT } from "@/lib/i18n/provider";
+import { useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { LOGIN_STARTED_KEY, useAuthStore } from "@/lib/stores/auth";
+import { BottomSheet } from "@/components/map-v2/bottom-sheet";
+import { LoginPanel } from "@/components/auth/login-panel";
+import { system } from "@/lib/copy/v1";
 
-/** Global nickname-login bottom sheet, driven by useAuthStore.loginOpen. */
+/**
+ * UI 5-04 로그인 시트, 5-07 로그인이 안 됐을 때(Figma 2995:3394, 2995:3878).
+ * 하트, 브랜드 하트, 회고, 마이페이지, API 오류 화면에서 로그인을 부르면 페이지를 옮기지 않고 지금 화면 위에
+ * 올라온다(11-20 Ted). `useAuthStore.openLogin(source)`로 연다. 내용은 `/login` 페이지와 같은 `LoginPanel`.
+ * - 바깥을 누르거나 Esc, "로그인 없이 둘러보기"로 닫으면 화면은 그대로다(5-06).
+ * - Google은 다른 사이트를 돌아오므로, 실패하면 auth/callback이 이 화면으로 돌려보내고 AuthBootstrap이 시트를 5-07로 다시 연다.
+ */
 export function LoginSheet() {
-  const t = useT();
   const open = useAuthStore((s) => s.loginOpen);
+  const source = useAuthStore((s) => s.loginSource);
+  const returned = useAuthStore((s) => s.loginReturned);
   const closeLogin = useAuthStore((s) => s.closeLogin);
-  const login = useAuthStore((s) => s.login);
-
-  const [nickname, setNickname] = useState("");
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  // Redirects the browser to Google; on return, /auth/callback issues the
-  // roam_user cookie. Preserve the current page as the post-login target.
-  //
-  // 반환값을 버리면 안 된다 — 성공 시엔 리디렉트로 화면이 떠나므로, 여기서 error를
-  // 받았다는 건 실패했다는 뜻이다. 예전엔 통째로 버려서 버튼을 눌러도 아무 일도
-  // 일어나지 않았고 원인도 남지 않았다.
-  async function google() {
-    if (busy) return;
-    setBusy(true);
-    setError(null);
-    const next = window.location.pathname + window.location.search;
-    const redirectTo = `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`;
-    try {
-      const { error: oauthError } = await createClient().auth.signInWithOAuth({
-        provider: "google",
-        options: { redirectTo },
-      });
-      if (oauthError) {
-        console.error("[login] signInWithOAuth failed", oauthError);
-        setError(t("login.failed"));
-        setBusy(false);
-      }
-    } catch (e) {
-      console.error("[login] signInWithOAuth threw", e);
-      setError(t("login.failed"));
-      setBusy(false);
-    }
-  }
-
-  async function submit() {
-    // 재진입 가드 — disabled는 리렌더 뒤에야 걸린다. 빠른 두 번 탭이 같은 요청을
-    // 두 번 보내면 서버에서 409가 나거나(중복) 같은 글이 두 번 올라간다.
-    if (busy) return;
-    const name = nickname.trim();
-    if (name.length < 2 || busy) return;
-    setBusy(true);
-    setError(null);
-    try {
-      await login(name);
-      toast.success(`${name}님, 반가워요!`);
-      setNickname("");
-    } catch (e) {
-      const msg =
-        e instanceof ApiClientError ? e.error.message : "로그인하지 못했어요";
-      setError(msg);
-    } finally {
-      setBusy(false);
-    }
-  }
-
+  const router = useRouter();
+  const pathname = usePathname();
+  // 로그인 페이지 자체에서는 시트를 겹치지 않는다.
+  if (!open || pathname === "/login") return null;
+  const next = window.location.pathname + window.location.search;
   return (
-    <Sheet open={open} onOpenChange={(o) => (o ? null : closeLogin())}>
-      <SheetContent side="bottom" className="px-5 pb-8">
-        <SheetHeader className="items-center text-center">
-          <div className="mb-1 flex size-12 items-center justify-center rounded-2xl bg-secondary">
-            <UserRound className="size-6 text-foreground" />
-          </div>
-          <SheetTitle>{t("login.sheetTitle")}</SheetTitle>
-          <SheetDescription>{t("login.sheetDesc")}</SheetDescription>
-        </SheetHeader>
-
-        {/* login-form.tsx와 같은 방침: 실사용자를 받는 배포에서는 신규 가입을
-            Google로만 받는다(닉네임 무비번은 진위 확인이 안 된다). mock 모드만
-            예외 — 거기선 Google 버튼이 없으니 닉네임을 남겨야 로그인 자체가 된다. */}
-        {hasSupabase ? (
-          <div className="mt-5">
-            <Button
-              variant="outline"
-              size="lg"
-              className="w-full"
-              onClick={google}
-              disabled={busy}
-            >
-              <GoogleIcon />
-              {t("login.google")}
-            </Button>
-          </div>
-        ) : (
-          <div className="mt-5 space-y-3">
-            <Field error={error}>
-              <Input
-                value={nickname}
-                onChange={(e) => {
-                  setNickname(e.target.value);
-                  setError(null);
-                }}
-                placeholder={t("login.placeholder")}
-                maxLength={20}
-                autoFocus
-                aria-label={t("login.placeholder")}
-                onKeyDown={(e) => {
-                  if (e.nativeEvent.isComposing) return;
-                  if (e.key === "Enter") submit();
-                }}
-              />
-            </Field>
-            <Button
-              size="lg"
-              className="w-full"
-              disabled={busy || nickname.trim().length < 2}
-              onClick={submit}
-            >
-              {busy && <Loader2 className="size-5 animate-spin" />}
-              {busy ? t("login.checking") : t("login.sheetTitle")}
-            </Button>
-            <p className="text-center text-xs text-muted-foreground">
-              이미 쓰는 닉네임은 고를 수 없어요.
-            </p>
-          </div>
-        )}
-      </SheetContent>
-    </Sheet>
+    <BottomSheet ariaLabel={system.loginSheetTitle.replace("\n", " ")} onClose={closeLogin}>
+      <LoginPanel
+        key={`${source}:${returned ?? ""}`}
+        next={next}
+        source={source}
+        returned={returned}
+        via="sheet"
+        onSkip={closeLogin}
+        onNicknameDone={() => {
+          closeLogin();
+          // 서버 화면(홈 머리 종 등)이 새 쿠키로 다시 그려지게 한다.
+          router.refresh();
+        }}
+      />
+    </BottomSheet>
   );
 }
 
-/**
- * `/auth/callback`이 실패했을 때 붙여 보내는 이유 → 사용자 문구.
- * 원인마다 다음 행동이 다르므로 한 문장으로 뭉뚱그리지 않는다.
- */
-const LOGIN_ERROR_MESSAGE: Record<string, string> = {
-  denied: "Google 로그인을 취소했어요. 다시 해 볼까요?",
-  unavailable: "지금은 Google 로그인을 쓸 수 없어요. 닉네임으로 시작해도 돼요.",
-  exchange: "로그인 확인에 실패했어요. 브라우저를 새로 열고 다시 해 주시겠어요?",
-  no_code: "로그인 정보가 오다가 끊겼어요. 다시 해 주세요.",
-  no_user: "계정 정보를 받지 못했어요. 다시 해 주세요.",
-};
+/** 로그인을 시작한 자리(markLoginStarted). 지우지 않고 읽기만 한다 — LoginPanel이 열리며 지운다. */
+function loginStartedSource(): string | null {
+  try {
+    return sessionStorage.getItem(LOGIN_STARTED_KEY);
+  } catch {
+    return null;
+  }
+}
 
 /** Mounts once near the app root: runs the initial session check. */
 export function AuthBootstrap() {
@@ -174,9 +68,10 @@ export function AuthBootstrap() {
         reason,
         detail: params.get("login_detail"),
       });
-      // /login은 화면 자체가 5-07(로그인을 마치지 못했어요)로 바뀌므로 토스트를 겹치지 않는다.
+      // /login은 화면 자체가 5-07(로그인을 마치지 못했어요)로 바뀐다. 다른 화면이면 시트에서 로그인을 시작했다가
+      // 돌아온 것이라 같은 시트를 다시 연다: 취소(denied)는 5-04 그대로, 그 밖은 5-07(Figma 5-04 상태 규칙).
       if (window.location.pathname !== "/login")
-        toast.error(LOGIN_ERROR_MESSAGE[reason] ?? "로그인하지 못했어요. 다시 해 주세요.");
+        useAuthStore.getState().openLogin(loginStartedSource() ?? "sheet", reason);
       params.delete("login_error");
       params.delete("login_detail");
       const qs = params.toString();
