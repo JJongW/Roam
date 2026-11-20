@@ -1,5 +1,4 @@
 import { CompanionBar } from "@/components/companion/companion-bar";
-import { AppOnboardingGate } from "@/components/onboarding/app-onboarding";
 
 export default function VisitorLayout({
   children,
@@ -13,9 +12,8 @@ export default function VisitorLayout({
     >
       {children}
       <CompanionBar />
-      {/* 홈뿐 아니라 전시·지도·부스 상세 등 모든 방문객 화면 공통 — 공유 링크로
-          전시에 바로 들어와도(홈을 안 거쳐도) 필요하면 뜬다. */}
-      <AppOnboardingGate />
+      {/* 옛 전체 화면 온보딩(AppOnboardingGate)은 지웠다. 지도를 가리고 질문 몇 개로 취향을 정했다(브랜드
+          규칙 §3, §4와 어긋남). 첫 진입은 박람회 지도 위 사진 고르기(UI 1, map-v2/fair-map-screen.tsx)다. */}
     </div>
   );
 }
