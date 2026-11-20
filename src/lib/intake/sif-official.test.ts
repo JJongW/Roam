@@ -66,13 +66,41 @@ describe("SIF 명단 → brands.v1", () => {
   });
 
   it("프로필 대조: 같은 작가는 잇고, 다른 작가는 지난 회차 정보 없이 새로, 모름은 계속 뺀다", () => {
-    const check = parseProfileCheck(["V22이름\t판정", "결\t다른 작가", "양면테이프\t같은 작가"].join("\n"));
+    const check = parseProfileCheck(["V22이름\t판정\t근거", "결\t다른 작가\t", "양면테이프\t같은 작가\t"].join("\n"));
+    // 명단에 결이 두 번인데 대조 줄은 하나 → 하나만 넣고, 판정은 그 줄을 따른다.
     const r = buildSifBrandsFile({ ...base, profileCheck: check });
     const byName = new Map(r.file.brands.map((b) => [b.name, b]));
     expect(byName.get("결")).toEqual({ key: "sif22-결", name: "결", category: "국내 작가", participationType: "국내 작가" });
     expect(byName.get("양면테이프")).toMatchObject({ instagramUrl: "https://www.instagram.com/both_tape", aliases: ["양면테이프(박주현)"] });
     expect(r.held.map((h) => h.name)).toEqual(["모이또이"]);
-    expect(parseProfileCheck(["V22이름\t판정", "결\t같은 작가", "결\t다른 작가"].join("\n")).get("결")).toBe("모름");
+    expect(r.duplicateRows).toEqual([{ type: "국내 작가", name: "결" }]);
+  });
+
+  it("같은 이름 카드가 둘이고 대조 줄도 둘이면 프로필 주소로 키를 갈라 두 브랜드로 넣는다", () => {
+    const check = parseProfileCheck(
+      [
+        "V22이름\t판정\t근거\t오크레오 프로필 주소",
+        "결\t같은 작가\tV.21 M26\thttps://www.ocreo.kr/profile/aaaaaaaaaaaaaaaaaaaaaaaa",
+        "결\t다른 작가\tV.21 없음\thttps://www.ocreo.kr/profile/bbbbbbbbbbbbbbbbbbbbbbbb",
+      ].join("\n"),
+    );
+    const r = buildSifBrandsFile({ ...base, profileCheck: check });
+    const gyeol = r.file.brands.filter((b) => b.name === "결");
+    expect(gyeol.map((b) => b.key)).toEqual(["sif22-결-aaaaaaaaaaaaaaaaaaaaaaaa", "sif22-결-bbbbbbbbbbbbbbbbbbbbbbbb"]);
+    expect(gyeol[0].instagramUrl).toBe("https://www.instagram.com/gyeol");
+    expect(gyeol[1].instagramUrl).toBeUndefined();
+    expect(r.duplicateRows).toEqual([]);
+  });
+
+  it("같은 작가인데 V.22 프로필 인스타가 다르면 V.22 쪽을 적고 확인 대상으로 낸다", () => {
+    const check = parseProfileCheck(
+      ["V22이름\t판정\t근거", "양면테이프\t같은 작가\t이력에 V.21 G19. 다만 프로필 인스타는 @tape_new로 V.21과 다름"].join("\n"),
+    );
+    const r = buildSifBrandsFile({ ...base, profileCheck: check });
+    expect(r.file.brands.find((b) => b.name === "양면테이프")?.instagramUrl).toBe("https://www.instagram.com/tape_new");
+    expect(r.instagramFromV22).toEqual([
+      { key: "sif22-양면테이프", name: "양면테이프", v21: "https://www.instagram.com/both_tape", v22: "https://www.instagram.com/tape_new" },
+    ]);
   });
 
   it("링크 모음 주소로 뭉치는 V.21 부스만 고른다(같은 인스타와 사이트를 쓰는 한 브랜드는 아님)", () => {

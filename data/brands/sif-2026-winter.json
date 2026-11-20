@@ -45,6 +45,19 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-가지",
+      "name": "가지",
+      "instagramUrl": "https://www.instagram.com/bygajee",
+      "websiteUrl": "https://www.bygajee.com/",
+      "intro": {
+        "text": "한국 전통문화를 재해석한 디지털 페인팅 작업을 합니다.",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#C33"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-간바레! 노노짱",
       "name": "간바레! 노노짱",
       "instagramUrl": "https://www.instagram.com/ganbare_nonochan_kr",
@@ -77,6 +90,24 @@
     {
       "key": "sif22-갱구리서랍",
       "name": "갱구리서랍",
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-갸운",
+      "name": "갸운",
+      "instagramUrl": "https://www.instagram.com/gya.oon",
+      "intro": {
+        "text": "아포와 가토의 말랑콩떡한 이야기를 담는 갸운입니다.",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#M43"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-결-683bf84e33b79d8977e20d73",
+      "name": "결",
       "category": "국내 작가",
       "participationType": "국내 작가"
     },
@@ -207,6 +238,18 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-곰곰",
+      "name": "곰곰",
+      "instagramUrl": "https://www.instagram.com/gomgoming_",
+      "intro": {
+        "text": "근육짱짱듬곰이와 근육뽀짝애곰이의 일상!",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#I46"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-공칠마카",
       "name": "공칠마카",
       "category": "국내 작가",
@@ -240,8 +283,34 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-귀영",
+      "name": "귀영",
+      "instagramUrl": "https://www.instagram.com/guiyoung_920",
+      "websiteUrl": "https://litt.ly/guiyoung_920",
+      "intro": {
+        "text": "귀영 | 케일페부산 J-02 | 서일페 M52",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#M52"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-그냥이네",
       "name": "그냥이네",
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-그노",
+      "name": "그노",
+      "instagramUrl": "https://www.instagram.com/guno9716",
+      "websiteUrl": "https://www.hypen.im/guno9716",
+      "intro": {
+        "text": "반려동물과 소소한 일상을 담는 그노. Book: 그노의 감성 양모펠트",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#E04"
+      },
       "category": "국내 작가",
       "participationType": "국내 작가"
     },
@@ -384,6 +453,19 @@
     {
       "key": "sif22-김성민",
       "name": "김성민",
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-김쐥",
+      "name": "김쐥",
+      "instagramUrl": "https://www.instagram.com/kim_sswang",
+      "websiteUrl": "https://kimsswang.creatorlink.net/",
+      "intro": {
+        "text": "일러스트레이터 김쐥 Illustrator Kim Sswang. Artist. 서일페 (7.30-8.2) 코엑스 C홀 K28",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#K28"
+      },
       "category": "국내 작가",
       "participationType": "국내 작가"
     },
@@ -650,6 +732,13 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-냐기",
+      "name": "냐기",
+      "websiteUrl": "https://x.com/iiqoco",
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-냐냐온 스튜디오",
       "name": "냐냐온 스튜디오",
       "category": "국내 작가",
@@ -739,6 +828,19 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-노마",
+      "name": "노마",
+      "instagramUrl": "https://www.instagram.com/noma.dic",
+      "websiteUrl": "https://smartstore.naver.com/studio_nomadic",
+      "intro": {
+        "text": "Painter. 일상에서 떠오른 상상을 담아 당신에게 보냅니다.",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#F03"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-노스탤드림",
       "name": "노스탤드림",
       "category": "국내 작가",
@@ -801,6 +903,32 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-니드",
+      "name": "니드",
+      "instagramUrl": "https://www.instagram.com/zero523n",
+      "websiteUrl": "https://zero523.com/",
+      "intro": {
+        "text": "니드. 사랑하는것들을 그립니다.",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#D14"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-니로",
+      "name": "니로",
+      "instagramUrl": "https://www.instagram.com/from_niro",
+      "websiteUrl": "https://linktr.ee/from_niro",
+      "intro": {
+        "text": "niro(니로). Illustrator/작가.",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#M24"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-다끼스튜디오",
       "name": "다끼스튜디오",
       "category": "국내 작가",
@@ -857,6 +985,19 @@
     {
       "key": "sif22-단추네재봉소",
       "name": "단추네재봉소",
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-단팥",
+      "name": "단팥",
+      "instagramUrl": "https://www.instagram.com/danpat_s",
+      "websiteUrl": "https://linktr.ee/redbeanvillage",
+      "intro": {
+        "text": "단팥(레드빈빌리지). 입점처: 잠시다락/텐바이텐/닷닷닷익스프레스/메이드바이 연남.",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#Q07"
+      },
       "category": "국내 작가",
       "participationType": "국내 작가"
     },
@@ -993,6 +1134,19 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-도랑",
+      "name": "도랑",
+      "instagramUrl": "https://www.instagram.com/dorang413",
+      "websiteUrl": "https://mongle.kr/",
+      "intro": {
+        "text": "DORANG. 연필 스케치/일러스트 위주 개인 포트폴리오 계정.",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#M09"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-도르",
       "name": "도르",
       "category": "국내 작가",
@@ -1043,6 +1197,32 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-도화",
+      "name": "도화",
+      "instagramUrl": "https://www.instagram.com/dohwa.earth",
+      "websiteUrl": "https://link.comic.naver.com/",
+      "intro": {
+        "text": "도화 Dohwa. Author. 서울일러스트레이션페어 V.21 P23. Comics & Webtoon / Illustration(밴드부 만화).",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#P23"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-독",
+      "name": "독",
+      "instagramUrl": "https://www.instagram.com/username.dok",
+      "websiteUrl": "https://x.com/usernamedok",
+      "intro": {
+        "text": "독(DOK)_서일페J50. 07.30-08.02 서일페 V.21 / 08.14-08.16 광저우GAF / 10.31-11.01 타이베이P.C.F.",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#J50"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-돌만",
       "name": "돌만",
       "category": "국내 작가",
@@ -1085,6 +1265,18 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-두입",
+      "name": "두입",
+      "instagramUrl": "https://www.instagram.com/doolip_doodle",
+      "intro": {
+        "text": "두입 • doolip. 즉석 인물화(캐리커처) 위주 대형 계정.",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#D20"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-둥한 순간",
       "name": "둥한 순간",
       "instagramUrl": "https://www.instagram.com/keem_daye",
@@ -1093,6 +1285,18 @@
         "text": "다예 DAYE | 둥한 순간. 서일페 L48. 고양이 캐릭터 '둥이' 작가.",
         "status": "collected",
         "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#L48"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-듀임",
+      "name": "듀임",
+      "instagramUrl": "https://www.instagram.com/_duim_",
+      "intro": {
+        "text": "듀임 duim. Designer. 일상 속 포근하고 귀여운 친구들을 그리는 문구 브랜드. 다수 페어 참가 이력 보유.",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#I33"
       },
       "category": "국내 작가",
       "participationType": "국내 작가"
@@ -1242,6 +1446,19 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-딸비",
+      "name": "딸비",
+      "instagramUrl": "https://www.instagram.com/talbi_illust",
+      "websiteUrl": "https://www.facebook.com/talbi1004",
+      "intro": {
+        "text": "딸비. Artist. 사인펜으로 음식 일러스트 그리는 방.",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#J36"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-땡규",
       "name": "땡규",
       "category": "국내 작가",
@@ -1343,6 +1560,19 @@
     {
       "key": "sif22-락규",
       "name": "락규",
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-랄랑",
+      "name": "랄랑",
+      "instagramUrl": "https://www.instagram.com/lalangheej",
+      "websiteUrl": "https://linktr.ee/lalangheej",
+      "intro": {
+        "text": "freelance illustrator. 입점처: 위드유샵/플레이/올더띵스아이러브. 오프라인 행사: 7월 서일페/10월 페이퍼즈클럽/12월...",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#F22"
+      },
       "category": "국내 작가",
       "participationType": "국내 작가"
     },
@@ -1482,6 +1712,19 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-리끼",
+      "name": "리끼",
+      "instagramUrl": "https://www.instagram.com/rikki_3778",
+      "websiteUrl": "https://linktr.ee/RIKKI3778",
+      "intro": {
+        "text": "리끼 (RIKKI). 쿠션키링/핀버튼 등 굿즈 제작.",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#O49"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-리들타운 베어스",
       "name": "리들타운 베어스",
       "category": "국내 작가",
@@ -1515,6 +1758,19 @@
     {
       "key": "sif22-리이시",
       "name": "리이시",
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-리카",
+      "name": "리카",
+      "instagramUrl": "https://www.instagram.com/licar_g",
+      "websiteUrl": "https://licar.creatorlink.net/",
+      "intro": {
+        "text": "고양이 그림 작가. 원형사. 고양이 그림책 #고양이는그려야한다 출간.",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#G04"
+      },
       "category": "국내 작가",
       "participationType": "국내 작가"
     },
@@ -1655,6 +1911,19 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-맘마",
+      "name": "맘마",
+      "instagramUrl": "https://www.instagram.com/____mamma",
+      "websiteUrl": "https://mamma.myportfolio.com/",
+      "intro": {
+        "text": "Gift Shop 네모네모 세상",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#G49"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-망쥬",
       "name": "망쥬",
       "category": "국내 작가",
@@ -1722,6 +1991,18 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-며리",
+      "name": "며리",
+      "instagramUrl": "https://www.instagram.com/myeori_",
+      "intro": {
+        "text": "머물고 싶은 마음의 풍경. 보이지 않는 마음을 머물 수 있는 장면으로 그립니다",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#L19"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-모니 사바",
       "name": "모니 사바",
       "category": "국내 작가",
@@ -1739,6 +2020,24 @@
         "status": "collected",
         "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#F35"
       },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-모로하나베이커리",
+      "name": "모로하나베이커리",
+      "aliases": [
+        "모로하나"
+      ],
+      "instagramUrl": "https://www.instagram.com/bakery_morohana",
+      "websiteUrl": "https://smartstore.naver.com/tastelism",
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-모루",
+      "name": "모루",
+      "instagramUrl": "https://www.instagram.com/ggosoon_friends",
       "category": "국내 작가",
       "participationType": "국내 작가"
     },
@@ -1788,6 +2087,19 @@
     {
       "key": "sif22-모비오",
       "name": "모비오",
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-모야",
+      "name": "모야",
+      "instagramUrl": "https://www.instagram.com/moya.illust",
+      "websiteUrl": "https://www.behance.net/moyaillust",
+      "intro": {
+        "text": "MOYA 서일페 M50 · 포슬포슬 따스한 일상을 그려요",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#M50"
+      },
       "category": "국내 작가",
       "participationType": "국내 작가"
     },
@@ -1936,6 +2248,19 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-문니",
+      "name": "문니",
+      "instagramUrl": "https://www.instagram.com/mooon__ni",
+      "websiteUrl": "https://linktr.ee/mooonni",
+      "intro": {
+        "text": "MOOON NI | 문 니 [서일페 R12] / Art Gallery. <담요를 뒤집어쓴 아이 무> 시리즈 작가. 담요는 아이를 숨기는 것이 아니라 상상으로 이어지는 문이라는 컨셉.",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#R12"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-뭇찌",
       "name": "뭇찌",
       "category": "국내 작가",
@@ -2046,6 +2371,18 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-밀",
+      "name": "밀",
+      "instagramUrl": "https://www.instagram.com/mill_illust",
+      "intro": {
+        "text": "일러스트레이터. 다꾸(별의별 밀 @starstar_mill), 여성그림모임 MERAKI, 킨츠기 등 다양한 부계정 운영.",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#K45"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-밀디블랙",
       "name": "밀디블랙",
       "instagramUrl": "https://www.instagram.com/gionharo",
@@ -2114,6 +2451,19 @@
     {
       "key": "sif22-박게티",
       "name": "박게티",
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-박냠",
+      "name": "박냠",
+      "instagramUrl": "https://www.instagram.com/parknyam",
+      "websiteUrl": "https://linktr.ee/parknyam",
+      "intro": {
+        "text": "오늘도 내일도 그림그리는 사람",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#C38"
+      },
       "category": "국내 작가",
       "participationType": "국내 작가"
     },
@@ -2298,6 +2648,19 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-봄녀",
+      "name": "봄녀",
+      "instagramUrl": "https://www.instagram.com/popbanao",
+      "websiteUrl": "https://bio.link/popbanao",
+      "intro": {
+        "text": "[RocoA] #rocoa #아트브루",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#O46"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-봄하봄하",
       "name": "봄하봄하",
       "category": "국내 작가",
@@ -2318,6 +2681,19 @@
     {
       "key": "sif22-붕붕카낫치",
       "name": "붕붕카낫치",
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-브르",
+      "name": "브르",
+      "instagramUrl": "https://www.instagram.com/13u12u",
+      "websiteUrl": "https://linktr.ee/babybrr",
+      "intro": {
+        "text": "미소녀 그려요",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#K53"
+      },
       "category": "국내 작가",
       "participationType": "국내 작가"
     },
@@ -2392,6 +2768,19 @@
     {
       "key": "sif22-비비메이드",
       "name": "비비메이드",
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-비야",
+      "name": "비야",
+      "instagramUrl": "https://www.instagram.com/beeya_ouo",
+      "websiteUrl": "https://x.com/beeya_ouo",
+      "intro": {
+        "text": "비야 / Instagram: beeya_ouo (ocreo portfolio was Twitter/X, guessed matching IG handle)",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#H12"
+      },
       "category": "국내 작가",
       "participationType": "국내 작가"
     },
@@ -2490,6 +2879,31 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-사서",
+      "name": "사서",
+      "instagramUrl": "https://www.instagram.com/sa_seo_",
+      "websiteUrl": "https://sa_seo_/",
+      "intro": {
+        "text": "사서_saseo / 자개키캡(mother-of-pearl keycap) 아티스트",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#I16"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-사소",
+      "name": "사소",
+      "instagramUrl": "https://www.instagram.com/i_o.saso",
+      "intro": {
+        "text": "illustrator saso / Brand 사이새사이",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#K47"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-산밤",
       "name": "산밤",
       "category": "국내 작가",
@@ -2550,6 +2964,19 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-서로",
+      "name": "서로",
+      "instagramUrl": "https://www.instagram.com/seoro__d",
+      "websiteUrl": "https://drive.google.com/file/d/1PimvxbqvUy9kSsD5B1MUvbSr0878BL0E/view?usp=sharing",
+      "intro": {
+        "text": "⭐️🌈일러스트레이터 서로☁️⭐️ 서로의 이야기를 그립니다",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#L20"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-서지양",
       "name": "서지양",
       "category": "국내 작가",
@@ -2595,6 +3022,19 @@
     {
       "key": "sif22-소누",
       "name": "소누",
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-소랏",
+      "name": "소랏",
+      "instagramUrl": "https://www.instagram.com/sorat_illust",
+      "websiteUrl": "https://soratillust.myportfolio.com/",
+      "intro": {
+        "text": "소랏 Sorat, 즐거운 마음의 파레트, illustrator, 7월 서일페 E14, 10월 대전 페이퍼즈클럽",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#E14"
+      },
       "category": "국내 작가",
       "participationType": "국내 작가"
     },
@@ -2656,6 +3096,18 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-소푸",
+      "name": "소푸",
+      "instagramUrl": "https://www.instagram.com/sopu_village",
+      "intro": {
+        "text": "소푸 | 서일페 J46, soap 솝 아니구 솦",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#J46"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-솔그림",
       "name": "솔그림",
       "instagramUrl": "https://www.instagram.com/sol_drawing__",
@@ -2671,6 +3123,19 @@
     {
       "key": "sif22-솔하트",
       "name": "솔하트",
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-솜두",
+      "name": "솜두",
+      "instagramUrl": "https://www.instagram.com/somdo.o",
+      "websiteUrl": "https://linktr.ee/somdoo",
+      "intro": {
+        "text": "솜두 somdoo | 서일페 E09, 따뜻한 순간들의 설레는 이야기를 그림. 코없는 코끼리와 작은 친구들",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#E09"
+      },
       "category": "국내 작가",
       "participationType": "국내 작가"
     },
@@ -3319,6 +3784,32 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-앙꾸",
+      "name": "앙꾸",
+      "instagramUrl": "https://www.instagram.com/angkku8_8",
+      "websiteUrl": "https://blog.naver.com/angkku8/223986283490",
+      "intro": {
+        "text": "앙꾸 / Brand / 사랑스러운 일상을 그려요",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#Q35"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-애뽈",
+      "name": "애뽈",
+      "instagramUrl": "https://www.instagram.com/_aeppol",
+      "websiteUrl": "https://linktr.ee/aeppol",
+      "intro": {
+        "text": "애뽈 / Artist / 깊은 숲속에서 살아가는 한 소녀의 이야기를 통해, 자연이 주는 위안과 행복을 그립니다.",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#F01"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-애옹즈",
       "name": "애옹즈",
       "category": "국내 작가",
@@ -3357,8 +3848,48 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-야온",
+      "name": "야온",
+      "websiteUrl": "https://ya0n.creatorlink.net/",
+      "intro": {
+        "text": "어떤 세계를 그립니다.",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#G03"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-양들의 숲",
       "name": "양들의 숲",
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-양면테이프",
+      "name": "양면테이프",
+      "aliases": [
+        "양면테이프(박주현)"
+      ],
+      "instagramUrl": "https://www.instagram.com/ds_tape",
+      "intro": {
+        "text": "양면테이프(박주현) / 7월: k_일페 부산(i-21)/서일페(G-19)/ 8월: 일러스트페스12(k-12,13)/ CET(j3-049)/ 코믹_일산335(ca21)/k_마곡 / 일러스트페스13",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#G19"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-양치",
+      "name": "양치",
+      "instagramUrl": "https://www.instagram.com/yangchee_",
+      "websiteUrl": "https://form.naver.com/response/55lm0K5rqhF",
+      "intro": {
+        "text": "양치 / Artist / Illustrator 양치. 양치 개인전 도록 사전구매 링크",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#D22"
+      },
       "category": "국내 작가",
       "participationType": "국내 작가"
     },
@@ -3504,6 +4035,19 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-영이",
+      "name": "영이",
+      "instagramUrl": "https://www.instagram.com/0_0e2",
+      "websiteUrl": "https://linktr.ee/00e2",
+      "intro": {
+        "text": "웹툰/일러스트 - 웹툰 <달팽이 소년> / Artist",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#C04"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-영점구팔페이지",
       "name": "영점구팔페이지",
       "category": "국내 작가",
@@ -3518,6 +4062,19 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-예란",
+      "name": "예란",
+      "instagramUrl": "https://www.instagram.com/yeran_illust",
+      "websiteUrl": "https://linktr.ee/yeran_illust",
+      "intro": {
+        "text": "Illustrator / Illust class",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#N01"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-예술보부상",
       "name": "예술보부상",
       "category": "국내 작가",
@@ -3526,6 +4083,18 @@
     {
       "key": "sif22-예오",
       "name": "예오",
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-예찬",
+      "name": "예찬",
+      "websiteUrl": "https://yechanwooo.myportfolio.com/",
+      "intro": {
+        "text": "11년 경력 애니메이션/게임 컨셉아티스트",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#H31"
+      },
       "category": "국내 작가",
       "participationType": "국내 작가"
     },
@@ -3648,6 +4217,18 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-온돌",
+      "name": "온돌",
+      "instagramUrl": "https://www.instagram.com/on.dol_",
+      "intro": {
+        "text": "Author - 온기를 담은 돌 캐릭터('돌멩츄') 작가",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#L44"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-온점하우스",
       "name": "온점하우스",
       "category": "국내 작가",
@@ -3722,6 +4303,19 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-우야",
+      "name": "우야",
+      "instagramUrl": "https://www.instagram.com/wooya_91",
+      "websiteUrl": "https://www.wooya91.com/",
+      "intro": {
+        "text": "雨夜 / 입시&취미 수업문의",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#E13"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-우윤",
       "name": "우윤",
       "category": "국내 작가",
@@ -3767,6 +4361,19 @@
     {
       "key": "sif22-유기",
       "name": "유기",
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-유르",
+      "name": "유르",
+      "instagramUrl": "https://www.instagram.com/urr.official",
+      "websiteUrl": "https://www.urrstore.com/",
+      "intro": {
+        "text": "모모・포포 친구들의 일상 이야기 / 문구・굿즈・캐릭터",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#I27"
+      },
       "category": "국내 작가",
       "participationType": "국내 작가"
     },
@@ -3844,6 +4451,13 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-윤동",
+      "name": "윤동",
+      "instagramUrl": "https://www.instagram.com/yyoondong",
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-윤슬담다",
       "name": "윤슬담다",
       "category": "국내 작가",
@@ -3860,6 +4474,19 @@
     {
       "key": "sif22-윤제이",
       "name": "윤제이",
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-윤진",
+      "name": "윤진",
+      "instagramUrl": "https://www.instagram.com/yoonjii7",
+      "websiteUrl": "https://yoonjii7.com/",
+      "intro": {
+        "text": "윤진 - 일러스트 / 그림책 / 삽화, 기분 좋은 상상_봄을 닮은 일러스트",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#Q45"
+      },
       "category": "국내 작가",
       "participationType": "국내 작가"
     },
@@ -3882,6 +4509,12 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-이니룸",
+      "name": "이니룸",
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-이달구",
       "name": "이달구",
       "category": "국내 작가",
@@ -3890,6 +4523,19 @@
     {
       "key": "sif22-이도라바기",
       "name": "이도라바기",
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-이륙-683bf85f33b79d8977e22ccd",
+      "name": "이륙",
+      "instagramUrl": "https://www.instagram.com/iryuk_",
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-이륙-687f887f699a25e18dfd2951",
+      "name": "이륙",
       "category": "국내 작가",
       "participationType": "국내 작가"
     },
@@ -4082,6 +4728,19 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-제리",
+      "name": "제리",
+      "instagramUrl": "https://www.instagram.com/jerry.bbang",
+      "websiteUrl": "https://mkt.shopping.naver.com/link/69654d0d9405d66e4f142067",
+      "intro": {
+        "text": "제리베이커리, 카카오톡채널/네이버 톡톡",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#P06"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-제밍",
       "name": "제밍",
       "category": "국내 작가",
@@ -4100,6 +4759,19 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-제제",
+      "name": "제제",
+      "instagramUrl": "https://www.instagram.com/hej_jeje",
+      "websiteUrl": "https://linktr.ee/_jeje",
+      "intro": {
+        "text": "Gift Shop, 고독의 별에서 건져낸 감정의 조각을 당신께",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#Q01"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-제제유니버스",
       "name": "제제유니버스",
       "category": "국내 작가",
@@ -4114,6 +4786,32 @@
     {
       "key": "sif22-조곽곽",
       "name": "조곽곽",
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-조금",
+      "name": "조금",
+      "instagramUrl": "https://www.instagram.com/studio_little_bit",
+      "websiteUrl": "https://sites.google.com/view/studiolittlebit",
+      "intro": {
+        "text": "당신을 위한 조금의 한국, 그림을 그리고 전통문화상품을 제작합니다",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#H13"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-조네",
+      "name": "조네",
+      "instagramUrl": "https://www.instagram.com/studio_jorne",
+      "websiteUrl": "https://linktr.ee/studiojorne",
+      "intro": {
+        "text": "Artist, 빈티지한 그림을 그립니다",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#O10"
+      },
       "category": "국내 작가",
       "participationType": "국내 작가"
     },
@@ -4143,6 +4841,19 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-종헌",
+      "name": "종헌",
+      "instagramUrl": "https://www.instagram.com/kiskeco",
+      "websiteUrl": "https://blog.naver.com/kiskeco",
+      "intro": {
+        "text": "Art, 2015 다음웹툰 감염 연재, 2016~2020 버프툰 좀비신드롬 연재",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#N51"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-주르디",
       "name": "주르디",
       "instagramUrl": "https://www.instagram.com/jour_di",
@@ -4151,6 +4862,19 @@
         "text": "Gift Shop, SIF V.21 | L39, 작은 오리 디어와 사랑하는 친구들이 함께해요",
         "status": "collected",
         "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#L39"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-주바",
+      "name": "주바",
+      "instagramUrl": "https://www.instagram.com/icecream_juba",
+      "websiteUrl": "https://linktr.ee/Icecreamjuba",
+      "intro": {
+        "text": "7월 서일페 O36, 굿즈 입점처",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#O36"
       },
       "category": "국내 작가",
       "participationType": "국내 작가"
@@ -4267,6 +4991,19 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-쮸",
+      "name": "쮸",
+      "instagramUrl": "https://www.instagram.com/moonnighttheluv",
+      "websiteUrl": "https://open.kakao.com/o/sfHWWJqi",
+      "intro": {
+        "text": "쮸 서일페 Q33. 서일페 sif Q33",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#Q33"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-찌봄",
       "name": "찌봄",
       "category": "국내 작가",
@@ -4281,6 +5018,22 @@
     {
       "key": "sif22-차아그림",
       "name": "차아그림",
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-차일드후드",
+      "name": "차일드후드",
+      "aliases": [
+        "차일드후드 메모리즈"
+      ],
+      "instagramUrl": "https://www.instagram.com/childhood_100",
+      "websiteUrl": "https://linktr.ee/childhood_100",
+      "intro": {
+        "text": "차일드후드 메모리즈 | 서일페 K06. 어린 시절의 꿈을 그립니다",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#K06"
+      },
       "category": "국내 작가",
       "participationType": "국내 작가"
     },
@@ -4318,6 +5071,19 @@
         "text": "채널오/서일페 V50. TV channel. 7.30-8.2/Seoul Illustration Fair V.21/서울 코엑스",
         "status": "collected",
         "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#V50"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-채밍",
+      "name": "채밍",
+      "instagramUrl": "https://www.instagram.com/chae_min_g",
+      "websiteUrl": "https://chaeming.myportfolio.com/",
+      "intro": {
+        "text": "chaeming",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#M02"
       },
       "category": "국내 작가",
       "participationType": "국내 작가"
@@ -4372,8 +5138,33 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-치모",
+      "name": "치모",
+      "instagramUrl": "https://www.instagram.com/chimoart_",
+      "intro": {
+        "text": "CHIMO. 치모ᐛ 서일페 P29",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#P29"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-치비코코",
       "name": "치비코코",
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-치유",
+      "name": "치유",
+      "instagramUrl": "https://www.instagram.com/chiu__art",
+      "websiteUrl": "https://linktr.ee/chiu82",
+      "intro": {
+        "text": "치유. Illustrator. 서일페 L12",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#L12"
+      },
       "category": "국내 작가",
       "participationType": "국내 작가"
     },
@@ -4546,6 +5337,19 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-크야",
+      "name": "크야",
+      "instagramUrl": "https://www.instagram.com/crazy_yaa_",
+      "websiteUrl": "https://litt.ly/moyo",
+      "intro": {
+        "text": "Artist / 세모입하고 뭘 봐? 무심하고 나른한 곁눈질 소녀 크야",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#H08"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-큰코의작업실",
       "name": "큰코의작업실",
       "category": "국내 작가",
@@ -4565,6 +5369,19 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-키론",
+      "name": "키론",
+      "instagramUrl": "https://www.instagram.com/kky_ron",
+      "websiteUrl": "https://linktr.ee/kky_ron",
+      "intro": {
+        "text": "Visual Artist / Illustrator, SIF V.21 2026.07.30-08.02 P40",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#P40"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-타이니메이트",
       "name": "타이니메이트",
       "category": "국내 작가",
@@ -4579,6 +5396,19 @@
         "text": "Potato0_t 포테톳 (@table_alae_mnbg 탁자밑문방구), 일상과 맛있는 음식...탁자밑에 숨어있는 요정들을 그려요",
         "status": "collected",
         "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#L46"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-태림",
+      "name": "태림",
+      "instagramUrl": "https://www.instagram.com/taerimart",
+      "websiteUrl": "https://x.com/taerimart",
+      "intro": {
+        "text": "아날로그 방식의 수작업을 합니다.",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#R18"
       },
       "category": "국내 작가",
       "participationType": "국내 작가"
@@ -4797,6 +5627,19 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-펌펌",
+      "name": "펌펌",
+      "instagramUrl": "https://www.instagram.com/pumpum_rum_",
+      "websiteUrl": "https://linktr.ee/pumpum_rum_",
+      "intro": {
+        "text": "Illustrator",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#M36"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-페이퍼 오브 엔",
       "name": "페이퍼 오브 엔",
       "category": "국내 작가",
@@ -4971,6 +5814,18 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-프롬",
+      "name": "프롬",
+      "instagramUrl": "https://www.instagram.com/from.__dream",
+      "intro": {
+        "text": "몽글몽글 애정하는 것들을 그립니다",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#L40"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-프롬투스튜디오",
       "name": "프롬투스튜디오",
       "instagramUrl": "https://www.instagram.com/fromtostudio%20(swlee.illust)",
@@ -5098,6 +5953,19 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-하미",
+      "name": "하미",
+      "instagramUrl": "https://www.instagram.com/dus0192",
+      "websiteUrl": "https://linktr.ee/hamine",
+      "intro": {
+        "text": "소중히 머무는 마음을 담아갑니다.",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#D13"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-하우스넘버 88",
       "name": "하우스넘버 88",
       "category": "국내 작가",
@@ -5112,6 +5980,18 @@
     {
       "key": "sif22-하이고미",
       "name": "하이고미",
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-하임",
+      "name": "하임",
+      "instagramUrl": "https://www.instagram.com/heim._.mm",
+      "intro": {
+        "text": "수작업으로 이상향을 그리는 하임입니다:)",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#G39"
+      },
       "category": "국내 작가",
       "participationType": "국내 작가"
     },
@@ -5283,6 +6163,32 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-호작",
+      "name": "호작",
+      "instagramUrl": "https://www.instagram.com/hojak_jill",
+      "websiteUrl": "https://litt.ly/hojak",
+      "intro": {
+        "text": "한국의 문화와 정서를 따듯하고 동그란 그림으로 전해요.",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#G07"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-호지",
+      "name": "호지",
+      "instagramUrl": "https://www.instagram.com/ho_zi_",
+      "websiteUrl": "https://litt.ly/ho_zi_",
+      "intro": {
+        "text": "penbyhozi@gmail.com",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#E29"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-홍시와 비비",
       "name": "홍시와 비비",
       "category": "국내 작가",
@@ -5364,6 +6270,19 @@
       "participationType": "국내 작가"
     },
     {
+      "key": "sif22-히밍",
+      "name": "히밍",
+      "instagramUrl": "https://www.instagram.com/heemingraphics",
+      "websiteUrl": "https://linktr.ee/heemingraphic",
+      "intro": {
+        "text": "안녕하세요, 그리고 디자인하는 히밍(heeming) 입니다.",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#P15"
+      },
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
       "key": "sif22-히수 스튜디오",
       "name": "히수 스튜디오",
       "category": "국내 작가",
@@ -5384,6 +6303,13 @@
     {
       "key": "sif22-히즈",
       "name": "히즈",
+      "category": "국내 작가",
+      "participationType": "국내 작가"
+    },
+    {
+      "key": "sif22-힙찌",
+      "name": "힙찌",
+      "instagramUrl": "https://www.instagram.com/hip_zzi_",
       "category": "국내 작가",
       "participationType": "국내 작가"
     },
@@ -5756,8 +6682,37 @@
       "participationType": "국내 기업"
     },
     {
+      "key": "sif22-사인어스",
+      "name": "사인어스",
+      "aliases": [
+        "사인어스(나만의 멋진 사인만들기)"
+      ],
+      "instagramUrl": "https://www.instagram.com/signus__",
+      "websiteUrl": "http://www.signus.or.kr/",
+      "intro": {
+        "text": "SBS생활의 달인 \"최강사인달인\" / 싸인디자이너 사인어스 대표 (나만의 멋진 사인만들기)",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#V32"
+      },
+      "category": "국내 기업",
+      "participationType": "국내 기업"
+    },
+    {
       "key": "sif22-삼대냥이",
       "name": "삼대냥이",
+      "category": "국내 기업",
+      "participationType": "국내 기업"
+    },
+    {
+      "key": "sif22-서티",
+      "name": "서티",
+      "instagramUrl": "https://www.instagram.com/3eotty",
+      "websiteUrl": "https://litt.ly/3eotty",
+      "intro": {
+        "text": "서티 | 서일페 [A13]",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#A13"
+      },
       "category": "국내 기업",
       "participationType": "국내 기업"
     },
@@ -5936,6 +6891,19 @@
     {
       "key": "sif22-피코앤톨",
       "name": "피코앤톨",
+      "category": "국내 기업",
+      "participationType": "국내 기업"
+    },
+    {
+      "key": "sif22-핑루",
+      "name": "핑루",
+      "instagramUrl": "https://www.instagram.com/pink._.rue",
+      "websiteUrl": "https://smartstore.naver.com/pinkrue_",
+      "intro": {
+        "text": "핑루만의 감성이 담긴 다양한 일러스트와 포근한 행복을 주는 귀여운 캐릭터들을 만나보세요",
+        "status": "collected",
+        "source": "오크레오 V.21 참가자 프로필(Roam src/lib/booth/links-sif-2026.json)#B01"
+      },
       "category": "국내 기업",
       "participationType": "국내 기업"
     },

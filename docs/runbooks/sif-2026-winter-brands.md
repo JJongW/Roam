@@ -11,17 +11,32 @@ _Ted 결정(11-20): "브랜드 먼저 넣어". 부스와 배치도는 공개되�
 | 파일 | 내용 |
 |---|---|
 | `data/exhibitions/sif-2026-winter.json` | 행사 행 본문(`POST /api/exhibitions`). `mapWidth`, `mapHeight`는 V.21 C홀 도면 값(임시) |
-| `data/brands/sif-2026-winter.json` | brands.v1 803곳. 새 참가 561, V.21과 같은 이름 242(인스타, 웹, 소개를 이어 적음) |
-| `data/brands/_sif-2026-winter-held.tsv` | 판정을 기다려 뺀 159곳과 이유 |
-| `scripts/brands-from-sif.ts` | 명단 TSV → brands.v1 (`npm run brands:sif`) |
+| `data/brands/sif-2026-winter.json` | brands.v1 882곳. 새 참가 561, V.21과 같은 작가 318(인스타, 웹, 소개를 이어 적음), 같은 이름이지만 다른 작가 3 |
+| `data/brands/_sif-2026-winter-held.tsv` | 링크 모음 주소 때문에 뺀 82곳과 이유 |
+| `scripts/brands-from-sif.ts` | 명단 TSV + 프로필 대조 → brands.v1 (`npm run brands:sif`) |
 
-명단 964줄 = 파일 803 + 보류 159 + 명단 중복 줄 2(결, 이륙. 오크레오 목록에 같은 분류와 이름으로 두 번 나옴. 하나만 넣었다).
+명단 964줄 = 파일 882 + 보류 82.
 
-보류 159곳:
-- 이름이 두 글자 이하라 확인 필요 96, 비슷한 이름 7: 오크레오 프로필 대조(`profile-check-2026-11-20.tsv`)가 오면 다시 만든다(아래 "대조 결과가 오면").
-- V.21 링크가 링크 모음 서비스(link.inpock.co.kr, instabio.cc, grafolio, marpple, threads 등)라 신원 키가 다른 작가와 뭉치는 56곳.
-  `lib/exhibitor/identity.ts`가 이 서비스들을 계정 단위로 나누지 못해 V.21 백필이 서로 다른 작가를 브랜드 하나로 묶는다
-  (mock 재현: "러브미모어" 아래 V.21 부스 27곳). 이으면 V.22 작가도 남의 브랜드에 붙는다. 신원 판정을 고치고 운영 브랜드를 가른 뒤 넣는다.
+- 오크레오 프로필 대조(`profile-check-2026-11-20.tsv`, 11-20): 같은 작가 102, 다른 작가 3. 이 판정을 반영했다.
+- **같은 이름 카드 둘**: "결", "이륙"은 오크레오에 같은 이름 작가가 둘이라 명단에 두 번 나온다. 한 줄은 V.21 작가, 한 줄은 다른 작가라
+  두 브랜드로 따로 넣었다. 파일 키는 `sif22-<이름>-<오크레오 프로필 id>`. 이름만 같은 단독 이름은 `sif22-<이름>`.
+- "이니룸"은 V.21 리틀타이니룸과 다른 작가라 새 브랜드다.
+- 보류 82곳은 V.21 링크가 링크 모음 서비스(link.inpock.co.kr, instabio.cc, grafolio, marpple, threads 등)라 신원 키가 다른 작가와 뭉치는 곳이다
+  (같은 이름 56, 프로필 대조로 같은 작가 26). `lib/exhibitor/identity.ts`가 이 서비스들을 계정 단위로 나누지 못해 V.21 백필이 서로 다른 작가를
+  브랜드 하나로 묶는다(mock 재현: "러브미모어" 아래 V.21 부스 27곳). 이으면 V.22 작가도 남의 브랜드에 붙는다.
+  Roam #208(identity.ts 계정 단위 판정)이 머지되고 운영 브랜드를 가른 뒤 넣는다(아래 "#208 뒤").
+
+### 확인 대상: 같은 작가인데 인스타가 바뀐 3곳
+
+페어 이력(V.21 같은 부스 코드)으로 같은 작가로 두었다. 인스타는 V.22 프로필 쪽이 최신이라 그걸 적었다(V.21 인스타로 덮지 않음).
+V.21 브랜드에는 V.21 웹 주소로 이어진다(mock에서 이음 확인). 기존 브랜드의 링크 칸이 이미 차 있으면 V.22 인스타는 칸에 들어가지 않으니,
+적용 뒤 `/admin/brands`에서 그 브랜드 링크를 사람이 고친다.
+
+| V.22 | V.22 프로필 인스타 | V.21 인스타 | V.21 부스 | 잇는 키 |
+|---|---|---|---|---|
+| 브르 | @13u12u | @baksaesama_ | K53 | linktr.ee/babybrr |
+| 서로 | @seoro__d | @seoro_illust | L20 | V.21 웹(구글 드라이브 주소) |
+| 히밍 | @heemingraphics | @heemingraphic | P15 | linktr.ee/heemingraphic |
 
 ## 1. 백업 (읽기만)
 
@@ -39,7 +54,7 @@ npm run intake:dry-run -- data/brands/sif-2026-winter.json --brands-only-if-miss
 ```
 
 - 행사 행: "형식 통과, 운영에 아직 없어요".
-- 브랜드: 오류 0, 파일 안 묶음 0. mock 기대값은 새 브랜드 566, 기존에 이음 237, 이름만 같음 9.
+- 브랜드: 오류 0, 파일 안 묶음 0. mock 기대값은 새 브랜드 569, 기존에 이음 313, 이름만 같음 10.
 - **"이음 … → <기존 이름>" 줄에서 기존 이름이 V.22 이름과 다른 곳이 있으면 멈춘다**(운영 V.21 브랜드가 다른 작가와 뭉쳐 있다는 뜻).
 - 이름만 같음 중 V.21과 같은 이름으로 본 곳(링크가 없거나 운영 부스에 링크가 없는 곳)은 기존 브랜드가 하나뿐이면 id를 적을 수 있다.
 
@@ -64,7 +79,7 @@ await fetch("/api/exhibitions", { method: "POST", headers: { "content-type": "ap
 npm run intake:dry-run -- data/brands/sif-2026-winter.json --json /tmp/sif-2026-winter-brands-plan.json
 ```
 
-참가 사실 새로 803(이미 0), 오류 0.
+참가 사실 새로 882(이미 0), 오류 0.
 
 ## 5. 적용 (운영 쓰기, Ted)
 
@@ -80,17 +95,19 @@ npm run intake:dry-run -- data/brands/sif-2026-winter.json   # 다시 돌려 새
 - `openable: false`, `availability: "upcoming_no_map"`. 웹 홈과 iOS 목록에 흐린 "진행 예정" 줄로 보인다.
 - `/admin/brands/links`에 이름만 같은 참가 후보가 올라온다. 사람이 본다.
 
-## 대조 결과가 오면
+## #208 뒤 (보류 82곳 넣기)
 
-`profile-check-2026-11-20.tsv`(머리줄 `V22이름`, `판정`. 판정은 같은 작가, 다른 작가, 모름)가 Roam-design 같은 폴더에 생기면:
+#208이 머지되고 운영에서 뭉친 브랜드를 가른 뒤(`docs/runbooks/brand-identity-split.md`, #208), 같은 명령으로 다시 만든다.
+생성기의 보류 판정(`v21MergedCodes`)도 identity.ts를 쓰므로 판정이 고쳐지면 82곳이 저절로 파일에 들어간다.
 
 ```bash
 npm run brands:sif -- --dir ../Roam-design/docs/content/engine/runs/sif-2026-v22 --slug sif-2026-winter --out data/brands/sif-2026-winter.json --held data/brands/_sif-2026-winter-held.tsv
 npm run intake:dry-run -- data/brands/sif-2026-winter.json --json /tmp/sif-2026-winter-brands-plan.json
 ```
 
-같은 작가는 V.21 링크와 소개를 잇고, 다른 작가는 새 브랜드, 모름은 계속 뺀다. 이미 올린 곳은 파일 키(`sif22-<이름>`)로 찾아 다시 만들지 않으니
-같은 파일을 `/admin/intake`에 한 번 더 올리면 새로 들어온 곳만 더해진다.
+#208 브랜치 위 mock 미리 계산(11-20): 파일 964곳, 보류 0. 추가분 82곳은 81묶음이 되어 **81곳 모두 V.21 브랜드에 이음, 새 브랜드 0**,
+이름이 다른 브랜드에 이어진 곳 0. 1곳은 파일 안에서 묶인다: "융"과 "요즘강아지 덕구"는 같은 작가(@22yyung, V.21 J53과 J26 두 부스)라 한 브랜드다.
+전체로는 새 브랜드 569, 이음 394, 참가 963. 이미 올린 882곳은 파일 키로 찾아 다시 만들지 않으니 `/admin/intake`에 같은 파일을 한 번 더 올리면 된다.
 
 ## 되돌리기 (운영 쓰기, Ted, Supabase SQL Editor)
 

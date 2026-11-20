@@ -84,7 +84,8 @@ const c = res.counts;
 console.log(
   `✓ brands.v1 ${file.brands.length}곳 → ${out}\n` +
     `  대조: 새 참가 ${c["새 참가"]}, 같은 이름 ${c["같은 이름"]}, 짧아서 확인 ${c["같은 이름(짧아서 확인 필요)"]}, 비슷한 이름 ${c["비슷한 이름(확인 필요)"]}\n` +
-    `  V.21 이어 적음 ${res.carried.length}(링크 있음 ${res.carried.filter((x) => x.withLinks).length}), 보류 ${res.held.length}, 명단 중복 줄 ${res.duplicateRows.length}` +
+    `  V.21 이어 적음 ${res.carried.length}(링크 있음 ${res.carried.filter((x) => x.withLinks).length}), 보류 ${res.held.length}, 하나만 넣은 명단 중복 줄 ${res.duplicateRows.length}` +
     (res.duplicateRows.length ? ` (${res.duplicateRows.map((d) => d.name).join(", ")})` : ""),
 );
+for (const x of res.instagramFromV22) console.log(`  인스타를 V.22 프로필 쪽으로 적음(확인 대상) ${x.name}: ${x.v22} (V.21 ${x.v21 ?? "없음"})`);
 console.log("  운영 DB에는 쓰지 않았어요. /admin/intake에 올려 미리보기를 보고 적용해 주세요");

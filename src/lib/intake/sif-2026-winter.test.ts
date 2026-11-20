@@ -44,9 +44,17 @@ describe("서울일러스트레이션페어V.22 브랜드 먼저(mock)", () => {
     const v21Exhibitors = new Set(before.participants.filter((p) => p.exhibitionId === v21).map((p) => p.exhibitorId));
     for (const b of linked) expect(v21Exhibitors.has((b.target as { existing: string }).existing)).toBe(true);
     // 이어진 V.21 브랜드 이름이 V.22 이름과 같다(링크 모음 주소로 남의 브랜드에 붙지 않았다).
-    expect(linked.filter((b) => flatName(b.existingName ?? "") !== flatName(b.name)).map((b) => `${b.name} → ${b.existingName}`)).toEqual([]);
-    // 파일 안에 이름이 같은 항목이 없다(명단에 두 번 나온 줄은 하나만 넣었다).
-    expect(new Set(file.brands.map((b) => flatName(b.name) || b.name)).size).toBe(file.brands.length);
+    // 비슷한 이름(모로하나베이커리 ↔ 모로하나)은 V.21 표기를 aliases로 적었으니 그 표기와 같으면 된다.
+    const namesOf = (key: string) => {
+      const f = file.brands.find((x) => x.key === key)!;
+      return [f.name, ...(f.aliases ?? [])].map(flatName);
+    };
+    expect(linked.filter((b) => !namesOf(b.key).includes(flatName(b.existingName ?? ""))).map((b) => `${b.name} → ${b.existingName}`)).toEqual([]);
+    // 파일 안에 이름이 같은 항목은 프로필 대조로 다른 작가라고 가른 것(키에 프로필 id)뿐이다.
+    const dupNames = file.brands.filter((b, i) => file.brands.findIndex((x) => flatName(x.name) === flatName(b.name)) !== i);
+    for (const b of dupNames) expect(b.key).toMatch(/^sif22-.+-[0-9a-f]{24}$/);
+    // 그 짝은 브랜드도 따로다(같은 이름으로 합쳐지지 않는다).
+    for (const b of dupNames) expect(res.plan.brands.find((x) => x.keys.includes(b.key))?.keys).toEqual([b.key]);
     expect(s.newBrands + s.linkedBrands + s.mergedInFile).toBe(file.brands.length);
     expect(s.participantsToCreate).toBe(file.brands.length - s.mergedInFile);
 

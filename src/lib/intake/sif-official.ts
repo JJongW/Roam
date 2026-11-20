@@ -68,19 +68,29 @@ export function parseCompare(text: string): SifCompareRow[] {
   });
 }
 
+export interface SifProfileCheckRow {
+  name: string;
+  verdict: SifVerdict;
+  /** 오크레오 프로필 주소(마지막 칸). 같은 이름 카드가 둘이면 이 주소로 파일 키를 가른다. */
+  profileUrl?: string;
+  /** 근거에 "프로필 인스타는 @계정"이 있으면 그 계정. V.21 인스타와 다르면 V.22 쪽을 쓴다(최신). */
+  profileInstagram?: string;
+}
+
 /**
- * 프로필 대조 결과 → V.22 이름 → 판정. 머리줄에 `V22이름`(또는 `이름`, `name`)과 `판정` 칸이 있어야 한다.
- * 같은 이름이 두 줄이면 판정이 같을 때만 받는다. 다르면 "모름"으로 둔다(사람이 다시 본다).
+ * 프로필 대조 결과 → V.22 이름 → 줄들. 머리줄에 `V22이름`(또는 `이름`, `name`)과 `판정` 칸이 있어야 한다.
+ * 같은 이름 카드가 둘이면(오크레오에 같은 이름 작가가 둘) 줄도 둘이다. 판정은 같은 작가, 다른 작가, 그 밖은 모름.
  */
-export function parseProfileCheck(text: string): Map<string, SifVerdict> {
-  const out = new Map<string, SifVerdict>();
+export function parseProfileCheck(text: string): Map<string, SifProfileCheckRow[]> {
+  const out = new Map<string, SifProfileCheckRow[]>();
   for (const r of parseTsv(text)) {
     const name = r["V22이름"] ?? r["이름"] ?? r["name"];
     const v = r["판정"];
     if (!name || !v) continue;
     const verdict: SifVerdict = v === "같은 작가" || v === "다른 작가" ? v : "모름";
-    const prev = out.get(name);
-    out.set(name, prev && prev !== verdict ? "모름" : verdict);
+    const profileUrl = r["오크레오 프로필 주소"] || undefined;
+    const ig = /프로필 인스타는 @([A-Za-z0-9._]+)/.exec(r["근거"] ?? "")?.[1]?.replace(/\.+$/, "");
+    out.set(name, [...(out.get(name) ?? []), { name, verdict, ...(profileUrl ? { profileUrl } : {}), ...(ig ? { profileInstagram: ig } : {}) }]);
   }
   return out;
 }
@@ -89,7 +99,7 @@ export interface SifBuildInput {
   participants: SifParticipant[];
   compare: SifCompareRow[];
   /** 없으면 확인 필요한 곳은 전부 held. */
-  profileCheck?: Map<string, SifVerdict>;
+  profileCheck?: Map<string, SifProfileCheckRow[]>;
   /** V.21 부스 코드 → 링크와 소개(src/lib/booth/links-sif-2026.json). */
   v21Links: Record<string, SifV21Link>;
   exhibitionSlug: string;
@@ -112,8 +122,10 @@ export interface SifHeld {
 export interface SifBuildResult {
   file: BrandsFile;
   held: SifHeld[];
-  /** 명단에 똑같이 두 번 나온 줄(분류와 이름이 같음). 하나만 넣었다. */
+  /** 명단에 똑같이 두 번 나온 줄인데 프로필 대조로 가를 수 없던 것. 하나만 넣었다. */
   duplicateRows: SifParticipant[];
+  /** 같은 작가인데 V.22 프로필 인스타가 V.21과 달라 V.22 쪽을 적은 곳. 사람이 확인한다. */
+  instagramFromV22: { key: string; name: string; v21: string | null; v22: string }[];
   /** 지난 회차 링크(또는 소개)를 이어 적은 곳. */
   carried: { key: string; name: string; v21Code: string; withLinks: boolean }[];
   counts: Record<SifMatch, number>;
@@ -175,9 +187,12 @@ const httpUrl = (u: string | undefined): string | undefined => {
 };
 
 /** 다시 돌려도 같은 브랜드를 찾는 파일 키. 명단 순서가 바뀌어도 같게 이름에서 만든다. */
-export function sifBrandKey(name: string): string {
-  return `sif22-${name.trim()}`.slice(0, 120);
+export function sifBrandKey(name: string, profileUrl?: string): string {
+  const id = profileUrl ? profileUrl.replace(/\/+$/, "").split("/").pop() : undefined;
+  return (id ? `sif22-${name.trim()}-${id}` : `sif22-${name.trim()}`).slice(0, 120);
 }
+
+const igHandle = (u: string | undefined) => (u ? /instagram\.com\/([^/?#]+)/i.exec(u)?.[1]?.toLowerCase() : undefined);
 
 export function buildSifBrandsFile(input: SifBuildInput): SifBuildResult {
   const byName = new Map<string, SifCompareRow>();
@@ -189,6 +204,10 @@ export function buildSifBrandsFile(input: SifBuildInput): SifBuildResult {
   }
   const held: SifHeld[] = [];
   const duplicateRows: SifParticipant[] = [];
+  const instagramFromV22: SifBuildResult["instagramFromV22"] = [];
+  const occurrences = new Map<string, number>();
+  for (const p of input.participants) occurrences.set(p.name.trim(), (occurrences.get(p.name.trim()) ?? 0) + 1);
+  const used = new Map<string, number>();
   const carried: SifBuildResult["carried"] = [];
   const counts = Object.fromEntries(MATCHES.map((m) => [m, 0])) as Record<SifMatch, number>;
   const brands: BrandsFileBrand[] = [];
@@ -199,20 +218,32 @@ export function buildSifBrandsFile(input: SifBuildInput): SifBuildResult {
     const name = p.name.trim();
     if (!name) continue;
     if (!SIF_TYPES.includes(p.type as (typeof SIF_TYPES)[number])) throw new Error(`모르는 분류예요: ${p.type} (${name})`);
-    const key = sifBrandKey(name);
-    if (seen.has(key)) {
-      // 오크레오 목록을 쪽마다 넘기며 뽑아 같은 줄이 두 번 잡힐 수 있다. 다른 팀인지 이름만으로는 모른다.
+    const c = byName.get(name);
+    if (!c) throw new Error(`대조 파일에 없는 이름이에요: ${name}`);
+    // 같은 이름 카드가 여럿이고 프로필 대조 줄도 그만큼 있으면 한 줄씩 짝지어 따로 넣는다(키는 프로필 주소로).
+    // 대조 줄이 모자라면 명단을 쪽마다 넘기며 뽑다 같은 줄이 두 번 잡혔을 수 있어 하나만 넣는다.
+    const rows = input.profileCheck?.get(name) ?? [];
+    const n = occurrences.get(name) ?? 1;
+    const nth = used.get(name) ?? 0;
+    used.set(name, nth + 1);
+    const split = n > 1 && rows.length === n;
+    if (n > 1 && !split && nth > 0) {
       duplicateRows.push(p);
       continue;
     }
+    const row: SifProfileCheckRow | undefined = split
+      ? rows[nth]
+      : rows.length
+        ? { ...rows[0], verdict: rows.every((r) => r.verdict === rows[0].verdict) ? rows[0].verdict : "모름" }
+        : undefined;
+    const key = sifBrandKey(name, split ? row?.profileUrl : undefined);
+    if (seen.has(key)) throw new Error(`파일 키가 겹쳐요: ${key}`);
     seen.add(key);
-    const c = byName.get(name);
-    if (!c) throw new Error(`대조 파일에 없는 이름이에요: ${name}`);
     counts[c.match]++;
 
     let carry = c.match === "같은 이름";
     if (c.match === "같은 이름(짧아서 확인 필요)" || c.match === "비슷한 이름(확인 필요)") {
-      const v = input.profileCheck?.get(name);
+      const v = row?.verdict;
       if (v === "같은 작가") carry = true;
       else if (v !== "다른 작가") {
         held.push({
@@ -242,7 +273,14 @@ export function buildSifBrandsFile(input: SifBuildInput): SifBuildResult {
     const b: BrandsFileBrand = { key, name: name.slice(0, 120), category: p.type, participationType: p.type };
     if (carry && c.v21Code) {
       const l = input.v21Links[c.v21Code] ?? {};
-      const instagramUrl = httpUrl(l.instagram);
+      let instagramUrl = httpUrl(l.instagram);
+      // V.22 프로필 인스타가 다르면 그쪽이 최신이다. V.21 인스타로 덮지 않는다. V.21 브랜드에는 웹 주소나
+      // 미리보기 이름 일치(--name-matches)로 잇는다.
+      const v22 = row?.profileInstagram;
+      if (v22 && v22.toLowerCase() !== igHandle(instagramUrl)) {
+        instagramFromV22.push({ key, name, v21: instagramUrl ?? null, v22: `https://www.instagram.com/${v22}` });
+        instagramUrl = `https://www.instagram.com/${v22}`;
+      }
       const websiteUrl = httpUrl(l.website);
       if (instagramUrl) b.instagramUrl = instagramUrl;
       if (websiteUrl) b.websiteUrl = websiteUrl;
@@ -262,7 +300,7 @@ export function buildSifBrandsFile(input: SifBuildInput): SifBuildResult {
     source: { url: input.sourceUrl, collectedAt: input.collectedAt, ...(input.note ? { note: input.note.slice(0, 500) } : {}) },
     brands,
   });
-  return { file, held, duplicateRows, carried, counts };
+  return { file, held, duplicateRows, instagramFromV22, carried, counts };
 }
 
 /**
