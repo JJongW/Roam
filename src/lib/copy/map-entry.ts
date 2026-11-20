@@ -25,7 +25,7 @@ export const entryCopy = {
   knownNote: "둘러본 시간이나 지나간 길로 취향을 짐작하지 않아요.",
   pickedMood: "고르신 사진",
   picked: (n: number) => `사진 ${n}장`,
-  notPicked: "아직 고르지 않으셨어요",
+  notPicked: "고르신 사진은 없어요",
   today: "오늘",
   heartedPlaces: "하트 남긴 곳",
   pickAgain: "다시 고르기",
