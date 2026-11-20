@@ -12,6 +12,8 @@ import {
   APP_ONBOARDING_GUIDE_STEP_KEY,
   APP_ONBOARDING_PHASE_KEY,
 } from "@/lib/onboarding/app-onboarding-gate";
+import { system } from "@/lib/copy/v1";
+import { SCREEN, track } from "@/lib/analytics/app-track";
 import type { BoothNote, User } from "@/lib/types";
 
 interface AuthState {
@@ -99,14 +101,53 @@ export async function syncPendingReactions(): Promise<boolean> {
  *  전시별 가치 온보딩(ValueOnboarding)은 로그인 사용자에게만 뜨므로(비로그인은
  *  결과가 계정에 안 남아 약속을 못 지켜 아예 숨긴다) 그쪽의 소급 동기화는 없다 —
  *  앱 최초진입 온보딩(PENDING_VALUES_KEY)만 비로그인 경로가 있다. */
+/**
+ * 로그인 화면(UI 5-04)에서 로그인을 시작했다는 표시. Google 로그인은 다른 사이트를 돌아 이 앱으로 다시 들어오므로
+ * 화면 상태로는 "방금 로그인했다"를 알 수 없다. 탭 단위(sessionStorage)로 남기고, 돌아와 로그인이 확인되면
+ * 5-05 "로그인했어요. 남긴 하트는 그대로 있어요."를 한 번 띄운다.
+ */
+const LOGIN_STARTED_KEY = "roam.login.started";
+export function markLoginStarted(source: string) {
+  try {
+    sessionStorage.setItem(LOGIN_STARTED_KEY, source || "login");
+  } catch {
+    /* 사생활 보호 모드 등 — 알림만 빠진다 */
+  }
+}
+/** 로그인이 실패하거나 취소돼 돌아오면 표시를 지운다(다음 로그인 확인 때 엉뚱하게 5-05가 뜨지 않게). */
+export function clearLoginStarted() {
+  try {
+    sessionStorage.removeItem(LOGIN_STARTED_KEY);
+  } catch {
+    /* 무시 */
+  }
+}
+function takeLoginStarted(): string | null {
+  try {
+    const v = sessionStorage.getItem(LOGIN_STARTED_KEY);
+    if (v) sessionStorage.removeItem(LOGIN_STARTED_KEY);
+    return v;
+  } catch {
+    return null;
+  }
+}
+
 async function syncAndAnnounce() {
+  const started = typeof window === "undefined" ? null : takeLoginStarted();
   const [syncedValues, syncedReactions, syncedBrandHearts] = await Promise.all([
     syncPendingValues(),
     syncPendingReactions(),
     // 브랜드 하트(UI 19)도 부스 하트와 같은 때 계정과 맞춘다(stores/brand-hearts.ts).
     syncBrandHearts(),
   ]);
-  if (syncedValues || syncedReactions || syncedBrandHearts) {
+  if (started) {
+    // 5-05. 옛 "아까 남기신 반응도 반영했어요" 알림과 겹치지 않게 이것 하나만 띄운다.
+    toast(system.loggedIn);
+    track("login_complete", {
+      screen: SCREEN.loginSheet,
+      props: { source: started, local_synced: syncedReactions },
+    });
+  } else if (syncedValues || syncedReactions || syncedBrandHearts) {
     toast("아까 남기신 반응도 반영했어요. 이제 박람회를 옮겨도 이어서 골라 드릴게요.");
   }
 }

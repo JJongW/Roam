@@ -108,6 +108,16 @@ export const system = {
   /** 5-02 로그인 제안. 웹 저장은 브라우저마다라 "이 브라우저". 로그인하면 기기 기록(하트, 다녀왔어요)을
    *  계정으로 올린다(stores/auth.ts syncPendingReactions). */
   loginPrompt: "하트는 이 브라우저에 남아요. 로그인하시면 계정에도 남아요.",
+  // UI 5-04~5-07 로그인. iOS V1Copy(loginSheetTitle 등)와 같은 자리. 웹은 Google 로그인이고 "이 휴대폰" 대신 "이 브라우저".
+  // 로그인하면 이 브라우저의 하트와 다녀온 곳을 계정으로 올린다(stores/auth.ts syncPendingReactions). 그래서 "계정에도 남아요"는 사실이다.
+  /** 5-04 */
+  loginSheetTitle: "로그인하시면 남긴 하트가\n계정에도 남아요",
+  loginSheetBody: "로그인하지 않아도 둘러보고 하트를 남길 수 있어요.",
+  /** 5-05 로그인하고 돌아온 화면의 알림 */
+  loggedIn: "로그인했어요.\n남긴 하트는 그대로 있어요.",
+  /** 5-07. 실패 이유는 보여 주지 않는다(설계서 5-07). 서비스가 알리는 말이라 로미 없음. */
+  loginFailedTitle: "로그인을 마치지 못했어요",
+  loginFailedBody: "하트는 이 브라우저에 그대로 있어요.\n잠시 뒤에 다시 해 보셔도 돼요.",
   // UI 19 브랜드 하트(A안, 11-19). iOS V1Copy(Roam-ios #193)와 같은 자리. 웹에서 거짓이 되는 말만 바꿨다
   // (11-20 브랜드 검토). 웹은 브라우저 푸시를 보내지 않는다(브랜드 알림은 iOS 푸시, 그리고 웹과 iOS의
   // 알림함 줄로만 간다). 그래서 웹은 "알려 드려요" 대신 확인된 사실(계정에 남는다)만 말한다(브랜드 규칙 §4).
@@ -223,6 +233,9 @@ export const label = {
   heartRemove: "하트 빼기",
   undo: "되돌리기",
   login: "로그인",
+  /** 5-04 웹은 Google 로그인(iOS는 Apple) */
+  googleLogin: "Google로 로그인",
+  browseWithoutLogin: "로그인 없이 둘러보기",
   retry: "다시 시도",
   /** 19-A1 브랜드 줄 */
   brand: "브랜드",
