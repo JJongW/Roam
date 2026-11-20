@@ -18,6 +18,7 @@
     "ig:publish": "vite-node -c worker/vite.config.ts scripts/ig-publish.ts --",
     "brands:sdf": "vite-node -c worker/vite.config.ts scripts/brands-from-sdf.ts --",
     "brands:comicw": "vite-node -c worker/vite.config.ts scripts/brands-from-comicw.ts --",
+    "brands:sif": "vite-node -c worker/vite.config.ts scripts/brands-from-sif.ts --",
     "tokens:sync": "node scripts/tokens-sync.mjs",
     "tokens:check": "node scripts/tokens-sync.mjs --check",
     "intake:backup": "vite-node -c worker/vite.config.ts scripts/intake-backup.ts --",
