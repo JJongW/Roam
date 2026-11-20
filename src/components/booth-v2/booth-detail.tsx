@@ -17,6 +17,7 @@ import { Snackbar } from "@/components/v2/snackbar";
 import { useBoothSignals } from "@/components/booth-v2/booth-actions";
 import { LeftSection } from "@/components/booth-v2/left-section";
 import { VerdictBand } from "@/components/booth-v2/verdict-band";
+import { BrandRow } from "@/components/booth-v2/brand-row";
 import {
   AliasesSection,
   AppearancesSection,
@@ -47,11 +48,13 @@ export interface BoothDetailV2Props {
   aliases?: string[];
   /** 박람회가 끝났으면 위에 "어떠셨어요?" 띠(6-09). 여는 날엔 평가를 묻지 않는다. */
   fairEnded?: boolean;
+  /** UI 19-A1 브랜드 줄. 부스에 대표 브랜드가 이어져 있을 때만. 이름은 브랜드 이름, 없으면 부스 이름. */
+  brand?: { exhibitorId: string; name: string };
 }
 
 /**
  * UI 4-02 부스 상세(Figma 3015:1288). 위에서 아래로: 뒤로 → 사진 줄 → 이름과 위치 → 분류 배지
- * → 브랜드 소개 상자 → 정보 줄(위치, 파는 것, 인스타그램, 브랜드 사이트) → 아래 고정 바(하트, 다녀왔어요).
+ * → 브랜드 소개 상자 → 브랜드 줄(UI 19-A1) → 정보 줄(위치, 파는 것, 인스타그램, 브랜드 사이트) → 아래 고정 바(하트, 다녀왔어요).
  *
  * - 정보가 비면 EM-1A: 이름이 1순위, 소개 상자 대신 "지금은 부스 이름과 위치만 나와 있어요."(11-15).
  * - 화살표는 갈 곳이 있는 줄에만(11-15).
@@ -72,6 +75,7 @@ export function BoothDetailV2({
   appearances = [],
   aliases,
   fairEnded,
+  brand,
 }: BoothDetailV2Props) {
   const s = useBoothSignals({
     boothId: booth.id,
@@ -175,6 +179,17 @@ export function BoothDetailV2({
             )
           )}
         </div>
+
+        {brand && (
+          <div className="px-v2-x4 pt-v2-x4">
+            <BrandRow
+              exhibitorId={brand.exhibitorId}
+              name={brand.name}
+              exhibitionSlug={exhibitionSlug}
+              show={s.show}
+            />
+          </div>
+        )}
 
         <ul className="flex flex-col pb-v2-x2 pt-v2-x4">
           {where && (

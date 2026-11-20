@@ -33,7 +33,7 @@ export default async function MapPage({ params, searchParams }: Props) {
     return (
       <div className="flex min-h-dvh flex-col bg-v2-bg-layer-basement font-v2-ui">
         <div className="px-v2-x4 pt-safe">
-          <BackButton fallbackHref={`/exhibitions/${slug}`} />
+          <BackButton fallbackHref="/" />
         </div>
         <div className="flex flex-1 flex-col items-center justify-center gap-v2-x3 px-v2-x6 text-center">
           <RomiAvatar size="lg" />

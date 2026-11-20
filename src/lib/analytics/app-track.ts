@@ -23,6 +23,12 @@ export const APP_EVENT_NAMES = [
   "heart_add",
   "heart_remove",
   "heart_save_fail",
+  // 브랜드 하트(UI 19 A, 측정 W-22). 이름은 iOS AnalyticsTaxonomy와 같다.
+  "brand_heart_add",
+  "brand_heart_remove",
+  "brand_heart_undo",
+  "login_prompt_shown",
+  "login_prompt_tap",
   "visit_mark",
   "visit_unmark",
   "visit_undo",
@@ -49,6 +55,11 @@ export const SCREEN = {
   visitRemembered: "UI 6-03",
   todayVisited: "UI 6-04",
   visitedList: "UI 6-10",
+  brandRow: "UI 19-A1",
+  brandHeartLeft: "UI 19-A2",
+  brandHeartLoginPrompt: "UI 19-A3",
+  brandHeartUndo: "UI 19-A4",
+  brandHeartFailed: "UI 19-A5",
 } as const;
 export type ScreenId = (typeof SCREEN)[keyof typeof SCREEN];
 
