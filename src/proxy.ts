@@ -46,6 +46,8 @@ export const PUBLIC_PATHS = ["/", "/privacy", "/terms", "/survey", "/visited", "
 export const PUBLIC_PATH_PATTERNS = [
   /^\/exhibitions\/[^/]+$/,
   /^\/exhibitions\/[^/]+\/map$/,
+  // 부스 목록(UI 8 둘러보기). 지도처럼 로그인 없이 둘러본다(브랜드 규칙 §4 로그인).
+  /^\/exhibitions\/[^/]+\/booths$/,
   /^\/booths\/[^/]+$/,
   /^\/me\/hearts\/[^/]+$/,
 ];

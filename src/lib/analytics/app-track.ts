@@ -42,6 +42,10 @@ export const APP_EVENT_NAMES = [
   "romi_sheet_open",
   "romi_row_tap",
   "route_start",
+  // UI 8 둘러보기. 앞의 둘은 iOS AnalyticsTaxonomy와 같은 이름, 줄 누름은 설계서 B UI 8 이름.
+  "booth_list_open",
+  "booth_list_category_tap",
+  "booth_list_row_tap",
   // UI 9 길 안내, 12 회고, 18 알림함. 이름은 iOS AnalyticsTaxonomy와 같다.
   "nearby_answer",
   "route_line_drawn",
@@ -78,6 +82,8 @@ export const SCREEN = {
   brandHeartUndo: "UI 19-A4",
   brandHeartFailed: "UI 19-A5",
   romiSheet: "UI 7-01",
+  boothList: "UI 8-01",
+  boothListCategory: "UI 8-02",
   romiLeft: "UI 7-03",
   routeTarget: "UI 9-01",
   routeNearby: "UI 9-02",

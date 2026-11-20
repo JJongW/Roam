@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, Heart, Search } from "lucide-react";
+import { ChevronLeft, ChevronRight, Heart, Library, Search } from "lucide-react";
 import { RomiAvatar } from "@/components/v2/romi-avatar";
 import { BottomSheet } from "@/components/map-v2/bottom-sheet";
 import { isHearted, isVisited, type BoothRecord } from "@/lib/stores/visit";
@@ -31,7 +31,8 @@ type Page = "main" | "left" | "where";
  * - 물어보기 칩: "'X' 가는 길"(UI 9), 이 지도에 있는 편의시설, "지금 어디인지 알려 주기".
  *   칩은 이 박람회에 실제로 있는 것만 보인다(없는 걸 묻게 하지 않는다).
  * - 12-01 맨 아래 "오늘은 여기까지 할게요": 열린 날에만 회고(12-02)로, 아니면 닫기만.
- * 웹에 없는 기능(로미에게 묻기 입력, 부스 목록, 오늘 프로그램, 제가 알고 있는 것)은 줄을 두지 않는다.
+ * - 둘러보기: "부스 목록 보기"(UI 8-01, 11-11 입구는 로미 시트 넷째 줄).
+ * 웹에 없는 기능(로미에게 묻기 입력, 오늘 프로그램, 제가 알고 있는 것)은 줄을 두지 않는다.
  * 남긴 것은 이 박람회 것만이다. 웹은 하트를 남긴 시각이 없어 "오늘"만 가르지 않는다.
  */
 export function RomiSheet({
@@ -237,6 +238,27 @@ export function RomiSheet({
             {label.whereNow}
           </Chip>
         </div>
+      </Section>
+
+      <Section title={label.browse}>
+        <Link
+          href={`/exhibitions/${exhibitionSlug}/booths`}
+          onClick={() => track("romi_row_tap", { ...ctx, props: { row: "booth_list" } })}
+          className="flex w-full items-center gap-v2-x3 py-v2-x3 text-left active:bg-v2-bg-transparent-pressed"
+        >
+          <Library
+            aria-hidden
+            className="size-[var(--roam-v2-icon-size-md)] shrink-0 text-v2-fg-neutral"
+          />
+          <span className="flex min-w-0 flex-1 flex-col gap-v2-x0-5 font-v2-medium">
+            <span className="text-v2-t5 text-v2-fg-neutral">{label.boothListOpen}</span>
+            <span className="text-v2-t3 text-v2-fg-neutral-muted">{label.boothListSub}</span>
+          </span>
+          <ChevronRight
+            aria-hidden
+            className="size-[var(--roam-v2-icon-size-md)] shrink-0 text-v2-fg-neutral-muted"
+          />
+        </Link>
       </Section>
 
       <button
