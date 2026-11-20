@@ -18,7 +18,8 @@ import type { BoothRecord } from "@/lib/stores/visit";
  * - 카드는 정보만이고, 자세한 건 "자세히"로 상세(11-10).
  * - 윗선 가운데 로미(동행자, 곁에 있다), 오른쪽 다녀왔어요 알약(V4).
  * - 하트는 이름 줄 오른쪽. 하트와 다녀왔어요는 따로다.
- * - 길 안내(UI 9)는 웹에 아직 없어 버튼을 두지 않는다. 없는 기능을 약속하지 않는다(브랜드 규칙 §4).
+ * - 길 안내(UI 9): 열린 날이고 배치도가 있을 때만 "길 안내" 버튼(`onRoute`). 원할 때만 쓰는 도구다(§4).
+ * - 9-06 도착하면 위치 줄 아래 "A홀 A13 도착했어요, 천천히 둘러보세요"(`arrivedLine`). 다녀왔어요는 켜지 않는다.
  * - 둥글기는 카드 시험값 1(16). iOS V2Radius.card와 같다(Ted 확정 전, 미정).
  */
 export function BoothCardV2({
@@ -28,6 +29,8 @@ export function BoothCardV2({
   exhibitionSlug,
   className,
   onVisitMarked,
+  onRoute,
+  arrivedLine,
 }: {
   booth: BoothListItem;
   hallName?: string;
@@ -36,6 +39,8 @@ export function BoothCardV2({
   className?: string;
   /** 알약으로 다녀왔어요를 켠 직후. 지도 화면이 카드를 내리고 로미 줄(6-03)을 띄운다. */
   onVisitMarked?: (before: BoothRecord | undefined) => void;
+  onRoute?: () => void;
+  arrivedLine?: string;
 }) {
   const s = useBoothSignals({
     boothId: booth.id,
@@ -80,6 +85,11 @@ export function BoothCardV2({
                 )}
               </p>
             )}
+            {arrivedLine && (
+              <p className="text-v2-t3 font-v2-medium text-v2-fg-brand">
+                {arrivedLine}
+              </p>
+            )}
           </div>
           <HeartButton
             on={s.hearted}
@@ -94,7 +104,16 @@ export function BoothCardV2({
             ))}
           </div>
         )}
-        <div className="flex justify-end">
+        <div className="flex items-center justify-end gap-v2-x2">
+          {onRoute && (
+            <button
+              type="button"
+              onClick={onRoute}
+              className="mr-auto flex min-h-v2-x9 items-center rounded-v2-pill border border-v2-stroke-neutral-weak px-v2-x3-5 py-v2-x2 text-v2-t4 font-v2-bold text-v2-fg-neutral active:bg-v2-bg-transparent-pressed"
+            >
+              {label.route}
+            </button>
+          )}
           <Link
             href={`/booths/${booth.id}`}
             className="flex min-h-v2-x9 items-center rounded-v2-r2 px-v2-x3-5 py-v2-x2 text-v2-t4 font-v2-bold text-v2-fg-neutral-muted active:bg-v2-bg-transparent-pressed"
