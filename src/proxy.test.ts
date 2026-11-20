@@ -92,4 +92,11 @@ describe("proxy() 게이트", () => {
     // 다녀왔어요 목록(6-10)은 기기 기록을 보여 주므로 로그인 없이 연다.
     expect(proxy(req("/visited")).status).toBe(200);
   });
+
+  it("마이페이지와 하트 목록, 설정은 로그인 없이 열고 계정 화면은 로그인으로 보낸다", () => {
+    for (const p of ["/me", "/me/hearts", "/me/hearts/sif-2026", "/me/settings"])
+      expect(proxy(req(p)).status).toBe(200);
+    for (const p of ["/me/brands", "/me/profile", "/me/profile/nickname", "/me/delete"])
+      expect(proxy(req(p)).status).toBe(307);
+  });
 });

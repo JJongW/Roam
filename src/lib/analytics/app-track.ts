@@ -52,6 +52,12 @@ export const APP_EVENT_NAMES = [
   "recap_login_choice",
   "inbox_open",
   "inbox_item_open",
+  // UI 14 마이페이지, 15 설정. 이름은 iOS AnalyticsTaxonomy와 같다.
+  "heart_list_view",
+  "heart_brand_view",
+  "nickname_change_result",
+  "logout",
+  "account_delete",
 ] as const;
 export type AppEventName = (typeof APP_EVENT_NAMES)[number];
 
@@ -82,6 +88,16 @@ export const SCREEN = {
   recapLoggedOut: "UI 12-04",
   inbox: "UI 18-02",
   inboxEmpty: "UI 18-03",
+  myPage: "UI 14-01",
+  heartList: "UI 14-02",
+  heartFair: "UI 14-05",
+  heartEmpty: "UI 14-06",
+  heartBrands: "UI 14-10",
+  settings: "UI 15-01",
+  profile: "UI 15-02",
+  nickname: "UI 15-03",
+  logout: "UI 15-09",
+  deleteAccount: "UI 15-11",
 } as const;
 export type ScreenId = (typeof SCREEN)[keyof typeof SCREEN];
 

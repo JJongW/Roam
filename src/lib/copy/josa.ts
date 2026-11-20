@@ -46,3 +46,8 @@ export function euroRo(word: string): string {
   if (last === "1" || last === "7" || last === "8" || /l$/i.test(last)) return "로";
   return hasFinalConsonant(s) ? "으로" : "로";
 }
+
+/** "꽃잠" → "꽃잠이", "나무" → "나무가". 조사만 돌려준다. */
+export function iGa(word: string): string {
+  return hasFinalConsonant(word) ? "이" : "가";
+}

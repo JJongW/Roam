@@ -9,7 +9,7 @@
 // 알리는 글은 찍는다(2026-11-18 브랜드 검토).
 // 기능이 아직 없는 것은 약속하지 않는다(브랜드 규칙 §4 "확인되지 않았으면 된다고 약속하지 않는다").
 
-import { euroRo, iyeyo } from "./josa";
+import { euroRo, iGa, iyeyo } from "./josa";
 
 export const romi = {
   /** 3-01 "A홀이에요, 같이 둘러봐요" */
@@ -143,6 +143,64 @@ export const system = {
   inboxEmptyBody: "하트 남긴 브랜드가 다음 박람회에 나오면 여기에 남겨 둘게요.",
   inboxFailed: "알림을 불러오지 못했어요",
   inboxLoading: "알림을 불러오고 있어요",
+  // UI 14 마이페이지. iOS V1Copy+Phase3과 같은 자리. 웹은 "이 휴대폰" 대신 "이 브라우저"(기록이 브라우저에 남는다).
+  /** 14-01 머리(로그인 전) */
+  browsing: "둘러보는 중이에요",
+  meLoading: "남기신 기록을 불러오고 있어요",
+  /** 14-01, 14-03 로미 줄 첫 줄 */
+  nextFair: (day: string, name: string) => `다음 박람회는 ${day} ${iyeyo(name)}.`,
+  openNow: (name: string) => `${name}${iGa(name)} 지금 열려 있어요.`,
+  myHeartsHere: "하트 남긴 곳이 있어요.",
+  /** 14-01. 웹 하트는 로그인 전에는 이 브라우저(localStorage)에만 있다. */
+  myHeartsBrowserOnly: "하트는 지금 이 브라우저에만 남아 있어요.",
+  noNextFair: "곧 열릴 박람회가 정해지면 여기에 나와요.",
+  /** 14-06 */
+  emptyHearts: "부스에 하트를 남기면 박람회 지도에 켜져요.",
+  emptyHeartsOpen: (name: string) =>
+    `${name}${iGa(name)} 지금 열려 있어요. 같이 둘러볼까요?`,
+  exampleHeartTitle: "하트를 남기면 이렇게 보여요",
+  exampleHeartBody: "박람회마다 지도 한 장에 모여요",
+  /** 14-05 "12월 4일 금요일부터 4일간, 코엑스 C홀이에요. 하트 남긴 곳이 지도에 켜져 있어요." */
+  fairHeartsOn: (when: string, venue: string) =>
+    `${when}, ${iyeyo(venue)}. 하트 남긴 곳이 지도에 켜져 있어요.`,
+  /** 14-05에서 지도를 그릴 수 없을 때(배치도가 없거나 하트가 0곳) "지도에 켜져 있어요"를 빼고 때와 장소만 */
+  fairWhere: (when: string, venue: string) => `${when}, ${iyeyo(venue)}.`,
+  /** "12월 4일부터 4일간, 코엑스 C홀" */
+  fairPeriod: (start: string, days: number, venue: string) =>
+    days > 1 ? `${start}부터 ${days}일간, ${venue}` : `${start}, ${venue}`,
+  from: (day: string) => `${day}부터`,
+  until: (day: string) => `${day}까지`,
+  /** 14-02 */
+  heartListNote: "이 브라우저에 남긴 하트예요. 하트를 다시 누르면 빠져요.",
+  /** 14-07, 14-10 */
+  heartListNoteAccount: "하트를 다시 누르면 빠져요.",
+  /** 14-04 맨 아래 */
+  heartsApart: "하트와 다녀온 기록은 따로 남아요.\n다녀왔다고 하트가 생기지는 않아요.",
+  /** 14-10 "홈테이블데코페어 2026, 12월 4일부터" */
+  brandUpcoming: (fair: string, day: string) => `${fair}, ${day}부터`,
+  brandHeartsEmpty: "아직 하트 남긴 브랜드가 없어요.",
+  brandHeartsFailed: "브랜드 하트를 불러오지 못했어요",
+  brandHeartsLoading: "브랜드 하트를 불러오고 있어요",
+  /** 12-05(40-C) 그날 쓰신 말 아래 */
+  writtenOn: (day: string) => `${day}에 쓰신 말`,
+  // UI 15 설정
+  loggedInWith: (provider: string) => `${provider}${euroRo(provider)} 로그인했어요`,
+  profileNote: "로그아웃과 계정 삭제는 설정 맨 아래에 있어요.",
+  nicknameHint: "12자까지 쓸 수 있어요. 마이페이지 맨 위에 보여요.",
+  nicknameFull: "12자를 다 채웠어요.",
+  nicknameTaken: "다른 분이 쓰고 있는 닉네임이에요. 다른 이름을 써 주세요.",
+  nicknameInvalid: "한글, 영문, 숫자로 2자 이상 써 주세요.",
+  nicknameFailed: "닉네임을 바꾸지 못했어요. 잠시 뒤에 다시 해 주세요.",
+  /** 15-09 */
+  logoutTitle: "로그아웃할까요?",
+  logoutBody: "이 브라우저에서 로그인이 풀려요.",
+  logoutDone: "로그아웃했어요",
+  /** 15-11, 15-12, 15-13. 서버 DELETE /api/me가 계정 기록을 바로 지운다. */
+  deleteBody: "계정을 지우면 계정에 남은\n하트, 다녀온 기록, 평가, 메모가 사라져요.",
+  deleteWarn: "바로 지워지고 되돌릴 수 없어요.",
+  deleteAsk: "계정을 지울까요?",
+  deleteDone: "계정을 지웠어요",
+  deleteFailed: "계정을 지우지 못했어요. 잠시 뒤에 다시 해 주세요.",
 } as const;
 
 export const label = {
@@ -238,6 +296,42 @@ export const label = {
   inboxHasNew: "새 알림 있음",
   inboxThisWeek: "이번 주",
   inboxEarlier: "지난 알림",
+  // UI 14 마이페이지
+  myPage: "마이페이지",
+  settings: "설정",
+  seeAll: "전체 보기",
+  seeMap: "지도 보기",
+  upcomingFairs: "곧 열리는 박람회",
+  heartsPill: (n: number) => `하트 ${n}곳`,
+  example: "예시",
+  step1: "부스를 눌러요",
+  step2: "하트를 남겨요",
+  step3: "여기에 모여요",
+  ended: "끝났어요",
+  expand: "펼치기",
+  collapse: "접기",
+  heartedBrands: "하트 남긴 브랜드",
+  upcomingBrands: "곧 박람회에 나와요",
+  unknownSchedule: "다음 일정은 아직 몰라요",
+  fairsStat: (n: number) => `박람회 ${n}곳`,
+  // UI 15 설정
+  profile: "프로필",
+  nickname: "닉네임",
+  loginMethod: "로그인 방식",
+  myRecords: "내 기록",
+  info: "정보",
+  privacy: "개인정보 처리방침",
+  terms: "이용약관",
+  account: "계정",
+  logout: "로그아웃",
+  deleteAccount: "계정 삭제",
+  deleteAccountButton: "계정 지우기",
+  delete: "지우기",
+  cancel: "취소",
+  done: "완료",
+  disappears: "사라지는 것",
+  goneHearts: "하트 남긴 부스와 브랜드",
+  goneVisits: "다녀온 기록과 평가",
 } as const;
 
 /** 메모 한 줄 길이(UI/입력 줄, 6-04). 서버는 300자까지 받지만 화면은 50자(설계서 §0-5). */
