@@ -520,6 +520,15 @@ export interface AppEventRow {
   props: Record<string, unknown>;
 }
 
+/** 운영 콘솔 "앱 이벤트"가 읽는 한 줄(속성은 읽지 않는다). */
+export interface AppEventBrief {
+  name: string;
+  platform: string;
+  anonId: string | null;
+  appVersion: string | null;
+  createdAt: string;
+}
+
 /**
  * 지도 "AI 추천" 채팅창에 사용자가 입력한 자유 텍스트 로그. 누적해서 자주 나오는
  * 키워드를 추적하고(RAG), 이후 추천 프롬프트에 트렌딩 신호로 주입한다.

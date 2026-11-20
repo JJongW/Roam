@@ -3,6 +3,7 @@ import type { CurveInput } from "@/lib/memory/learning-curve";
 import type {
   AnalyticsEvent,
   AppEventRow,
+  AppEventBrief,
   PushDevice,
   BrandHeart,
   UpcomingParticipation,
@@ -669,4 +670,6 @@ export interface Repository {
   /** 이름 붙은 앱 이벤트 묶음(0066). event_id가 이미 있으면 건너뛴다. 텔레메트리라 실패는
    *  로그만 남긴다(화면을 막지 않는다). */
   recordAppEvents(rows: AppEventRow[]): Promise<void>;
+  /** 운영 콘솔 "앱 이벤트": since 이후 앱 이벤트(type app), 최신순 limit개. */
+  listAppEventsSince(sinceIso: string, limit: number): Promise<AppEventBrief[]>;
 }

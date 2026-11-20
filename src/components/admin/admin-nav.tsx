@@ -21,6 +21,7 @@ import {
   Tags,
   Send,
   Newspaper,
+  Activity,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/common/theme-toggle";
@@ -40,6 +41,8 @@ const ITEMS = [
   { href: "/admin/changes", label: "변경 이력", icon: GitCompare },
   { href: "/admin/events", label: "이벤트", icon: CalendarClock },
   { href: "/admin/analytics", label: "분석", icon: BarChart3 },
+  // iOS가 보내는 이름 붙은 이벤트가 들어오는지(0066). "이벤트"는 부스 프로그램 관리라 거기엔 안 보인다.
+  { href: "/admin/app-events", label: "앱 이벤트", icon: Activity },
   { href: "/admin/survey", label: "설문", icon: ClipboardList },
   { href: "/admin/timeline", label: "타임라인", icon: History },
   { href: "/admin/accounts", label: "계정", icon: Users },

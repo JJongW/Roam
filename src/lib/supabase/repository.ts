@@ -23,6 +23,7 @@ import type {
 import type {
   AnalyticsEvent,
   AppEventRow,
+  AppEventBrief,
   PushDevice,
   BrandHeart,
   NewParticipation,
@@ -3881,6 +3882,26 @@ export class SupabaseRepository implements Repository {
       { onConflict: "event_id", ignoreDuplicates: true },
     );
     loggedWrite(res, "앱 이벤트 적재");
+  }
+
+  async listAppEventsSince(sinceIso: string, limit: number): Promise<AppEventBrief[]> {
+    // 쓰기와 같은 서비스 롤로 읽는다 — analytics_event엔 select 정책이 없다.
+    const db = createServiceClient();
+    const { data, error } = await db
+      .from("analytics_event")
+      .select("name, platform, anon_id, app_version, created_at")
+      .eq("type", "app")
+      .gte("created_at", sinceIso)
+      .order("created_at", { ascending: false })
+      .limit(limit);
+    if (error) throw new Error(`앱 이벤트 읽기 실패: ${error.message}`);
+    return (data ?? []).map((r) => ({
+      name: (r.name as string | null) ?? "",
+      platform: (r.platform as string | null) ?? "",
+      anonId: (r.anon_id as string | null) ?? null,
+      appVersion: (r.app_version as string | null) ?? null,
+      createdAt: r.created_at as string,
+    }));
   }
 
   async _allAnalytics(exhibitionId: string): Promise<AnalyticsEvent[]> {
