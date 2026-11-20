@@ -34,6 +34,7 @@ export function BoothCardV2({
   onVisitMarked,
   onRoute,
   arrivedLine,
+  beforeOpen,
 }: {
   booth: BoothListItem;
   hallName?: string;
@@ -44,6 +45,8 @@ export function BoothCardV2({
   onVisitMarked?: (before: BoothRecord | undefined) => void;
   onRoute?: () => void;
   arrivedLine?: string;
+  /** 10-02 열리기 전: 아직 다녀올 수 없으니 다녀왔어요 알약을 두지 않는다. 하트는 미리 남길 수 있다. */
+  beforeOpen?: boolean;
 }) {
   const s = useBoothSignals({
     boothId: booth.id,
@@ -120,11 +123,13 @@ export function BoothCardV2({
           size="md"
           className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2"
         />
-        <VisitedPill
-          on={s.visited}
-          onToggle={s.toggleVisited}
-          className="absolute right-v2-x4 top-0 -translate-y-1/2"
-        />
+        {!beforeOpen && (
+          <VisitedPill
+            on={s.visited}
+            onToggle={s.toggleVisited}
+            className="absolute right-v2-x4 top-0 -translate-y-1/2"
+          />
+        )}
         <div className="flex items-start gap-v2-x2">
           <div className="flex min-w-0 flex-1 flex-col gap-v2-x1">
             <h2 className="text-v2-t7 font-v2-bold tracking-v2-card-title text-v2-fg-neutral">

@@ -1,0 +1,147 @@
+// UI 1 박람회 첫 진입(취향 확장형, 11-12 Figma 24). iOS `FairOnboarding.swift`와 같은 규칙, 같은 저장 키.
+//
+// - 박람회를 처음 열면 지도 위로 사진 고르기 시트(1-02). 그 박람회 부스 사진 여섯 장 중 두 장.
+//   건너뛰면 바로 지도. 사진이 여섯 장이 안 되면 시트를 띄우지 않는다.
+// - 두 장을 고르면 지도로 돌아와 "지금 행사장에 계세요?"(1-04) 한 번.
+// - 이어서 고른 사진의 부스와 같은 분류 부스로 세 곳(1-05). 이유를 그대로 말한다.
+//   "이건 아니에요"는 온보딩 답으로만 남기고 패스로 기록하지 않는다.
+// - 두 번째 진입: 건너뛴 분께 한 번만 다시 묻는다(1-10, 11-13 B). 하트가 있으면 1-09.
+// - 온보딩으로 사람을 다 알 수는 없다. 고른 것만 기억하고(1-07), 둘러본 시간이나 길로 짐작하지 않는다.
+//
+// 저장: 이 브라우저 localStorage `roam.fair.<slug>`에 JSON. 로그아웃해도 남는다(기기 기록).
+import type { BoothListItem } from "@/lib/types";
+
+export interface FairOnboardingState {
+  moodBoothIds: string[];
+  moodSkipped: boolean;
+  /** 1-10 다시 묻기를 이미 보였는지(한 번만). */
+  reaskShown: boolean;
+  /** 1-04 답. 없으면 아직 안 물었거나 넘김. */
+  onSite?: boolean;
+  onsiteAsked: boolean;
+  /** 1-05 세 곳을 이미 보였는지. */
+  firstPicksShown: boolean;
+  /** "이건 아니에요" — 온보딩 답일 뿐, 부스 평가(패스)가 아니다. */
+  notThis: string[];
+  /** 마지막으로 연 날(YYYY-MM-DD). */
+  lastOpenedDay?: string;
+  openCount: number;
+}
+
+export const EMPTY_STATE: FairOnboardingState = {
+  moodBoothIds: [],
+  moodSkipped: false,
+  reaskShown: false,
+  onsiteAsked: false,
+  firstPicksShown: false,
+  notThis: [],
+  openCount: 0,
+};
+
+const key = (slug: string) => `roam.fair.${slug}`;
+
+export function readFairState(slug: string): FairOnboardingState {
+  try {
+    const raw = window.localStorage.getItem(key(slug));
+    if (!raw) return { ...EMPTY_STATE };
+    return { ...EMPTY_STATE, ...(JSON.parse(raw) as Partial<FairOnboardingState>) };
+  } catch {
+    return { ...EMPTY_STATE };
+  }
+}
+
+export function updateFairState(
+  slug: string,
+  change: (s: FairOnboardingState) => FairOnboardingState,
+): FairOnboardingState {
+  const next = change(readFairState(slug));
+  try {
+    window.localStorage.setItem(key(slug), JSON.stringify(next));
+  } catch {
+    // 남기지 못하면 다음에 처음처럼 한 번 더 물을 뿐이다.
+  }
+  return next;
+}
+
+export type FairEntryStep = "mood" | "returnWithHearts" | "reask" | "none";
+
+export const MOOD_PHOTO_COUNT = 6;
+export const MOOD_PICK_COUNT = 2;
+
+/**
+ * 박람회를 열 때 무엇을 먼저 보일지(iOS `FairEntry.step`).
+ * @param state 이번 열기를 세기 전 상태
+ */
+export function entryStep(
+  state: FairOnboardingState,
+  { photoCount, heartsHere, today }: { photoCount: number; heartsHere: number; today: string },
+): FairEntryStep {
+  const canPick = photoCount >= MOOD_PHOTO_COUNT;
+  if (state.openCount === 0) return canPick ? "mood" : "none";
+  if (state.lastOpenedDay === today) return "none";
+  if (heartsHere > 0) return "returnWithHearts";
+  if (state.moodSkipped && !state.reaskShown && canPick) return "reask";
+  return "none";
+}
+
+type PhotoBooth = Pick<BoothListItem, "id" | "categoryId" | "images" | "kind">;
+
+/** 사진 여섯 장: 분류가 겹치지 않게 돌아가며 고른다. 같은 박람회면 늘 같은 순서. */
+export function moodBooths<T extends PhotoBooth>(booths: T[]): T[] {
+  const withPhoto = booths
+    .filter((b) => b.kind !== "facility" && b.images.some((s) => !!s))
+    .sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+  const byCat = new Map<string, T[]>();
+  for (const b of withPhoto) byCat.set(b.categoryId, [...(byCat.get(b.categoryId) ?? []), b]);
+  const out: T[] = [];
+  for (let round = 0; out.length < MOOD_PHOTO_COUNT; round++) {
+    let added = false;
+    for (const list of byCat.values()) {
+      if (round < list.length && out.length < MOOD_PHOTO_COUNT) {
+        out.push(list[round]);
+        added = true;
+      }
+    }
+    if (!added) break;
+  }
+  return out;
+}
+
+export interface FirstPick {
+  boothId: string;
+  reason: string;
+}
+
+export const reasonPhoto = "고르신 사진의 부스예요.";
+export const reasonCategory = (name: string) => `고르신 사진의 부스와 같은 ${name} 분류예요.`;
+
+/** 1-05 세 곳: 고른 사진의 부스 두 곳 + 그 분류의 다른 부스 한 곳. 하트를 이미 남긴 곳과 "이건 아니에요"는 뺀다. */
+export function firstPicks(
+  picked: string[],
+  booths: Pick<BoothListItem, "id" | "categoryId" | "kind">[],
+  categoryName: (id: string) => string | undefined,
+  hearted: Set<string>,
+  notThis: Set<string>,
+): FirstPick[] {
+  const skip = new Set([...hearted, ...notThis]);
+  const out: FirstPick[] = picked.filter((id) => !skip.has(id)).map((boothId) => ({ boothId, reason: reasonPhoto }));
+  const sorted = [...booths]
+    .filter((b) => b.kind !== "facility")
+    .sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+  const cats = picked.map((id) => booths.find((b) => b.id === id)?.categoryId).filter((c): c is string => !!c);
+  for (const cat of cats) {
+    if (out.length >= 3) break;
+    const other = sorted.find(
+      (b) =>
+        b.categoryId === cat &&
+        !picked.includes(b.id) &&
+        !skip.has(b.id) &&
+        !out.some((p) => p.boothId === b.id),
+    );
+    if (other) {
+      const name = categoryName(cat);
+      out.push({ boothId: other.id, reason: name ? reasonCategory(name) : reasonPhoto });
+    }
+  }
+  return out.slice(0, 3);
+}

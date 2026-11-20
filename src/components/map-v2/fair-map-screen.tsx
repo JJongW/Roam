@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Bath,
+  CalendarDays,
   Coffee,
   DoorOpen,
   Info,
@@ -20,6 +21,26 @@ import { RomiSheet } from "@/components/map-v2/romi-sheet";
 import { RouteSheet } from "@/components/map-v2/route-sheet";
 import { RecapSheet } from "@/components/map-v2/recap-sheet";
 import { RomiCard, type RomiCardAction } from "@/components/map-v2/romi-card";
+import {
+  DatePill,
+  EntryCard,
+  FirstPickCard,
+  MoodSheet,
+  StepBars,
+  VerdictAskMapCard,
+} from "@/components/map-v2/entry-cards";
+import { entryCopy, monthDayKo } from "@/lib/copy/map-entry";
+import {
+  entryStep,
+  firstPicks as computeFirstPicks,
+  moodBooths,
+  readFairState,
+  updateFairState,
+  type FairEntryStep,
+  type FairOnboardingState,
+  type FirstPick,
+} from "@/lib/onboarding/fair-entry";
+import { brightOnly, verdictCandidate } from "@/lib/map/ended-map";
 import {
   heartedOnTheWay,
   nextStop,
@@ -39,8 +60,10 @@ import { floorplanHallOf } from "@/lib/floorplan/hall-of";
 import {
   isHearted,
   isVisited,
+  pushNote,
   useVisitStore,
   type BoothRecord,
+  type VerdictValue,
 } from "@/lib/stores/visit";
 import { RomiLineCard } from "@/components/map-v2/romi-line-card";
 import { TodaySheet, isToday } from "@/components/map-v2/today-sheet";
@@ -73,6 +96,14 @@ const AMENITY_ICON: Record<AmenityId, typeof Bath> = {
  *   카드는 왼쪽 아래 고정 폭으로 띄워 지도를 덜 가린다.
  * - 동선 추천, 관심 밀도는 없다. 길 안내(UI 9)는 원할 때만: 부스 카드 "길 안내"나 로미 시트 칩에서 시작한다.
  * - 아래 로미 알약을 누르면 로미 시트(UI 7)가 올라온다. 맨 아래 "오늘은 여기까지 할게요"가 회고(UI 12) 입구다.
+ *
+ * 박람회 첫 진입(UI 1, iOS FairOnboarding과 같은 규칙, lib/onboarding/fair-entry.ts):
+ * - 처음 열면 지도 위로 사진 고르기 시트(1-02) → 지금 행사장에 계세요(1-04) → 고르신 사진으로 세 곳(1-05, 1-06).
+ *   옛 전체 화면 온보딩(지도를 가리던 대화형)은 지웠다. 지도가 늘 먼저 보인다(§4).
+ * - 다른 날 다시 열면 하트가 있으면 1-09, 사진을 건너뛰셨으면 한 번만 1-10.
+ * 열리기 전(UI 10): 찾기 줄 아래 "12월 11일에 열려요" 알약, 로미 알약 "아직 열리기 전이에요, 미리 둘러봐요",
+ *   부스 카드에 다녀왔어요 알약 없음(10-02), 로미 시트 설명 줄이 여는 날(10-03).
+ * 끝난 박람회(UI 11): "11월 9일에 끝났어요" 알약, 남기신 곳만 밝게(F-B, 없으면 F-A), 다녀오신 곳 평가 묻기(M4) → 고마워요(11-06).
  */
 
 /** UI 9 길 안내 한 번. 메모리에만 있다(추적 없음, iOS RouteSession과 같은 단계). */
@@ -185,13 +216,32 @@ export function FairMapScreen({
     boothId?: string;
   } | null>(null);
   const signedIn = useAuthStore((s) => !!s.user);
-  const isOpenDay = useMemo(
-    () => exhibitionStatus(detail.exhibition, todayISO()) === "ongoing",
-    [detail.exhibition],
+  const today = useMemo(() => todayISO(), []);
+  const phase = useMemo(
+    () => exhibitionStatus(detail.exhibition, today),
+    [detail.exhibition, today],
   );
+  const isOpenDay = phase === "ongoing";
+  const isPrefair = phase === "upcoming";
+  const isEnded = phase === "ended";
   const canRoute = isOpenDay && !!floorplan;
   const [snack, setSnack] = useState<SnackbarState | null>(null);
   const closeSnack = useCallback(() => setSnack(null), []);
+
+  // UI 1 첫 진입. 상태는 이 브라우저 `roam.fair.<slug>`(iOS와 같은 키).
+  const moodList = useMemo(() => moodBooths(booths), [booths]);
+  const [fairState, setFairState] = useState<FairOnboardingState | null>(null);
+  const [entry, setEntry] = useState<FairEntryStep>("none");
+  const [moodOpen, setMoodOpen] = useState(false);
+  const [onsiteAsk, setOnsiteAsk] = useState(false);
+  const [picks, setPicks] = useState<FirstPick[]>([]);
+  const [pickIndex, setPickIndex] = useState(0);
+  const [pickHead, setPickHead] = useState("");
+  const [romiPage, setRomiPage] = useState<"main" | "where">("main");
+  // UI 11 M4: 이번에 연 동안 "나중에 할게요"를 눌렀는지, 다 남긴 뒤 고마워요(11-06)를 보이는지.
+  const [verdictLater, setVerdictLater] = useState(false);
+  const [verdictThanks, setVerdictThanks] = useState(false);
+  const decided = useRef(false);
   const todayBooths = useMemo(() => {
     if (!hydrated) return [];
     return booths
@@ -257,10 +307,20 @@ export function FairMapScreen({
     );
   }, [booths, q]);
 
+  // F-B: 끝난 박람회는 남기신 곳만 밝게. 남긴 게 없으면 F-A(전부 보통). 편의시설 칩을 켜면 그쪽이 먼저다.
+  const endedBright = useMemo(
+    () => (isEnded && hydrated ? brightOnly(booths, records) : null),
+    [isEnded, hydrated, booths, records],
+  );
   const highlightIds = useMemo(() => {
     if (amenity) return new Set(amenityMatches.get(amenity) ?? []);
-    return null;
-  }, [amenity, amenityMatches]);
+    return endedBright;
+  }, [amenity, amenityMatches, endedBright]);
+  const verdictBooth = useMemo(
+    () =>
+      isEnded && hydrated && !verdictLater ? verdictCandidate(booths, records) : null,
+    [isEnded, hydrated, verdictLater, booths, records],
+  );
 
   const selected = selectedId
     ? booths.find((b) => b.id === selectedId)
@@ -283,6 +343,176 @@ export function FairMapScreen({
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug]);
+
+  // 지도가 뜬 뒤 한 번: 무엇을 먼저 보일지 정하고 이번 열기를 센다(iOS decideEntry).
+  useEffect(() => {
+    if (!hydrated || decided.current) return;
+    decided.current = true;
+    const st = readFairState(slug);
+    const recs = useVisitStore.getState().records;
+    const heartsHere = booths.filter((b) => isHearted(recs[b.id])).length;
+    let step: FairEntryStep = isEnded
+      ? "none"
+      : entryStep(st, { photoCount: moodList.length, heartsHere, today });
+    // 1-09는 여는 날부터. 열리기 전은 로미 알약 "아직 열리기 전이에요"로 충분하다(11-17 브랜드 검토).
+    if (step === "returnWithHearts" && isPrefair) step = "none";
+    const ctx = { exhibitionSlug: slug };
+    if (isPrefair) {
+      const days = Math.round(
+        (Date.parse(`${detail.exhibition.startDate.slice(0, 10)}T00:00:00Z`) -
+          Date.parse(`${today}T00:00:00Z`)) /
+          86_400_000,
+      );
+      track("prefair_view", { ...ctx, screen: SCREEN.prefair, props: { days_to_open: days, count: heartsHere } });
+    }
+    if (isEnded) {
+      const anyLeft = brightOnly(booths, recs) !== null;
+      track("screen_view", { ...ctx, screen: anyLeft ? SCREEN.endedMap : SCREEN.endedMapEmpty });
+    }
+    const next = updateFairState(slug, (s) => ({
+      ...s,
+      openCount: s.openCount + 1,
+      lastOpenedDay: today,
+      reaskShown: s.reaskShown || step === "reask",
+    }));
+    // 브라우저 저장소(외부 상태)를 읽은 결과로 첫 화면을 정한다.
+    /* eslint-disable react-hooks/set-state-in-effect */
+    setFairState(next);
+    setEntry(step);
+    if (step === "mood") {
+      setMoodOpen(true);
+      track("onboarding_mood_shown", {
+        ...ctx,
+        screen: SCREEN.moodSheet,
+        props: { card_ids: moodList.map((b) => b.id).join(",") },
+      });
+    } else if (step === "reask") {
+      track("onboarding_reask_shown", { ...ctx, screen: SCREEN.reask });
+    } else if (step === "returnWithHearts") {
+      track("screen_view", { ...ctx, screen: SCREEN.returnLine, props: { count: heartsHere } });
+    }
+    /* eslint-enable react-hooks/set-state-in-effect */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hydrated]);
+
+  const startFirstPicks = (st: FairOnboardingState) => {
+    const recs = useVisitStore.getState().records;
+    const hearted = new Set(booths.filter((b) => isHearted(recs[b.id])).map((b) => b.id));
+    const list = computeFirstPicks(
+      st.moodBoothIds,
+      booths,
+      (id) => catById.get(id)?.name,
+      hearted,
+      new Set(st.notThis),
+    );
+    if (!list.length) return;
+    setFairState(updateFairState(slug, (s) => ({ ...s, firstPicksShown: true })));
+    track("onboarding_first_three_shown", {
+      screen: SCREEN.firstPicks,
+      exhibitionSlug: slug,
+      props: { booth_ids: list.map((p) => p.boothId).join(",") },
+    });
+    setPicks(list);
+    setPickIndex(0);
+    setPickHead(entryCopy.firstPicksHead(list.length));
+    setSelectedId(null);
+    focusIds([list[0].boothId], 2.5);
+  };
+
+  const moodPicked = (ids: string[]) => {
+    setMoodOpen(false);
+    setEntry("none");
+    const st = updateFairState(slug, (s) => ({ ...s, moodBoothIds: ids, moodSkipped: false }));
+    setFairState(st);
+    track("onboarding_mood_pick", {
+      screen: SCREEN.moodSheet,
+      exhibitionSlug: slug,
+      props: { picked_count: ids.length, booth_ids: ids.join(",") },
+    });
+    if (st.onsiteAsked) startFirstPicks(st);
+    else {
+      setOnsiteAsk(true);
+      track("screen_view", { screen: SCREEN.onsiteAsk, exhibitionSlug: slug });
+    }
+  };
+
+  const moodSkipped = () => {
+    setMoodOpen(false);
+    setEntry("none");
+    setFairState(updateFairState(slug, (s) => ({ ...s, moodSkipped: true })));
+    track("onboarding_mood_skip", { screen: SCREEN.moodSheet, exhibitionSlug: slug });
+  };
+
+  /** 1-04 답. null은 "나중에 할게요". */
+  const answerOnsite = (here: boolean | null) => {
+    setOnsiteAsk(false);
+    const st = updateFairState(slug, (s) => ({
+      ...s,
+      onsiteAsked: true,
+      ...(here === null ? {} : { onSite: here }),
+    }));
+    setFairState(st);
+    track("onsite_question_answer", {
+      screen: SCREEN.onsiteAsk,
+      exhibitionSlug: slug,
+      props: { answer: here === null ? "later" : here ? "onsite" : "planning" },
+    });
+    startFirstPicks(st);
+  };
+
+  const currentPick = picks[pickIndex];
+  /** 1-05 "하트 남기기", "이건 아니에요". 누르면 다음 곳으로(1-06 머리 줄이 방금 남긴 하트를 말한다). */
+  const pickAction = (action: "heart" | "not_this") => {
+    if (!currentPick) return;
+    const b = booths.find((x) => x.id === currentPick.boothId);
+    if (action === "heart") {
+      if (!isHearted(useVisitStore.getState().records[currentPick.boothId])) {
+        useVisitStore.getState().setHeart(currentPick.boothId, true);
+        void pushNote(currentPick.boothId, { heart: true });
+        track("heart_add", {
+          screen: SCREEN.firstPicks,
+          exhibitionSlug: slug,
+          boothId: currentPick.boothId,
+          props: { surface: "onboarding" },
+        });
+      }
+      setPickHead(entryCopy.heartLeft(b?.name ?? ""));
+    } else {
+      // 온보딩 답일 뿐, 부스 평가(패스)가 아니다.
+      setFairState(
+        updateFairState(slug, (s) => ({ ...s, notThis: [...s.notThis, currentPick.boothId] })),
+      );
+    }
+    track("romi_pick_feedback", {
+      screen: SCREEN.firstPicks,
+      exhibitionSlug: slug,
+      boothId: currentPick.boothId,
+      props: { choice: action, index: pickIndex },
+    });
+    const next = pickIndex + 1;
+    if (next >= picks.length) {
+      setPicks([]);
+      return;
+    }
+    setPickIndex(next);
+    focusIds([picks[next].boothId], 2.5);
+  };
+
+  /** M4 칩. 다 남기면 고마워요(11-06). */
+  const pickVerdict = (boothId: string, v: VerdictValue) => {
+    useVisitStore.getState().setVerdict(boothId, v);
+    void pushNote(boothId, { verdict: true, visited: true });
+    track("verdict_pick", {
+      screen: SCREEN.verdictAsk,
+      exhibitionSlug: slug,
+      boothId,
+      props: { value: v },
+    });
+    if (!verdictCandidate(booths, useVisitStore.getState().records)) {
+      setVerdictThanks(true);
+      track("verdict_all_done", { screen: SCREEN.verdictThanks, exhibitionSlug: slug });
+    }
+  };
 
   const select = (id: string, from: "map" | "search") => {
     setSelectedId(id || null);
@@ -661,11 +891,97 @@ export function FairMapScreen({
     };
   }, [booths, visitedIds, records]);
 
-  const romiLine = hall
-    ? romi.inHall(hall)
-    : hallNames.length === 1
-      ? romi.inHall(hallNames[0])
-      : romi.lookAround;
+  const romiLine = isPrefair
+    ? entryCopy.prefairLine
+    : hall
+      ? romi.inHall(hall)
+      : hallNames.length === 1
+        ? romi.inHall(hallNames[0])
+        : romi.lookAround;
+
+  // 아래 자리에 오는 로미 카드(첫 진입, 끝난 박람회). 부스 카드, 길 안내, 답이 먼저다.
+  const pickBooth = currentPick
+    ? booths.find((b) => b.id === currentPick.boothId)
+    : undefined;
+  const entryNode = pickBooth && currentPick ? (
+    <FirstPickCard
+      booth={pickBooth}
+      code={pickBooth.code}
+      reason={currentPick.reason}
+      index={pickIndex}
+      total={picks.length}
+      head={pickHead}
+      onHeart={() => pickAction("heart")}
+      onNotThis={() => pickAction("not_this")}
+    />
+  ) : onsiteAsk ? (
+    <EntryCard
+      top={<StepBars done={2} />}
+      topRight={{ label: entryCopy.later, onClick: () => answerOnsite(null) }}
+      title={entryCopy.onsiteAsk}
+      sub={entryCopy.onsiteBody}
+      actions={[
+        { label: entryCopy.onsiteHere, onClick: () => answerOnsite(true) },
+        { label: entryCopy.onsitePlanning, onClick: () => answerOnsite(false) },
+      ]}
+    />
+  ) : entry === "returnWithHearts" ? (
+    <EntryCard
+      title={entryCopy.returnHearts}
+      sub={entryCopy.returnBody}
+      actions={[
+        {
+          label: entryCopy.whereNow,
+          onClick: () => {
+            setEntry("none");
+            setRomiPage("where");
+            track("romi_sheet_open", { screen: SCREEN.returnLine, exhibitionSlug: slug, props: { from: "return_line" } });
+            setSheet("romi");
+          },
+        },
+        { label: entryCopy.noThanks, onClick: () => setEntry("none") },
+      ]}
+    />
+  ) : entry === "reask" ? (
+    <EntryCard
+      title={entryCopy.reaskTitle}
+      sub={entryCopy.reaskBody}
+      actions={[
+        {
+          label: entryCopy.pickNow,
+          onClick: () => {
+            setEntry("none");
+            track("onboarding_reask_answer", { screen: SCREEN.reask, exhibitionSlug: slug, props: { answer: "pick" } });
+            setMoodOpen(true);
+          },
+        },
+        {
+          label: entryCopy.noThanks,
+          onClick: () => {
+            setEntry("none");
+            track("onboarding_reask_answer", { screen: SCREEN.reask, exhibitionSlug: slug, props: { answer: "no" } });
+          },
+        },
+      ]}
+    />
+  ) : verdictThanks ? (
+    <EntryCard
+      title={entryCopy.thanksLeft}
+      sub={entryCopy.seeInMyPage}
+      topRight={{ label: entryCopy.close, onClick: () => setVerdictThanks(false) }}
+    />
+  ) : verdictBooth ? (
+    <VerdictAskMapCard
+      key={verdictBooth.id}
+      name={verdictBooth.name}
+      place={label.hallNumber(hallOf(verdictBooth), verdictBooth.code) || undefined}
+      onPick={(v) => pickVerdict(verdictBooth.id, v)}
+      onLater={() => {
+        setVerdictLater(true);
+        track("verdict_later", { screen: SCREEN.verdictAsk, exhibitionSlug: slug });
+      }}
+    />
+  ) : null;
 
   return (
     // fixed: 방문객 레이아웃의 폰 폭 기둥(max-w-md)을 벗어나 넓은 화면에서도 지도가 화면을 다 쓴다.
@@ -688,7 +1004,7 @@ export function FairMapScreen({
         persistKey={slug}
         exhibitionSlug={slug}
         viewportClassName="inset-0"
-        selectedId={selectedId}
+        selectedId={selectedId ?? (pickBooth ? pickBooth.id : null)}
         safeInsets={insets}
         onSelect={(id) => select(id, "map")}
         renderLayer={(ctx) => (
@@ -791,7 +1107,24 @@ export function FairMapScreen({
           )}
 
           {!q && (
-            <div className="flex w-full justify-end">
+            <div className="flex w-full items-center justify-end gap-v2-x2">
+              {(isPrefair || isEnded) && (
+                <span className="mr-auto">
+                  <DatePill
+                    icon={
+                      <CalendarDays
+                        aria-hidden
+                        className="size-[var(--roam-v2-icon-size-sm)]"
+                      />
+                    }
+                    text={
+                      isPrefair
+                        ? entryCopy.opensOn(monthDayKo(detail.exhibition.startDate))
+                        : entryCopy.endedOn(monthDayKo(detail.exhibition.endDate))
+                    }
+                  />
+                </span>
+              )}
               <HallSwitch
                 halls={hallNames}
                 current={hall}
@@ -907,10 +1240,13 @@ export function FairMapScreen({
                 (c): c is NonNullable<typeof c> => !!c,
               )}
               exhibitionSlug={slug}
+              beforeOpen={isPrefair}
               className="w-full pb-v2-x2"
             />
           ) : routeCard ? (
             <div className="flex w-full flex-col pb-v2-x2">{routeCard}</div>
+          ) : !answer && entryNode ? (
+            <div className="flex w-full flex-col pb-v2-x2">{entryNode}</div>
           ) : answer ? (
             <div className="flex w-full flex-col pb-v2-x2">
               <RomiCard
@@ -1000,7 +1336,47 @@ export function FairMapScreen({
             focusIds([b.id], 2.5);
           }}
           onDoneForToday={() => setSheet("recap")}
-          onClose={() => setSheet(null)}
+          onClose={() => {
+            setSheet(null);
+            setRomiPage("main");
+          }}
+          initialPage={romiPage}
+          prefairBody={
+            isPrefair
+              ? entryCopy.prefairSheetBody(monthDayKo(detail.exhibition.startDate))
+              : undefined
+          }
+          known={
+            isEnded || !fairState
+              ? undefined
+              : {
+                  pickedCount: fairState.moodBoothIds.length,
+                  onSite: fairState.onSite,
+                  onPickAgain: () => {
+                    setSheet(null);
+                    if (moodList.length >= 2) setMoodOpen(true);
+                  },
+                  onChangeOnsite: () => {
+                    const nextOnSite = fairState.onSite === true ? false : true;
+                    setFairState(
+                      updateFairState(slug, (st) => ({ ...st, onSite: nextOnSite, onsiteAsked: true })),
+                    );
+                    track("onsite_question_answer", {
+                      screen: SCREEN.known,
+                      exhibitionSlug: slug,
+                      props: { answer: nextOnSite ? "onsite" : "planning", via: "known" },
+                    });
+                  },
+                }
+          }
+        />
+      )}
+      {moodOpen && (
+        <MoodSheet
+          fairName={detail.exhibition.name}
+          booths={moodList}
+          onPicked={moodPicked}
+          onSkip={moodSkipped}
         />
       )}
       {sheet === "recap" && (
