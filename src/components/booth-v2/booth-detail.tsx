@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   AtSign,
   Check,
@@ -18,6 +19,7 @@ import { useBoothSignals } from "@/components/booth-v2/booth-actions";
 import { LeftSection } from "@/components/booth-v2/left-section";
 import { VerdictBand } from "@/components/booth-v2/verdict-band";
 import { BrandRow } from "@/components/booth-v2/brand-row";
+import { PhotoViewer } from "@/components/booth-v2/photo-viewer";
 import {
   AliasesSection,
   AppearancesSection,
@@ -59,7 +61,9 @@ export interface BoothDetailV2Props {
  * - 정보가 비면 EM-1A: 이름이 1순위, 소개 상자 대신 "지금은 부스 이름과 위치만 나와 있어요."(11-15).
  * - 화살표는 갈 곳이 있는 줄에만(11-15).
  * - 브랜드가 직접 쓴 소개 원문은 고치지 않는다(브랜드 규칙 §1 예외, 11-09).
- * - 길 안내 버튼은 웹에 아직 없다(UI 9).
+ * - 사진을 누르면 4-03 사진 크게 보기(옆으로 넘김, 알약 "2 / 5").
+ * - 4-07 "지도에서 보기"는 상세를 쌓지 않고 지도로 바꿔 연다(뒤로 가기가 길어지지 않는다, 11-13).
+ * - 길 안내 버튼은 상세에 아직 없다. 길 안내(UI 9)는 지도 카드와 로미 시트에서 시작한다.
  * - W2: 남기신 것(6-05, 6-07, 6-08), 끝난 박람회의 어떠셨어요 띠(6-09), v1에서 옮긴 이벤트, 웰컴 키트,
  *   다른 행사에서도, 함께 입점한 곳. AI 요약과 후기는 옮기지 않았다(docs/decisions/2026-11-18_웹-디자인-v2-이전-계획.md W2).
  */
@@ -96,6 +100,8 @@ export function BoothDetailV2({
     });
   }, [booth.id, booth.images.length, exhibitionSlug, introSource]);
 
+  const router = useRouter();
+  const [viewer, setViewer] = useState<number | null>(null);
   const where = label.hallNumber(hallName, booth.code);
   const mapHref = exhibitionSlug
     ? `/exhibitions/${exhibitionSlug}/map?booth=${booth.id}`
@@ -129,13 +135,19 @@ export function BoothDetailV2({
           >
             {booth.images.map((src, i) => (
               <li key={src + i} className="w-2/5 shrink-0">
-                {/* eslint-disable-next-line @next/next/no-img-element -- 브랜드 사진은 외부 주소가 제각각이라 next/image 도메인 목록에 다 넣을 수 없다 */}
-                <img
-                  src={src}
-                  alt={`${booth.name} ${label.photo} ${i + 1}`}
-                  loading={i < 2 ? "eager" : "lazy"}
-                  className="aspect-3/4 w-full rounded-v2-r3 bg-v2-bg-neutral-weak object-cover"
-                />
+                <button
+                  type="button"
+                  onClick={() => setViewer(i)}
+                  className="block w-full rounded-v2-r3 active:opacity-80"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element -- 브랜드 사진은 외부 주소가 제각각이라 next/image 도메인 목록에 다 넣을 수 없다 */}
+                  <img
+                    src={src}
+                    alt={`${booth.name} ${label.photo} ${i + 1}`}
+                    loading={i < 2 ? "eager" : "lazy"}
+                    className="aspect-3/4 w-full rounded-v2-r3 bg-v2-bg-neutral-weak object-cover"
+                  />
+                </button>
               </li>
             ))}
           </ul>
@@ -199,13 +211,17 @@ export function BoothDetailV2({
               sub={where}
               action={mapHref ? label.showOnMap : undefined}
               href={mapHref}
-              onClick={() =>
+              onClick={(e) => {
                 track("booth_show_on_map", {
                   screen: SCREEN.boothDetail,
                   exhibitionSlug,
                   boothId: booth.id,
-                })
-              }
+                });
+                // 4-07: 상세를 닫고 그 자리에 지도를 연다(화면을 쌓지 않는다). 새 탭으로 여는 누름은 그대로 둔다.
+                if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+                e.preventDefault();
+                router.replace(mapHref!);
+              }}
             />
           )}
           {booth.goods.length > 0 && (
@@ -249,6 +265,17 @@ export function BoothDetailV2({
         <AppearancesSection items={appearances} />
         <AliasesSection names={aliases} />
       </div>
+
+      {viewer !== null && (
+        <PhotoViewer
+          images={booth.images}
+          start={viewer}
+          name={booth.name}
+          boothId={booth.id}
+          exhibitionSlug={exhibitionSlug}
+          onClose={() => setViewer(null)}
+        />
+      )}
 
       {/* 아래 고정 바 */}
       <div className="fixed inset-x-0 bottom-0 z-20 mx-auto w-full max-w-[var(--roam-v2-size-content-max-width)]">
@@ -299,7 +326,7 @@ function InfoRow({
   action?: string;
   href?: string;
   external?: boolean;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }) {
   const body = (
     <>
