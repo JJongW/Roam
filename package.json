@@ -21,6 +21,7 @@
     "tokens:sync": "node scripts/tokens-sync.mjs",
     "tokens:check": "node scripts/tokens-sync.mjs --check",
     "intake:backup": "vite-node -c worker/vite.config.ts scripts/intake-backup.ts --",
+    "link-candidates:backfill": "vite-node -c worker/vite.config.ts scripts/link-candidates-backfill.ts --",
     "sdf:watch": "node scripts/sdf-floorplan-watch.mjs",
     "floorplan:watch": "node scripts/floorplan-watch.mjs",
     "intake:dry-run": "vite-node -c worker/vite.config.ts scripts/intake-dry-run.ts --",

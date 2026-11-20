@@ -47,7 +47,8 @@ export interface PlanInput {
   participants?: PlanParticipant[];
   /** 이미 참가 사실에 배정된 부스. 다시 건드리지 않는다(멱등). */
   assignedBoothIds?: Set<string>;
-  /** 이미 판단한 후보 `${boothId}|${exhibitorId}` — 다시 내지 않는다. */
+  /** 이미 낸 후보 — 다시 내지 않는다. 열쇠는 둘 다 받는다: 출전 `pt:${participantId}|${exhibitorId}`(판단 단위),
+   *  옛 행은 부스 `${boothId}|${exhibitorId}`. candidateKeys()로 만든다. */
   decidedCandidates?: Set<string>;
 }
 
@@ -72,7 +73,21 @@ export interface ExhibitorPlan {
     metadata?: Record<string, unknown>;
   }[];
   assignments: { boothId: string; participantRef: Ref; role: "primary" }[];
-  candidates: { boothId: string; target: Ref; reason: string }[];
+  /**
+   * 이름만 같은 짝 — 사람이 본다. 판단 단위는 출전(participantRef)이다. 부스 인입이 낸 후보는 그 부스(boothId)를
+   * 붙여 두고, 브랜드 먼저 인입(brands.v1)이 낸 후보는 부스가 없다(2026-11-20 Ted 결정).
+   */
+  candidates: { participantRef: Ref; boothId?: string; target: Ref; reason: string }[];
+}
+
+/** 이미 있는 후보 행에서 decidedCandidates 열쇠를 만든다. 출전 열쇠가 먼저, 부스 열쇠는 옛 행 몫. */
+export function candidateKeys(rows: { boothId: string | null; participantId: string | null; exhibitorId: string }[]): Set<string> {
+  const out = new Set<string>();
+  for (const c of rows) {
+    if (c.participantId) out.add(`pt:${c.participantId}|${c.exhibitorId}`);
+    if (c.boothId) out.add(`${c.boothId}|${c.exhibitorId}`);
+  }
+  return out;
 }
 
 export function planExhibitorLinks(input: PlanInput): ExhibitorPlan {
@@ -117,6 +132,7 @@ export function planExhibitorLinks(input: PlanInput): ExhibitorPlan {
 
   const plan: ExhibitorPlan = { exhibitors: [], participants: [], assignments: [], candidates: [] };
   const participantOf = new Map<string, Ref>(); // `${exhibitorKey}|${exhibitionId}`
+  const participantOfBooth = new Map<string, Ref>(); // boothId → 이번 계획의 대표 배정 출전
   for (const p of input.participants ?? []) {
     participantOf.set(`ex:${p.exhibitorId}|${p.exhibitionId}`, { existing: p.id });
   }
@@ -185,6 +201,7 @@ export function planExhibitorLinks(input: PlanInput): ExhibitorPlan {
         plan.participants.push({ key: pk, exhibitorRef: ref, exhibitionId: m.exhibitionId, displayName: m.name });
       }
       plan.assignments.push({ boothId: m.id, participantRef: pref, role: "primary" });
+      participantOfBooth.set(m.id, pref);
     }
   }
 
@@ -222,9 +239,11 @@ export function planExhibitorLinks(input: PlanInput): ExhibitorPlan {
         if (rank(other) > rank(mine)) continue;
         const pair = `${refKey(mine)}>${refKey(other)}`;
         if (emitted.has(pair)) continue;
+        const pref = participantOfBooth.get(m.id)!;
         if ("existing" in other && decided.has(`${m.id}|${other.existing}`)) continue;
+        if ("existing" in other && "existing" in pref && decided.has(`pt:${pref.existing}|${other.existing}`)) continue;
         emitted.add(pair);
-        plan.candidates.push({ boothId: m.id, target: other, reason: `이름이 같아요: "${m.name}"` });
+        plan.candidates.push({ participantRef: pref, boothId: m.id, target: other, reason: `이름이 같아요: "${m.name}"` });
       }
     }
   }

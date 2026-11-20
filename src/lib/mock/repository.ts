@@ -97,6 +97,7 @@ import {
   mergePermissionPatch,
 } from "@/lib/brands/contact";
 import { planFieldMerge, profileFieldId } from "@/lib/brands/profile";
+import { carryIdentity } from "@/lib/exhibitor/merge";
 import { applyNoteInput, heartOf, type NoteState } from "@/lib/notes/apply";
 import type {
   AnalyticsEventInput,
@@ -417,7 +418,12 @@ export class MockRepository implements Repository {
       exhibitors: [...gph.exhibitors],
       participants: [...gph.participants],
       assignments: [...gph.assignments],
-      candidates: store().linkCandidates.map((c) => ({ boothId: c.boothId, exhibitorId: c.exhibitorId, status: c.status })),
+      candidates: store().linkCandidates.map((c) => ({
+        boothId: c.boothId,
+        participantId: c.participantId,
+        exhibitorId: c.exhibitorId,
+        status: c.status,
+      })),
     };
   }
 
@@ -450,12 +456,21 @@ export class MockRepository implements Repository {
     let candidates = 0;
     for (const c of plan.candidates) {
       const exhibitorId = ex(c.target);
-      if (store().linkCandidates.some((x) => x.boothId === c.boothId && x.exhibitorId === exhibitorId)) continue;
-      const primary = plan.assignments.find((a) => a.boothId === c.boothId && a.role === "primary");
+      const primary = c.boothId ? plan.assignments.find((a) => a.boothId === c.boothId && a.role === "primary") : undefined;
+      const participantId = pt(c.participantRef) ?? (primary ? pt(primary.participantRef) : undefined) ?? null;
+      // supabase와 같은 두 unique: 출전 짝(0073), 부스 짝(0057). null은 서로 안 겹친다.
+      if (
+        store().linkCandidates.some(
+          (x) =>
+            x.exhibitorId === exhibitorId &&
+            ((participantId && x.participantId === participantId) || (c.boothId && x.boothId === c.boothId)),
+        )
+      )
+        continue;
       store().linkCandidates.push({
         id: uid("xlc"),
-        boothId: c.boothId,
-        participantId: primary ? pt(primary.participantRef) : null,
+        boothId: c.boothId ?? null,
+        participantId,
         exhibitorId,
         reason: c.reason,
         status: "pending",
@@ -551,8 +566,9 @@ export class MockRepository implements Repository {
     if (decision === "approved") {
       const gph = store().exhibitorGraph;
       const participantId =
-        c.participantId ?? gph.assignments.find((a) => a.boothId === c.boothId && a.role === "primary")?.participantId;
-      if (!participantId) throw new Error("이 부스는 아직 참가사에 배정되지 않았습니다 — 백필부터");
+        c.participantId ?? (c.boothId ? gph.assignments.find((a) => a.boothId === c.boothId && a.role === "primary")?.participantId : undefined);
+      if (!participantId)
+        throw new Error(c.boothId ? "이 부스는 아직 참가사에 배정되지 않았습니다 — 백필부터" : "이 후보는 출전도 부스도 가리키지 않아요");
       const from = gph.participants.find((p) => p.id === participantId)!.exhibitorId;
       const to = c.exhibitorId;
       if (from !== to) {
@@ -576,6 +592,19 @@ export class MockRepository implements Repository {
         st2.brandHearts = st2.brandHearts.filter((x) => x.exhibitorId !== from);
         for (const o of store().linkCandidates)
           if (o.exhibitorId === from && o.status === "pending") o.status = "superseded";
+        // 이름과 파일 키를 대상에 남긴다(supabase mergeExhibitor와 같은 carryIdentity).
+        const fromEx = gph.exhibitors.find((e) => e.id === from);
+        const toEx = gph.exhibitors.find((e) => e.id === to);
+        if (fromEx && toEx) {
+          const carried = carryIdentity(
+            { canonicalName: fromEx.canonicalName, aliases: fromEx.aliases ?? [], metadata: { brandKeys: fromEx.brandKeys ?? [] } },
+            { canonicalName: toEx.canonicalName, aliases: toEx.aliases ?? [], metadata: { brandKeys: toEx.brandKeys ?? [] } },
+          );
+          if (carried) {
+            toEx.aliases = carried.aliases;
+            if (Array.isArray(carried.metadata.brandKeys)) toEx.brandKeys = carried.metadata.brandKeys as string[];
+          }
+        }
         gph.exhibitors = gph.exhibitors.filter((e) => e.id !== from);
       }
     }

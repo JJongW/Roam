@@ -3,6 +3,7 @@ import { diffFields } from "@/lib/audit/diff";
 import { AUDIT_SPECS } from "@/lib/audit/entities";
 import type { CurveInput } from "@/lib/memory/learning-curve";
 import { uid } from "@/lib/utils";
+import { carryIdentity } from "@/lib/exhibitor/merge";
 import { computeJourneyFunnel } from "@/lib/admin/journey-funnel";
 import { computeFlowEdges } from "@/lib/admin/flow";
 import { REPORT_HIDE_THRESHOLD } from "@/lib/constants";
@@ -1143,7 +1144,7 @@ export class SupabaseRepository implements Repository {
       readAll<Row>((a, b) => db.from("exhibitor").select("id,canonical_name,instagram_url,website_url,aliases,metadata").order("id").range(a, b), "참가사"),
       readAll<Row>((a, b) => db.from("exhibition_participant").select("id,exhibitor_id,exhibition_id,display_name,aliases").order("id").range(a, b), "참가 사실"),
       readAll<Row>((a, b) => db.from("booth_participant").select("booth_id,participant_id,role").order("booth_id").range(a, b), "부스 배정"),
-      readAll<Row>((a, b) => db.from("exhibitor_link_candidate").select("booth_id,exhibitor_id,status").order("id").range(a, b), "연결 후보"),
+      readAll<Row>((a, b) => db.from("exhibitor_link_candidate").select("booth_id,participant_id,exhibitor_id,status").order("id").range(a, b), "연결 후보"),
     ]);
     return {
       exhibitors: ex.map((r) => ({
@@ -1166,7 +1167,12 @@ export class SupabaseRepository implements Repository {
         participantId: str(r.participant_id),
         role: r.role === "co_exhibitor" ? "co_exhibitor" : "primary",
       })),
-      candidates: lc.map((r) => ({ boothId: str(r.booth_id), exhibitorId: str(r.exhibitor_id), status: str(r.status) })),
+      candidates: lc.map((r) => ({
+        boothId: optStr(r.booth_id) ?? null,
+        participantId: optStr(r.participant_id) ?? null,
+        exhibitorId: str(r.exhibitor_id),
+        status: str(r.status),
+      })),
     };
   }
 
@@ -1222,31 +1228,34 @@ export class SupabaseRepository implements Repository {
       "부스 배정",
       (rows) => db.from("booth_participant").insert(rows).select("booth_id"),
     );
-    // 같은 쌍은 한 번만(unique) — 백필을 다시 돌려도 중복이 안 생긴다.
-    // 후보의 출전(participant_id, 0062)은 이번 계획의 대표 배정에서 잇는다. 없으면 null이고 판단 때 부스로 찾는다.
+    // 같은 짝은 한 번만 — 다시 돌려도 중복이 안 생긴다. 판단 단위는 출전이다(0073 unique(participant_id, exhibitor_id)).
+    // 부스는 붙은 정보일 뿐이라 brands.v1 후보는 booth_id가 null이다. 출전을 못 푼 옛 모양(부스만)은 0057 unique로 거른다.
     const candidateParticipant = new Map<string, string>();
     for (const a of plan.assignments)
       if (a.role === "primary" && !candidateParticipant.has(a.boothId)) {
         const id = resolvePt(a.participantRef);
         if (id) candidateParticipant.set(a.boothId, id);
       }
+    const candidateRows = plan.candidates.map((c) => ({
+      id: uid("xlc"),
+      booth_id: c.boothId ?? null,
+      participant_id: resolvePt(c.participantRef) ?? (c.boothId ? candidateParticipant.get(c.boothId) : undefined) ?? null,
+      exhibitor_id: resolveEx(c.target),
+      reason: c.reason,
+      created_at: t,
+    }));
     let candidates = 0;
-    for (let i = 0; i < plan.candidates.length; i += 500) {
-      const res = await db
-        .from("exhibitor_link_candidate")
-        .upsert(
-          plan.candidates.slice(i, i + 500).map((c) => ({
-            id: uid("xlc"),
-            booth_id: c.boothId,
-            participant_id: candidateParticipant.get(c.boothId) ?? null,
-            exhibitor_id: resolveEx(c.target),
-            reason: c.reason,
-            created_at: t,
-          })),
-          { onConflict: "booth_id,exhibitor_id", ignoreDuplicates: true },
-        )
-        .select("id");
-      candidates += (maybeWrote(res, "연결 후보") ?? []).length;
+    for (const [rows, onConflict] of [
+      [candidateRows.filter((r) => r.participant_id), "participant_id,exhibitor_id"],
+      [candidateRows.filter((r) => !r.participant_id), "booth_id,exhibitor_id"],
+    ] as const) {
+      for (let i = 0; i < rows.length; i += 500) {
+        const res = await db
+          .from("exhibitor_link_candidate")
+          .upsert(rows.slice(i, i + 500), { onConflict, ignoreDuplicates: true })
+          .select("id");
+        candidates += (maybeWrote(res, "연결 후보") ?? []).length;
+      }
     }
     return {
       exhibitors,
@@ -1387,6 +1396,7 @@ export class SupabaseRepository implements Repository {
       // 출전은 후보의 participant_id(0062, 0063이 채움)가 먼저고, 없으면 부스의 대표 배정으로 찾는다.
       let participantId = optStr(c.participant_id) ?? null;
       if (!participantId) {
+        if (!optStr(c.booth_id)) throw new Error("이 후보는 출전도 부스도 가리키지 않아요");
         const { data: asg, error: e1 } = await db
           .from("booth_participant").select("participant_id").eq("booth_id", str(c.booth_id)).eq("role", "primary").maybeSingle();
         if (e1) throw new Error(`부스 배정 조회 실패: ${e1.message}`);
@@ -1686,6 +1696,23 @@ export class SupabaseRepository implements Repository {
     if (outreach) await this.moveOutreach("move_brand_outreach", from, to);
     // 브랜드 하트(0068)는 cascade라 지우기 전에 옮긴다.
     await this.moveBrandHearts(from, to);
+    // 이름과 파일 키(brands.v1 metadata.brandKeys)를 대상에 남긴다. 키를 잃으면 같은 brands.v1 파일을
+    // 다시 올릴 때 이 브랜드를 못 찾아 새로 만들고 참가도 하나 더 생긴다(2026-11-20).
+    const { data: pair, error: pe } = await db.from("exhibitor").select("id,canonical_name,aliases,metadata").in("id", [from, to]);
+    if (pe) throw new Error(`참가사 조회 실패: ${pe.message}`);
+    const fromRow = ((pair ?? []) as Row[]).find((r) => r.id === from);
+    const toRow = ((pair ?? []) as Row[]).find((r) => r.id === to);
+    if (fromRow && toRow) {
+      const carried = carryIdentity(
+        { canonicalName: str(fromRow.canonical_name), aliases: strArr(fromRow.aliases), metadata: (fromRow.metadata ?? {}) as Row },
+        { canonicalName: str(toRow.canonical_name), aliases: strArr(toRow.aliases), metadata: (toRow.metadata ?? {}) as Row },
+      );
+      if (carried)
+        wrote(
+          await db.from("exhibitor").update({ aliases: carried.aliases, metadata: carried.metadata, updated_at: now() }).eq("id", to).select("id"),
+          "참가사 이름과 파일 키 옮기기",
+        );
+    }
     maybeWrote(await db.from("exhibitor").delete().eq("id", from).select("id"), "참가사 정리");
   }
 
@@ -4318,7 +4345,7 @@ function mapBrandContactLog(r: Row): BrandContactLog {
 function mapLinkCandidate(r: Row): ExhibitorLinkCandidate {
   return {
     id: str(r.id),
-    boothId: str(r.booth_id),
+    boothId: optStr(r.booth_id) ?? null,
     participantId: optStr(r.participant_id) ?? null,
     exhibitorId: str(r.exhibitor_id),
     reason: str(r.reason),

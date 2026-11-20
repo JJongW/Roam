@@ -80,10 +80,10 @@ describe("MockRepository 브랜드 프로필 칸(0061)", () => {
     expect(rows).toHaveLength(candidates.length);
     expect(rows[0].evidence.some((e) => e.startsWith("이름이 같아요"))).toBe(true);
     expect(rows[0].target.appearances.length).toBeGreaterThan(0);
-    expect(rows[0].booth).not.toBeNull();
+    expect(rows[0].subject).not.toBeNull();
     // 후보는 출전(participantId)을 들고 있고, 화면 열쇠도 출전이다(0062, 0063).
     expect(candidates.every((c) => c.participantId)).toBe(true);
-    expect(rows[0].booth!.key).toBe(candidates[0].participantId);
+    expect(rows[0].subject!.key).toBe(candidates[0].participantId);
     expect(rows[0].target.appearances.every((a) => a.participantId && a.key === a.participantId)).toBe(true);
   });
 

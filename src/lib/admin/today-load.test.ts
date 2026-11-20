@@ -6,6 +6,7 @@ import { loadAdminToday } from "@/lib/admin/today-load";
 import type { FairCount, QueueCount, QueueKey, TodayItem } from "@/lib/admin/today";
 import {
   articleQueue,
+  brandLinkRows,
   dataIssueQueue,
   enrichmentQueue,
   issueGroups,
@@ -18,6 +19,7 @@ import { loadContactBoard } from "@/lib/brands/board-load";
 import { funnel } from "@/lib/brands/board";
 import { DEFAULT_POLICY } from "@/lib/enrichment/review-policy";
 import { MockRepository } from "@/lib/mock/repository";
+import { planFromRepository } from "@/lib/exhibitor/service";
 import type { Repository } from "@/lib/repositories/types";
 import type { Article, EnrichmentCandidate, Exhibition, IssueLog } from "@/lib/types";
 
@@ -126,6 +128,28 @@ describe("홈 카드 숫자 = 화면 숫자", () => {
     const { repo, exhibitions } = await fixture();
     const c = byKey((await home(repo, exhibitions, EARLY)).items).brandLinks;
     expect(c).toMatchObject({ state: "ok", count: (await pendingLinkCandidates(repo)).length });
+  });
+
+  it("브랜드 확인: 부스 없는 참가의 후보도 세고, 홈 숫자 = 화면이 그리는 줄 수", async () => {
+    const { repo, exhibitions } = await fixture();
+    // 부스 후보(백필)와 부스 없는 참가 후보(brands.v1 모양)를 섞는다.
+    const { plan } = await planFromRepository(repo);
+    await repo.applyExhibitorPlan(plan);
+    const g = await repo.loadExhibitorGraph();
+    const target = g.exhibitors[0];
+    await repo.applyExhibitorPlan({
+      exhibitors: [{ key: "new:ny-311", canonicalName: target.canonicalName }],
+      participants: [{ key: "p", exhibitorRef: { new: "new:ny-311" }, exhibitionId: exhibitions[1].id, displayName: target.canonicalName }],
+      assignments: [],
+      candidates: [{ participantRef: { new: "p" }, target: { existing: target.id }, reason: "이름이 같아요" }],
+    });
+    const pending = await pendingLinkCandidates(repo);
+    expect(pending.some((x) => x.boothId === null)).toBe(true);
+    expect(pending.some((x) => x.boothId)).toBe(true);
+    const rows = await brandLinkRows(repo);
+    const c = byKey((await home(repo, exhibitions, EARLY)).items).brandLinks;
+    expect(c).toMatchObject({ state: "ok", count: rows.length });
+    expect(rows.every((r) => r.subject)).toBe(true);
   });
 
   it("오류: 오류 로그 탭의 묶은 수와 같다", async () => {

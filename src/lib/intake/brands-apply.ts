@@ -10,6 +10,7 @@ import type { AuditContext } from "@/lib/audit/diff";
 import { diffFields } from "@/lib/audit/diff";
 import { AUDIT_SPECS } from "@/lib/audit/entities";
 import { existingExhibitors } from "@/lib/exhibitor/service";
+import { candidateKeys } from "@/lib/exhibitor/plan";
 import { diffGraph, enqueueBrandDrafts, markStaleForNewAppearance } from "@/lib/brands/jobs";
 import { existingTargets, planBrands, type BrandsPlan } from "./brands-plan";
 import type { BrandsFile } from "./brands-schema";
@@ -39,7 +40,7 @@ export async function planBrandsFromRepository(
     ...exhibitions.data.map((e) => repo.listBoothsFull(e.id)),
   ]);
   const existing = existingExhibitors(graph, perExhibition.flat());
-  const base = { file, exhibitionId, graph, existing };
+  const base = { file, exhibitionId, graph, existing, decidedCandidates: candidateKeys(graph.candidates) };
   // 두 번 세운다: 처음엔 어느 기존 브랜드에 이어지는지 보고, 그 브랜드들의 칸만 읽어 다시 세운다.
   const first = planBrands(base);
   const ids = existingTargets(first);
@@ -57,6 +58,8 @@ export async function planBrandsFromRepository(
 export interface BrandsApplyResult {
   createdBrands: number;
   createdParticipants: number;
+  /** 연결 확인에 새로 올린 참가 단위 후보 수(이미 있던 짝은 세지 않는다). */
+  createdCandidates: number;
   filledFields: number;
   /** 새 출전이 이어진 기존 브랜드의 칸을 stale로 돌린 수(lib/brands/jobs.ts와 같은 규칙). */
   staled: number;
@@ -68,6 +71,7 @@ export async function applyBrandsPlan(repo: Repository, plan: BrandsPlan, audit:
   const result: BrandsApplyResult = {
     createdBrands: 0,
     createdParticipants: 0,
+    createdCandidates: 0,
     filledFields: 0,
     staled: 0,
     enqueued: { jobIds: [], brands: 0 },
@@ -75,15 +79,16 @@ export async function applyBrandsPlan(repo: Repository, plan: BrandsPlan, audit:
   };
   const before = await repo.loadExhibitorGraph();
 
-  // 1) 브랜드와 참가 사실. 한 번에 쓴다 — 참가 사실이 새 브랜드 id를 참조한다.
+  // 1) 브랜드, 참가 사실, 참가 단위 연결 후보. 한 번에 쓴다 — 참가 사실이 새 브랜드 id를, 후보가 새 참가 id를 참조한다.
   const xp = plan.exhibitorPlan;
   let ids: { exhibitors: Record<string, string>; participants: Record<string, string> } = { exhibitors: {}, participants: {} };
-  if (xp.exhibitors.length || xp.participants.length) {
+  if (xp.exhibitors.length || xp.participants.length || xp.candidates.length) {
     try {
       const applied = await repo.applyExhibitorPlan(xp);
       ids = applied.ids;
       result.createdBrands = applied.exhibitors;
       result.createdParticipants = applied.participants;
+      result.createdCandidates = applied.candidates;
     } catch (e) {
       // 브랜드를 못 만들면 칸도 쓸 곳이 없다. 기존 브랜드 칸만 계속한다.
       result.failures.push({ key: "brands", message: msg(e) });

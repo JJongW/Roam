@@ -5,6 +5,8 @@ import { findBoothEnrichmentGaps, findNoteInconsistencies } from "@/lib/admin/da
 import { groupIssues } from "@/lib/admin/issue-grouping";
 import { exhaustedBooths, exhibitionTrust, reviewPolicy, type PolicyConfig } from "@/lib/enrichment/review-policy";
 import { diffVerified, loadVerified } from "@/lib/verified";
+import { loadBrandData } from "@/lib/brands/load";
+import { buildLinkRows } from "@/lib/brands/links";
 
 /**
  * 관리자 큐 하나당 함수 하나. **큐 화면과 관리자 홈이 같은 함수를 같은 범위로 부른다.**
@@ -84,9 +86,18 @@ export async function articleQueue(repo: Repository): Promise<{ rows: Article[];
 
 // ─── 브랜드 확인(/admin/brands/links) ────────────────────────────────────
 
-/** 이름만 같아 사람이 확인할 연결 후보. 화면은 이 목록을 한 줄씩 그린다(1:1). */
+/**
+ * 이름만 같아 사람이 확인할 연결 후보. 판단 단위는 참가다 — 부스 없는 참가(brands.v1)의 후보도
+ * 여기 든다(0073, 2026-11-20 Ted). 화면은 brandLinkRows로 이 목록을 한 줄씩 그린다(1:1).
+ */
 export function pendingLinkCandidates(repo: Repository) {
   return repo.listExhibitorLinkCandidates("pending");
+}
+
+/** 연결 확인 화면이 그리는 줄. 홈 숫자(pendingLinkCandidates 수)와 같아야 한다(today-load.test.ts). */
+export async function brandLinkRows(repo: Repository) {
+  const [data, pending] = await Promise.all([loadBrandData(repo), pendingLinkCandidates(repo)]);
+  return buildLinkRows({ ...data, candidates: pending });
 }
 
 // ─── 오류(/admin/errors 오류 로그) ───────────────────────────────────────

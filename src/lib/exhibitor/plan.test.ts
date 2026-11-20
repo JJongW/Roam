@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { planExhibitorLinks, type PlanBooth } from "./plan";
+import { candidateKeys, planExhibitorLinks, type PlanBooth } from "./plan";
 
 const b = (over: Partial<PlanBooth> & { id: string; exhibitionId: string; name: string }): PlanBooth => ({
   kind: "exhibitor",
@@ -161,7 +161,9 @@ describe("planExhibitorLinks — 브랜드 먼저 들어온 참가 사실에 부
     });
     expect(plan.exhibitors).toHaveLength(1);
     expect(plan.assignments[0].participantRef).toEqual({ new: expect.any(String) });
-    expect(plan.candidates).toEqual([{ boothId: "b1", target: { existing: "exA" }, reason: '이름이 같아요: "하치공방"' }]);
+    expect(plan.candidates).toEqual([
+      { participantRef: plan.assignments[0].participantRef, boothId: "b1", target: { existing: "exA" }, reason: '이름이 같아요: "하치공방"' },
+    ]);
   });
 
   it("같은 행사에 같은 이름의 부스 없는 브랜드가 둘이면 고르지 않는다", () => {
@@ -181,7 +183,20 @@ describe("planExhibitorLinks — 브랜드 먼저 들어온 참가 사실에 부
       participants: [open(), { id: "ptOld", exhibitorId: "exOld", exhibitionId: "moongu", displayName: "하치공방", hasBooth: true }],
     });
     expect(plan.assignments).toEqual([{ boothId: "b1", participantRef: { existing: "pt1" }, role: "primary" }]);
-    expect(plan.candidates).toEqual([{ boothId: "b1", target: { existing: "exOld" }, reason: '이름이 같아요: "하치공방"' }]);
+    expect(plan.candidates).toEqual([
+      { participantRef: { existing: "pt1" }, boothId: "b1", target: { existing: "exOld" }, reason: '이름이 같아요: "하치공방"' },
+    ]);
+  });
+
+  it("브랜드 먼저 인입이 이미 그 참가로 낸 후보(출전 열쇠)는 부스가 들어와도 다시 안 낸다", () => {
+    const plan = planExhibitorLinks({
+      booths: [b({ id: "b1", exhibitionId: "ny", name: "하치공방" })],
+      exhibitors: [exA, { id: "exOld", keys: [], names: ["하치공방"] }],
+      participants: [open(), { id: "ptOld", exhibitorId: "exOld", exhibitionId: "moongu", displayName: "하치공방", hasBooth: true }],
+      decidedCandidates: candidateKeys([{ boothId: null, participantId: "pt1", exhibitorId: "exOld" }]),
+    });
+    expect(plan.assignments).toEqual([{ boothId: "b1", participantRef: { existing: "pt1" }, role: "primary" }]);
+    expect(plan.candidates).toEqual([]);
   });
 
   it("인스타가 맞으면 이름보다 인스타가 먼저다", () => {

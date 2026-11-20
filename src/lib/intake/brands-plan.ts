@@ -4,7 +4,9 @@
  * brands.v1 파일 한 장을 "새 브랜드 / 기존 브랜드에 이음 / 참가 사실 / 채울 칸"으로 나눈다.
  * 규칙은 부스 연결(lib/exhibitor/plan.ts)과 같다:
  *  - 인스타·도메인(identity.ts)이 기존 브랜드와 겹치면 그 브랜드를 쓴다.
- *  - 이름만 같으면 자동으로 합치지 않는다. 새로 만들고 "이름 같은 기존 브랜드"로 보여 준다.
+ *  - 이름만 같으면 자동으로 합치지 않는다. 새로 만들고, 행사가 있으면 그 **참가**를 연결 후보
+ *    (exhibitor_link_candidate, 0073)로 올린다. 부스는 기다리지 않는다(2026-11-20 Ted 결정).
+ *    사람이 /admin/brands/links에서 승인하면 새 브랜드가 기존 브랜드로 합쳐지고 참가도 따라간다.
  *  - 파일 안에서 인스타·도메인이 같은 항목은 하나로 묶는다.
  *  - 다시 돌려도 중복이 안 생긴다: 만든 브랜드에 파일 키(brandKeys)를 남겨 두고 다음에 그걸로 찾는다.
  * 프로필 칸은 비어 있을 때만 채운다(intake.v1 "빈 칸만 채운다"와 같은 원칙).
@@ -55,7 +57,7 @@ export interface BrandsPlan {
   version: "brands.v1";
   exhibitionId: string | null;
   brands: PlannedBrand[];
-  /** applyExhibitorPlan에 그대로 넘긴다. 배정과 후보는 늘 비어 있다(부스가 없다). */
+  /** applyExhibitorPlan에 그대로 넘긴다. 배정은 늘 비어 있다(부스가 없다). 후보는 참가 단위다(부스 없음). */
   exhibitorPlan: ExhibitorPlan;
   fields: PlannedField[];
   nameMatches: NameMatch[];
@@ -69,6 +71,8 @@ export interface BrandsPlan {
     participantsToCreate: number;
     participantsExisting: number;
     fieldsToFill: number;
+    /** 연결 확인(/admin/brands/links)에 새로 올릴 참가 단위 후보 수. */
+    candidates: number;
   };
 }
 
@@ -81,6 +85,8 @@ export interface BrandsPlanInput {
   existing: ExistingExhibitor[];
   /** 기존 브랜드에 이미 있는 칸(exhibitorId → 칸 key). 상태와 무관하게 있으면 안 채운다. */
   filledFields?: Map<string, Set<string>>;
+  /** 이미 낸 연결 후보(lib/exhibitor/plan.ts candidateKeys). 판단했든 대기 중이든 다시 내지 않는다. */
+  decidedCandidates?: Set<string>;
 }
 
 /** 다시 돌릴 때 같은 브랜드를 찾는 열쇠. 행사가 있으면 행사, 없으면 출처 URL 안에서 유일하다. */
@@ -98,6 +104,7 @@ function nameForms(name: string): string[] {
 
 export function planBrands(input: BrandsPlanInput): BrandsPlan {
   const { file, exhibitionId, graph } = input;
+  const decided = input.decidedCandidates ?? new Set<string>();
   const plan: BrandsPlan = {
     version: "brands.v1",
     exhibitionId,
@@ -107,7 +114,7 @@ export function planBrands(input: BrandsPlanInput): BrandsPlan {
     nameMatches: [],
     errors: [],
     warnings: [],
-    summary: { newBrands: 0, linkedBrands: 0, mergedInFile: 0, participantsToCreate: 0, participantsExisting: 0, fieldsToFill: 0 },
+    summary: { newBrands: 0, linkedBrands: 0, mergedInFile: 0, participantsToCreate: 0, participantsExisting: 0, fieldsToFill: 0, candidates: 0 },
   };
 
   // ── 파일 안에서 인스타·도메인이 같은 항목을 묶는다(union-find) ─────────────────
@@ -235,16 +242,20 @@ export function planBrands(input: BrandsPlanInput): BrandsPlan {
           ...(category && !exhibitionId ? { category } : {}),
         },
       });
-      // 이름만 같은 기존 브랜드 — 합치지 않고 보여만 준다(사람이 /admin/brands에서 판단).
-      const same = new Set<string>();
-      for (const n of [lead.name, ...aliases]) for (const f of nameForms(n)) for (const id of exByName.get(f) ?? []) same.add(id);
-      if (same.size)
-        plan.nameMatches.push({
-          key: lead.key,
-          name: lead.name,
-          existing: [...same].map((id) => ({ id, name: nameOf.get(id) ?? id })),
-        });
     }
+    // 이름만 같은 다른 기존 브랜드(이름, 다른 이름 어느 쪽이든). 인스타나 도메인, 사람이 적은 id로 이은 브랜드는
+    // 이미 확정이라 보지 않는다. 새로 만드는 브랜드와, 이 파일로 전에 만든 브랜드(다시 돌림)를 본다.
+    const sameName = new Map<string, string>(); // 기존 브랜드 id → 맞은 이름
+    if (!existingId || brand.matchedBy === "brandKey")
+      for (const n of [lead.name, ...aliases])
+        for (const f of nameForms(n))
+          for (const id of exByName.get(f) ?? []) if (id !== existingId && !sameName.has(id)) sameName.set(id, n);
+    if (!existingId && sameName.size)
+      plan.nameMatches.push({
+        key: lead.key,
+        name: lead.name,
+        existing: [...sameName.keys()].map((id) => ({ id, name: nameOf.get(id) ?? id })),
+      });
 
     // 파일 안에서 묶이지 않은 동명 항목 — 같은 브랜드인지 파일만으로는 모른다.
     for (const f of nameForms(lead.name).filter((x) => x.startsWith("~"))) {
@@ -258,6 +269,18 @@ export function planBrands(input: BrandsPlanInput): BrandsPlan {
     if (exhibitionId) {
       const pk = `${refKey(target)}|${exhibitionId}`;
       const existingParticipant = existingId ? participantOf.get(`${existingId}|${exhibitionId}`) : undefined;
+      // 3) 이름만 같은 짝 → 참가 단위 연결 후보. 부스 없이 낸다. 파일 안에서 같은 대상에 두 번째로 오는
+      //    항목(seenParticipant)은 첫 항목이 이미 냈다.
+      const pref: Ref | null = existingParticipant
+        ? { existing: existingParticipant }
+        : seenParticipant.has(pk)
+          ? null
+          : { new: pk };
+      if (pref)
+        for (const [id, matched] of sameName) {
+          if ("existing" in pref && decided.has(`pt:${pref.existing}|${id}`)) continue;
+          plan.exhibitorPlan.candidates.push({ participantRef: pref, target: { existing: id }, reason: `이름이 같아요: "${matched}"` });
+        }
       if (existingParticipant || seenParticipant.has(pk)) {
         brand.participant = "exists";
         plan.summary.participantsExisting++;
@@ -283,7 +306,7 @@ export function planBrands(input: BrandsPlanInput): BrandsPlan {
       }
     }
 
-    // 3) 프로필 칸 — 빈 칸만.
+    // 4) 프로필 칸 — 빈 칸만.
     const filled = existingId ? (input.filledFields?.get(existingId) ?? new Set<string>()) : new Set<string>();
     const candidates: Omit<PlannedField, "brandKey" | "target">[] = [];
     const intro = members.find((m) => m.intro)?.intro;
@@ -327,6 +350,7 @@ export function planBrands(input: BrandsPlanInput): BrandsPlan {
     plan.brands.push(brand);
   }
   plan.summary.fieldsToFill = plan.fields.length;
+  plan.summary.candidates = plan.exhibitorPlan.candidates.length;
   return plan;
 }
 

@@ -639,7 +639,8 @@ export interface ExhibitorGraph {
     createdAt?: string;
   }[];
   assignments: { boothId: string; participantId: string; role: "primary" | "co_exhibitor" }[];
-  candidates: { boothId: string; exhibitorId: string; status: string }[];
+  /** 연결 후보(0057, 0073). 판단 단위는 출전(participantId)이고 부스는 붙은 정보일 뿐이라 없을 수 있다. */
+  candidates: { boothId: string | null; participantId: string | null; exhibitorId: string; status: string }[];
 }
 
 /** 한 부스(=그 브랜드)의 다른 행사 기록 — 로미 2절 재료(설계 2026-10-02 §6). */
@@ -816,11 +817,14 @@ export interface ProfileField {
   updatedAt: string;
 }
 
-/** "같은 브랜드인가요?" — 이름만 같아서 사람이 판단해야 하는 연결(0057). */
+/** "같은 브랜드인가요?" — 이름만 같아서 사람이 판단해야 하는 연결(0057, 0073).
+ *  판단 단위는 **출전**(그 박람회의 그 참가)이다. 부스는 나중에 붙는 선택값이라 없어도 된다
+ *  (2026-11-20 Ted, docs/decisions/2026-11-20_브랜드-대조는-참가-단위.md). */
 export interface ExhibitorLinkCandidate {
   id: string;
-  boothId: string;
-  /** 후보가 된 출전(0062 칸, 0063이 대표 배정으로 채움). 옛 행이나 배정 전이면 null — 그때는 부스로 찾는다. */
+  /** 후보를 낸 부스. 부스 인입이 낸 후보만 있고, 브랜드 먼저 인입(brands.v1)이 낸 후보는 null. */
+  boothId: string | null;
+  /** 후보가 된 출전(0062 칸, 0063, 0073이 대표 배정으로 채움). 옛 행이면 null일 수 있다 — 그때는 부스로 찾는다. */
   participantId: string | null;
   exhibitorId: string;
   reason: string;
