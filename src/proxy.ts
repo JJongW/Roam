@@ -38,13 +38,16 @@ const EXEMPT_PREFIXES = ["/login", "/auth", "/admin"];
  * `/survey`는 공개 설문이다 — 링크를 받은 사람이 계정을 만들 이유가 없다.
  * `/visited`는 "다녀왔어요" 목록(UI 6-10)이다. 기록은 이 기기에 먼저 남고 로그인 전에는 기기 것만
  * 보여 준다(화면 설계서 6-10 상태, "로그인 없이 모두 할 수 있어요").
+ * `/me`, `/me/hearts`, `/me/settings`는 마이페이지(UI 14-01, 14-02)와 설정이다. 로그인 전에도 이 브라우저의
+ * 하트를 보여 준다. 프로필, 닉네임, 계정 삭제, 하트 남긴 브랜드(계정 목록)는 여기 없어 로그인으로 보낸다.
  */
-export const PUBLIC_PATHS = ["/", "/privacy", "/terms", "/survey", "/visited"];
+export const PUBLIC_PATHS = ["/", "/privacy", "/terms", "/survey", "/visited", "/me", "/me/hearts", "/me/settings"];
 /** 정확한 패턴 매치 — 하위 경로(메모장·커뮤니티 등)는 자동으로 안 걸린다. */
 export const PUBLIC_PATH_PATTERNS = [
   /^\/exhibitions\/[^/]+$/,
   /^\/exhibitions\/[^/]+\/map$/,
   /^\/booths\/[^/]+$/,
+  /^\/me\/hearts\/[^/]+$/,
 ];
 
 export function proxy(req: NextRequest) {

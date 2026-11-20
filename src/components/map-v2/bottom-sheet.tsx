@@ -26,7 +26,7 @@ export function BottomSheet({
   }, [onClose]);
   return (
     <div
-      className={`fixed inset-0 z-40 flex items-end ${tall ? "pt-v2-x12" : "pt-v2-x28"}`}
+      className={`fixed inset-0 z-40 flex items-end justify-center ${tall ? "pt-v2-x12" : "pt-v2-x28"}`}
       role="dialog"
       aria-modal
       aria-label={ariaLabel}
