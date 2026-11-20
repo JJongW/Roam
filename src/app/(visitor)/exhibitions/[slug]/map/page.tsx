@@ -6,6 +6,8 @@ import { BackButton } from "@/components/v2/back-button";
 import { RomiAvatar } from "@/components/v2/romi-avatar";
 import { system } from "@/lib/copy/v1";
 import { devSkeletonDelay } from "@/lib/dev/skeleton-delay";
+import { FairNotOpen } from "@/components/exhibition/fair-not-open";
+import { isExhibitionOpenCached } from "@/lib/exhibition/open-gate";
 
 export const metadata = { title: "지도" };
 
@@ -26,6 +28,7 @@ export default async function MapPage({ params, searchParams }: Props) {
   const repo = await getRepository();
   const detail = await repo.getExhibition(slug);
   if (!detail) notFound();
+  if (!(await isExhibitionOpenCached(detail.exhibition.id))) return <FairNotOpen />;
   const booths = await repo.listBoothsByExhibitionId(detail.exhibition.id);
 
   // 좌표가 없으면 지도는 "없다"가 아니라 거짓이다 — 부스가 한 점에 겹친다. 그리지 않는다.

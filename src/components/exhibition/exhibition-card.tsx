@@ -27,6 +27,7 @@ export function ExhibitionCard({
   recommended = false,
   recommendedLabel = "로미 추천",
   signals,
+  openable = true,
 }: {
   exhibition: Exhibition;
   status: ExhibitionStatusKind;
@@ -35,6 +36,9 @@ export function ExhibitionCard({
   recommendedLabel?: string;
   /** 결정 근거 — 진행 중 카드에서만 그린다(행에는 자리가 없다). */
   signals?: ExhibitionSignals;
+  /** false면 지도에 놓인 부스가 없는 박람회 — 흐리게, 눌리지 않게, "진행 예정" 라벨만
+   *  (2026-11-20 Ted 결정, lib/exhibition/openable.ts). 날짜 상태와 상관없이 행으로 그린다. */
+  openable?: boolean;
 }) {
   const t = useT();
   const range = `${format(new Date(exhibition.startDate), "M.d")} – ${format(new Date(exhibition.endDate), "M.d")}`;
@@ -52,6 +56,33 @@ export function ExhibitionCard({
       signals.groundedCount > 0);
   const cta =
     status === "ongoing" ? t("home.enter") : t("home.browse");
+
+  // 열 수 없는 박람회: 링크가 아니라 흐린 행. 참가 브랜드도, 들어가는 길도 없다.
+  // 색만으로 상태를 나르지 않게(WCAG 1.4.1) 라벨 글자와 화살표 없음으로도 가른다.
+  if (!openable) {
+    return (
+      <div
+        role="group"
+        aria-disabled="true"
+        aria-label={t("home.notOpenA11y", { name: exhibition.name })}
+        data-testid="exhibition-not-open"
+        className="flex min-h-11 items-center gap-3 rounded-xl border border-border bg-card px-4 py-3 opacity-50"
+      >
+        <span className="w-12 shrink-0 text-xs font-semibold tabular text-muted-foreground">
+          {format(new Date(exhibition.startDate), "M.d")}
+        </span>
+        <span className="min-w-0 flex-1">
+          <span className="block truncate font-bold">{exhibition.name}</span>
+          <span className="block truncate text-xs text-muted-foreground">
+            {exhibition.venue}
+          </span>
+        </span>
+        <span className="shrink-0 text-xs font-semibold text-muted-foreground">
+          {t("home.notOpenLabel")}
+        </span>
+      </div>
+    );
+  }
 
   // 진행 중만 꽉 찬 카드. 나머지는 행 — 결정 대상이 아니다.
   if (status !== "ongoing") {

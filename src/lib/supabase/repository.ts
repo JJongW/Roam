@@ -869,6 +869,27 @@ export class SupabaseRepository implements Repository {
     return (data as { id: string } | null)?.id ?? null;
   }
 
+  async openExhibitionIds(exhibitionIds: string[]): Promise<Set<string>> {
+    const db = await this.db();
+    const ids = [...new Set(exhibitionIds)];
+    // 행사마다 한 줄만 묻는다(limit 1). 부스를 다 읽어 세면 1천 행 상한에 잘린다.
+    // or 두 개는 AND로 묶인다: (편의시설 아님) AND (좌표가 0,0 아님). kind는 비어 있을 수 있다.
+    const results = await Promise.all(
+      ids.map(async (id) => {
+        const { data, error } = await db
+          .from("booth")
+          .select("id")
+          .eq("exhibition_id", id)
+          .or("kind.is.null,kind.neq.facility")
+          .or("x.neq.0,y.neq.0")
+          .limit(1);
+        if (error) throw new Error(`행사 열림 조회 실패(${id}): ${error.message}`);
+        return (data ?? []).length > 0 ? id : null;
+      }),
+    );
+    return new Set(results.filter((id): id is string => id !== null));
+  }
+
   // 전시 쓰기 3종도 admin 콘솔 전용 — createBooth 주석과 같은 이유로 서비스 롤.
   async createExhibition(input: ExhibitionInput): Promise<Exhibition> {
     const db = createServiceClient();

@@ -10,6 +10,7 @@ import {
 import { boothPatchInputSchema } from "@/lib/schemas";
 import { brandIntroForBooth } from "@/lib/brands/intro";
 import { withBrandIds } from "@/lib/booth/brand-ids";
+import { gateFairById } from "@/lib/exhibition/open-gate";
 
 type Ctx = { params: Promise<{ id: string }> };
 
@@ -18,6 +19,9 @@ export async function GET(_req: Request, { params }: Ctx) {
   const repo = await getRepository();
   const detail = await repo.getBoothDetail(id);
   if (!detail) return notFound("부스를 찾을 수 없어요");
+  // 그 부스의 박람회가 아직 열리지 않았으면 부스도 내주지 않는다(lib/exhibition/open-gate.ts).
+  const gated = await gateFairById(detail.booth.exhibitionId);
+  if (gated) return gated;
   // 브랜드 공식 소개(말투 게이트 통과본, 없으면 null). 키를 더하기만 해서 iOS의 기존
   // 디코딩은 그대로다. 있으면 앱은 부스 요약과 원문 대신 이걸 보여 준다(lib/brands/intro.ts).
   // exhibitorId, participantId, exhibitorName(브랜드 이름)도 부스에 붙인다(키 추가만, lib/booth/brand-ids.ts).

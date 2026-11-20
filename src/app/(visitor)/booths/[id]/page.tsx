@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
 import { getBoothDetailCached, listExhibitionsCached } from "@/lib/repositories/cached";
+import { FairNotOpen } from "@/components/exhibition/fair-not-open";
+import { isExhibitionOpenCached } from "@/lib/exhibition/open-gate";
 import { getRepository } from "@/lib/repositories";
 import { AnalyticsTracker } from "@/components/common/analytics-tracker";
 import { BoothExhibitionContextBridge } from "@/components/companion/booth-exhibition-context-bridge";
@@ -19,6 +21,7 @@ export async function generateMetadata({ params }: Props) {
   const { id } = await params;
   const detail = await getBoothDetailCached(id);
   if (!detail) return { title: "부스" };
+  if (!(await isExhibitionOpenCached(detail.booth.exhibitionId))) return { title: "부스" };
   return {
     title: `${detail.booth.name} | ${detail.booth.company}`,
     description: detail.booth.description,
@@ -34,6 +37,8 @@ export default async function BoothDetailPage({ params, searchParams }: Props) {
   await devSkeletonDelay((await searchParams).skeletonDelay);
   const detail = await getBoothDetailCached(id);
   if (!detail) notFound();
+  // 그 부스의 박람회가 아직 열리지 않았으면(지도에 놓인 부스 0곳) 부스도 보여 주지 않는다.
+  if (!(await isExhibitionOpenCached(detail.booth.exhibitionId))) return <FairNotOpen />;
   const { booth, category, events, welcomeKit } = detail;
   const repo = await getRepository();
   const [brandIntro, exhibitions, halls, appearances, [brandIds]] = await Promise.all([
