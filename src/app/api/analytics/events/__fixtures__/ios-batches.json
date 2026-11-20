@@ -1,0 +1,890 @@
+[
+  {
+    "anonId" : "a6695261-c8fd-423e-b6f4-3e94301971dc",
+    "appVersion" : "1.0.0",
+    "events" : [
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "119fae10-c3fb-471a-a999-f81eb13c1e50",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "app_open",
+        "props" : {
+          "is_logged_in" : false,
+          "launch_source" : "direct"
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "46f8ca2a-d314-4c1a-a8a1-810fe52c4643",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "screen_view",
+        "props" : {
+          "is_logged_in" : false
+        },
+        "screenId" : "UI 2-01"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "fb4810e1-2ea3-48be-9705-a3854af3c115",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "onboarding_mood_shown",
+        "props" : {
+          "is_logged_in" : false
+        },
+        "screenId" : "UI 1-02"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "fabb4a3a-3e51-43b0-a1cb-49b624c91967",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "onboarding_mood_pick",
+        "props" : {
+          "card_ids" : [
+            "c1",
+            "c2"
+          ],
+          "is_logged_in" : false,
+          "picked_count" : 2
+        },
+        "screenId" : "UI 1-02"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "c4167a76-0a11-43c3-87a9-3aa1152bf6d6",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "onboarding_mood_skip",
+        "props" : {
+          "is_logged_in" : false
+        },
+        "screenId" : "UI 1-02"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "38464f56-9029-4801-8e28-fa30b4272bb5",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "onsite_question_answer",
+        "props" : {
+          "answer" : "here",
+          "is_logged_in" : false
+        },
+        "screenId" : "UI 1-04"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "c730937b-53d5-4281-bf3c-7ffab45b3343",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "onboarding_first_three_shown",
+        "props" : {
+          "booth_ids" : [
+            "b1",
+            "b2",
+            "b3"
+          ],
+          "is_logged_in" : false
+        },
+        "screenId" : "UI 1-05"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "0ebf7019-98c8-4d2a-974c-f09ed09a78df",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "onboarding_reask_shown",
+        "props" : {
+          "is_logged_in" : false
+        },
+        "screenId" : "UI 1-10"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "01215079-2bef-4157-929e-123d63214dff",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "onboarding_reask_answer",
+        "props" : {
+          "answer" : "pick",
+          "is_logged_in" : false
+        },
+        "screenId" : "UI 1-10"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "4a4832d5-1d6b-40de-ab77-cee143ef5ca2",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "fair_open",
+        "props" : {
+          "entry" : "home_card",
+          "fair_phase" : "open",
+          "is_logged_in" : false
+        },
+        "screenId" : "UI 3-01"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "2ac177f7-4757-4d14-bb22-237d5bf678d9",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "article_open",
+        "props" : {
+          "article_id" : "art_1",
+          "entry" : "home_magazine",
+          "is_logged_in" : false
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "5cd1f574-b5f1-4a2d-b058-94663203d3b4",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "map_control",
+        "props" : {
+          "control" : "map_zoom_in",
+          "is_logged_in" : false
+        },
+        "screenId" : "UI 3-01"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "d0f70895-c9d0-463f-9709-99de40973d36",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "map_load_result",
+        "props" : {
+          "from_cache" : false,
+          "is_logged_in" : false,
+          "ms" : 412,
+          "ok" : true
+        },
+        "screenId" : "UI 3-03"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "ecd62f2e-aaa3-469f-b8d6-e2f6071c40a1",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "search_submit",
+        "props" : {
+          "is_logged_in" : false,
+          "query_len" : 4,
+          "result_count" : 3
+        },
+        "screenId" : "UI 3-04"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "c393f772-2e8f-45a6-80ab-db3a94a03dd8",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "search_zero_result",
+        "props" : {
+          "is_logged_in" : false,
+          "query_len" : 2
+        },
+        "screenId" : "UI 3-06"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "2e7220c4-d99a-4b9b-9f46-28eef6e35dfe",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "search_result_tap",
+        "props" : {
+          "booth_id" : "b1",
+          "is_logged_in" : false,
+          "rank" : 1
+        },
+        "screenId" : "UI 3-05"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "67f09e74-5778-4380-8895-3af4a4930af3",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "hall_switch",
+        "props" : {
+          "floor" : 1,
+          "from" : "list",
+          "hall_id" : "C",
+          "is_logged_in" : false
+        },
+        "screenId" : "UI 3-09"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "5db96748-7a9a-40d9-8760-abd0915972ac",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "booth_card_open",
+        "props" : {
+          "booth_id" : "b1",
+          "is_logged_in" : false,
+          "source" : "map"
+        },
+        "screenId" : "UI 4-01"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "271dbddf-539a-45f5-8db1-f4c139f9aed2",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "view",
+        "props" : {
+          "info_level" : "full",
+          "is_logged_in" : false,
+          "photo_count" : 3,
+          "source" : "map"
+        },
+        "screenId" : "UI 4-02"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "499e66aa-485c-40b5-b489-8baf63ef1a01",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "booth_photo_swipe",
+        "props" : {
+          "index" : 2,
+          "is_logged_in" : false
+        },
+        "screenId" : "UI 4-03"
+      }
+    ],
+    "platform" : "ios",
+    "sessionId" : "88d3354f-8732-4161-b538-66c411faea39"
+  },
+  {
+    "anonId" : "a6695261-c8fd-423e-b6f4-3e94301971dc",
+    "appVersion" : "1.0.0",
+    "events" : [
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "46d41b4b-afe4-4248-ad3f-98c5c30ff942",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "booth_show_on_map",
+        "props" : {
+          "is_logged_in" : false
+        },
+        "screenId" : "UI 4-02"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "e29c5095-e675-42be-92cf-83e42d198fbe",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "heart_add",
+        "props" : {
+          "is_logged_in" : false,
+          "source" : "card",
+          "undo" : false
+        },
+        "screenId" : "UI 4-01"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "ffbb452f-15b0-412a-a851-39d00457311f",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "heart_remove",
+        "props" : {
+          "is_logged_in" : false,
+          "source" : "card"
+        },
+        "screenId" : "UI 5-08"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "a897cb77-9221-4bc6-95a9-1c7834e2ed6c",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "heart_save_fail",
+        "props" : {
+          "is_logged_in" : false,
+          "reason" : "device",
+          "surface" : "brand_row"
+        },
+        "screenId" : "UI 19-A5"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "5ccf9bf7-da26-4955-9a9c-4fdf7e79deb9",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "login_prompt_shown",
+        "props" : {
+          "is_logged_in" : false,
+          "placement" : "snackbar_top",
+          "trigger" : "heart"
+        },
+        "screenId" : "UI 5-03"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "2eef3d4d-de9c-466a-ad37-233bed998761",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "login_prompt_tap",
+        "props" : {
+          "from" : "brand_heart",
+          "is_logged_in" : false,
+          "placement" : "snackbar_top"
+        },
+        "screenId" : "UI 19-A3"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "7bc1fd8b-4a30-40cb-ad8d-a09cfcf82f71",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "login_skip",
+        "props" : {
+          "is_logged_in" : false,
+          "trigger" : "heart"
+        },
+        "screenId" : "UI 5-04"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "e6cd0e17-e5a6-40a4-b588-7d5363b4fb01",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "login_complete",
+        "props" : {
+          "is_logged_in" : false,
+          "method" : "apple",
+          "trigger" : "heart"
+        },
+        "screenId" : "UI 5-04"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "c8f3cea9-75b0-45a8-a31a-14fe9ac92840",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "login_fail",
+        "props" : {
+          "is_logged_in" : false,
+          "method" : "google"
+        },
+        "screenId" : "UI 5-04"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "a277ed31-7a8f-41c3-8c36-3c7d27f0e44b",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "snackbar_collision",
+        "props" : {
+          "dropped" : "login",
+          "is_logged_in" : false,
+          "kept" : "heart"
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "ae7908da-bace-433f-9445-8647e557b1d1",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "brand_heart_add",
+        "props" : {
+          "from" : "detail_row",
+          "is_logged_in" : false
+        },
+        "screenId" : "UI 19-A2"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "309a047f-15d7-4ed0-8def-983778fcfea9",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "brand_heart_remove",
+        "props" : {
+          "is_logged_in" : false
+        },
+        "screenId" : "UI 19-A1"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "098d1c01-39af-456c-8aed-f5a5b7a713b4",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "brand_heart_undo",
+        "props" : {
+          "is_logged_in" : false
+        },
+        "screenId" : "UI 19-A4"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "9bd9bec3-008a-419f-87ea-0198c581209f",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "visit_mark",
+        "props" : {
+          "is_logged_in" : false,
+          "source" : "card_pill"
+        },
+        "screenId" : "UI 6-03"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "f43a41cb-047e-4ed5-b2c5-dfcf5db94c82",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "visit_unmark",
+        "props" : {
+          "is_logged_in" : false,
+          "source" : "detail"
+        },
+        "screenId" : "UI 6-03"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "a613ac9f-fbc0-4f68-80bd-e78657b0b77c",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "memo_save",
+        "props" : {
+          "is_logged_in" : false,
+          "len_bucket" : "1-5"
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "9d96f88e-a294-4b2a-8e9e-8a50cdc1be8d",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "memo_delete",
+        "props" : {
+          "is_logged_in" : false
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "5700408b-bd8c-462e-bbff-a93fcd4ab230",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "verdict_prompt_shown",
+        "props" : {
+          "booth_count" : 4,
+          "is_logged_in" : false,
+          "surface" : "M2"
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "a98e83b8-3ea9-457b-aa79-5046845e3f90",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "verdict_pick",
+        "props" : {
+          "is_logged_in" : false,
+          "surface" : "M2",
+          "value" : "good"
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "91c3afa8-d5c6-4c67-be17-94dd045f70db",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "verdict_later",
+        "props" : {
+          "is_logged_in" : false,
+          "surface" : "M3"
+        }
+      }
+    ],
+    "platform" : "ios",
+    "sessionId" : "88d3354f-8732-4161-b538-66c411faea39"
+  },
+  {
+    "anonId" : "a6695261-c8fd-423e-b6f4-3e94301971dc",
+    "appVersion" : "1.0.0",
+    "events" : [
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "85003e8b-5e2a-4c90-9f12-f1537c74bda4",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "verdict_all_done",
+        "props" : {
+          "count" : 4,
+          "is_logged_in" : false
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "7ff1942c-8679-4718-8e73-a54895f98fc1",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "verdict_nothing_left",
+        "props" : {
+          "count" : 0,
+          "is_logged_in" : false
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "55af8cd3-9b8c-4a6f-8bd0-761c65f6f53a",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "ended_fair_entry_shown",
+        "props" : {
+          "is_logged_in" : false,
+          "variant" : "h_b"
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "49f7fa76-da85-4f4c-b83b-03752f427fa6",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "ended_fair_entry_tap",
+        "props" : {
+          "is_logged_in" : false,
+          "variant" : "h_b"
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "addffb5a-f229-4b8a-b3ed-94183ada3eb9",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "romi_sheet_open",
+        "props" : {
+          "height" : "half",
+          "is_logged_in" : false
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "fcb66457-3137-4b60-94a1-e8c28e26a056",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "romi_row_tap",
+        "props" : {
+          "is_logged_in" : false,
+          "row" : "route"
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "08a001ea-3428-4e07-81ee-b7cbbe51d877",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "romi_ask_submit",
+        "props" : {
+          "answer_kind" : "sheet",
+          "has_place" : false,
+          "is_logged_in" : false,
+          "offline" : false
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "20992b85-5409-409a-b2ce-7df2acb00967",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "booth_list_open",
+        "props" : {
+          "is_logged_in" : false
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "1232f1c2-8a51-436d-ace0-3d6d32061583",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "booth_list_category_tap",
+        "props" : {
+          "category_id" : "ceramics",
+          "is_logged_in" : false
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "eeb1209e-8cf0-4de6-8678-7525c1ed00b3",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "romi_pick_shown",
+        "props" : {
+          "booth_ids" : [
+            "b1",
+            "b2"
+          ],
+          "is_logged_in" : false,
+          "reason_kind" : "heart_similar"
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "7283a42a-1a0a-42b8-ac07-3255591f1904",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "romi_pick_feedback",
+        "props" : {
+          "is_logged_in" : false,
+          "value" : "not_for_me"
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "01f1ece0-b0cd-46ee-bfea-418eb15dc54c",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "romi_pick_map_toggle",
+        "props" : {
+          "is_logged_in" : false,
+          "on" : true
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "976db799-0e90-497b-b778-a024dd5d7e73",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "route_start",
+        "props" : {
+          "is_logged_in" : false,
+          "target_booth_id" : "b2"
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "69c905b1-815b-4745-8f5b-c244154660f6",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "nearby_answer",
+        "props" : {
+          "attempt" : 1,
+          "is_logged_in" : false,
+          "result" : "confirmed"
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "63500ea5-06b4-45d2-b281-9e7bf936f1fe",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "route_line_drawn",
+        "props" : {
+          "is_logged_in" : false,
+          "target_booth_id" : "b2"
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "8f302bf1-d4e8-421d-8fb9-3880f11e5ada",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "route_just_go",
+        "props" : {
+          "choice" : "just_go",
+          "is_logged_in" : false,
+          "target_booth_id" : "b2"
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "750be47a-ec41-48ff-b8be-c1db7a7f79b9",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "booth_arrive",
+        "props" : {
+          "is_logged_in" : false,
+          "via" : "arrive_chip"
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "b2bd8203-2579-47ae-aff0-1bc5c41f44a6",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "prefair_view",
+        "props" : {
+          "days_to_open" : 5,
+          "is_logged_in" : false
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "874bf231-f853-44bb-92f6-b87961ec07fd",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "open_day_romi_shown",
+        "props" : {
+          "got_push" : false,
+          "had_heart_before" : true,
+          "is_logged_in" : false
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "62f47d80-0bad-4d95-8fec-ac6b2a036119",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "recap_start",
+        "props" : {
+          "entry" : "romi_sheet",
+          "is_logged_in" : false
+        }
+      }
+    ],
+    "platform" : "ios",
+    "sessionId" : "88d3354f-8732-4161-b538-66c411faea39"
+  },
+  {
+    "anonId" : "a6695261-c8fd-423e-b6f4-3e94301971dc",
+    "appVersion" : "1.0.0",
+    "events" : [
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "46d1bd5d-d242-45c3-80ef-9f90ae8d6989",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "recap_save",
+        "props" : {
+          "answered_question" : true,
+          "is_logged_in" : false,
+          "len_bucket" : "6-20"
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "052a9153-b042-42e0-8037-9a4d4b3ade6c",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "recap_login_choice",
+        "props" : {
+          "choice" : "device_only",
+          "is_logged_in" : false
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "d635b4a7-5566-4c77-b483-71e9e2916a56",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "recap_list_view",
+        "props" : {
+          "count" : 2,
+          "is_logged_in" : false
+        },
+        "screenId" : "UI 12-05"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "601f48c7-fa44-4a4e-8672-73ea1c7b1c63",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "push_ask_shown",
+        "props" : {
+          "is_logged_in" : false,
+          "trigger" : "verdict_done"
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "d9d5cad3-9c3c-4976-a7e9-74f4079b94ad",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "push_ask_answer",
+        "props" : {
+          "answer" : "yes",
+          "is_logged_in" : false
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "0a581510-6b7e-4354-90a0-acad7fdf1821",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "push_os_result",
+        "props" : {
+          "granted" : true,
+          "is_logged_in" : false
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "30b9fd61-3884-4aab-876f-5e5c59690573",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "push_received_open",
+        "props" : {
+          "is_logged_in" : false,
+          "kind" : "brand_listed",
+          "landing" : "brand_detail"
+        }
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "62765393-bcad-44fb-9df5-84acf53edd83",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "push_setting_change",
+        "props" : {
+          "is_logged_in" : false,
+          "kind" : "brand",
+          "on" : false,
+          "os_blocked" : false
+        },
+        "screenId" : "UI 15-01"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "c18e5d66-4a36-432e-a1b6-da3c988f50e0",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "inbox_open",
+        "props" : {
+          "is_logged_in" : false,
+          "value" : true
+        },
+        "screenId" : "UI 2-01"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "2580a4f0-d60e-4958-8855-9fb333fcc602",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "inbox_item_open",
+        "props" : {
+          "is_logged_in" : false,
+          "landing" : "map"
+        },
+        "screenId" : "UI 18-02"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "2086623a-13a2-4bd5-937a-b6555d46a88a",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "heart_list_view",
+        "props" : {
+          "ended_collapsed" : true,
+          "fair_groups" : 2,
+          "is_logged_in" : false
+        },
+        "screenId" : "UI 14-02"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "77ee5fc4-7df7-403a-b3e3-93717d565ca8",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "heart_brand_view",
+        "props" : {
+          "brand_count" : 3,
+          "is_logged_in" : false
+        },
+        "screenId" : "UI 14-10"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "fffe0903-2a15-45d5-9b02-14c2405972e5",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "nickname_change_result",
+        "props" : {
+          "is_logged_in" : false,
+          "ok" : false,
+          "reason" : "duplicate"
+        },
+        "screenId" : "UI 15-03"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "3c9c2692-41d1-4826-9052-d8d1de4345e5",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "map_orientation_set",
+        "props" : {
+          "is_logged_in" : false,
+          "value" : "floorplan"
+        },
+        "screenId" : "UI 15-06"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "dfd303f8-abf3-479b-8602-2eaf621d57b3",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "records_export",
+        "props" : {
+          "is_logged_in" : false,
+          "row_count" : 12
+        },
+        "screenId" : "UI 15-07"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "62d108c3-4669-42b8-b9ef-5c5d8f14677d",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "logout",
+        "props" : {
+          "is_logged_in" : false
+        },
+        "screenId" : "UI 15-09"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "bd6dec13-6fb3-47cc-91e5-4d66939b5dfc",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "account_delete",
+        "props" : {
+          "is_logged_in" : false,
+          "ok" : true
+        },
+        "screenId" : "UI 15-11"
+      },
+      {
+        "clientTs" : "2026-11-20T02:30:42Z",
+        "eventId" : "51392050-d9d4-494b-abcb-afe3041a3911",
+        "exhibitionSlug" : "sif-2026",
+        "name" : "offline_band_shown",
+        "props" : {
+          "has_cached_map" : true,
+          "is_logged_in" : false
+        },
+        "screenId" : "UI 16-04"
+      }
+    ],
+    "platform" : "ios",
+    "sessionId" : "88d3354f-8732-4161-b538-66c411faea39"
+  }
+]

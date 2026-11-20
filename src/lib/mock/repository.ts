@@ -33,6 +33,7 @@ import type {
   AiQueryLog,
   AnalyticsEvent,
   AppEventRow,
+  AppEventBrief,
   PushDevice,
   BrandHeart,
   NewParticipation,
@@ -2233,6 +2234,20 @@ export class MockRepository implements Repository {
         eventId: r.eventId,
       });
     }
+  }
+
+  async listAppEventsSince(sinceIso: string, limit: number): Promise<AppEventBrief[]> {
+    return store()
+      .analytics.filter((a) => a.type === "app" && a.createdAt >= sinceIso)
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+      .slice(0, limit)
+      .map((a) => ({
+        name: a.name ?? "",
+        platform: a.platform ?? "",
+        anonId: a.anonId ?? null,
+        appVersion: a.appVersion ?? null,
+        createdAt: a.createdAt,
+      }));
   }
 
   async _allAnalytics(exhibitionId: string): Promise<AnalyticsEvent[]> {
