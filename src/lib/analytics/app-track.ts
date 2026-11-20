@@ -66,6 +66,13 @@ export const APP_EVENT_NAMES = [
   "nickname_change_result",
   "logout",
   "account_delete",
+  // UI 20 홈과 박람회 전체, 11 끝난 박람회 입구, 16 오프라인 띠. 이름은 iOS AnalyticsTaxonomy와 같다.
+  "ended_fair_entry_shown",
+  "ended_fair_entry_tap",
+  "verdict_pick",
+  "verdict_later",
+  "verdict_all_done",
+  "offline_band_shown",
 ] as const;
 export type AppEventName = (typeof APP_EVENT_NAMES)[number];
 
@@ -109,6 +116,16 @@ export const SCREEN = {
   nickname: "UI 15-03",
   logout: "UI 15-09",
   deleteAccount: "UI 15-11",
+  home: "UI 20-01",
+  homeNoOpen: "UI 2-07",
+  homeLoggedIn: "UI 2-05",
+  fairsAll: "UI 20-02",
+  endedHome: "UI 11-01",
+  homeVerdict: "UI 11-08",
+  myVerdict: "UI 11-10",
+  loginPromptTop: "UI 5-03",
+  offlineMap: "UI 16-01",
+  offlineHome: "UI 16-04",
 } as const;
 export type ScreenId = (typeof SCREEN)[keyof typeof SCREEN];
 

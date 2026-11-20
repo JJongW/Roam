@@ -21,6 +21,8 @@ import {
   type MeFair,
 } from "@/lib/me/view";
 import { useMyRecords } from "./use-my-records";
+import { VerdictAskCard } from "@/components/home/verdict-ask";
+import { useEndedEntry } from "@/components/home/use-ended-entry";
 import {
   Card,
   FairGroupHead,
@@ -41,6 +43,8 @@ export function MyPage({ fairs, today }: { fairs: MeFair[]; today: string }) {
   const authReady = useAuthStore((s) => s.ready);
   const { loading, hearts, visited, heartCount, firstVisit } = useMyRecords(fairs, today);
   const { snack, close, remove } = useHeartRemove(SCREEN.myPage);
+  // 11-10 M6: 끝난 박람회 평가 묻기. 홈 M3과 같은 카드, 같은 "나중에 할게요" 기억.
+  const { ask, hideAsk } = useEndedEntry(fairs, today);
 
   const next = nextFair(fairs, today);
   const nextGroup = next ? hearts.find((g) => g.fair.id === next.id) : undefined;
@@ -105,6 +109,12 @@ export function MyPage({ fairs, today }: { fairs: MeFair[]; today: string }) {
               )}
             </div>
           </div>
+
+          {ask && (
+            <div className="px-v2-x4 pb-v2-x3">
+              <VerdictAskCard group={ask} screen={SCREEN.myVerdict} onHide={hideAsk} />
+            </div>
+          )}
 
           {empty ? (
             <EmptyHearts next={next} today={today} />

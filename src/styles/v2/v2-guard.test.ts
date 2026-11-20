@@ -92,6 +92,15 @@ export const V2_FILES = [
   "src/components/booth-v2/booth-extras.tsx",
   "src/components/booth-v2/visited-list.tsx",
   "src/app/(visitor)/visited/page.tsx",
+  // UI 20 홈과 박람회 전체, 11 끝난 박람회 입구, 16 오프라인 띠
+  "src/app/(visitor)/page.tsx",
+  "src/app/(visitor)/fairs/page.tsx",
+  "src/components/home/fair-row.tsx",
+  "src/components/home/home-body.tsx",
+  "src/components/home/all-fairs.tsx",
+  "src/components/home/hearted-brands.tsx",
+  "src/components/home/verdict-ask.tsx",
+  "src/components/common/offline-band.tsx",
 ];
 
 /** 주석을 지운다 — 설명에 예시 값이 들어 있어도 된다. */

@@ -1,29 +1,15 @@
-import Image from "next/image";
-import Link from "next/link";
-import { ChevronRight } from "lucide-react";
-import { getRepository } from "@/lib/repositories";
-import { EmptyState } from "@/components/common/states";
-import { AccountButton } from "@/components/auth/account-button";
+import { RomiAvatar } from "@/components/v2/romi-avatar";
 import { InboxBell } from "@/components/inbox/inbox-bell";
 import { MyPageLink } from "@/components/me/my-page-link";
 import { LegalLinks } from "@/components/common/legal-links";
 import { LanguageSwitch } from "@/components/i18n/language-switch";
+import { HomeBody } from "@/components/home/home-body";
 import { getI18n } from "@/lib/i18n/server";
 import { getCurrentUser } from "@/lib/api/session";
-import {
-  byStartDate,
-  exhibitionValueProfile,
-  matchExhibition,
-  matchReason,
-  type ExhibitionMatch,
-} from "@/lib/feed/exhibition-match";
-import { exhibitionSignals, type ExhibitionSignals } from "@/lib/exhibition/signals";
 import { todayISO } from "@/lib/exhibition/current";
-import {
-  exhibitionStatus,
-  pickSeriesRepresentative,
-} from "@/lib/exhibition/status";
-import { ExhibitionStatusSection } from "@/components/exhibition/exhibition-status-section";
+import { groupFairs, homeHeadline } from "@/lib/exhibition/fair-groups";
+import { loadFairEntries } from "@/lib/exhibition/fair-entries";
+import { homeCopy } from "@/lib/copy/home";
 
 export const metadata = {
   // 홈 title은 동의 화면 앱 이름("Roam")과 정확히 일치해야 한다(Google OAuth 브랜딩
@@ -31,92 +17,28 @@ export const metadata = {
   title: { absolute: "Roam" },
 };
 
+/**
+ * UI 20-01 홈(Figma 3230:21580, 11-20 Ted).
+ *
+ * 머리는 로미와 한 줄("오늘은 한 곳이 열려 있어요" / "다음 박람회는 12월 4일에 열려요"), 아래는 박람회 줄.
+ * 박람회를 고르면 바로 지도다(지도 먼저, 브랜드 규칙 §4). 옛 홈의 가치 매치 추천("이런 성향이라 추천")은
+ * 지웠다 — 로미는 동행자이고 온보딩 몇 개로 취향을 정하지 않는다(§3, §5).
+ *
+ * 공개 랜딩이다(proxy.ts). 로그인은 마이페이지에서 기억을 이어 갈 때 권한다.
+ */
 export default async function HomePage() {
-  const repo = await getRepository();
-  const { data: rawExhibitions } = await repo.listExhibitions({ limit: 20 });
-  const { t } = await getI18n();
-  // 홈은 공개 랜딩 — 로그인 없이도 열린 전시를 둘러본다(proxy.ts). 미로그인 시
-  // '왜 로그인?' 배너로 기억·연속성을 설명(계정 벽이 아니라 기억 설정).
-  const user = await getCurrentUser();
-
-  // 전시 정렬 — 예전엔 저장소가 준 순서(운영은 id 오름차순)를 그대로 쓰면서 첫 전시에
-  // "네가 고른 관람 성향을 기준으로" 라는 문장을 붙였다. 정렬에 취향이 안 들어갔으므로
-  // 거짓이었다. 이제 실제로 겹치는 가치가 있을 때만 추천이라 부른다.
-  //
-  // 부스를 읽어야 전시의 가치 프로필·신호(부스 수·로미 준비도)가 나오는데(카테고리엔
-  // 전시 링크가 없다), 그 비용은 값어치가 있을 때만 낸다 — 두 단계:
-  //  · 진행 중: 항상 읽는다. 신호는 취향 없는 첫 방문객의 결정 근거다.
-  //  · 예정: 로그인 + 브레인 관심이 있을 때만, 매치(추천·정렬)용으로만. 행이라 신호는 없다.
-  //  · 종료: 읽지 않는다. 행으로만 그려지고 추천에서도 빠진다.
-  // 전시당 읽기는 최대 한 번 — 같은 배열로 매치와 신호를 둘 다 낸다.
-  // 지도에 놓인 부스가 없는 박람회는 흐린 "진행 예정" 줄로만 보이고 눌리지 않는다
-  // (2026-11-20 Ted 결정, lib/exhibition/openable.ts). 추천과 신호 계산에서도 뺀다.
-  const [brain, openIds] = await Promise.all([
-    user ? repo.getUserBrain(user.id) : Promise.resolve(null),
-    repo.openExhibitionIds(rawExhibitions.map((ex) => ex.id)),
+  const [{ t }, user, { entries, fairs, failed }] = await Promise.all([
+    getI18n(),
+    getCurrentUser(),
+    loadFairEntries(),
   ]);
-  const isOpen = (ex: (typeof rawExhibitions)[number]) => openIds.has(ex.id);
-  const notOpenSlugs = rawExhibitions.filter((ex) => !isOpen(ex)).map((ex) => ex.slug);
-  const hasInterest = (brain?.interests.length ?? 0) > 0;
-
   const today = todayISO();
-  // 상태 판정은 목록 순서와 무관하니 정렬 전에 묶어도 안전하다.
-  const statusOf = (ex: (typeof rawExhibitions)[number]) =>
-    exhibitionStatus(ex, today);
-  const matchBySlug = new Map<string, ExhibitionMatch>();
-  const signalsBySlug: Record<string, ExhibitionSignals> = {};
-  await Promise.all(
-    rawExhibitions.map(async (ex) => {
-      const status = statusOf(ex);
-      if (!isOpen(ex)) return;
-      if (status === "ended" || (status === "upcoming" && !hasInterest)) return;
-      const booths = await repo.listBoothsByExhibitionId(ex.id);
-      if (hasInterest) {
-        matchBySlug.set(
-          ex.slug,
-          matchExhibition(brain, exhibitionValueProfile(booths)),
-        );
-      }
-      if (status === "ongoing") {
-        signalsBySlug[ex.slug] = exhibitionSignals(ex, booths, today);
-      }
-    }),
-  );
-
-  let exhibitions = byStartDate(rawExhibitions);
-  if (hasInterest) {
-    // 겹침이 있는 전시를 점수 순으로 앞에, 나머지는 개막 임박 순으로 뒤에.
-    const scored = (ex: (typeof rawExhibitions)[number]) =>
-      matchBySlug.get(ex.slug)?.score ?? 0;
-    exhibitions = [...rawExhibitions].sort(
-      (a, b) => scored(b) - scored(a) || a.startDate.localeCompare(b.startDate),
-    );
-  }
-  const byStatus = (status: "upcoming" | "ongoing" | "ended") =>
-    exhibitions.filter((ex) => statusOf(ex) === status);
-
-  const ongoing = pickSeriesRepresentative(byStatus("ongoing"), "ongoing");
-  const upcoming = pickSeriesRepresentative(byStatus("upcoming"), "upcoming");
-  // 지난 전시는 매치 점수·개막일 순서가 의미 없다 — 최근에 끝난 것부터.
-  const ended = [...pickSeriesRepresentative(byStatus("ended"), "ended")].sort(
-    (a, b) => b.endDate.localeCompare(a.endDate),
-  );
-
-  // "추천"은 진행중·예정 중에서만 — 이미 끝난 전시를 취향 근거로 추천하는 건
-  // 의미가 없다. ongoing을 upcoming보다 먼저 두어 "지금 갈 수 있는 곳"을 우선한다.
-  const top = [...ongoing, ...upcoming].filter(isOpen)[0];
-  const topMatch = top ? matchBySlug.get(top.slug) : undefined;
-  const topReason = topMatch ? matchReason(topMatch.matched) : null;
-  const topReasonText =
-    topReason ??
-    (ongoing.length + upcoming.length === 1 ? t("home.singleReason") : null);
-  const topStatus = top ? exhibitionStatus(top, today) : null;
+  const groups = groupFairs(entries, today);
 
   // 구조화 데이터 — 앱 이름과 목적을 기계가 읽는 표준 경로로도 명시한다. Google OAuth
   // 인증이 "홈페이지의 앱 이름이 동의 화면과 일치하지 않는다"로 반려한 이력이 있어,
-  // 화면 텍스트(h1·소개문)에만 의존하지 않고 여기에도 같은 값을 박아둔다.
-  // 이름은 "Roam" 단독 — alternateName("Roam — Exhibition Navigator")은 폐기됐다.
-  // 이름이 두 가지로 보이면 심사에서 다시 불일치로 읽힌다. docs/brand/04_naming-messaging.md §1.
+  // 화면 텍스트에만 의존하지 않고 여기에도 같은 값을 박아둔다.
+  // 이름은 "Roam" 단독 — docs/brand/04_naming-messaging.md §1.
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
@@ -130,116 +52,32 @@ export default async function HomePage() {
   };
 
   return (
-    <main className="flex-1 pb-safe">
+    <main className="flex flex-1 flex-col bg-v2-bg-layer-default pb-safe font-v2-ui">
       <script
         type="application/ld+json"
         // 값은 위에서 우리가 만든 리터럴이라 사용자 입력이 섞이지 않는다.
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <header className="sticky top-0 z-40 flex h-14 items-center justify-between border-b border-border bg-background/80 px-[var(--spacing-global-gutter)] pt-safe backdrop-blur-xl">
-        <span className="flex items-center gap-1.5 text-lg font-extrabold tracking-tight">
-          <span className="flex size-7 items-center justify-center overflow-hidden rounded-full ring-1 ring-border">
-            <Image
-              src="/logo.svg"
-              alt="Roam"
-              width={28}
-              height={28}
-              className="size-full object-cover"
-              unoptimized
-              priority
-            />
-          </span>
-          Roam
-        </span>
-        {/* UI 18-01A 알림함 종. 로그인한 분만(브랜드 알림은 로그인한 분만 받는다). */}
-        <span className="flex items-center gap-1">
-          {user && <InboxBell />}
-          <MyPageLink />
-          <AccountButton />
-        </span>
+      <header className="flex items-center gap-v2-x2-5 pl-v2-x4 pr-v2-x1-5 pt-safe">
+        <div className="flex min-h-v2-x14 flex-1 items-center gap-v2-x2-5">
+          <RomiAvatar size="md" />
+          <h1 className="text-v2-t7 font-v2-bold tracking-v2-card-title text-v2-fg-neutral">
+            {failed ? homeCopy.homeFailed : homeHeadline(groups)}
+          </h1>
+        </div>
+        {/* 18-01A 알림함 종(로그인한 분만), 마이페이지(웹은 하단 탭 대신 머리에 둔다). */}
+        {user && <InboxBell />}
+        <MyPageLink />
       </header>
 
-      {/* 히어로 — 주목 상위 구간은 전시가 쓴다. 마스코트 애니메이션은 뺐다.
-          미로그인일 땐 **앱 이름과 목적**을 유지한다: Google OAuth 심사가 홈의 앱 이름이
-          동의 화면과 일치하는지 직접 확인하고 크롤러도 여기서 서비스를 읽는다. 크기만 줄인다. */}
-      {user ? (
-        <section className="px-[var(--spacing-global-gutter)] pb-[var(--spacing-component-default)] pt-[var(--spacing-nav-to-title)]">
-          <h1 className="type-body-lg font-bold">{t("home.heroGreeting")}</h1>
-        </section>
-      ) : (
-        <section className="px-[var(--spacing-global-gutter)] pb-[var(--spacing-component-default)] pt-[var(--spacing-nav-to-title)]">
-          <h1 className="text-2xl font-extrabold tracking-tight">Roam</h1>
-          <p className="type-body mt-1 text-muted-foreground">
-            {t("home.tagline")}
-          </p>
-        </section>
-      )}
+      <div className="flex-1 pb-v2-x10 pt-v2-x4">
+        <HomeBody groups={groups} fairs={fairs} today={today} failed={failed} signedIn={!!user} />
+      </div>
 
-      <section className="space-y-5 px-[var(--spacing-global-gutter)] pb-6 pt-2">
-        {exhibitions.length === 0 ? (
-          <EmptyState
-            title={t("home.emptyTitle")}
-            description={t("home.emptyDesc")}
-          />
-        ) : (
-          <>
-            <ExhibitionStatusSection
-              title={t("home.statusOngoing")}
-              status="ongoing"
-              exhibitions={ongoing}
-              recommendedSlug={top?.slug}
-              recommendedLabel={t("home.recommended")}
-              showBadge={topReason !== null}
-              recommendedReason={topStatus === "ongoing" ? topReasonText : null}
-              signalsBySlug={signalsBySlug}
-              notOpenSlugs={notOpenSlugs}
-            />
-            <ExhibitionStatusSection
-              title={t("home.statusUpcoming")}
-              status="upcoming"
-              exhibitions={upcoming}
-              recommendedSlug={top?.slug}
-              recommendedLabel={t("home.recommended")}
-              showBadge={topReason !== null}
-              recommendedReason={
-                topStatus === "upcoming" ? topReasonText : null
-              }
-              notOpenSlugs={notOpenSlugs}
-            />
-            <ExhibitionStatusSection
-              title={t("home.statusEnded")}
-              status="ended"
-              exhibitions={ended}
-              notOpenSlugs={notOpenSlugs}
-            />
-          </>
-        )}
-      </section>
-
-      {/* 미로그인 랜딩 배너 — 계정 벽이 아니라 기억 설정임을 설명 + 로그인 진입. */}
-      {!user && (
-        <div className="px-[var(--spacing-global-gutter)] pb-2">
-          <Link
-            href="/login?next=%2F"
-            className="flex items-center gap-3 rounded-2xl border border-primary/30 bg-primary/5 p-4 press active:bg-accent"
-          >
-            <div className="min-w-0 flex-1">
-              <p className="text-sm font-bold text-primary">
-                {t("home.loginReasonTitle")}
-              </p>
-              <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
-                {t("home.loginReasonBody")}
-              </p>
-            </div>
-            <ChevronRight className="size-5 shrink-0 text-primary" />
-          </Link>
-        </div>
-      )}
-
-      {/* 홈에서 개인정보처리방침·약관으로 가는 길 — Google OAuth 인증의 명시
-          요구사항이다. 링크가 없으면 심사관에겐 없는 문서와 같다. 언어 전환도 여기 —
-          예전엔 첫 진입에 전체화면 게이트로 물었는데 그게 홈페이지를 가렸다. */}
-      <footer className="space-y-3 border-t border-border px-[var(--spacing-global-gutter)] py-6">
+      {/* 앱 이름과 목적, 개인정보처리방침과 약관 링크 — Google OAuth 인증의 명시 요구사항이다.
+          링크가 없으면 심사관에겐 없는 문서와 같다. 언어 전환도 여기. */}
+      <footer className="flex flex-col gap-v2-x3 border-t border-v2-stroke-neutral-muted px-v2-x4 py-v2-x6">
+        <p className="text-v2-t3 font-v2-medium text-v2-fg-neutral-muted">{t("home.tagline")}</p>
         <LegalLinks />
         <LanguageSwitch />
       </footer>

@@ -1,12 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { CloudOff, Loader2, UploadCloud, Wifi } from "lucide-react";
+import { Loader2, UploadCloud, Wifi } from "lucide-react";
 import { useOnline } from "@/lib/hooks/use-online";
 import { useT } from "@/lib/i18n/provider";
 import { useVisitStore } from "@/lib/stores/visit";
 import { syncPendingReactions, useAuthStore } from "@/lib/stores/auth";
 import { cn } from "@/lib/utils";
+import { OfflineBand } from "@/components/common/offline-band";
 
 /** 다시 연결됐다는 말이 남아 있는 시간. */
 const RESTORED_MS = 2400;
@@ -68,7 +69,8 @@ export function ConnectionBanner() {
   // 올릴 게 남았다는 말은 **로그인 사용자에게만** 뜻이 있다 — 비로그인은 애초에
   // 서버에 올릴 자리가 없고, 그 안내는 judgment-bar의 로그인 권유가 따로 한다.
   const showPending = online && Boolean(user) && pending;
-  if (!online) return <Bar tone="offline" icon={<CloudOff className="size-4 shrink-0" aria-hidden />} text={t("offline.bar")} />;
+  // 끊김은 UI 16 O-C 띠(상태바 아래)로 말한다. 아래 띠는 복구와 못 올린 반응만 맡는다.
+  if (!online) return <OfflineBand />;
   if (showPending)
     return (
       <Bar
