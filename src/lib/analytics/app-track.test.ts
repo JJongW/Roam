@@ -25,3 +25,12 @@ describe("웹 이름 붙은 이벤트", () => {
     for (const n of APP_EVENT_NAMES) expect(n).toMatch(/^[a-z][a-z0-9_]*$/);
   });
 });
+
+describe("lenBucket", () => {
+  it("iOS LengthBucket과 같은 경계", async () => {
+    const { lenBucket } = await import("./app-track");
+    expect([0, 1, 5, 6, 20, 21, 100, 101].map(lenBucket)).toEqual([
+      "0", "1-5", "1-5", "6-20", "6-20", "21-100", "21-100", "100+",
+    ]);
+  });
+});

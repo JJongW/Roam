@@ -15,7 +15,21 @@ import {
 } from "lucide-react";
 import { clsx } from "clsx";
 import { ExhibitionMap, type MapHandle } from "@/components/map/exhibition-map";
-import { MapLayerV2 } from "@/components/map-v2/map-layer";
+import { MapLayerV2, type RouteOverlay } from "@/components/map-v2/map-layer";
+import { RomiSheet } from "@/components/map-v2/romi-sheet";
+import { RouteSheet } from "@/components/map-v2/route-sheet";
+import { RecapSheet } from "@/components/map-v2/recap-sheet";
+import { RomiCard, type RomiCardAction } from "@/components/map-v2/romi-card";
+import {
+  heartedOnTheWay,
+  nextStop,
+  routePath,
+  type RouteBooth,
+} from "@/lib/route/guide";
+import type { RoutePt } from "@/lib/aisle-route";
+import { exhibitionStatus } from "@/lib/exhibition/status";
+import { todayISO } from "@/lib/exhibition/current";
+import { useAuthStore } from "@/lib/stores/auth";
 import { BoothCardV2 } from "@/components/map-v2/booth-card";
 import { HallSwitch } from "@/components/map-v2/hall-switch";
 import { RomiAvatar } from "@/components/v2/romi-avatar";
@@ -57,8 +71,24 @@ const AMENITY_ICON: Record<AmenityId, typeof Bath> = {
  * - 찾기 줄 왼쪽에 뒤로 버튼(iOS는 탭바로 돌아가지만 웹은 박람회 홈으로 돌아갈 길이 필요하다).
  * - 넓은 화면(md 이상)은 손가락 확대가 없어 확대, 축소 버튼을 오른쪽 아래에 둔다.
  *   카드는 왼쪽 아래 고정 폭으로 띄워 지도를 덜 가린다.
- * - 동선 추천, 관심 밀도, 길 안내는 없다(원할 때만, UI 9 이후).
+ * - 동선 추천, 관심 밀도는 없다. 길 안내(UI 9)는 원할 때만: 부스 카드 "길 안내"나 로미 시트 칩에서 시작한다.
+ * - 아래 로미 알약을 누르면 로미 시트(UI 7)가 올라온다. 맨 아래 "오늘은 여기까지 할게요"가 회고(UI 12) 입구다.
  */
+
+/** UI 9 길 안내 한 번. 메모리에만 있다(추적 없음, iOS RouteSession과 같은 단계). */
+interface RouteSession {
+  step: "pickTarget" | "askStart" | "drawn" | "direct" | "waiting" | "next";
+  targetId?: string;
+  /** 들렀다 가는 중이면 원래 가려던 곳. */
+  finalId?: string;
+  /** 출발 부스. 없고 drawn이면 출입구에서. */
+  startId?: string;
+  path: RoutePt[];
+  onTheWayId?: string;
+  nextId?: string;
+  source: string;
+  attempt: number;
+}
 export function FairMapScreen({
   detail,
   booths,
@@ -146,6 +176,20 @@ export function FairMapScreen({
   const clearRemembered = useCallback(() => setRemembered(null), []);
   // 6-04 오늘 다녀온 곳: 이 박람회에서 오늘 다녀온 부스가 있을 때만 입구를 보인다.
   const [todayOpen, setTodayOpen] = useState(false);
+  // UI 7 로미 시트, 12 회고, 9 길 안내, 7-05 장소 답(지금 어디, 편의시설)
+  const [sheet, setSheet] = useState<"romi" | "recap" | null>(null);
+  const [route, setRoute] = useState<RouteSession | null>(null);
+  const [arrivedId, setArrivedId] = useState<string | null>(null);
+  const [answer, setAnswer] = useState<{
+    title: string;
+    boothId?: string;
+  } | null>(null);
+  const signedIn = useAuthStore((s) => !!s.user);
+  const isOpenDay = useMemo(
+    () => exhibitionStatus(detail.exhibition, todayISO()) === "ongoing",
+    [detail.exhibition],
+  );
+  const canRoute = isOpenDay && !!floorplan;
   const [snack, setSnack] = useState<SnackbarState | null>(null);
   const closeSnack = useCallback(() => setSnack(null), []);
   const todayBooths = useMemo(() => {
@@ -339,6 +383,284 @@ export function FairMapScreen({
     if (r) mapRef.current?.focusRect(r);
   };
 
+  // ---- UI 9 길 안내(iOS FairMapViewModel+Phase3를 옮김) ----
+  const boothById = useMemo(
+    () => new Map(booths.map((b) => [b.id, b])),
+    [booths],
+  );
+  const rb = (b: BoothListItem): RouteBooth => ({
+    id: b.id,
+    code: b.code,
+    name: b.name,
+  });
+  const heartedBooths = useMemo(
+    () =>
+      booths.filter((b) => b.kind !== "facility" && heartIds.has(b.id)),
+    [booths, heartIds],
+  );
+  const nameOf = (id?: string) => (id ? (boothById.get(id)?.name ?? "") : "");
+  const routeCtx = (screen: (typeof SCREEN)[keyof typeof SCREEN]) => ({
+    screen,
+    exhibitionSlug: slug,
+  });
+
+  const startRoute = (boothId: string | null, source: string) => {
+    track("route_start", {
+      ...routeCtx(SCREEN.map),
+      boothId: boothId ?? undefined,
+      props: { from: source },
+    });
+    setSheet(null);
+    setAnswer(null);
+    setRemembered(null);
+    setArrivedId(null);
+    setSelectedId(null);
+    setRoute({
+      step: boothId ? "askStart" : "pickTarget",
+      targetId: boothId ?? undefined,
+      path: [],
+      source,
+      attempt: 0,
+    });
+  };
+
+  /** 9-02 답으로 선을 한 번 그린다. null은 "잘 모르겠어요"(출입구에서). */
+  const drawRoute = (r: RouteSession, startId: string | null) => {
+    const target = boothById.get(r.targetId ?? "");
+    if (!target || !floorplan) return;
+    const from = startId ? boothById.get(startId) : undefined;
+    const attempt = r.attempt + 1;
+    track("nearby_answer", {
+      ...routeCtx(SCREEN.routeNearby),
+      boothId: startId ?? undefined,
+      props: { result: startId ? "found" : "dont_know", attempt },
+    });
+    const path = routePath(floorplan, from?.code, target.code) ?? [];
+    const exclude = new Set(
+      [startId, r.targetId, r.finalId].filter((x): x is string => !!x),
+    );
+    const stop = heartedOnTheWay(
+      floorplan,
+      path,
+      heartedBooths.map(rb),
+      exclude,
+    );
+    setRoute({
+      ...r,
+      step: "drawn",
+      startId: startId ?? undefined,
+      path,
+      onTheWayId: stop?.id,
+      attempt,
+    });
+    setSelectedId(null);
+    track("route_line_drawn", {
+      ...routeCtx(SCREEN.routeDrawn),
+      boothId: target.id,
+      props: { ok: path.length > 0, count: path.length },
+    });
+    lastFocus.current = null;
+    focusIds([target.id, ...(startId ? [startId] : [])], 0.3, path);
+  };
+
+  const routeStopBy = () => {
+    if (!route?.onTheWayId || !floorplan) return;
+    const stop = boothById.get(route.onTheWayId);
+    if (!stop) return;
+    const from = route.startId ? boothById.get(route.startId) : undefined;
+    const path = routePath(floorplan, from?.code, stop.code) ?? [];
+    track("route_just_go", {
+      ...routeCtx(SCREEN.routeDrawn),
+      boothId: stop.id,
+      props: { choice: "stop_by" },
+    });
+    setRoute({
+      ...route,
+      finalId: route.targetId,
+      targetId: stop.id,
+      path,
+      onTheWayId: undefined,
+      step: "waiting",
+    });
+    focusIds([stop.id, ...(from ? [from.id] : [])], 0.3, path);
+  };
+
+  const routeJustGo = () => {
+    if (!route) return;
+    track("route_just_go", {
+      ...routeCtx(SCREEN.routeDrawn),
+      boothId: route.targetId,
+      props: { choice: "just_go" },
+    });
+    setRoute({ ...route, onTheWayId: undefined, step: "direct" });
+  };
+
+  /** 9-06 도착. 다녀왔어요는 켜지 않는다(도착과 방문 기록은 다른 신호, 브랜드 규칙 §4). */
+  const routeArrived = () => {
+    if (!route?.targetId || !floorplan) return;
+    const target = boothById.get(route.targetId);
+    if (!target) return;
+    track("booth_arrive", {
+      ...routeCtx(SCREEN.routeArrived),
+      boothId: target.id,
+      props: { from: route.source },
+    });
+    setArrivedId(target.id);
+    setSelectedId(target.id);
+    const pool = heartedBooths.filter((b) => !visitedIds.has(b.id)).map(rb);
+    const next = route.finalId ?? nextStop(floorplan, rb(target), pool)?.id;
+    setRoute(
+      next
+        ? {
+            ...route,
+            step: "next",
+            startId: target.id,
+            nextId: next,
+            finalId: undefined,
+            path: [],
+            onTheWayId: undefined,
+          }
+        : null,
+    );
+  };
+
+  const routeGoNext = () => {
+    if (!route?.nextId) return;
+    setArrivedId(null);
+    drawRoute(
+      {
+        step: "askStart",
+        targetId: route.nextId,
+        startId: route.startId,
+        path: [],
+        source: "next",
+        attempt: 0,
+      },
+      route.startId ?? null,
+    );
+  };
+
+  const endRoute = () => {
+    if (route)
+      track("map_control", {
+        ...routeCtx(SCREEN.routeDrawn),
+        props: { control: "route_end" },
+      });
+    setRoute(null);
+  };
+
+  const routeOverlay: RouteOverlay | null = (() => {
+    if (route && ["drawn", "direct", "waiting"].includes(route.step)) {
+      const s = route.startId ? boothById.get(route.startId) : undefined;
+      return {
+        path: route.path,
+        targetId: route.targetId,
+        // 출입구에서 그리면 출입구 표식이 이미 있어 이름표를 겹쳐 달지 않는다.
+        startLabel: route.path.length && s ? label.startFront(s.name) : undefined,
+      };
+    }
+    if (answer?.boothId) return { path: [], targetId: answer.boothId };
+    return null;
+  })();
+
+  const routeCard = (() => {
+    if (!route) return null;
+    const target = nameOf(route.targetId);
+    const end: RomiCardAction = { label: label.endGuide, onClick: endRoute };
+    const other: RomiCardAction = {
+      label: label.otherBoothFront,
+      onClick: () => setRoute({ ...route, step: "askStart" }),
+    };
+    const arrived: RomiCardAction = {
+      label: label.arrived,
+      primary: true,
+      onClick: routeArrived,
+    };
+    switch (route.step) {
+      case "drawn": {
+        const title = !route.path.length
+          ? romi.routeOnlyPlace(target)
+          : route.startId
+            ? romi.routeDrawn(target)
+            : romi.routeFromEntrance(target);
+        if (route.onTheWayId)
+          return (
+            <RomiCard
+              title={title}
+              sub={romi.routeOnTheWay(nameOf(route.onTheWayId))}
+              actions={[
+                { label: label.stopBy, primary: true, onClick: routeStopBy },
+                { label: label.justGo, onClick: routeJustGo },
+              ]}
+              trailing={end}
+            />
+          );
+        return (
+          <RomiCard
+            title={title}
+            sub={romi.routeArriveAsk}
+            actions={[arrived, other]}
+            trailing={end}
+          />
+        );
+      }
+      case "direct":
+        return (
+          <RomiCard
+            title={romi.routeDirect(target)}
+            sub={romi.routeReaskHint}
+            actions={[arrived, other]}
+            trailing={end}
+          />
+        );
+      case "waiting":
+        return (
+          <RomiCard
+            title={romi.routeDrawn(target)}
+            sub={romi.routeArriveAsk}
+            actions={[arrived, other]}
+            trailing={end}
+          />
+        );
+      case "next":
+        return (
+          <RomiCard
+            title={romi.routeNextAsk(nameOf(route.nextId))}
+            sub={romi.routeNextSkip}
+            actions={[
+              { label: label.goTogether, primary: true, onClick: routeGoNext },
+              { label: label.noThanks, onClick: endRoute },
+            ]}
+          />
+        );
+      default:
+        return null;
+    }
+  })();
+
+  // 편의시설 칩과 로미 시트 칩이 같은 동작을 한다(가장 가까운 한 곳을 비춘다).
+  const pickAmenity = (next: AmenityId | null) => {
+    setAmenity(next);
+    if (next)
+      focusIds(
+        amenityMatches.get(next) ?? [],
+        0.3,
+        nearestFirst(amenityPoints.get(next) ?? []),
+        { atFit: true },
+      );
+  };
+
+  const fairStats = useMemo(() => {
+    const here = booths.filter((b) => b.kind !== "facility");
+    return {
+      visited: here.filter((b) => visitedIds.has(b.id)).length,
+      good: here.filter(
+        (b) => visitedIds.has(b.id) && records[b.id]?.verdict === "good",
+      ).length,
+      memos: here.filter((b) => !!records[b.id]?.memo?.trim()).length,
+    };
+  }, [booths, visitedIds, records]);
+
   const romiLine = hall
     ? romi.inHall(hall)
     : hallNames.length === 1
@@ -375,6 +697,7 @@ export function FairMapScreen({
             heartIds={heartIds}
             visitedIds={visitedIds}
             highlightIds={highlightIds}
+            route={routeOverlay}
           />
         )}
       />
@@ -446,15 +769,8 @@ export function FairMapScreen({
                     type="button"
                     aria-pressed={on}
                     onClick={() => {
-                      const next = on ? null : a.id;
-                      setAmenity(next);
-                      if (next)
-                        focusIds(
-                          amenityMatches.get(next) ?? [],
-                          0.3,
-                          nearestFirst(amenityPoints.get(next) ?? []),
-                          { atFit: true },
-                        );
+                      setAnswer(null);
+                      pickAmenity(on ? null : a.id);
                     }}
                     className={clsx(
                       "flex shrink-0 items-center gap-v2-x1 rounded-v2-pill border px-v2-x2-5 py-v2-x1-5 text-v2-t4 font-v2-medium shadow-v2-s2",
@@ -574,6 +890,18 @@ export function FairMapScreen({
               }}
               key={selected.id}
               booth={selected}
+              onRoute={
+                canRoute && selected.code
+                  ? () => startRoute(selected.id, "booth_card")
+                  : undefined
+              }
+              arrivedLine={
+                arrivedId === selected.id
+                  ? system.arrivedLine(
+                      label.hallNumber(hallOf(selected), selected.code),
+                    )
+                  : undefined
+              }
               hallName={hallOf(selected)}
               categories={[catById.get(selected.categoryId)].filter(
                 (c): c is NonNullable<typeof c> => !!c,
@@ -581,14 +909,42 @@ export function FairMapScreen({
               exhibitionSlug={slug}
               className="w-full pb-v2-x2"
             />
+          ) : routeCard ? (
+            <div className="flex w-full flex-col pb-v2-x2">{routeCard}</div>
+          ) : answer ? (
+            <div className="flex w-full flex-col pb-v2-x2">
+              <RomiCard
+                title={answer.title}
+                trailing={{
+                  label: label.close,
+                  onClick: () => {
+                    setAnswer(null);
+                    setAmenity(null);
+                  },
+                }}
+              />
+            </div>
           ) : (
             <div className="flex w-full flex-col items-center gap-v2-x2 pb-v2-x2">
               <Snackbar state={snack} onClose={closeSnack} className="w-full" />
               <div className="flex w-full items-center justify-center gap-v2-x2">
-                <p className="pointer-events-auto flex items-center gap-v2-x2 rounded-v2-pill border border-v2-stroke-neutral-muted bg-v2-bg-layer-floating py-v2-x1 pl-v2-x1 pr-v2-x4 text-v2-t4 font-v2-medium text-v2-fg-neutral shadow-v2-s2">
+                <button
+                  type="button"
+                  aria-haspopup="dialog"
+                  aria-label={`${romiLine}, ${label.romiSheet}`}
+                  onClick={() => {
+                    track("romi_sheet_open", {
+                      screen: SCREEN.map,
+                      exhibitionSlug: slug,
+                      props: { from: "map_pill" },
+                    });
+                    setSheet("romi");
+                  }}
+                  className="pointer-events-auto flex items-center gap-v2-x2 rounded-v2-pill border border-v2-stroke-neutral-muted bg-v2-bg-layer-floating py-v2-x1 pl-v2-x1 pr-v2-x4 text-v2-t4 font-v2-medium text-v2-fg-neutral shadow-v2-s2 active:bg-v2-bg-layer-floating-pressed"
+                >
                   <RomiAvatar size="sm" className="shadow-v2-s1" />
                   {romiLine}
-                </p>
+                </button>
                 {todayBooths.length > 0 && (
                   <button
                     type="button"
@@ -609,6 +965,68 @@ export function FairMapScreen({
           exhibitionSlug={slug}
           onClose={() => setTodayOpen(false)}
           show={(x) => setSnack({ ...x, key: Date.now() })}
+        />
+      )}
+      {sheet === "romi" && (
+        <RomiSheet
+          booths={booths}
+          records={hydrated ? records : {}}
+          hallOf={hallOf}
+          exhibitionSlug={slug}
+          isOpenDay={isOpenDay}
+          canRoute={canRoute}
+          facilities={amenityIds
+            .filter((a) => ["toilet", "cafe", "restaurant"].includes(a.id))
+            .map((a) => ({ id: a.id, title: a.title }))}
+          onRoute={(id) => startRoute(id, "romi_sheet")}
+          onFacility={(id) => {
+            setSheet(null);
+            setSelectedId(null);
+            pickAmenity(id);
+            const title = AMENITIES.find((a) => a.id === id)?.title ?? "";
+            setAnswer({ title: romi.facilityMarked(title) });
+          }}
+          onWhereFound={(b) => {
+            setSheet(null);
+            setSelectedId(null);
+            setAmenity(null);
+            setAnswer({
+              title: romi.whereFound(
+                b.name,
+                label.hallNumber(hallOf(b), b.code),
+              ),
+              boothId: b.id,
+            });
+            focusIds([b.id], 2.5);
+          }}
+          onDoneForToday={() => setSheet("recap")}
+          onClose={() => setSheet(null)}
+        />
+      )}
+      {sheet === "recap" && (
+        <RecapSheet
+          slug={slug}
+          fairName={detail.exhibition.name}
+          stats={fairStats}
+          signedIn={signedIn}
+          onClose={() => setSheet(null)}
+        />
+      )}
+      {route && (route.step === "pickTarget" || route.step === "askStart") && (
+        <RouteSheet
+          key={route.step}
+          step={route.step}
+          booths={booths}
+          records={hydrated ? records : {}}
+          floorplan={floorplan}
+          hallOf={hallOf}
+          targetId={route.targetId}
+          exhibitionSlug={slug}
+          onPickTarget={(id) =>
+            setRoute({ ...route, targetId: id, step: "askStart" })
+          }
+          onPickStart={(id) => drawRoute(route, id)}
+          onClose={() => setRoute(null)}
         />
       )}
     </div>
