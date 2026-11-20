@@ -25,8 +25,8 @@ export const entryCopy = {
   knownRowSub: "오늘 고르신 답이에요. 언제든 바꿀 수 있어요.",
   knownBody: "직접 고르고 남기신 것만 보여요. 언제든 바꿀 수 있어요.",
   knownNote: "둘러본 시간이나 지나간 길로 취향을 짐작하지 않아요.",
-  pickedMood: "고르신 분위기",
-  /** 1-07 고르신 분위기 줄: 고르신 사진의 부스 이름(Figma는 분위기 낱말이지만 웹은 부스 사진을 고른다). */
+  pickedMood: "고르신 사진",
+  /** 1-07 고르신 사진 줄: 고르신 사진의 부스 이름. Figma는 "분위기" 낱말이지만 웹은 부스 사진을 고르므로 "분위기"라 부르지 않는다(브랜드 검토, §2 §5). */
   pickedPhotosOf: (names: string) => `${names} 사진`,
   notPicked: "고르신 사진은 없어요",
   today: "오늘",
@@ -50,9 +50,12 @@ export const entryCopy = {
   /** 8-06 */
   picksListOnly: "제가 고른 곳은 목록에 담아 뒀어요",
   picksListOnlyBody: "지도에는 하트 남긴 곳만 보여요.",
+  /** 하트가 하나도 없을 때(37-B: 남긴 게 없으면 하트 얘기를 빼요) */
+  picksListOnlyBodyNoHearts: "지도에서 켜면 고른 곳이 밝게 보여요.",
   /** 8-07 */
-  picksOnMap: "제가 고른 곳을 지도에 켰어요",
+  picksOnMap: "제가 고른 곳도 지도에 보여 드려요",
   picksOnMapBody: "밝은 곳 중 하트가 없는 곳이에요. 오늘만 켜 둘게요.",
+  picksOnMapBodyNoHearts: "밝은 곳이 제가 고른 곳이에요. 오늘만 켜 둘게요.",
   listView: "목록으로 보기",
   turnOnMap: "지도에 켜기",
   turnOff: "끄기",

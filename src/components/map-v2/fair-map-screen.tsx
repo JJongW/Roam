@@ -1088,7 +1088,7 @@ export function FairMapScreen({
     // 8-07 고른 곳을 지도에 켰을 때. 끄면 지도엔 다시 하트만.
     <RomiCard
       title={entryCopy.picksOnMap}
-      sub={entryCopy.picksOnMapBody}
+      sub={heartIds.size > 0 ? entryCopy.picksOnMapBody : entryCopy.picksOnMapBodyNoHearts}
       actions={[{ label: entryCopy.listView, onClick: openPicksList }]}
       trailing={{ label: entryCopy.turnOff, onClick: () => setPicksOnMap(false) }}
     />
@@ -1096,7 +1096,7 @@ export function FairMapScreen({
     // 8-06 고른 곳은 목록에만(K-C). 지도엔 하트만 보인다.
     <RomiCard
       title={entryCopy.picksListOnly}
-      sub={entryCopy.picksListOnlyBody}
+      sub={heartIds.size > 0 ? entryCopy.picksListOnlyBody : entryCopy.picksListOnlyBodyNoHearts}
       actions={[
         { label: entryCopy.listView, onClick: openPicksList },
         { label: entryCopy.turnOnMap, onClick: () => setPicksOnMap(true) },

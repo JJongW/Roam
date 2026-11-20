@@ -166,7 +166,7 @@ export function BoothListScreen({
                 <div className="flex items-center gap-v2-x2-5 rounded-v2-r3 bg-v2-bg-neutral-weak p-v2-x3">
                   <RomiAvatar size="md" />
                   <p className="min-w-0 flex-1 text-v2-t4 font-v2-medium">{entryCopy.picksHead}</p>
-                  {/* 8-05 답 바꾸기: 웹에서 바꿀 수 있는 답은 1-07 제가 알고 있는 것(고르신 분위기, 오늘)이다. */}
+                  {/* 8-05 답 바꾸기: 웹에서 바꿀 수 있는 답은 1-07 제가 알고 있는 것(고르신 사진, 오늘)이다. */}
                   <Link
                     href={`${mapHref}?romi=known`}
                     onClick={() =>
