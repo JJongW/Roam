@@ -17,3 +17,24 @@ describe("iyeyo", () => {
     expect(hasFinalConsonant("")).toBe(false);
   });
 });
+
+describe("euroRo", () => {
+  it("받침 없거나 ㄹ이면 로, 나머지는 으로", async () => {
+    const { euroRo } = await import("./josa");
+    expect(euroRo("나무")).toBe("로");
+    expect(euroRo("돌과풀")).toBe("로");
+    expect(euroRo("꽃잠")).toBe("으로");
+    expect(euroRo("A13")).toBe("으로");
+    expect(euroRo("B1")).toBe("로");
+    expect(euroRo("Hall")).toBe("로");
+  });
+});
+
+describe("iGa", () => {
+  it("받침이 있으면 이, 없으면 가", async () => {
+    const { iGa } = await import("./josa");
+    expect(iGa("새해준비상점 2026")).toBe("이");
+    expect(iGa("페어")).toBe("가");
+    expect(iGa("꽃잠")).toBe("이");
+  });
+});

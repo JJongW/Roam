@@ -75,6 +75,8 @@ export function CompanionBar() {
   // 전시 안에 들어와야 동행 맥락이 생긴다 — 홈(전시 목록)·로그인·지도(자체 UI)엔 숨김.
   if (pathname === "/" || pathname.startsWith("/login")) return null;
   if (pathname.endsWith("/map")) return null;
+  // 마이페이지와 설정(UI 14, 15), 알림함(UI 18)은 화면 안에 로미 줄과 아래 붙은 버튼, 시트가 있다. 겹치지 않게 숨긴다.
+  if (pathname === "/me" || pathname.startsWith("/me/") || pathname === "/inbox") return null;
 
   return (
     <>

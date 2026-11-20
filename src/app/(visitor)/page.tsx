@@ -4,6 +4,8 @@ import { ChevronRight } from "lucide-react";
 import { getRepository } from "@/lib/repositories";
 import { EmptyState } from "@/components/common/states";
 import { AccountButton } from "@/components/auth/account-button";
+import { InboxBell } from "@/components/inbox/inbox-bell";
+import { MyPageLink } from "@/components/me/my-page-link";
 import { LegalLinks } from "@/components/common/legal-links";
 import { LanguageSwitch } from "@/components/i18n/language-switch";
 import { getI18n } from "@/lib/i18n/server";
@@ -149,7 +151,12 @@ export default async function HomePage() {
           </span>
           Roam
         </span>
-        <AccountButton />
+        {/* UI 18-01A 알림함 종. 로그인한 분만(브랜드 알림은 로그인한 분만 받는다). */}
+        <span className="flex items-center gap-1">
+          {user && <InboxBell />}
+          <MyPageLink />
+          <AccountButton />
+        </span>
       </header>
 
       {/* 히어로 — 주목 상위 구간은 전시가 쓴다. 마스코트 애니메이션은 뺐다.

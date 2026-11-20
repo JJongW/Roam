@@ -1,24 +1,23 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import Link from "next/link";
 import { Check, ChevronRight } from "lucide-react";
 import { BackButton } from "@/components/v2/back-button";
 import { RomiAvatar } from "@/components/v2/romi-avatar";
-import { api } from "@/lib/api/client";
 import {
   isVisited,
   useVisitStore,
   type VerdictValue,
 } from "@/lib/stores/visit";
 import { useHydrated } from "@/lib/hooks/use-hydrated";
-import { FLOORPLANS, type Floorplan } from "@/lib/floorplans";
+import { FLOORPLANS } from "@/lib/floorplans";
+import { MiniMap } from "@/components/booth-v2/mini-map";
 import { floorplanHallOf } from "@/lib/floorplan/hall-of";
 import { dayKo, label, system } from "@/lib/copy/v1";
 import { SCREEN, track } from "@/lib/analytics/app-track";
-import { V2_PX } from "@/styles/v2/lengths.generated";
-import { useAuthStore } from "@/lib/stores/auth";
-import type { BoothDetail, NoteWithContext } from "@/lib/types";
+import { useBoothMeta } from "@/lib/me/use-booth-meta";
+import { readRecap } from "@/lib/recap/visit-memory";
 
 export interface FairInfo {
   id: string;
@@ -35,8 +34,6 @@ interface Row {
   verdict?: VerdictValue;
   visitedAt?: string;
 }
-
-const C = (name: string) => `var(--roam-v2-color-${name})`;
 
 /**
  * UI 6-10 "다녀왔어요" 목록(Figma 3003:9490). 박람회별로 묶어 작은 지도(다녀온 칸만 진하게)와 부스 줄.
@@ -55,55 +52,7 @@ export function VisitedList({ fairs }: { fairs: FairInfo[] }) {
         : [],
     [records, hydrated],
   );
-  const idsKey = ids.slice().sort().join(",");
-  const authReady = useAuthStore((s) => s.ready);
-  const signedIn = useAuthStore((s) => !!s.user);
-  const [meta, setMeta] = useState<
-    Record<string, { name: string; code?: string; exhibitionId: string } | null>
-  >({});
-
-  useEffect(() => {
-    if (!idsKey || !authReady) return;
-    let alive = true;
-    (async () => {
-      const out: typeof meta = {};
-      if (signedIn) {
-        const notes = await api
-          .get<{ data: NoteWithContext[] }>("/api/me/notes?expand=booth")
-          .then((r) => r.data)
-          .catch(() => [] as NoteWithContext[]);
-        for (const n of notes) {
-          if (n.booth && n.exhibition)
-            out[n.boothId] = {
-              name: n.booth.name,
-              code: n.booth.code,
-              exhibitionId: n.exhibition.id,
-            };
-        }
-      }
-      const missing = idsKey.split(",").filter((id) => !(id in out));
-      for (let i = 0; i < missing.length; i += 6) {
-        await Promise.all(
-          missing.slice(i, i + 6).map(async (id) => {
-            const d = await api
-              .get<BoothDetail>(`/api/booths/${id}`)
-              .catch(() => null);
-            out[id] = d
-              ? {
-                  name: d.booth.name,
-                  code: d.booth.code,
-                  exhibitionId: d.booth.exhibitionId,
-                }
-              : null;
-          }),
-        );
-      }
-      if (alive) setMeta(out);
-    })();
-    return () => {
-      alive = false;
-    };
-  }, [idsKey, authReady, signedIn]);
+  const meta = useBoothMeta(ids);
 
   const loading =
     !hydrated || (ids.length > 0 && ids.some((id) => !(id in meta)));
@@ -202,6 +151,7 @@ export function VisitedList({ fairs }: { fairs: FairInfo[] }) {
             ]
               .filter((h) => !fair!.venue.includes(h))
               .join(", ");
+            const recap = readRecap(fair!.slug);
             const first = rows
               .map((r) => r.visitedAt)
               .filter(Boolean)
@@ -209,9 +159,11 @@ export function VisitedList({ fairs }: { fairs: FairInfo[] }) {
             return (
               <section
                 key={fair!.id}
-                className="flex flex-col gap-v2-x3 overflow-hidden rounded-v2-r4 border border-v2-stroke-neutral-muted bg-v2-bg-layer-floating pb-v2-x2 pt-v2-x4"
+                id={fair!.slug}
+                className="flex scroll-mt-v2-x4 flex-col gap-v2-x3 overflow-hidden rounded-v2-r4 border border-v2-stroke-neutral-muted bg-v2-bg-layer-floating pb-v2-x2 pt-v2-x4"
               >
                 {fp && (
+                  <div className="px-v2-x4">
                   <MiniMap
                     floorplan={fp}
                     codes={
@@ -220,6 +172,7 @@ export function VisitedList({ fairs }: { fairs: FairInfo[] }) {
                       )
                     }
                   />
+                  </div>
                 )}
                 <div className="flex flex-col gap-v2-x0-5 px-v2-x4 font-v2-medium">
                   <h2 className="text-v2-t5 text-v2-fg-neutral">
@@ -234,6 +187,20 @@ export function VisitedList({ fairs }: { fairs: FairInfo[] }) {
                       : fair!.venue}
                   </p>
                 </div>
+                {recap?.text && (
+                  // 12-05(40-C) 그날 쓰신 말. 고치지 않고 그대로, 회색 따옴표 글과 쓴 날.
+                  // 글은 이 브라우저에만 있다(서버에 글 칸이 없다). "다음 박람회에도 나와요"는 그 API가 없어 아직 없다.
+                  <figure className="mx-v2-x4 flex flex-col gap-v2-x1 border-b border-v2-stroke-neutral-muted pb-v2-x3">
+                    <blockquote className="whitespace-pre-line text-v2-t5 font-v2-medium text-v2-fg-neutral-muted">
+                      “{recap.text}”
+                    </blockquote>
+                    {recap.date && (
+                      <figcaption className="text-v2-t3 font-v2-medium text-v2-fg-neutral-subtle">
+                        {system.writtenOn(dayKo(recap.date))}
+                      </figcaption>
+                    )}
+                  </figure>
+                )}
                 <ul>
                   {rows.map((r) => (
                     <li key={r.boothId}>
@@ -278,93 +245,6 @@ export function VisitedList({ fairs }: { fairs: FairInfo[] }) {
           })
         )}
       </div>
-    </div>
-  );
-}
-
-/** 작은 지도(Figma 3045:18454 홀 벽 + UI/지도/작은 다녀온 칸 3003:9489). 다녀온 칸이 든 홀만 잘라 그린다. */
-function MiniMap({
-  floorplan,
-  codes,
-}: {
-  floorplan: Floorplan;
-  codes: Set<string>;
-}) {
-  const visited = floorplan.booths.filter((b) => codes.has(b.code));
-  if (visited.length === 0) return null;
-  const halls = floorplan.halls.filter((h) =>
-    visited.some(
-      (b) => b.x >= h.x && b.x <= h.x + h.w && b.y >= h.y && b.y <= h.y + h.h,
-    ),
-  );
-  const hall = halls.length
-    ? {
-        x: Math.min(...halls.map((h) => h.x)),
-        y: Math.min(...halls.map((h) => h.y)),
-        x1: Math.max(...halls.map((h) => h.x + h.w)),
-        y1: Math.max(...halls.map((h) => h.y + h.h)),
-      }
-    : { x: 0, y: 0, x1: floorplan.width, y1: floorplan.height };
-  const cellH = Math.min(...visited.map((b) => Math.min(b.w, b.h)));
-  // 다녀온 칸 둘레만 잘라 그린다(이웃 칸 몇 줄과 함께). 홀이 커도 칸이 점이 되지 않게. 홀 밖으로는 넘지 않는다.
-  const pad = cellH * 4;
-  let box = {
-    x: Math.min(...visited.map((b) => b.x - b.w / 2)) - pad,
-    y: Math.min(...visited.map((b) => b.y - b.h / 2)) - pad,
-    x1: Math.max(...visited.map((b) => b.x + b.w / 2)) + pad,
-    y1: Math.max(...visited.map((b) => b.y + b.h / 2)) + pad,
-  };
-  // 카드 폭에 맞게 가로가 세로의 두 배쯤 되도록 넓힌다.
-  const want = (box.y1 - box.y) * 2 - (box.x1 - box.x);
-  if (want > 0) box = { ...box, x: box.x - want / 2, x1: box.x1 + want / 2 };
-  box = {
-    x: Math.max(hall.x, box.x),
-    y: Math.max(hall.y, box.y),
-    x1: Math.min(hall.x1, box.x1),
-    y1: Math.min(hall.y1, box.y1),
-  };
-  return (
-    <div className="px-v2-x4">
-      <svg
-        aria-hidden
-        viewBox={`${box.x} ${box.y} ${box.x1 - box.x} ${box.y1 - box.y}`}
-        className="block w-full rounded-v2-r1 border-2 border-v2-stroke-neutral-weak bg-v2-bg-layer-default"
-      >
-        {floorplan.booths.map((b) => {
-          const on = codes.has(b.code);
-          return (
-            <g
-              key={b.code}
-              transform={
-                b.rotate ? `rotate(${b.rotate} ${b.x} ${b.y})` : undefined
-              }
-            >
-              <rect
-                x={b.x - b.w / 2 + 2}
-                y={b.y - b.h / 2 + 2}
-                width={Math.max(4, b.w - 4)}
-                height={Math.max(4, b.h - 4)}
-                rx={V2_PX["radius-r1"]}
-                fill={on ? C("bg-neutral-solid") : C("map-booth")}
-                stroke={on ? "none" : C("stroke-neutral-weak")}
-              />
-              {on && (
-                <text
-                  x={b.x}
-                  y={b.y}
-                  fontSize={cellH * 0.35}
-                  textAnchor="middle"
-                  dominantBaseline="central"
-                  fill={C("fg-neutral-inverted")}
-                  className="font-v2-ui font-v2-regular"
-                >
-                  {b.code}
-                </text>
-              )}
-            </g>
-          );
-        })}
-      </svg>
     </div>
   );
 }
