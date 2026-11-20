@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { clsx } from "clsx";
 import { RomiAvatar } from "@/components/v2/romi-avatar";
@@ -8,8 +10,9 @@ import { VisitedPill } from "@/components/v2/visited-pill";
 import { CategoryChip } from "@/components/v2/category-chip";
 import { Snackbar } from "@/components/v2/snackbar";
 import { useBoothSignals } from "@/components/booth-v2/booth-actions";
-import { label } from "@/lib/copy/v1";
-import { SCREEN } from "@/lib/analytics/app-track";
+import { label, system } from "@/lib/copy/v1";
+import { SCREEN, track } from "@/lib/analytics/app-track";
+import { AB, abVariant } from "@/lib/ab/variant";
 import type { BoothListItem, Category } from "@/lib/types";
 import type { BoothRecord } from "@/lib/stores/visit";
 
@@ -51,11 +54,64 @@ export function BoothCardV2({
     onVisitMarked,
   });
   const where = label.hallNumber(hallName, booth.code);
+  // 5-02 / 5-03 로그인 제안 자리 A/B(11-11 Ted, 위 선호). 기기마다 한쪽으로 고정하고 로그인 탭 비율로 고른다.
+  // 제안을 띄우는 일은 useBoothSignals(상세와 같이 쓰는 파일)가 맡고, 여기서는 자리와 기록만 정한다.
+  const [position, setPosition] = useState<"top" | "bottom">("bottom");
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setPosition(abVariant(AB.loginPromptPosition.key, AB.loginPromptPosition.variants));
+  }, []);
+  const isLoginPrompt = s.snack?.message === system.loginPrompt;
+  const loginScreen = position === "top" ? SCREEN.loginPromptTop : SCREEN.boothCard;
+  useEffect(() => {
+    if (!isLoginPrompt) return;
+    track("login_prompt_shown", {
+      screen: loginScreen,
+      exhibitionSlug,
+      boothId: booth.id,
+      props: { variant: position, source: "heart_snackbar" },
+    });
+    // 한 번 뜰 때 한 번
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [s.snack?.key, isLoginPrompt]);
+  const snack = useMemo(
+    () =>
+      isLoginPrompt && s.snack
+        ? {
+            ...s.snack,
+            onAction: () => {
+              track("login_prompt_tap", {
+                screen: loginScreen,
+                exhibitionSlug,
+                boothId: booth.id,
+                props: { variant: position, source: "heart_snackbar" },
+              });
+              s.snack?.onAction?.();
+            },
+          }
+        : s.snack,
+    [isLoginPrompt, s.snack, loginScreen, exhibitionSlug, booth.id, position],
+  );
   return (
     <div
       className={clsx("pointer-events-none flex flex-col gap-v2-x2", className)}
     >
-      <Snackbar state={s.snack} onClose={s.closeSnack} />
+      {isLoginPrompt && position === "top" ? (
+        // 5-03: 화면 맨 위, 찾기 줄 자리에 띄운다(Figma 2995:3234). 카드는 지도 아래 쌓임 안에 있어
+        // 찾기 줄 밑으로 깔리므로 body로 옮겨 그린다.
+        createPortal(
+          <div className="pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center px-v2-x4 pt-safe">
+            <Snackbar
+              state={snack}
+              onClose={s.closeSnack}
+              className="mt-v2-x1 w-full max-w-[var(--roam-v2-size-content-max-width)]"
+            />
+          </div>,
+          document.body,
+        )
+      ) : (
+        <Snackbar state={snack} onClose={s.closeSnack} />
+      )}
       <section
         aria-label={booth.name}
         className="pointer-events-auto relative mt-v2-x5 flex flex-col gap-v2-x3 rounded-[var(--roam-v2-trial-radius-card-1)] border border-v2-stroke-neutral-muted bg-v2-bg-layer-floating p-v2-x4 pt-v2-x6 shadow-v2-s2"
