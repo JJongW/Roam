@@ -1,0 +1,14 @@
+{
+  "version": "brand-fix.v1",
+  "exhibitionSlug": "newyear-store-2026",
+  "note": "2026-11-20 Ted 결정. ny-200 fabric이 주최 측 사이트 목록에서 빠져(11-16 CSV, 11-19 대조) 이 행사 참가 사실만 지운다. 브랜드는 둔다",
+  "ops": [
+    {
+      "op": "removeParticipation",
+      "key": "ny-200",
+      "exhibitorId": "exr_1cdegaremwa3huom",
+      "name": "fabric",
+      "why": "주최 측 사이트 브랜드 목록에서 빠짐(2026-11-16 CSV와 2026-11-19 대조 모두 없음)"
+    }
+  ]
+}
