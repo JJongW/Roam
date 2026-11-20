@@ -273,6 +273,14 @@
   .pt-safe {
     padding-top: max(env(safe-area-inset-top), 0.5rem);
   }
+  /* UI 16 오프라인 띠(O-C, components/common/offline-band.tsx)는 상태바 아래에 붙는다. 띠가 떠 있는
+     동안 맨 위 바들(pt-safe)을 띠 높이만큼 내려 찾기 줄과 머리를 덮지 않게 한다. */
+  .offline-band {
+    padding-top: env(safe-area-inset-top);
+  }
+  html[data-offline] .pt-safe {
+    padding-top: calc(max(env(safe-area-inset-top), 0.5rem) + var(--roam-v2-spacing-x6));
+  }
   .tabular {
     font-variant-numeric: tabular-nums;
   }
