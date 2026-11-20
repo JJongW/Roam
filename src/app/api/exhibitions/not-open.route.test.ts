@@ -46,6 +46,7 @@ beforeEach(async () => {
     name: "모모상점",
     company: "모모상점",
     description: "",
+    longDescription: "",
     images: [],
     tags: [],
     x: 0,
