@@ -9,6 +9,7 @@ import { brandIntroForBooth } from "@/lib/brands/intro";
 import { FLOORPLANS } from "@/lib/floorplans";
 import { floorplanHallOf } from "@/lib/floorplan/hall-of";
 import { devSkeletonDelay } from "@/lib/dev/skeleton-delay";
+import { withBrandIds } from "@/lib/booth/brand-ids";
 import { exhibitionStatus } from "@/lib/exhibition/status";
 import { todayISO } from "@/lib/exhibition/current";
 
@@ -35,12 +36,14 @@ export default async function BoothDetailPage({ params, searchParams }: Props) {
   if (!detail) notFound();
   const { booth, category, events, welcomeKit } = detail;
   const repo = await getRepository();
-  const [brandIntro, exhibitions, halls, appearances] = await Promise.all([
+  const [brandIntro, exhibitions, halls, appearances, [brandIds]] = await Promise.all([
     brandIntroForBooth(repo, booth.id),
     listExhibitionsCached().catch(() => null),
     repo.listHalls(booth.exhibitionId).catch(() => []),
     // 같은 브랜드의 다른 행사 출전(참가사 연결). 실패해도 페이지는 뜬다.
     repo.boothAppearances(booth.id).catch(() => []),
+    // 대표 브랜드 id와 이름(UI 19 브랜드 줄, #191). 실패하면 id 없이 와서 브랜드 줄만 안 그린다.
+    withBrandIds(repo, [{ id: booth.id }], { names: true }),
   ]);
   const exhibition = exhibitions?.data.find((e) => e.id === booth.exhibitionId);
   const exhibitionSlug = exhibition?.slug;
@@ -83,6 +86,11 @@ export default async function BoothDetailPage({ params, searchParams }: Props) {
         }))}
         aliases={booth.aliases}
         fairEnded={fairEnded}
+        brand={
+          brandIds?.exhibitorId
+            ? { exhibitorId: brandIds.exhibitorId, name: brandIds.exhibitorName || booth.name }
+            : undefined
+        }
       />
     </>
   );

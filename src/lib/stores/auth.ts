@@ -4,6 +4,7 @@ import { create } from "zustand";
 import { toast } from "sonner";
 import { api, ApiClientError } from "@/lib/api/client";
 import { useVisitStore, pushNote } from "@/lib/stores/visit";
+import { clearBrandHearts, syncBrandHearts } from "@/lib/stores/brand-hearts";
 import { clearSessionState } from "@/lib/hooks/use-session-state";
 import {
   APP_ONBOARDING_DISMISS_KEY,
@@ -99,11 +100,13 @@ export async function syncPendingReactions(): Promise<boolean> {
  *  결과가 계정에 안 남아 약속을 못 지켜 아예 숨긴다) 그쪽의 소급 동기화는 없다 —
  *  앱 최초진입 온보딩(PENDING_VALUES_KEY)만 비로그인 경로가 있다. */
 async function syncAndAnnounce() {
-  const [syncedValues, syncedReactions] = await Promise.all([
+  const [syncedValues, syncedReactions, syncedBrandHearts] = await Promise.all([
     syncPendingValues(),
     syncPendingReactions(),
+    // 브랜드 하트(UI 19)도 부스 하트와 같은 때 계정과 맞춘다(stores/brand-hearts.ts).
+    syncBrandHearts(),
   ]);
-  if (syncedValues || syncedReactions) {
+  if (syncedValues || syncedReactions || syncedBrandHearts) {
     toast("아까 남기신 반응도 반영했어요. 이제 박람회를 옮겨도 이어서 골라 드릴게요.");
   }
 }
@@ -183,6 +186,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
     set({ user: null, needsOnboarding: false });
     useVisitStore.getState().clear();
+    clearBrandHearts();
   },
 }));
 

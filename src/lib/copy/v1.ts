@@ -71,6 +71,21 @@ export const system = {
   /** 5-02 로그인 제안. 웹 저장은 브라우저마다라 "이 브라우저". 로그인하면 기기 기록(하트, 다녀왔어요)을
    *  계정으로 올린다(stores/auth.ts syncPendingReactions). */
   loginPrompt: "하트는 이 브라우저에 남아요. 로그인하시면 계정에도 남아요.",
+  // UI 19 브랜드 하트(A안, 11-19). iOS V1Copy(Roam-ios #193)와 같은 자리. 웹에서 거짓이 되는 말만 바꿨다
+  // (11-20 브랜드 검토). 브랜드 알림은 iOS 푸시와 iOS 알림함으로만 가고, 웹 계정과 iOS 계정이 이어지는지
+  // 확인되지 않았다. 그래서 웹은 "알려 드려요" 대신 확인된 사실(계정에 남는다)만 말한다(브랜드 규칙 §4).
+  /** 19-A1 브랜드 줄 설명, 로그인한 분 */
+  brandRowLoggedIn: "브랜드 하트는 계정에 남아요",
+  /** 19-A3 브랜드 줄 설명, 로그인 안 한 분 */
+  brandRowLoggedOut: "로그인하시면 브랜드 하트가 계정에도 남아요",
+  /** 19-A2 */
+  brandHeartLeft: (name: string) => `‘${name}’ 브랜드 하트를 남겼어요.`,
+  /** 19-A3 로그인 제안(5-02와 같은 띠). 로그인하면 stores/auth.ts가 syncBrandHearts로 계정에 올린다. */
+  brandHeartLoginPrompt: "브랜드 하트는 이 브라우저에 남아요.\n로그인하시면 계정에도 남아요.",
+  /** 19-A4 */
+  brandHeartRemoved: (name: string) => `‘${name}’ 브랜드 하트를 뺐어요.`,
+  /** 19-A5 */
+  brandHeartSaveFailed: "브랜드 하트를 남기지 못했어요.",
 } as const;
 
 export const label = {
@@ -93,6 +108,12 @@ export const label = {
   heartRemove: "하트 빼기",
   undo: "되돌리기",
   login: "로그인",
+  retry: "다시 시도",
+  /** 19-A1 브랜드 줄 */
+  brand: "브랜드",
+  brandHeartPill: "이 브랜드 하트",
+  brandHeartAdd: "브랜드 하트 남기기",
+  brandHeartRemove: "브랜드 하트 빼기",
   photo: "부스 사진",
   zoomIn: "지도 확대",
   zoomOut: "지도 축소",

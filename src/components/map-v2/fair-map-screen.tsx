@@ -389,7 +389,7 @@ export function FairMapScreen({
         <div ref={topRef} className="flex w-full flex-col gap-v2-x2">
           <div className="pointer-events-auto flex w-full max-w-[var(--roam-v2-size-content-max-width)] items-center gap-v2-x2">
             <BackButton
-              fallbackHref={`/exhibitions/${slug}`}
+              fallbackHref="/"
               className="shrink-0 border border-v2-stroke-neutral-muted bg-v2-bg-layer-floating shadow-v2-s3"
             />
             <label className="flex min-w-0 flex-1 items-center gap-v2-x2 rounded-v2-pill border border-v2-stroke-neutral-muted bg-v2-bg-layer-floating px-v2-x3 py-v2-x2-5 shadow-v2-s3">

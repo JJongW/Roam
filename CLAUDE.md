@@ -44,8 +44,9 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
 - ⚠️ 닉네임 로그인 제거는 **보류 중**(기존 계정 마이그레이션 미정) — 임의로 끄거나 지우지 말 것.
 
 ## 주요 도메인
-- **방문객 플로우**: 전시 홈(가치 온보딩 + 관심 피드 + 근거 카드) → 지도 → 부스 상세 → 노트 →
-  "오늘 관람 마치기"(회고, 전시 홈 하단 `FinishVisit` → `POST /api/me/reflect`). 앞 셋은 공개.
+- **방문객 플로우**: 홈 → 지도(`/exhibitions/[slug]`는 `/map`으로 넘겨 준다, 지도 먼저 §4, 2026-11-20) →
+  부스 상세(브랜드 줄 하트 UI 19, `stores/brand-hearts.ts`). 옛 전시 홈(가치 온보딩, 관심 피드, 근거 카드,
+  `FinishVisit` 회고 입구)은 화면에서 닿지 않는다. 피드 큐레이션은 iOS가 쓰는 `/api/exhibitions/[slug]/feed` 때문에 남아 있다.
 - **부스/이벤트**: `Booth`(code 자연키, kind exhibitor|facility, tags=카테고리 slug, aliases 공동입점), `BoothEvent`.
 - **참가사(행사를 넘는 브랜드)**: `exhibitor` ← `exhibition_participant`(회차별 표기 이름) ← `booth_participant`.
   인스타나 웹 도메인이 겹치면 자동 연결, **이름만 같으면 사람이 확인**(`/admin/brands/links`).

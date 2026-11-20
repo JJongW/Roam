@@ -27,6 +27,16 @@ import type { SnackbarState } from "@/components/v2/snackbar";
  */
 let loginPromptShown = false;
 
+/**
+ * 로그인 제안(5-02, 19-A3)은 부스 하트와 브랜드 하트를 묶어 한 번만 띄운다(섹션 33, iOS와 같다).
+ * 띄울 차례면 true를 돌려주고 표시를 남긴다.
+ */
+export function takeLoginPrompt(): boolean {
+  if (loginPromptShown) return false;
+  loginPromptShown = true;
+  return true;
+}
+
 export function useBoothSignals({
   boothId,
   name,
@@ -79,8 +89,7 @@ export function useBoothSignals({
           });
         },
       });
-    } else if (!signedIn && !loginPromptShown) {
-      loginPromptShown = true;
+    } else if (!signedIn && takeLoginPrompt()) {
       show({
         message: system.loginPrompt,
         actionLabel: label.login,
