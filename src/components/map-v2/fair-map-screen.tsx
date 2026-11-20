@@ -356,7 +356,14 @@ export function FairMapScreen({
     const recs = useVisitStore.getState().records;
     const heartsHere = booths.filter((b) => isHearted(recs[b.id])).length;
     // 상세에서 길 안내를 누르고 왔으면 사진 고르기나 다시 묻기로 가리지 않는다(누른 일이 먼저다).
-    let step: FairEntryStep = isEnded || routeOnArrival
+    // 이번 열기는 세지 않아 다음에 지도를 열면 첫 진입 규칙이 그대로 돈다.
+    // 아래 setState는 브라우저 저장소(외부 상태)를 읽은 결과다.
+    /* eslint-disable react-hooks/set-state-in-effect */
+    if (routeOnArrival) {
+      setFairState(st);
+      return;
+    }
+    let step: FairEntryStep = isEnded
       ? "none"
       : entryStep(st, { photoCount: moodList.length, heartsHere, today });
     // 1-09는 여는 날부터. 열리기 전은 로미 알약 "아직 열리기 전이에요"로 충분하다(11-17 브랜드 검토).
@@ -381,7 +388,6 @@ export function FairMapScreen({
       reaskShown: s.reaskShown || step === "reask",
     }));
     // 브라우저 저장소(외부 상태)를 읽은 결과로 첫 화면을 정한다.
-    /* eslint-disable react-hooks/set-state-in-effect */
     setFairState(next);
     setEntry(step);
     if (step === "mood") {
