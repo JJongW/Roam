@@ -2,7 +2,7 @@
  * 서울일러스트레이션페어 공식 참가자 명단(TSV) → brands.v1 파일.
  *
  *   npm run brands:sif -- --dir <명단 폴더> --slug <행사 slug> --out <파일.json>
- *     [--participants <파일명>] [--profile-check <파일명>] [--name-matches <dry-run 보고서.json>] [--held <보류 목록.tsv>]
+ *     [--participants <파일명>] [--profile-check <파일명>] [--name-matches <dry-run 보고서.json>] [--held <보류 목록.tsv>] [--dropped-intros <비운 소개.tsv>]
  *
  *   --dir: Roam-design `docs/content/engine/runs/sif-2026-v22`. 기본 파일 이름
  *          official-participants-2026-11-20.tsv(명단), compare-with-v21.tsv(V.21 이름 대조),
@@ -10,6 +10,7 @@
  *   --name-matches: `npm run intake:dry-run -- <out> --brands-only-if-missing --json <보고서>`의 보고서.
  *          지난 회차와 같다고 본 곳 중 이름 일치로만 남은 곳에, 기존 브랜드가 하나뿐이면 exhibitorId를 적는다.
  *   --held: 판정을 기다리느라 파일에서 뺀 곳을 TSV로 적는다.
+ *   --dropped-intros: 지난 회차 부스 번호, 날짜, 회차 표기가 있어 비운 V.21 소개를 TSV로 적는다(눈으로 훑는 용도).
  *
  * 명단은 오크레오 공식 페이지(https://www.ocreo.kr/fair/sif22)를 사람이 브라우저로 넘기며 뽑은 것이다. 이 스크립트는
  * 네트워크를 타지 않는다. V.21 인스타, 웹, 소개는 src/lib/booth/links-sif-2026.json(V.21 오크레오 프로필 이관본)에서 온다.
@@ -73,6 +74,12 @@ if (nmPath) {
 
 mkdirSync(dirname(out), { recursive: true });
 writeFileSync(out, `${JSON.stringify(file, null, 2)}\n`);
+const droppedPath = opt("--dropped-intros");
+if (droppedPath) {
+  mkdirSync(dirname(droppedPath), { recursive: true });
+  const rows = res.introDropped.map((d) => [d.name, d.v21Code, d.hit, d.text.replace(/\s+/g, " ")].join("\t"));
+  writeFileSync(droppedPath, `${["V22이름", "V21부스", "걸린 표기", "소개 원문"].join("\t")}\n${rows.join("\n")}\n`);
+}
 const heldPath = opt("--held");
 if (heldPath) {
   mkdirSync(dirname(heldPath), { recursive: true });
@@ -87,5 +94,6 @@ console.log(
     `  V.21 이어 적음 ${res.carried.length}(링크 있음 ${res.carried.filter((x) => x.withLinks).length}), 보류 ${res.held.length}, 하나만 넣은 명단 중복 줄 ${res.duplicateRows.length}` +
     (res.duplicateRows.length ? ` (${res.duplicateRows.map((d) => d.name).join(", ")})` : ""),
 );
+console.log(`  지난 회차 부스 번호, 날짜, 회차 표기가 있어 비운 V.21 소개 ${res.introDropped.length}곳`);
 for (const x of res.instagramFromV22) console.log(`  인스타를 V.22 프로필 쪽으로 적음(확인 대상) ${x.name}: ${x.v22} (V.21 ${x.v21 ?? "없음"})`);
 console.log("  운영 DB에는 쓰지 않았어요. /admin/intake에 올려 미리보기를 보고 적용해 주세요");

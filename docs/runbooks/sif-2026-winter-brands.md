@@ -13,9 +13,13 @@ _Ted 결정(11-20): "브랜드 먼저 넣어". 부스와 배치도는 공개되�
 | `data/exhibitions/sif-2026-winter.json` | 행사 행 본문(`POST /api/exhibitions`). `mapWidth`, `mapHeight`는 V.21 C홀 도면 값(임시) |
 | `data/brands/sif-2026-winter.json` | brands.v1 882곳. 새 참가 561, V.21과 같은 작가 318(인스타, 웹, 소개를 이어 적음), 같은 이름이지만 다른 작가 3 |
 | `data/brands/_sif-2026-winter-held.tsv` | 링크 모음 주소 때문에 뺀 82곳과 이유 |
+| `data/brands/_sif-2026-winter-dropped-intros.tsv` | V.21 소개 중 지난 회차 부스 번호, 날짜, 회차 표기가 있어 비운 101곳(원문과 걸린 표기) |
 | `scripts/brands-from-sif.ts` | 명단 TSV + 프로필 대조 → brands.v1 (`npm run brands:sif`) |
 
 명단 964줄 = 파일 882 + 보류 82.
+
+- V.21에서 잇는 소개 중 "서일페 D40", "7/30~8/2", "7월", "V.21"처럼 지난 회차 부스 번호, 날짜, 회차 표기가 있는 101곳은 비웠다(11-20 Ted).
+  작가 원문이라 고쳐 쓰지 않고(가운뎃점 포함) 통째로 뺀다. 남은 소개는 181곳. 생성할 때 `--dropped-intros`로 비운 목록을 뽑아 눈으로 훑는다.
 
 - 오크레오 프로필 대조(`profile-check-2026-11-20.tsv`, 11-20): 같은 작가 102, 다른 작가 3. 이 판정을 반영했다.
 - **같은 이름 카드 둘**: "결", "이륙"은 오크레오에 같은 이름 작가가 둘이라 명단에 두 번 나온다. 한 줄은 V.21 작가, 한 줄은 다른 작가라
@@ -101,7 +105,7 @@ npm run intake:dry-run -- data/brands/sif-2026-winter.json   # 다시 돌려 새
 생성기의 보류 판정(`v21MergedCodes`)도 identity.ts를 쓰므로 판정이 고쳐지면 82곳이 저절로 파일에 들어간다.
 
 ```bash
-npm run brands:sif -- --dir ../Roam-design/docs/content/engine/runs/sif-2026-v22 --slug sif-2026-winter --out data/brands/sif-2026-winter.json --held data/brands/_sif-2026-winter-held.tsv
+npm run brands:sif -- --dir ../Roam-design/docs/content/engine/runs/sif-2026-v22 --slug sif-2026-winter --out data/brands/sif-2026-winter.json --held data/brands/_sif-2026-winter-held.tsv --dropped-intros data/brands/_sif-2026-winter-dropped-intros.tsv
 npm run intake:dry-run -- data/brands/sif-2026-winter.json --json /tmp/sif-2026-winter-brands-plan.json
 ```
 

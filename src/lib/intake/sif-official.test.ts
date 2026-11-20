@@ -4,6 +4,7 @@ import {
   parseCompare,
   parseParticipants,
   parseProfileCheck,
+  pastFairMention,
   pinFromNameMatches,
   v21MergedCodes,
   type SifV21Link,
@@ -132,5 +133,42 @@ describe("SIF 명단 → brands.v1", () => {
   it("모르는 대조 값이나 대조 파일에 없는 이름이면 멈춘다", () => {
     expect(() => parseCompare("V22분류\tV22이름\t대조\nx\ty\t아마도")).toThrow();
     expect(() => buildSifBrandsFile({ ...base, participants: [{ type: "국내 작가", name: "없는이름" }] })).toThrow();
+  });
+
+  it("지난 회차 부스 번호, 날짜, 회차 표기가 있는 V.21 소개는 옮기지 않는다(원문은 고치지 않고 통째로 뺀다)", () => {
+    for (const t of [
+      "도깨비 화방 | 서일페 D40. 무루와 고양이들이 담긴 골목 풍경 일러스트 작가.",
+      "몽진아트 | 서일페 L-18, 맛있는 음식+즐거운 일상",
+      "사리사 / *서코섬머 양일 CJ_75",
+      "김구구_Illustrator. 서울일러스트레이션페어21 7.31~8.2 코엑스",
+      "끼니들이 살아가는 귀여운 일상 7/30(목) - 8/2(일)",
+      "7월 서일페 / 10월 대전 페퍼클",
+      "2026.07.30 ~ 08.02 서일페",
+      "202607 서울일러스트레이션페어",
+      "Artist, SEOUL ILLUSTRATION FAIR V.21",
+      "서일페v21참가",
+      "21회 참가",
+      "여름 서일페에서 만나요",
+      "7月 서일페",
+    ])
+      expect(pastFairMention(t), t).not.toBeNull();
+    for (const t of [
+      "우리가 좋아하는 공간, 115room",
+      "What ever you do, wherever you go. 365 days of christmas!",
+      "담장아래 | Illustrator. ⓒ2018 DAMJANG ALAE.",
+      "덩이나라 DUNG2NARA. 고양이 캐릭터 스티커/문구 브랜드.",
+      "매월 1일 '드로잉데이 배경화면' 배포.",
+      "11년 경력 애니메이션/게임 컨셉아티스트",
+      "Art, 2015 다음웹툰 감염 연재, 2016~2020 버프툰 좀비신드롬 연재",
+      "3D ARTWORK. 서일페 인기템 카드지갑 출시",
+      "A4 노트와 B612 엽서",
+      "서울 마포구 망원로 4길 3, 2층 쇼룸",
+      "먼슬리•위클리 스티커",
+    ])
+      expect(pastFairMention(t), t).toBeNull();
+
+    const r = buildSifBrandsFile({ ...base, v21Links: { ...LINKS, D35: { ...LINKS.D35, intro: "115룸 | 서일페 D35, 공간을 그려요" } } });
+    expect(r.file.brands.find((b) => b.name === "115룸")?.intro).toBeUndefined();
+    expect(r.introDropped).toEqual([{ key: "sif22-115룸", name: "115룸", v21Code: "D35", hit: "D35", text: "115룸 | 서일페 D35, 공간을 그려요" }]);
   });
 });

@@ -124,6 +124,8 @@ export interface SifBuildResult {
   held: SifHeld[];
   /** 명단에 똑같이 두 번 나온 줄인데 프로필 대조로 가를 수 없던 것. 하나만 넣었다. */
   duplicateRows: SifParticipant[];
+  /** 지난 회차 부스 번호, 날짜, 회차 표기가 있어 옮기지 않은 V.21 소개. */
+  introDropped: { key: string; name: string; v21Code: string; hit: string; text: string }[];
   /** 같은 작가인데 V.22 프로필 인스타가 V.21과 달라 V.22 쪽을 적은 곳. 사람이 확인한다. */
   instagramFromV22: { key: string; name: string; v21: string | null; v22: string }[];
   /** 지난 회차 링크(또는 소개)를 이어 적은 곳. */
@@ -176,6 +178,27 @@ export function v21MergedCodes(v21Links: Record<string, SifV21Link>): Set<string
   return out;
 }
 
+/**
+ * 지난 회차 소개에 그 회차 부스 번호, 날짜, 회차 표기가 들어 있으면 그 표기를 돌려준다(없으면 null).
+ * 2026-11-20 Ted 결정: 그런 소개는 V.22에 옮기지 않고 비운다. 작가 원문이라 고쳐 쓰지 않고(가운뎃점도 그대로) 통째로 뺀다.
+ * - 부스 번호: 알파벳 한두 자 + 숫자 두 자리(D40, B-20, k39, CJ_75). 한 자리(A4)나 세 자리(B612)는 부스 번호로 안 본다.
+ * - 날짜: 7/30~, 7.31-8.2, 7월, 30일~, 2026.07, 202607, 7月.
+ * - 회차: V.21, v21, 21회, 여름 서일페.
+ * "서일페"라는 말만 있는 소개(예: "서일페 꼭 들려야할 부스")는 번호나 날짜가 없으면 남긴다.
+ */
+const PAST_FAIR_PATTERNS = [
+  /(?<![A-Za-z0-9])[A-Za-z]{1,2} ?[-_]? ?\d{2}(?![0-9])/,
+  /\d{1,2} ?[/.] ?\d{1,2} ?(?:\([^)]*\))? ?[~\-–]|(?<!\d)\d{1,2} ?월|20\d\d ?[./년] ?\d{1,2}|20\d\d(?:0[1-9]|1[0-2])(?!\d)|\d{1,2} ?일 ?[~\-–]|\d{1,2}月/,
+  /[Vv]\.? ?2[01](?!\d)|2[01] ?회|여름 ?서일페|서일페 ?여름/,
+];
+export function pastFairMention(text: string): string | null {
+  for (const p of PAST_FAIR_PATTERNS) {
+    const m = p.exec(text);
+    if (m) return m[0];
+  }
+  return null;
+}
+
 const httpUrl = (u: string | undefined): string | undefined => {
   if (!u) return undefined;
   try {
@@ -205,6 +228,7 @@ export function buildSifBrandsFile(input: SifBuildInput): SifBuildResult {
   const held: SifHeld[] = [];
   const duplicateRows: SifParticipant[] = [];
   const instagramFromV22: SifBuildResult["instagramFromV22"] = [];
+  const introDropped: SifBuildResult["introDropped"] = [];
   const occurrences = new Map<string, number>();
   for (const p of input.participants) occurrences.set(p.name.trim(), (occurrences.get(p.name.trim()) ?? 0) + 1);
   const used = new Map<string, number>();
@@ -288,7 +312,10 @@ export function buildSifBrandsFile(input: SifBuildInput): SifBuildResult {
       if (c.v21Name && c.v21Name.trim() !== name) b.aliases = [c.v21Name.trim().slice(0, 120)];
       // 작가가 오크레오 프로필에 직접 쓴 소개 원문 그대로(브랜드가 쓴 글은 고치지 않는다, 2026-11-09).
       // 말투 변환은 워커가 한다. 기존 브랜드에 이미 소개가 있으면 계획이 건너뛴다(빈 칸만).
-      if (l.intro?.trim()) b.intro = { text: l.intro.trim().slice(0, 4000), status: "collected", source: `${input.v21IntroSource}#${c.v21Code}` };
+      const intro = l.intro?.trim();
+      const hit = intro ? pastFairMention(intro) : null;
+      if (intro && hit) introDropped.push({ key, name, v21Code: c.v21Code, hit, text: intro });
+      else if (intro) b.intro = { text: intro.slice(0, 4000), status: "collected", source: `${input.v21IntroSource}#${c.v21Code}` };
       carried.push({ key, name, v21Code: c.v21Code, withLinks: !!(instagramUrl || websiteUrl) });
     }
     brands.push(b);
@@ -300,7 +327,7 @@ export function buildSifBrandsFile(input: SifBuildInput): SifBuildResult {
     source: { url: input.sourceUrl, collectedAt: input.collectedAt, ...(input.note ? { note: input.note.slice(0, 500) } : {}) },
     brands,
   });
-  return { file, held, duplicateRows, instagramFromV22, carried, counts };
+  return { file, held, duplicateRows, instagramFromV22, introDropped, carried, counts };
 }
 
 /**
