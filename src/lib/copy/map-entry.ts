@@ -12,7 +12,7 @@ export const entryCopy = {
   moodPhoto: (name: string) => `${name} 부스 사진`,
   onsiteAsk: "지금 행사장에 계세요?",
   onsiteBody: "고르신 사진의 부스와 같은 분류에서 몇 곳을 이어서 보여 드릴게요.",
-  onsiteHere: "오늘 행사장에 있어요",
+  onsiteHere: "행사장에 있어요",
   onsitePlanning: "미리 보는 중이에요",
   later: "나중에 할게요",
   firstPicksHead: (n: number) => `고르신 사진으로 ${n === 3 ? "세" : n === 2 ? "두" : "한"} 곳을 골라 봤어요`,
