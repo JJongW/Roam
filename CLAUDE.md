@@ -54,6 +54,8 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
   후보가 된다. 새 기능이 브랜드 판단에 부스를 필수로 두면 먼저 의심한다(`docs/decisions/2026-11-20_브랜드-대조는-참가-단위.md`).
   예외 하나: 같은 행사에 부스 없는 참가 사실(브랜드 먼저 인입)과 표기 이름이 같으면 그 참가 사실에 배정한다.
   판정은 `lib/exhibitor/identity.ts` 하나뿐(품질 게이트의 신원 앵커와 공유).
+  링크 모음, SNS, 마켓처럼 여러 사람이 한 호스트를 쓰는 곳은 도메인이 아니라 계정이 신원이다(`ACCOUNT_RULES`).
+  계정을 못 뽑으면 근거로 쓰지 않는다. 새 공용 서비스는 표에 더한다(`docs/decisions/2026-11-20_공용-서비스-주소는-계정으로-가른다.md`).
   소개·사진은 참가사에 복사하지 않는다 — 가장 최근 승인 부스가 원천.
   로미 근거 우선순위: 내 지난 반응(긍정만) > 이번 행사의 내 반응 > 브랜드의 지난 출전(피드당 2번) > 저작 근거.
   설계 `docs/superpowers/specs/2026-10-02-cross-exhibition-brand-design.md`.
