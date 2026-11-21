@@ -1,5 +1,7 @@
+import { memo } from "react";
 import { Bath, Check, Heart } from "lucide-react";
-import type { MapLayerContext } from "@/components/map/exhibition-map";
+import type { MapLayerContext, MapRect } from "@/components/map/exhibition-map";
+import { labelFadeStyle, labelLevel } from "@/components/map/map-camera";
 import {
   CODE_RATIO,
   layoutBoothLabel,
@@ -22,7 +24,13 @@ import type { BoothListItem } from "@/lib/types";
  * - 다녀온 칸(UI/지도/다녀온 칸 3002:4574)은 보통 칸 이름표 + 오른쪽 아래 체크. 하트보다 앞선다(6-02,
  *   섹션 8 "경험한 판정이 먼저").
  * - 도면 원본 색(존 색)은 쓰지 않는다. v2는 부스 칸 한 색이고 상태만 색으로 가른다.
+ * - 칸 이름과 번호는 화면에서 t1(가장 작은 글자 눈금)보다 작아지는 배율에서 숨는다. 엔진이 적는
+ *   라벨 단계를 보고 opacity로 잇는다(map-level 토큰). 하트와 다녀온 체크는 늘 보인다.
+ * - 칸 하나하나는 memo다. 선택이나 하트가 바뀌면 그 칸만 다시 그린다.
  */
+
+/** 이보다 작게 보이는 글자는 숨긴다(화면 px) — v2 글자 눈금의 가장 작은 값 t1. */
+const LABEL_MIN_PX = V2_PX["font-size-t1"];
 
 const C = (name: string) => `var(--roam-v2-color-${name})`;
 
@@ -38,7 +46,7 @@ export interface RouteOverlay {
   targetId?: string;
 }
 
-export function MapLayerV2({
+export const MapLayerV2 = memo(function MapLayerV2({
   ctx,
   heartIds,
   visitedIds,
@@ -102,62 +110,17 @@ export function MapLayerV2({
         const facility = b.kind === "facility";
         const isSel = b.id === selectedId;
         const visited = !facility && !!visitedIds?.has(b.id);
-        const hearted = !facility && !visited && heartIds.has(b.id);
-        const dim = highlightIds ? !highlightIds.has(b.id) && !isSel : false;
-        const w = Math.max(8, g.w - CELL_GAP * 2);
-        const h = Math.max(8, g.h - CELL_GAP * 2);
-        const fill = isSel
-          ? C("map-booth-selected")
-          : facility
-            ? C("map-booth-facility")
-            : C("map-booth");
-        const text = isSel
-          ? C("map-label-selected")
-          : facility
-            ? C("fg-neutral-muted")
-            : C("map-label");
         return (
-          <g
+          <BoothCell
             key={b.id}
-            transform={`translate(${g.x} ${g.y})${g.rotate ? ` rotate(${g.rotate})` : ""}`}
-            opacity={dim ? V2_NUM["opacity-map-dim"] : 1}
-          >
-            <rect
-              x={-w / 2}
-              y={-h / 2}
-              width={w}
-              height={h}
-              rx={markerR}
-              fill={fill}
-              stroke={
-                isSel ? C("map-booth-selected") : C("stroke-neutral-weak")
-              }
-              strokeWidth={stroke}
-            />
-            <g
-              transform={
-                upright(0, 0) ?? (g.rotate ? `rotate(${-g.rotate})` : undefined)
-              }
-            >
-              <CellLabel
-                booth={b}
-                w={w}
-                h={h}
-                color={text}
-                hearted={hearted}
-                selected={isSel}
-              />
-              {visited && (
-                <VisitedCheck
-                  w={w}
-                  h={h}
-                  color={
-                    isSel ? C("map-label-selected") : C("fg-neutral-muted")
-                  }
-                />
-              )}
-            </g>
-          </g>
+            booth={b}
+            g={g}
+            selected={isSel}
+            visited={visited}
+            hearted={!facility && !visited && heartIds.has(b.id)}
+            dim={highlightIds ? !highlightIds.has(b.id) && !isSel : false}
+            upright={upright(0, 0)}
+          />
         );
       })}
 
@@ -213,7 +176,76 @@ export function MapLayerV2({
         ))}
     </g>
   );
-}
+});
+
+/** 부스 칸 하나. 입력이 같으면 다시 그리지 않는다(이름 줄바꿈 계산 포함). */
+const BoothCell = memo(function BoothCell({
+  booth: b,
+  g,
+  selected: isSel,
+  visited,
+  hearted,
+  dim,
+  upright,
+}: {
+  booth: BoothListItem;
+  g: MapRect;
+  selected: boolean;
+  visited: boolean;
+  hearted: boolean;
+  dim: boolean;
+  upright: string | undefined;
+}) {
+  const facility = b.kind === "facility";
+  const stroke = V2_PX["stroke-width-s1"];
+  const markerR = V2_PX["radius-r1"];
+  const w = Math.max(8, g.w - CELL_GAP * 2);
+  const h = Math.max(8, g.h - CELL_GAP * 2);
+  const fill = isSel
+    ? C("map-booth-selected")
+    : facility
+      ? C("map-booth-facility")
+      : C("map-booth");
+  const text = isSel
+    ? C("map-label-selected")
+    : facility
+      ? C("fg-neutral-muted")
+      : C("map-label");
+  return (
+    <g
+      transform={`translate(${g.x} ${g.y})${g.rotate ? ` rotate(${g.rotate})` : ""}`}
+      opacity={dim ? V2_NUM["opacity-map-dim"] : 1}
+    >
+      <rect
+        x={-w / 2}
+        y={-h / 2}
+        width={w}
+        height={h}
+        rx={markerR}
+        fill={fill}
+        stroke={isSel ? C("map-booth-selected") : C("stroke-neutral-weak")}
+        strokeWidth={stroke}
+      />
+      <g transform={upright ?? (g.rotate ? `rotate(${-g.rotate})` : undefined)}>
+        <CellLabel
+          booth={b}
+          w={w}
+          h={h}
+          color={text}
+          hearted={hearted}
+          selected={isSel}
+        />
+        {visited && (
+          <VisitedCheck
+            w={w}
+            h={h}
+            color={isSel ? C("map-label-selected") : C("fg-neutral-muted")}
+          />
+        )}
+      </g>
+    </g>
+  );
+});
 
 /**
  * 길 안내 선(지도 토큰 map-route). 굵기와 이름표는 맞춘 배율에서 화면 px로 읽히는 크기다(출입구 표식과
@@ -378,6 +410,7 @@ function CellLabel({
           fill={hearted && !selected ? C("fg-neutral") : color}
           fontSize={layout.fontSize}
           className={fontClass}
+          style={labelFadeStyle(labelLevel(layout.fontSize, LABEL_MIN_PX))}
         >
           {layout.lines.map((line, i) => (
             <tspan
@@ -406,28 +439,40 @@ function CellLabel({
   const top = -h / 2 + padY;
   const codeY = top + codeSize;
   const firstY = booth.code ? codeY + lineH * 1.05 : top + lineH;
+  // 번호 줄과 이름 줄은 숨는 배율이 달라(번호가 더 작다) text를 나눈다. tspan엔 opacity가 걸리지 않는다.
   return (
-    <text fill={color} className={fontClass}>
+    <>
       {booth.code && (
-        <tspan
+        <text
           x={left}
           y={codeY}
           fontSize={codeSize}
-          opacity={V2_NUM["opacity-map-code"]}
+          fill={color}
+          className={fontClass}
+          style={labelFadeStyle(
+            labelLevel(codeSize, LABEL_MIN_PX),
+            V2_NUM["opacity-map-code"],
+          )}
         >
           {booth.code}
-        </tspan>
+        </text>
       )}
-      {layout.lines.map((line, i) => (
-        <tspan
-          key={i}
-          x={left}
-          y={firstY + lineH * i}
-          fontSize={layout.fontSize}
-        >
-          {line}
-        </tspan>
-      ))}
-    </text>
+      <text
+        fill={color}
+        className={fontClass}
+        style={labelFadeStyle(labelLevel(layout.fontSize, LABEL_MIN_PX))}
+      >
+        {layout.lines.map((line, i) => (
+          <tspan
+            key={i}
+            x={left}
+            y={firstY + lineH * i}
+            fontSize={layout.fontSize}
+          >
+            {line}
+          </tspan>
+        ))}
+      </text>
+    </>
   );
 }
