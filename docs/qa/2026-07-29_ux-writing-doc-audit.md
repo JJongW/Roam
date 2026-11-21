@@ -175,7 +175,7 @@ P0과 같은 뿌리다 — 무엇이 확실하고 무엇이 추정인지 구분�
    (`${name}의 부스입니다. 부스 번호 ${code}...`)이라 914개가 사실상 동일. `grounding.ts`는
    이미 summary 조각으로 차별화를 시도하지만, summary 없는 부스는 폴백으로 수렴한다.
    이제 테마 대분류·소분류·굿즈가 생겼으니 부스마다 다른 문장을 만들 재료가 있다.
-3. **UI 위계 개선** — frontend-design 스킬로 별도 검토.
+3. **UI 위계 개선** — 별도 검토.
 4. **전체 flow 개선** — 범위가 커서 별도 브레인스토밍 필요.
 5. **관람 종료 후 flow** — "없음"이 아니라 **부실함**. `src/app/api/me/reflect/route.ts`
    (23줄)와 `src/components/companion/finish-visit.tsx`가 이미 있다. 요구된 건
