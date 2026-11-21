@@ -78,15 +78,6 @@ export function cubicBezier([x1, y1, x2, y2]: Bezier): Easing {
   return (t) => (t <= 0 ? 0 : t >= 1 ? 1 : sy(solve(t)));
 }
 
-/** 곡선의 시작 기울기(dy/dx, t=0). 손을 뗀 속도를 그대로 이어받을 거리를 구할 때 쓴다. */
-export function initialSlope([x1, y1, x2, y2]: Bezier): number {
-  if (x1 > 0) return y1 / x1;
-  if (y1 > 0) return Infinity;
-  // 첫 제어점이 원점이면 시작 접선은 둘째 제어점 쪽이다.
-  if (x2 > 0) return y2 / x2;
-  return y2 > 0 ? Infinity : 0;
-}
-
 /**
  * 두 카메라 사이를 진행도 e(0~1)로 잇는다. 배율과 위치를 **같은 진행도**로 묶는다.
  *
@@ -160,14 +151,26 @@ export function releaseVelocity(samples: Sample[], now: number, windowMs: number
 }
 
 /**
- * 손 뗀 뒤 미끄러질 거리(px). 정착 곡선으로 `durationMs` 동안 가는데, 출발 속도가 손 뗀 속도와
- * 같게 거리를 고른다: 곡선의 시작 기울기가 k면 출발 속도 = 거리 × k / 길이.
- * 시작 기울기가 0인 곡선(천천히 출발)은 손 뗀 속도를 이어받지 못하므로 미끄러지지 않는다.
+ * 손으로 튕긴 뒤 감속(`decay.map-fling`, 2026-11-21 Ted B안). 속도가 v(t) = v0·e^(−t/τ)로 줄어
+ * 위치는 x(t) = v0·τ·(1 − e^(−t/τ)), 끝까지 가면 v0·τ만큼 간다. τ는 `--roam-v2-decay-map-fling-tau`.
+ * 길이가 속도에 따라 달라지므로 map-move(300ms)와 묶지 않는다.
  */
-export function glideDistance(v: Point, durationMs: number, curve: Bezier): Point {
-  const k = initialSlope(curve);
-  if (!(durationMs > 0) || !(k > 0) || !Number.isFinite(k)) return { x: 0, y: 0 };
-  return { x: (v.x * durationMs) / k, y: (v.y * durationMs) / k };
+export function flingOffset(v0: Point, tauMs: number, t: number): Point {
+  if (!(tauMs > 0) || t <= 0) return { x: 0, y: 0 };
+  const k = tauMs * (1 - Math.exp(-t / tauMs));
+  return { x: v0.x * k, y: v0.y * k };
+}
+
+/** 튕긴 뒤 끝까지 가는 거리(v0·τ). */
+export function flingDistance(v0: Point, tauMs: number): Point {
+  if (!(tauMs > 0)) return { x: 0, y: 0 };
+  return { x: v0.x * tauMs, y: v0.y * tauMs };
+}
+
+/** 남은 거리(|v0|·τ·e^(−t/τ))가 `epsPx`보다 작으면 멈춘 것으로 본다. `epsPx`는 화면 반올림 폭이지 디자인 값이 아니다. */
+export function flingSettled(v0: Point, tauMs: number, t: number, epsPx = 0.5): boolean {
+  if (!(tauMs > 0)) return true;
+  return Math.hypot(v0.x, v0.y) * tauMs * Math.exp(-t / tauMs) < epsPx;
 }
 
 /** 라벨 단계: 한 옥타브(배율 2배)를 몇 단계로 나눌지. 단계가 바뀔 때만 스타일을 다시 계산한다. */
@@ -205,11 +208,14 @@ export function labelFadeStyle(level: number, base = 1): CSSProperties {
 export interface MapMotion {
   /** map-move: 프로그램 이동(부스로 가기, 홀 바꾸기, 전체 보기, 확대 버튼). */
   move: { duration: number; curve: Bezier | null };
-  /** 손 뗀 뒤 정착(관성, 경계로 돌아오기). spring.settle의 웹 근사가 미정이라 enter 곡선으로 대신한다. */
+  /** 경계 밖에서 안으로 정착. spring.settle의 웹 근사가 미정이라 enter 곡선을 map-move 길이로 대신한다. */
   settle: { duration: number; curve: Bezier | null };
+  /** 손으로 튕긴 뒤 감속의 τ(ms). 동작 줄이기면 0(관성 없음). */
+  flingTau: number;
 }
 
-/** 요소의 계산된 스타일에서 지도 모션 토큰을 읽는다. 동작 줄이기면 map-move는 즉시(토큰 reduceMotion). */
+/** 요소의 계산된 스타일에서 지도 모션 토큰을 읽는다. 동작 줄이기면 map-move는 즉시(토큰 reduceMotion),
+ *  튕긴 뒤 관성은 없다(그 자리에 멈춘다, decay.map-fling 결정). */
 export function readMapMotion(el: Element, reduceMotion: boolean): MapMotion {
   const cs = getComputedStyle(el);
   const get = (name: string) => cs.getPropertyValue(name);
@@ -225,5 +231,8 @@ export function readMapMotion(el: Element, reduceMotion: boolean): MapMotion {
       duration,
       curve: parseCubicBezier(get("--roam-v2-easing-enter")),
     },
+    flingTau: reduceMotion
+      ? 0
+      : (parseDurationMs(get("--roam-v2-decay-map-fling-tau")) ?? 0),
   };
 }

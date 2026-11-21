@@ -2,8 +2,9 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import {
   cubicBezier,
-  glideDistance,
-  initialSlope,
+  flingDistance,
+  flingOffset,
+  flingSettled,
   interpolateCamera,
   labelFadeStyle,
   labelLevel,
@@ -131,7 +132,7 @@ describe("interpolateCamera — 확대와 이동을 같은 진행도로", () => 
   });
 });
 
-describe("손 뗀 뒤 관성", () => {
+describe("손 뗀 속도", () => {
   it("마지막 창 안의 표본으로 속도를 잰다", () => {
     const v = releaseVelocity(
       [
@@ -158,21 +159,50 @@ describe("손 뗀 뒤 관성", () => {
     );
     expect(v).toEqual({ x: 0, y: 0 });
   });
-  it("미끄러지는 첫 속도가 손 뗀 속도와 같다", () => {
-    const curve: [number, number, number, number] = [0, 0, 0.15, 1];
-    const v = { x: 2, y: -1 }; // px/ms
-    const T = 300;
-    const d = glideDistance(v, T, curve);
-    const f = cubicBezier(curve);
-    // 곡선 시작이 접선으로만 정해지는 꼴이라 아주 짧은 구간에서 잰다(5% 안).
-    const dt = 0.02; // ms
-    const startV = (d.x * f(dt / T)) / dt;
-    expect(Math.abs(startV - v.x) / v.x).toBeLessThan(0.05);
-    expect(initialSlope(curve)).toBeCloseTo(1 / 0.15, 9);
+});
+
+describe("손으로 튕긴 뒤 감속(decay.map-fling, τ 250ms)", () => {
+  const tau = parseDurationMs(token("--roam-v2-decay-map-fling-tau"))!;
+
+  it("τ는 토큰에서 250ms", () => {
+    expect(tau).toBe(250);
+    expect(Number(token("--roam-v2-decay-map-fling-rate"))).toBe(0.996);
   });
-  it("천천히 출발하는 곡선이나 길이 0이면 미끄러지지 않는다", () => {
-    expect(glideDistance({ x: 3, y: 0 }, 300, [0.35, 0, 0.35, 1])).toEqual({ x: 0, y: 0 });
-    expect(glideDistance({ x: 3, y: 0 }, 0, [0, 0, 0.15, 1])).toEqual({ x: 0, y: 0 });
+
+  it("초속 2000pt로 튕기면 약 500pt 간다", () => {
+    const v = { x: 2, y: 0 }; // 2000pt/s = 2pt/ms
+    expect(flingDistance(v, tau).x).toBeCloseTo(500, 6);
+    // 0.75초(3τ) 안에 95% 넘게 간다
+    expect(flingOffset(v, tau, 750).x).toBeGreaterThan(475);
+    expect(flingOffset(v, tau, 750).x).toBeLessThan(500);
+  });
+
+  it("출발 속도가 손 뗀 속도와 같다", () => {
+    const v = { x: 1.5, y: -0.8 };
+    const dt = 0.01;
+    const d = flingOffset(v, tau, dt);
+    expect(d.x / dt).toBeCloseTo(v.x, 3);
+    expect(d.y / dt).toBeCloseTo(v.y, 3);
+  });
+
+  it("속도는 v0·e^(−t/τ)로 줄어든다(τ 뒤 1/e)", () => {
+    const v = { x: 2, y: 0 };
+    const t = tau;
+    const dt = 0.01;
+    const speed = (flingOffset(v, tau, t + dt).x - flingOffset(v, tau, t).x) / dt;
+    expect(speed).toBeCloseTo(2 / Math.E, 3);
+  });
+
+  it("남은 거리가 반 px보다 작아지면 멈춘 것으로 본다", () => {
+    const v = { x: 2, y: 0 };
+    expect(flingSettled(v, tau, 0)).toBe(false);
+    expect(flingSettled(v, tau, 3000)).toBe(true);
+  });
+
+  it("τ가 0이면(동작 줄이기) 움직이지 않는다", () => {
+    expect(flingOffset({ x: 3, y: 0 }, 0, 100)).toEqual({ x: 0, y: 0 });
+    expect(flingDistance({ x: 3, y: 0 }, 0)).toEqual({ x: 0, y: 0 });
+    expect(flingSettled({ x: 3, y: 0 }, 0, 0)).toBe(true);
   });
 });
 

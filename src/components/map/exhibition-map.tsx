@@ -32,7 +32,8 @@ import {
 } from "./map-entry";
 import {
   cubicBezier,
-  glideDistance,
+  flingOffset,
+  flingSettled,
   interpolateCamera,
   readMapMotion,
   releaseVelocity,
@@ -380,13 +381,24 @@ export function ExhibitionMap({
       ? { scale: savedView.scale, offset: savedView.offset, rotation: savedView.rotation }
       : { scale: 1, offset: { x: 0, y: 0 }, rotation: 0 },
   );
-  const anim = useRef<{
-    from: Camera;
-    to: Camera;
-    start: number;
-    duration: number;
-    ease: Easing;
-  } | null>(null);
+  // 루프가 돌리는 움직임은 둘이다. curve = 목표까지 곡선으로(map-move, 경계 정착),
+  // fling = 손으로 튕긴 뒤 감속(decay.map-fling). 둘 다 같은 requestAnimationFrame 루프 하나가 돈다.
+  const anim = useRef<
+    | {
+        kind: "curve";
+        from: Camera;
+        to: Camera;
+        start: number;
+        duration: number;
+        ease: Easing;
+      }
+    | {
+        kind: "fling";
+        /** 이 시각의 카메라. 지도 끝을 넘으면 done과 함께 안으로 정착할 자리(settleTo)를 준다. */
+        step: (now: number) => { cam: Camera; done: boolean; settleTo?: Camera };
+      }
+    | null
+  >(null);
   const frame = useRef<number | null>(null);
   // 마지막 프로그램 초점 요청(focusRect). 여백이 바뀌면 같은 상자를 다시 맞추는 데 쓴다.
   // 사용자가 지도를 직접 움직이면 지운다.
@@ -445,17 +457,80 @@ export function ExhibitionMap({
     writeShown();
   }, [writeShown]);
 
-  /** 지금 보이는 자리에서 `to`까지 보간한다. move = map-move 곡선, settle = 손 뗀 뒤 정착 곡선. */
-  const startCamera = useCallback(
+  /** 곡선 움직임 하나. 토큰을 못 읽었거나 길이가 0이면(동작 줄이기) null — 부르는 쪽이 바로 옮긴다. */
+  const curveTo = useCallback(
     (to: Camera, kind: "move" | "settle") => {
       const m = readMotion();
       const spec = m ? (kind === "move" ? m.move : m.settle) : null;
-      if (
-        !spec ||
-        !(spec.duration > 0) ||
-        !spec.curve ||
-        sameCamera(shown.current, to)
-      ) {
+      if (!spec || !(spec.duration > 0) || !spec.curve) return null;
+      if (sameCamera(shown.current, to)) return null;
+      return {
+        kind: "curve" as const,
+        from: shown.current,
+        to,
+        start: performance.now(),
+        duration: spec.duration,
+        ease: cubicBezier(spec.curve),
+      };
+    },
+    [readMotion],
+  );
+
+  /** 루프가 안 돌고 있으면 돌린다. 돌고 있으면 바뀐 anim을 다음 프레임부터 이어 받는다. */
+  const runLoop = useCallback(() => {
+    setMoving(true);
+    if (frame.current != null) return;
+    const finish = () => {
+      frame.current = null;
+      anim.current = null;
+      setMoving(false);
+      persistView();
+    };
+    const loop = (now: number) => {
+      const a = anim.current;
+      if (!a) {
+        frame.current = null;
+        return;
+      }
+      if (a.kind === "curve") {
+        const t = Math.min(1, Math.max(0, (now - a.start) / a.duration));
+        shown.current =
+          t >= 1 ? a.to : interpolateCamera(a.from, a.to, a.ease(t));
+        writeShown();
+        if (t < 1) frame.current = requestAnimationFrame(loop);
+        else finish();
+        return;
+      }
+      const r = a.step(now);
+      shown.current = r.cam;
+      view.current = { scale: r.cam.scale, offset: r.cam.offset };
+      writeShown();
+      if (!r.done) {
+        frame.current = requestAnimationFrame(loop);
+        return;
+      }
+      if (r.settleTo) {
+        // 지도 끝을 넘었다 — 그 자리에서 안쪽으로 정착한다(같은 루프에서 이어서).
+        view.current = { scale: r.settleTo.scale, offset: r.settleTo.offset };
+        const next = curveTo(r.settleTo, "settle");
+        if (next) {
+          anim.current = next;
+          frame.current = requestAnimationFrame(loop);
+          return;
+        }
+        shown.current = r.settleTo;
+        writeShown();
+      }
+      finish();
+    };
+    frame.current = requestAnimationFrame(loop);
+  }, [curveTo, writeShown, setMoving, persistView]);
+
+  /** 지금 보이는 자리에서 `to`까지 보간한다. move = map-move 곡선, settle = 경계 밖에서 안으로 정착. */
+  const startCamera = useCallback(
+    (to: Camera, kind: "move" | "settle") => {
+      const next = curveTo(to, kind);
+      if (!next) {
         // 동작 줄이기(map-move: 즉시)나 토큰을 못 읽으면 바로 그 자리로.
         if (frame.current != null) cancelAnimationFrame(frame.current);
         frame.current = null;
@@ -466,36 +541,10 @@ export function ExhibitionMap({
         persistView();
         return;
       }
-      anim.current = {
-        from: shown.current,
-        to,
-        start: performance.now(),
-        duration: spec.duration,
-        ease: cubicBezier(spec.curve),
-      };
-      setMoving(true);
-      if (frame.current != null) return; // 돌고 있는 루프가 새 목표를 이어 받는다.
-      const loop = (now: number) => {
-        const a = anim.current;
-        if (!a) {
-          frame.current = null;
-          return;
-        }
-        const t = Math.min(1, Math.max(0, (now - a.start) / a.duration));
-        shown.current = t >= 1 ? a.to : interpolateCamera(a.from, a.to, a.ease(t));
-        writeShown();
-        if (t < 1) {
-          frame.current = requestAnimationFrame(loop);
-          return;
-        }
-        frame.current = null;
-        anim.current = null;
-        setMoving(false);
-        persistView();
-      };
-      frame.current = requestAnimationFrame(loop);
+      anim.current = next;
+      runLoop();
     },
-    [readMotion, writeShown, setMoving, persistView],
+    [curveTo, runLoop, writeShown, setMoving, persistView],
   );
 
   /**
@@ -509,7 +558,7 @@ export function ExhibitionMap({
     (animate: boolean | "retarget" = false) => {
       const to = targetCamera();
       if (animate === "retarget") {
-        if (anim.current) {
+        if (anim.current?.kind === "curve") {
           anim.current.to = to;
           return;
         }
@@ -1094,23 +1143,42 @@ export function ExhibitionMap({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [safeInsets?.top, safeInsets?.bottom, fit]);
 
-  // 손을 놓은 뒤: 손 뗀 속도를 이어받아 감속하며 미끄러진다(정착 곡선, map-move 길이). 미끄러질 곳이
-  // 가둔 범위 밖이면 경계에서 멈추고, 이미 밖에 있으면 안으로 돌아온다. 확대 배율은 손 뗀 그대로 둔다.
+  // 손을 놓은 뒤: 손 뗀 속도로 출발해 v(t) = v0·e^(−t/τ)로 감속한다(decay.map-fling, τ 토큰).
+  // map-move(300ms)와 묶지 않는다 — 길이가 손가락 속도에 따라 달라진다. 지도 끝을 넘으면 그 자리에서
+  // 안쪽으로 정착한다(정착 곡선). 동작 줄이기면 관성 없이 그 자리에 멈춘다. 확대 배율은 손 뗀 그대로다.
   function settleAfterRelease(v: Point) {
-    const m = readMotion();
+    const tau = readMotion()?.flingTau ?? 0;
     const s = view.current.scale;
-    const o = view.current.offset;
-    const d = m?.settle.curve
-      ? glideDistance(v, m.settle.duration, m.settle.curve)
-      : { x: 0, y: 0 };
-    const to = clampOffset({ x: o.x + d.x, y: o.y + d.y }, s);
-    if (Math.abs(to.x - o.x) < 0.5 && Math.abs(to.y - o.y) < 0.5) {
+    const o0 = view.current.offset;
+    const rot = rotationRef.current;
+    const inside = clampOffset(o0, s);
+    const outside =
+      Math.abs(inside.x - o0.x) > 0.5 || Math.abs(inside.y - o0.y) > 0.5;
+    if (!(tau > 0) || flingSettled(v, tau, 0)) {
+      if (outside) {
+        view.current = { scale: s, offset: inside };
+        startCamera(targetCamera(), "settle");
+        return;
+      }
       setMoving(false);
       persistView();
       return;
     }
-    view.current = { scale: s, offset: to };
-    startCamera(targetCamera(), "settle");
+    const t0 = performance.now();
+    anim.current = {
+      kind: "fling",
+      step: (now) => {
+        const t = Math.max(0, now - t0);
+        const d = flingOffset(v, tau, t);
+        const offset = { x: o0.x + d.x, y: o0.y + d.y };
+        const cam: Camera = { scale: s, offset, rotation: rot };
+        const c = clampOffset(offset, s);
+        if (Math.abs(c.x - offset.x) > 0.5 || Math.abs(c.y - offset.y) > 0.5)
+          return { cam, done: true, settleTo: { scale: s, offset: c, rotation: rot } };
+        return { cam, done: flingSettled(v, tau, t) };
+      },
+    };
+    runLoop();
   }
 
   function localPoint(e: { clientX: number; clientY: number }): Point {
