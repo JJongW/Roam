@@ -1,7 +1,8 @@
-# Roam — Exhibition Navigator
+# Roam — 부스 탐색 서비스
 
-전시·박람회 **범용** 모바일 가이드 플랫폼 + 주최자 관리 콘솔(`/admin`). 특정 전시 전용이 아니다 —
-들어 있는 전시 데이터(SIBF 등)는 전부 교체 가능한 데이터다.
+박람회와 페어에서 관심 있는 부스를 찾고 찾아가도록 돕는 부스 탐색 서비스(모바일 웹) + 주최자 관리 콘솔(`/admin`).
+특정 박람회 하나에 묶이지 않는다. 들어 있는 행사 데이터(SIBF 등)는 전부 교체 가능한 데이터다.
+코드 식별자(`exhibition`, `/exhibitions`)는 사용자에게 보이지 않으므로 그대로 둔다.
 
 > 이 파일은 **규칙과 함정**만 담는다. 이력·현황 수치·운영 절차는 `docs/reference/project-notes.md`.
 > 구조·플로우·규약이 바뀌면 이 파일을 갱신한다.
@@ -13,8 +14,14 @@
 동선 추천은 원할 때만, 사용자 문구에 "전시" 금지(브랜드가 직접 쓴 원문은 예외). 어긋나는 코드와 문구 목록:
 `../Roam-design/docs/decisions/2026-11-02_브랜드-규칙-재정의.md`. 작업 조율은 Roam-design 세션(헤더)이 한다.
 
+## 작업 규칙
+- 화면 작업은 Figma를 따른다. **Figma에 없는 화면이나 흐름은 만들지 말고 보고하라.**
+- 비밀값(`.env` 등)은 열거나 출력하지 않는다.
+- 디자인 값은 Roam-design 토큰(v2)에서만 받는다(아래 "디자인 시스템 v2").
+- 문구와 브랜드 판단은 `../Roam-design/docs/brand/00_brand-rules.md`를 따른다. 여기에 옮겨 적지 않는다.
+
 ## 제품 방향 (2026-07 기준. 브랜드 규칙과 어긋나면 브랜드 규칙)
-**관람 동행자**: 앱은 판단 근거를 주고 사용자가 판단한다. 동선은 제품이 아니라 부산물.
+**박람회를 같이 다니는 동행자**: 앱은 판단 근거를 주고 사용자가 판단한다. 동선은 제품이 아니라 부산물.
 **서비스가 판단, LLM은 말만** — 결정은 결정론 모듈, LLM은 언어 표면 한 겹. 새 작업은 이 방향에 정렬.
 설계: `docs/decisions/2026-07-07_{companion-reframe,knowledge-architecture,agent-architecture}.md`.
 
@@ -95,7 +102,7 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
 - **피드 큐레이션엔 LLM 없음**: `curateFeed`(feed/curate.ts)는 순수 결정론.
 - **피드는 6칸짜리 결정 큐다**(`rhythm.ts`): 반응한 부스는 **전부** 큐에서 빠진다(되돌아보는 곳은 지도 색과 메모장).
   새로 고르기는 **목록 맨 아래 버튼으로만** — 읽는 중에 화면이 다시 그려지면 안 된다.
-  새 카드는 '여기부터 새로 골랐어' 아래에만 붙는다.
+  새 카드는 '여기부터 새로 골랐어요' 아래에만 붙는다.
 - Gemini 호출처는 3곳뿐: `/api/ai/booth-summary` · `/api/ai/community-summary` · `/api/exhibitions/[slug]/keywords`.
 - **부스 요약은 런타임 호출이 0이다.** 요약은 보는 사람과 무관하게 소개글만으로 정해지므로 미리 만들어
   `booth/summaries.json`에 담았다. 시드가 합성한 소개는 애초에 부르지 않고(`booth/blurb.ts`), 나머지는
@@ -108,14 +115,18 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
   server-only · 재시도+모델 폴백 · `hasGemini` 게이트.
 - **지연 구간엔 무조건 로딩 UX**: `src/lib/loading-messages.ts` + `useRotatingMessage`.
 
-## 로미 문장 규칙 (근거 카드)
+## 옛 화면 (지금 닿지 않음)
+> 근거 카드와 가치 온보딩은 옛 홈 화면에 있었고 지금 방문객 흐름에서 닿지 않는다(위 "주요 도메인"의 방문객 플로우).
+> 코드를 되살리거나 고칠 때만 참고한다. 새 화면의 규칙으로 쓰지 않는다.
+
+### 로미 문장 규칙 (근거 카드)
 - `src/lib/feed/grounding.ts`(순수) → `curateFeed`가 FeedItem에 attach → `components/feed/interest-feed.tsx`가 렌더.
 - ⚠️ **로미 발화에 가치 이름을 쓰지 않는다.** 한 줄 = **부스가 무엇인지(사실)** + **왜 지금 너한테(내가 실제로 누른 부스)**.
 - 사실 절은 항상 채워진다: `roamInterpretation` > `recommendationReasons` > `summary` > `booth.name`
   (`booth.company`는 시드에서 카테고리 요약이라 쓰지 않는다).
 - 근거 절은 피드당 최대 2번(`createLinkPicker`의 `maxUses`). 없을 수는 있어도 **지어내지 않는다**.
 
-## 온보딩 = 가치 선택
+### 온보딩 = 가치 선택
 - 별도 페이지 없음. 전시 홈의 `components/onboarding/value-onboarding.tsx` → `POST /api/me/values` →
   `recordSignal`(explicit) → 브레인 재증류 → 피드 즉시 반영.
 - 가치 slug 단일 소스 `src/lib/values/index.ts`. 8개 밖의 값은 `/api/me/values`가 400.
@@ -212,4 +223,5 @@ npx tsc --noEmit
 npx vitest run
 npx eslint <changed paths>
 ```
-- 모든 커밋/PR은 `/why`로 이유를 `docs/decisions/`에 기록한다.
+- 모든 커밋/PR은 이유를 `docs/decisions/`에 기록한다. `/why` 스킬은 이 레포에 없고 Roam-ios에만 있다
+  (`../Roam-ios/.claude/skills/why/SKILL.md`). 양식이 필요하면 그 파일을 읽는다.
