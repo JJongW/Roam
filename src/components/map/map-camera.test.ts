@@ -176,9 +176,9 @@ describe("손 뗀 뒤 관성", () => {
   });
 });
 
-describe("라벨 단계", () => {
-  it("글자가 기준 px 이상으로 보이는 배율부터 보인다", () => {
-    const font = 8; // 도면 단위
+describe("라벨 단계(부스 번호만 숨긴다, 이름은 늘 보인다)", () => {
+  it("번호 글자가 기준 px 이상으로 보이는 배율부터 보인다", () => {
+    const font = 8; // 번호 줄 글자 크기(도면 단위)
     const min = 11; // px
     const need = labelLevel(font, min);
     // 그 단계의 가장 작은 배율에서도 기준 이상이다
@@ -188,11 +188,20 @@ describe("라벨 단계", () => {
     expect(zoomLevel(lowest * 0.999)).toBeLessThan(need);
     expect(zoomLevel(lowest)).toBeGreaterThanOrEqual(need);
   });
-  it("opacity는 단계 변수로 잇고 map-level 토큰으로 옮겨 간다", () => {
+  it("번호 줄 opacity는 map-code 투명도에 단계 변수를 곱하고 map-level 토큰으로 옮겨 간다", () => {
     const s = labelFadeStyle(3, 0.7);
     expect(String(s.opacity)).toContain("var(--map-zoom-level)");
     expect(String(s.opacity)).toContain("0.7");
     expect(String(s.transition)).toContain("--roam-v2-motion-map-level-duration");
     expect(String(s.transition)).toContain("--roam-v2-motion-map-level-easing");
+  });
+});
+
+describe("부스 이름은 어떤 배율에서도 숨기지 않는다(2026-10-15 결정)", () => {
+  it("map-layer는 번호 줄에만 labelFadeStyle을 건다", () => {
+    const src = readFileSync("src/components/map-v2/map-layer.tsx", "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+    const uses = src.match(/labelFadeStyle\(/g) ?? [];
+    expect(uses).toHaveLength(1);
+    expect(src).toMatch(/labelFadeStyle\(\s*labelLevel\(codeSize,/);
   });
 });
