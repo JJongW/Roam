@@ -21,8 +21,11 @@ import { trackUiClick, type UiControl } from "@/lib/analytics/ui-controls";
 import {
   CODE_LINE_HEIGHT,
   CODE_RATIO,
+  labelBaseUnits,
+  labelInner,
   layoutBoothLabel,
   NAME_LINE_HEIGHT,
+  NAME_WIDTH,
 } from "./booth-label";
 import {
   BOTTOM_RESERVE_RATIO,
@@ -2045,16 +2048,15 @@ export function ExhibitionMap({
                             // 부스 크기에 비례(작은 부스 작게, 큰 부스 크게). 이름은
                             // **어절 단위로** 줄을 바꾸고(`layoutBoothLabel`), 어절이
                             // 한 줄에 안 들어갈 때만 글자를 절반까지 줄인다.
-                            const minDim = Math.min(g.w, g.h);
-                            const base = clamp(minDim / 5.5, 7, 26);
-                            const pad = BOOTH_GAP + 3;
-                            const innerW = Math.max(8, g.w - pad * 2);
-                            // 한글 글자폭 ≈ 1em. 옆으로 넘치지 않게 92%만 사용.
+                            // 규칙 값은 토큰 ratio.map-booth-name*(booth-label.ts).
+                            const base = labelBaseUnits(g.w, g.h);
+                            const inner = labelInner(g.w, g.h);
+                            // 한글 글자폭 ≈ 1em. 옆으로 넘치지 않게 일부만 쓴다(NAME_WIDTH).
                             const label = layoutBoothLabel(
                               b.name,
                               base,
-                              innerW * 0.92,
-                              Math.max(0, g.h - pad * 2),
+                              inner.w * NAME_WIDTH,
+                              inner.h,
                               Boolean(b.code),
                             );
                             const lines = label.lines;

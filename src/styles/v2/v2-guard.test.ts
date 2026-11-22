@@ -56,6 +56,8 @@ export const V2_FILES = [
   "src/components/v2/back-button.tsx",
   "src/components/map-v2/fair-map-screen.tsx",
   "src/components/map-v2/map-layer.tsx",
+  "src/components/map-v2/heart-label.tsx",
+  "src/components/map-v2/heart-cell.ts",
   "src/components/map-v2/map-skeleton.tsx",
   "src/components/map-v2/booth-card.tsx",
   "src/components/map-v2/hall-switch.tsx",
