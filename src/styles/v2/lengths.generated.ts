@@ -65,6 +65,10 @@ export const V2_PX = {
   "size-romi-ink-md": 26,
   "size-romi-ink-lg": 35,
   "size-content-max-width": 448,
+  "size-photo-article-lead": 288,
+  "size-photo-article-brand": 220,
+  "size-photo-card": 156,
+  "size-photo-thumb": 66,
   "trial-between-text-1": 6,
   "trial-between-text-2": 8,
   "trial-radius-card-1": 16,
@@ -124,4 +128,5 @@ export const V2_NUM = {
   "opacity-map-dim": 0.35,
   "opacity-map-code": 0.7,
   "ratio-map-entrance-label": 0.16,
+  "ratio-photo-portrait": 1.333333,
 } as const;

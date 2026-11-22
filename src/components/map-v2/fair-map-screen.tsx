@@ -16,7 +16,11 @@ import {
 } from "lucide-react";
 import { clsx } from "clsx";
 import { useRouter } from "next/navigation";
-import { ExhibitionMap, type MapHandle } from "@/components/map/exhibition-map";
+import {
+  ExhibitionMap,
+  type MapHandle,
+  type MapLayerContext,
+} from "@/components/map/exhibition-map";
 import { MapLayerV2, type RouteOverlay } from "@/components/map-v2/map-layer";
 import { RomiSheet } from "@/components/map-v2/romi-sheet";
 import { RouteSheet } from "@/components/map-v2/route-sheet";
@@ -645,7 +649,7 @@ export function FairMapScreen({
     ids: string[],
     context = 0.3,
     points: { x: number; y: number }[] = [],
-    opts?: { atFit?: boolean },
+    opts?: { atFit?: boolean; keepWhileSelected?: string },
   ) => {
     type Box = { x: number; y: number; w: number; h: number };
     const rects: Box[] = [
@@ -678,22 +682,15 @@ export function FairMapScreen({
 
   // 부스 하나를 보여 줄 때(찾기, 지도에서 보기): 그 부스가 있는 홀 하나를 안전 띠에 맞춘다
   // (UI 3-02, iOS와 같음). 홀이 하나뿐인 도면이면 지도 전체가 그 홀이다. 홀을 모르면 이웃과 함께.
-  const lastFocus = useRef<string | null>(null);
   const focusBooth = (id: string) => {
-    lastFocus.current = id;
     const b = booths.find((x) => x.id === id);
     const name = b ? floorplanHallOf(floorplan, b.code) : undefined;
     const r = name ? floorplan?.halls.find((h) => h.name === name) : undefined;
-    if (r) mapRef.current?.focusRect(r);
-    else focusIds([id], 2.5);
+    // 카드가 떠서 아래 띠가 높아지면 엔진이 같은 상자를 새 띠에 다시 맞춘다(keepWhileSelected).
+    // 예전엔 여기서 여백이 바뀔 때 한 번 더 불러 이동이 둘 겹쳤다.
+    if (r) mapRef.current?.focusRect(r, { keepWhileSelected: id });
+    else focusIds([id], 2.5, [], { keepWhileSelected: id });
   };
-
-  // 부스를 맞춘 뒤 카드가 떠서 아래 띠가 높아지면 같은 부스를 새 띠에 다시 맞춘다.
-  useEffect(() => {
-    if (lastFocus.current && selectedId === lastFocus.current)
-      focusBooth(lastFocus.current);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [insets.top, insets.bottom]);
 
   // "지도에서 보기"(4-02)로 들어오면 그 부스를 이웃과 함께 읽히는 배율로 맞춘다.
   useEffect(() => {
@@ -809,7 +806,6 @@ export function FairMapScreen({
       boothId: target.id,
       props: { ok: path.length > 0, count: path.length },
     });
-    lastFocus.current = null;
     focusIds([target.id, ...(startId ? [startId] : [])], 0.3, path);
   };
 
@@ -899,7 +895,9 @@ export function FairMapScreen({
     setRoute(null);
   };
 
-  const routeOverlay: RouteOverlay | null = (() => {
+  // 지도 그림 층의 입력은 메모한다 — 렌더마다 새 객체면 부스 층이 홀 바꾸기, 검색어 입력에도 다시 그려진다.
+  const answerBoothId = answer?.boothId;
+  const routeOverlay: RouteOverlay | null = useMemo(() => {
     if (route && ["drawn", "direct", "waiting"].includes(route.step)) {
       const s = route.startId ? boothById.get(route.startId) : undefined;
       return {
@@ -909,9 +907,21 @@ export function FairMapScreen({
         startLabel: route.path.length && s ? label.startFront(s.name) : undefined,
       };
     }
-    if (answer?.boothId) return { path: [], targetId: answer.boothId };
+    if (answerBoothId) return { path: [], targetId: answerBoothId };
     return null;
-  })();
+  }, [route, answerBoothId, boothById]);
+  const renderMapLayer = useCallback(
+    (ctx: MapLayerContext) => (
+      <MapLayerV2
+        ctx={ctx}
+        heartIds={heartIds}
+        visitedIds={visitedIds}
+        highlightIds={highlightIds}
+        route={routeOverlay}
+      />
+    ),
+    [heartIds, visitedIds, highlightIds, routeOverlay],
+  );
 
   const routeCard = (() => {
     if (!route) return null;
@@ -1147,15 +1157,7 @@ export function FairMapScreen({
         selectedId={selectedId ?? (pickBooth ? pickBooth.id : null)}
         safeInsets={insets}
         onSelect={(id) => select(id, "map")}
-        renderLayer={(ctx) => (
-          <MapLayerV2
-            ctx={ctx}
-            heartIds={heartIds}
-            visitedIds={visitedIds}
-            highlightIds={highlightIds}
-            route={routeOverlay}
-          />
-        )}
+        renderLayer={renderMapLayer}
       />
 
       {/* 위: 찾기 줄, 칩, 홀 버튼 */}

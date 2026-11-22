@@ -72,6 +72,8 @@
   --color-v2-map-route-visited: var(--roam-v2-color-map-route-visited);
   --color-v2-map-entrance: var(--roam-v2-color-map-entrance);
   --color-v2-map-header: var(--roam-v2-color-map-header);
+  --color-v2-map-wall: var(--roam-v2-color-map-wall);
+  --color-v2-map-blocked: var(--roam-v2-color-map-blocked);
   --color-v2-map-heat-1: var(--roam-v2-color-map-heat-1);
   --color-v2-map-heat-2: var(--roam-v2-color-map-heat-2);
   --color-v2-map-heat-3: var(--roam-v2-color-map-heat-3);

@@ -30,6 +30,25 @@ import {
   entryPoint,
   readableScale,
 } from "./map-entry";
+import {
+  cubicBezier,
+  flingOffset,
+  flingSettled,
+  interpolateCamera,
+  readMapMotion,
+  releaseVelocity,
+  sameCamera,
+  zoomLevel,
+  ZOOM_LEVEL_VAR,
+  type Camera,
+  type Easing,
+  type MapMotion,
+  type Sample,
+} from "./map-camera";
+
+/** 손 뗀 속도를 잴 때 보는 마지막 표본 폭(ms). 디자인 값이 아니라 입력 거르기 폭이다 — 이보다
+ *  오래 멈춰 있다가 놓으면 미끄러지지 않는다. */
+const VELOCITY_WINDOW_MS = 100;
 
 // Fallback booth box when no floorplan geometry is supplied.
 const BOOTH_W = 72;
@@ -37,6 +56,8 @@ const BOOTH_H = 62;
 // Visual inset per booth so adjacent stands keep a gap (aisle) between them —
 // the traced coordinates pack booths edge-to-edge.
 const BOOTH_GAP = 3;
+/** 홀 목록 기본값. 렌더마다 새 배열이면 홀 바닥판 메모가 매번 깨진다. */
+const NO_HALLS: Hall[] = [];
 
 /** 도면 데이터가 "색 없음"을 나타낼 때 쓰는 값. 디자인 색이 아니라 **데이터 센티넬**이라
  *  토큰으로 올리지 않는다 — 이 값이 보이면 존 색 대신 테두리 색으로 떨어뜨린다. */
@@ -125,7 +146,13 @@ export interface MapHandle {
     r: { x: number; y: number; w: number; h: number },
     /** atFit: 배율은 맞춘 배율(들어올 때) 그대로 두고 그 자리로 옮기기만 한다(편의시설 칩). 줄이면
      *  흩어진 표식을 담느라 지도가 점이 되고, 늘리면 주변을 잃는다. */
-    opts?: { atFit?: boolean },
+    opts?: {
+      atFit?: boolean;
+      /** 이 부스가 선택된 동안 떠 있는 것의 높이(safeInsets)가 바뀌면 같은 상자를 새 띠에 다시
+       *  맞춘다. 카드가 뜨면서 아래 띠가 높아질 때 화면 쪽에서 한 번 더 부르지 않게 엔진이 맡는다.
+       *  진행 중인 이동은 새로 시작하지 않고 목표만 바꿔 이어 간다. */
+      keepWhileSelected?: string;
+    },
   ) => void;
 }
 
@@ -211,7 +238,7 @@ export function ExhibitionMap({
   height: heightProp,
   booths,
   categories,
-  halls = [],
+  halls = NO_HALLS,
   selectedId,
   mustIds = [],
   curiousIds = [],
@@ -244,7 +271,10 @@ export function ExhibitionMap({
   safeInsets,
 }: MapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const safeRef = useRef({ top: 0, bottom: 0 });
+  const safeRef = useRef({
+    top: safeInsets?.top ?? 0,
+    bottom: safeInsets?.bottom ?? 0,
+  });
   const [fitScale, setFitScale] = useState<number | undefined>(undefined);
   /** 가려지지 않는 세로 띠: 위 끝 y와 높이. safeInsets가 없으면 화면 전체. */
   const band = (ch: number) => {
@@ -324,8 +354,11 @@ export function ExhibitionMap({
   // Counter-rotate a label around its own anchor so it stays upright (readable)
   // while the map turns — the anchor is the pivot, so the text doesn't drift,
   // only its orientation is cancelled. Returns undefined at 0° (no transform).
-  const upright = (ax: number, ay: number): string | undefined =>
-    rotation % 360 === 0 ? undefined : `rotate(${-rotation} ${ax} ${ay})`;
+  const upright = useCallback(
+    (ax: number, ay: number): string | undefined =>
+      rotation % 360 === 0 ? undefined : `rotate(${-rotation} ${ax} ${ay})`,
+    [rotation],
+  );
 
   // Vertical pan target that keeps a focused booth above the bottom popup.
   // Portrait: shift up by half the popup inset (capped so it never overshoots);
@@ -338,34 +371,219 @@ export function ExhibitionMap({
     return (ch - bias) / 2 - gy * scale;
   }
 
-  // Write the current view to the DOM. `animate` adds a short transition for
-  // programmatic moves (tap-zoom, buttons); drags pass false for instant feel.
-  const transformString = useCallback(() => {
-    const { scale, offset } = view.current;
+  // ---- 카메라: 한 곳에서, 한 루프로 ----
+  // `view` + `rotationRef`는 목표(논리) 카메라다. 맞추기, 가두기, 부스로 가기는 여기에 목표를 쓴다.
+  // `shown`은 지금 화면에 그려진 카메라다. 이동 요청은 requestAnimationFrame 루프 하나가 `shown`에서
+  // 목표까지 보간한다(map-move 토큰 길이와 곡선). 진행 중에 새 요청이 오면 지금 보이는 자리에서
+  // 이어 받는다. CSS transition은 쓰지 않는다 — 두 체계가 섞이면 겹친 전환이 서로를 끊는다.
+  const shown = useRef<Camera>(
+    savedView
+      ? { scale: savedView.scale, offset: savedView.offset, rotation: savedView.rotation }
+      : { scale: 1, offset: { x: 0, y: 0 }, rotation: 0 },
+  );
+  // 루프가 돌리는 움직임은 둘이다. curve = 목표까지 곡선으로(map-move, 경계 정착),
+  // fling = 손으로 튕긴 뒤 감속(decay.map-fling). 둘 다 같은 requestAnimationFrame 루프 하나가 돈다.
+  const anim = useRef<
+    | {
+        kind: "curve";
+        from: Camera;
+        to: Camera;
+        start: number;
+        duration: number;
+        ease: Easing;
+      }
+    | {
+        kind: "fling";
+        /** 이 시각의 카메라. 지도 끝을 넘으면 done과 함께 안으로 정착할 자리(settleTo)를 준다. */
+        step: (now: number) => { cam: Camera; done: boolean; settleTo?: Camera };
+      }
+    | null
+  >(null);
+  const frame = useRef<number | null>(null);
+  // 마지막 프로그램 초점 요청(focusRect). 여백이 바뀌면 같은 상자를 다시 맞추는 데 쓴다.
+  // 사용자가 지도를 직접 움직이면 지운다.
+  const lastFocus = useRef<{
+    r: { x: number; y: number; w: number; h: number };
+    opts?: Parameters<MapHandle["focusRect"]>[1];
+  } | null>(null);
+
+  const zoomLevelRef = useRef<number | null>(null);
+  const targetCamera = (): Camera => ({
+    scale: view.current.scale,
+    offset: view.current.offset,
+    rotation: rotationRef.current,
+  });
+  const readMotion = useCallback((): MapMotion | null => {
+    const el = containerRef.current;
+    if (!el || typeof window === "undefined") return null;
+    const reduce =
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+    return readMapMotion(el, reduce);
+  }, []);
+
+  // 지금 보이는 카메라를 DOM에 쓴다. 바뀌는 건 SVG의 transform 하나와(부스 층은 다시 그리지 않는다)
+  // 라벨 단계 변수 하나(단계가 바뀔 때만)다.
+  const writeShown = useCallback(() => {
+    const el = svgRef.current;
+    if (!el) return;
+    const { scale, offset, rotation: deg } = shown.current;
     const cx = width / 2;
     const cy = height / 2;
     // Pan → zoom → rotate-about-centre (transform-origin is 0 0, so the rotation
     // is centred manually). Booth boxes and their labels rotate together.
-    return `translate(${offset.x}px, ${offset.y}px) scale(${scale}) translate(${cx}px, ${cy}px) rotate(${rotationRef.current}deg) translate(${-cx}px, ${-cy}px)`;
+    el.style.transform = `translate(${offset.x}px, ${offset.y}px) scale(${scale}) translate(${cx}px, ${cy}px) rotate(${deg}deg) translate(${-cx}px, ${-cy}px)`;
+    const level = zoomLevel(scale);
+    if (level !== zoomLevelRef.current) {
+      zoomLevelRef.current = level;
+      el.style.setProperty(ZOOM_LEVEL_VAR, String(level));
+    }
   }, [width, height]);
 
-  const applyView = useCallback(
-    (animate = false) => {
-      const el = svgRef.current;
-      if (!el) return;
-      el.style.transition = animate ? "transform 220ms ease-out" : "none";
-      el.style.transform = transformString();
-    },
-    [transformString],
-  );
-  // Re-assert just the transform after a React re-render (which would otherwise
-  // drop the imperatively-set inline style). Leaves `transition` untouched so an
-  // in-flight animated move (tap-zoom, centre-on) isn't cut short.
-  const reassertTransform = useCallback(() => {
+  // 움직이는 동안만 합성 층으로 올린다. 늘 `will-change: transform`이면 브라우저가 처음 그린 비트맵을
+  // 키워 보여서 확대한 뒤 글자가 흐리다. 멈추면 풀어서 그 배율로 선명하게 다시 그린다.
+  const setMoving = useCallback((on: boolean) => {
     const el = svgRef.current;
-    if (!el) return;
-    el.style.transform = transformString();
-  }, [transformString]);
+    if (el) el.style.willChange = on ? "transform" : "auto";
+  }, []);
+
+  // 진행 중인 이동을 지금 보이는 자리에서 멈추고 목표를 그 자리로 맞춘다(손이 닿으면 거기서 잡는다).
+  const stopCamera = useCallback(() => {
+    if (frame.current != null) cancelAnimationFrame(frame.current);
+    frame.current = null;
+    if (!anim.current) return;
+    anim.current = null;
+    shown.current = { ...shown.current, rotation: rotationRef.current };
+    view.current = { scale: shown.current.scale, offset: shown.current.offset };
+    writeShown();
+  }, [writeShown]);
+
+  /** 곡선 움직임 하나. 토큰을 못 읽었거나 길이가 0이면(동작 줄이기) null — 부르는 쪽이 바로 옮긴다. */
+  const curveTo = useCallback(
+    (to: Camera, kind: "move" | "settle") => {
+      const m = readMotion();
+      const spec = m ? (kind === "move" ? m.move : m.settle) : null;
+      if (!spec || !(spec.duration > 0) || !spec.curve) return null;
+      if (sameCamera(shown.current, to)) return null;
+      return {
+        kind: "curve" as const,
+        from: shown.current,
+        to,
+        start: performance.now(),
+        duration: spec.duration,
+        ease: cubicBezier(spec.curve),
+      };
+    },
+    [readMotion],
+  );
+
+  /** 루프가 안 돌고 있으면 돌린다. 돌고 있으면 바뀐 anim을 다음 프레임부터 이어 받는다. */
+  const runLoop = useCallback(() => {
+    setMoving(true);
+    if (frame.current != null) return;
+    const finish = () => {
+      frame.current = null;
+      anim.current = null;
+      setMoving(false);
+      persistView();
+    };
+    const loop = (now: number) => {
+      const a = anim.current;
+      if (!a) {
+        frame.current = null;
+        return;
+      }
+      if (a.kind === "curve") {
+        const t = Math.min(1, Math.max(0, (now - a.start) / a.duration));
+        shown.current =
+          t >= 1 ? a.to : interpolateCamera(a.from, a.to, a.ease(t));
+        writeShown();
+        if (t < 1) frame.current = requestAnimationFrame(loop);
+        else finish();
+        return;
+      }
+      const r = a.step(now);
+      shown.current = r.cam;
+      view.current = { scale: r.cam.scale, offset: r.cam.offset };
+      writeShown();
+      if (!r.done) {
+        frame.current = requestAnimationFrame(loop);
+        return;
+      }
+      if (r.settleTo) {
+        // 지도 끝을 넘었다 — 그 자리에서 안쪽으로 정착한다(같은 루프에서 이어서).
+        view.current = { scale: r.settleTo.scale, offset: r.settleTo.offset };
+        const next = curveTo(r.settleTo, "settle");
+        if (next) {
+          anim.current = next;
+          frame.current = requestAnimationFrame(loop);
+          return;
+        }
+        shown.current = r.settleTo;
+        writeShown();
+      }
+      finish();
+    };
+    frame.current = requestAnimationFrame(loop);
+  }, [curveTo, writeShown, setMoving, persistView]);
+
+  /** 지금 보이는 자리에서 `to`까지 보간한다. move = map-move 곡선, settle = 경계 밖에서 안으로 정착. */
+  const startCamera = useCallback(
+    (to: Camera, kind: "move" | "settle") => {
+      const next = curveTo(to, kind);
+      if (!next) {
+        // 동작 줄이기(map-move: 즉시)나 토큰을 못 읽으면 바로 그 자리로.
+        if (frame.current != null) cancelAnimationFrame(frame.current);
+        frame.current = null;
+        anim.current = null;
+        shown.current = to;
+        writeShown();
+        setMoving(false);
+        persistView();
+        return;
+      }
+      anim.current = next;
+      runLoop();
+    },
+    [curveTo, runLoop, writeShown, setMoving, persistView],
+  );
+
+  /**
+   * 목표 카메라(view + rotationRef)를 화면에 낸다.
+   * - false: 바로(끌기, 핀치, 휠). 진행 중인 이동은 끊는다.
+   * - true: 지금 보이는 자리에서 map-move로 보간한다.
+   * - "retarget": 진행 중인 이동이 있으면 시작 시각과 출발점은 두고 목표만 바꾼다(여백이 바뀌어
+   *   같은 곳을 새 띠에 다시 맞출 때). 없으면 바로.
+   */
+  const applyView = useCallback(
+    (animate: boolean | "retarget" = false) => {
+      const to = targetCamera();
+      if (animate === "retarget") {
+        if (anim.current?.kind === "curve") {
+          anim.current.to = to;
+          return;
+        }
+        animate = false;
+      }
+      if (animate) {
+        startCamera(to, "move");
+        return;
+      }
+      if (frame.current != null) cancelAnimationFrame(frame.current);
+      frame.current = null;
+      anim.current = null;
+      shown.current = to;
+      writeShown();
+    },
+    [startCamera, writeShown],
+  );
+  // React가 다시 그린 뒤에도 지금 보이는 카메라를 다시 적는다(인라인 스타일이 지워졌을 때 대비).
+  const reassertTransform = writeShown;
+  useEffect(
+    () => () => {
+      if (frame.current != null) cancelAnimationFrame(frame.current);
+    },
+    [],
+  );
   // Active touch/mouse points for pan (1) + pinch (2) gestures.
   const pointers = useRef<Map<number, Point>>(new Map());
   const gesture = useRef<{
@@ -384,6 +602,15 @@ export function ExhibitionMap({
     x: 0,
     y: 0,
   });
+  /** 한 손가락 끌기의 최근 포인터 표본(손 뗀 속도를 잰다). */
+  const samples = useRef<Sample[]>([]);
+  const wheelIdle = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(
+    () => () => {
+      if (wheelIdle.current) clearTimeout(wheelIdle.current);
+    },
+    [],
+  );
 
   // Axis-aligned footprint of the (possibly rotated) map, in world units. At 90°
   // / 270° the width and height swap — fit + clamp use this to frame and bound
@@ -426,22 +653,37 @@ export function ExhibitionMap({
 
   // Booth geometry: from the floorplan (by code) when available, else a
   // uniform fallback box at the booth's stored x/y.
-  const rectByCode = new Map(
-    (floorplan?.booths ?? []).map((fb) => [fb.code, fb]),
+  // 도면 상자는 부스마다 한 번만 만든다. 같은 객체를 돌려줘야 부스 칸(memo)이 카메라나 홀이 바뀔 때
+  // 다시 그려지지 않는다.
+  const rectByCode = useMemo(
+    () => new Map((floorplan?.booths ?? []).map((fb) => [fb.code, fb])),
+    [floorplan],
   );
-  const geomOf = (b: BoothListItem): Rect => {
-    const fb = b.code ? rectByCode.get(b.code) : undefined;
-    if (fb)
-      return {
-        x: fb.x,
-        y: fb.y,
-        w: fb.w,
-        h: fb.h,
-        color: fb.color,
-        rotate: fb.rotate,
-      };
-    return { x: b.x, y: b.y, w: BOOTH_W, h: BOOTH_H };
-  };
+  const geomById = useMemo(() => {
+    const make = (b: BoothListItem): Rect => {
+      const fb = b.code ? rectByCode.get(b.code) : undefined;
+      return fb
+        ? {
+            x: fb.x,
+            y: fb.y,
+            w: fb.w,
+            h: fb.h,
+            color: fb.color,
+            rotate: fb.rotate,
+          }
+        : { x: b.x, y: b.y, w: BOOTH_W, h: BOOTH_H };
+    };
+    return { make, byId: new Map(booths.map((b) => [b.id, make(b)])) };
+  }, [booths, rectByCode]);
+  const geomOf = useCallback(
+    (b: BoothListItem): Rect => geomById.byId.get(b.id) ?? geomById.make(b),
+    [geomById],
+  );
+  const layerGeomOf = useCallback(
+    (b: BoothListItem): MapRect | null =>
+      floorplan && !(b.code && rectByCode.has(b.code)) ? null : geomOf(b),
+    [floorplan, rectByCode, geomOf],
+  );
 
   const catById = new Map(categories.map((c) => [c.id, c]));
   const boothById = new Map(booths.map((b) => [b.id, b]));
@@ -461,7 +703,7 @@ export function ExhibitionMap({
     : booths;
   // Hall containers. From the floorplan when present; otherwise a bounding box
   // computed from booth positions.
-  const hallRegions = floorplan
+  const hallRegions = useMemo(() => floorplan
     ? floorplan.halls.map((h) => ({
         label: h.name,
         x: h.x,
@@ -498,7 +740,7 @@ export function ExhibitionMap({
             w: number;
             h: number;
           } => r !== null,
-        );
+        ), [floorplan, halls, booths]);
 
   // 들어올 때의 배율 — 보통 부스의 코드가 11px로 보이는 배율(`map-entry.ts`).
   // 도면이 없으면(부스 좌표만 있는 전시) 예전처럼 맞춤으로 들어온다.
@@ -543,7 +785,8 @@ export function ExhibitionMap({
           x: fw * s <= cw ? (cw - fw * s) / 2 : clamp(o.x, cw - fw * s, 0),
           y: fh * s <= ch ? (ch - fh * s) / 2 : clamp(o.y, ch - fh * s, 0),
         };
-        applyView(animate);
+        // 이동 중에 크기가 바뀌면(크롬이 숨고 나타날 때) 이동을 끊고 뛰지 않게 목표만 바꾼다.
+        applyView(animate || "retarget");
         persistView();
         return;
       }
@@ -570,7 +813,7 @@ export function ExhibitionMap({
           },
         };
         setFitScale(s);
-        applyView(animate);
+        applyView(animate || "retarget");
         persistView();
         return;
       }
@@ -618,7 +861,7 @@ export function ExhibitionMap({
         },
       };
       setFitScale(s);
-      applyView(animate);
+      applyView(animate || "retarget");
       persistView();
     },
     // focus is depended on by its x/y (object identity may churn each render).
@@ -650,6 +893,7 @@ export function ExhibitionMap({
       setRotation(upright);
     }
     userAdjusted.current = false;
+    lastFocus.current = null;
     fit(true, true);
   }, [fit]);
 
@@ -660,24 +904,16 @@ export function ExhibitionMap({
     rotationRef.current += 90;
     setRotation(rotationRef.current);
     userAdjusted.current = false;
+    lastFocus.current = null;
     fit(true, true);
   }, [fit]);
-
-  // 떠 있는 것의 높이가 바뀌면(카드가 뜨고 칩 줄이 접히면) 띠를 새로 잡는다. 사용자가
-  // 아직 지도를 움직이지 않았으면 전체 보기를 그 띠에 다시 맞춘다.
-  useEffect(() => {
-    safeRef.current = {
-      top: safeInsets?.top ?? 0,
-      bottom: safeInsets?.bottom ?? 0,
-    };
-    if (!restoredView.current && !userAdjusted.current) fit();
-  }, [safeInsets?.top, safeInsets?.bottom, fit]);
 
   // Re-fit whenever the container is (re)sized — handles late layout, rotation, etc.
   // 복원된 view가 있으면(위 lazy initializer에서 이미 state에 반영됨) fit()을
   // 건너뛰고 그 값을 그대로 그린다 — 되돌아왔을 때 처음 보던 자리 그대로,
   // 전체 보기로 다시 리셋되지 않는다.
-  useEffect(() => {
+  // layout effect: 첫 그림 전에 맞춘다(라벨 단계가 배율 1에서 맞춘 배율로 한 번 넘어가며 깜빡이지 않게).
+  useLayoutEffect(() => {
     const el = containerRef.current;
     if (!el) return;
     if (restoredView.current) {
@@ -788,10 +1024,79 @@ export function ExhibitionMap({
         ),
       };
       userAdjusted.current = true;
+      lastFocus.current = null;
       applyView(animate);
       persistView();
     },
     [clampOffset, applyView, minScale, maxScale, persistView],
+  );
+
+  /** 상자 하나를 화면에 맞춘다. "refit"은 여백이 바뀌어 같은 상자를 다시 맞출 때 — 진행 중이면
+   *  목표만 바꾸고, 끝났으면 새로 옮긴다. */
+  const focusTo = useCallback(
+    (
+      r: { x: number; y: number; w: number; h: number },
+      opts: Parameters<MapHandle["focusRect"]>[1],
+      mode: "move" | "refit" = "move",
+    ) => {
+      const el = containerRef.current;
+      if (!el) return;
+      const cw = el.clientWidth;
+      const ch = el.clientHeight;
+      const c = toContent({ x: r.x + r.w / 2, y: r.y + r.h / 2 });
+      const safe = band(ch);
+      const want =
+        Math.min(cw / r.w, (safeInsets ? safe.h : ch) / r.h) * 0.92;
+      if (opts?.atFit && fitScale) {
+        // 맞춘 배율에 머문다. 들어올 때처럼 도면이 띠 밖으로 빈 곳을 보이지 않게 가둔다(여분 여백 없음).
+        const { fw, fh } = footprint();
+        const sF = fitScale;
+        view.current = {
+          scale: sF,
+          offset: {
+            x: clamp(
+              cw / 2 - c.x * sF,
+              Math.min(0, cw - fw * sF),
+              Math.max(0, cw - fw * sF),
+            ),
+            y:
+              fh * sF <= safe.h
+                ? safe.top + (safe.h - fh * sF) / 2
+                : clamp(
+                    safe.top + safe.h / 2 - c.y * sF,
+                    safe.top + safe.h - fh * sF,
+                    safe.top,
+                  ),
+          },
+        };
+      } else {
+        const s = clamp(want, minScale(), maxScale());
+        const y = safeInsets
+          ? safe.top + safe.h / 2 - c.y * s
+          : focusCenterY(el, c.y, s);
+        view.current = {
+          scale: s,
+          offset: clampOffset({ x: cw / 2 - c.x * s, y }, s),
+        };
+      }
+      userAdjusted.current = true;
+      applyView(mode === "refit" && anim.current ? "retarget" : true);
+      persistView();
+    },
+    // focusCenterY와 band는 렌더마다 새로 만드는 함수라 뺀다(focusBottomInset과 safeRef만 읽는다).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      fitScale,
+      toContent,
+      minScale,
+      maxScale,
+      clampOffset,
+      applyView,
+      persistView,
+      focusBottomInset,
+      safeInsets,
+      footprint,
+    ],
   );
 
   useImperativeHandle(
@@ -810,67 +1115,71 @@ export function ExhibitionMap({
         };
       },
       focusRect: (r, opts) => {
-        const el = containerRef.current;
-        if (!el) return;
-        const cw = el.clientWidth;
-        const ch = el.clientHeight;
-        const c = toContent({ x: r.x + r.w / 2, y: r.y + r.h / 2 });
-        const safe = band(ch);
-        const want =
-          Math.min(cw / r.w, (safeInsets ? safe.h : ch) / r.h) * 0.92;
-        if (opts?.atFit && fitScale) {
-          // 맞춘 배율에 머문다. 들어올 때처럼 도면이 띠 밖으로 빈 곳을 보이지 않게 가둔다(여분 여백 없음).
-          const { fw, fh } = footprint();
-          const sF = fitScale;
-          view.current = {
-            scale: sF,
-            offset: {
-              x: clamp(
-                cw / 2 - c.x * sF,
-                Math.min(0, cw - fw * sF),
-                Math.max(0, cw - fw * sF),
-              ),
-              y:
-                fh * sF <= safe.h
-                  ? safe.top + (safe.h - fh * sF) / 2
-                  : clamp(
-                      safe.top + safe.h / 2 - c.y * sF,
-                      safe.top + safe.h - fh * sF,
-                      safe.top,
-                    ),
-            },
-          };
-        } else {
-          const s = clamp(want, minScale(), maxScale());
-          const y = safeInsets
-            ? safe.top + safe.h / 2 - c.y * s
-            : focusCenterY(el, c.y, s);
-          view.current = {
-            scale: s,
-            offset: clampOffset({ x: cw / 2 - c.x * s, y }, s),
-          };
-        }
-        userAdjusted.current = true;
-        applyView(true);
-        persistView();
+        lastFocus.current = { r, opts };
+        focusTo(r, opts);
       },
     }),
-    // focusCenterY는 렌더마다 새로 만드는 함수라 뺀다(focusBottomInset만 읽는다).
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [
-      fitScale,
-      zoomBy,
-      resetView,
-      toContent,
-      minScale,
-      maxScale,
-      clampOffset,
-      applyView,
-      persistView,
-      focusBottomInset,
-      safeInsets,
-    ],
+    [zoomBy, resetView, focusTo],
   );
+
+  // 떠 있는 것의 높이가 바뀌면(카드가 뜨고 칩 줄이 접히면) 띠를 새로 잡는다. 사용자가
+  // 아직 지도를 움직이지 않았으면 전체 보기를 그 띠에 다시 맞춘다.
+  // 사용자가 움직였는데 마지막 요청이 "이 부스가 선택된 동안 띠에 맞춰 둬"(focusRect의
+  // keepWhileSelected)였으면, 같은 상자를 새 띠에 다시 맞춘다. 화면 쪽에서 focusRect를 한 번 더
+  // 부르면 전환이 둘 겹쳤다(2026-11-21 분석). 여기선 진행 중인 이동의 목표만 바꿔 한 번의 이동으로 끝난다.
+  useEffect(() => {
+    safeRef.current = {
+      top: safeInsets?.top ?? 0,
+      bottom: safeInsets?.bottom ?? 0,
+    };
+    if (!restoredView.current && !userAdjusted.current) {
+      fit();
+      return;
+    }
+    const f = lastFocus.current;
+    if (f?.opts?.keepWhileSelected && f.opts.keepWhileSelected === selectedId)
+      focusTo(f.r, f.opts, "refit");
+    // selectedId는 여백이 바뀐 그 순간의 값만 본다(선택이 바뀔 때 다시 맞추지 않는다).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [safeInsets?.top, safeInsets?.bottom, fit]);
+
+  // 손을 놓은 뒤: 손 뗀 속도로 출발해 v(t) = v0·e^(−t/τ)로 감속한다(decay.map-fling, τ 토큰).
+  // map-move(300ms)와 묶지 않는다 — 길이가 손가락 속도에 따라 달라진다. 지도 끝을 넘으면 그 자리에서
+  // 안쪽으로 정착한다(정착 곡선). 동작 줄이기면 관성 없이 그 자리에 멈춘다. 확대 배율은 손 뗀 그대로다.
+  function settleAfterRelease(v: Point) {
+    const tau = readMotion()?.flingTau ?? 0;
+    const s = view.current.scale;
+    const o0 = view.current.offset;
+    const rot = rotationRef.current;
+    const inside = clampOffset(o0, s);
+    const outside =
+      Math.abs(inside.x - o0.x) > 0.5 || Math.abs(inside.y - o0.y) > 0.5;
+    if (!(tau > 0) || flingSettled(v, tau, 0)) {
+      if (outside) {
+        view.current = { scale: s, offset: inside };
+        startCamera(targetCamera(), "settle");
+        return;
+      }
+      setMoving(false);
+      persistView();
+      return;
+    }
+    const t0 = performance.now();
+    anim.current = {
+      kind: "fling",
+      step: (now) => {
+        const t = Math.max(0, now - t0);
+        const d = flingOffset(v, tau, t);
+        const offset = { x: o0.x + d.x, y: o0.y + d.y };
+        const cam: Camera = { scale: s, offset, rotation: rot };
+        const c = clampOffset(offset, s);
+        if (Math.abs(c.x - offset.x) > 0.5 || Math.abs(c.y - offset.y) > 0.5)
+          return { cam, done: true, settleTo: { scale: s, offset: c, rotation: rot } };
+        return { cam, done: flingSettled(v, tau, t) };
+      },
+    };
+    runLoop();
+  }
 
   function localPoint(e: { clientX: number; clientY: number }): Point {
     const rect = containerRef.current!.getBoundingClientRect();
@@ -880,6 +1189,8 @@ export function ExhibitionMap({
   // Fire onMoveStart once per gesture, the first time real movement happens.
   function beginMove() {
     userAdjusted.current = true;
+    lastFocus.current = null;
+    setMoving(true);
     if (!moveStartFired.current) {
       moveStartFired.current = true;
       onMoveStart?.();
@@ -889,7 +1200,10 @@ export function ExhibitionMap({
   function onPointerDown(e: React.PointerEvent) {
     (e.target as Element).setPointerCapture?.(e.pointerId);
     onInteractStart?.();
+    // 움직이는 중이면(부스로 가는 중, 미끄러지는 중) 손이 닿은 그 자리에서 잡는다.
+    stopCamera();
     const p = localPoint(e);
+    samples.current = [{ t: e.timeStamp, x: p.x, y: p.y }];
     pointers.current.set(e.pointerId, p);
     const pts = [...pointers.current.values()];
     const { scale, offset } = view.current;
@@ -925,7 +1239,14 @@ export function ExhibitionMap({
 
   function onPointerMove(e: React.PointerEvent) {
     if (!pointers.current.has(e.pointerId)) return;
-    pointers.current.set(e.pointerId, localPoint(e));
+    const lp = localPoint(e);
+    pointers.current.set(e.pointerId, lp);
+    if (pointers.current.size === 1) {
+      const list = samples.current;
+      list.push({ t: e.timeStamp, x: lp.x, y: lp.y });
+      while (list.length > 2 && e.timeStamp - list[0].t > VELOCITY_WINDOW_MS)
+        list.shift();
+    }
     const g = gesture.current;
     if (!g) return;
     const pts = [...pointers.current.values()];
@@ -988,6 +1309,7 @@ export function ExhibitionMap({
         startPoint: rest,
         moved: true,
       };
+      samples.current = [];
       return;
     }
     if (pointers.current.size > 0) return;
@@ -997,6 +1319,16 @@ export function ExhibitionMap({
       moveStartFired.current = false;
       onMoveEnd?.();
     }
+    if (moved) {
+      settleAfterRelease(
+        wasPan
+          ? releaseVelocity(samples.current, e.timeStamp, VELOCITY_WINDOW_MS)
+          : { x: 0, y: 0 },
+      );
+      samples.current = [];
+      return;
+    }
+    samples.current = [];
 
     if (wasPan && !moved) {
       const now = e.timeStamp;
@@ -1058,6 +1390,7 @@ export function ExhibitionMap({
                 ),
               };
               userAdjusted.current = true;
+              lastFocus.current = null;
               applyView(true);
               persistView();
             }
@@ -1074,10 +1407,19 @@ export function ExhibitionMap({
 
   function onWheel(e: React.WheelEvent) {
     // Gentler step + dampened for trackpads (many small deltas) so wheel/pinch
-    // zoom feels smooth rather than jumpy.
+    // zoom feels smooth rather than jumpy. 커서 지점이 고정점이다(그 아래 부스가 제자리에 있다).
     if (e.deltaY !== 0) {
+      stopCamera();
+      setMoving(true);
       const step = Math.min(0.08, Math.abs(e.deltaY) * 0.0016);
       zoomBy(e.deltaY < 0 ? 1 + step : 1 - step, localPoint(e));
+      // 휠이 멈추면(map-move 길이만큼 조용하면) 합성 층을 풀어 글자를 그 배율로 다시 그린다.
+      if (wheelIdle.current) clearTimeout(wheelIdle.current);
+      const wait = readMotion()?.move.duration ?? 0;
+      wheelIdle.current = setTimeout(() => {
+        wheelIdle.current = null;
+        if (!anim.current) setMoving(false);
+      }, wait);
     }
   }
 
@@ -1131,6 +1473,7 @@ export function ExhibitionMap({
       ),
     };
     userAdjusted.current = true;
+    lastFocus.current = null;
     applyView(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [centerOn]);
@@ -1183,6 +1526,27 @@ export function ExhibitionMap({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [heatPairs, floorplan, width, height]);
 
+  // 그림 층은 그 입력이 바뀔 때만 다시 만든다. 카메라는 transform 하나로만 움직이고(리렌더 없음),
+  // 화면 쪽 상태(홀 버튼, 검색어 등)로 엔진이 다시 그려져도 같은 요소를 돌려줘 부스 층은 그대로 둔다.
+  const layerCtx = useMemo<MapLayerContext>(
+    () => ({
+      width,
+      height,
+      booths,
+      floorplan,
+      geomOf: layerGeomOf,
+      hallRegions,
+      upright,
+      selectedId,
+      fitScale,
+    }),
+    [width, height, booths, floorplan, layerGeomOf, hallRegions, upright, selectedId, fitScale],
+  );
+  const layer = useMemo(
+    () => (renderLayer ? renderLayer(layerCtx) : undefined),
+    [renderLayer, layerCtx],
+  );
+
   return (
     <div
       className={cn(
@@ -1202,7 +1566,11 @@ export function ExhibitionMap({
         onPointerUp={onPointerUp}
         onPointerCancel={(e) => {
           pointers.current.delete(e.pointerId);
-          if (pointers.current.size === 0) gesture.current = null;
+          if (pointers.current.size === 0) {
+            gesture.current = null;
+            samples.current = [];
+            setMoving(false);
+          }
         }}
         onWheel={onWheel}
         role="application"
@@ -1215,24 +1583,12 @@ export function ExhibitionMap({
           viewBox={`0 0 ${width} ${height}`}
           // Transform is applied imperatively (see applyView) so panning never
           // re-renders this subtree — only transformOrigin is React-managed.
-          style={{ transformOrigin: "0 0", willChange: "transform" }}
+          // will-change는 움직이는 동안만 엔진이 켠다(setMoving) — 늘 켜 두면 확대 뒤 글자가 흐리다.
+          style={{ transformOrigin: "0 0" }}
           className="select-none"
         >
-          {renderLayer ? (
-            renderLayer({
-              width,
-              height,
-              booths,
-              floorplan,
-              geomOf: (b) =>
-                floorplan && !(b.code && rectByCode.has(b.code))
-                  ? null
-                  : geomOf(b),
-              hallRegions,
-              upright,
-              selectedId,
-              fitScale,
-            })
+          {layer !== undefined ? (
+            layer
           ) : (
             <>
               {/* grid backdrop. No SVG filters — drop-shadow filters force costly

@@ -165,6 +165,8 @@
   --roam-v2-color-map-route-visited: #868b94;
   --roam-v2-color-map-entrance: #2a3038;
   --roam-v2-color-map-header: #555d6d;
+  --roam-v2-color-map-wall: #868b94;
+  --roam-v2-color-map-blocked: #eeeff1;
   --roam-v2-color-map-heat-1: #ebeefc;
   --roam-v2-color-map-heat-2: #dce1fa;
   --roam-v2-color-map-heat-3: #c1c9f5;
@@ -249,9 +251,14 @@
   --roam-v2-size-romi-ink-md: 26px;
   --roam-v2-size-romi-ink-lg: 35px;
   --roam-v2-size-content-max-width: 448px;
+  --roam-v2-size-photo-article-lead: 288px;
+  --roam-v2-size-photo-article-brand: 220px;
+  --roam-v2-size-photo-card: 156px;
+  --roam-v2-size-photo-thumb: 66px;
   --roam-v2-opacity-map-dim: 0.35;
   --roam-v2-opacity-map-code: 0.7;
   --roam-v2-ratio-map-entrance-label: 0.16;
+  --roam-v2-ratio-photo-portrait: 1.333333;
   --roam-v2-trial-between-text-1: 0.375rem;
   --roam-v2-trial-between-text-2: 0.5rem;
   --roam-v2-trial-radius-card-1: 16px;
@@ -327,6 +334,8 @@
   --roam-v2-easing-enter-expressive: cubic-bezier(0.03, 0.4, 0.1, 1);
   --roam-v2-easing-exit-expressive: cubic-bezier(0.35, 0, 0.95, 0.55);
   --roam-v2-easing-pressed-scale: cubic-bezier(0, 0, 0.15, 1);
+  --roam-v2-decay-map-fling-tau: 250ms;
+  --roam-v2-decay-map-fling-rate: 0.996;
   --roam-v2-motion-press-duration: var(--roam-v2-duration-pressed-scale);
   --roam-v2-motion-press-easing: var(--roam-v2-easing-pressed-scale);
   --roam-v2-motion-color-duration: var(--roam-v2-duration-color-transition);
@@ -512,6 +521,8 @@
   --roam-v2-color-map-route-visited: #868b94;
   --roam-v2-color-map-entrance: #e9eaec;
   --roam-v2-color-map-header: #dcdee3;
+  --roam-v2-color-map-wall: #868b94;
+  --roam-v2-color-map-blocked: #1d2025;
   --roam-v2-color-map-heat-1: #1d1f2a;
   --roam-v2-color-map-heat-2: #232744;
   --roam-v2-color-map-heat-3: #2e3264;
