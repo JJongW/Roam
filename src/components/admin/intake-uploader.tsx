@@ -1,14 +1,17 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Upload, Loader2, AlertTriangle, Check } from "lucide-react";
 import { toast } from "sonner";
 import { api, ApiClientError } from "@/lib/api/client";
-import { intakeAnyRequestSchema } from "@/lib/intake/schema";
+import { checkIntakeFile, INTAKE_FILE_KIND_LABEL, type IntakeFileIssue } from "@/lib/intake/schema";
+import type { ExhibitionPlan } from "@/lib/intake/exhibition-file";
 import type { IntakePlan } from "@/lib/intake/plan";
 import type { BrandsPlan } from "@/lib/intake/brands-plan";
 import type { BrandsApplyResult } from "@/lib/intake/brands-apply";
 import { BrandsIntakePreview } from "@/components/admin/brands-intake-preview";
+import { ExhibitionIntakePreview } from "@/components/admin/exhibition-intake-preview";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/ui/chip";
@@ -17,6 +20,12 @@ interface BrandsResponse {
   kind: "brands";
   plan: BrandsPlan;
   applied: BrandsApplyResult | null;
+}
+
+interface ExhibitionResponse {
+  kind: "exhibition";
+  plan: ExhibitionPlan;
+  applied: { id: string; slug: string } | null;
 }
 
 interface IntakeResponse {
@@ -32,15 +41,19 @@ interface IntakeResponse {
 }
 
 export function IntakeUploader() {
+  const router = useRouter();
   const fileRef = useRef<HTMLInputElement>(null);
   const [raw, setRaw] = useState<unknown>(null);
   const [fileName, setFileName] = useState("");
-  const [result, setResult] = useState<IntakeResponse | BrandsResponse | null>(null);
+  const [result, setResult] = useState<IntakeResponse | BrandsResponse | ExhibitionResponse | null>(null);
+  const [invalid, setInvalid] = useState<{ title: string; issues: IntakeFileIssue[] } | null>(null);
   const [overwrite, setOverwrite] = useState(false);
   const [busy, setBusy] = useState(false);
 
   async function pick(file: File) {
     setResult(null);
+    setInvalid(null);
+    setFileName(file.name);
     let parsed: unknown;
     try {
       parsed = JSON.parse(await file.text());
@@ -49,28 +62,33 @@ export function IntakeUploader() {
       return;
     }
     // 서버에 보내기 전에 여기서 한 번 거른다 — 형식이 틀린 걸 왕복시킬 이유가 없다.
-    // version이 1이면 부스(intake.v1), "brands.v1"이면 브랜드 먼저 인입이다.
-    const check = intakeAnyRequestSchema.shape.file.safeParse(parsed);
-    if (!check.success) {
-      const first = check.error.issues[0];
-      toast.error(`형식 오류: ${first.path.join(".")}, ${first.message}`);
+    // version이 1이면 부스(intake.v1), "brands.v1"이면 브랜드 먼저 인입, "exhibition.v1"이거나 version 없이
+    // slug가 있으면 행사 행이다. 드라이런 스크립트와 같은 검사 함수(lib/intake/schema.ts checkIntakeFile).
+    const check = checkIntakeFile(parsed);
+    if (!check.ok) {
+      const title = check.kind ? `${INTAKE_FILE_KIND_LABEL[check.kind]} 형식이 안 맞아요` : "모르는 파일이에요";
+      setInvalid({ title, issues: check.issues });
+      toast.error(`${title}. 틀린 칸 ${check.issues.length}곳`);
       return;
     }
-    setRaw(check.data);
-    setFileName(file.name);
-    await send(check.data, false, false);
+    setRaw(check.file);
+    await send(check.file, false, false);
   }
 
   async function send(file: unknown, apply: boolean, ow: boolean) {
     setBusy(true);
     try {
-      const res = await api.post<IntakeResponse | BrandsResponse>("/api/admin/intake", {
+      const res = await api.post<IntakeResponse | BrandsResponse | ExhibitionResponse>("/api/admin/intake", {
         file,
         apply,
         overwrite: ow,
       });
       setResult(res);
-      if (apply && res.kind === "brands") {
+      if (apply && res.kind === "exhibition") {
+        toast.success(`행사 행을 만들었어요(${res.applied!.slug})`);
+        // 위 "올릴 파일" 목록이 서버에서 다시 세도록.
+        router.refresh();
+      } else if (apply && res.kind === "brands") {
         const a = res.applied!;
         toast.success(
           `새 브랜드 ${a.createdBrands}, 참가 사실 ${a.createdParticipants}, 채운 칸 ${a.filledFields}, 연결 확인 ${a.createdCandidates ?? 0}${
@@ -132,7 +150,28 @@ export function IntakeUploader() {
           부스 번호가 나오기 전이면 브랜드 파일(brands.v1)부터 올려요. 브랜드와 참가 사실만
           만들고, 부스가 들어오면 그 브랜드에 이어져요.
         </p>
+        <p className="text-sm text-muted-foreground">
+          운영에 행사가 아직 없으면 행사 행 파일(data/exhibitions)을 먼저 올려요. 같은 주소 이름이 이미 있으면
+          만들지 않아요.
+        </p>
       </Card>
+
+      {invalid && (
+        <IssueList
+          title={`${invalid.title}. 아무것도 보내지 않았어요`}
+          rows={invalid.issues.map((i, n) => ({ key: `${i.path}-${n}`, text: i.path || "파일", detail: i.message }))}
+          tone="bad"
+        />
+      )}
+
+      {result?.kind === "exhibition" && (
+        <ExhibitionIntakePreview
+          plan={result.plan}
+          applied={result.applied}
+          busy={busy}
+          onApply={() => raw && void send(raw, true, false)}
+        />
+      )}
 
       {result?.kind === "brands" && (
         <BrandsIntakePreview

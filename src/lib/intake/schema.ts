@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { boothEnrichmentAuthorInputSchema } from "@/lib/schemas";
 import { brandsFileSchema } from "./brands-schema";
+import { EXHIBITION_FILE_VERSION, exhibitionFileSchema } from "./exhibition-file";
 
 /**
  * 전시 인입 정규형 v1 — 주최 측 CSV든 우리가 손으로 쓴 것이든 참가사 폼이든,
@@ -59,12 +60,87 @@ export type IntakeRequest = z.infer<typeof intakeRequestSchema>;
 
 /**
  * `/admin/intake`가 받는 요청. 파일 `version`으로 가른다 — 1이면 부스(intake.v1),
- * "brands.v1"이면 브랜드 먼저 인입(brands-schema.ts). 경로는 하나다(CLAUDE.md 데이터 주입).
+ * "brands.v1"이면 브랜드 먼저 인입(brands-schema.ts), "exhibition.v1"이거나 version 없이 slug가 있으면
+ * 행사 행(exhibition-file.ts). 경로는 하나다(CLAUDE.md 데이터 주입).
  */
 export const intakeAnyRequestSchema = z.object({
-  file: z.union([intakeFileSchema, brandsFileSchema]),
+  file: z.union([intakeFileSchema, brandsFileSchema, exhibitionFileSchema]),
   apply: z.boolean().default(false),
   /** intake.v1에만 쓴다. brands.v1은 빈 칸만 채우고 덮어쓰지 않는다. */
   overwrite: z.boolean().default(false),
 });
 export type IntakeAnyRequest = z.infer<typeof intakeAnyRequestSchema>;
+
+export type IntakeFileKind = "booths" | "brands" | "exhibition";
+
+export const INTAKE_FILE_KIND_LABEL: Record<IntakeFileKind, string> = {
+  booths: "부스 파일(intake.v1)",
+  brands: "브랜드 파일(brands.v1)",
+  exhibition: "행사 행 파일(exhibition.v1)",
+};
+
+/** 파일 종류. `version`으로 먼저 가르고, version이 없으면 `slug` 칸이 있는 모양을 행사 행으로 본다. 모르면 null. */
+export function intakeFileKind(raw: unknown): IntakeFileKind | null {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return null;
+  const o = raw as Record<string, unknown>;
+  if (o.version === 1) return "booths";
+  if (o.version === "brands.v1") return "brands";
+  if (o.version === EXHIBITION_FILE_VERSION) return "exhibition";
+  if (o.version === undefined && "slug" in o) return "exhibition";
+  return null;
+}
+
+export interface IntakeFileIssue {
+  /** 틀린 칸. "tips.ticket", "booths.3.code" 모양. 파일 전체면 빈 값. */
+  path: string;
+  message: string;
+}
+
+export type IntakeFileCheck =
+  | { ok: true; kind: "booths"; file: IntakeFile }
+  | { ok: true; kind: "brands"; file: z.infer<typeof brandsFileSchema> }
+  | { ok: true; kind: "exhibition"; file: z.infer<typeof exhibitionFileSchema> }
+  | { ok: false; kind: IntakeFileKind | null; issues: IntakeFileIssue[] };
+
+/**
+ * 인입 파일 형식 검사. `/admin/intake` 화면과 `scripts/intake-dry-run.ts`가 같이 부른다.
+ * 틀리면 어느 칸이 왜 틀렸는지 전부 돌려준다(첫 하나만 보여 주면 두 칸이 틀렸을 때 두 번 올려야 안다).
+ */
+export function checkIntakeFile(raw: unknown): IntakeFileCheck {
+  const kind = intakeFileKind(raw);
+  if (!kind)
+    return {
+      ok: false,
+      kind: null,
+      issues: [{ path: "version", message: "모르는 파일이에요. intake.v1, brands.v1, 행사 행(exhibition.v1) 중 하나여야 해요" }],
+    };
+  const issuesOf = (e: z.ZodError): IntakeFileIssue[] => e.issues.map((i) => ({ path: i.path.join("."), message: issueMessage(i) }));
+  if (kind === "booths") {
+    const r = intakeFileSchema.safeParse(raw);
+    return r.success ? { ok: true, kind, file: r.data } : { ok: false, kind, issues: issuesOf(r.error) };
+  }
+  if (kind === "brands") {
+    const r = brandsFileSchema.safeParse(raw);
+    return r.success ? { ok: true, kind, file: r.data } : { ok: false, kind, issues: issuesOf(r.error) };
+  }
+  const r = exhibitionFileSchema.safeParse(raw);
+  return r.success ? { ok: true, kind, file: r.data } : { ok: false, kind, issues: issuesOf(r.error) };
+}
+
+/** zod 기본 문구(영어)를 관리자가 읽을 해요체로. 스키마에 적은 한국어 문구는 그대로 둔다. */
+function issueMessage(i: z.core.$ZodIssue): string {
+  switch (i.code) {
+    case "invalid_type":
+      return i.input === undefined ? "빠진 칸이에요" : `형식이 달라요(${i.expected}이어야 해요)`;
+    case "unrecognized_keys":
+      return `모르는 칸이에요: ${i.keys.join(", ")}`;
+    case "too_small":
+      return i.origin === "array" ? `${i.minimum}개 이상이어야 해요` : `너무 짧아요(${i.minimum} 이상)`;
+    case "too_big":
+      return i.origin === "array" ? `${i.maximum}개까지예요` : `너무 길어요(${i.maximum} 이하)`;
+    case "invalid_value":
+      return `이 값만 받아요: ${i.values.map((v) => JSON.stringify(v)).join(", ")}`;
+    default:
+      return /[가-힣]/.test(i.message) ? i.message : `형식이 안 맞아요(${i.message})`;
+  }
+}

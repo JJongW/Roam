@@ -5,7 +5,9 @@
  *
  * - brands.v1(`version: "brands.v1"`): planBrandsFromRepository. 새 브랜드, 기존에 이음, 이름만 같음, 참가 사실.
  * - intake.v1(`version: 1`): planIntake + FLOORPLANS[slug]. 새 부스, 채울 칸, 충돌, 도면에 없는 번호.
- * - 행사 행(`slug`, `startDate`가 있는 파일): exhibitionInputSchema 검사와 운영에 같은 slug가 있는지.
+ * - 행사 행(exhibition.v1, version 없이 `slug`로 시작하는 파일): 같은 slug가 운영에 있는지("새로 만들어요"/"이미 있어요").
+ *
+ * 형식 검사와 파일 종류 판정은 `/admin/intake` 화면과 같은 checkIntakeFile(lib/intake/schema.ts)이다.
  *
  * **쓰지 않는다.** 저장소 읽기만 부른다. 적용은 사람이 /admin/intake에서 미리보기를 보고 한다.
  * `.env`는 이 체크아웃, 없으면 본 체크아웃(git common dir의 부모)에서 읽는다. 값은 출력하지 않는다.
@@ -45,17 +47,23 @@ if (!hasSupabase) {
   process.exit(1);
 }
 const repo = await getRepository();
-const raw = JSON.parse(readFileSync(path, "utf8")) as Record<string, unknown>;
+const raw = JSON.parse(readFileSync(path, "utf8")) as unknown;
+const { checkIntakeFile, INTAKE_FILE_KIND_LABEL } = await import("@/lib/intake/schema");
+const checked = checkIntakeFile(raw);
+if (!checked.ok) {
+  console.error(`✗ ${checked.kind ? `${INTAKE_FILE_KIND_LABEL[checked.kind]} 형식이 안 맞아요` : "모르는 파일이에요"}`);
+  for (const i of checked.issues) console.error(`  ${i.path || "(파일)"}: ${i.message}`);
+  process.exit(1);
+}
 const report = (obj: unknown) => {
   if (!jsonOut) return;
   writeFileSync(jsonOut, `${JSON.stringify(obj, null, 2)}\n`);
   console.log(`  보고서 → ${jsonOut}`);
 };
 
-if (raw.version === "brands.v1") {
-  const { brandsFileSchema } = await import("@/lib/intake/brands-schema");
+if (checked.kind === "brands") {
   const { planBrandsFromRepository } = await import("@/lib/intake/brands-apply");
-  const file = brandsFileSchema.parse(raw);
+  const file = checked.file;
   const exhibitionId = file.exhibitionSlug ? await repo.getExhibitionIdBySlug(file.exhibitionSlug) : null;
   if (file.exhibitionSlug && !exhibitionId)
     console.log(`! 행사 ${file.exhibitionSlug} 행이 운영에 없어요. ${brandsOnly ? "참가 사실 없이 브랜드 판정만 봐요" : "적용 경로는 404예요"}`);
@@ -82,11 +90,10 @@ if (raw.version === "brands.v1") {
   for (const e of plan.errors) console.log(`  오류 ${e.key}: ${e.message}`);
   for (const w of plan.warnings) console.log(`  경고 ${w}`);
   report({ file: path, kind: "brands", exhibitionFound: !!exhibitionId, summary: s, brands: plan.brands, nameMatches: plan.nameMatches, errors: plan.errors, warnings: plan.warnings });
-} else if (raw.version === 1) {
-  const { intakeFileSchema } = await import("@/lib/intake/schema");
+} else if (checked.kind === "booths") {
   const { planIntake } = await import("@/lib/intake/plan");
   const { FLOORPLANS } = await import("@/lib/floorplans");
-  const file = intakeFileSchema.parse(raw);
+  const file = checked.file;
   const floorplan = FLOORPLANS[file.exhibitionSlug];
   if (!floorplan) console.log(`! FLOORPLANS에 ${file.exhibitionSlug}가 없어요. 모든 부스가 0,0에 놓여요. 도면을 먼저 등록해 주세요`);
   const exhibitionId = await repo.getExhibitionIdBySlug(file.exhibitionSlug);
@@ -106,18 +113,18 @@ if (raw.version === "brands.v1") {
   for (const e of plan.errors) console.log(`  오류 ${JSON.stringify(e)}`);
   for (const w of plan.warnings) console.log(`  경고 ${w}`);
   report({ file: path, kind: "booths", offMap, plan });
-} else if (typeof raw.slug === "string" && typeof raw.startDate === "string") {
-  const { exhibitionInputSchema } = await import("@/lib/schemas");
-  const parsed = exhibitionInputSchema.safeParse(raw);
-  if (!parsed.success) {
-    console.error(`✗ 행사 행 형식이 안 맞아요: ${JSON.stringify(parsed.error.issues)}`);
-    process.exit(1);
-  }
-  const id = await repo.getExhibitionIdBySlug(parsed.data.slug);
-  console.log(`행사 행 ${parsed.data.slug}: 형식 통과, 운영에 ${id ? `이미 있어요(${id}). POST하면 겹쳐요` : "아직 없어요. POST /api/exhibitions로 만들 수 있어요"}`);
-  report({ file: path, kind: "exhibition", exists: !!id, input: parsed.data });
 } else {
-  console.error("✗ 모르는 파일이에요. brands.v1, intake.v1, 행사 행 중 하나여야 해요");
-  process.exit(1);
+  const { planExhibitionFromRepository } = await import("@/lib/intake/exhibition-file");
+  const plan = await planExhibitionFromRepository(repo, checked.file);
+  const ex = plan.exhibition;
+  console.log(
+    `행사 행 ${ex.slug}: 형식 통과, ${
+      plan.status === "exists"
+        ? `이미 있어요(${plan.existingId}). /admin/intake에서도 만들지 않아요`
+        : "새로 만들어요. /admin/intake에 올려 미리보기를 보고 적용해요"
+    }`,
+  );
+  console.log(`  ${ex.name}, ${ex.venue}, ${ex.startDate} ~ ${ex.endDate}, 안내 문구 ${Object.keys(ex.tips).join(", ") || "없음"}`);
+  report({ file: path, kind: "exhibition", exists: plan.status === "exists", existingId: plan.existingId, input: ex });
 }
 console.log("운영 DB에는 쓰지 않았어요");

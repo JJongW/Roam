@@ -166,6 +166,7 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
 - **인입 틀 `intake.v1`이 유일한 경로다.** 전시별 JSON·전용 스크립트·손 UPSERT 마이그레이션은 더 만들지 않는다.
   계약 `src/lib/intake/schema.ts`, 계획 `src/lib/intake/plan.ts`(순수), 설계 `docs/superpowers/specs/2026-09-06-exhibition-intake-design.md`.
   - **부스 번호 전엔 `brands.v1`**(같은 `/admin/intake`, 파일 `version`으로 가름): 브랜드와 참가 사실, 빈 프로필 칸(intro, links, photos)만 넣고, 부스가 들어오면 인스타·도메인 또는 같은 행사 표기 이름으로 그 브랜드에 잇는다. `src/lib/intake/brands-{schema,plan,apply}.ts`, `docs/decisions/2026-11-10_브랜드-먼저-인입.md`.
+  - **행사 행도 같은 `/admin/intake`**: `data/exhibitions/<slug>.json`(exhibition.v1, version 없이 `slug`로 가름)을 올리면 미리보기("새로 만들어요"/"이미 있어요(<id>)") 뒤 적용으로 만든다. 같은 slug는 덮어쓰지 않고 막는다. 콘솔 `fetch` 금지. 검사는 화면과 드라이런이 같은 `checkIntakeFile`(`src/lib/intake/{schema,exhibition-file}.ts`, `docs/decisions/2026-11-22_행사-행-인입.md`).
   - 좌표는 계약에 없다 — `FLOORPLANS[slug]`가 `code`로 댄다.
   - **빈 칸만 채운다.** 양쪽 값이 다르면 `conflicts`로 빠진다(사람이 "충돌도 덮어쓰기"를 켜야 덮인다). 배열은 합집합 안 만든다.
   - `categorySlug`는 명시로만 받는다 — `booth.tags`로 들어가 스코어링이 읽으므로 한글 이름에서 파생 금지.

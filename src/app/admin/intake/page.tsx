@@ -22,7 +22,7 @@ export default async function AdminIntakePage() {
         <p className="text-sm text-muted-foreground">
           정규형 파일 하나로 부스와 저작 정보를 넣어요. 있는 부스는 빈 칸만
           채우고, 사람이 쓴 값은 건드리지 않아요. 브랜드 파일(brands.v1)은 부스
-          없이 브랜드부터 넣어요.
+          없이 브랜드부터 넣어요. 행사 행 파일은 미리보기를 본 뒤 행사를 만들어요.
         </p>
       </header>
 
