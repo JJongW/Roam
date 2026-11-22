@@ -1,14 +1,23 @@
-import { memo } from "react";
-import { Bath, Check, Heart } from "lucide-react";
+import { memo, useMemo } from "react";
+import { Bath, Check } from "lucide-react";
 import type { MapLayerContext, MapRect } from "@/components/map/exhibition-map";
-import { labelFadeStyle, labelLevel } from "@/components/map/map-camera";
 import {
+  LABEL_LEVELS_PER_OCTAVE,
+  labelFadeStyle,
+  labelLevel,
+  zoomLevel,
+} from "@/components/map/map-camera";
+import {
+  CODE_LINE_HEIGHT,
   CODE_RATIO,
+  labelBaseUnits,
   layoutBoothLabel,
   NAME_LINE_HEIGHT,
 } from "@/components/map/booth-label";
 import { V2_NUM, V2_PX } from "@/styles/v2/lengths.generated";
 import { entranceMarkers, wcMarkers } from "./map-markers";
+import { heartCellLayout } from "./heart-cell";
+import { HeartLabel } from "./heart-label";
 import type { BoothListItem } from "@/lib/types";
 
 /**
@@ -20,7 +29,9 @@ import type { BoothListItem } from "@/lib/types";
  * - 선 굵기와 둥글기는 v2 토큰의 px 값(V2_PX, tokens.css에서 기계로 뽑은 값)을 도면 단위로 쓴다.
  * - 글자 크기는 칸 크기에 맞춘다(booth-label.ts, iOS BoothLabel과 같은 규칙). 도면 단위가
  *   화면 px이 아니라서 t2(12) 같은 고정 크기를 쓰면 큰 도면에선 점, 작은 도면에선 넘친다.
- * - 하트 칸은 가운데 하트 + 이름(2994:808), 편의시설 칸은 회색 면(2994:813).
+ * - 하트 칸(UI 21 Q2 A, 2026-11-22): 칸이 화면에서 34×20 미만이면 하트를 칸 오른쪽 위에 작게 두고 이름은
+ *   가운데, 그 이상이면 UI 부품 "상태=하트"처럼 하트(16)를 이름 왼쪽에(heart-cell.ts, heart-label.tsx).
+ *   편의시설 칸은 회색 면(2994:813).
  * - 다녀온 칸(UI/지도/다녀온 칸 3002:4574)은 보통 칸 이름표 + 오른쪽 아래 체크. 하트보다 앞선다(6-02,
  *   섹션 8 "경험한 판정이 먼저").
  * - 도면 원본 색(존 색)은 쓰지 않는다. v2는 부스 칸 한 색이고 상태만 색으로 가른다.
@@ -77,6 +88,8 @@ export const MapLayerV2 = memo(function MapLayerV2({
   const stroke = V2_PX["stroke-width-s1"];
   const hallStroke = V2_PX["stroke-width-s3"];
   const markerR = V2_PX["radius-r1"];
+  // 하트 칸 큰 모양을 재기 시작하는 단계(맞춤 배율의 한 옥타브 아래)와, 엔진이 단계를 적기 전에 쓸 단계.
+  const fitLevel = fitScale && fitScale > 0 ? zoomLevel(fitScale) : 0;
 
   return (
     <g>
@@ -111,6 +124,7 @@ export const MapLayerV2 = memo(function MapLayerV2({
         const facility = b.kind === "facility";
         const isSel = b.id === selectedId;
         const visited = !facility && !!visitedIds?.has(b.id);
+        const hearted = !facility && !visited && heartIds.has(b.id);
         return (
           <BoothCell
             key={b.id}
@@ -118,9 +132,11 @@ export const MapLayerV2 = memo(function MapLayerV2({
             g={g}
             selected={isSel}
             visited={visited}
-            hearted={!facility && !visited && heartIds.has(b.id)}
+            hearted={hearted}
             dim={highlightIds ? !highlightIds.has(b.id) && !isSel : false}
             upright={upright(0, 0)}
+            // 하트 칸만 받는다. 맞춤 배율이 바뀌어도 나머지 칸은 다시 그리지 않는다.
+            fitLevel={hearted ? fitLevel : undefined}
           />
         );
       })}
@@ -188,6 +204,7 @@ const BoothCell = memo(function BoothCell({
   hearted,
   dim,
   upright,
+  fitLevel,
 }: {
   booth: BoothListItem;
   g: MapRect;
@@ -196,6 +213,7 @@ const BoothCell = memo(function BoothCell({
   hearted: boolean;
   dim: boolean;
   upright: string | undefined;
+  fitLevel?: number;
 }) {
   const facility = b.kind === "facility";
   const stroke = V2_PX["stroke-width-s1"];
@@ -212,6 +230,20 @@ const BoothCell = memo(function BoothCell({
     : facility
       ? C("fg-neutral-muted")
       : C("map-label");
+  const heartCell = useMemo(
+    () =>
+      hearted
+        ? heartCellLayout(
+            b.name,
+            g.w,
+            g.h,
+            w,
+            h,
+            (fitLevel ?? 0) - LABEL_LEVELS_PER_OCTAVE,
+          )
+        : null,
+    [hearted, b.name, g.w, g.h, w, h, fitLevel],
+  );
   return (
     <g
       transform={`translate(${g.x} ${g.y})${g.rotate ? ` rotate(${g.rotate})` : ""}`}
@@ -228,14 +260,16 @@ const BoothCell = memo(function BoothCell({
         strokeWidth={stroke}
       />
       <g transform={upright ?? (g.rotate ? `rotate(${-g.rotate})` : undefined)}>
-        <CellLabel
-          booth={b}
-          w={w}
-          h={h}
-          color={text}
-          hearted={hearted}
-          selected={isSel}
-        />
+        {heartCell ? (
+          <HeartLabel
+            cell={heartCell}
+            color={text}
+            selected={isSel}
+            fallbackLevel={fitLevel ?? 0}
+          />
+        ) : (
+          <CellLabel booth={b} w={w} h={h} color={text} selected={isSel} />
+        )}
         {visited && (
           <VisitedCheck
             w={w}
@@ -345,7 +379,7 @@ function VisitedCheck({
   h: number;
   color: string;
 }) {
-  const base = Math.max(7, Math.min(26, Math.min(w, h) / 5.5));
+  const base = labelBaseUnits(w, h);
   const size = Math.min(base * 1.4, h * 0.35);
   const pad = Math.min(w * 0.08, base * 0.6);
   return (
@@ -364,70 +398,43 @@ function CellLabel({
   w,
   h,
   color,
-  hearted,
   selected,
 }: {
   booth: BoothListItem;
   w: number;
   h: number;
   color: string;
-  hearted: boolean;
   selected: boolean;
 }) {
-  const base = Math.max(7, Math.min(26, Math.min(w, h) / 5.5));
-  const center = hearted || booth.kind === "facility";
-  const iconSize = hearted ? Math.min(base * 1.4, h * 0.35) : 0;
+  const base = labelBaseUnits(w, h);
+  const center = booth.kind === "facility";
   const layout = layoutBoothLabel(
     booth.name,
     base,
     w * 0.86,
-    h - iconSize - (center ? 0 : base * CODE_RATIO * 1.3),
+    h - (center ? 0 : base * CODE_RATIO * CODE_LINE_HEIGHT),
     !center && !!booth.code,
   );
   const lineH = layout.fontSize * NAME_LINE_HEIGHT;
-  const fontClass =
-    hearted || selected
-      ? "font-v2-ui font-v2-bold"
-      : "font-v2-ui font-v2-regular";
+  const fontClass = selected
+    ? "font-v2-ui font-v2-bold"
+    : "font-v2-ui font-v2-regular";
 
   if (center) {
-    const blockH =
-      iconSize + (iconSize ? lineH * 0.3 : 0) + lineH * layout.lines.length;
-    const top = -blockH / 2;
+    const top = (-lineH * layout.lines.length) / 2;
     return (
-      <g>
-        {hearted && (
-          <Heart
-            x={-iconSize / 2}
-            y={top}
-            width={iconSize}
-            height={iconSize}
-            fill={selected ? color : C("fg-brand")}
-            stroke={selected ? color : C("fg-brand")}
-          />
-        )}
-        <text
-          textAnchor="middle"
-          fill={hearted && !selected ? C("fg-neutral") : color}
-          fontSize={layout.fontSize}
-          className={fontClass}
-        >
-          {layout.lines.map((line, i) => (
-            <tspan
-              key={i}
-              x={0}
-              y={
-                top +
-                iconSize +
-                (iconSize ? lineH * 0.3 : 0) +
-                lineH * (i + 0.8)
-              }
-            >
-              {line}
-            </tspan>
-          ))}
-        </text>
-      </g>
+      <text
+        textAnchor="middle"
+        fill={color}
+        fontSize={layout.fontSize}
+        className={fontClass}
+      >
+        {layout.lines.map((line, i) => (
+          <tspan key={i} x={0} y={top + lineH * (i + 0.8)}>
+            {line}
+          </tspan>
+        ))}
+      </text>
     );
   }
 

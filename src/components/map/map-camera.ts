@@ -186,6 +186,20 @@ export function labelLevel(fontSize: number, minPx: number): number {
   return Math.ceil(LABEL_LEVELS_PER_OCTAVE * Math.log2(minPx / Math.max(fontSize, 1e-6)));
 }
 
+/**
+ * 칸(도면 단위 `w`×`h`)이 화면에서 `minW`×`minH` px 이상으로 보이기 시작하는 단계. 단계가 이 값 이상이면
+ * 배율이 2^(단계/4) 이상이라 칸이 그 크기 이상이다. 단계는 내림이라 실제 문턱보다 최대 한 단계 늦다.
+ */
+export function sizeLevel(w: number, h: number, minW: number, minH: number): number {
+  const need = Math.max(minW / Math.max(w, 1e-6), minH / Math.max(h, 1e-6));
+  return Math.ceil(LABEL_LEVELS_PER_OCTAVE * Math.log2(need));
+}
+
+/** 단계 `level`의 배율 하한(2^(단계/4)). */
+export function levelScale(level: number): number {
+  return 2 ** (level / LABEL_LEVELS_PER_OCTAVE);
+}
+
 /** 엔진이 지금 라벨 단계를 적는 CSS 변수. 디자인 값이 아니라 엔진 상태다. */
 export const ZOOM_LEVEL_VAR = "--map-zoom-level";
 
@@ -195,14 +209,42 @@ export const ZOOM_LEVEL_VAR = "--map-zoom-level";
  * 단계를 아직 안 적었으면(첫 그림 전) 변수가 없어 opacity가 기본값(보임)으로 떨어진다.
  * `base`는 보일 때의 투명도(번호 줄의 map-code 토큰 등).
  */
-export function labelFadeStyle(level: number, base = 1): CSSProperties {
-  const on = `clamp(0, calc(var(${ZOOM_LEVEL_VAR}) - ${level - 1}), 1)`;
+export function labelFadeStyle(
+  level: number,
+  base = 1,
+  opts: { below?: boolean; fallback?: number } = {},
+): CSSProperties {
+  // `below`: 거꾸로, 단계가 `level` 아래인 동안 보이고 이상이면 숨는다(작은 칸 모양 ↔ 큰 칸 모양 바꿔 끼우기).
+  // `fallback`: 단계를 아직 안 적었을 때 쓸 단계. 없으면 위 설명대로 보임으로 떨어진다.
+  const v = zoomVar(opts.fallback);
+  const on = opts.below
+    ? `clamp(0, calc(${level} - ${v}), 1)`
+    : `clamp(0, calc(${v} - ${level - 1}), 1)`;
   return {
     opacity: base === 1 ? on : `calc(${base} * ${on})`,
-    transition:
-      "opacity var(--roam-v2-motion-map-level-duration) var(--roam-v2-motion-map-level-easing)",
+    transition: LEVEL_TRANSITION,
   };
 }
+
+/** 단계가 [from, to) 안인 동안만 보인다. 끝이 무한이면 그쪽은 열려 있다. */
+export function levelBandStyle(from: number, to: number, fallback?: number): CSSProperties {
+  const v = zoomVar(fallback);
+  const parts = [
+    Number.isFinite(from) ? `calc(${v} - ${from - 1})` : null,
+    Number.isFinite(to) ? `calc(${to} - ${v})` : null,
+  ].filter(Boolean);
+  if (parts.length === 0) return {};
+  const on = parts.length === 1 ? parts[0] : `min(${parts.join(", ")})`;
+  return { opacity: `clamp(0, ${on}, 1)`, transition: LEVEL_TRANSITION };
+}
+
+/** CSS에서 지금 단계(화면 1px당 도면 단위를 셀 때 쓰는 값). */
+export function zoomVar(fallback?: number): string {
+  return fallback === undefined ? `var(${ZOOM_LEVEL_VAR})` : `var(${ZOOM_LEVEL_VAR}, ${fallback})`;
+}
+
+const LEVEL_TRANSITION =
+  "opacity var(--roam-v2-motion-map-level-duration) var(--roam-v2-motion-map-level-easing)";
 
 /** 토큰에서 읽은 지도 모션. 못 읽으면 duration이 0(즉시)이다. */
 export interface MapMotion {
