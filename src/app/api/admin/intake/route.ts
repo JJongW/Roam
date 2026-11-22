@@ -1,9 +1,10 @@
 import { getRepository } from "@/lib/repositories";
-import { getUserId, notFound, ok, parseBody, requireAdmin } from "@/lib/api/http";
+import { fail, getUserId, notFound, ok, parseBody, requireAdmin } from "@/lib/api/http";
 import { FLOORPLANS } from "@/lib/floorplans";
 import { intakeAnyRequestSchema } from "@/lib/intake/schema";
 import { applyBrandsPlan, planBrandsFromRepository } from "@/lib/intake/brands-apply";
 import { planIntake } from "@/lib/intake/plan";
+import { planExhibitionFromRepository } from "@/lib/intake/exhibition-file";
 import { planFromRepository, runCarryover } from "@/lib/exhibitor/service";
 import { applyLinkPlan } from "@/lib/brands/jobs";
 import type { IntakePlan } from "@/lib/intake/plan";
@@ -17,6 +18,10 @@ import type { AuditContext } from "@/lib/audit/diff";
  *
  * 파일 version이 "brands.v1"이면 브랜드 먼저 인입이다 — 부스 없이 브랜드와 참가 사실,
  * 비어 있는 프로필 칸만 넣는다(lib/intake/brands-plan.ts, docs/decisions/2026-11-10_브랜드-먼저-인입.md).
+ *
+ * 행사 행 파일(`data/exhibitions/*.json`, exhibition.v1)이면 행사 행 하나를 만든다. 같은 slug가 이미 있으면
+ * 미리보기에 "이미 있어요"를 보이고 적용을 막는다 — 덮어쓰지 않는다(lib/intake/exhibition-file.ts,
+ * docs/decisions/2026-11-22_행사-행-인입.md).
  */
 export async function POST(req: Request) {
   const denied = await requireAdmin();
@@ -27,6 +32,16 @@ export async function POST(req: Request) {
   const { file: anyFile, apply, overwrite } = parsed.data;
 
   const repo = await getRepository();
+  if ("slug" in anyFile) {
+    const plan = await planExhibitionFromRepository(repo, anyFile);
+    if (!apply) return ok({ kind: "exhibition", plan, applied: null });
+    if (plan.status === "exists") {
+      const message = `이미 있는 행사예요(${plan.existingId}). 덮어쓰지 않아요`;
+      return fail("CONFLICT", message, { slug: [message] });
+    }
+    const exhibition = await repo.createExhibition(plan.exhibition);
+    return ok({ kind: "exhibition", plan, applied: { id: exhibition.id, slug: exhibition.slug } });
+  }
   if (anyFile.version === "brands.v1") {
     const planned = await planBrandsFromRepository(repo, anyFile);
     if (!planned.ok) return notFound(planned.message);

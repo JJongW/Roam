@@ -51,14 +51,12 @@ npm run intake:backup -- moongu-2026-winter --label before-fair
 ## 2. 행사 행 만들기 (운영 쓰기, Ted)
 
 ```bash
-npm run intake:dry-run -- data/exhibitions/moongu-2026-winter.json   # "형식 통과, 운영에 아직 없어요"
+npm run intake:dry-run -- data/exhibitions/moongu-2026-winter.json   # "형식 통과, 새로 만들어요"
 ```
 
-어드민 행사 만들기 화면은 한글 이름에서 slug를 만들어 `moongu-2026-winter`가 안 된다. 로그인된 `https://roam.ai.kr/admin` 탭 개발자 도구 콘솔에서:
-
-```js
-await fetch("/api/exhibitions", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(/* data/exhibitions/moongu-2026-winter.json 내용 */) }).then((r) => r.json());
-```
+`/admin/intake`에 `data/exhibitions/moongu-2026-winter.json`을 올린다. 미리보기에 "새로 만들어요"와 slug `moongu-2026-winter`,
+이름, 장소(킨텍스 제2전시장 6홀), 날짜, 안내 문구가 파일대로 나오는지 보고 "적용"을 누른다. 이미 있으면 "이미 있어요(<id>)"가 뜨고
+적용이 막힌다. 개발자 도구 콘솔에 `fetch`를 붙여 넣는 방법은 쓰지 않는다(2026-11-22).
 
 같은 dry-run을 다시 돌려 "이미 있어요(<id>)"를 본다. `mapWidth`, `mapHeight` 1214x1806은 6홀 CAD(60.7x90.3m)를 1m=20으로 환산한 임시값이다.
 

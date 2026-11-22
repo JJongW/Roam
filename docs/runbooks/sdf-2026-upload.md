@@ -11,7 +11,7 @@ _Ted 결정(11-17, 11-19): 배치도가 나오면 행사, 브랜드, 부스를 �
 | 파일 | 내용 | 상태 |
 |---|---|---|
 | `data/brands/sdf-2026.json` | brands.v1 146곳(11-22 다시 받음, 11-19보다 6곳 늘어남: 토마스스튜디오, 코발트사회적협동조합, 모비오, 스튜디오 오그루, 유림 / 데일웍스, 다정한 유리). 부스 없음 | 운영 대조 끝(11-22) |
-| `data/exhibitions/sdf-2026.json` | 행사 행 본문(`POST /api/exhibitions`) | 형식 통과, 운영에 없음 |
+| `data/exhibitions/sdf-2026.json` | 행사 행 파일(`/admin/intake`에 올림) | 형식 통과, 운영에 없음 |
 | `scripts/sdf-floorplan-watch.mjs` | 배치도 올라왔는지 공식 사이트만 본다 | |
 | `scripts/intake-dry-run.ts` | 세 파일 모두 운영 미리보기(읽기만) | |
 | `scripts/intake-backup.ts` | 적용 전 운영 값 백업(읽기만) | |
@@ -87,15 +87,13 @@ npm run intake:backup -- sdf-2026 --label before-upload
 ## 5. 행사 행 만들기 (운영 쓰기, Ted)
 
 ```bash
-npm run intake:dry-run -- data/exhibitions/sdf-2026.json   # "형식 통과, 운영에 아직 없어요"를 본다
+npm run intake:dry-run -- data/exhibitions/sdf-2026.json   # "형식 통과, 새로 만들어요"를 본다
 ```
 
-어드민 행사 만들기 화면은 한글 이름에서 slug를 만들어 `sdf-2026`이 안 된다(새해준비상점 때 `n-27`).
-로그인된 `https://roam.ai.kr/admin` 탭의 개발자 도구 콘솔에서 파일 내용을 그대로 보낸다.
-
-```js
-await fetch("/api/exhibitions", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(/* data/exhibitions/sdf-2026.json 내용 */) }).then((r) => r.json());
-```
+`/admin/intake`에 `data/exhibitions/sdf-2026.json`을 올린다. 미리보기에 "새로 만들어요"와 slug `sdf-2026`, 이름, 장소,
+날짜, 안내 문구가 파일대로 나오는지 보고 "적용"을 누른다. 형식이 틀리면 틀린 칸이 뜨고 아무것도 보내지 않는다.
+같은 slug가 이미 있으면 "이미 있어요(<id>)"가 뜨고 적용 버튼이 막힌다(덮어쓰지 않는다).
+개발자 도구 콘솔에 `fetch`를 붙여 넣는 방법은 쓰지 않는다(2026-11-22).
 
 같은 dry-run을 다시 돌려 "이미 있어요(<id>)"가 나오는지 본다.
 
