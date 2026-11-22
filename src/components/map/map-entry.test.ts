@@ -13,14 +13,15 @@ import {
 // iOS `MapEntryTests`와 같은 사례.
 describe("지도 진입 배율·자리", () => {
   it("부스 글자 크기는 짧은 변의 1/5.5, 7~26 사이다", () => {
-    expect(labelBase(110, 55)).toBe(10);
+    // 비율은 토큰 ratio.map-booth-name(0.181818, 소수 여섯째 자리)이라 1/5.5와 1e-6 안쪽으로 같다.
+    expect(labelBase(110, 55)).toBeCloseTo(10, 4);
     expect(labelBase(20, 20)).toBe(7);
     expect(labelBase(400, 400)).toBe(26);
   });
 
   it("가장 작은 칸 하나에 끌려가지 않는다 — 가운데값 기준", () => {
     const sizes = [{ w: 20, h: 20 }, ...Array(4).fill({ w: 55, h: 55 }), { w: 900, h: 900 }];
-    expect(medianLabelBase(sizes)).toBe(10);
+    expect(medianLabelBase(sizes)).toBeCloseTo(10, 4);
   });
 
   it("이미 읽히는 도면은 맞춤 배율 아래로 줄이지 않는다", () => {

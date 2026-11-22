@@ -10,16 +10,16 @@
  * iOS `RoamKit/Features/Map/MapEntry.swift`와 같은 규칙이다.
  */
 import type { Floorplan } from "@/lib/floorplans";
-import { CODE_RATIO } from "./booth-label";
+import { CODE_RATIO, labelBaseUnits } from "./booth-label";
 
 /** 코드(작은 줄)가 이보다 작으면 읽히지 않는다. */
 export const READABLE_CODE_PX = 11;
 /** 들어올 때 화면 아래에서 비워 둘 몫 — 하단 칩·카드가 이만큼을 덮는다. */
 export const BOTTOM_RESERVE_RATIO = 0.3;
 
-/** 부스 하나의 이름 글자 크기(도면 단위). 짧은 변의 1/5.5, 7~26. */
+/** 부스 하나의 이름 글자 크기(도면 단위). 짧은 변의 1/5.5, 7~26(토큰 `ratio.map-booth-name*`). */
 export function labelBase(w: number, h: number): number {
-  return Math.min(Math.max(Math.min(w, h) / 5.5, 7), 26);
+  return labelBaseUnits(w, h);
 }
 
 /** 가운데값 부스의 이름 글자 크기. 가장 작은 칸에 맞추면 칸 하나 때문에 도면
