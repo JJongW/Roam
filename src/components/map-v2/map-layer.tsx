@@ -8,11 +8,12 @@ import {
   zoomLevel,
 } from "@/components/map/map-camera";
 import {
-  CODE_LINE_HEIGHT,
   CODE_RATIO,
   labelBaseUnits,
+  labelInner,
   layoutBoothLabel,
   NAME_LINE_HEIGHT,
+  NAME_WIDTH,
 } from "@/components/map/booth-label";
 import { V2_NUM, V2_PX } from "@/styles/v2/lengths.generated";
 import { entranceMarkers, wcMarkers } from "./map-markers";
@@ -268,7 +269,15 @@ const BoothCell = memo(function BoothCell({
             fallbackLevel={fitLevel ?? 0}
           />
         ) : (
-          <CellLabel booth={b} w={w} h={h} color={text} selected={isSel} />
+          <CellLabel
+            booth={b}
+            cellW={g.w}
+            cellH={g.h}
+            w={w}
+            h={h}
+            color={text}
+            selected={isSel}
+          />
         )}
         {visited && (
           <VisitedCheck
@@ -393,26 +402,36 @@ function VisitedCheck({
   );
 }
 
+/**
+ * 보통 칸과 편의시설 칸 이름표. 글자 크기와 줄은 iOS `BoothNameLabel`과 같은 토큰 규칙이다(헤더 11-22,
+ * UI 21 A): 기준 크기는 점유 칸(`cellW`×`cellH`, 틈 빼기 전)으로 재고, 쓰는 폭은 안쪽 × `ratio.map-booth-name-width`.
+ * 하트 칸(heart-cell.ts)과 같은 규칙이라 옆 칸과 이름 크기가 같다. `w`×`h`는 그리는 칸(자리 잡기용).
+ */
 function CellLabel({
   booth,
+  cellW,
+  cellH,
   w,
   h,
   color,
   selected,
 }: {
   booth: BoothListItem;
+  cellW: number;
+  cellH: number;
   w: number;
   h: number;
   color: string;
   selected: boolean;
 }) {
-  const base = labelBaseUnits(w, h);
+  const base = labelBaseUnits(cellW, cellH);
+  const inner = labelInner(cellW, cellH);
   const center = booth.kind === "facility";
   const layout = layoutBoothLabel(
     booth.name,
     base,
-    w * 0.86,
-    h - (center ? 0 : base * CODE_RATIO * CODE_LINE_HEIGHT),
+    inner.w * NAME_WIDTH,
+    inner.h,
     !center && !!booth.code,
   );
   const lineH = layout.fontSize * NAME_LINE_HEIGHT;
