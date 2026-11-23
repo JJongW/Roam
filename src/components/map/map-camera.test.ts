@@ -8,6 +8,8 @@ import {
   footprint,
   fromContent,
   isRotated,
+  NORTH_SNAP_DEG,
+  shouldSnapNorth,
   labelQuarter,
   pointInRect,
   screenToWorld,
@@ -365,6 +367,16 @@ describe("지도 돌리기(2026-11-23) — 카메라 각도 변환", () => {
     expect(isRotated(0)).toBe(false);
     expect(isRotated(720)).toBe(false);
     expect(isRotated(3)).toBe(true);
+  });
+
+  it("손을 뗄 때 처음 방향에서 7도 안이면 0도에 붙인다(iOS, Mapbox bearingSnap)", () => {
+    expect(NORTH_SNAP_DEG).toBe(7);
+    expect(shouldSnapNorth(6.9)).toBe(true);
+    expect(shouldSnapNorth(-7)).toBe(true);
+    expect(shouldSnapNorth(355)).toBe(true);
+    expect(shouldSnapNorth(7.5)).toBe(false);
+    expect(shouldSnapNorth(0)).toBe(false);
+    expect(shouldSnapNorth(360)).toBe(false);
   });
 
   it("이름표 사분면: 45도를 넘으면 가로세로를 바꿔 나눈다", () => {

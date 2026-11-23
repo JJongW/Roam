@@ -257,8 +257,8 @@ export const label = {
   zoomIn: "지도 확대",
   zoomOut: "지도 축소",
   hallSwitch: "홀 바꾸기",
-  /** 나침반 단추(2026-11-23). 돌린 지도를 배치도 방향으로 되돌린다. iOS 설정 줄 이름 "지도 방향"과 맞춘다. */
-  mapOrientationReset: "지도 방향 되돌리기",
+  /** 나침반 단추(2026-11-23). 돌린 지도를 배치도 방향으로 되돌린다. iOS #228과 같은 문장. */
+  mapOrientationReset: "지도 처음 방향으로",
   /** 6 평가 칩. 판단 어휘(02_voice-tone §5) */
   verdict: { good: "좋았어요", ok: "그저 그랬어요", bad: "아니었어요" },
   later: "나중에 할게요",

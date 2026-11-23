@@ -1268,11 +1268,21 @@ export function FairMapScreen({
                   />
                 </span>
               )}
-              {/* 나침반은 돌린 동안만 홀 버튼 옆에 선다(2026-11-23). 홀 목록이 펼쳐져도 위에 맞춰 둔다. */}
-              <div className="flex items-start gap-v2-x2">
+              {/* 나침반은 돌린 동안만 홀 버튼 아래에 선다(iOS #228). 홀 버튼이 없으면 그 자리다. 홀 버튼 아래일 때는
+                  줄 높이를 바꾸지 않게 띄워서(날짜 알약이 홀 버튼과 계속 나란하다), 홀 목록이 펼쳐지면 그 아래로 밀린다. */}
+              <div className="relative flex flex-col items-end">
+                <HallSwitch
+                  halls={hallNames}
+                  current={hall}
+                  onPick={pickHall}
+                  className="pointer-events-auto"
+                />
                 <MapCompass
                   mapRef={mapRef}
-                  className="pointer-events-auto"
+                  className={clsx(
+                    "pointer-events-auto",
+                    hallNames.length >= 2 && "absolute right-0 top-full mt-v2-x2",
+                  )}
                   onPress={() =>
                     track("map_control", {
                       screen: SCREEN.map,
@@ -1280,12 +1290,6 @@ export function FairMapScreen({
                       props: { control: "compass" },
                     })
                   }
-                />
-                <HallSwitch
-                  halls={hallNames}
-                  current={hall}
-                  onPick={pickHall}
-                  className="pointer-events-auto"
                 />
               </div>
             </div>

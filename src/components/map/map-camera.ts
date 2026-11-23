@@ -411,6 +411,17 @@ export function isRotated(deg: number, epsDeg = 0.05): boolean {
 }
 
 /**
+ * 손을 뗄 때 처음 방향에서 이만큼(도) 안이면 0도에 붙인다. iOS(Roam-ios #228)와 같고 Mapbox GL `bearingSnap`
+ * 기본값(7)이다. 돌리기 시작 문턱(12도)과는 따로다.
+ */
+export const NORTH_SNAP_DEG = 7;
+
+/** 손 뗀 각도가 처음 방향에 붙일 만큼 가까운지(이미 정확히 0이면 false). */
+export function shouldSnapNorth(deg: number): boolean {
+  return isRotated(deg) && Math.abs(deg - uprightAngle(deg)) <= NORTH_SNAP_DEG;
+}
+
+/**
  * 이름표를 칸 모양에 맞출 사분면(0~3). 글자는 늘 바로 서지만 칸은 지도와 같이 돌므로, 90도 근처에서는
  * 칸의 가로세로가 화면에서 바뀐다. 이름표는 가장 가까운 사분면이 홀수면 칸의 가로세로를 바꿔 줄을 나눈다.
  */

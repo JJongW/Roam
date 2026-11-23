@@ -50,6 +50,7 @@ import {
   releaseVelocity,
   sameCamera,
   screenToWorld,
+  shouldSnapNorth,
   toContent as toContentAt,
   uprightAngle,
   UPRIGHT_ATTR,
@@ -1048,6 +1049,11 @@ export function ExhibitionMap({
           moveStartFired.current = false;
           onMoveEnd?.();
         }
+        // 처음 방향에서 7도 안이면 0도에 붙인다(NORTH_SNAP_DEG).
+        if (shouldSnapNorth(rotationRef.current)) {
+          resetRotation();
+          return;
+        }
         setMoving(false);
         persistView();
         return;
@@ -1527,6 +1533,13 @@ export function ExhibitionMap({
       onMoveEnd?.();
     }
     if (moved) {
+      // 돌리기를 놓았는데 처음 방향에서 7도 안이면 0도에 붙인다(NORTH_SNAP_DEG, iOS #228, Mapbox bearingSnap).
+      // 돌리기는 12도를 넘어야 시작하므로 이 범위의 각도는 방금 돌린 손짓에서만 생긴다.
+      if (shouldSnapNorth(rotationRef.current)) {
+        samples.current = [];
+        resetRotation();
+        return;
+      }
       // 관성은 끌기에만 붙는다. 확대와 돌리기(두 손가락, 데스크톱 돌리기)는 손 뗀 자리에 멈춘다(iOS 973aa3f와 같다).
       settleAfterRelease(
         wasPan
