@@ -34,13 +34,27 @@ import {
   readableScale,
 } from "./map-entry";
 import {
+  angleDelta,
+  cameraKeeping,
+  cameraTransform,
   cubicBezier,
+  fingerAngle,
   flingOffset,
   flingSettled,
+  footprint as footprintAt,
+
   interpolateCamera,
+  labelQuarter,
+  pointInRect,
   readMapMotion,
   releaseVelocity,
   sameCamera,
+  screenToWorld,
+  shouldSnapNorth,
+  toContent as toContentAt,
+  uprightAngle,
+  UPRIGHT_ATTR,
+  uprightTransform,
   zoomLevel,
   ZOOM_LEVEL_VAR,
   type Camera,
@@ -52,6 +66,23 @@ import {
 /** 손 뗀 속도를 잴 때 보는 마지막 표본 폭(ms). 디자인 값이 아니라 입력 거르기 폭이다 — 이보다
  *  오래 멈춰 있다가 놓으면 미끄러지지 않는다. */
 const VELOCITY_WINDOW_MS = 100;
+
+/** 두 손가락 돌리기가 시작되는 각도(도). 확대하려고 벌릴 때 손가락 선이 조금 기우는 것으로 지도가 돌지 않게
+ *  거르는 입력 폭이다(디자인 값 아님). 넘은 뒤에는 넘은 자리부터 돌아 튀지 않는다. 구글 지도, 애플 지도처럼
+ *  돌리려고 마음먹고 비틀어야 돈다. */
+const ROTATE_START_DEG = 12;
+
+/** 데스크톱 오른쪽 단추 끌기, Ctrl 끌기에서 가로 1px당 도는 각도. Mapbox GL과 MapLibre의
+ *  `bearingDegreesPerPixelMoved`(0.8)와 같다 — 입력 감도라 디자인 값이 아니다. */
+const MOUSE_DEG_PER_PX = 0.8;
+
+/** 사파리 트랙패드 비틀기(gesturechange)의 비표준 필드. 표준 DOM 타입에 없다. */
+interface SafariGestureEvent extends UIEvent {
+  rotation: number;
+  scale: number;
+  clientX: number;
+  clientY: number;
+}
 
 // Fallback booth box when no floorplan geometry is supplied.
 const BOOTH_W = 72;
@@ -129,8 +160,9 @@ export interface MapLayerContext {
   geomOf: (b: BoothListItem) => MapRect | null;
   /** 홀 바닥판(도면 또는 부스 범위). */
   hallRegions: { label: string; x: number; y: number; w: number; h: number }[];
-  /** 지도가 돌아가도 글자가 서 있게 하는 변환. 0도면 undefined. */
-  upright: (ax: number, ay: number) => string | undefined;
+  /** 지도가 멈춘 각도의 가장 가까운 사분면(0~3, `labelQuarter`). 글자는 엔진이 각도마다 적는 transform(`uprightAnchor`)으로 늘 바로
+   *  서고, 이 값이 홀수면 이름표를 칸의 가로세로를 바꿔 나눈다. 지도가 멈출 때만 바뀐다. */
+  labelQuarter: number;
   selectedId?: string | null;
   /** 마지막으로 맞춘(들어올 때, 전체 보기) 배율. 사용자가 확대하면 바뀌지 않는다. 길잡이 표식(출입구,
    *  화장실)이 이 배율에서 읽히는 크기가 되게 쓴다. 맞추기 전에는 undefined. */
@@ -143,8 +175,12 @@ export interface MapHandle {
   zoomOut: () => void;
   reset: () => void;
   /** 도면 상자 하나를 화면에 맞춘다(홀 바꾸기). x, y는 왼쪽 위. */
-  /** 지금 화면 가운데의 도면 좌표(회전 0 기준). 편의시설 칩이 가장 가까운 곳을 고를 때 쓴다. */
+  /** 지금 화면 가운데의 도면 좌표(돌린 각도를 풀어서). 편의시설 칩이 가장 가까운 곳을 고를 때 쓴다. */
   viewCenter: () => { x: number; y: number } | null;
+  /** 처음 방향(배치도 방향, 0도)으로 짧은 쪽으로 돌아온다. 화면 가운데 자리는 그대로 둔다(나침반 단추). */
+  resetRotation: () => void;
+  /** 지도 각도가 바뀔 때마다 부른다(나침반 아이콘). 리렌더 없이 받으려고 구독으로 둔다. 해지 함수를 돌려준다. */
+  onRotation: (fn: (deg: number) => void) => () => void;
   focusRect: (
     r: { x: number; y: number; w: number; h: number },
     /** atFit: 배율은 맞춘 배율(들어올 때) 그대로 두고 그 자리로 옮기기만 한다(편의시설 칩). 줄이면
@@ -332,12 +368,13 @@ export function ExhibitionMap({
   // (chrome show/hide, status chips appearing) — keep their chosen view.
   const userAdjusted = useRef(!!savedView);
   const moveStartFired = useRef(false);
-  // Map view rotation in 90° steps. Stored as an ever-increasing degree count so
-  // each press animates forward a quarter turn (270°→360°, not 270°→0°). The
-  // whole map (booths + their labels) rotates rigidly, so nothing overflows its
-  // box; footprint() uses this mod 180 to know if width/height are swapped.
+  // 지도 각도(도). 두 손가락 돌리기, 나침반, (v1) 90도 단추가 바꾼다. 한 바퀴를 넘어도 그대로 쌓고
+  // (나침반은 uprightAngle로 가장 가까운 360의 배수로 돌아온다), 처음 열 때는 0이다(배치도 방향, 11-16).
   const rotationRef = useRef(savedView?.rotation ?? 0);
+  // 멈춘 각도. 움직이는 동안엔 바뀌지 않는다 — 글자는 CSS 변수로 매 프레임 서고, 이 값은 이름표 사분면(가로세로
+  // 바꿔 나누기)과 v1 그림의 transform 속성에만 쓴다. 그래서 돌리는 동안 부스 층을 다시 그리지 않는다.
   const [rotation, setRotation] = useState(savedView?.rotation ?? 0);
+  const rotationListeners = useRef(new Set<(deg: number) => void>());
   const persistView = useCallback(() => {
     if (!mapViewStorageKey || typeof window === "undefined") return;
     try {
@@ -354,14 +391,13 @@ export function ExhibitionMap({
     }
   }, [mapViewStorageKey]);
   const restoredView = useRef(!!savedView);
-  // Counter-rotate a label around its own anchor so it stays upright (readable)
-  // while the map turns — the anchor is the pivot, so the text doesn't drift,
-  // only its orientation is cancelled. Returns undefined at 0° (no transform).
+  // v1 그림: 글자를 자기 자리를 축으로 거꾸로 돌려 바로 세운다(멈춘 각도 기준). v2 층은 CSS 변수로 선다.
   const upright = useCallback(
     (ax: number, ay: number): string | undefined =>
       rotation % 360 === 0 ? undefined : `rotate(${-rotation} ${ax} ${ay})`,
     [rotation],
   );
+  const quarter = labelQuarter(rotation);
 
   // Vertical pan target that keeps a focused booth above the bottom popup.
   // Portrait: shift up by half the popup inset (capped so it never overshoots);
@@ -391,6 +427,7 @@ export function ExhibitionMap({
         kind: "curve";
         from: Camera;
         to: Camera;
+        turn?: Parameters<typeof interpolateCamera>[3];
         start: number;
         duration: number;
         ease: Easing;
@@ -426,27 +463,45 @@ export function ExhibitionMap({
 
   // 지금 보이는 카메라를 DOM에 쓴다. 바뀌는 건 SVG의 transform 하나와(부스 층은 다시 그리지 않는다)
   // 라벨 단계 변수 하나(단계가 바뀔 때만)다.
+  const uprightRef = useRef<number | null>(null);
+  // 바로 세울 요소(층이 `uprightAnchor`로 표시한 것). 층이 다시 그려지면 비운다(아래 매 렌더 layout effect).
+  const uprightNodes = useRef<{ el: Element; anchor: string }[] | null>(null);
+  const writeUpright = useCallback((svg: SVGSVGElement, deg: number) => {
+    uprightNodes.current ??= [...svg.querySelectorAll(`[${UPRIGHT_ATTR}]`)].map(
+      (el) => ({ el, anchor: el.getAttribute(UPRIGHT_ATTR) ?? "" }),
+    );
+    for (const { el, anchor } of uprightNodes.current) {
+      const t = uprightTransform(anchor, deg);
+      if (t) el.setAttribute("transform", t);
+      else el.removeAttribute("transform");
+    }
+  }, []);
   const writeShown = useCallback(() => {
     const el = svgRef.current;
     if (!el) return;
-    const { scale, offset, rotation: deg } = shown.current;
-    const cx = width / 2;
-    const cy = height / 2;
-    // Pan → zoom → rotate-about-centre (transform-origin is 0 0, so the rotation
-    // is centred manually). Booth boxes and their labels rotate together.
-    el.style.transform = `translate(${offset.x}px, ${offset.y}px) scale(${scale}) translate(${cx}px, ${cy}px) rotate(${deg}deg) translate(${-cx}px, ${-cy}px)`;
+    const { scale, rotation: deg } = shown.current;
+    // 이동 → 확대 → 돌리기. 내용 좌표 정의(map-camera `toContent`)와 같은 식이다.
+    el.style.transform = cameraTransform(shown.current, { w: width, h: height });
     const level = zoomLevel(scale);
     if (level !== zoomLevelRef.current) {
       zoomLevelRef.current = level;
       el.style.setProperty(ZOOM_LEVEL_VAR, String(level));
     }
-  }, [width, height]);
+    // 각도가 바뀔 때만 적는다. 이동과 확대만 할 때는 글자를 건드리지 않는다.
+    if (deg !== uprightRef.current) {
+      uprightRef.current = deg;
+      writeUpright(el, deg);
+      for (const fn of rotationListeners.current) fn(deg);
+    }
+  }, [width, height, writeUpright]);
 
   // 움직이는 동안만 합성 층으로 올린다. 늘 `will-change: transform`이면 브라우저가 처음 그린 비트맵을
   // 키워 보여서 확대한 뒤 글자가 흐리다. 멈추면 풀어서 그 배율로 선명하게 다시 그린다.
   const setMoving = useCallback((on: boolean) => {
     const el = svgRef.current;
     if (el) el.style.willChange = on ? "transform" : "auto";
+    // 멈췄을 때만 각도를 React 상태로 올린다(이름표 사분면). 같은 값이면 React가 다시 그리지 않는다.
+    if (!on) setRotation(shown.current.rotation);
   }, []);
 
   // 진행 중인 이동을 지금 보이는 자리에서 멈추고 목표를 그 자리로 맞춘다(손이 닿으면 거기서 잡는다).
@@ -455,7 +510,7 @@ export function ExhibitionMap({
     frame.current = null;
     if (!anim.current) return;
     anim.current = null;
-    shown.current = { ...shown.current, rotation: rotationRef.current };
+    rotationRef.current = shown.current.rotation;
     view.current = { scale: shown.current.scale, offset: shown.current.offset };
     writeShown();
   }, [writeShown]);
@@ -467,16 +522,31 @@ export function ExhibitionMap({
       const spec = m ? (kind === "move" ? m.move : m.settle) : null;
       if (!spec || !(spec.duration > 0) || !spec.curve) return null;
       if (sameCamera(shown.current, to)) return null;
+      // 각도가 바뀌는 이동은 도착 화면 가운데의 도면 점을 축으로 돈다(그 점이 화면에서 곧게 간다).
+      const el = containerRef.current;
+      const size = { w: width, h: height };
+      const turn =
+        el && to.rotation !== shown.current.rotation
+          ? {
+              size,
+              pivot: screenToWorld(
+                { x: el.clientWidth / 2, y: el.clientHeight / 2 },
+                to,
+                size,
+              ),
+            }
+          : undefined;
       return {
         kind: "curve" as const,
         from: shown.current,
         to,
+        turn,
         start: performance.now(),
         duration: spec.duration,
         ease: cubicBezier(spec.curve),
       };
     },
-    [readMotion],
+    [readMotion, width, height],
   );
 
   /** 루프가 안 돌고 있으면 돌린다. 돌고 있으면 바뀐 anim을 다음 프레임부터 이어 받는다. */
@@ -498,7 +568,7 @@ export function ExhibitionMap({
       if (a.kind === "curve") {
         const t = Math.min(1, Math.max(0, (now - a.start) / a.duration));
         shown.current =
-          t >= 1 ? a.to : interpolateCamera(a.from, a.to, a.ease(t));
+          t >= 1 ? a.to : interpolateCamera(a.from, a.to, a.ease(t), a.turn);
         writeShown();
         if (t < 1) frame.current = requestAnimationFrame(loop);
         else finish();
@@ -507,6 +577,7 @@ export function ExhibitionMap({
       const r = a.step(now);
       shown.current = r.cam;
       view.current = { scale: r.cam.scale, offset: r.cam.offset };
+      rotationRef.current = r.cam.rotation;
       writeShown();
       if (!r.done) {
         frame.current = requestAnimationFrame(loop);
@@ -590,15 +661,22 @@ export function ExhibitionMap({
   // Active touch/mouse points for pan (1) + pinch (2) gestures.
   const pointers = useRef<Map<number, Point>>(new Map());
   const gesture = useRef<{
-    mode: "pan" | "pinch";
+    /** pan = 한 손가락 끌기, pinch = 두 손가락 확대, 이동, 돌리기, spin = 데스크톱 오른쪽 단추나 Ctrl 끌기로 돌리기. */
+    mode: "pan" | "pinch" | "spin";
     startOffset: Point;
     startScale: number;
     startDist: number;
-    /** Pinch focal point in world (map) coordinates. */
+    /** 핀치(와 spin)의 축이 되는 도면 점(돌린 각도를 푼 도면 좌표). 그 점이 손가락 가운데(spin은 화면 가운데)를 따라간다. */
     focalWorld: Point;
     /** Pan: pointer position at gesture start (container coords). */
     startPoint: Point;
     moved: boolean;
+    /** 시작할 때 지도 각도. */
+    startRotation: number;
+    /** 두 손가락 선의 처음 각도. 돌리기가 시작되면(ROTATE_START_DEG를 넘으면) 그 자리 각도로 바꾼다. */
+    startAngle: number;
+    /** 돌리기가 시작됐는지. 시작 전엔 확대와 이동만 한다. */
+    rotating: boolean;
   } | null>(null);
   const lastTap = useRef<{ t: number; x: number; y: number }>({
     t: 0,
@@ -615,44 +693,20 @@ export function ExhibitionMap({
     [],
   );
 
-  // Axis-aligned footprint of the (possibly rotated) map, in world units. At 90°
-  // / 270° the width and height swap — fit + clamp use this to frame and bound
-  // the rotated map correctly. Rotation always pivots about the map centre, so
-  // that centre stays fixed regardless of angle.
-  const footprint = useCallback(() => {
-    const r = ((rotationRef.current % 180) + 180) % 180;
-    return r === 90 ? { fw: height, fh: width } : { fw: width, fh: height };
-  }, [width, height]);
+  // 지금 각도로 돌린 도면을 감싸는 축 정렬 상자(도면 단위). 맞추기와 가두기는 이 상자 하나로 계산한다 —
+  // 내용 좌표가 이 상자의 왼쪽 위를 0으로 두기 때문이다(map-camera `toContent`). 어느 각도든 같은 식이다.
+  const footprint = useCallback(
+    () => footprintAt({ w: width, h: height }, rotationRef.current),
+    [width, height],
+  );
 
-  // World ↔ rotated-content mapping. The CSS transform rotates the map about its
-  // centre, so pan/zoom (screen-space) stay correct, but anything mapping a
-  // booth's world x/y to the screen — tap hit-testing, centre-on — must apply
-  // the same rotation. `toContent` rotates a world point into the post-rotation
-  // frame; `fromContent` inverts it.
-  const spin = (dx: number, dy: number, deg: number): Point => {
-    const a = (deg * Math.PI) / 180;
-    const c = Math.cos(a);
-    const s = Math.sin(a);
-    return { x: dx * c - dy * s, y: dx * s + dy * c };
-  };
+  // 도면 좌표 ↔ 내용 좌표. 부스의 도면 x, y를 화면에 잇는 곳(누르기 판정, 부스로 가기, 입구 맞추기)은 모두 이걸 지난다.
   const toContent = useCallback(
-    (w: Point): Point => {
-      const cx = width / 2;
-      const cy = height / 2;
-      const r = spin(w.x - cx, w.y - cy, rotationRef.current);
-      return { x: cx + r.x, y: cy + r.y };
-    },
+    (w: Point): Point =>
+      toContentAt(w, { w: width, h: height }, rotationRef.current),
     [width, height],
   );
-  const fromContent = useCallback(
-    (p: Point): Point => {
-      const cx = width / 2;
-      const cy = height / 2;
-      const r = spin(p.x - cx, p.y - cy, -rotationRef.current);
-      return { x: cx + r.x, y: cy + r.y };
-    },
-    [width, height],
-  );
+
 
   // Booth geometry: from the floorplan (by code) when available, else a
   // uniform fallback box at the booth's stored x/y.
@@ -832,14 +886,14 @@ export function ExhibitionMap({
         : fillHeight
           ? Math.max(contain, (ch / fh) * 0.92)
           : contain;
-      // Centre formula pivots on the map centre (width/2,height/2) — the same
-      // point the rotation turns about — so it holds at every angle.
-      const cx = focus
-        ? focus.x
+      // 가운데는 내용 좌표로 잡는다(돌린 도면을 감싸는 상자의 가운데가 도면 가운데다).
+      const fc = focus ? toContent(focus) : null;
+      const cx = fc
+        ? fc.x
         : fillBand && floorplan
           ? toContent(entryPoint(floorplan)).x
-          : width / 2;
-      const cy = focus ? focus.y : height / 2;
+          : fw / 2;
+      const cy = fc ? fc.y : fh / 2;
       const scaledH = fh * s;
       view.current = {
         scale: s,
@@ -885,20 +939,35 @@ export function ExhibitionMap({
     ],
   );
 
-  // The explicit "전체 보기" control: drop the user-adjusted lock and re-fit —
-  // rotation included, since "전체 보기" reads as "처음 화면으로". Turn the short
-  // way to the nearest upright angle (90°→0°, 270°→360°) — never three
-  // quarter-turns.
+  // "전체 보기"(웹 v2는 홀 버튼의 "전체"): 사용자가 움직였다는 잠금을 풀고 다시 맞춘다. 각도는 그대로 둔다 —
+  // 다른 지도 앱처럼 방향을 되돌리는 건 나침반 하나다(2026-11-23). 돌린 도면을 감싸는 상자에 맞춘다.
   const resetView = useCallback(() => {
-    const upright = Math.round(rotationRef.current / 360) * 360;
-    if (upright !== rotationRef.current) {
-      rotationRef.current = upright;
-      setRotation(upright);
-    }
     userAdjusted.current = false;
     lastFocus.current = null;
     fit(true, true);
   }, [fit]);
+
+  // 나침반: 처음 방향(가장 가까운 360의 배수)으로 짧은 쪽으로 돌아온다. 배율은 그대로, 화면 가운데의 도면 점을
+  // 축으로 돌아 보던 곳을 잃지 않는다. 길이와 곡선은 map-move 토큰(다른 프로그램 이동과 같다).
+  const resetRotation = useCallback(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const from = rotationRef.current;
+    const to = uprightAngle(from);
+    if (to === from) return;
+    const size = { w: width, h: height };
+    const s = view.current.scale;
+    const centre = { x: el.clientWidth / 2, y: el.clientHeight / 2 };
+    const pivot = screenToWorld(centre, targetCamera(), size);
+    rotationRef.current = to;
+    const cam = cameraKeeping(pivot, centre, s, to, size);
+    view.current = { scale: s, offset: clampOffset(cam.offset, s) };
+    lastFocus.current = null;
+    applyView(true);
+    persistView();
+    // targetCamera와 clampOffset은 매 렌더 새로 만들지 않는 ref와 콜백만 읽는다.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [width, height, applyView, persistView]);
 
   // Rotate the whole map a quarter-turn. Re-fit afterwards so the rotated map is
   // re-centred and scaled to the viewport — it can never spill off-screen, and
@@ -941,17 +1010,91 @@ export function ExhibitionMap({
   //     onWheel은 루트에 passive로 붙어 preventDefault가 먹지 않으므로 직접 건다.
   // 지도 밖에서는 확대가 그대로 된다 — 전역 user-scalable=no는 쓰지 않는다(iOS는
   // 무시하고, 글자를 키워야 하는 사용자를 앱 전체에서 막는다).
+  //  사파리 맥 트랙패드의 두 손가락 비틀기도 이 gesture 이벤트로만 온다(`rotation`, 도). 손가락이 지도에 닿아
+  //  있지 않을 때(포인터 0개)만 돌리기로 쓴다 — iOS 사파리는 터치 핀치에도 gesture 이벤트를 같이 보내는데, 그건
+  //  포인터 핀치가 이미 돌린다. 확대(`scale`)는 쓰지 않는다(트랙패드 확대는 휠 경로가 맡는다).
+  const trackpadTurn = useRef<
+    (phase: "start" | "change" | "end", e: SafariGestureEvent) => void
+  >(() => {});
+  const trackpadState = useRef<{
+    rot: number;
+    pivot: Point;
+    at: Point;
+    /** 돌리기가 시작된 순간의 e.rotation. 시작 전이면 null. */
+    from: number | null;
+  } | null>(null);
+  useLayoutEffect(() => {
+    trackpadTurn.current = (phase, e) => {
+      if (pointers.current.size > 0) return;
+      const el = containerRef.current;
+      if (!el) return;
+      const size = { w: width, h: height };
+      if (phase === "start") {
+        stopCamera();
+        const at = localPoint(e);
+        trackpadState.current = {
+          rot: rotationRef.current,
+          pivot: screenToWorld(at, targetCamera(), size),
+          at,
+          from: null,
+        };
+        return;
+      }
+      const st = trackpadState.current;
+      if (!st) return;
+      if (phase === "end") {
+        trackpadState.current = null;
+        if (st.from === null) return;
+        if (moveStartFired.current) {
+          moveStartFired.current = false;
+          onMoveEnd?.();
+        }
+        // 처음 방향에서 7도 안이면 0도에 붙인다(NORTH_SNAP_DEG).
+        if (shouldSnapNorth(rotationRef.current)) {
+          resetRotation();
+          return;
+        }
+        setMoving(false);
+        persistView();
+        return;
+      }
+      if (st.from === null) {
+        if (Math.abs(e.rotation) <= ROTATE_START_DEG) return;
+        st.from = e.rotation;
+        moveStartFired.current = false;
+      }
+      beginMove();
+      rotationRef.current = st.rot + (e.rotation - st.from);
+      const s = view.current.scale;
+      const cam = cameraKeeping(st.pivot, st.at, s, rotationRef.current, size);
+      view.current = { scale: s, offset: clampOffset(cam.offset, s) };
+      applyView();
+    };
+  });
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
     const stop = (e: Event) => e.preventDefault();
-    el.addEventListener("gesturestart", stop);
-    el.addEventListener("gesturechange", stop);
+    const turn =
+      (phase: "start" | "change" | "end") => (e: Event) => {
+        e.preventDefault();
+        trackpadTurn.current(phase, e as SafariGestureEvent);
+      };
+    const onStart = turn("start");
+    const onChange = turn("change");
+    const onEnd = turn("end");
+    el.addEventListener("gesturestart", onStart);
+    el.addEventListener("gesturechange", onChange);
+    el.addEventListener("gestureend", onEnd);
     el.addEventListener("wheel", stop, { passive: false });
+    // 오른쪽 단추 끌기는 돌리기다(onPointerDown). 지도 위에서 메뉴가 뜨지 않게 한다.
+    el.addEventListener("contextmenu", stop);
     return () => {
-      el.removeEventListener("gesturestart", stop);
-      el.removeEventListener("gesturechange", stop);
+      el.removeEventListener("gesturestart", onStart);
+      el.removeEventListener("gesturechange", onChange);
+      el.removeEventListener("gestureend", onEnd);
       el.removeEventListener("wheel", stop);
+      el.removeEventListener("contextmenu", stop);
     };
   }, []);
 
@@ -960,6 +1103,10 @@ export function ExhibitionMap({
   // the current view after every render — cheap (one style write).
   useLayoutEffect(() => {
     reassertTransform();
+    // 층이 다시 그려졌을 수 있다(새로 생긴 이름표, 길 안내). 바로 세울 요소를 다시 모아 지금 각도를 적는다.
+    uprightNodes.current = null;
+    const svg = svgRef.current;
+    if (svg && renderLayer) writeUpright(svg, shown.current.rotation);
   });
 
   // Keep the map from disappearing off-screen, but don't pin edges flush to
@@ -1048,8 +1195,10 @@ export function ExhibitionMap({
       const ch = el.clientHeight;
       const c = toContent({ x: r.x + r.w / 2, y: r.y + r.h / 2 });
       const safe = band(ch);
+      // 돌린 지도에서는 상자도 같이 돈다 — 화면에서 차지하는 축 정렬 크기로 맞춘다(홀 맞춤, 부스 맞춤).
+      const rf = footprintAt({ w: r.w, h: r.h }, rotationRef.current);
       const want =
-        Math.min(cw / r.w, (safeInsets ? safe.h : ch) / r.h) * 0.92;
+        Math.min(cw / rf.fw, (safeInsets ? safe.h : ch) / rf.fh) * 0.92;
       if (opts?.atFit && fitScale) {
         // 맞춘 배율에 머문다. 들어올 때처럼 도면이 띠 밖으로 빈 곳을 보이지 않게 가둔다(여분 여백 없음).
         const { fw, fh } = footprint();
@@ -1108,21 +1257,29 @@ export function ExhibitionMap({
       zoomIn: () => zoomBy(1.25, undefined, true),
       zoomOut: () => zoomBy(0.8, undefined, true),
       reset: () => resetView(),
+      resetRotation: () => resetRotation(),
+      onRotation: (fn) => {
+        rotationListeners.current.add(fn);
+        fn(shown.current.rotation);
+        return () => {
+          rotationListeners.current.delete(fn);
+        };
+      },
       viewCenter: () => {
         const el = containerRef.current;
         if (!el) return null;
-        const { scale: sc, offset: o } = view.current;
-        return {
-          x: (el.clientWidth / 2 - o.x) / sc,
-          y: (el.clientHeight / 2 - o.y) / sc,
-        };
+        return screenToWorld(
+          { x: el.clientWidth / 2, y: el.clientHeight / 2 },
+          targetCamera(),
+          { w: width, h: height },
+        );
       },
       focusRect: (r, opts) => {
         lastFocus.current = { r, opts };
         focusTo(r, opts);
       },
     }),
-    [zoomBy, resetView, focusTo],
+    [zoomBy, resetView, resetRotation, focusTo, width, height],
   );
 
   // 떠 있는 것의 높이가 바뀌면(카드가 뜨고 칩 줄이 접히면) 띠를 새로 잡는다. 사용자가
@@ -1210,17 +1367,33 @@ export function ExhibitionMap({
     pointers.current.set(e.pointerId, p);
     const pts = [...pointers.current.values()];
     const { scale, offset } = view.current;
+    const size = { w: width, h: height };
+    const rot = rotationRef.current;
 
     if (pts.length === 1) {
       moveStartFired.current = false;
+      // 데스크톱: 오른쪽 단추 끌기나 Ctrl 끌기는 돌리기다(구글 지도, Mapbox, MapLibre와 같다).
+      // 화면 가운데를 축으로 가로로 끈 만큼 돈다.
+      const spinDrag =
+        e.pointerType === "mouse" &&
+        (e.button === 2 || e.ctrlKey);
+      const el = containerRef.current;
+      const centre = el
+        ? { x: el.clientWidth / 2, y: el.clientHeight / 2 }
+        : p;
       gesture.current = {
-        mode: "pan",
+        mode: spinDrag ? "spin" : "pan",
         startOffset: offset,
         startScale: scale,
         startDist: 0,
-        focalWorld: { x: 0, y: 0 },
+        focalWorld: spinDrag
+          ? screenToWorld(centre, targetCamera(), size)
+          : { x: 0, y: 0 },
         startPoint: p,
         moved: false,
+        startRotation: rot,
+        startAngle: 0,
+        rotating: spinDrag,
       };
     } else if (pts.length === 2) {
       const [a, b] = pts;
@@ -1230,12 +1403,12 @@ export function ExhibitionMap({
         startOffset: offset,
         startScale: scale,
         startDist: Math.hypot(a.x - b.x, a.y - b.y) || 1,
-        focalWorld: {
-          x: (mid.x - offset.x) / scale,
-          y: (mid.y - offset.y) / scale,
-        },
+        focalWorld: screenToWorld(mid, targetCamera(), size),
         startPoint: mid,
         moved: true,
+        startRotation: rot,
+        startAngle: fingerAngle(a, b),
+        rotating: false,
       };
     }
   }
@@ -1263,17 +1436,51 @@ export function ExhibitionMap({
         minScale(),
         maxScale(),
       );
+      // 돌리기: 손가락 선이 ROTATE_START_DEG 넘게 기울면 그 자리부터 돈다(넘는 순간 튀지 않게 기준을 옮긴다).
+      // 확대, 이동과 한 손짓이다 — 손가락 가운데 아래의 도면 점이 손가락을 따라가며 그 둘레로 돌고 커진다.
+      const angle = fingerAngle(a, b);
+      if (!g.rotating && Math.abs(angleDelta(g.startAngle, angle)) > ROTATE_START_DEG) {
+        g.rotating = true;
+        g.startAngle = angle;
+      }
+      const rot = g.rotating
+        ? g.startRotation + angleDelta(g.startAngle, angle)
+        : g.startRotation;
+      // 손가락 선이 ±180을 넘을 때 angleDelta가 한 바퀴 되돌지 않게, 지난 프레임 각도에서 이어 붙인다.
+      if (g.rotating) {
+        const prev = rotationRef.current;
+        rotationRef.current = prev + angleDelta(prev, rot);
+      }
       beginMove();
-      view.current = {
-        scale: next,
-        offset: clampOffset(
-          {
-            x: mid.x - g.focalWorld.x * next,
-            y: mid.y - g.focalWorld.y * next,
-          },
-          next,
-        ),
-      };
+      const cam = cameraKeeping(
+        g.focalWorld,
+        mid,
+        next,
+        rotationRef.current,
+        { w: width, h: height },
+      );
+      view.current = { scale: next, offset: clampOffset(cam.offset, next) };
+      applyView();
+    } else if (g.mode === "spin") {
+      const cur = pts[0];
+      const dx = cur.x - g.startPoint.x;
+      if (Math.abs(dx) > 4) {
+        g.moved = true;
+        beginMove();
+      }
+      if (!g.moved) return;
+      const el = containerRef.current;
+      if (!el) return;
+      rotationRef.current = g.startRotation + dx * MOUSE_DEG_PER_PX;
+      const s = view.current.scale;
+      const cam = cameraKeeping(
+        g.focalWorld,
+        { x: el.clientWidth / 2, y: el.clientHeight / 2 },
+        s,
+        rotationRef.current,
+        { w: width, h: height },
+      );
+      view.current = { scale: s, offset: clampOffset(cam.offset, s) };
       applyView();
     } else if (g.mode === "pan") {
       const cur = pts[0];
@@ -1311,6 +1518,9 @@ export function ExhibitionMap({
         focalWorld: { x: 0, y: 0 },
         startPoint: rest,
         moved: true,
+        startRotation: rotationRef.current,
+        startAngle: 0,
+        rotating: false,
       };
       samples.current = [];
       return;
@@ -1323,6 +1533,14 @@ export function ExhibitionMap({
       onMoveEnd?.();
     }
     if (moved) {
+      // 돌리기를 놓았는데 처음 방향에서 7도 안이면 0도에 붙인다(NORTH_SNAP_DEG, iOS #228, Mapbox bearingSnap).
+      // 돌리기는 12도를 넘어야 시작하므로 이 범위의 각도는 방금 돌린 손짓에서만 생긴다.
+      if (shouldSnapNorth(rotationRef.current)) {
+        samples.current = [];
+        resetRotation();
+        return;
+      }
+      // 관성은 끌기에만 붙는다. 확대와 돌리기(두 손가락, 데스크톱 돌리기)는 손 뗀 자리에 멈춘다(iOS 973aa3f와 같다).
       settleAfterRelease(
         wasPan
           ? releaseVelocity(samples.current, e.timeStamp, VELOCITY_WINDOW_MS)
@@ -1345,27 +1563,23 @@ export function ExhibitionMap({
         lastTap.current = { t: 0, x: 0, y: 0 };
       } else {
         lastTap.current = { t: now, x: p.x, y: p.y };
-        // Un-project the tap through pan/zoom, then un-rotate to world coords.
-        const world = fromContent({
-          x: (p.x - offset.x) / scale,
-          y: (p.y - offset.y) / scale,
-        });
+        // 누른 화면 점을 이동, 확대, 돌리기를 거꾸로 풀어 도면 점으로 바꾼다(map-camera `screenToWorld`).
+        const world = screenToWorld(
+          p,
+          { scale, offset, rotation: rotationRef.current },
+          { w: width, h: height },
+        );
         const mx = world.x;
         const my = world.y;
         // Prefer selecting the nearest booth within a finger-friendly radius.
         if (onSelect) {
-          // Point-in-rect hit test against each booth's actual box.
+          // 칸 자체 각도까지 따지는 칸 안 판정.
           let hit = "";
           let hitBooth: BoothListItem | undefined;
           for (const b of booths) {
             if (floorplan && !(b.code && rectByCode.has(b.code))) continue;
             const g = geomOf(b);
-            if (
-              mx >= g.x - g.w / 2 &&
-              mx <= g.x + g.w / 2 &&
-              my >= g.y - g.h / 2 &&
-              my <= g.y + g.h / 2
-            ) {
+            if (pointInRect(world, g)) {
               hit = b.id;
               hitBooth = b;
               break;
@@ -1539,11 +1753,11 @@ export function ExhibitionMap({
       floorplan,
       geomOf: layerGeomOf,
       hallRegions,
-      upright,
+      labelQuarter: quarter,
       selectedId,
       fitScale,
     }),
-    [width, height, booths, floorplan, layerGeomOf, hallRegions, upright, selectedId, fitScale],
+    [width, height, booths, floorplan, layerGeomOf, hallRegions, quarter, selectedId, fitScale],
   );
   const layer = useMemo(
     () => (renderLayer ? renderLayer(layerCtx) : undefined),

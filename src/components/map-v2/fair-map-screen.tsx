@@ -61,6 +61,7 @@ import { todayISO } from "@/lib/exhibition/current";
 import { useAuthStore } from "@/lib/stores/auth";
 import { BoothCardV2 } from "@/components/map-v2/booth-card";
 import { HallSwitch } from "@/components/map-v2/hall-switch";
+import { MapCompass } from "@/components/map-v2/map-compass";
 import { RomiAvatar } from "@/components/v2/romi-avatar";
 import { BackButton } from "@/components/v2/back-button";
 import { FLOORPLANS } from "@/lib/floorplans";
@@ -1267,12 +1268,30 @@ export function FairMapScreen({
                   />
                 </span>
               )}
-              <HallSwitch
-                halls={hallNames}
-                current={hall}
-                onPick={pickHall}
-                className="pointer-events-auto"
-              />
+              {/* 나침반은 돌린 동안만 홀 버튼 아래에 선다(iOS #228). 홀 버튼이 없으면 그 자리다. 홀 버튼 아래일 때는
+                  줄 높이를 바꾸지 않게 띄워서(날짜 알약이 홀 버튼과 계속 나란하다), 홀 목록이 펼쳐지면 그 아래로 밀린다. */}
+              <div className="relative flex flex-col items-end">
+                <HallSwitch
+                  halls={hallNames}
+                  current={hall}
+                  onPick={pickHall}
+                  className="pointer-events-auto"
+                />
+                <MapCompass
+                  mapRef={mapRef}
+                  className={clsx(
+                    "pointer-events-auto",
+                    hallNames.length >= 2 && "absolute right-0 top-full mt-v2-x2",
+                  )}
+                  onPress={() =>
+                    track("map_control", {
+                      screen: SCREEN.map,
+                      exhibitionSlug: slug,
+                      props: { control: "compass" },
+                    })
+                  }
+                />
+              </div>
             </div>
           )}
         </div>
