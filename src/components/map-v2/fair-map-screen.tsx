@@ -61,6 +61,7 @@ import { todayISO } from "@/lib/exhibition/current";
 import { useAuthStore } from "@/lib/stores/auth";
 import { BoothCardV2 } from "@/components/map-v2/booth-card";
 import { HallSwitch } from "@/components/map-v2/hall-switch";
+import { MapCompass } from "@/components/map-v2/map-compass";
 import { RomiAvatar } from "@/components/v2/romi-avatar";
 import { BackButton } from "@/components/v2/back-button";
 import { FLOORPLANS } from "@/lib/floorplans";
@@ -1267,12 +1268,26 @@ export function FairMapScreen({
                   />
                 </span>
               )}
-              <HallSwitch
-                halls={hallNames}
-                current={hall}
-                onPick={pickHall}
-                className="pointer-events-auto"
-              />
+              {/* 나침반은 돌린 동안만 홀 버튼 옆에 선다(2026-11-23). 홀 목록이 펼쳐져도 위에 맞춰 둔다. */}
+              <div className="flex items-start gap-v2-x2">
+                <MapCompass
+                  mapRef={mapRef}
+                  className="pointer-events-auto"
+                  onPress={() =>
+                    track("map_control", {
+                      screen: SCREEN.map,
+                      exhibitionSlug: slug,
+                      props: { control: "compass" },
+                    })
+                  }
+                />
+                <HallSwitch
+                  halls={hallNames}
+                  current={hall}
+                  onPick={pickHall}
+                  className="pointer-events-auto"
+                />
+              </div>
             </div>
           )}
         </div>

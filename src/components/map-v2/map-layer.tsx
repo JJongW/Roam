@@ -5,6 +5,7 @@ import {
   LABEL_LEVELS_PER_OCTAVE,
   labelFadeStyle,
   labelLevel,
+  uprightAnchor,
   zoomLevel,
 } from "@/components/map/map-camera";
 import {
@@ -40,6 +41,9 @@ import type { BoothListItem } from "@/lib/types";
  *   라벨 단계를 보고 opacity로 잇는다(map-level 토큰). 이름은 어떤 배율에서도 숨기지 않는다
  *   (2026-10-15 결정, 11-21 Ted 다시 확인). 하트와 다녀온 체크도 늘 보인다.
  * - 칸 하나하나는 memo다. 선택이나 하트가 바뀌면 그 칸만 다시 그린다.
+ * - 지도를 돌려도(2026-11-23) 이름, 번호, 하트, 체크, 출입구와 화장실 표식, 길 안내 이름표는 바로 선다. 이 층은
+ *   축만 달아 두고(`uprightAnchor`) 엔진이 각도가 바뀔 때 그 요소에만 transform을 적어서, 돌리는 동안 다시 그리지 않는다.
+ *   멈춘 각도가 90도 쪽이면(`labelQuarter` 홀수) 칸이 화면에서 세로와 가로가 바뀌므로 이름표를 바꾼 가로세로로 나눈다.
  */
 
 /** 번호 줄이 이보다 작게 보이면 숨긴다(화면 px) — v2 글자 눈금의 가장 작은 값 t1. */
@@ -78,7 +82,7 @@ export const MapLayerV2 = memo(function MapLayerV2({
     floorplan,
     geomOf,
     hallRegions,
-    upright,
+    labelQuarter,
     selectedId,
     fitScale,
   } = ctx;
@@ -135,7 +139,8 @@ export const MapLayerV2 = memo(function MapLayerV2({
             visited={visited}
             hearted={hearted}
             dim={highlightIds ? !highlightIds.has(b.id) && !isSel : false}
-            upright={upright(0, 0)}
+            // 칸 자체 각도까지 더해 가장 가까운 사분면이 홀수면 이름표의 가로세로를 바꾼다. 바뀐 칸만 다시 그린다.
+            swap={(labelQuarter + Math.round((g.rotate ?? 0) / 90)) % 2 !== 0}
             // 하트 칸만 받는다. 맞춤 배율이 바뀌어도 나머지 칸은 다시 그리지 않는다.
             fitLevel={hearted ? fitLevel : undefined}
           />
@@ -147,7 +152,7 @@ export const MapLayerV2 = memo(function MapLayerV2({
       {/* 길잡이 표식: 벽 바깥에 붙여 부스 칸을 덮지 않는다(map-markers.ts). 화장실 칩을 켜면 진하게 남는다. */}
       {floorplan &&
         wcMarkers(floorplan, fitScale).map((m, i) => (
-          <g key={`wc-${i}`} transform={upright(m.x + m.w / 2, m.y + m.h / 2)}>
+          <g key={`wc-${i}`} {...uprightAnchor(m.x + m.w / 2, m.y + m.h / 2)}>
             <rect
               x={m.x}
               y={m.y}
@@ -170,7 +175,7 @@ export const MapLayerV2 = memo(function MapLayerV2({
         ))}
       {floorplan &&
         entranceMarkers(floorplan, fitScale).map((m, i) => (
-          <g key={`ent-${i}`} transform={upright(m.x + m.w / 2, m.y + m.h / 2)}>
+          <g key={`ent-${i}`} {...uprightAnchor(m.x + m.w / 2, m.y + m.h / 2)}>
             <rect
               x={m.x}
               y={m.y}
@@ -204,7 +209,7 @@ const BoothCell = memo(function BoothCell({
   visited,
   hearted,
   dim,
-  upright,
+  swap,
   fitLevel,
 }: {
   booth: BoothListItem;
@@ -213,7 +218,8 @@ const BoothCell = memo(function BoothCell({
   visited: boolean;
   hearted: boolean;
   dim: boolean;
-  upright: string | undefined;
+  /** 이름표를 칸의 가로세로를 바꿔 나눈다(지도가 90도 쪽으로 멈췄을 때). */
+  swap: boolean;
   fitLevel?: number;
 }) {
   const facility = b.kind === "facility";
@@ -221,6 +227,11 @@ const BoothCell = memo(function BoothCell({
   const markerR = V2_PX["radius-r1"];
   const w = Math.max(8, g.w - CELL_GAP * 2);
   const h = Math.max(8, g.h - CELL_GAP * 2);
+  // 이름표가 쓰는 칸(바로 선 글자 기준). 칸 그림(w×h)은 그대로 지도와 같이 돈다.
+  const lw = swap ? h : w;
+  const lh = swap ? w : h;
+  const lcw = swap ? g.h : g.w;
+  const lch = swap ? g.w : g.h;
   const fill = isSel
     ? C("map-booth-selected")
     : facility
@@ -236,14 +247,14 @@ const BoothCell = memo(function BoothCell({
       hearted
         ? heartCellLayout(
             b.name,
-            g.w,
-            g.h,
-            w,
-            h,
+            lcw,
+            lch,
+            lw,
+            lh,
             (fitLevel ?? 0) - LABEL_LEVELS_PER_OCTAVE,
           )
         : null,
-    [hearted, b.name, g.w, g.h, w, h, fitLevel],
+    [hearted, b.name, lcw, lch, lw, lh, fitLevel],
   );
   return (
     <g
@@ -260,7 +271,7 @@ const BoothCell = memo(function BoothCell({
         stroke={isSel ? C("map-booth-selected") : C("stroke-neutral-weak")}
         strokeWidth={stroke}
       />
-      <g transform={upright ?? (g.rotate ? `rotate(${-g.rotate})` : undefined)}>
+      <g {...uprightAnchor(0, 0, g.rotate ?? 0)}>
         {heartCell ? (
           <HeartLabel
             cell={heartCell}
@@ -271,18 +282,18 @@ const BoothCell = memo(function BoothCell({
         ) : (
           <CellLabel
             booth={b}
-            cellW={g.w}
-            cellH={g.h}
-            w={w}
-            h={h}
+            cellW={lcw}
+            cellH={lch}
+            w={lw}
+            h={lh}
             color={text}
             selected={isSel}
           />
         )}
         {visited && (
           <VisitedCheck
-            w={w}
-            h={h}
+            w={lw}
+            h={lh}
             color={isSel ? C("map-label-selected") : C("fg-neutral-muted")}
           />
         )}
@@ -350,7 +361,7 @@ function RouteLine({ route, ctx }: { route: RouteOverlay; ctx: MapLayerContext }
             strokeWidth={width * 0.6}
           />
           {route.startLabel && (
-            <g transform={ctx.upright(start.x, start.y)}>
+            <g {...uprightAnchor(start.x, start.y)}>
               <rect
                 x={start.x - labelW / 2}
                 y={start.y - width * 2 - font * 1.9}

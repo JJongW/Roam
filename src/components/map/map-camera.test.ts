@@ -1,6 +1,21 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import {
+  angleDelta,
+  cameraKeeping,
+  cameraTransform,
+  fingerAngle,
+  footprint,
+  fromContent,
+  isRotated,
+  labelQuarter,
+  pointInRect,
+  screenToWorld,
+  toContent,
+  uprightAngle,
+  uprightAnchor,
+  uprightTransform,
+  worldToScreen,
   cubicBezier,
   flingDistance,
   flingOffset,
@@ -233,5 +248,164 @@ describe("부스 이름은 어떤 배율에서도 숨기지 않는다(2026-10-15
     const uses = src.match(/labelFadeStyle\(/g) ?? [];
     expect(uses).toHaveLength(1);
     expect(src).toMatch(/labelFadeStyle\(\s*labelLevel\(codeSize,/);
+  });
+});
+
+describe("지도 돌리기(2026-11-23) — 카메라 각도 변환", () => {
+  const size = { w: 1200, h: 600 };
+  const close = (a: { x: number; y: number }, b: { x: number; y: number }, d = 6) => {
+    expect(a.x).toBeCloseTo(b.x, d);
+    expect(a.y).toBeCloseTo(b.y, d);
+  };
+
+  it("감싸는 상자: 0도는 도면 그대로, 90도는 가로세로가 바뀌고, 45도는 커진다", () => {
+    expect(footprint(size, 0)).toEqual({ fw: 1200, fh: 600 });
+    expect(footprint(size, 90)).toEqual({ fw: 600, fh: 1200 });
+    expect(footprint(size, -270)).toEqual({ fw: 600, fh: 1200 });
+    const f = footprint(size, 45);
+    expect(f.fw).toBeCloseTo(1800 / Math.SQRT2, 6);
+    expect(f.fh).toBeCloseTo(1800 / Math.SQRT2, 6);
+  });
+
+  it("0도면 내용 좌표가 도면 좌표 그대로다(돌리기 전 화면이 그대로)", () => {
+    expect(toContent({ x: 30, y: 40 }, size, 0)).toEqual({ x: 30, y: 40 });
+  });
+
+  it.each([17, 90, 135, -60, 400])("%s도: 도면 → 내용 → 도면이 제자리, 네 모서리가 감싸는 상자 안", (deg) => {
+    const p = { x: 123, y: 456 };
+    close(fromContent(toContent(p, size, deg), size, deg), p);
+    const { fw, fh } = footprint(size, deg);
+    for (const c of [
+      { x: 0, y: 0 },
+      { x: size.w, y: 0 },
+      { x: 0, y: size.h },
+      { x: size.w, y: size.h },
+    ]) {
+      const q = toContent(c, size, deg);
+      expect(q.x).toBeGreaterThanOrEqual(-1e-6);
+      expect(q.y).toBeGreaterThanOrEqual(-1e-6);
+      expect(q.x).toBeLessThanOrEqual(fw + 1e-6);
+      expect(q.y).toBeLessThanOrEqual(fh + 1e-6);
+    }
+  });
+
+  it("90도는 시계 방향이다(도면 위쪽이 화면 오른쪽으로 간다)", () => {
+    const top = toContent({ x: 600, y: 0 }, size, 90);
+    const centre = toContent({ x: 600, y: 300 }, size, 90);
+    expect(top.x).toBeGreaterThan(centre.x);
+    expect(top.y).toBeCloseTo(centre.y, 6);
+  });
+
+  it("SVG에 쓰는 transform 문자열과 worldToScreen이 같은 점을 낸다", () => {
+    const cam: Camera = { scale: 0.7, offset: { x: -40, y: 25 }, rotation: 33 };
+    const css = cameraTransform(cam, size);
+    // 문자열을 왼쪽부터 행렬로 합쳐 점에 적용한다.
+    type M = [number, number, number, number, number, number];
+    const mul = (a: M, b: M): M => [
+      a[0] * b[0] + a[2] * b[1],
+      a[1] * b[0] + a[3] * b[1],
+      a[0] * b[2] + a[2] * b[3],
+      a[1] * b[2] + a[3] * b[3],
+      a[0] * b[4] + a[2] * b[5] + a[4],
+      a[1] * b[4] + a[3] * b[5] + a[5],
+    ];
+    let m: M = [1, 0, 0, 1, 0, 0];
+    for (const [, fn, args] of css.matchAll(/(\w+)\(([^)]*)\)/g)) {
+      const n = args.split(",").map((v) => parseFloat(v));
+      if (fn === "translate") m = mul(m, [1, 0, 0, 1, n[0], n[1]]);
+      else if (fn === "scale") m = mul(m, [n[0], 0, 0, n[0], 0, 0]);
+      else if (fn === "rotate") {
+        const r = (n[0] * Math.PI) / 180;
+        m = mul(m, [Math.cos(r), Math.sin(r), -Math.sin(r), Math.cos(r), 0, 0]);
+      }
+    }
+    const p = { x: 222, y: 77 };
+    close({ x: m[0] * p.x + m[2] * p.y + m[4], y: m[1] * p.x + m[3] * p.y + m[5] }, worldToScreen(p, cam, size));
+  });
+
+  it("화면 ↔ 도면이 서로 역이다", () => {
+    const cam: Camera = { scale: 1.8, offset: { x: -300, y: -120 }, rotation: -47 };
+    const p = { x: 210, y: 380 };
+    close(worldToScreen(screenToWorld(p, cam, size), cam, size), p);
+  });
+
+  it("두 손가락 돌리기와 확대: 손가락 가운데 아래 도면 점이 손가락을 따라간다", () => {
+    const start: Camera = { scale: 1, offset: { x: 0, y: 0 }, rotation: 0 };
+    const mid = { x: 180, y: 320 };
+    const focal = screenToWorld(mid, start, size);
+    const movedMid = { x: 200, y: 300 };
+    const cam = cameraKeeping(focal, movedMid, 1.6, 40, size);
+    close(worldToScreen(focal, cam, size), movedMid);
+    expect(cam.rotation).toBe(40);
+  });
+
+  it("각도가 다른 두 카메라 사이: 축 점이 화면에서 곧게 가고 각도는 고르게", () => {
+    const from: Camera = { scale: 1, offset: { x: 10, y: 20 }, rotation: 70 };
+    const pivot = { x: 500, y: 250 };
+    const centre = worldToScreen(pivot, from, size);
+    const to = cameraKeeping(pivot, centre, 1, 0, size);
+    for (const e of [0.25, 0.5, 0.75]) {
+      const c = interpolateCamera(from, to, e, { size, pivot });
+      close(worldToScreen(pivot, c, size), centre);
+      expect(c.rotation).toBeCloseTo(70 * (1 - e), 9);
+    }
+    expect(interpolateCamera(from, to, 1, { size, pivot })).toBe(to);
+  });
+
+  it("손가락 선 각도 차이는 ±180을 넘을 때 한 바퀴 튀지 않는다", () => {
+    expect(angleDelta(170, -170)).toBeCloseTo(20, 9);
+    expect(angleDelta(-170, 170)).toBeCloseTo(-20, 9);
+    expect(fingerAngle({ x: 0, y: 0 }, { x: 0, y: 10 })).toBeCloseTo(90, 9);
+  });
+
+  it("나침반은 가장 가까운 처음 방향으로 짧게 돌아오고, 돌리지 않았으면 숨는다", () => {
+    expect(uprightAngle(170)).toBe(0);
+    expect(uprightAngle(190)).toBe(360);
+    expect(uprightAngle(-200)).toBe(-360);
+    expect(isRotated(0)).toBe(false);
+    expect(isRotated(720)).toBe(false);
+    expect(isRotated(3)).toBe(true);
+  });
+
+  it("이름표 사분면: 45도를 넘으면 가로세로를 바꿔 나눈다", () => {
+    expect(labelQuarter(0)).toBe(0);
+    expect(labelQuarter(44)).toBe(0);
+    expect(labelQuarter(46)).toBe(1);
+    expect(labelQuarter(-90)).toBe(3);
+    expect(labelQuarter(181)).toBe(2);
+  });
+
+  it("글자 바로 세우기: 층은 축만 달고 엔진이 각도마다 transform을 적는다", () => {
+    expect(uprightAnchor(10, 20)).toEqual({ "data-upright": "10 20 0" });
+    const a = uprightAnchor(10, 20)["data-upright"];
+    expect(uprightTransform(a, 0)).toBeNull();
+    expect(uprightTransform(a, 360)).toBeNull();
+    expect(uprightTransform(a, 30)).toBe("rotate(-30 10 20)");
+    // 칸 자체 각도(12도)는 지도가 0도여도 되돌린다.
+    expect(uprightTransform(uprightAnchor(0, 0, 12)["data-upright"], 0)).toBe("rotate(-12)");
+    expect(uprightTransform(uprightAnchor(0, 0, 12)["data-upright"], -12)).toBeNull();
+  });
+});
+
+describe("돌린 지도에서 누르기 판정", () => {
+  const size = { w: 1000, h: 800 };
+  const booth = { x: 400, y: 300, w: 60, h: 30 };
+
+  it.each([0, 37, 90, -125])("%s도: 칸 가운데를 누르면 맞고, 칸 밖(긴 변 바깥)을 누르면 안 맞는다", (deg) => {
+    const cam: Camera = { scale: 1.4, offset: { x: -150, y: 40 }, rotation: deg };
+    const centre = worldToScreen({ x: booth.x, y: booth.y }, cam, size);
+    expect(pointInRect(screenToWorld(centre, cam, size), booth)).toBe(true);
+    // 칸 오른쪽 끝 바로 안과 바로 밖(도면에서 잰 뒤 화면으로 보내 누른다).
+    const inside = worldToScreen({ x: booth.x + 29, y: booth.y + 14 }, cam, size);
+    const outside = worldToScreen({ x: booth.x, y: booth.y + 16 }, cam, size);
+    expect(pointInRect(screenToWorld(inside, cam, size), booth)).toBe(true);
+    expect(pointInRect(screenToWorld(outside, cam, size), booth)).toBe(false);
+  });
+
+  it("칸 자체 각도(도면의 기운 칸)도 따진다", () => {
+    const tilted = { ...booth, rotate: 90 };
+    // 90도 기운 60×30 칸은 세로로 길다.
+    expect(pointInRect({ x: booth.x, y: booth.y + 25 }, tilted)).toBe(true);
+    expect(pointInRect({ x: booth.x + 25, y: booth.y }, tilted)).toBe(false);
   });
 });

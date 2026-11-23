@@ -61,6 +61,7 @@ export const V2_FILES = [
   "src/components/map-v2/map-skeleton.tsx",
   "src/components/map-v2/booth-card.tsx",
   "src/components/map-v2/hall-switch.tsx",
+  "src/components/map-v2/map-compass.tsx",
   "src/components/map-v2/bottom-sheet.tsx",
   "src/components/map-v2/romi-card.tsx",
   "src/components/map-v2/romi-sheet.tsx",

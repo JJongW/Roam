@@ -15,7 +15,11 @@ export interface Point {
   y: number;
 }
 
-/** 화면 px = offset + scale × (회전한 도면 좌표). 회전은 도면 가운데를 축으로 돈다. */
+/**
+ * 화면 px = offset + scale × 내용 좌표. 내용 좌표는 도면을 가운데 축으로 `rotation`도 돌린 뒤, 돌린 도면을
+ * 감싸는 축 정렬 상자(`footprint`)의 왼쪽 위가 0이 되게 옮긴 좌표다(`toContent`). 0도면 도면 좌표 그대로다.
+ * 그래서 맞추기와 가두기는 각도와 상관없이 "0~fw × 0~fh 상자" 하나로 계산한다.
+ */
 export interface Camera {
   scale: number;
   offset: Point;
@@ -86,9 +90,32 @@ export function cubicBezier([x1, y1, x2, y2]: Bezier): Easing {
  * 끝 자리로 **곧은 선**을 따라가고, 확대가 가까울수록 빨라 보이는 일도 없다. 배율이 거의
  * 같으면(이동만) 위치를 곧게 보간한다.
  */
-export function interpolateCamera(from: Camera, to: Camera, e: number): Camera {
+export function interpolateCamera(
+  from: Camera,
+  to: Camera,
+  e: number,
+  /** 각도가 다른 두 카메라를 이을 때 쓴다. 이 도면 점이 화면에서 곧은 선을 따라가고 그 둘레로 돈다. */
+  turn?: { size: MapSize; pivot: Point },
+): Camera {
   if (e <= 0) return from;
   if (e >= 1) return to;
+  if (turn && Math.abs(to.rotation - from.rotation) > 1e-9) {
+    const { size, pivot } = turn;
+    const s0 = from.scale;
+    const s1 = to.scale;
+    const scale =
+      s0 > 0 && s1 > 0 ? s0 * Math.pow(s1 / s0, e) : s0 + (s1 - s0) * e;
+    const rotation = from.rotation + (to.rotation - from.rotation) * e;
+    const a = worldToScreen(pivot, from, size);
+    const b = worldToScreen(pivot, to, size);
+    return cameraKeeping(
+      pivot,
+      { x: a.x + (b.x - a.x) * e, y: a.y + (b.y - a.y) * e },
+      scale,
+      rotation,
+      size,
+    );
+  }
   const s0 = from.scale;
   const s1 = to.scale;
   const rotation = from.rotation + (to.rotation - from.rotation) * e;
@@ -277,4 +304,165 @@ export function readMapMotion(el: Element, reduceMotion: boolean): MapMotion {
       ? 0
       : (parseDurationMs(get("--roam-v2-decay-map-fling-tau")) ?? 0),
   };
+}
+
+// ---- 돌리기(2026-11-23 Ted "회전 되게 해줘. 모든 지도맵 처럼 동일하게") ----
+
+/** 도면 크기(도면 단위). */
+export interface MapSize {
+  w: number;
+  h: number;
+}
+
+const RAD = Math.PI / 180;
+
+/** `deg`도 돌린 도면을 감싸는 축 정렬 상자의 너비와 높이. 0도와 180도는 도면 그대로, 90도는 둘이 바뀐다. */
+export function footprint(size: MapSize, deg: number): { fw: number; fh: number } {
+  const c = Math.abs(Math.cos(deg * RAD));
+  const s = Math.abs(Math.sin(deg * RAD));
+  // 0, 90, 180도에서 부동소수 찌꺼기(1e-16)가 맞추기 배율을 흔들지 않게 반올림한다.
+  const r = (v: number) => Math.round(v * 1e9) / 1e9;
+  return { fw: r(size.w * c + size.h * s), fh: r(size.w * s + size.h * c) };
+}
+
+/** 도면 좌표 → 내용 좌표(가운데 축으로 돌리고 감싸는 상자 왼쪽 위를 0으로). */
+export function toContent(p: Point, size: MapSize, deg: number): Point {
+  if (deg === 0) return p;
+  const { fw, fh } = footprint(size, deg);
+  const c = Math.cos(deg * RAD);
+  const s = Math.sin(deg * RAD);
+  const dx = p.x - size.w / 2;
+  const dy = p.y - size.h / 2;
+  return { x: fw / 2 + dx * c - dy * s, y: fh / 2 + dx * s + dy * c };
+}
+
+/** 내용 좌표 → 도면 좌표(`toContent`의 역). */
+export function fromContent(p: Point, size: MapSize, deg: number): Point {
+  if (deg === 0) return p;
+  const { fw, fh } = footprint(size, deg);
+  const c = Math.cos(deg * RAD);
+  const s = Math.sin(deg * RAD);
+  const dx = p.x - fw / 2;
+  const dy = p.y - fh / 2;
+  return { x: size.w / 2 + dx * c + dy * s, y: size.h / 2 - dx * s + dy * c };
+}
+
+/** 도면 점이 화면 어디에 그려지는지. */
+export function worldToScreen(p: Point, cam: Camera, size: MapSize): Point {
+  const q = toContent(p, size, cam.rotation);
+  return { x: cam.offset.x + cam.scale * q.x, y: cam.offset.y + cam.scale * q.y };
+}
+
+/** 화면 점(지도 영역 안 px) 아래의 도면 점. 누르기 판정이 쓴다. */
+export function screenToWorld(p: Point, cam: Camera, size: MapSize): Point {
+  return fromContent(
+    { x: (p.x - cam.offset.x) / cam.scale, y: (p.y - cam.offset.y) / cam.scale },
+    size,
+    cam.rotation,
+  );
+}
+
+/** 도면 점 `world`가 화면 `screen`에 오는 카메라(배율과 각도는 주어진 대로). */
+export function cameraKeeping(
+  world: Point,
+  screen: Point,
+  scale: number,
+  rotation: number,
+  size: MapSize,
+): Camera {
+  const q = toContent(world, size, rotation);
+  return {
+    scale,
+    rotation,
+    offset: { x: screen.x - scale * q.x, y: screen.y - scale * q.y },
+  };
+}
+
+/** CSS transform 문자열. 엔진이 SVG에 쓴다. 내용 좌표 정의(`toContent`)와 같은 식이다. */
+export function cameraTransform(cam: Camera, size: MapSize): string {
+  const { scale, offset, rotation: deg } = cam;
+  const base = `translate(${offset.x}px, ${offset.y}px) scale(${scale})`;
+  if (deg === 0) return base;
+  const { fw, fh } = footprint(size, deg);
+  return `${base} translate(${fw / 2}px, ${fh / 2}px) rotate(${deg}deg) translate(${-size.w / 2}px, ${-size.h / 2}px)`;
+}
+
+/** 두 손가락을 잇는 선의 각도(도). 손가락 순서가 같으면 돌린 만큼 바뀐다. */
+export function fingerAngle(a: Point, b: Point): number {
+  return Math.atan2(b.y - a.y, b.x - a.x) / RAD;
+}
+
+/** 각도 차이를 −180~180도로(손가락 선이 ±180을 넘어갈 때 한 바퀴 튀지 않게). */
+export function angleDelta(from: number, to: number): number {
+  let d = (to - from) % 360;
+  if (d > 180) d -= 360;
+  if (d < -180) d += 360;
+  return d;
+}
+
+/** 지금 각도에서 가장 가까운 처음 방향(360의 배수). 나침반이 짧은 쪽으로 돌아온다. */
+export function uprightAngle(deg: number): number {
+  return Math.round(deg / 360) * 360;
+}
+
+/** 돌린 상태인지(처음 방향에서 `epsDeg` 넘게). 나침반 단추를 보일지 정한다. */
+export function isRotated(deg: number, epsDeg = 0.05): boolean {
+  return Math.abs(deg - uprightAngle(deg)) > epsDeg;
+}
+
+/**
+ * 이름표를 칸 모양에 맞출 사분면(0~3). 글자는 늘 바로 서지만 칸은 지도와 같이 돌므로, 90도 근처에서는
+ * 칸의 가로세로가 화면에서 바뀐다. 이름표는 가장 가까운 사분면이 홀수면 칸의 가로세로를 바꿔 줄을 나눈다.
+ */
+export function labelQuarter(deg: number): number {
+  return (((Math.round(deg / 90) % 4) + 4) % 4);
+}
+
+/**
+ * 도면 점이 칸(가운데 x, y, 크기 w×h, 칸 자체 각도 rotate) 안인지. 지도 각도와는 상관없다 — 누른 화면 점을
+ * `screenToWorld`로 도면 점으로 돌린 뒤 이것으로 판정한다.
+ */
+export function pointInRect(
+  p: Point,
+  r: { x: number; y: number; w: number; h: number; rotate?: number },
+): boolean {
+  let dx = p.x - r.x;
+  let dy = p.y - r.y;
+  if (r.rotate) {
+    const c = Math.cos(-r.rotate * RAD);
+    const s = Math.sin(-r.rotate * RAD);
+    [dx, dy] = [dx * c - dy * s, dx * s + dy * c];
+  }
+  return Math.abs(dx) <= r.w / 2 && Math.abs(dy) <= r.h / 2;
+}
+
+/**
+ * 손 뗀 순간의 돌리는 속도(도/ms). `releaseVelocity`와 같은 창 규칙이다. 표본의 x에 각도를 담는다.
+ */
+export function releaseSpin(samples: Sample[], now: number, windowMs: number): number {
+  return releaseVelocity(samples, now, windowMs).x;
+}
+
+/**
+ * 글자와 표식을 바로 세우는 자리 표시. 층은 이 속성(축 x, 축 y, 이미 돌아간 각도)만 달아 두고, 엔진이 지도 각도가
+ * 바뀔 때 이 속성이 달린 요소에만 SVG `transform`을 적는다(`uprightTransform`). 층은 다시 그리지 않는다.
+ *
+ * 처음엔 SVG 뿌리에 각도 CSS 변수 하나를 적고 글자가 `rotate(var(...))`로 받게 했다. 그런데 상속되는 변수가 바뀌면
+ * 브라우저가 지도 요소 전체(SIF 914칸, 5,735개)의 스타일을 다시 계산해 손짓 한 번에 50ms 넘게 걸렸다(PR 본문 측정).
+ * 바로 세울 요소에만 속성을 적으면 그 요소만 다시 계산한다.
+ */
+export const UPRIGHT_ATTR = "data-upright";
+
+/** 도면 점 (ax, ay)를 축으로 바로 세울 요소에 다는 속성. `extraDeg`는 칸 자체 각도처럼 바깥에서 이미 돌아간 만큼. */
+export function uprightAnchor(ax = 0, ay = 0, extraDeg = 0): Record<string, string> {
+  return { [UPRIGHT_ATTR]: `${ax} ${ay} ${extraDeg}` };
+}
+
+/** 지도 각도 `deg`에서 그 요소에 적을 SVG transform. 돌릴 게 없으면 null(속성을 지운다). */
+export function uprightTransform(anchor: string, deg: number): string | null {
+  const [ax, ay, extra] = anchor.split(" ").map(Number);
+  const a = -(deg + (extra || 0));
+  const r = ((a % 360) + 360) % 360;
+  if (r < 1e-9 || 360 - r < 1e-9) return null;
+  return ax || ay ? `rotate(${a} ${ax} ${ay})` : `rotate(${a})`;
 }
