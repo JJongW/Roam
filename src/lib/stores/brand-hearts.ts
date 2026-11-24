@@ -12,6 +12,8 @@
 
 import { create } from "zustand";
 import { api } from "@/lib/api/client";
+import { isHearted, useVisitStore } from "@/lib/stores/visit";
+import type { BrandHeartSource } from "@/lib/types";
 
 export const BRAND_HEART_STORAGE_KEY = "roam-brand-hearts";
 
@@ -105,19 +107,84 @@ function settle(exhibitorId: string, op: PendingOp) {
   commit({ hearts, pending: rest });
 }
 
-/** 로그인한 분의 한 번 누름을 계정에 올린다. 실패하면 pending에 남아 다음 맞추기 때 다시 간다. */
-export async function pushBrandHeart(exhibitorId: string): Promise<boolean> {
+/**
+ * DELETE /api/me/brand-hearts/[exhibitorId] 응답(2026-11-24). 브랜드 하트를 빼면 서버가 그 브랜드 부스 하트도 끈다.
+ * 옛 서버(204, 본문 없음)면 끈 부스가 없는 것으로 읽는다.
+ */
+export interface BrandHeartRemoval {
+  removed: boolean;
+  source: BrandHeartSource | null;
+  unheartedBoothIds: string[];
+}
+
+/** 서버가 끈 부스 하트를 이 브라우저 부스 기록(stores/visit.ts)에도 끈다. 메모, 다녀왔어요는 그대로. */
+function applyBoothUnhearts(boothIds: string[]) {
+  const visit = useVisitStore.getState();
+  for (const id of boothIds) if (isHearted(visit.records[id])) visit.setHeart(id, false);
+}
+
+async function push(exhibitorId: string): Promise<{ ok: boolean; removal?: BrandHeartRemoval }> {
   const op = current().pending[exhibitorId];
-  if (!op) return true;
+  if (!op) return { ok: true };
   const path = `/api/me/brand-hearts/${encodeURIComponent(exhibitorId)}`;
   try {
+    let removal: BrandHeartRemoval | undefined;
     if (op === "add") await api.put(path);
-    else await api.del(path);
+    else {
+      const res = await api.del<BrandHeartRemoval | undefined>(path);
+      removal = {
+        removed: res?.removed ?? true,
+        source: res?.source ?? null,
+        unheartedBoothIds: res?.unheartedBoothIds ?? [],
+      };
+      applyBoothUnhearts(removal.unheartedBoothIds);
+    }
     settle(exhibitorId, op);
-    return true;
+    return { ok: true, removal };
   } catch {
-    return false;
+    return { ok: false };
   }
+}
+
+/** 로그인한 분의 한 번 누름을 계정에 올린다. 실패하면 pending에 남아 다음 맞추기 때 다시 간다. */
+export async function pushBrandHeart(exhibitorId: string): Promise<boolean> {
+  return (await push(exhibitorId)).ok;
+}
+
+/** 빼기를 올리고 서버가 끈 부스 하트까지 돌려준다(되돌리기용). 올리지 못했거나 빼기가 아니면 null. */
+export async function pushBrandHeartRemoval(exhibitorId: string): Promise<BrandHeartRemoval | null> {
+  return (await push(exhibitorId)).removal ?? null;
+}
+
+/**
+ * 되돌리기: 빼기로 꺼진 부스 하트를 다시 켜고 브랜드 하트를 살린다.
+ * - 부스 하트를 다시 켜면 서버가 브랜드 하트를 booth 출처로 다시 만든다(lib/brands/follow.ts).
+ *   그래서 원래 booth 출처였으면 브랜드 하트 API를 따로 부르지 않는다(direct로 바뀌지 않게).
+ * - 원래 direct였거나 끈 부스가 없었으면 브랜드 하트를 직접 다시 남긴다.
+ * - 부스 쓰기는 하트만 보낸다(이 브라우저에 없는 메모를 빈 값으로 덮지 않게).
+ * 브라우저에 못 쓰면 false.
+ */
+export async function restoreBrandHeart(exhibitorId: string, removal: BrandHeartRemoval): Promise<boolean> {
+  const viaBooths = removal.source !== "direct" && removal.unheartedBoothIds.length > 0;
+  if (viaBooths) {
+    const { hearts, pending } = current();
+    const rest = { ...pending };
+    delete rest[exhibitorId];
+    if (!commit({ hearts: { ...hearts, [exhibitorId]: hearts[exhibitorId] ?? new Date().toISOString() }, pending: rest }))
+      return false;
+  } else if (!setBrandHeart(exhibitorId, true)) return false;
+
+  const visit = useVisitStore.getState();
+  for (const id of removal.unheartedBoothIds) {
+    visit.setHeart(id, true);
+    try {
+      await api.put(`/api/me/notes/${encodeURIComponent(id)}`, { heart: true });
+    } catch {
+      useVisitStore.getState().setPendingSync();
+    }
+  }
+  if (!viaBooths) await pushBrandHeart(exhibitorId);
+  return true;
 }
 
 interface BrandHeartViewLite {

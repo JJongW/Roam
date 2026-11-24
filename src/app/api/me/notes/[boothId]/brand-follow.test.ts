@@ -7,7 +7,7 @@ const state = vi.hoisted(() => ({ user: null as User | null }));
 vi.mock("@/lib/api/session", () => ({ getCurrentUser: async () => state.user }));
 
 import { PUT } from "./route";
-import { PUT as BRAND_PUT } from "../../brand-hearts/[exhibitorId]/route";
+import { DELETE as BRAND_DELETE, PUT as BRAND_PUT } from "../../brand-hearts/[exhibitorId]/route";
 
 type Store = { exhibitorGraph: ExhibitorGraph; booths: Booth[]; brandHearts: BrandHeart[] };
 const st = () => (globalThis as unknown as { __roamStore: Store }).__roamStore;
@@ -113,3 +113,93 @@ describe("PUT /api/me/notes/[boothId] — 부스 하트가 브랜드 하트도(U
     err.mockRestore();
   });
 });
+
+describe("DELETE /api/me/brand-hearts/[exhibitorId] — 브랜드 하트를 빼면 그 브랜드의 부스 하트도(11-24)", () => {
+  const repo = new MockRepository();
+  let userId: string;
+  let A1: string; // ex1, sibf
+  let A2: string; // ex1, 다른 박람회
+  let B1: string; // ex2 대표, ex1 공동 입점
+  let otherUser: User;
+
+  const heartOf = (ex: string) => st().brandHearts.find((h) => h.userId === userId && h.exhibitorId === ex);
+  const notes = () => repo.listNotes(userId);
+  const noteOf = async (id: string) => (await notes()).find((n) => n.boothId === id);
+  const del = (ex: string) =>
+    BRAND_DELETE(new Request("http://localhost", { method: "DELETE" }), { params: Promise.resolve({ exhibitorId: ex }) });
+
+  beforeEach(async () => {
+    (globalThis as unknown as { __roamStore?: unknown }).__roamStore = undefined;
+    otherUser = await repo.createUser("other");
+    const user = await repo.createUser("unhearter");
+    userId = user.id;
+    state.user = user;
+    const sibfId = (await repo.getExhibition("sibf-2026"))!.exhibition.id;
+    const sibf = st().booths.filter((b) => b.exhibitionId === sibfId);
+    const other = st().booths.find((b) => b.exhibitionId !== sibfId)!;
+    [A1, B1] = sibf.slice(0, 2).map((b) => b.id);
+    A2 = other.id;
+    const g = st().exhibitorGraph;
+    g.exhibitors.push({ id: "ex1", canonicalName: "꽃잠" }, { id: "ex2", canonicalName: "모모상점" });
+    g.participants.push(
+      { id: "p1", exhibitorId: "ex1", exhibitionId: sibfId, displayName: "꽃잠" },
+      { id: "p1b", exhibitorId: "ex1", exhibitionId: other.exhibitionId, displayName: "꽃잠" },
+      { id: "p2", exhibitorId: "ex2", exhibitionId: sibfId, displayName: "모모상점" },
+    );
+    g.assignments.push(
+      { boothId: A1, participantId: "p1", role: "primary" },
+      { boothId: A2, participantId: "p1b", role: "primary" },
+      { boothId: B1, participantId: "p2", role: "primary" },
+      { boothId: B1, participantId: "p1", role: "co_exhibitor" },
+    );
+  });
+
+  it("다른 박람회까지 그 브랜드(대표) 부스 하트를 끄고, 끈 부스 id를 돌려준다", async () => {
+    await putNote(A1, { heart: true, memo: "엽서", visited: true });
+    await putNote(A2, { heart: true });
+    await putNote(B1, { heart: true }); // ex1은 공동 입점일 뿐이라 남는다
+    const res = await del("ex1");
+    expect(res.status).toBe(200);
+    const body = (await res.json()).data;
+    expect(body.removed).toBe(true);
+    expect(body.source).toBe("booth");
+    expect([...body.unheartedBoothIds].sort()).toEqual([A1, A2].sort());
+    expect((await noteOf(A1))?.heart).toBe(false);
+    expect(await noteOf(A2)).toBeUndefined(); // 하트만 있던 노트는 비어서 지워진다
+    expect((await noteOf(B1))?.heart).toBe(true);
+    expect(heartOf("ex1")).toBeUndefined();
+    expect(heartOf("ex2")).toBeTruthy();
+  });
+
+  it("하트만 끈다 — 메모, 다녀왔어요는 남는다", async () => {
+    await putNote(A1, { heart: true, memo: "엽서", visited: true });
+    await del("ex1");
+    const n = await noteOf(A1);
+    expect(n).toMatchObject({ heart: false, memo: "엽서", visited: true });
+  });
+
+  it("직접 남긴 브랜드 하트(direct)를 빼도 부스 하트를 끄고 source는 direct", async () => {
+    await BRAND_PUT(new Request("http://localhost", { method: "PUT" }), { params: Promise.resolve({ exhibitorId: "ex1" }) });
+    await putNote(A1, { heart: true });
+    const body = (await (await del("ex1")).json()).data;
+    expect(body).toMatchObject({ removed: true, source: "direct", unheartedBoothIds: [A1] });
+    expect(heartOf("ex1")).toBeUndefined();
+  });
+
+  it("다른 사용자의 부스 하트는 건드리지 않는다", async () => {
+    state.user = otherUser;
+    await putNote(A1, { heart: true });
+    state.user = await repo.getUser(userId);
+    await del("ex1");
+    const theirs = (await repo.listNotes(otherUser.id)).find((n) => n.boothId === A1);
+    expect(theirs?.heart).toBe(true);
+  });
+
+  it("다시 부스 하트를 남기면 브랜드 하트가 booth로 돌아온다(되돌리기 경로)", async () => {
+    await putNote(A1, { heart: true });
+    await del("ex1");
+    await putNote(A1, { heart: true });
+    expect(heartOf("ex1")).toMatchObject({ source: "booth" });
+  });
+});
+
