@@ -144,6 +144,15 @@ npm run intake:dry-run -- data/intake/sdf-2026.json --json /tmp/sdf-2026-booths-
 - `/admin/intake`에 올려 미리보기(creates, conflicts, warnings 0)를 보고 적용한다. 결과의 `exhibitors.linked`가 brands.v1 참가 사실에 이어진 수다.
 - 이어지지 않은 부스는 `/admin/verify/brands`, `/admin/brands/links`에서 사람이 본다.
 
+## 8-1. 행사 프로그램(이벤트) 넣기 (운영 쓰기, Ted, 8단계 뒤)
+
+부스가 운영에 올라간 뒤에만 의미가 있다(부스 번호로 붙인다. 부스가 없으면 0행이라 해는 없다).
+
+1. Supabase SQL Editor에 `supabase/migrations/0075_sdf_2026_stage_events.sql`을 붙여 돌린다(SDF Stage A-05 무대 프로그램 3건).
+2. 상시 4건(특별전 3곳, SDF SHOP)은 `0076_sdf_2026_standing_programs.sql`. iOS "오늘 프로그램"이 상시를 첫날에만 보여 주는 문제가 있어 넣을지 먼저 정한다.
+3. 파일 끝 확인 쿼리(읽기만)로 행 수를 본다. 공개 API로도 본다: `curl -s https://roam.ai.kr/api/exhibitions/sdf-2026/events | head -c 400`.
+4. 컨퍼런스(401호), 비즈매칭(308호), SDF 어워드는 붙일 부스 칸이 없어 넣지 않았다. `docs/decisions/2026-11-24_서울디자인페스티벌-행사-프로그램.md`.
+
 ## 9. 확인
 
 - 웹: `https://roam.ai.kr/exhibitions/sdf-2026`(홈), `/exhibitions/sdf-2026/map`(처음 열면 전체, 부스 칸, 출입구, 화장실 겹침 없음), 부스 몇 곳의 상세.
