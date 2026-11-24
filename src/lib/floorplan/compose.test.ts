@@ -117,11 +117,21 @@ describe("코엑스 장소 제원", () => {
 
   it("위치를 모르는 장소는 입출구를 비워둔다 — 지어내면 다음 전시가 물려받는다", async () => {
     // 공식 평면도를 아직 안 읽은 홀들. 읽으면 여기서 빼고 아래 검사로 옮긴다.
-    for (const id of ["coex-hall-a", "coex-hall-b1", "coex-hall-b2", "coex-hall-d"]) {
+    for (const id of ["coex-hall-b1", "coex-hall-b2", "coex-hall-d"]) {
       const v = (await import(`@/lib/venues/${id}.json`)) as unknown as Venue;
       expect(v.entrance, `${id}`).toBeUndefined();
       expect(v.gates ?? [], `${id}`).toEqual([]);
     }
+  });
+
+  it("A홀 출입구는 서울디자인페스티벌 2026 배치도에서 읽은 남측 벽 한 곳이다", async () => {
+    // 배치도에 화장실은 없어 비워 둔다. 출입구는 입구, 출구 화살표(33.3m, 37.8m)가 한 문이라 그 가운데.
+    const v = (await import("@/lib/venues/coex-hall-a.json")) as unknown as Venue;
+    expect(v.gates?.map((g) => [g.kind, g.x, g.y])).toEqual([
+      ["in", 35.5, 72],
+      ["out", 35.5, 72],
+    ]);
+    expect(v.wc ?? []).toEqual([]);
   });
 
   it("마곡 전시홀 치수는 공식 면적과 맞아떨어진다", async () => {
