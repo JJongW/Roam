@@ -132,6 +132,8 @@ export const system = {
   /** UI 23 Q1 C 브랜드 줄 설명(2026-11-24). 부스 하트가 브랜드 하트도 남긴다(서버, lib/brands/follow.ts).
    *  알림은 iOS 푸시와 웹, iOS 알림함 줄로 간다(로그인한 분). Figma 화면 글자 그대로. */
   brandRowFollowsBoothHeart: "부스 하트를 남기면 이 브랜드의 다음 박람회 참가도 알려 드려요",
+  /** 같은 줄의 로그인 전 설명(2026-11-24 Ted "로그인 전 문구를 따로 나눠야지"). 브랜드 알림은 로그인한 분만 받는다(11-17). */
+  brandRowLoggedOut: "로그인하면 다음 박람회 소식을 알려 드려요",
   // UI 19 브랜드 하트(11-19). 마이 브랜드 목록(14-10)에서 쓴다.
   /** 19-A4 */
   brandHeartRemoved: (name: string) => `‘${name}’ 브랜드 하트를 뺐어요.`,
