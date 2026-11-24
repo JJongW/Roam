@@ -63,10 +63,15 @@
   --color-v2-stroke-informative-weak: var(--roam-v2-color-stroke-informative-weak);
   --color-v2-stroke-focus-ring: var(--roam-v2-color-stroke-focus-ring);
   --color-v2-map-booth: var(--roam-v2-color-map-booth);
+  --color-v2-map-floor: var(--roam-v2-color-map-floor);
+  --color-v2-map-booth-mine: var(--roam-v2-color-map-booth-mine);
   --color-v2-map-booth-pressed: var(--roam-v2-color-map-booth-pressed);
   --color-v2-map-booth-selected: var(--roam-v2-color-map-booth-selected);
   --color-v2-map-booth-facility: var(--roam-v2-color-map-booth-facility);
   --color-v2-map-label: var(--roam-v2-color-map-label);
+  --color-v2-map-label-mine: var(--roam-v2-color-map-label-mine);
+  --color-v2-map-heart-mine: var(--roam-v2-color-map-heart-mine);
+  --color-v2-map-check-mine: var(--roam-v2-color-map-check-mine);
   --color-v2-map-label-selected: var(--roam-v2-color-map-label-selected);
   --color-v2-map-route: var(--roam-v2-color-map-route);
   --color-v2-map-route-visited: var(--roam-v2-color-map-route-visited);

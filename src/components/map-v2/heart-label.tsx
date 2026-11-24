@@ -29,14 +29,15 @@ export function HeartLabel({
   fallbackLevel,
 }: {
   cell: HeartCellLayout;
-  /** 칸 이름 글자 색(고른 칸이면 map-label-selected). */
+  /** 칸 이름 글자 색(고른 칸이면 map-label-selected, 아니면 map-label-mine). */
   color: string;
   selected: boolean;
   /** 엔진이 단계를 아직 안 적었을 때 쓸 단계. */
   fallbackLevel: number;
 }) {
-  const heartColor = selected ? color : C("fg-brand");
-  const nameColor = selected ? color : C("fg-neutral");
+  // 하트 칸은 내 칸이라 하트와 이름을 내 칸 색으로 그린다(UI 22).
+  const heartColor = selected ? color : C("map-heart-mine");
+  const nameColor = selected ? color : C("map-label-mine");
   const { heart, name } = cell.small;
   // 화면 1px이 도면 몇 단위인지. 하트 크기 계산은 largeFrom 아래로 내려가지 않는다(그 아래는 지도와 같이 줄어든다).
   const k = `pow(2, calc(max(${zoomVar(fallbackLevel)}, ${cell.largeFrom}) / ${-LABEL_LEVELS_PER_OCTAVE}))`;
