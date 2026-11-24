@@ -1,7 +1,7 @@
 {
   "$comment": "디자인 시스템 v2 웹 산출물의 출처. 손으로 고치지 않는다. 커밋을 바꾸려면 commit만 고치고 `npm run tokens:sync`를 돌린다. sha256은 sync가 쓴다.",
   "repo": "JJongW/Roam-design",
-  "commit": "fa7cbec9dfbbcddacb9c3d7e8f0633ebc46aee26",
+  "commit": "97fe0db682759bf4a1508ce2bdb6e98f1c0248b8",
   "files": [
     {
       "from": "dist/web/v2/tokens.css",
