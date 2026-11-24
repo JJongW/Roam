@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -50,7 +50,7 @@ export interface BoothDetailV2Props {
   aliases?: string[];
   /** 박람회가 끝났으면 위에 "어떠셨어요?" 띠(6-09). 여는 날엔 평가를 묻지 않는다. */
   fairEnded?: boolean;
-  /** UI 19-A1 브랜드 줄. 부스에 대표 브랜드가 이어져 있을 때만. 이름은 브랜드 이름, 없으면 부스 이름. */
+  /** UI 23 Q1 C 브랜드 줄(설명만). 부스에 대표 브랜드가 이어져 있을 때만. 이름은 브랜드 이름, 없으면 부스 이름. */
   brand?: { exhibitorId: string; name: string };
   /** 여는 날이고 배치도가 있으면 아래 바에 "길 안내"(4-02). 누르면 지도로 돌아가 그 부스로 길 안내(UI 9)를 시작한다. */
   canRoute?: boolean;
@@ -58,7 +58,10 @@ export interface BoothDetailV2Props {
 
 /**
  * UI 4-02 부스 상세(Figma 3015:1288). 위에서 아래로: 뒤로 → 사진 줄 → 이름과 위치 → 분류 배지
- * → 브랜드 소개 상자 → 브랜드 줄(UI 19-A1) → 정보 줄(위치, 파는 것, 인스타그램, 브랜드 사이트) → 아래 고정 바(하트, 다녀왔어요).
+ * → 브랜드 소개 상자 → 브랜드 줄(UI 23 Q1 C, 설명만) → 정보 줄(위치, 파는 것, 인스타그램, 브랜드 사이트) → 아래 고정 바(하트, 다녀왔어요).
+ *
+ * - 하트는 아래 바 왼쪽 하나(UI 23 Q1 C, 11-24). 부스 하트가 브랜드 하트도 남긴다(서버).
+ * - 위 내비(UI 23 Q2 A): 내려 읽어 큰 이름이 내비 밑으로 사라지면 가운데에 부스 이름(booth.name, 한 줄 말줄임)과 아래 선이 나타난다.
  *
  * - 정보가 비면 EM-1A: 이름이 1순위, 소개 상자 대신 "지금은 부스 이름과 위치만 나와 있어요."(11-15).
  * - 화살표는 갈 곳이 있는 줄에만(11-15).
@@ -106,6 +109,21 @@ export function BoothDetailV2({
 
   const router = useRouter();
   const [viewer, setViewer] = useState<number | null>(null);
+  // UI 23 Q2 A: 큰 이름이 내비 아래로 사라졌는지. 내비 높이만큼 위를 깎아 관찰한다.
+  const navRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const [compact, setCompact] = useState(false);
+  useEffect(() => {
+    const title = titleRef.current;
+    if (!title || typeof IntersectionObserver === "undefined") return;
+    const navH = navRef.current?.getBoundingClientRect().height ?? 0;
+    const io = new IntersectionObserver(
+      ([e]) => setCompact(!e.isIntersecting && e.boundingClientRect.top < navH),
+      { rootMargin: `-${Math.round(navH)}px 0px 0px 0px` },
+    );
+    io.observe(title);
+    return () => io.disconnect();
+  }, []);
   const where = label.hallNumber(hallName, booth.code);
   const mapHref = exhibitionSlug
     ? `/exhibitions/${exhibitionSlug}/map?booth=${booth.id}`
@@ -119,8 +137,25 @@ export function BoothDetailV2({
   return (
     <div className="min-h-dvh bg-v2-bg-layer-default font-v2-ui text-v2-fg-neutral">
       <div className="mx-auto flex min-h-dvh w-full flex-col pb-v2-x28">
-        <div className="flex items-center px-v2-x1-5 pt-safe">
-          <BackButton fallbackHref={mapHref ?? "/"} />
+        <div
+          ref={navRef}
+          className={clsx(
+            "sticky top-0 z-10 border-b bg-v2-bg-layer-default pt-safe",
+            compact ? "border-v2-stroke-neutral-weak" : "border-v2-bg-transparent",
+          )}
+        >
+          <div className="relative flex items-center px-v2-x1-5">
+            <BackButton fallbackHref={mapHref ?? "/"} />
+            <p
+              aria-hidden={!compact}
+              className={clsx(
+                "pointer-events-none absolute inset-x-v2-x16 truncate text-center text-v2-t5-5 font-v2-bold text-v2-fg-neutral transition-opacity duration-[var(--roam-v2-duration-d3)]",
+                compact ? "opacity-100" : "opacity-0",
+              )}
+            >
+              {booth.name}
+            </p>
+          </div>
         </div>
 
         {fairEnded && (
@@ -159,7 +194,7 @@ export function BoothDetailV2({
 
         <div className="flex flex-col gap-v2-x3 px-v2-x4 pt-v2-x5">
           <div className="flex flex-col gap-v2-x1">
-            <h1 className="text-v2-t7 font-v2-bold tracking-v2-card-title">
+            <h1 ref={titleRef} className="text-v2-t7 font-v2-bold tracking-v2-card-title">
               {booth.name}
             </h1>
             {where && (
@@ -198,12 +233,7 @@ export function BoothDetailV2({
 
         {brand && (
           <div className="px-v2-x4 pt-v2-x4">
-            <BrandRow
-              exhibitorId={brand.exhibitorId}
-              name={brand.name}
-              exhibitionSlug={exhibitionSlug}
-              show={s.show}
-            />
+            <BrandRow name={brand.name} />
           </div>
         )}
 

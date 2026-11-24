@@ -6,6 +6,7 @@ import { boothNoteInputSchema } from "@/lib/schemas";
 import type { JudgedClass } from "@/lib/memory/taste";
 import type { SignalKind } from "@/lib/types";
 import { heartOf } from "@/lib/notes/apply";
+import { followBrandForBoothHeart } from "@/lib/brands/follow";
 
 type Ctx = { params: Promise<{ boothId: string }> };
 
@@ -70,6 +71,19 @@ export async function PUT(req: Request, { params }: Ctx) {
   } // else: 둘 다 불변(메모/사진만 편집) → undefined, 기존 판정을 안 건드린다.
 
   const note = await repo.upsertNote(user.id, boothId, parsed.data, judgedClass);
+
+  // UI 23(2026-11-24): 부스 하트가 바뀌면 그 부스의 브랜드 하트도 따라 맞춘다(lib/brands/follow.ts).
+  // 하트 경로(heart)와 옛 interest 경로 둘 다 실제 하트가 바뀐 경우만. 부스 하트 저장은 이미 끝났으므로
+  // 따라가기가 실패해도(예: 0074 적용 전) 이 요청을 실패로 돌리지 않고 로그만 남긴다.
+  const wasHearted = heartOf(existing ?? {});
+  const isHearted = heartOf(note);
+  if (wasHearted !== isHearted) {
+    try {
+      await followBrandForBoothHeart(repo, user.id, boothId, isHearted);
+    } catch (e) {
+      console.error("[brand-follow] 부스 하트를 브랜드 하트로 맞추지 못했어요", { boothId, err: (e as Error).message });
+    }
+  }
 
   // L4 메모리: 상태 변경이 곧 신호다. 이 경로가 유일한 신호 적재 지점.
   if (heartChanged) {

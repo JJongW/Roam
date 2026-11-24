@@ -10,7 +10,7 @@ import {
   singleCopy,
   type BrandAppearItem,
 } from "./brand-appear";
-import type { NewParticipation } from "@/lib/types";
+import type { BrandHeart, NewParticipation } from "@/lib/types";
 
 const part = (over: Partial<NewParticipation> & { exhibitorId: string }): NewParticipation => ({
   participantId: `pt-${over.exhibitorId}`,
@@ -77,11 +77,11 @@ describe("문구", () => {
 });
 
 describe("고르기", () => {
-  const hearts = [
-    { userId: "u1", exhibitorId: "a", createdAt: "2026-11-01T00:00:00Z" },
-    { userId: "u2", exhibitorId: "a", createdAt: "2026-11-01T00:00:00Z" },
-    { userId: "u3", exhibitorId: "a", createdAt: "2026-11-19T05:00:00Z" }, // 참가가 생긴 뒤
-    { userId: "u1", exhibitorId: "b", createdAt: "2026-11-01T00:00:00Z" },
+  const hearts: BrandHeart[] = [
+    { userId: "u1", exhibitorId: "a", createdAt: "2026-11-01T00:00:00Z", source: "direct" },
+    { userId: "u2", exhibitorId: "a", createdAt: "2026-11-01T00:00:00Z", source: "direct" },
+    { userId: "u3", exhibitorId: "a", createdAt: "2026-11-19T05:00:00Z", source: "direct" }, // 참가가 생긴 뒤
+    { userId: "u1", exhibitorId: "b", createdAt: "2026-11-01T00:00:00Z", source: "direct" },
   ];
 
   it("새 참가 × 하트, 참가 뒤 하트만 뺀다(끈 사람도 고른다, 알림함용)", () => {

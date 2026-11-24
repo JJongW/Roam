@@ -129,17 +129,10 @@ export const system = {
   /** 5-07. 실패 이유는 보여 주지 않는다(설계서 5-07). 서비스가 알리는 말이라 로미 없음. */
   loginFailedTitle: "로그인을 마치지 못했어요",
   loginFailedBody: "하트는 이 브라우저에 그대로 있어요.\n잠시 뒤에 다시 해 보셔도 돼요.",
-  // UI 19 브랜드 하트(A안, 11-19). iOS V1Copy(Roam-ios #193)와 같은 자리. 웹에서 거짓이 되는 말만 바꿨다
-  // (11-20 브랜드 검토). 웹은 브라우저 푸시를 보내지 않는다(브랜드 알림은 iOS 푸시, 그리고 웹과 iOS의
-  // 알림함 줄로만 간다). 그래서 웹은 "알려 드려요" 대신 확인된 사실(계정에 남는다)만 말한다(브랜드 규칙 §4).
-  /** 19-A1 브랜드 줄 설명, 로그인한 분 */
-  brandRowLoggedIn: "브랜드 하트는 계정에 남아요",
-  /** 19-A3 브랜드 줄 설명, 로그인 안 한 분 */
-  brandRowLoggedOut: "로그인하시면 브랜드 하트가 계정에도 남아요",
-  /** 19-A2 */
-  brandHeartLeft: (name: string) => `‘${name}’ 브랜드 하트를 남겼어요.`,
-  /** 19-A3 로그인 제안(5-02와 같은 띠). 로그인하면 stores/auth.ts가 syncBrandHearts로 계정에 올린다. */
-  brandHeartLoginPrompt: "브랜드 하트는 이 브라우저에 남아요.\n로그인하시면 계정에도 남아요.",
+  /** UI 23 Q1 C 브랜드 줄 설명(2026-11-24). 부스 하트가 브랜드 하트도 남긴다(서버, lib/brands/follow.ts).
+   *  알림은 iOS 푸시와 웹, iOS 알림함 줄로 간다(로그인한 분). Figma 화면 글자 그대로. */
+  brandRowFollowsBoothHeart: "부스 하트를 남기면 이 브랜드의 다음 박람회 참가도 알려 드려요",
+  // UI 19 브랜드 하트(11-19). 마이 브랜드 목록(14-10)에서 쓴다.
   /** 19-A4 */
   brandHeartRemoved: (name: string) => `‘${name}’ 브랜드 하트를 뺐어요.`,
   /** 19-A5 */
@@ -250,8 +243,6 @@ export const label = {
   retry: "다시 시도",
   /** 19-A1 브랜드 줄 */
   brand: "브랜드",
-  brandHeartPill: "이 브랜드 하트",
-  brandHeartAdd: "브랜드 하트 남기기",
   brandHeartRemove: "브랜드 하트 빼기",
   photo: "부스 사진",
   zoomIn: "지도 확대",
