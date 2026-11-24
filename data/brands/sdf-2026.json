@@ -3,7 +3,7 @@
   "exhibitionSlug": "sdf-2026",
   "source": {
     "url": "https://seoul.designfestival.co.kr/wp-json/wp/v2/exhibitor?exhibition_year=37",
-    "collectedAt": "2026-11-22",
+    "collectedAt": "2026-11-24",
     "note": "서울디자인페스티벌 2026 공식 참가브랜드(WP REST + 상세 페이지). 서울디자인스팟은 행사장 밖 프로그램이라 뺐어요. 부스 번호는 사이트에 없어요"
   },
   "brands": [
@@ -19,13 +19,79 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/chorokdongsaek/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20153_2b19ceec.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20153_a05880be.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20153_18f041ee.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20153_42554d38.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "브랜드 유니버스",
       "participationType": "디자인브랜드"
     },
     {
       "key": "sdf-20157",
       "name": "IDDAT",
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20157_9aab9a4e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20157_152506ef.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20157_655ffc2b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20157_60945f35.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인 엔진",
+      "participationType": "디자인브랜드"
+    },
+    {
+      "key": "sdf-20159",
+      "name": "나인파이브",
+      "aliases": [
+        "NINEFIVE"
+      ],
+      "instagramUrl": "https://www.instagram.com/ninefive_digitaldesign/",
+      "websiteUrl": "https://www.ninefive.com/",
+      "intro": {
+        "text": "나인파이브(NINEFIVE)는 기술과 디자인을 연결해 새로운 디지털 경험을 만드는 디지털 크리에이티브 스튜디오입니다.\n브랜드와 사용자에 대한 이해를 바탕으로 디지털 플랫폼, AI 서비스, XR 콘텐츠 등 다양한 영역에서 기획부터 UX/UI 디자인, 개발까지 통합적인 솔루션을 제공합니다.\n이번 서울디자인페스티벌에서는 몰입형 명상 앱 ‘ORBI’, 인터랙티브 XR 전시 앱 ‘ART REACT XR’, 사용자 행동과 생체 데이터를 기반으로 경험을 분석하는 ‘XR LUMINA’를 선보입니다. 현실과 가상을 연결하는 몰입형 콘텐츠부터 사용자 경험을 데이터로 검증하는 기술까지, 나인파이브가 만들어가는 XR 경험의 가능성을 소개합니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/ninefive/"
+      },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20159_5c97baf1.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20159_3bd3fb70.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20159_0ae28fda.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
+      "category": "디자인&테크",
       "participationType": "디자인브랜드"
     },
     {
@@ -41,7 +107,75 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/sserpe-3/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20163_43ff22f8.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20163_44b3fc11.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20163_90455f22.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20163_053ff947.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20163_a4a4058e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20163_2192d815.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
+      "participationType": "디자인브랜드"
+    },
+    {
+      "key": "sdf-20165",
+      "name": "다숲 × 도도리",
+      "aliases": [
+        "DASOOP X DODORE"
+      ],
+      "instagramUrl": "https://www.instagram.com/dasoop_in",
+      "websiteUrl": "http://www.dasoop.com/",
+      "intro": {
+        "text": "다숲은 버려진 옷과 폐유니폼을 가구와 인테리어에 쓰이는 섬유 소재 도도리보드로 만듭니다. 보드 표면에는 옷감에서 온 섬유의 색과 결이 남아 있습니다. 그 보드로 만든 도도리벤치는 한때 누군가가 입었던 옷이 이제 누구나 앉아 쉴 수 있는 자리가 된 모습을 보여줍니다. 전시에서 폐섬유와 보드 샘플을 나란히 살펴보고, 도도리벤치에 직접 앉아보세요.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/dasoop-x-dodore/"
+      },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20165_41e364ea.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20165_de090f44.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20165_d65e95f3.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20165_08e0d6c5.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20165_c27e109d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20165_dbfdae88.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
+      "category": "디자인&ESG",
       "participationType": "디자인브랜드"
     },
     {
@@ -57,6 +191,28 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/liberteco/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20167_5b51a266.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20167_15e34c18.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20167_bd683220.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20167_5f678502.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20167_3ed6ca2e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "리빙",
       "participationType": "디자인브랜드"
     },
@@ -73,6 +229,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/digital-still-life/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20171_6eb1ef9c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20171_f363fb21.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20171_04681230.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20171_fd499f43.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20171_fd0fabba.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20171_868b9de5.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인 엔진",
       "participationType": "디자인브랜드"
     },
@@ -88,6 +270,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/hid/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20177_b4991b5c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20177_9f951d04.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20177_a295015e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20177_9750c095.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20177_f7e479de.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20177_49d12215.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인 엔진",
       "participationType": "디자인브랜드"
     },
@@ -104,6 +312,20 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/craft-design/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20183_800eca7c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20183_0fd6b11e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20183_de6fdd73.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "리빙",
       "participationType": "디자인브랜드"
     },
@@ -118,6 +340,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/pcda-by-foma/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20185_97ffecfc.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20185_1b36ad5b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20185_db8e4ca1.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20185_0f1bb34c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20185_bcd2dda3.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20185_8b9a0ff9.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인 엔진",
       "participationType": "디자인브랜드"
     },
@@ -132,6 +380,12 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/starlight-chungha/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20191_2a200270.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "브랜드 유니버스",
       "participationType": "디자인브랜드"
     },
@@ -162,6 +416,16 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/jeonjinmoonhwasa/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20201_064ef54b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20201_63c239ed.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "그래픽 컬처",
       "participationType": "디자인브랜드"
     },
@@ -178,6 +442,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/pauline-louise/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20203_7af9a760.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20203_07e27a26.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20203_c6913249.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20203_0ccecb5f.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20203_336165ee.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20203_904dd377.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "리빙",
       "participationType": "디자인브랜드"
     },
@@ -194,6 +484,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/toso/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20205_e6b49fc2.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20205_202de30d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20205_10446c46.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20205_e2fccea5.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20205_d7fc7919.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20205_3bd6a062.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -210,6 +526,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/redearsclub/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20207_eb860ace.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20207_f2467e86.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20207_63c12d22.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20207_c18c9a27.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20207_a545a13d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20207_7300b1f9.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "그래픽 컬처",
       "participationType": "디자인브랜드"
     },
@@ -226,6 +568,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/rysm/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20209_f23e04ac.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20209_8e1c39f6.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20209_4011a997.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20209_5d005cd9.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20209_c5fcf92b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20209_52acbd14.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -240,6 +608,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/repairing/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20213_61ac898d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20213_e048394d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20213_e9c08a42.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20213_206df196.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20213_22716901.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20213_b7072c71.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -256,6 +650,16 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/note-on/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20215_9cec89fe.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20215_8840d4ed.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -271,6 +675,16 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/type-material/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20219_c5fdd037.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20219_af87bbb4.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "그래픽 컬처",
       "participationType": "디자인브랜드"
     },
@@ -287,6 +701,24 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/mothw-studio/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20221_b86fb901.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20221_4e051470.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20221_8c90030f.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20221_cb671d48.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "그래픽 컬처",
       "participationType": "디자인브랜드"
     },
@@ -303,6 +735,12 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/rla-arelei/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20223_32949c42.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인제품",
       "participationType": "디자인브랜드"
     },
@@ -319,6 +757,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/munanist/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20225_daa966d4.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20225_13f985bc.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20225_af8f21cf.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20225_1031b333.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20225_edac45e1.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20225_690c97f1.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -335,6 +799,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/culturecitytongyeong/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20229_2289bd60.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20229_952f80c6.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20229_e884de63.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20229_c6fede53.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20229_d86b6024.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20229_39959dcf.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "아트&크래프트",
       "participationType": "디자인브랜드"
     },
@@ -351,6 +841,28 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/swna/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20231_53fd9f59.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20231_978f5629.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20231_f3040c80.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20231_16f52a1c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20231_b2faafeb.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인제품",
       "participationType": "디자인 스페셜리스트"
     },
@@ -367,6 +879,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/kove-seoul/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20233_34d7fe59.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20233_d337eff2.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20233_29014305.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20233_4a9a1104.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20233_e1b30282.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20233_0556a5d5.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "패션",
       "participationType": "디자인브랜드"
     },
@@ -383,6 +921,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/keep-it-in-a-set/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20235_e87ca92d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20235_db500943.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20235_f81bcde9.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20235_c4149435.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20235_0eaa09b4.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20235_9b6d00aa.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "F&B",
       "participationType": "디자인브랜드"
     },
@@ -399,6 +963,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/marshmallowtrampolin/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20237_22aa2116.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20237_9e591034.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20237_316e4125.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20237_dc0df8ff.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20237_4dc73a80.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20237_9c3a2a5c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -415,6 +1005,12 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/patternflow/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20239_a7565356.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&테크",
       "participationType": "디자인브랜드"
     },
@@ -431,6 +1027,24 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/underthing/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20241_018ddb43.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20241_b7210982.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20241_bf423832.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20241_55f1b330.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인제품",
       "participationType": "디자인브랜드"
     },
@@ -447,6 +1061,28 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/grotto-seoul/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20243_f32d23f5.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20243_e44254af.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20243_3f04c34c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20243_3bf272da.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20243_a856671e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인제품",
       "participationType": "디자인브랜드"
     },
@@ -458,6 +1094,24 @@
       ],
       "instagramUrl": "https://www.instagram.com/evelab.studio?igsh=MWR6dHg3ZnVid2Z4OA%3D%3D&utm_source=qr",
       "websiteUrl": "https://smartstore.naver.com/evelab",
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20245_198b5256.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20245_ade6dc4f.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20245_7d0b7665.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20245_1b9e53a1.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -474,6 +1128,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/sonkkeutbee-4/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20251_d91a96e5.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20251_0fa88389.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20251_4e26e81b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20251_1e1f25f5.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20251_b12e5490.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20251_bbcf8184.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&ESG",
       "participationType": "디자인브랜드"
     },
@@ -490,6 +1170,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/linda-pro/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20253_24bfe6be.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20253_53296139.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20253_c943a3e9.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20253_398c0dc2.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20253_5577300b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20253_971cec7e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -506,6 +1212,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/keedle/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20255_7deb8063.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20255_7cdc0b8d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20255_d5764bf0.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20255_4f4d3bd8.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20255_9294f83f.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20255_f2b25820.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -521,6 +1253,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/soseuly/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20257_15fbdcb5.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20257_3aa4ccf4.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20257_3c41773b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20257_07b47c47.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20257_ee876e35.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20257_27a7d31c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -536,6 +1294,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/drawingday/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20265_048126ca.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20265_655f82a9.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20265_c89f4fb9.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20265_b35ed411.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20265_be37b11d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20265_1ca25a8f.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "그래픽 컬처",
       "participationType": "디자인브랜드"
     },
@@ -552,6 +1336,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/heedagarden/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20267_2132f75f.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20267_6249afc1.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20267_72f70ddf.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20267_7084b920.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20267_ccca28f3.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20267_e02475c7.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "그래픽 컬처",
       "participationType": "디자인브랜드"
     },
@@ -568,6 +1378,12 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/aunog/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20269_45c0543e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -582,6 +1398,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/dokkaebi-atelier/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20275_32e7fd05.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20275_e33614c8.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20275_66c6fd98.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20275_d28c0c09.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20275_8ba18e05.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20275_9caace77.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "그래픽 컬처",
       "participationType": "디자인브랜드"
     },
@@ -598,6 +1440,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/sukchulmok/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20279_6b2c2e41.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20279_ce864743.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20279_9e0707f4.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20279_72fb8760.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20279_3adab250.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20279_7ea357a3.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -614,6 +1482,24 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/ohseven/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20285_cce31f2a.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20285_61ce7253.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20285_05ec8251.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20285_20521708.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "브랜드 유니버스",
       "participationType": "디자인 스페셜리스트"
     },
@@ -630,6 +1516,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/thomas-studio-2/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20287_d5d4f2f9.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20287_2104931d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20287_f2b5fc56.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20287_e5fbd17e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20287_cad2ee65.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20287_0966debb.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "브랜드 유니버스",
       "participationType": "디자인 스페셜리스트"
     },
@@ -646,6 +1558,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/everyday-practice/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20291_1fcbe34e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20291_1fc231d6.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20291_be6422a1.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20291_9ff3f5e8.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20291_b44feacd.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20291_e57ece3d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "그래픽 컬처",
       "participationType": "디자인 스페셜리스트"
     },
@@ -662,6 +1600,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/labotory-2/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20293_b2717d25.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20293_5dc2b105.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20293_e29ce616.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20293_e8195515.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20293_32907960.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20293_8be4ec90.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "브랜드 유니버스",
       "participationType": "디자인 스페셜리스트"
     },
@@ -677,6 +1641,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/park-hyun-jong/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20297_93f513cc.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20297_d6c2db1c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20297_3eea3c29.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20297_b77c537f.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20297_6fac909b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20297_79f7f3c1.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -693,6 +1683,28 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/socksmith/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20299_d964ea9e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20299_69f8b0ee.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20299_863727ff.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20299_aab9f09d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20299_c246d4a1.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -709,6 +1721,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/d-origin/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20311_c732cfd5.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20311_49e7b569.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20311_049a183d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20311_736aabb5.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20311_b04bb36f.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20311_c00e7093.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "브랜드 유니버스",
       "participationType": "디자인 스페셜리스트"
     },
@@ -725,6 +1763,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/habit-us/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20315_2d404fc5.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20315_9e54f3b1.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20315_a0c7e086.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20315_775761bb.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20315_87844bee.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20315_b8bc9289.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&ESG",
       "participationType": "디자인브랜드"
     },
@@ -741,6 +1805,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/sulsul-recipe-2/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20317_10efe502.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20317_8382adf5.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20317_7d1872ef.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20317_76e14850.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20317_7e97be84.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20317_b6d239e7.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "그래픽 컬처",
       "participationType": "디자인브랜드"
     },
@@ -757,6 +1847,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/hipbuz/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20323_beabd2ba.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20323_5e4e9e7a.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20323_6b34dea8.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20323_e3659095.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20323_347f9548.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20323_072fa3bf.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "그래픽 컬처",
       "participationType": "디자인브랜드"
     },
@@ -771,6 +1887,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/jinju-peach/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20325_6a18b92b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20325_ce790857.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20325_bd27425b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20325_a387bd77.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20325_7fc196d2.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20325_29835cd3.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "브랜드 유니버스",
       "participationType": "디자인브랜드"
     },
@@ -786,6 +1928,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/muhehe/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20329_b34e34ff.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20329_dc975154.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20329_067cba13.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20329_ac6e1063.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20329_ba36a162.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20329_6f19b31f.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인제품",
       "participationType": "디자인브랜드"
     },
@@ -802,6 +1970,24 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/nelna/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20333_47a0f9d1.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20333_9e41d6f3.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20333_666b4755.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20333_cb32bfa0.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -818,6 +2004,16 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/maco/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20335_62d1c814.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20335_33dcf8bc.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&테크",
       "participationType": "디자인브랜드"
     },
@@ -833,6 +2029,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/pafg-nhcb/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20345_2fdda656.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20345_9a6ba08a.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20345_b9f0d87a.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20345_ba32e6ce.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20345_2c4e6851.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20345_dd0f4584.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -849,6 +2071,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/fefehaus/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20351_30da64bf.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20351_b77cb8d5.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20351_24a2118e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20351_65b19176.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20351_b65e84cd.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20351_79e16ea5.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -865,6 +2113,20 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/design-wing/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20353_e092bb3a.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20353_b3ddef9c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20353_305805d4.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -880,6 +2142,24 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/the-other-threads/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20357_5029126d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20357_30926f4e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20357_5887f4c6.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20357_833aac8d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "그래픽 컬처",
       "participationType": "디자인브랜드"
     },
@@ -896,6 +2176,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/charade-show-2/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20359_03ed8fa2.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20359_1d9ba20a.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20359_be85b801.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20359_2f13b87b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20359_7a3cbf7f.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20359_a4b7f9c7.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "그래픽 컬처",
       "participationType": "디자인브랜드"
     },
@@ -912,6 +2218,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/golden-olive/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20361_d8e63016.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20361_297b9d51.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20361_8c8f3d9a.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20361_80df8953.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20361_2b50c645.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20361_67b8c367.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&테크",
       "participationType": "디자인브랜드"
     },
@@ -928,6 +2260,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/petit-factory/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20363_5fa5a61a.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20363_e5b6c9dc.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20363_c4599813.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20363_d1ab6185.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20363_9c7ed70b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20363_c1489a3b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "그래픽 컬처",
       "participationType": "디자인브랜드"
     },
@@ -944,6 +2302,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/kimmming-studio/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20365_8a8f0a09.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20365_c053b85b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20365_d6c642fb.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20365_710c709f.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20365_5d261e60.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20365_fd9d01d4.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "그래픽 컬처",
       "participationType": "디자인브랜드"
     },
@@ -960,6 +2344,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/klio-mobility/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20367_76d1e9ab.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20367_960ac785.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20367_b108833a.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20367_feeed5fd.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20367_a00a2453.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20367_4de09770.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&ESG",
       "participationType": "디자인브랜드"
     },
@@ -975,6 +2385,20 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/loov/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20371_8888fa7c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20371_8f33abf6.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20371_5d873f1d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -990,6 +2414,24 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/heyc/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20373_23bf4de3.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20373_8ba0a5f5.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20373_b0411a2f.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20373_6950acfa.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&ESG",
       "participationType": "디자인브랜드"
     },
@@ -1017,6 +2459,16 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/cobalt/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20377_d69a9045.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20377_607d6747.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -1032,6 +2484,16 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/record-the-moment/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20381_304ea791.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20381_0e096f1b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "그래픽 컬처",
       "participationType": "디자인브랜드"
     },
@@ -1048,6 +2510,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/o-check/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20385_af558c55.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20385_77a14200.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20385_76132071.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20385_a090247b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20385_8ddd8d14.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20385_a3c59c5a.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -1059,6 +2547,20 @@
       ],
       "instagramUrl": "https://www.instagram.com/composition_studio_kr/",
       "websiteUrl": "https://www.compositionstudio.kr/",
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20387_809653fd.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20387_56fedd18.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20387_95e97a81.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -1074,6 +2576,12 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/moomiyeong/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20393_2d25f5a9.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -1089,6 +2597,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/movio/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20409_d7357884.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20409_bc8ce66c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20409_51659ec2.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20409_9e52fb19.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20409_80b77d23.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20409_cdd2e45f.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인제품",
       "participationType": "디자인브랜드"
     },
@@ -1103,6 +2637,16 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/piece-of-tomorrow-2/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20413_13621847.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20413_b5089b6e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&ESG",
       "participationType": "디자인브랜드"
     },
@@ -1119,6 +2663,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/lunettel-2/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20415_7a5695b6.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20415_343bbbc5.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20415_deca8d76.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20415_83324de5.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20415_9654c248.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20415_e513b23f.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인제품",
       "participationType": "디자인브랜드"
     },
@@ -1151,6 +2721,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/onheuk-2/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20433_18936e49.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20433_e1fb806a.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20433_b0ccf47b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20433_7ccb9aad.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20433_e54d0f0c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20433_f467eed4.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -1183,6 +2779,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/kara-young-2/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20439_e8b444c1.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20439_bab54003.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20439_8bb7f47f.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20439_1cdc7c91.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20439_bf186f38.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20439_e94408d2.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -1198,6 +2820,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/arthands/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20443_02357766.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20443_0ff7af97.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20443_580df7e9.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20443_28a5c0c7.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20443_c3f2a70e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20443_79191a08.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -1213,6 +2861,20 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/juyoung-yook/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20445_c1f33ce6.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20445_d9fc3286.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20445_be238cf8.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1228,6 +2890,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/cha-mi-so-rang-2/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20449_af01bde4.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20449_447b6148.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20449_5ecfd949.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20449_71c52359.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20449_f192b5b8.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20449_aea7cf01.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1243,6 +2931,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/moon-jungmi/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20451_d9de74ba.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20451_a4ec6bba.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20451_3043affb.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20451_2ff9aa6c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20451_bb999d32.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20451_493baead.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1258,6 +2972,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/seunghyun-roh/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20453_051babab.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20453_0d38f411.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20453_07f78d22.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20453_f267a9f1.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20453_12615134.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20453_3ca40de5.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1273,6 +3013,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/park-ji-seon/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20455_2b2a55ba.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20455_8d51d660.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20455_188c8af3.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20455_abf7166e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20455_aeec59df.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20455_f368238f.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1289,6 +3055,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/jeongjisu/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20457_7b053048.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20457_3d109791.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20457_220f14d6.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20457_3a9e966d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20457_b769d188.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20457_e9cd3097.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인제품",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1305,6 +3097,20 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/hyejin-park/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20461_2bc4c596.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20461_7ce9def6.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20461_b446d325.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "브랜드 유니버스",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1319,6 +3125,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/oh-sumin/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20463_1903262c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20463_71411caf.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20463_26a28791.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20463_eb860924.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20463_c0277d24.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20463_e9a75b86.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&ESG",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1335,6 +3167,28 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/kishcave/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20465_5687815e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20465_a197e19b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20465_f7714f90.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20465_23e4d43e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20465_a9defefe.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -1351,6 +3205,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/jiwon-lee/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20467_126b331b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20467_b129993d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20467_a954eed2.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20467_b3f846c1.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20467_6082bfe5.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20467_d903bb9c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&ESG",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1366,7 +3246,73 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/jiwon-jung/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20475_cf0f8ea4.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20475_46e2b134.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20475_71da029e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20475_00fc954d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20475_3f7af60e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20475_10a66df5.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "뉴 아틀리에",
+      "participationType": "영 디자이너 프로모션"
+    },
+    {
+      "key": "sdf-20477",
+      "name": "이승재",
+      "aliases": [
+        "Seungjae Lee"
+      ],
+      "intro": {
+        "text": "Z CHAIR는 스프링을 정면에서 바라보았을 때 나타나는 Z자 형상에서 출발한 파이프 라운지체어입니다. Z라는 형상제약점 안에서 캔틸레버의 구조적 원리와 인체의 움직임, 제작 공법의 조건을 하나의 형상으로 제작하고자 했습니다.\n두 개의 캔틸레버 구조를 상하로 결합하고, 파이프의 곡률과 치수를 조정하여 세 곳의 탄성 지점을 설계했습니다. 상부의 R50 두 곳과 하부의 R100 한 곳은 착좌 시 함께 변형되며 신체의 하중을 아래로 분산합니다. 외곽 프레임은 탄성을 발생시키는 동시에 팔걸이 역할을 수행하며, 내부의 좌판과 등받이는 각각의 움직임에 반응하도록 구성했습니다.\n특히 등받이를 구성하는 좌우의 독립된 파이프는 상체와 어깨의 비틀림을 자연스럽게 받아줍니다. 등받이와 좌판의 각도는 110°로 설정했습니다. 착좌시, 프레임이 후방과 하방으로 탄성하며 몸을 부드럽게 받아주고, 기립 시에는 스테인레스의 탄성 복원력이 몸을 일으키는 움직임을 돕습니다.\n쿠션이나 별도의 스프링 장치 없이, 프레임의 탄성과 팽팽하게 감긴 로프만으로 해먹이나 요람에 몸을 맡긴 듯한 착좌 경험을 구현했습니다.\n이러한 구조를 제게 주어진 제작 환경에서 구현하기 위해 기성 벤딩 금형의 규격을 조사하고, 파이프의 곡률을 R50과 R100으로 통일했습니다.\nZ CHAIR는 형태 자체가 탄성을 만들어내고, 그 탄성이 신체의 움직임에 반응하도록 설계한 의자입니다.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/seungjae-lee/"
+      },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20477_f60b9ce7.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20477_9df4e82f.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20477_79bb1ebc.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20477_7724f38e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20477_e490fe3c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20477_053d683c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
+      "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
     {
@@ -1382,6 +3328,20 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/lee-yunha-ryu-hyeongrae/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20479_8cf09ec4.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20479_6886933b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20479_0d32a698.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인제품",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1398,6 +3358,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/junsung-won-hayong-kim/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20481_dd7c76e2.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20481_30c7bd88.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20481_68dd6b9e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20481_914e0009.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20481_6adb1bb8.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20481_2aeace28.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1414,6 +3400,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/hyunju-roh/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20483_93e403b8.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20483_d7e10749.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20483_64685429.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20483_9a4a6d5b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20483_08e03b18.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20483_90fcd446.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1429,6 +3441,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/yu-donghwan/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20489_4b6366df.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20489_8a2fd09e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20489_35991087.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20489_893bde82.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20489_f440729f.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20489_dcfc4e2e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1444,6 +3482,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/heo-jungwoo-choi-sooa/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20491_c8f98859.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20491_ebf3b44f.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20491_621cc31d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20491_32a48f47.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20491_5a212e93.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20491_d37e0d92.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1458,6 +3522,24 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/kim-yujin-lee-hannah/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20493_fa7d17bf.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20493_4e3a13e2.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20493_996e558e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20493_e5d51f7d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1474,6 +3556,28 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/sung-jonghyup/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20495_7d987e65.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20495_4ec5b8d9.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20495_5de67291.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20495_7439469e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20495_fad7f3bf.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1488,6 +3592,20 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/no-hyeong-o-lee-su-min/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20497_bdbc1895.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20497_9b15d8b3.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20497_23301759.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1503,6 +3621,20 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/moon-jihee/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20499_b0ddb949.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20499_a7232051.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20499_0ccc90b6.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1519,6 +3651,12 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/dream-gream-3/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20501_8f6b0da3.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "기타",
       "participationType": "디자인브랜드"
     },
@@ -1534,6 +3672,24 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/jang-sungsu/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20503_b094acea.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20503_d0d470e7.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20503_50237b81.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20503_835c9362.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1550,6 +3706,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/kim-sungdong-2/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20505_0f6972f2.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20505_012c430d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20505_43aaae38.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20505_315331e4.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20505_66c4e800.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20505_b1b839e6.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1564,6 +3746,20 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/lee-seung-won/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20507_d50a0d6d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20507_1e3dbfeb.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20507_f8e9b94e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1579,6 +3775,28 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/han-seungwoo/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20509_69657c46.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20509_f51011e4.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20509_38751a44.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20509_12333cd7.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20509_179ee027.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1595,6 +3813,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/hyunji-kim/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20511_0143d502.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20511_8dc5646d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20511_aa94ab60.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20511_fa1e3721.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20511_6edd17ab.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20511_bc4282bf.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "뉴 아틀리에",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1607,10 +3851,36 @@
       "instagramUrl": "https://www.instagram.com/leesngjin/",
       "websiteUrl": "https://leesngjin.com/",
       "intro": {
-        "text": "Everyday Playscape\n놀이는 우리의 일상을 변화시킬 수 있을까?\n우리는 일상 속에서 점점 정해진 방식대로 행동하는 데 익숙해져 있다. 의자는 앉기 위한 것, 조명은 빛을 밝히기 위한 것, 테이블은 물건을 올려두기 위한 것이라는 익숙한 규칙 속에서 사물은 주어진 기능을 수행하는 대상으로 존재한다.\n나는 이러한 일상의 사물에 작은 놀이의 요소를 더해 사용자의 행동과 경험을 자연스럽게 변화시키는 Playable Furniture와 Home-scale Objects를 디자인한다. 놀이를 단순한 재미가 아닌 사물과 환경을 새롭게 인식하고, 타인과 관계 맺는 디자인 언어로 활용하며, 진지함과 유희, 기능과 경험 사이의 균형을 탐구하는 'Serious Fun'을 디자인 철학으로 삼고 있다. 특히 일상과 관계 속에서 발견한 다양한 사회적·문화적 질문을 놀이적 디자인으로 번역하고, 사용자가 직접 참여하고 경험하는 과정을 통해 그 안에 담긴 메시지를 전달하고자 한다.\n이번 전시에서는 익숙한 가구의 기능에 놀이적 요소를 결합하고, 그 안에 서로 다른 개념과 이야기를 담은 세 가지 오브제를 선보인다. 은 두 사람이 구조물 양 끝에 앉아 서로의 무게와 움직임을 조율해 균형을 맞추면 비로소 빛이 켜지는 조명이다. 각기 다른 두 사람이 상대를 고려하고 자신의 편안함을 조정해야만 빛이 유지되는 경험을 통해, 관계란 완벽하게 맞아떨어지는 상태가 아니라 서로의 다름을 인식하고 끊임없이 조율해 가는 과정임을 이야기한다. 는 일상적인 대화 속 괄호에 숨겨진 진심과 말해지지 않은 감정에서 출발한 가변형 가구다. 두 개의 괄호 형태 구조와 아코디언 메커니즘을 결합해, 사용자가 직접 열고 닫는 동작에 따라 스툴에서 선반으로 형태와 기능이 변화한다. 괄호 안에 머물던 감정이 바깥으로 드러나고, 숨기거나 감싸는 구조가 관계를 위한 공간으로 전환되는 과정을 통해 감정의 표현과 관계의 경계를 놀이적으로 경험하게 한다. 은 한국의 정월대보름 풍습인 부럼 깨기에서 출발한 작품으로, 스툴의 구조와 신체의 무게를 활용해 실제로 호두를 깨는 경험을 제안한다. 전통적인 문화적 풍습을 앉는 행위와 결합된 놀이로 재해석함으로써, 문화적 경험을 특정한 배경에 머무르게 하지 않고 누구나 몸으로 참여하고 즐길 수 있는 일상의 경험으로 확장한다.\n세 작품은 각각 관계 속의 균형과 조율, 감정의 표현과 관계의 경계, 전통문화와 신체적 경험이라는 서로 다른 주제를 다루지만, 이를 모두 사용자의 참여를 통해 경험할 수 있는 놀이적 행위로 전환한다는 공통점을 지닌다. 이때 사용자는 단순히 가구를 사용하는 사람이 아니라 자신의 움직임과 참여를 통해 작품에 담긴 개념을 경험하고 새로운 의미를 발견하는 주체가 된다. 추상적인 질문과 메시지는 가구의 기능과 구조에 더해진 놀이의 규칙을 통해 신체적인 경험으로 구체화된다.\n이번 전시는 기능과 경험, 진지함과 유희가 공존하는 가구와 오브제를 통해 놀이가 특별한 장소나 별도의 활동에 한정되지 않고 우리의 일상 속에서도 자연스럽게 발생할 수 있음을 제안한다. 앉고, 움직이고, 균형을 맞추고, 구조를 변화시키는 익숙한 행위들이 새로운 놀이가 되는 공간, 일상 속에서 지속되는 Everyday Playscape를 만들어가고자 한다.",
+        "text": "Everyday Playscapes\n놀이는 우리의 일상을 변화시킬 수 있을까?\n우리는 일상 속에서 점점 정해진 방식대로 행동하는 데 익숙해져 있다. 의자는 앉기 위한 것, 조명은 빛을 밝히기 위한 것, 테이블은 물건을 올려두기 위한 것이라는 익숙한 규칙 속에서 사물은 주어진 기능을 수행하는 대상으로 존재한다.\n나는 이러한 일상의 사물에 작은 놀이의 요소를 더해 사용자의 행동과 경험을 자연스럽게 변화시키는 Playable Furniture와 Home-scale Objects를 디자인한다. 놀이를 단순한 재미가 아닌 사물과 환경을 새롭게 인식하고, 타인과 관계 맺는 디자인 언어로 활용하며, 진지함과 유희, 기능과 경험 사이의 균형을 탐구하는 'Serious Fun'을 디자인 철학으로 삼고 있다. 특히 일상과 관계 속에서 발견한 다양한 사회적·문화적 질문을 놀이적 디자인으로 번역하고, 사용자가 직접 참여하고 경험하는 과정을 통해 그 안에 담긴 메시지를 전달하고자 한다.\n이번 전시에서는 익숙한 가구의 기능에 놀이적 요소를 결합하고, 그 안에 서로 다른 개념과 이야기를 담은 세 가지 오브제를 선보인다. 은 두 사람이 구조물 양 끝에 앉아 서로의 무게와 움직임을 조율해 균형을 맞추면 비로소 빛이 켜지는 조명이다. 각기 다른 두 사람이 상대를 고려하고 자신의 편안함을 조정해야만 빛이 유지되는 경험을 통해, 관계란 완벽하게 맞아떨어지는 상태가 아니라 서로의 다름을 인식하고 끊임없이 조율해 가는 과정임을 이야기한다. 는 일상적인 대화 속 괄호에 숨겨진 진심과 말해지지 않은 감정에서 출발한 가변형 가구다. 두 개의 괄호 형태 구조와 아코디언 메커니즘을 결합해, 사용자가 직접 열고 닫는 동작에 따라 스툴에서 선반으로 형태와 기능이 변화한다. 괄호 안에 머물던 감정이 바깥으로 드러나고, 숨기거나 감싸는 구조가 관계를 위한 공간으로 전환되는 과정을 통해 감정의 표현과 관계의 경계를 놀이적으로 경험하게 한다. 은 한국의 정월대보름 풍습인 부럼 깨기에서 출발한 작품으로, 스툴의 구조와 신체의 무게를 활용해 실제로 호두를 깨는 경험을 제안한다. 전통적인 문화적 풍습을 앉는 행위와 결합된 놀이로 재해석함으로써, 문화적 경험을 특정한 배경에 머무르게 하지 않고 누구나 몸으로 참여하고 즐길 수 있는 일상의 경험으로 확장한다.\n세 작품은 각각 관계 속의 균형과 조율, 감정의 표현과 관계의 경계, 전통문화와 신체적 경험이라는 서로 다른 주제를 다루지만, 이를 모두 사용자의 참여를 통해 경험할 수 있는 놀이적 행위로 전환한다는 공통점을 지닌다. 이때 사용자는 단순히 가구를 사용하는 사람이 아니라 자신의 움직임과 참여를 통해 작품에 담긴 개념을 경험하고 새로운 의미를 발견하는 주체가 된다. 추상적인 질문과 메시지는 가구의 기능과 구조에 더해진 놀이의 규칙을 통해 신체적인 경험으로 구체화된다.\n이번 전시는 기능과 경험, 진지함과 유희가 공존하는 가구와 오브제를 통해 놀이가 특별한 장소나 별도의 활동에 한정되지 않고 우리의 일상 속에서도 자연스럽게 발생할 수 있음을 제안한다. 앉고, 움직이고, 균형을 맞추고, 구조를 변화시키는 익숙한 행위들이 새로운 놀이가 되는 공간, 일상 속에서 지속되는 Everyday Playscape를 만들어가고자 한다.",
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/jin-lee/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20515_b6cd1b73.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20515_24a050d1.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20515_8b875e85.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20515_c9ad9464.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20515_16b03f73.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20515_631ed647.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1626,6 +3896,28 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/myoung-subeen/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20519_01cd4a54.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20519_0b650936.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20519_6a63b2eb.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20519_5efd888b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20519_36bd49e2.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1642,6 +3934,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/jeong-chaebeen-park-jimin/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20525_99375192.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20525_3f42bff8.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20525_79691518.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20525_31832115.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20525_1a50a0cf.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20525_10533f15.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인제품",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1657,6 +3975,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/lee-hayoung/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20527_c62c019c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20527_78b288aa.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20527_dc94256a.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20527_83859604.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20527_219d2db4.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20527_91bef394.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1673,6 +4017,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/youngjin-cho-oneseo-choi/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20529_9a849b05.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20529_55ba3c6e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20529_d3094e55.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20529_63605233.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20529_0abb5bf9.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20529_f7285766.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1689,6 +4059,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/poq-2/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20531_2946cfd9.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20531_a4f208a4.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20531_22bf0f12.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20531_9633eea3.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20531_60daee6b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20531_32ed112b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "브랜드 유니버스",
       "participationType": "디자인브랜드"
     },
@@ -1704,6 +4100,52 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/jeonghyeon-kim/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20533_2da54632.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20533_4bc5c7e7.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20533_d80e0e84.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
+      "category": "디자인&크래프트 무브먼트",
+      "participationType": "영 디자이너 프로모션"
+    },
+    {
+      "key": "sdf-20535",
+      "name": "이우연",
+      "aliases": [
+        "Lee Wooyeon"
+      ],
+      "intro": {
+        "text": "이 우 연 에 게 ' 의 자 ' 는 고 정 되 고 완 결 된 형 태 가 아 니 라 ,\n해 체 와 재 구 성 을 기 다 리 는 하 나 의 구 조 다 .\n작 가 는 의 자 를 이 루 는 수 직 과 수 평 의 축 을 분 리 하 고 위 치 를 옮 기 며 ,\n기 존 의 전 형 적 인 결 합 방 식 을 변 형 한 다 .\n이 를 통 해 의 자 는 앉 기 위 한 대 상 이 라 는 익 숙 한 인 식 에 서 벗 어 나\n선 과 면 , 비 례 와 균 형 으 로 구 성 된 조 형 적 대 상 으 로 드 러 난 다 .",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/lee-wooyeon/"
+      },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20535_e473c0db.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20535_77bbc382.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20535_edafccf3.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20535_b804ad0a.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1720,6 +4162,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/kim-seungki/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20537_0687320a.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20537_4f7dda72.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20537_1b68ee96.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20537_30ed5158.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20537_bf2e87af.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20537_e889aa3a.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1735,6 +4203,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/song-inwoo/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20539_a9d870d6.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20539_be3afcf7.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20539_07fe3bec.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20539_eb4c0295.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20539_40ba903f.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20539_8810578e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1749,6 +4243,12 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/leesubin/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20543_c8dddfe2.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1761,10 +4261,36 @@
       "instagramUrl": "https://www.instagram.com/shellang_k_official",
       "websiteUrl": "https://shellang.kr/",
       "intro": {
-        "text": "쉘랑 코리아의 '모던선비 갓'는 조선시대 선비들이 쓰던 갓을 현대적인 라이프스타일 오브제로 재해석한 디자인 프로젝트입니다. 갓 특유의 곡선과 섬세한 짜임, 은은한 비침을 현대적인 소재와 기술로 구현하고, 이를 무드등과 보틀램프, 패션 액세서리로 확장했습니다. 전통의 형태와 미감을 유지하면서도 오늘날의 공간과 일상에서 새롭게 즐길 수 있는 가능성을 제안합니다.",
+        "text": "쉘랑 코리아의 '모던선비 갓'은 조선시대 선비들이 쓰던 갓을 현대적인 라이프스타일 오브제로 탄생시킨 디자인 프로젝트입니다. 갓 특유의 곡선과 섬세한 짜임, 은은한 비침을 현대적인 소재와 기술로 구현하고, 이를 무드등과 보틀램프, 패션 액세서리로 확장했습니다. 전통의 형태와 미감을 유지하면서도 오늘날의 공간과 일상에서 새롭게 즐길 수 있는 가능성을 제안합니다.",
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/shellang-2/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20545_caf76ad2.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20545_36d2e1c9.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20545_c95cbebc.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20545_351d3128.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20545_7d536add.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20545_246cee8a.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&테크",
       "participationType": "디자인브랜드"
     },
@@ -1781,6 +4307,24 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/yi-yuna/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20549_c3ca4523.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20549_36de5a43.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20549_3da2cc5f.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20549_db36c76c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "브랜드 유니버스",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1796,6 +4340,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/vivalorre/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20551_996d9cd2.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20551_1381671c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20551_b1ea7489.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20551_e8646cdf.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20551_f59bab6f.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20551_5e3e2341.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인제품",
       "participationType": "디자인브랜드"
     },
@@ -1811,6 +4381,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/park-jinho-2/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20553_5ddab8ea.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20553_93864783.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20553_8e0cc2fb.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20553_1c2a913f.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20553_d2d28c95.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20553_ed94c137.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1827,6 +4423,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/did/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20557_4c96866c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20557_4d50c6f8.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20557_2364bb9e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20557_939b22f5.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20557_29fc04c4.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20557_74221cf3.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -1843,6 +4465,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/piglab-2/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20559_101dc1bf.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20559_773ef3ee.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20559_5bc6e523.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20559_276d88e8.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20559_f57e14f6.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20559_1f456f14.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&ESG",
       "participationType": "디자인브랜드"
     },
@@ -1858,6 +4506,12 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/gwangmyeong-c-f/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20561_19fff927.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인제품",
       "participationType": "디자인브랜드"
     },
@@ -1874,6 +4528,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/jang-jahyeon/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20565_c1e1a580.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20565_35174df7.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20565_6705ce29.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20565_d0b286e3.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20565_0f5de58b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20565_9b74e390.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1889,6 +4569,20 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/younghyun-won/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20567_16d143c6.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20567_05f59797.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20567_9463e6d8.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -1904,6 +4598,24 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/yulim-daleworks/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20575_0f0ac7ed.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20575_f20b456d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20575_e4a51819.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20575_5afdbc45.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -1915,6 +4627,32 @@
       ],
       "instagramUrl": "https://www.instagram.com/bokit.official/",
       "websiteUrl": "https://bokit.co.kr/",
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20577_bb397004.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20577_1ba51be8.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20577_c8057cb4.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20577_d28a1dfd.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20577_d98d751b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20577_dfe935ed.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -1931,6 +4669,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/kimtokki-yoga/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20579_6164490e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20579_5311beec.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20579_26f081ae.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20579_5cbca81b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20579_da112de1.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20579_ff7314e7.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "브랜드 유니버스",
       "participationType": "디자인브랜드"
     },
@@ -1947,6 +4711,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/visualstoryteller/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20587_c4eeee39.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20587_3df1918d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20587_2f4c88ea.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20587_b0e5e0a3.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20587_e23a4e8c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20587_f494bf81.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "그래픽 컬처",
       "participationType": "디자인브랜드"
     },
@@ -1963,6 +4753,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/oase/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20591_c4f36729.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20591_cf138268.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20591_a738eb76.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20591_01511d69.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20591_6a841b1d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20591_75c9908d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "그래픽 컬처",
       "participationType": "디자인브랜드"
     },
@@ -1979,6 +4795,24 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/inoff-4/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20593_b5a10253.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20593_75b49617.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20593_d47960ca.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20593_4a75d2ba.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "브랜드 유니버스",
       "participationType": "디자인브랜드"
     },
@@ -1995,6 +4829,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/wraps-boh/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20595_861af8bf.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20595_5344db2a.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20595_aac9fcc2.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20595_e68c95b9.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20595_40cb8aba.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20595_46b102f3.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -2011,6 +4871,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/lee-hye-yong-2/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20597_dc806e36.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20597_6522eb61.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20597_e1ffcf72.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20597_0337045b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20597_b7e55961.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20597_83989274.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -2025,6 +4911,20 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/gitdeum/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20601_761f1ec7.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20601_d6b556d6.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20601_c47872a1.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "패션",
       "participationType": "디자인브랜드"
     },
@@ -2039,6 +4939,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/alouettee/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20603_a1dffc4c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20603_72a2650e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20603_757b1ad6.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20603_0fe44492.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20603_257805d0.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20603_a08dd602.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -2055,6 +4981,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/son-danbee-2/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20605_5b65cf3e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20605_3668a191.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20605_85a09c76.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20605_62045f8a.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20605_a6f61b50.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20605_72478dca.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -2070,6 +5022,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/theleeho/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20607_564e4e86.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20607_516e784d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20607_1ab2738e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20607_857afb63.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20607_48a7246d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20607_74642cf6.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "패션",
       "participationType": "디자인브랜드"
     },
@@ -2086,6 +5064,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/mino/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20613_6e91ed72.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20613_3c723ab3.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20613_244bd716.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20613_198c4038.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20613_b0a1dd65.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20613_219352e1.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -2101,6 +5105,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/kind-glass/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20619_4d90ac6d.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20619_f15861d0.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20619_bb1f2f94.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20619_572bc17f.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20619_7297ef13.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20619_4f39e31b.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -2117,6 +5147,28 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/memelt-2/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20623_05d27077.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20623_ca65b055.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20623_f0e674e3.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20623_a2d03f24.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20623_f0055bea.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "F&B",
       "participationType": "디자인브랜드"
     },
@@ -2133,7 +5185,63 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/poohlovel/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20625_d6d28856.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20625_6978f221.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20625_8392106c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "그래픽 컬처",
+      "participationType": "디자인브랜드"
+    },
+    {
+      "key": "sdf-20627",
+      "name": "아름다운가게",
+      "aliases": [
+        "BeautifulStore"
+      ],
+      "instagramUrl": "https://www.instagram.com/_beautiful_store_",
+      "websiteUrl": "https://www.beautifulstore.org/",
+      "intro": {
+        "text": "누군가의 서랍에서 잠들어 있던 물건이 다른 이의 일상으로 건너갑니다. 아름다운가게는 2002년부터 물건에 '두 번째 쓰임'을 찾아주며 자원을 순환시켜 왔습니다. 전국 100여 곳의 재사용나눔가게에서 생긴 수익은 어려운 이웃과 그들을 돕는 단체에 나눕니다. 동네의 사랑방이 된 가게들은 이웃과 연결되고 서로를 돌보는 일상을 지역 곳곳에 만들어가고 있습니다.\n이번 서울디자인페스티벌에서 아름다운가게는 묻습니다.\n좋은 디자인은 얼마나 오래, 얼마나 멀리 순환할 수 있을까요?\n순환을 디자인하는 가게, 아름다운가게에 놀러오세요.",
+        "status": "collected",
+        "source": "https://seoul.designfestival.co.kr/exhibitor/beautifulstore/"
+      },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20627_ec798904.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20627_026ec040.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20627_8a9c9a11.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20627_cc099745.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20627_0652b1f5.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20627_77c03499.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
+      "category": "디자인&ESG",
       "participationType": "디자인브랜드"
     },
     {
@@ -2149,6 +5257,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/duitproject-2/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20631_8fe15381.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20631_34f1b852.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20631_883bc343.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20631_6c6433a0.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20631_f16d5bd2.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20631_a137730e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "그래픽",
       "participationType": "디자인브랜드"
     },
@@ -2165,6 +5299,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/additable-2/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20637_70f65e36.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20637_a5f508df.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20637_2cef40bd.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20637_e505768c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20637_56f8c1f9.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20637_d975a530.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -2181,6 +5341,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/damda-package-2/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20641_1f7357e5.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20641_6f03c936.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20641_c096b483.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20641_99058b6f.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20641_ce7f2370.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20641_a85427b6.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -2197,6 +5383,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/zonefeel-eyewear-3/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20651_d3aa9de4.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20651_f00746be.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20651_8de2db3f.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20651_7bc2c51e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20651_2affcbed.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20651_1b6c2e2f.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "디자인브랜드"
     },
@@ -2213,6 +5425,32 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/yoon-kyungsik%e3%86%8djin-minji/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-20801_8835485c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20801_94ff1318.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20801_4e91a364.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20801_3ecf9ffe.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20801_e01e77cb.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-20801_01bed59e.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "디자인&크래프트 무브먼트",
       "participationType": "영 디자이너 프로모션"
     },
@@ -2227,6 +5465,28 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/bigshop/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-22058_e729f328.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-22058_d017455c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-22058_25cb70c5.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-22058_f7c3a60c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-22058_27073619.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "브랜드 유니버스",
       "participationType": "디자인브랜드"
     },
@@ -2241,6 +5501,24 @@
         "status": "collected",
         "source": "https://seoul.designfestival.co.kr/exhibitor/localxlocal/"
       },
+      "photos": [
+        {
+          "path": "/booths/sdf-2026/sdf-22717_e42bef76.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-22717_e39eb955.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-22717_e791222c.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        },
+        {
+          "path": "/booths/sdf-2026/sdf-22717_3842faa1.webp",
+          "scope": "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)"
+        }
+      ],
       "category": "기타",
       "participationType": "디자인브랜드"
     }
