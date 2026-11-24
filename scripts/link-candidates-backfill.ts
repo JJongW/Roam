@@ -75,11 +75,14 @@ const [graph, ...perExhibition] = await Promise.all([
   ...exhibitions.data.map((e) => repo.listBoothsFull(e.id)),
 ]);
 const existing = existingExhibitors(graph, perExhibition.flat());
+// 배정된 부스의 이름과 별칭도 본다 — 부스 연결이 별칭을 못 봐 새 브랜드에 이은 부스를 후보로 올린다(2026-11-24).
+const boothsHere = perExhibition.flat().filter((b) => b.exhibitionId === exhibition.id);
 const plan = planParticipantNameCandidates({
   exhibitionId: exhibition.id,
   graph,
   existing,
   decidedCandidates: candidateKeys(graph.candidates),
+  booths: boothsHere,
 });
 
 // 2. 백업
@@ -162,6 +165,7 @@ const again = planParticipantNameCandidates({
   graph: after,
   existing: existingExhibitors(after, perExhibition.flat()),
   decidedCandidates: candidateKeys(after.candidates),
+  booths: boothsHere,
 });
 console.log(`다시 세면 새로 올릴 후보 ${again.candidates.length}건이에요(0이어야 해요). /admin/brands/links에서 보세요`);
 console.log(

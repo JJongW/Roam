@@ -199,6 +199,73 @@ describe("planExhibitorLinks — 브랜드 먼저 들어온 참가 사실에 부
     expect(plan.candidates).toEqual([]);
   });
 
+  // SDF 2026 E-27: 부스 이름 "진주도원", 별칭 "진주 복숭아주" = 부스 없는 참가 사실(sdf-20325).
+  const jinju = { id: "exJinju", keys: [], names: ["진주 복숭아주"] };
+  const jinjuOpen = open({ id: "ptJinju", exhibitorId: "exJinju", exhibitionId: "sdf", displayName: "진주 복숭아주" });
+
+  it("부스 이름이 안 맞아도 별칭이 부스 없는 참가 사실과 같으면 그 참가 사실에 배정한다", () => {
+    const plan = planExhibitorLinks({
+      booths: [b({ id: "e27", exhibitionId: "sdf", name: "진주도원", aliases: ["진주 복숭아주"] })],
+      exhibitors: [jinju],
+      participants: [jinjuOpen],
+    });
+    expect(plan.exhibitors).toEqual([]);
+    expect(plan.participants).toEqual([]);
+    expect(plan.assignments).toEqual([{ boothId: "e27", participantRef: { existing: "ptJinju" }, role: "primary" }]);
+  });
+
+  it("별칭이 띄어쓰기만 달라도(nameKey) 잇는다", () => {
+    const plan = planExhibitorLinks({
+      booths: [b({ id: "e27", exhibitionId: "sdf", name: "진주도원", aliases: ["진주복숭아주"] })],
+      exhibitors: [jinju],
+      participants: [jinjuOpen],
+    });
+    expect(plan.assignments[0].participantRef).toEqual({ existing: "ptJinju" });
+  });
+
+  it("부스 이름이 맞으면 별칭보다 이름이 먼저다(별칭엔 공동입점 브랜드도 있다)", () => {
+    const plan = planExhibitorLinks({
+      booths: [b({ id: "b1", exhibitionId: "ny", name: "하치공방", aliases: ["진주 복숭아주"] })],
+      exhibitors: [exA, jinju],
+      participants: [open(), open({ id: "ptJinju", exhibitorId: "exJinju", displayName: "진주 복숭아주" })],
+    });
+    expect(plan.assignments).toEqual([{ boothId: "b1", participantRef: { existing: "pt1" }, role: "primary" }]);
+  });
+
+  it("한 부스의 별칭들이 서로 다른 두 브랜드에 맞으면 고르지 않는다", () => {
+    const plan = planExhibitorLinks({
+      booths: [b({ id: "e27", exhibitionId: "sdf", name: "진주도원", aliases: ["진주 복숭아주", "하치공방"] })],
+      exhibitors: [jinju, exA],
+      participants: [jinjuOpen, open({ exhibitionId: "sdf" })],
+    });
+    expect(plan.exhibitors).toHaveLength(1);
+    expect(plan.assignments[0].participantRef).toEqual({ new: expect.any(String) });
+  });
+
+  it("한 묶음의 부스들이 이름과 별칭으로 서로 다른 브랜드에 맞으면 고르지 않는다", () => {
+    const ig = "https://instagram.com/jinju_dowon";
+    const plan = planExhibitorLinks({
+      booths: [
+        b({ id: "e27", exhibitionId: "sdf", name: "진주도원", aliases: ["진주 복숭아주"], instagramUrl: ig }),
+        b({ id: "b1", exhibitionId: "ny", name: "하치공방", instagramUrl: ig }),
+      ],
+      exhibitors: [jinju, exA],
+      participants: [jinjuOpen, open()],
+    });
+    expect(plan.exhibitors).toHaveLength(1);
+    expect(plan.assignments.every((a) => "new" in a.participantRef)).toBe(true);
+  });
+
+  it("별칭이 다른 행사의 참가 사실과만 같으면 잇지 않는다", () => {
+    const plan = planExhibitorLinks({
+      booths: [b({ id: "e27", exhibitionId: "sdf", name: "진주도원", aliases: ["진주 복숭아주"] })],
+      exhibitors: [jinju],
+      participants: [{ ...jinjuOpen, exhibitionId: "other" }],
+    });
+    expect(plan.exhibitors).toHaveLength(1);
+    expect(plan.assignments[0].participantRef).toEqual({ new: expect.any(String) });
+  });
+
   it("인스타가 맞으면 이름보다 인스타가 먼저다", () => {
     const plan = planExhibitorLinks({
       booths: [b({ id: "b1", exhibitionId: "ny", name: "하치공방", instagramUrl: "https://instagram.com/other" })],

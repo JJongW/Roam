@@ -14,6 +14,8 @@ export interface PlanBooth {
   id: string;
   exhibitionId: string;
   name: string;
+  /** booth.aliases — 같은 부스 번호의 다른 표기(공동입점 포함). 같은 행사 이름 맞추기에서 이름이 안 맞을 때만 본다. */
+  aliases?: string[];
   kind?: string;
   instagramUrl?: string;
   websiteUrl?: string;
@@ -157,12 +159,20 @@ export function planExhibitorLinks(input: PlanInput): ExhibitorPlan {
         openByName.get(k)!.add(p.exhibitorId);
       }
   }
+  const brandsOf = (exhibitionId: string, names: string[]): Set<string> => {
+    const out = new Set<string>();
+    for (const n of names) for (const f of nameForms(n)) for (const id of openByName.get(`${exhibitionId}|${f}`) ?? []) out.add(id);
+    return out;
+  };
   const sameFairMatch = (members: PlanBooth[]): string | null => {
     const hits = new Set<string>();
     for (const m of members) {
-      const mine = new Set<string>();
-      for (const f of nameForms(m.name)) for (const id of openByName.get(`${m.exhibitionId}|${f}`) ?? []) mine.add(id);
-      // 한 부스 이름이 두 브랜드에 맞으면 고르지 않는다.
+      // 부스 이름이 먼저다. 이름이 아무 데도 안 맞을 때만 부스 별칭을 본다(2026-11-24, SDF E-27 "진주도원"의
+      // 별칭 "진주 복숭아주"가 부스 없는 참가 사실이었는데 새 브랜드가 생겼다). 별칭엔 공동입점 브랜드도 들어가서,
+      // 이름이 맞은 부스를 별칭 때문에 못 고르게 만들지 않는다.
+      let mine = brandsOf(m.exhibitionId, [m.name]);
+      if (mine.size === 0) mine = brandsOf(m.exhibitionId, m.aliases ?? []);
+      // 한 부스(이름, 또는 별칭들)가 두 브랜드에 맞으면 고르지 않는다.
       if (mine.size > 1) return null;
       for (const id of mine) hits.add(id);
     }

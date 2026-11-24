@@ -28,6 +28,7 @@ export async function planFromRepository(
       id: b.id,
       exhibitionId: b.exhibitionId,
       name: b.name,
+      aliases: b.aliases,
       kind: b.kind,
       instagramUrl: b.instagramUrl,
       websiteUrl: b.websiteUrl,
