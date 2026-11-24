@@ -114,8 +114,8 @@ const answer = await new Promise<string>((done) => {
   if (process.stdin.isTTY) process.stdout.write("운영에 씁니다. 계속하려면 backfill 을 그대로 입력하세요: ");
   const rl = createInterface({ input: process.stdin, terminal: false });
   rl.once("line", (line) => {
+    done(line.trim()); // close보다 먼저 — close가 동기로 done("")을 불러 답을 덮는다
     rl.close();
-    done(line.trim());
   });
   rl.once("close", () => done(""));
 });
