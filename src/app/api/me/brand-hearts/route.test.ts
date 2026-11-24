@@ -37,9 +37,11 @@ describe("/api/me/brand-hearts", () => {
     expect(Array.isArray(list[0].upcoming)).toBe(true);
   });
 
-  it("없는 브랜드는 404, 빼기는 없어도 204", async () => {
+  it("없는 브랜드는 404, 빼기는 없어도 200(removed false, 끈 부스 없음)", async () => {
     expect((await PUT(req(), ctx("nope"))).status).toBe(404);
-    expect((await DELETE(req(), ctx("ex2"))).status).toBe(204);
+    const res = await DELETE(req(), ctx("ex2"));
+    expect(res.status).toBe(200);
+    expect((await res.json()).data).toEqual({ removed: false, source: null, unheartedBoothIds: [] });
   });
 
   it("로그인 뒤 기기 하트를 한 번에 올린다(합집합, 없는 id는 알려 줌)", async () => {

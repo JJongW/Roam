@@ -69,3 +69,28 @@ export function planBrandHeartBackfill(input: {
   }
   return [...out.values()];
 }
+
+/**
+ * 브랜드 하트를 빼면 그 브랜드의 부스 하트도 같이 뺀다(2026-11-24 Ted, 마이 브랜드 목록 14-10).
+ * "마이 브랜드 목록에서 하트를 빼면 부스 하트도 같이"(docs/decisions/2026-11-24_부스-상세-하트-하나.md 덧붙임 2).
+ *
+ * - 기준은 부스 하트 → 브랜드 하트와 같다: 부스의 대표 브랜드(booth_participant role=primary). 공동 입점은 아니다.
+ * - 다른 박람회 부스도 끈다. 하트만 끈다 — 메모, 다녀왔어요, 평가, 사진은 그대로 둔다.
+ * - 하트를 끈 쓰기는 브랜드 따라가기(followBrandForBoothHeart)를 부르지 않는다. 브랜드 하트는 호출부가 바로 지운다.
+ * 돌려주는 값: 끈 부스 id(하트였던 것만). 없으면 빈 배열.
+ */
+export async function unheartBoothsOfBrand(
+  repo: Repository,
+  userId: string,
+  exhibitorId: string,
+): Promise<string[]> {
+  const hearted = (await repo.listNotes(userId)).filter((n) => heartOf(n)).map((n) => n.boothId);
+  if (hearted.length === 0) return [];
+  const links = await repo.listPrimaryBrandLinks(hearted);
+  const mine = hearted.filter((id) => links[id]?.exhibitorId === exhibitorId);
+  for (const boothId of mine) {
+    // 하트를 끄면 판정 등급도 지운다(PUT /api/me/notes의 하트 해제와 같은 규칙).
+    await repo.upsertNote(userId, boothId, { heart: false }, null);
+  }
+  return mine;
+}

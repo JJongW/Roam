@@ -13,10 +13,13 @@ import {
   isBrandHearted,
   loadBrandHearts,
   pushBrandHeart,
+  pushBrandHeartRemoval,
+  restoreBrandHeart,
   setBrandHeart,
   syncBrandHearts,
   useBrandHeartStore,
 } from "./brand-hearts";
+import { isHearted, useVisitStore } from "./visit";
 
 function saved() {
   return JSON.parse(localStorage.getItem(BRAND_HEART_STORAGE_KEY) ?? "{}");
@@ -28,6 +31,7 @@ beforeEach(() => {
   put.mockReset();
   del.mockReset();
   get.mockReset();
+  useVisitStore.setState({ records: {}, hasPendingSync: false });
 });
 
 describe("브랜드 하트 기기 저장(UI 19)", () => {
@@ -105,5 +109,56 @@ describe("브랜드 하트 기기 저장(UI 19)", () => {
     clearBrandHearts();
     expect(isBrandHearted("ex-1")).toBe(false);
     expect(localStorage.getItem(BRAND_HEART_STORAGE_KEY)).toBeNull();
+  });
+});
+
+describe("브랜드 하트를 빼면 부스 하트도(2026-11-24)", () => {
+  const visit = () => useVisitStore.getState();
+
+  it("서버가 끈 부스 하트를 이 브라우저에서도 끄고 메모는 남긴다", async () => {
+    visit().setHeart("b1", true);
+    visit().setMemo("b1", "엽서");
+    visit().setHeart("b2", true);
+    visit().setHeart("b3", true);
+    setBrandHeart("ex-1", false);
+    del.mockResolvedValue({ removed: true, source: "booth", unheartedBoothIds: ["b1", "b2"] });
+    const r = await pushBrandHeartRemoval("ex-1");
+    expect(r).toEqual({ removed: true, source: "booth", unheartedBoothIds: ["b1", "b2"] });
+    expect(isHearted(visit().records.b1)).toBe(false);
+    expect(visit().records.b1?.memo).toBe("엽서");
+    expect(isHearted(visit().records.b2)).toBe(false);
+    expect(isHearted(visit().records.b3)).toBe(true);
+  });
+
+  it("옛 서버(204)면 끈 부스 없음으로 읽는다", async () => {
+    setBrandHeart("ex-1", false);
+    del.mockResolvedValue(undefined);
+    expect(await pushBrandHeartRemoval("ex-1")).toEqual({ removed: true, source: null, unheartedBoothIds: [] });
+  });
+
+  it("되돌리면 booth 출처는 부스 하트만 다시 켜고 브랜드 하트 API는 부르지 않는다", async () => {
+    put.mockResolvedValue({});
+    expect(await restoreBrandHeart("ex-1", { removed: true, source: "booth", unheartedBoothIds: ["b1", "b2"] })).toBe(true);
+    expect(put).toHaveBeenCalledWith("/api/me/notes/b1", { heart: true });
+    expect(put).toHaveBeenCalledWith("/api/me/notes/b2", { heart: true });
+    expect(put).not.toHaveBeenCalledWith("/api/me/brand-hearts/ex-1");
+    expect(isBrandHearted("ex-1")).toBe(true);
+    expect(saved().pending).toEqual({});
+    expect(isHearted(visit().records.b1)).toBe(true);
+  });
+
+  it("되돌리면 direct 출처는 부스 하트와 브랜드 하트를 둘 다 다시 남긴다", async () => {
+    put.mockResolvedValue({});
+    await restoreBrandHeart("ex-1", { removed: true, source: "direct", unheartedBoothIds: ["b1"] });
+    expect(put).toHaveBeenCalledWith("/api/me/notes/b1", { heart: true });
+    expect(put).toHaveBeenCalledWith("/api/me/brand-hearts/ex-1");
+    expect(isBrandHearted("ex-1")).toBe(true);
+  });
+
+  it("부스 하트를 다시 못 올리면 다음 맞추기로 남긴다", async () => {
+    put.mockRejectedValue(new Error("offline"));
+    await restoreBrandHeart("ex-1", { removed: true, source: "booth", unheartedBoothIds: ["b1"] });
+    expect(visit().hasPendingSync).toBe(true);
+    expect(isHearted(visit().records.b1)).toBe(true);
   });
 });

@@ -8,7 +8,10 @@ import { SCREEN, track } from "@/lib/analytics/app-track";
 import {
   loadBrandHearts,
   pushBrandHeart,
+  pushBrandHeartRemoval,
+  restoreBrandHeart,
   setBrandHeart,
+  type BrandHeartRemoval,
 } from "@/lib/stores/brand-hearts";
 import type { BrandHeartView } from "@/lib/brands/hearts";
 import { Card, HeartRow, MePage, PageTitle } from "./me-ui";
@@ -22,6 +25,7 @@ const stamp = () => Date.now();
  *   없으면 "다음 일정은 아직 몰라요".
  * - Figma의 "서울디자인페스티벌 2025에 나왔어요"(지난 참가)는 이 API가 주지 않아 아직 비운다.
  * - 하트를 누르면 확인 없이 빠지고 스낵바로 되돌린다(19-A4와 같은 말).
+ * - 빼면 서버가 그 브랜드 부스 하트도 같이 끈다(2026-11-24 Ted). 되돌리면 그 부스 하트도 다시 켠다.
  */
 export function BrandHeartList() {
   const [views, setViews] = useState<BrandHeartView[] | null>(null);
@@ -52,31 +56,44 @@ export function BrandHeartList() {
     load();
   }, [load]);
 
-  const flip = (v: BrandHeartView, on: boolean) => {
-    if (!setBrandHeart(v.exhibitorId, on)) {
-      setSnack({ key: stamp(), message: system.brandHeartSaveFailed });
-      return false;
-    }
-    void pushBrandHeart(v.exhibitorId);
+  const markRemoved = (id: string, on: boolean) =>
     setRemoved((s) => {
       const n = new Set(s);
-      if (on) n.delete(v.exhibitorId);
-      else n.add(v.exhibitorId);
+      if (on) n.delete(id);
+      else n.add(id);
       return n;
     });
-    return true;
-  };
+
+  const failSave = () => setSnack({ key: stamp(), message: system.brandHeartSaveFailed });
 
   const remove = (v: BrandHeartView) => {
-    if (!flip(v, false)) return;
+    if (!setBrandHeart(v.exhibitorId, false)) return failSave();
+    // 빼기 응답에 서버가 끈 부스 하트가 실려 온다. 되돌리기가 그 응답을 기다려 같은 부스를 다시 켠다.
+    const pushed: Promise<BrandHeartRemoval | null> = pushBrandHeartRemoval(v.exhibitorId);
+    markRemoved(v.exhibitorId, false);
     track("brand_heart_remove", { screen: SCREEN.heartBrands, props: { exhibitorId: v.exhibitorId } });
     setSnack({
       key: stamp(),
       message: system.brandHeartRemoved(v.name),
       actionLabel: label.undo,
       onAction: () => {
-        if (flip(v, true))
+        markRemoved(v.exhibitorId, true);
+        void (async () => {
+          const removal = await pushed;
+          // 빼기를 못 올렸으면(오프라인) 서버 부스 하트는 그대로다. 기기 브랜드 하트만 다시 켠다.
+          let ok: boolean;
+          if (removal) ok = await restoreBrandHeart(v.exhibitorId, removal);
+          else {
+            ok = setBrandHeart(v.exhibitorId, true);
+            if (ok) void pushBrandHeart(v.exhibitorId);
+          }
+          if (!ok) {
+            markRemoved(v.exhibitorId, false);
+            failSave();
+            return;
+          }
           track("brand_heart_undo", { screen: SCREEN.heartBrands, props: { exhibitorId: v.exhibitorId } });
+        })();
       },
     });
   };
