@@ -26,8 +26,11 @@ import type { BoothListItem } from "@/lib/types";
  * UI 3-01 지도 그림(Figma 3022:3102 홀 바닥, 2994:798 부스 칸, 2994:818 출입구).
  *
  * 엔진(ExhibitionMap)의 이동, 확대, 누르기는 그대로 쓰고 그림만 v2로 바꾼다.
- * - 색은 전부 v2 지도 토큰(map-booth, map-booth-selected, map-booth-facility, map-label,
- *   map-entrance, bg-layer-default, stroke-neutral-weak). SVG라 `var(--roam-v2-color-*)`로 칠한다.
+ * - 색은 전부 v2 지도 토큰(map-floor, map-booth, map-booth-selected, map-booth-facility, map-label,
+ *   map-entrance, stroke-neutral-weak). SVG라 `var(--roam-v2-color-*)`로 칠한다.
+ * - 내 칸(UI 22 A + 내 부스 강조, 2026-11-24 Ted): 하트를 남긴 칸과 다녀온 칸은 map-booth-mine으로 칠하고
+ *   그 위 이름, 하트, 체크는 map-label-mine, map-heart-mine, map-check-mine. 고른 칸과 편의시설 칸은 그대로.
+ *   라이트 값은 보통 칸과 거의 같고 다크에서만 갈린다(Roam-design docs/decisions/2026-11-24_다크-지도-내-부스-강조.md).
  * - 선 굵기와 둥글기는 v2 토큰의 px 값(V2_PX, tokens.css에서 기계로 뽑은 값)을 도면 단위로 쓴다.
  * - 글자 크기는 칸 크기에 맞춘다(booth-label.ts, iOS BoothLabel과 같은 규칙). 도면 단위가
  *   화면 px이 아니라서 t2(12) 같은 고정 크기를 쓰면 큰 도면에선 점, 작은 도면에선 넘친다.
@@ -117,7 +120,7 @@ export const MapLayerV2 = memo(function MapLayerV2({
           width={r.w}
           height={r.h}
           rx={markerR}
-          fill={C("bg-layer-default")}
+          fill={C("map-floor")}
           stroke={C("stroke-neutral-weak")}
           strokeWidth={hallStroke}
         />
@@ -232,16 +235,22 @@ const BoothCell = memo(function BoothCell({
   const lh = swap ? w : h;
   const lcw = swap ? g.h : g.w;
   const lch = swap ? g.w : g.h;
+  // 내 칸: 하트를 남긴 칸과 다녀온 칸(UI 22). 고른 칸과 편의시설 칸은 아니다(iOS `isMine`과 같다).
+  const mine = !isSel && !facility && (hearted || visited);
   const fill = isSel
     ? C("map-booth-selected")
     : facility
       ? C("map-booth-facility")
-      : C("map-booth");
+      : mine
+        ? C("map-booth-mine")
+        : C("map-booth");
   const text = isSel
     ? C("map-label-selected")
     : facility
       ? C("fg-neutral-muted")
-      : C("map-label");
+      : mine
+        ? C("map-label-mine")
+        : C("map-label");
   const heartCell = useMemo(
     () =>
       hearted
@@ -294,7 +303,7 @@ const BoothCell = memo(function BoothCell({
           <VisitedCheck
             w={lw}
             h={lh}
-            color={isSel ? C("map-label-selected") : C("fg-neutral-muted")}
+            color={isSel ? C("map-label-selected") : C("map-check-mine")}
           />
         )}
       </g>

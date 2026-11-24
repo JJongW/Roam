@@ -34,7 +34,7 @@ export function MapSkeleton({ floorplan }: { floorplan?: Floorplan }) {
                 width={h.w}
                 height={h.h}
                 rx={V2_PX["radius-r1"]}
-                fill={C("bg-layer-default")}
+                fill={C("map-floor")}
                 stroke={C("stroke-neutral-weak")}
                 strokeWidth={V2_PX["stroke-width-s3"]}
               />
