@@ -1,0 +1,3546 @@
+{
+  "version": 1,
+  "exhibitionSlug": "sdf-2026",
+  "booths": [
+    {
+      "code": "A-01",
+      "name": "디자인하우스 50년 특별전 〈막 포스터 프로젝트〉",
+      "hall": "코엑스 A홀",
+      "kind": "facility",
+      "category": "주최 프로그램",
+      "categorySlug": "sdf-organizer-program",
+      "categoryColor": "#37BEF0"
+    },
+    {
+      "code": "A-02",
+      "name": "SDF SHOP",
+      "hall": "코엑스 A홀",
+      "kind": "facility",
+      "category": "주최 프로그램",
+      "categorySlug": "sdf-organizer-program",
+      "categoryColor": "#37BEF0"
+    },
+    {
+      "code": "A-03",
+      "name": "월간〈디자인〉 50년 특별전 〈디자인 크로니클〉",
+      "hall": "코엑스 A홀",
+      "kind": "facility",
+      "category": "주최 프로그램",
+      "categorySlug": "sdf-organizer-program",
+      "categoryColor": "#37BEF0"
+    },
+    {
+      "code": "A-04",
+      "name": "디자인하우스",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "A-05",
+      "name": "SDF Stage",
+      "hall": "코엑스 A홀",
+      "kind": "facility",
+      "category": "주최 프로그램",
+      "categorySlug": "sdf-organizer-program",
+      "categoryColor": "#37BEF0"
+    },
+    {
+      "code": "B-01",
+      "name": "헤즈",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "B-05",
+      "name": "김토끼 요가",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/kimtokki_yoga",
+      "websiteUrl": "https://litt.ly/kimtokki_yoga",
+      "images": [
+        "/booths/sdf-2026/sdf-20579_6164490e.webp",
+        "/booths/sdf-2026/sdf-20579_5311beec.webp",
+        "/booths/sdf-2026/sdf-20579_26f081ae.webp",
+        "/booths/sdf-2026/sdf-20579_5cbca81b.webp",
+        "/booths/sdf-2026/sdf-20579_da112de1.webp",
+        "/booths/sdf-2026/sdf-20579_ff7314e7.webp"
+      ]
+    },
+    {
+      "code": "B-06",
+      "name": "오아서",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/designstudio.oase/",
+      "websiteUrl": "https://www.studio-oase.net/",
+      "images": [
+        "/booths/sdf-2026/sdf-20591_c4f36729.webp",
+        "/booths/sdf-2026/sdf-20591_cf138268.webp",
+        "/booths/sdf-2026/sdf-20591_a738eb76.webp",
+        "/booths/sdf-2026/sdf-20591_01511d69.webp",
+        "/booths/sdf-2026/sdf-20591_6a841b1d.webp",
+        "/booths/sdf-2026/sdf-20591_75c9908d.webp"
+      ]
+    },
+    {
+      "code": "B-07",
+      "name": "홍익대 시각디자인과",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/hivcdofficial/",
+      "websiteUrl": "https://sidi.hongik.ac.kr/",
+      "aliases": [
+        "홍익대학교 시각디자인과"
+      ]
+    },
+    {
+      "code": "B-09",
+      "name": "어녹",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/aunog_official/",
+      "websiteUrl": "http://www.aunog.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20269_45c0543e.webp"
+      ]
+    },
+    {
+      "code": "B-10",
+      "name": "무명",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "B-11",
+      "name": "전산정물(電算靜物)",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/pie_in__the___sky",
+      "websiteUrl": "http://www.kimseonggohn.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20171_6eb1ef9c.webp",
+        "/booths/sdf-2026/sdf-20171_f363fb21.webp",
+        "/booths/sdf-2026/sdf-20171_04681230.webp",
+        "/booths/sdf-2026/sdf-20171_fd499f43.webp",
+        "/booths/sdf-2026/sdf-20171_fd0fabba.webp",
+        "/booths/sdf-2026/sdf-20171_868b9de5.webp"
+      ]
+    },
+    {
+      "code": "B-13",
+      "name": "김하늘",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "B-15",
+      "name": "노에브리오디너리&미적지능연구소",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "B-17",
+      "name": "린다 프로",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/linda_pro_design/",
+      "websiteUrl": "https://www.lindapro.cz/",
+      "images": [
+        "/booths/sdf-2026/sdf-20253_24bfe6be.webp",
+        "/booths/sdf-2026/sdf-20253_53296139.webp",
+        "/booths/sdf-2026/sdf-20253_c943a3e9.webp",
+        "/booths/sdf-2026/sdf-20253_398c0dc2.webp",
+        "/booths/sdf-2026/sdf-20253_5577300b.webp",
+        "/booths/sdf-2026/sdf-20253_971cec7e.webp"
+      ]
+    },
+    {
+      "code": "B-18",
+      "name": "비바로레",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "websiteUrl": "https://vivalorre.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20551_996d9cd2.webp",
+        "/booths/sdf-2026/sdf-20551_1381671c.webp",
+        "/booths/sdf-2026/sdf-20551_b1ea7489.webp",
+        "/booths/sdf-2026/sdf-20551_e8646cdf.webp",
+        "/booths/sdf-2026/sdf-20551_f59bab6f.webp",
+        "/booths/sdf-2026/sdf-20551_5e3e2341.webp"
+      ]
+    },
+    {
+      "code": "B-19",
+      "name": "키쉬케이브",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/kishcave.zip/",
+      "websiteUrl": "https://kishcave.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20465_5687815e.webp",
+        "/booths/sdf-2026/sdf-20465_a197e19b.webp",
+        "/booths/sdf-2026/sdf-20465_f7714f90.webp",
+        "/booths/sdf-2026/sdf-20465_23e4d43e.webp",
+        "/booths/sdf-2026/sdf-20465_a9defefe.webp"
+      ]
+    },
+    {
+      "code": "B-20",
+      "name": "보킷",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/bokit.official/",
+      "websiteUrl": "https://bokit.co.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20577_bb397004.webp",
+        "/booths/sdf-2026/sdf-20577_1ba51be8.webp",
+        "/booths/sdf-2026/sdf-20577_c8057cb4.webp",
+        "/booths/sdf-2026/sdf-20577_d28a1dfd.webp",
+        "/booths/sdf-2026/sdf-20577_d98d751b.webp",
+        "/booths/sdf-2026/sdf-20577_dfe935ed.webp"
+      ]
+    },
+    {
+      "code": "B-21",
+      "name": "(재)광명문화재단",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/gmcf.official?utm_source=ig_web_button_share_sheet&xtok=ZDNlZDc0MzIxNw==",
+      "images": [
+        "/booths/sdf-2026/sdf-20561_19fff927.webp"
+      ],
+      "aliases": [
+        "광명문화재단"
+      ]
+    },
+    {
+      "code": "B-22",
+      "name": "백석대학교 산업디자인",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "B-25",
+      "name": "공예디자인 전문인력",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/gidp_gwangju",
+      "websiteUrl": "https://www.gdc.or.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20183_800eca7c.webp",
+        "/booths/sdf-2026/sdf-20183_0fd6b11e.webp",
+        "/booths/sdf-2026/sdf-20183_de6fdd73.webp"
+      ],
+      "aliases": [
+        "공예디자인 전문인력양성"
+      ]
+    },
+    {
+      "code": "B-27",
+      "name": "한국화필무렵",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "B-28",
+      "name": "로컬바이로컬",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "images": [
+        "/booths/sdf-2026/sdf-22717_e42bef76.webp",
+        "/booths/sdf-2026/sdf-22717_e39eb955.webp",
+        "/booths/sdf-2026/sdf-22717_e791222c.webp",
+        "/booths/sdf-2026/sdf-22717_3842faa1.webp"
+      ]
+    },
+    {
+      "code": "B-30",
+      "name": "데일리스티치",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "B-31",
+      "name": "월간 건축문화 (아키랩)",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "B-33",
+      "name": "딜레탕티즘&쎄르페",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "http://www.instagram.com/sserpe_official",
+      "websiteUrl": "http://www.thesserpe.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20163_43ff22f8.webp",
+        "/booths/sdf-2026/sdf-20163_44b3fc11.webp",
+        "/booths/sdf-2026/sdf-20163_90455f22.webp",
+        "/booths/sdf-2026/sdf-20163_053ff947.webp",
+        "/booths/sdf-2026/sdf-20163_a4a4058e.webp",
+        "/booths/sdf-2026/sdf-20163_2192d815.webp"
+      ],
+      "aliases": [
+        "딜레탕티즘",
+        "쎄르페"
+      ]
+    },
+    {
+      "code": "B-35",
+      "name": "냅스앤나이브스",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/napsandknives/?hl=ko",
+      "websiteUrl": "https://www.napsandknives.com/"
+    },
+    {
+      "code": "B-36",
+      "name": "모두컷",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "B-38",
+      "name": "나인파이브",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/ninefive_digitaldesign/",
+      "websiteUrl": "https://www.ninefive.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20159_5c97baf1.webp",
+        "/booths/sdf-2026/sdf-20159_3bd3fb70.webp",
+        "/booths/sdf-2026/sdf-20159_0ae28fda.webp"
+      ]
+    },
+    {
+      "code": "B-39",
+      "name": "인오프",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/inoff_design_?rpxt=MXByYmRjMDVucXU0Zg%3D%3D",
+      "websiteUrl": "https://www.behance.net/inoff_design",
+      "images": [
+        "/booths/sdf-2026/sdf-20593_b5a10253.webp",
+        "/booths/sdf-2026/sdf-20593_75b49617.webp",
+        "/booths/sdf-2026/sdf-20593_d47960ca.webp",
+        "/booths/sdf-2026/sdf-20593_4a75d2ba.webp"
+      ]
+    },
+    {
+      "code": "B-40",
+      "name": "에브랩",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/evelab.studio?igsh=MWR6dHg3ZnVid2Z4OA%3D%3D&utm_source=qr",
+      "websiteUrl": "https://smartstore.naver.com/evelab",
+      "images": [
+        "/booths/sdf-2026/sdf-20245_198b5256.webp",
+        "/booths/sdf-2026/sdf-20245_ade6dc4f.webp",
+        "/booths/sdf-2026/sdf-20245_7d0b7665.webp",
+        "/booths/sdf-2026/sdf-20245_1b9e53a1.webp"
+      ]
+    },
+    {
+      "code": "B-41",
+      "name": "소슬히",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/soseuly_?vrfl=MWF1NWpkZTFmaHFwaQ%3D%3D&utm_source=qr",
+      "images": [
+        "/booths/sdf-2026/sdf-20257_15fbdcb5.webp",
+        "/booths/sdf-2026/sdf-20257_3aa4ccf4.webp",
+        "/booths/sdf-2026/sdf-20257_3c41773b.webp",
+        "/booths/sdf-2026/sdf-20257_07b47c47.webp",
+        "/booths/sdf-2026/sdf-20257_ee876e35.webp",
+        "/booths/sdf-2026/sdf-20257_27a7d31c.webp"
+      ]
+    },
+    {
+      "code": "B-42",
+      "name": "루브",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/turn_ur_loov",
+      "images": [
+        "/booths/sdf-2026/sdf-20371_8888fa7c.webp",
+        "/booths/sdf-2026/sdf-20371_8f33abf6.webp",
+        "/booths/sdf-2026/sdf-20371_5d873f1d.webp"
+      ]
+    },
+    {
+      "code": "B-43",
+      "name": "페페하우스",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/fefehaus/",
+      "websiteUrl": "https://www.fefehaus.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20351_30da64bf.webp",
+        "/booths/sdf-2026/sdf-20351_b77cb8d5.webp",
+        "/booths/sdf-2026/sdf-20351_24a2118e.webp",
+        "/booths/sdf-2026/sdf-20351_65b19176.webp",
+        "/booths/sdf-2026/sdf-20351_b65e84cd.webp",
+        "/booths/sdf-2026/sdf-20351_79e16ea5.webp"
+      ]
+    },
+    {
+      "code": "B-44",
+      "name": "아름다운가게",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/_beautiful_store_",
+      "websiteUrl": "https://www.beautifulstore.org/",
+      "images": [
+        "/booths/sdf-2026/sdf-20627_ec798904.webp",
+        "/booths/sdf-2026/sdf-20627_026ec040.webp",
+        "/booths/sdf-2026/sdf-20627_8a9c9a11.webp",
+        "/booths/sdf-2026/sdf-20627_cc099745.webp",
+        "/booths/sdf-2026/sdf-20627_0652b1f5.webp",
+        "/booths/sdf-2026/sdf-20627_77c03499.webp"
+      ]
+    },
+    {
+      "code": "C-01",
+      "name": "브루토",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "C-04",
+      "name": "P:AFG뉴함창클럽",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/project__afg/",
+      "images": [
+        "/booths/sdf-2026/sdf-20345_2fdda656.webp",
+        "/booths/sdf-2026/sdf-20345_9a6ba08a.webp",
+        "/booths/sdf-2026/sdf-20345_b9f0d87a.webp",
+        "/booths/sdf-2026/sdf-20345_ba32e6ce.webp",
+        "/booths/sdf-2026/sdf-20345_2c4e6851.webp",
+        "/booths/sdf-2026/sdf-20345_dd0f4584.webp"
+      ]
+    },
+    {
+      "code": "C-05",
+      "name": "랩스보",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/wrapsboh_official/",
+      "websiteUrl": "https://wrapsboh.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20595_861af8bf.webp",
+        "/booths/sdf-2026/sdf-20595_5344db2a.webp",
+        "/booths/sdf-2026/sdf-20595_aac9fcc2.webp",
+        "/booths/sdf-2026/sdf-20595_e68c95b9.webp",
+        "/booths/sdf-2026/sdf-20595_40cb8aba.webp",
+        "/booths/sdf-2026/sdf-20595_46b102f3.webp"
+      ]
+    },
+    {
+      "code": "C-07",
+      "name": "문화도시통영",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/culturecity_tongyeong/",
+      "websiteUrl": "https://tycc.or.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20229_2289bd60.webp",
+        "/booths/sdf-2026/sdf-20229_952f80c6.webp",
+        "/booths/sdf-2026/sdf-20229_e884de63.webp",
+        "/booths/sdf-2026/sdf-20229_c6fede53.webp",
+        "/booths/sdf-2026/sdf-20229_d86b6024.webp",
+        "/booths/sdf-2026/sdf-20229_39959dcf.webp"
+      ]
+    },
+    {
+      "code": "C-10",
+      "name": "이혜용",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/lhy.ceramic?rpxt=czNvNDF4OXZ0MnFy&utm_source=qr",
+      "websiteUrl": "https://lhyceramic.myportfolio.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20597_dc806e36.webp",
+        "/booths/sdf-2026/sdf-20597_6522eb61.webp",
+        "/booths/sdf-2026/sdf-20597_e1ffcf72.webp",
+        "/booths/sdf-2026/sdf-20597_0337045b.webp",
+        "/booths/sdf-2026/sdf-20597_b7e55961.webp",
+        "/booths/sdf-2026/sdf-20597_83989274.webp"
+      ]
+    },
+    {
+      "code": "C-11",
+      "name": "깃듦",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "images": [
+        "/booths/sdf-2026/sdf-20601_761f1ec7.webp",
+        "/booths/sdf-2026/sdf-20601_d6b556d6.webp",
+        "/booths/sdf-2026/sdf-20601_c47872a1.webp"
+      ]
+    },
+    {
+      "code": "C-13",
+      "name": "디자인&크래프트 특별전 〈떠오른 것들〉",
+      "hall": "코엑스 A홀",
+      "kind": "facility",
+      "category": "주최 프로그램",
+      "categorySlug": "sdf-organizer-program",
+      "categoryColor": "#37BEF0"
+    },
+    {
+      "code": "D-01",
+      "name": "최중호 스튜디오",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "D-05",
+      "name": "소소슬슬",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "D-07",
+      "name": "디디의 둥지",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "D-08",
+      "name": "케이박스",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "D-09",
+      "name": "석철목",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/sukchulmok/",
+      "websiteUrl": "http://www.sukchulmok.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20279_6b2c2e41.webp",
+        "/booths/sdf-2026/sdf-20279_ce864743.webp",
+        "/booths/sdf-2026/sdf-20279_9e0707f4.webp",
+        "/booths/sdf-2026/sdf-20279_72fb8760.webp",
+        "/booths/sdf-2026/sdf-20279_3adab250.webp",
+        "/booths/sdf-2026/sdf-20279_7ea357a3.webp"
+      ]
+    },
+    {
+      "code": "D-13",
+      "name": "초록동색",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "websiteUrl": "http://www.chorokdongsaek.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20153_2b19ceec.webp",
+        "/booths/sdf-2026/sdf-20153_a05880be.webp",
+        "/booths/sdf-2026/sdf-20153_18f041ee.webp",
+        "/booths/sdf-2026/sdf-20153_42554d38.webp"
+      ]
+    },
+    {
+      "code": "D-17",
+      "name": "이함캠퍼스",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "E-01",
+      "name": "케이패키지",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "E-02",
+      "name": "담다패키지",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/damda.package/",
+      "websiteUrl": "https://p-damda.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20641_1f7357e5.webp",
+        "/booths/sdf-2026/sdf-20641_6f03c936.webp",
+        "/booths/sdf-2026/sdf-20641_c096b483.webp",
+        "/booths/sdf-2026/sdf-20641_99058b6f.webp",
+        "/booths/sdf-2026/sdf-20641_ce7f2370.webp",
+        "/booths/sdf-2026/sdf-20641_a85427b6.webp"
+      ]
+    },
+    {
+      "code": "E-06",
+      "name": "디자인싹",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "E-09",
+      "name": "홍익대학교 디자인컨버전스학부",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "E-11",
+      "name": "골든올리브",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/goldenolive.works/",
+      "websiteUrl": "https://goldenolive.works/",
+      "images": [
+        "/booths/sdf-2026/sdf-20361_d8e63016.webp",
+        "/booths/sdf-2026/sdf-20361_297b9d51.webp",
+        "/booths/sdf-2026/sdf-20361_8c8f3d9a.webp",
+        "/booths/sdf-2026/sdf-20361_80df8953.webp",
+        "/booths/sdf-2026/sdf-20361_2b50c645.webp",
+        "/booths/sdf-2026/sdf-20361_67b8c367.webp"
+      ]
+    },
+    {
+      "code": "E-13",
+      "name": "주식회사 탑",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "E-14",
+      "name": "비주",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "E-15",
+      "name": "애디터블",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/additable/",
+      "websiteUrl": "https://www.additable.shop/",
+      "images": [
+        "/booths/sdf-2026/sdf-20637_70f65e36.webp",
+        "/booths/sdf-2026/sdf-20637_a5f508df.webp",
+        "/booths/sdf-2026/sdf-20637_2cef40bd.webp",
+        "/booths/sdf-2026/sdf-20637_e505768c.webp",
+        "/booths/sdf-2026/sdf-20637_56f8c1f9.webp",
+        "/booths/sdf-2026/sdf-20637_d975a530.webp"
+      ]
+    },
+    {
+      "code": "E-16",
+      "name": "디엠피 북스",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "E-18",
+      "name": "IDDAT",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "images": [
+        "/booths/sdf-2026/sdf-20157_9aab9a4e.webp",
+        "/booths/sdf-2026/sdf-20157_152506ef.webp",
+        "/booths/sdf-2026/sdf-20157_655ffc2b.webp",
+        "/booths/sdf-2026/sdf-20157_60945f35.webp"
+      ]
+    },
+    {
+      "code": "E-19",
+      "name": "대구대 산업디자인",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/_du_did_/",
+      "websiteUrl": "http://didshow.daegu.ac.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20557_4c96866c.webp",
+        "/booths/sdf-2026/sdf-20557_4d50c6f8.webp",
+        "/booths/sdf-2026/sdf-20557_2364bb9e.webp",
+        "/booths/sdf-2026/sdf-20557_939b22f5.webp",
+        "/booths/sdf-2026/sdf-20557_29fc04c4.webp",
+        "/booths/sdf-2026/sdf-20557_74221cf3.webp"
+      ],
+      "aliases": [
+        "대구대학교 산업디자인학과"
+      ]
+    },
+    {
+      "code": "E-21",
+      "name": "마코",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/maco_design/",
+      "websiteUrl": "https://macogroup.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20335_62d1c814.webp",
+        "/booths/sdf-2026/sdf-20335_33dcf8bc.webp"
+      ]
+    },
+    {
+      "code": "E-22",
+      "name": "쉘랑 코리아",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/shellang_k_official",
+      "websiteUrl": "https://shellang.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20545_caf76ad2.webp",
+        "/booths/sdf-2026/sdf-20545_36d2e1c9.webp",
+        "/booths/sdf-2026/sdf-20545_c95cbebc.webp",
+        "/booths/sdf-2026/sdf-20545_351d3128.webp",
+        "/booths/sdf-2026/sdf-20545_7d536add.webp",
+        "/booths/sdf-2026/sdf-20545_246cee8a.webp"
+      ]
+    },
+    {
+      "code": "E-23",
+      "name": "디자인 윙(한글락)",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/designwing_/",
+      "websiteUrl": "https://designwing.co.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20353_e092bb3a.webp",
+        "/booths/sdf-2026/sdf-20353_b3ddef9c.webp",
+        "/booths/sdf-2026/sdf-20353_305805d4.webp"
+      ]
+    },
+    {
+      "code": "E-24",
+      "name": "김종필안경",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/designshower_atelier/",
+      "websiteUrl": "https://designshower.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20651_d3aa9de4.webp",
+        "/booths/sdf-2026/sdf-20651_f00746be.webp",
+        "/booths/sdf-2026/sdf-20651_8de2db3f.webp",
+        "/booths/sdf-2026/sdf-20651_7bc2c51e.webp",
+        "/booths/sdf-2026/sdf-20651_2affcbed.webp",
+        "/booths/sdf-2026/sdf-20651_1b6c2e2f.webp"
+      ]
+    },
+    {
+      "code": "E-26",
+      "name": "도아세",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "E-27",
+      "name": "진주도원",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "aliases": [
+        "진주 복숭아주"
+      ],
+      "images": [
+        "/booths/sdf-2026/sdf-20325_6a18b92b.webp",
+        "/booths/sdf-2026/sdf-20325_ce790857.webp",
+        "/booths/sdf-2026/sdf-20325_bd27425b.webp",
+        "/booths/sdf-2026/sdf-20325_a387bd77.webp",
+        "/booths/sdf-2026/sdf-20325_7fc196d2.webp",
+        "/booths/sdf-2026/sdf-20325_29835cd3.webp"
+      ]
+    },
+    {
+      "code": "E-30",
+      "name": "전진문화사",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "images": [
+        "/booths/sdf-2026/sdf-20201_064ef54b.webp",
+        "/booths/sdf-2026/sdf-20201_63c239ed.webp"
+      ]
+    },
+    {
+      "code": "E-32",
+      "name": "아트핸즈",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "websiteUrl": "http://www.arthands.co.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20443_02357766.webp",
+        "/booths/sdf-2026/sdf-20443_0ff7af97.webp",
+        "/booths/sdf-2026/sdf-20443_580df7e9.webp",
+        "/booths/sdf-2026/sdf-20443_28a5c0c7.webp",
+        "/booths/sdf-2026/sdf-20443_c3f2a70e.webp",
+        "/booths/sdf-2026/sdf-20443_79191a08.webp"
+      ]
+    },
+    {
+      "code": "F-01",
+      "name": "현대카드",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "F-13",
+      "name": "홍익대학교산업디자인",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/hongik.id.degreeshow?dlrf=MTdoZjhkMHhlOWVhaw==",
+      "images": [
+        "/booths/sdf-2026/sdf-20177_b4991b5c.webp",
+        "/booths/sdf-2026/sdf-20177_9f951d04.webp",
+        "/booths/sdf-2026/sdf-20177_a295015e.webp",
+        "/booths/sdf-2026/sdf-20177_9750c095.webp",
+        "/booths/sdf-2026/sdf-20177_f7e479de.webp",
+        "/booths/sdf-2026/sdf-20177_49d12215.webp"
+      ]
+    },
+    {
+      "code": "F-23",
+      "name": "카라영 인센스",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/karayoung_official",
+      "websiteUrl": "https://www.karayoung.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20439_e8b444c1.webp",
+        "/booths/sdf-2026/sdf-20439_bab54003.webp",
+        "/booths/sdf-2026/sdf-20439_8bb7f47f.webp",
+        "/booths/sdf-2026/sdf-20439_1cdc7c91.webp",
+        "/booths/sdf-2026/sdf-20439_bf186f38.webp",
+        "/booths/sdf-2026/sdf-20439_e94408d2.webp"
+      ]
+    },
+    {
+      "code": "F-24",
+      "name": "피스나인 by 피스하나",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "F-25",
+      "name": "별빛청하",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "images": [
+        "/booths/sdf-2026/sdf-20191_2a200270.webp"
+      ]
+    },
+    {
+      "code": "G-01",
+      "name": "포니정디자인아카데미",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "images": [
+        "/booths/sdf-2026/sdf-20185_97ffecfc.webp",
+        "/booths/sdf-2026/sdf-20185_1b36ad5b.webp",
+        "/booths/sdf-2026/sdf-20185_db8e4ca1.webp",
+        "/booths/sdf-2026/sdf-20185_0f1bb34c.webp",
+        "/booths/sdf-2026/sdf-20185_bcd2dda3.webp",
+        "/booths/sdf-2026/sdf-20185_8b9a0ff9.webp"
+      ],
+      "aliases": [
+        "포니정디자인아카데미 by FOMA"
+      ]
+    },
+    {
+      "code": "G-05",
+      "name": "메탈플레이어 박현종",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/jong_metalplayer/",
+      "images": [
+        "/booths/sdf-2026/sdf-20297_93f513cc.webp",
+        "/booths/sdf-2026/sdf-20297_d6c2db1c.webp",
+        "/booths/sdf-2026/sdf-20297_3eea3c29.webp",
+        "/booths/sdf-2026/sdf-20297_b77c537f.webp",
+        "/booths/sdf-2026/sdf-20297_6fac909b.webp",
+        "/booths/sdf-2026/sdf-20297_79f7f3c1.webp"
+      ]
+    },
+    {
+      "code": "G-07",
+      "name": "리베르떼코",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/liberte_living/",
+      "websiteUrl": "https://liberteliving.co.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20167_5b51a266.webp",
+        "/booths/sdf-2026/sdf-20167_15e34c18.webp",
+        "/booths/sdf-2026/sdf-20167_bd683220.webp",
+        "/booths/sdf-2026/sdf-20167_5f678502.webp",
+        "/booths/sdf-2026/sdf-20167_3ed6ca2e.webp"
+      ]
+    },
+    {
+      "code": "G-08",
+      "name": "모아",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "G-09",
+      "name": "손끋비",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/sonkkeutbee",
+      "websiteUrl": "https://www.sonkkeutbee.co.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20251_d91a96e5.webp",
+        "/booths/sdf-2026/sdf-20251_0fa88389.webp",
+        "/booths/sdf-2026/sdf-20251_4e26e81b.webp",
+        "/booths/sdf-2026/sdf-20251_1e1f25f5.webp",
+        "/booths/sdf-2026/sdf-20251_b12e5490.webp",
+        "/booths/sdf-2026/sdf-20251_bbcf8184.webp"
+      ]
+    },
+    {
+      "code": "G-11",
+      "name": "피스오브토마로우",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "images": [
+        "/booths/sdf-2026/sdf-20413_13621847.webp",
+        "/booths/sdf-2026/sdf-20413_b5089b6e.webp"
+      ]
+    },
+    {
+      "code": "G-12",
+      "name": "페이퍼콘크리트",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "G-13",
+      "name": "테라쎄",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "G-15",
+      "name": "오버랩",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "G-17",
+      "name": "다숲 × 도도리",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/dasoop_in",
+      "websiteUrl": "http://www.dasoop.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20165_41e364ea.webp",
+        "/booths/sdf-2026/sdf-20165_de090f44.webp",
+        "/booths/sdf-2026/sdf-20165_d65e95f3.webp",
+        "/booths/sdf-2026/sdf-20165_08e0d6c5.webp",
+        "/booths/sdf-2026/sdf-20165_c27e109d.webp",
+        "/booths/sdf-2026/sdf-20165_dbfdae88.webp"
+      ],
+      "aliases": [
+        "다숲 X 도도리"
+      ]
+    },
+    {
+      "code": "G-18",
+      "name": "목화송이협동조합",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "G-19",
+      "name": "메멜트",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/memelt_dessert",
+      "websiteUrl": "https://smartstore.naver.com/memelt",
+      "images": [
+        "/booths/sdf-2026/sdf-20623_05d27077.webp",
+        "/booths/sdf-2026/sdf-20623_ca65b055.webp",
+        "/booths/sdf-2026/sdf-20623_f0e674e3.webp",
+        "/booths/sdf-2026/sdf-20623_a2d03f24.webp",
+        "/booths/sdf-2026/sdf-20623_f0055bea.webp"
+      ]
+    },
+    {
+      "code": "G-20",
+      "name": "마더그라운드",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "G-21",
+      "name": "스케잇모어",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "G-22",
+      "name": "아람채리빙",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "G-23",
+      "name": "플리티카",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "G-24",
+      "name": "한국환경산업협회",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "G-26",
+      "name": "미노",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/ado_mino_official/",
+      "websiteUrl": "https://ado-mino.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20613_6e91ed72.webp",
+        "/booths/sdf-2026/sdf-20613_3c723ab3.webp",
+        "/booths/sdf-2026/sdf-20613_244bd716.webp",
+        "/booths/sdf-2026/sdf-20613_198c4038.webp",
+        "/booths/sdf-2026/sdf-20613_b0a1dd65.webp",
+        "/booths/sdf-2026/sdf-20613_219352e1.webp"
+      ]
+    },
+    {
+      "code": "G-27",
+      "name": "알루에티",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "images": [
+        "/booths/sdf-2026/sdf-20603_a1dffc4c.webp",
+        "/booths/sdf-2026/sdf-20603_72a2650e.webp",
+        "/booths/sdf-2026/sdf-20603_757b1ad6.webp",
+        "/booths/sdf-2026/sdf-20603_0fe44492.webp",
+        "/booths/sdf-2026/sdf-20603_257805d0.webp",
+        "/booths/sdf-2026/sdf-20603_a08dd602.webp"
+      ]
+    },
+    {
+      "code": "G-28",
+      "name": "눈에뜰",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/lunettel_eyewear",
+      "websiteUrl": "https://www.lunettel.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20415_7a5695b6.webp",
+        "/booths/sdf-2026/sdf-20415_343bbbc5.webp",
+        "/booths/sdf-2026/sdf-20415_deca8d76.webp",
+        "/booths/sdf-2026/sdf-20415_83324de5.webp",
+        "/booths/sdf-2026/sdf-20415_9654c248.webp",
+        "/booths/sdf-2026/sdf-20415_e513b23f.webp"
+      ]
+    },
+    {
+      "code": "G-29",
+      "name": "소마르에",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "G-30",
+      "name": "업클로스",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "G-31",
+      "name": "희뮤즈",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "G-32",
+      "name": "굿인터내셔널",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "G-33",
+      "name": "캘빈라이트",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "G-35",
+      "name": "리그로",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "G-36",
+      "name": "플룸",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "G-40",
+      "name": "와콤코리아",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "H-01",
+      "name": "오늑",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/onheuk.official/",
+      "websiteUrl": "https://onheuk.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20433_18936e49.webp",
+        "/booths/sdf-2026/sdf-20433_e1fb806a.webp",
+        "/booths/sdf-2026/sdf-20433_b0ccf47b.webp",
+        "/booths/sdf-2026/sdf-20433_7ccb9aad.webp",
+        "/booths/sdf-2026/sdf-20433_e54d0f0c.webp",
+        "/booths/sdf-2026/sdf-20433_f467eed4.webp"
+      ]
+    },
+    {
+      "code": "H-03",
+      "name": "모쓰 스튜디오",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/mothw.studio",
+      "websiteUrl": "https://mothwstudio.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20221_b86fb901.webp",
+        "/booths/sdf-2026/sdf-20221_4e051470.webp",
+        "/booths/sdf-2026/sdf-20221_8c90030f.webp",
+        "/booths/sdf-2026/sdf-20221_cb671d48.webp"
+      ]
+    },
+    {
+      "code": "H-04",
+      "name": "마시멜로트램펄린",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/marshmallowtrampoline/",
+      "websiteUrl": "https://www.marshmallowtrampoline.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20237_22aa2116.webp",
+        "/booths/sdf-2026/sdf-20237_9e591034.webp",
+        "/booths/sdf-2026/sdf-20237_316e4125.webp",
+        "/booths/sdf-2026/sdf-20237_dc0df8ff.webp",
+        "/booths/sdf-2026/sdf-20237_4dc73a80.webp",
+        "/booths/sdf-2026/sdf-20237_9c3a2a5c.webp"
+      ]
+    },
+    {
+      "code": "H-05",
+      "name": "노톤&무나니스트",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/noteon.kr/",
+      "websiteUrl": "https://smartstore.naver.com/note_on",
+      "images": [
+        "/booths/sdf-2026/sdf-20215_9cec89fe.webp",
+        "/booths/sdf-2026/sdf-20215_8840d4ed.webp"
+      ],
+      "aliases": [
+        "노톤",
+        "무나니스트"
+      ]
+    },
+    {
+      "code": "H-06",
+      "name": "리즘",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/rysm_is_here/",
+      "websiteUrl": "https://www.rysmstudio.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20209_f23e04ac.webp",
+        "/booths/sdf-2026/sdf-20209_8e1c39f6.webp",
+        "/booths/sdf-2026/sdf-20209_4011a997.webp",
+        "/booths/sdf-2026/sdf-20209_5d005cd9.webp",
+        "/booths/sdf-2026/sdf-20209_c5fcf92b.webp",
+        "/booths/sdf-2026/sdf-20209_52acbd14.webp"
+      ]
+    },
+    {
+      "code": "H-07",
+      "name": "슈퍼삭스",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "H-08",
+      "name": "해비터스",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/habitus.kr",
+      "websiteUrl": "https://habit-us.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20315_2d404fc5.webp",
+        "/booths/sdf-2026/sdf-20315_9e54f3b1.webp",
+        "/booths/sdf-2026/sdf-20315_a0c7e086.webp",
+        "/booths/sdf-2026/sdf-20315_775761bb.webp",
+        "/booths/sdf-2026/sdf-20315_87844bee.webp",
+        "/booths/sdf-2026/sdf-20315_b8bc9289.webp"
+      ]
+    },
+    {
+      "code": "H-10",
+      "name": "아렐레이",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/",
+      "websiteUrl": "https://www.rla.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20223_32949c42.webp"
+      ]
+    },
+    {
+      "code": "H-11",
+      "name": "피오큐",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "http://www.instagram.com/poq.kr",
+      "websiteUrl": "http://www.poq.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20531_2946cfd9.webp",
+        "/booths/sdf-2026/sdf-20531_a4f208a4.webp",
+        "/booths/sdf-2026/sdf-20531_22bf0f12.webp",
+        "/booths/sdf-2026/sdf-20531_9633eea3.webp",
+        "/booths/sdf-2026/sdf-20531_60daee6b.webp",
+        "/booths/sdf-2026/sdf-20531_32ed112b.webp"
+      ]
+    },
+    {
+      "code": "H-12",
+      "name": "더리호",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/the_leeho?cplk=bXcxOGJpMTdwN3k=",
+      "images": [
+        "/booths/sdf-2026/sdf-20607_564e4e86.webp",
+        "/booths/sdf-2026/sdf-20607_516e784d.webp",
+        "/booths/sdf-2026/sdf-20607_1ab2738e.webp",
+        "/booths/sdf-2026/sdf-20607_857afb63.webp",
+        "/booths/sdf-2026/sdf-20607_48a7246d.webp",
+        "/booths/sdf-2026/sdf-20607_74642cf6.webp"
+      ]
+    },
+    {
+      "code": "H-13",
+      "name": "피그랩",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/piglab.official/",
+      "websiteUrl": "https://www.pig-lab.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20559_101dc1bf.webp",
+        "/booths/sdf-2026/sdf-20559_773ef3ee.webp",
+        "/booths/sdf-2026/sdf-20559_5bc6e523.webp",
+        "/booths/sdf-2026/sdf-20559_276d88e8.webp",
+        "/booths/sdf-2026/sdf-20559_f57e14f6.webp",
+        "/booths/sdf-2026/sdf-20559_1f456f14.webp"
+      ]
+    },
+    {
+      "code": "H-16",
+      "name": "그로토서울",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/grotto.seoul.kr/",
+      "websiteUrl": "https://grotto.seoul.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20243_f32d23f5.webp",
+        "/booths/sdf-2026/sdf-20243_e44254af.webp",
+        "/booths/sdf-2026/sdf-20243_3f04c34c.webp",
+        "/booths/sdf-2026/sdf-20243_3bf272da.webp",
+        "/booths/sdf-2026/sdf-20243_a856671e.webp"
+      ]
+    },
+    {
+      "code": "H-17",
+      "name": "폴린루이즈 스튜디오",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/paulinelouise.studio/",
+      "websiteUrl": "https://tender-fabric-049789.framer.app/",
+      "images": [
+        "/booths/sdf-2026/sdf-20203_7af9a760.webp",
+        "/booths/sdf-2026/sdf-20203_07e27a26.webp",
+        "/booths/sdf-2026/sdf-20203_c6913249.webp",
+        "/booths/sdf-2026/sdf-20203_0ccecb5f.webp",
+        "/booths/sdf-2026/sdf-20203_336165ee.webp",
+        "/booths/sdf-2026/sdf-20203_904dd377.webp"
+      ]
+    },
+    {
+      "code": "H-18",
+      "name": "킵잇인어셋",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/keepitinaset/",
+      "websiteUrl": "https://keepitinaset.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20235_e87ca92d.webp",
+        "/booths/sdf-2026/sdf-20235_db500943.webp",
+        "/booths/sdf-2026/sdf-20235_f81bcde9.webp",
+        "/booths/sdf-2026/sdf-20235_c4149435.webp",
+        "/booths/sdf-2026/sdf-20235_0eaa09b4.webp",
+        "/booths/sdf-2026/sdf-20235_9b6d00aa.webp"
+      ]
+    },
+    {
+      "code": "H-19",
+      "name": "언더띵",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/underthing_official",
+      "websiteUrl": "https://www.underthing.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20241_018ddb43.webp",
+        "/booths/sdf-2026/sdf-20241_b7210982.webp",
+        "/booths/sdf-2026/sdf-20241_bf423832.webp",
+        "/booths/sdf-2026/sdf-20241_55f1b330.webp"
+      ]
+    },
+    {
+      "code": "H-20",
+      "name": "헤이씨",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "websiteUrl": "https://heyc-story.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20373_23bf4de3.webp",
+        "/booths/sdf-2026/sdf-20373_8ba0a5f5.webp",
+        "/booths/sdf-2026/sdf-20373_b0411a2f.webp",
+        "/booths/sdf-2026/sdf-20373_6950acfa.webp"
+      ]
+    },
+    {
+      "code": "H-22",
+      "name": "피부피부",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "H-24",
+      "name": "썬양의 자연주의",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "H-25",
+      "name": "진세실",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "H-26",
+      "name": "오플레닛",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "H-27",
+      "name": "텍타일 실로암",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "H-29",
+      "name": "아러바웃",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "H-30",
+      "name": "마이도이",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "H-31",
+      "name": "라라슈",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "H-32",
+      "name": "서울패션메이커스협동조합",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "H-33",
+      "name": "코발트사회적협동조합",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/roundgcafe",
+      "websiteUrl": "https://cobaltcoop.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20377_d69a9045.webp",
+        "/booths/sdf-2026/sdf-20377_607d6747.webp"
+      ]
+    },
+    {
+      "code": "H-34",
+      "name": "보석공방 리페어링",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "images": [
+        "/booths/sdf-2026/sdf-20213_61ac898d.webp",
+        "/booths/sdf-2026/sdf-20213_e048394d.webp",
+        "/booths/sdf-2026/sdf-20213_e9c08a42.webp",
+        "/booths/sdf-2026/sdf-20213_206df196.webp",
+        "/booths/sdf-2026/sdf-20213_22716901.webp",
+        "/booths/sdf-2026/sdf-20213_b7072c71.webp"
+      ]
+    },
+    {
+      "code": "H-35",
+      "name": "디자인북",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "H-36",
+      "name": "플로라서인",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "H-37",
+      "name": "옴쎄",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "H-38",
+      "name": "푸러블",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/poohlovel_official/",
+      "websiteUrl": "https://akei.shop/",
+      "images": [
+        "/booths/sdf-2026/sdf-20625_d6d28856.webp",
+        "/booths/sdf-2026/sdf-20625_6978f221.webp",
+        "/booths/sdf-2026/sdf-20625_8392106c.webp"
+      ]
+    },
+    {
+      "code": "H-39",
+      "name": "유웰푸드",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "H-40",
+      "name": "오첵",
+      "hall": "코엑스 A홀",
+      "category": "쓰는 디자인",
+      "categorySlug": "sdf-stationery-design",
+      "categoryColor": "#3071B9",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/ocheckdesigngraphics/",
+      "websiteUrl": "https://www.o-check.net/",
+      "images": [
+        "/booths/sdf-2026/sdf-20385_af558c55.webp",
+        "/booths/sdf-2026/sdf-20385_77a14200.webp",
+        "/booths/sdf-2026/sdf-20385_76132071.webp",
+        "/booths/sdf-2026/sdf-20385_a090247b.webp",
+        "/booths/sdf-2026/sdf-20385_8ddd8d14.webp",
+        "/booths/sdf-2026/sdf-20385_a3c59c5a.webp"
+      ]
+    },
+    {
+      "code": "H-42",
+      "name": "유림 / 데일웍스",
+      "hall": "코엑스 A홀",
+      "category": "쓰는 디자인",
+      "categorySlug": "sdf-stationery-design",
+      "categoryColor": "#3071B9",
+      "kind": "exhibitor",
+      "websiteUrl": "https://yulimcover.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20575_0f0ac7ed.webp",
+        "/booths/sdf-2026/sdf-20575_f20b456d.webp",
+        "/booths/sdf-2026/sdf-20575_e4a51819.webp",
+        "/booths/sdf-2026/sdf-20575_5afdbc45.webp"
+      ]
+    },
+    {
+      "code": "H-43",
+      "name": "클리오 모빌리티",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/mule_by_kliodesign/",
+      "websiteUrl": "https://www.mulebykliodesign.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20367_76d1e9ab.webp",
+        "/booths/sdf-2026/sdf-20367_960ac785.webp",
+        "/booths/sdf-2026/sdf-20367_b108833a.webp",
+        "/booths/sdf-2026/sdf-20367_feeed5fd.webp",
+        "/booths/sdf-2026/sdf-20367_a00a2453.webp",
+        "/booths/sdf-2026/sdf-20367_4de09770.webp"
+      ]
+    },
+    {
+      "code": "H-58",
+      "name": "한성자동차 드림그림",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/dream_gream/",
+      "websiteUrl": "https://dream-gream.co.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20501_8f6b0da3.webp"
+      ]
+    },
+    {
+      "code": "I-01",
+      "name": "어벤져스와인",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "I-03",
+      "name": "리미리미",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "I-04",
+      "name": "한림사",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "I-05",
+      "name": "팔도카라멜",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "I-06",
+      "name": "비주얼스토리텔러",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/visualstoryteller",
+      "websiteUrl": "https://www.visteller.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20587_c4eeee39.webp",
+        "/booths/sdf-2026/sdf-20587_3df1918d.webp",
+        "/booths/sdf-2026/sdf-20587_2f4c88ea.webp",
+        "/booths/sdf-2026/sdf-20587_b0e5e0a3.webp",
+        "/booths/sdf-2026/sdf-20587_e23a4e8c.webp",
+        "/booths/sdf-2026/sdf-20587_f494bf81.webp"
+      ]
+    },
+    {
+      "code": "I-08",
+      "name": "마봉이",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "I-09",
+      "name": "스튜디오 오그루",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/ogru.shop",
+      "websiteUrl": "https://studioogru.com/"
+    },
+    {
+      "code": "I-10",
+      "name": "고체가글 키들",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/keedle.official/",
+      "websiteUrl": "https://keedle.co.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20255_7deb8063.webp",
+        "/booths/sdf-2026/sdf-20255_7cdc0b8d.webp",
+        "/booths/sdf-2026/sdf-20255_d5764bf0.webp",
+        "/booths/sdf-2026/sdf-20255_4f4d3bd8.webp",
+        "/booths/sdf-2026/sdf-20255_9294f83f.webp",
+        "/booths/sdf-2026/sdf-20255_f2b25820.webp"
+      ]
+    },
+    {
+      "code": "I-11",
+      "name": "바이시클 카드 코리아",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "I-13",
+      "name": "컴포지션스튜디오",
+      "hall": "코엑스 A홀",
+      "category": "쓰는 디자인",
+      "categorySlug": "sdf-stationery-design",
+      "categoryColor": "#3071B9",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/composition_studio_kr/",
+      "websiteUrl": "https://www.compositionstudio.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20387_809653fd.webp",
+        "/booths/sdf-2026/sdf-20387_56fedd18.webp",
+        "/booths/sdf-2026/sdf-20387_95e97a81.webp"
+      ]
+    },
+    {
+      "code": "I-14",
+      "name": "디자인 미닝",
+      "hall": "코엑스 A홀",
+      "category": "쓰는 디자인",
+      "categorySlug": "sdf-stationery-design",
+      "categoryColor": "#3071B9",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "I-15",
+      "name": "커버서울",
+      "hall": "코엑스 A홀",
+      "category": "쓰는 디자인",
+      "categorySlug": "sdf-stationery-design",
+      "categoryColor": "#3071B9",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "I-16",
+      "name": "달빛토깽단",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "I-17",
+      "name": "낼나",
+      "hall": "코엑스 A홀",
+      "category": "쓰는 디자인",
+      "categorySlug": "sdf-stationery-design",
+      "categoryColor": "#3071B9",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/nelna.shop/",
+      "websiteUrl": "https://nelna.shop/",
+      "images": [
+        "/booths/sdf-2026/sdf-20333_47a0f9d1.webp",
+        "/booths/sdf-2026/sdf-20333_9e41d6f3.webp",
+        "/booths/sdf-2026/sdf-20333_666b4755.webp",
+        "/booths/sdf-2026/sdf-20333_cb32bfa0.webp"
+      ]
+    },
+    {
+      "code": "I-19",
+      "name": "고유한",
+      "hall": "코엑스 A홀",
+      "category": "쓰는 디자인",
+      "categorySlug": "sdf-stationery-design",
+      "categoryColor": "#3071B9",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "I-20",
+      "name": "모비오",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/movio_kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20409_d7357884.webp",
+        "/booths/sdf-2026/sdf-20409_bc8ce66c.webp",
+        "/booths/sdf-2026/sdf-20409_51659ec2.webp",
+        "/booths/sdf-2026/sdf-20409_9e52fb19.webp",
+        "/booths/sdf-2026/sdf-20409_80b77d23.webp",
+        "/booths/sdf-2026/sdf-20409_cdd2e45f.webp"
+      ]
+    },
+    {
+      "code": "I-21",
+      "name": "더트프로젝트",
+      "hall": "코엑스 A홀",
+      "category": "쓰는 디자인",
+      "categorySlug": "sdf-stationery-design",
+      "categoryColor": "#3071B9",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/duitproject.kr/",
+      "websiteUrl": "https://www.duitproject.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20631_8fe15381.webp",
+        "/booths/sdf-2026/sdf-20631_34f1b852.webp",
+        "/booths/sdf-2026/sdf-20631_883bc343.webp",
+        "/booths/sdf-2026/sdf-20631_6c6433a0.webp",
+        "/booths/sdf-2026/sdf-20631_f16d5bd2.webp",
+        "/booths/sdf-2026/sdf-20631_a137730e.webp"
+      ]
+    },
+    {
+      "code": "I-22",
+      "name": "키오스크 키오스크",
+      "hall": "코엑스 A홀",
+      "category": "쓰는 디자인",
+      "categorySlug": "sdf-stationery-design",
+      "categoryColor": "#3071B9",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "I-24",
+      "name": "감탱센터",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "I-25",
+      "name": "부산 브랜드숍",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "images": [
+        "/booths/sdf-2026/sdf-22058_e729f328.webp",
+        "/booths/sdf-2026/sdf-22058_d017455c.webp",
+        "/booths/sdf-2026/sdf-22058_25cb70c5.webp",
+        "/booths/sdf-2026/sdf-22058_f7c3a60c.webp",
+        "/booths/sdf-2026/sdf-22058_27073619.webp"
+      ]
+    },
+    {
+      "code": "I-31",
+      "name": "다비치 안경",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "J-01",
+      "name": "닮담",
+      "hall": "코엑스 A홀",
+      "category": "일러스트레이터",
+      "categorySlug": "sdf-illustrator",
+      "categoryColor": "#674498",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "J-03",
+      "name": "술술레시피",
+      "hall": "코엑스 A홀",
+      "category": "일러스트레이터",
+      "categorySlug": "sdf-illustrator",
+      "categoryColor": "#674498",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/sulsul_recipe/",
+      "websiteUrl": "https://www.sulsulrecipe.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20317_10efe502.webp",
+        "/booths/sdf-2026/sdf-20317_8382adf5.webp",
+        "/booths/sdf-2026/sdf-20317_7d1872ef.webp",
+        "/booths/sdf-2026/sdf-20317_76e14850.webp",
+        "/booths/sdf-2026/sdf-20317_7e97be84.webp",
+        "/booths/sdf-2026/sdf-20317_b6d239e7.webp"
+      ]
+    },
+    {
+      "code": "J-05",
+      "name": "다정한 유리",
+      "hall": "코엑스 A홀",
+      "category": "일러스트레이터",
+      "categorySlug": "sdf-illustrator",
+      "categoryColor": "#674498",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/kindglass_studio/",
+      "images": [
+        "/booths/sdf-2026/sdf-20619_4d90ac6d.webp",
+        "/booths/sdf-2026/sdf-20619_f15861d0.webp",
+        "/booths/sdf-2026/sdf-20619_bb1f2f94.webp",
+        "/booths/sdf-2026/sdf-20619_572bc17f.webp",
+        "/booths/sdf-2026/sdf-20619_7297ef13.webp",
+        "/booths/sdf-2026/sdf-20619_4f39e31b.webp"
+      ]
+    },
+    {
+      "code": "J-06",
+      "name": "힙부즈",
+      "hall": "코엑스 A홀",
+      "category": "일러스트레이터",
+      "categorySlug": "sdf-illustrator",
+      "categoryColor": "#674498",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/hipbuz_",
+      "websiteUrl": "https://onlymoment.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20323_beabd2ba.webp",
+        "/booths/sdf-2026/sdf-20323_5e4e9e7a.webp",
+        "/booths/sdf-2026/sdf-20323_6b34dea8.webp",
+        "/booths/sdf-2026/sdf-20323_e3659095.webp",
+        "/booths/sdf-2026/sdf-20323_347f9548.webp",
+        "/booths/sdf-2026/sdf-20323_072fa3bf.webp"
+      ]
+    },
+    {
+      "code": "J-07",
+      "name": "낫낫",
+      "hall": "코엑스 A홀",
+      "category": "일러스트레이터",
+      "categorySlug": "sdf-illustrator",
+      "categoryColor": "#674498",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "J-08",
+      "name": "크래커 스튜디오",
+      "hall": "코엑스 A홀",
+      "category": "일러스트레이터",
+      "categorySlug": "sdf-illustrator",
+      "categoryColor": "#674498",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "J-09",
+      "name": "킴밍스튜디오",
+      "hall": "코엑스 A홀",
+      "category": "일러스트레이터",
+      "categorySlug": "sdf-illustrator",
+      "categoryColor": "#674498",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/_kimmming",
+      "websiteUrl": "https://kimmming-studio.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20365_8a8f0a09.webp",
+        "/booths/sdf-2026/sdf-20365_c053b85b.webp",
+        "/booths/sdf-2026/sdf-20365_d6c642fb.webp",
+        "/booths/sdf-2026/sdf-20365_710c709f.webp",
+        "/booths/sdf-2026/sdf-20365_5d261e60.webp",
+        "/booths/sdf-2026/sdf-20365_fd9d01d4.webp"
+      ]
+    },
+    {
+      "code": "J-10",
+      "name": "셔레이드쇼",
+      "hall": "코엑스 A홀",
+      "category": "일러스트레이터",
+      "categorySlug": "sdf-illustrator",
+      "categoryColor": "#674498",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/charadeshow/",
+      "websiteUrl": "https://charadeshow.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20359_03ed8fa2.webp",
+        "/booths/sdf-2026/sdf-20359_1d9ba20a.webp",
+        "/booths/sdf-2026/sdf-20359_be85b801.webp",
+        "/booths/sdf-2026/sdf-20359_2f13b87b.webp",
+        "/booths/sdf-2026/sdf-20359_7a3cbf7f.webp",
+        "/booths/sdf-2026/sdf-20359_a4b7f9c7.webp"
+      ]
+    },
+    {
+      "code": "J-11",
+      "name": "심냥즈",
+      "hall": "코엑스 A홀",
+      "category": "일러스트레이터",
+      "categorySlug": "sdf-illustrator",
+      "categoryColor": "#674498",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "J-12",
+      "name": "씨이이",
+      "hall": "코엑스 A홀",
+      "category": "일러스트레이터",
+      "categorySlug": "sdf-illustrator",
+      "categoryColor": "#674498",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "J-13",
+      "name": "도깨비 화방",
+      "hall": "코엑스 A홀",
+      "category": "일러스트레이터",
+      "categorySlug": "sdf-illustrator",
+      "categoryColor": "#674498",
+      "kind": "exhibitor",
+      "images": [
+        "/booths/sdf-2026/sdf-20275_32e7fd05.webp",
+        "/booths/sdf-2026/sdf-20275_e33614c8.webp",
+        "/booths/sdf-2026/sdf-20275_66c6fd98.webp",
+        "/booths/sdf-2026/sdf-20275_d28c0c09.webp",
+        "/booths/sdf-2026/sdf-20275_8ba18e05.webp",
+        "/booths/sdf-2026/sdf-20275_9caace77.webp"
+      ]
+    },
+    {
+      "code": "J-14",
+      "name": "그리다가",
+      "hall": "코엑스 A홀",
+      "category": "일러스트레이터",
+      "categorySlug": "sdf-illustrator",
+      "categoryColor": "#674498",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "J-15",
+      "name": "희다가든",
+      "hall": "코엑스 A홀",
+      "category": "일러스트레이터",
+      "categorySlug": "sdf-illustrator",
+      "categoryColor": "#674498",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/heedagarden/",
+      "websiteUrl": "https://heedagarden.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20267_2132f75f.webp",
+        "/booths/sdf-2026/sdf-20267_6249afc1.webp",
+        "/booths/sdf-2026/sdf-20267_72f70ddf.webp",
+        "/booths/sdf-2026/sdf-20267_7084b920.webp",
+        "/booths/sdf-2026/sdf-20267_ccca28f3.webp",
+        "/booths/sdf-2026/sdf-20267_e02475c7.webp"
+      ]
+    },
+    {
+      "code": "J-16",
+      "name": "드로잉데이",
+      "hall": "코엑스 A홀",
+      "category": "일러스트레이터",
+      "categorySlug": "sdf-illustrator",
+      "categoryColor": "#674498",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/drawingday.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20265_048126ca.webp",
+        "/booths/sdf-2026/sdf-20265_655f82a9.webp",
+        "/booths/sdf-2026/sdf-20265_c89f4fb9.webp",
+        "/booths/sdf-2026/sdf-20265_b35ed411.webp",
+        "/booths/sdf-2026/sdf-20265_be37b11d.webp",
+        "/booths/sdf-2026/sdf-20265_1ca25a8f.webp"
+      ]
+    },
+    {
+      "code": "J-17",
+      "name": "무헤헤",
+      "hall": "코엑스 A홀",
+      "category": "일러스트레이터",
+      "categorySlug": "sdf-illustrator",
+      "categoryColor": "#674498",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/3muhehe/",
+      "images": [
+        "/booths/sdf-2026/sdf-20329_b34e34ff.webp",
+        "/booths/sdf-2026/sdf-20329_dc975154.webp",
+        "/booths/sdf-2026/sdf-20329_067cba13.webp",
+        "/booths/sdf-2026/sdf-20329_ac6e1063.webp",
+        "/booths/sdf-2026/sdf-20329_ba36a162.webp",
+        "/booths/sdf-2026/sdf-20329_6f19b31f.webp"
+      ]
+    },
+    {
+      "code": "J-18",
+      "name": "순간을 아로새기다",
+      "hall": "코엑스 A홀",
+      "category": "일러스트레이터",
+      "categorySlug": "sdf-illustrator",
+      "categoryColor": "#674498",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/joyyj_",
+      "images": [
+        "/booths/sdf-2026/sdf-20381_304ea791.webp",
+        "/booths/sdf-2026/sdf-20381_0e096f1b.webp"
+      ]
+    },
+    {
+      "code": "J-19",
+      "name": "디어더스레드",
+      "hall": "코엑스 A홀",
+      "category": "일러스트레이터",
+      "categorySlug": "sdf-illustrator",
+      "categoryColor": "#674498",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/this_is_yeongy/",
+      "images": [
+        "/booths/sdf-2026/sdf-20357_5029126d.webp",
+        "/booths/sdf-2026/sdf-20357_30926f4e.webp",
+        "/booths/sdf-2026/sdf-20357_5887f4c6.webp",
+        "/booths/sdf-2026/sdf-20357_833aac8d.webp"
+      ]
+    },
+    {
+      "code": "J-20",
+      "name": "몸의표정",
+      "hall": "코엑스 A홀",
+      "category": "일러스트레이터",
+      "categorySlug": "sdf-illustrator",
+      "categoryColor": "#674498",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/mhom_ent",
+      "websiteUrl": "https://mhom-ent.kr/"
+    },
+    {
+      "code": "J-21",
+      "name": "리펭구르컴퍼니",
+      "hall": "코엑스 A홀",
+      "category": "일러스트레이터",
+      "categorySlug": "sdf-illustrator",
+      "categoryColor": "#674498",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "J-22",
+      "name": "커피리브레",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "K-01",
+      "name": "와디즈",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "K-04",
+      "name": "유스투바운더리",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "K-06",
+      "name": "펀랩",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "K-08",
+      "name": "컷프레스스테이플",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "K-09",
+      "name": "토소&패턴플로우",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/toso.kr/",
+      "websiteUrl": "https://toso.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20205_e6b49fc2.webp",
+        "/booths/sdf-2026/sdf-20205_202de30d.webp",
+        "/booths/sdf-2026/sdf-20205_10446c46.webp",
+        "/booths/sdf-2026/sdf-20205_e2fccea5.webp",
+        "/booths/sdf-2026/sdf-20205_d7fc7919.webp",
+        "/booths/sdf-2026/sdf-20205_3bd6a062.webp"
+      ],
+      "aliases": [
+        "토소",
+        "패턴플로우"
+      ]
+    },
+    {
+      "code": "K-10",
+      "name": "커브서울",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/kove_seoul/",
+      "websiteUrl": "https://kove-seoul.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20233_34d7fe59.webp",
+        "/booths/sdf-2026/sdf-20233_d337eff2.webp",
+        "/booths/sdf-2026/sdf-20233_29014305.webp",
+        "/booths/sdf-2026/sdf-20233_4a9a1104.webp",
+        "/booths/sdf-2026/sdf-20233_e1b30282.webp",
+        "/booths/sdf-2026/sdf-20233_0556a5d5.webp"
+      ]
+    },
+    {
+      "code": "K-11",
+      "name": "타입 매터리얼",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/nutype.info/",
+      "images": [
+        "/booths/sdf-2026/sdf-20219_c5fdd037.webp",
+        "/booths/sdf-2026/sdf-20219_af87bbb4.webp"
+      ]
+    },
+    {
+      "code": "K-12",
+      "name": "쁘띠팩토리",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/petitfactory_official/",
+      "websiteUrl": "http://www.petitfactory.net/",
+      "images": [
+        "/booths/sdf-2026/sdf-20363_5fa5a61a.webp",
+        "/booths/sdf-2026/sdf-20363_e5b6c9dc.webp",
+        "/booths/sdf-2026/sdf-20363_c4599813.webp",
+        "/booths/sdf-2026/sdf-20363_d1ab6185.webp",
+        "/booths/sdf-2026/sdf-20363_9c7ed70b.webp",
+        "/booths/sdf-2026/sdf-20363_c1489a3b.webp"
+      ]
+    },
+    {
+      "code": "K-13",
+      "name": "레드이어스클럽",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/redearsclub/",
+      "websiteUrl": "https://www.soshyety.shop/",
+      "images": [
+        "/booths/sdf-2026/sdf-20207_eb860ace.webp",
+        "/booths/sdf-2026/sdf-20207_f2467e86.webp",
+        "/booths/sdf-2026/sdf-20207_63c12d22.webp",
+        "/booths/sdf-2026/sdf-20207_c18c9a27.webp",
+        "/booths/sdf-2026/sdf-20207_a545a13d.webp",
+        "/booths/sdf-2026/sdf-20207_7300b1f9.webp"
+      ]
+    },
+    {
+      "code": "K-14",
+      "name": "어디에든,어린이",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "K-15",
+      "name": "홍드메이드",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "K-17",
+      "name": "삭스미스",
+      "hall": "코엑스 A홀",
+      "category": "디자인 브랜드",
+      "categorySlug": "sdf-design-brand",
+      "categoryColor": "#FF42B2",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/socksmithkorea/",
+      "websiteUrl": "https://www.socksmith.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20299_d964ea9e.webp",
+        "/booths/sdf-2026/sdf-20299_69f8b0ee.webp",
+        "/booths/sdf-2026/sdf-20299_863727ff.webp",
+        "/booths/sdf-2026/sdf-20299_aab9f09d.webp",
+        "/booths/sdf-2026/sdf-20299_c246d4a1.webp"
+      ]
+    },
+    {
+      "code": "S-01",
+      "name": "일상의실천",
+      "hall": "코엑스 A홀",
+      "category": "디자인 스페셜리스트",
+      "categorySlug": "sdf-design-specialist",
+      "categoryColor": "#5CB531",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/hello_ep/",
+      "websiteUrl": "https://everyday-practice.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20291_1fcbe34e.webp",
+        "/booths/sdf-2026/sdf-20291_1fc231d6.webp",
+        "/booths/sdf-2026/sdf-20291_be6422a1.webp",
+        "/booths/sdf-2026/sdf-20291_9ff3f5e8.webp",
+        "/booths/sdf-2026/sdf-20291_b44feacd.webp",
+        "/booths/sdf-2026/sdf-20291_e57ece3d.webp"
+      ]
+    },
+    {
+      "code": "S-02",
+      "name": "오와이웍스",
+      "hall": "코엑스 A홀",
+      "category": "디자인 스페셜리스트",
+      "categorySlug": "sdf-design-specialist",
+      "categoryColor": "#5CB531",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "S-03",
+      "name": "네임드",
+      "hall": "코엑스 A홀",
+      "category": "디자인 스페셜리스트",
+      "categorySlug": "sdf-design-specialist",
+      "categoryColor": "#5CB531",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "S-04",
+      "name": "오세븐",
+      "hall": "코엑스 A홀",
+      "category": "디자인 스페셜리스트",
+      "categorySlug": "sdf-design-specialist",
+      "categoryColor": "#5CB531",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/ohseven_design",
+      "websiteUrl": "https://www.ohseven.co.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20285_cce31f2a.webp",
+        "/booths/sdf-2026/sdf-20285_61ce7253.webp",
+        "/booths/sdf-2026/sdf-20285_05ec8251.webp",
+        "/booths/sdf-2026/sdf-20285_20521708.webp"
+      ]
+    },
+    {
+      "code": "S-05",
+      "name": "토마스스튜디오",
+      "hall": "코엑스 A홀",
+      "category": "디자인 스페셜리스트",
+      "categorySlug": "sdf-design-specialist",
+      "categoryColor": "#5CB531",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/thomas_studio_official/",
+      "websiteUrl": "https://www.thomas-studio.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20287_d5d4f2f9.webp",
+        "/booths/sdf-2026/sdf-20287_2104931d.webp",
+        "/booths/sdf-2026/sdf-20287_f2b5fc56.webp",
+        "/booths/sdf-2026/sdf-20287_e5fbd17e.webp",
+        "/booths/sdf-2026/sdf-20287_cad2ee65.webp",
+        "/booths/sdf-2026/sdf-20287_0966debb.webp"
+      ]
+    },
+    {
+      "code": "S-06",
+      "name": "논스페이스, 니즈디자인랩, 라보토리, 오픈스튜디오, 플라이밍고",
+      "hall": "코엑스 A홀",
+      "category": "디자인 스페셜리스트",
+      "categorySlug": "sdf-design-specialist",
+      "categoryColor": "#5CB531",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/labotory_official/",
+      "websiteUrl": "http://www.labotory.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20293_b2717d25.webp",
+        "/booths/sdf-2026/sdf-20293_5dc2b105.webp",
+        "/booths/sdf-2026/sdf-20293_e29ce616.webp",
+        "/booths/sdf-2026/sdf-20293_e8195515.webp",
+        "/booths/sdf-2026/sdf-20293_32907960.webp",
+        "/booths/sdf-2026/sdf-20293_8be4ec90.webp"
+      ],
+      "aliases": [
+        "논스페이스",
+        "니즈디자인랩",
+        "라보토리",
+        "오픈스튜디오",
+        "플라이밍고"
+      ]
+    },
+    {
+      "code": "S-07",
+      "name": "헤즈",
+      "hall": "코엑스 A홀",
+      "category": "디자인 스페셜리스트",
+      "categorySlug": "sdf-design-specialist",
+      "categoryColor": "#5CB531",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "S-08",
+      "name": "에스더블유앤에이",
+      "hall": "코엑스 A홀",
+      "category": "디자인 스페셜리스트",
+      "categorySlug": "sdf-design-specialist",
+      "categoryColor": "#5CB531",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/swna.office/",
+      "websiteUrl": "https://theswna.com/en",
+      "images": [
+        "/booths/sdf-2026/sdf-20231_53fd9f59.webp",
+        "/booths/sdf-2026/sdf-20231_978f5629.webp",
+        "/booths/sdf-2026/sdf-20231_f3040c80.webp",
+        "/booths/sdf-2026/sdf-20231_16f52a1c.webp",
+        "/booths/sdf-2026/sdf-20231_b2faafeb.webp"
+      ]
+    },
+    {
+      "code": "S-09",
+      "name": "더블유지앤비",
+      "hall": "코엑스 A홀",
+      "category": "디자인 스페셜리스트",
+      "categorySlug": "sdf-design-specialist",
+      "categoryColor": "#5CB531",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "S-10",
+      "name": "디오리진",
+      "hall": "코엑스 A홀",
+      "category": "디자인 스페셜리스트",
+      "categorySlug": "sdf-design-specialist",
+      "categoryColor": "#5CB531",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/d_origin_official/",
+      "websiteUrl": "https://d-origin.co.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20311_c732cfd5.webp",
+        "/booths/sdf-2026/sdf-20311_49e7b569.webp",
+        "/booths/sdf-2026/sdf-20311_049a183d.webp",
+        "/booths/sdf-2026/sdf-20311_736aabb5.webp",
+        "/booths/sdf-2026/sdf-20311_b04bb36f.webp",
+        "/booths/sdf-2026/sdf-20311_c00e7093.webp"
+      ]
+    },
+    {
+      "code": "S-11",
+      "name": "파운드파운디드",
+      "hall": "코엑스 A홀",
+      "category": "디자인 스페셜리스트",
+      "categorySlug": "sdf-design-specialist",
+      "categoryColor": "#5CB531",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "Y-01",
+      "name": "이하영",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/onott.studio",
+      "images": [
+        "/booths/sdf-2026/sdf-20527_c62c019c.webp",
+        "/booths/sdf-2026/sdf-20527_78b288aa.webp",
+        "/booths/sdf-2026/sdf-20527_dc94256a.webp",
+        "/booths/sdf-2026/sdf-20527_83859604.webp",
+        "/booths/sdf-2026/sdf-20527_219d2db4.webp",
+        "/booths/sdf-2026/sdf-20527_91bef394.webp"
+      ]
+    },
+    {
+      "code": "Y-02",
+      "name": "장성수",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/j.sungsu",
+      "images": [
+        "/booths/sdf-2026/sdf-20503_b094acea.webp",
+        "/booths/sdf-2026/sdf-20503_d0d470e7.webp",
+        "/booths/sdf-2026/sdf-20503_50237b81.webp",
+        "/booths/sdf-2026/sdf-20503_835c9362.webp"
+      ]
+    },
+    {
+      "code": "Y-03",
+      "name": "한승우",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/sgwoo_woodworking",
+      "images": [
+        "/booths/sdf-2026/sdf-20509_69657c46.webp",
+        "/booths/sdf-2026/sdf-20509_f51011e4.webp",
+        "/booths/sdf-2026/sdf-20509_38751a44.webp",
+        "/booths/sdf-2026/sdf-20509_12333cd7.webp",
+        "/booths/sdf-2026/sdf-20509_179ee027.webp"
+      ]
+    },
+    {
+      "code": "Y-04",
+      "name": "유동환",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/yu.thegiver/",
+      "images": [
+        "/booths/sdf-2026/sdf-20489_4b6366df.webp",
+        "/booths/sdf-2026/sdf-20489_8a2fd09e.webp",
+        "/booths/sdf-2026/sdf-20489_35991087.webp",
+        "/booths/sdf-2026/sdf-20489_893bde82.webp",
+        "/booths/sdf-2026/sdf-20489_f440729f.webp",
+        "/booths/sdf-2026/sdf-20489_dcfc4e2e.webp"
+      ]
+    },
+    {
+      "code": "Y-05",
+      "name": "천유선",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "Y-06",
+      "name": "허정우, 최수아",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/geoli_official/",
+      "images": [
+        "/booths/sdf-2026/sdf-20491_c8f98859.webp",
+        "/booths/sdf-2026/sdf-20491_ebf3b44f.webp",
+        "/booths/sdf-2026/sdf-20491_621cc31d.webp",
+        "/booths/sdf-2026/sdf-20491_32a48f47.webp",
+        "/booths/sdf-2026/sdf-20491_5a212e93.webp",
+        "/booths/sdf-2026/sdf-20491_d37e0d92.webp"
+      ],
+      "aliases": [
+        "최수아, 허정우"
+      ]
+    },
+    {
+      "code": "Y-07",
+      "name": "문정미",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/esormii?obrf=MXBucXYycW5jemRodg%3D%3D&utm_source=qr",
+      "images": [
+        "/booths/sdf-2026/sdf-20451_d9de74ba.webp",
+        "/booths/sdf-2026/sdf-20451_a4ec6bba.webp",
+        "/booths/sdf-2026/sdf-20451_3043affb.webp",
+        "/booths/sdf-2026/sdf-20451_2ff9aa6c.webp",
+        "/booths/sdf-2026/sdf-20451_bb999d32.webp",
+        "/booths/sdf-2026/sdf-20451_493baead.webp"
+      ]
+    },
+    {
+      "code": "Y-08",
+      "name": "이유나",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/jancheest",
+      "websiteUrl": "https://www.jancheest.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20549_c3ca4523.webp",
+        "/booths/sdf-2026/sdf-20549_36de5a43.webp",
+        "/booths/sdf-2026/sdf-20549_3da2cc5f.webp",
+        "/booths/sdf-2026/sdf-20549_db36c76c.webp"
+      ]
+    },
+    {
+      "code": "Y-09",
+      "name": "정윤주",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "Y-10",
+      "name": "장자현",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/ow.swall_official",
+      "websiteUrl": "https://owswall.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20565_c1e1a580.webp",
+        "/booths/sdf-2026/sdf-20565_35174df7.webp",
+        "/booths/sdf-2026/sdf-20565_6705ce29.webp",
+        "/booths/sdf-2026/sdf-20565_d0b286e3.webp",
+        "/booths/sdf-2026/sdf-20565_0f5de58b.webp",
+        "/booths/sdf-2026/sdf-20565_9b74e390.webp"
+      ]
+    },
+    {
+      "code": "Y-11",
+      "name": "김성동",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/greenwaycourt.zip/",
+      "websiteUrl": "https://greenwaycourt.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20505_0f6972f2.webp",
+        "/booths/sdf-2026/sdf-20505_012c430d.webp",
+        "/booths/sdf-2026/sdf-20505_43aaae38.webp",
+        "/booths/sdf-2026/sdf-20505_315331e4.webp",
+        "/booths/sdf-2026/sdf-20505_66c4e800.webp",
+        "/booths/sdf-2026/sdf-20505_b1b839e6.webp"
+      ]
+    },
+    {
+      "code": "Y-12",
+      "name": "육주영",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/yookjuyoung/",
+      "images": [
+        "/booths/sdf-2026/sdf-20445_c1f33ce6.webp",
+        "/booths/sdf-2026/sdf-20445_d9fc3286.webp",
+        "/booths/sdf-2026/sdf-20445_be238cf8.webp"
+      ]
+    },
+    {
+      "code": "Y-13",
+      "name": "정지원",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/zione_zone/",
+      "images": [
+        "/booths/sdf-2026/sdf-20475_cf0f8ea4.webp",
+        "/booths/sdf-2026/sdf-20475_46e2b134.webp",
+        "/booths/sdf-2026/sdf-20475_71da029e.webp",
+        "/booths/sdf-2026/sdf-20475_00fc954d.webp",
+        "/booths/sdf-2026/sdf-20475_3f7af60e.webp",
+        "/booths/sdf-2026/sdf-20475_10a66df5.webp"
+      ]
+    },
+    {
+      "code": "Y-14",
+      "name": "이지원",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/ezpz.lab",
+      "websiteUrl": "https://ezpzlaboratory.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20467_126b331b.webp",
+        "/booths/sdf-2026/sdf-20467_b129993d.webp",
+        "/booths/sdf-2026/sdf-20467_a954eed2.webp",
+        "/booths/sdf-2026/sdf-20467_b3f846c1.webp",
+        "/booths/sdf-2026/sdf-20467_6082bfe5.webp",
+        "/booths/sdf-2026/sdf-20467_d903bb9c.webp"
+      ]
+    },
+    {
+      "code": "Y-15",
+      "name": "노승현",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/robotic_design?utm_source=ig_web_button_share_sheet&obrf=ZDNlZDc0MzIxNw==",
+      "images": [
+        "/booths/sdf-2026/sdf-20453_051babab.webp",
+        "/booths/sdf-2026/sdf-20453_0d38f411.webp",
+        "/booths/sdf-2026/sdf-20453_07f78d22.webp",
+        "/booths/sdf-2026/sdf-20453_f267a9f1.webp",
+        "/booths/sdf-2026/sdf-20453_12615134.webp",
+        "/booths/sdf-2026/sdf-20453_3ca40de5.webp"
+      ]
+    },
+    {
+      "code": "Y-16",
+      "name": "노형오 / 이수민",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "images": [
+        "/booths/sdf-2026/sdf-20497_bdbc1895.webp",
+        "/booths/sdf-2026/sdf-20497_9b15d8b3.webp",
+        "/booths/sdf-2026/sdf-20497_23301759.webp"
+      ]
+    },
+    {
+      "code": "Y-17",
+      "name": "차미소랑",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/carmisorang/",
+      "images": [
+        "/booths/sdf-2026/sdf-20449_af01bde4.webp",
+        "/booths/sdf-2026/sdf-20449_447b6148.webp",
+        "/booths/sdf-2026/sdf-20449_5ecfd949.webp",
+        "/booths/sdf-2026/sdf-20449_71c52359.webp",
+        "/booths/sdf-2026/sdf-20449_f192b5b8.webp",
+        "/booths/sdf-2026/sdf-20449_aea7cf01.webp"
+      ]
+    },
+    {
+      "code": "Y-18",
+      "name": "손단비",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/studio_aaroc/",
+      "websiteUrl": "https://studioaaroc.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20605_5b65cf3e.webp",
+        "/booths/sdf-2026/sdf-20605_3668a191.webp",
+        "/booths/sdf-2026/sdf-20605_85a09c76.webp",
+        "/booths/sdf-2026/sdf-20605_62045f8a.webp",
+        "/booths/sdf-2026/sdf-20605_a6f61b50.webp",
+        "/booths/sdf-2026/sdf-20605_72478dca.webp"
+      ]
+    },
+    {
+      "code": "Y-19",
+      "name": "박지선",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/seeonpark_",
+      "images": [
+        "/booths/sdf-2026/sdf-20455_2b2a55ba.webp",
+        "/booths/sdf-2026/sdf-20455_8d51d660.webp",
+        "/booths/sdf-2026/sdf-20455_188c8af3.webp",
+        "/booths/sdf-2026/sdf-20455_abf7166e.webp",
+        "/booths/sdf-2026/sdf-20455_aeec59df.webp",
+        "/booths/sdf-2026/sdf-20455_f368238f.webp"
+      ]
+    },
+    {
+      "code": "Y-20",
+      "name": "김정현",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/haeni_made/",
+      "images": [
+        "/booths/sdf-2026/sdf-20533_2da54632.webp",
+        "/booths/sdf-2026/sdf-20533_4bc5c7e7.webp",
+        "/booths/sdf-2026/sdf-20533_d80e0e84.webp"
+      ]
+    },
+    {
+      "code": "Y-21",
+      "name": "윤경식ㆍ진민지",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/onheuk.official/",
+      "websiteUrl": "https://onheuk.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20801_8835485c.webp",
+        "/booths/sdf-2026/sdf-20801_94ff1318.webp",
+        "/booths/sdf-2026/sdf-20801_4e91a364.webp",
+        "/booths/sdf-2026/sdf-20801_3ecf9ffe.webp",
+        "/booths/sdf-2026/sdf-20801_e01e77cb.webp",
+        "/booths/sdf-2026/sdf-20801_01bed59e.webp"
+      ]
+    },
+    {
+      "code": "Y-22",
+      "name": "이우연",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "images": [
+        "/booths/sdf-2026/sdf-20535_e473c0db.webp",
+        "/booths/sdf-2026/sdf-20535_77bbc382.webp",
+        "/booths/sdf-2026/sdf-20535_edafccf3.webp",
+        "/booths/sdf-2026/sdf-20535_b804ad0a.webp"
+      ]
+    },
+    {
+      "code": "Y-23",
+      "name": "이수빈",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "images": [
+        "/booths/sdf-2026/sdf-20543_c8dddfe2.webp"
+      ]
+    },
+    {
+      "code": "Y-24",
+      "name": "송인우",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/siwoo____o/",
+      "images": [
+        "/booths/sdf-2026/sdf-20539_a9d870d6.webp",
+        "/booths/sdf-2026/sdf-20539_be3afcf7.webp",
+        "/booths/sdf-2026/sdf-20539_07fe3bec.webp",
+        "/booths/sdf-2026/sdf-20539_eb4c0295.webp",
+        "/booths/sdf-2026/sdf-20539_40ba903f.webp",
+        "/booths/sdf-2026/sdf-20539_8810578e.webp"
+      ]
+    },
+    {
+      "code": "Y-25",
+      "name": "문지희",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/moonjiroom/",
+      "images": [
+        "/booths/sdf-2026/sdf-20499_b0ddb949.webp",
+        "/booths/sdf-2026/sdf-20499_a7232051.webp",
+        "/booths/sdf-2026/sdf-20499_0ccc90b6.webp"
+      ]
+    },
+    {
+      "code": "Y-26",
+      "name": "원준성, 김하용",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/newgreyform/",
+      "websiteUrl": "https://newgreyform.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20481_dd7c76e2.webp",
+        "/booths/sdf-2026/sdf-20481_30c7bd88.webp",
+        "/booths/sdf-2026/sdf-20481_68dd6b9e.webp",
+        "/booths/sdf-2026/sdf-20481_914e0009.webp",
+        "/booths/sdf-2026/sdf-20481_6adb1bb8.webp",
+        "/booths/sdf-2026/sdf-20481_2aeace28.webp"
+      ],
+      "aliases": [
+        "김하용, 원준성"
+      ]
+    },
+    {
+      "code": "Y-27",
+      "name": "이승진",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/leesngjin/",
+      "websiteUrl": "https://leesngjin.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20515_b6cd1b73.webp",
+        "/booths/sdf-2026/sdf-20515_24a050d1.webp",
+        "/booths/sdf-2026/sdf-20515_8b875e85.webp",
+        "/booths/sdf-2026/sdf-20515_c9ad9464.webp",
+        "/booths/sdf-2026/sdf-20515_16b03f73.webp",
+        "/booths/sdf-2026/sdf-20515_631ed647.webp"
+      ]
+    },
+    {
+      "code": "Y-28",
+      "name": "김영민",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "Y-29",
+      "name": "조영진, 최원서",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/ilmiworks/",
+      "websiteUrl": "https://ilmiworks.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20529_9a849b05.webp",
+        "/booths/sdf-2026/sdf-20529_55ba3c6e.webp",
+        "/booths/sdf-2026/sdf-20529_d3094e55.webp",
+        "/booths/sdf-2026/sdf-20529_63605233.webp",
+        "/booths/sdf-2026/sdf-20529_0abb5bf9.webp",
+        "/booths/sdf-2026/sdf-20529_f7285766.webp"
+      ]
+    },
+    {
+      "code": "Y-30",
+      "name": "정지윤",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "Y-31",
+      "name": "이승재",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "images": [
+        "/booths/sdf-2026/sdf-20477_f60b9ce7.webp",
+        "/booths/sdf-2026/sdf-20477_9df4e82f.webp",
+        "/booths/sdf-2026/sdf-20477_79bb1ebc.webp",
+        "/booths/sdf-2026/sdf-20477_7724f38e.webp",
+        "/booths/sdf-2026/sdf-20477_e490fe3c.webp",
+        "/booths/sdf-2026/sdf-20477_053d683c.webp"
+      ]
+    },
+    {
+      "code": "Y-32",
+      "name": "명수빈",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/studio_anodo?obrf=N3p1NHlnYjA1dDd2",
+      "images": [
+        "/booths/sdf-2026/sdf-20519_01cd4a54.webp",
+        "/booths/sdf-2026/sdf-20519_0b650936.webp",
+        "/booths/sdf-2026/sdf-20519_6a63b2eb.webp",
+        "/booths/sdf-2026/sdf-20519_5efd888b.webp",
+        "/booths/sdf-2026/sdf-20519_36bd49e2.webp"
+      ]
+    },
+    {
+      "code": "Y-33",
+      "name": "정지수",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/mickey_jisu/",
+      "websiteUrl": "https://design.co.kr/young/oojisuoo/",
+      "images": [
+        "/booths/sdf-2026/sdf-20457_7b053048.webp",
+        "/booths/sdf-2026/sdf-20457_3d109791.webp",
+        "/booths/sdf-2026/sdf-20457_220f14d6.webp",
+        "/booths/sdf-2026/sdf-20457_3a9e966d.webp",
+        "/booths/sdf-2026/sdf-20457_b769d188.webp",
+        "/booths/sdf-2026/sdf-20457_e9cd3097.webp"
+      ]
+    },
+    {
+      "code": "Y-34",
+      "name": "이승원",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "images": [
+        "/booths/sdf-2026/sdf-20507_d50a0d6d.webp",
+        "/booths/sdf-2026/sdf-20507_1e3dbfeb.webp",
+        "/booths/sdf-2026/sdf-20507_f8e9b94e.webp"
+      ]
+    },
+    {
+      "code": "Y-35",
+      "name": "성종협",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/graftmen/",
+      "websiteUrl": "https://graftmen.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20495_7d987e65.webp",
+        "/booths/sdf-2026/sdf-20495_4ec5b8d9.webp",
+        "/booths/sdf-2026/sdf-20495_5de67291.webp",
+        "/booths/sdf-2026/sdf-20495_7439469e.webp",
+        "/booths/sdf-2026/sdf-20495_fad7f3bf.webp"
+      ]
+    },
+    {
+      "code": "Y-36",
+      "name": "박혜진",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/thewhitecladpeople",
+      "websiteUrl": "https://thewhitecladpeople.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20461_2bc4c596.webp",
+        "/booths/sdf-2026/sdf-20461_7ce9def6.webp",
+        "/booths/sdf-2026/sdf-20461_b446d325.webp"
+      ]
+    },
+    {
+      "code": "Y-37",
+      "name": "김유진, 이한나",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "images": [
+        "/booths/sdf-2026/sdf-20493_fa7d17bf.webp",
+        "/booths/sdf-2026/sdf-20493_4e3a13e2.webp",
+        "/booths/sdf-2026/sdf-20493_996e558e.webp",
+        "/booths/sdf-2026/sdf-20493_e5d51f7d.webp"
+      ]
+    },
+    {
+      "code": "Y-38",
+      "name": "김민준",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "Y-39",
+      "name": "정채빈, 박지민",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/komo.seoul/",
+      "websiteUrl": "https://komoseoul.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20525_99375192.webp",
+        "/booths/sdf-2026/sdf-20525_3f42bff8.webp",
+        "/booths/sdf-2026/sdf-20525_79691518.webp",
+        "/booths/sdf-2026/sdf-20525_31832115.webp",
+        "/booths/sdf-2026/sdf-20525_1a50a0cf.webp",
+        "/booths/sdf-2026/sdf-20525_10533f15.webp"
+      ],
+      "aliases": [
+        "박지민, 정채빈"
+      ]
+    },
+    {
+      "code": "Y-40",
+      "name": "오수민",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "images": [
+        "/booths/sdf-2026/sdf-20463_1903262c.webp",
+        "/booths/sdf-2026/sdf-20463_71411caf.webp",
+        "/booths/sdf-2026/sdf-20463_26a28791.webp",
+        "/booths/sdf-2026/sdf-20463_eb860924.webp",
+        "/booths/sdf-2026/sdf-20463_c0277d24.webp",
+        "/booths/sdf-2026/sdf-20463_e9a75b86.webp"
+      ]
+    },
+    {
+      "code": "Y-41",
+      "name": "김승기",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/fabor.objet/",
+      "websiteUrl": "https://fabor.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20537_0687320a.webp",
+        "/booths/sdf-2026/sdf-20537_4f7dda72.webp",
+        "/booths/sdf-2026/sdf-20537_1b68ee96.webp",
+        "/booths/sdf-2026/sdf-20537_30ed5158.webp",
+        "/booths/sdf-2026/sdf-20537_bf2e87af.webp",
+        "/booths/sdf-2026/sdf-20537_e889aa3a.webp"
+      ]
+    },
+    {
+      "code": "Y-42",
+      "name": "김현지",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/mondkim",
+      "websiteUrl": "https://www.mondkim.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20511_0143d502.webp",
+        "/booths/sdf-2026/sdf-20511_8dc5646d.webp",
+        "/booths/sdf-2026/sdf-20511_aa94ab60.webp",
+        "/booths/sdf-2026/sdf-20511_fa1e3721.webp",
+        "/booths/sdf-2026/sdf-20511_6edd17ab.webp",
+        "/booths/sdf-2026/sdf-20511_bc4282bf.webp"
+      ]
+    },
+    {
+      "code": "Y-43",
+      "name": "원영현",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/won.human",
+      "images": [
+        "/booths/sdf-2026/sdf-20567_16d143c6.webp",
+        "/booths/sdf-2026/sdf-20567_05f59797.webp",
+        "/booths/sdf-2026/sdf-20567_9463e6d8.webp"
+      ]
+    },
+    {
+      "code": "Y-44",
+      "name": "이윤하, 류형래",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/deniq.official/",
+      "websiteUrl": "https://www.deniq.co.kr/",
+      "images": [
+        "/booths/sdf-2026/sdf-20479_8cf09ec4.webp",
+        "/booths/sdf-2026/sdf-20479_6886933b.webp",
+        "/booths/sdf-2026/sdf-20479_0d32a698.webp"
+      ],
+      "aliases": [
+        "류형래, 이윤하"
+      ]
+    },
+    {
+      "code": "Y-45",
+      "name": "김주담, 박미선",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "Y-46",
+      "name": "박진호",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://www.instagram.com/moonybunny.official/",
+      "images": [
+        "/booths/sdf-2026/sdf-20553_5ddab8ea.webp",
+        "/booths/sdf-2026/sdf-20553_93864783.webp",
+        "/booths/sdf-2026/sdf-20553_8e0cc2fb.webp",
+        "/booths/sdf-2026/sdf-20553_1c2a913f.webp",
+        "/booths/sdf-2026/sdf-20553_d2d28c95.webp",
+        "/booths/sdf-2026/sdf-20553_ed94c137.webp"
+      ]
+    },
+    {
+      "code": "Y-47",
+      "name": "노현주",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor",
+      "instagramUrl": "https://instagram.com/studio.dustdust",
+      "websiteUrl": "https://studiodustdust.com/",
+      "images": [
+        "/booths/sdf-2026/sdf-20483_93e403b8.webp",
+        "/booths/sdf-2026/sdf-20483_d7e10749.webp",
+        "/booths/sdf-2026/sdf-20483_64685429.webp",
+        "/booths/sdf-2026/sdf-20483_9a4a6d5b.webp",
+        "/booths/sdf-2026/sdf-20483_08e03b18.webp",
+        "/booths/sdf-2026/sdf-20483_90fcd446.webp"
+      ]
+    },
+    {
+      "code": "Y-48",
+      "name": "이예지",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "Y-49",
+      "name": "남규리",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor"
+    },
+    {
+      "code": "Y-50",
+      "name": "조성진, 천준영",
+      "hall": "코엑스 A홀",
+      "category": "영 디자이너",
+      "categorySlug": "sdf-young-designer",
+      "categoryColor": "#ED6C00",
+      "kind": "exhibitor"
+    }
+  ]
+}

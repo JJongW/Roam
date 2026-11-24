@@ -9,6 +9,7 @@ import sif from "@/lib/floorplan-sif.json";
 import ha from "@/lib/floorplan-house-archive.json";
 import mlm from "@/lib/floorplan-magok-livingmarket.json";
 import siwse from "@/lib/floorplan-siwse-magok.json";
+import sdf2026 from "@/lib/floorplan-sdf-2026.json";
 // exporum 배치도 API에서 변환(scripts/floorplan-from-exporum.mjs). 코엑스 전관 두 층을
 // 한 지도에 세로로 쌓았고 venue 합성을 거치지 않는다 — API 좌표가 곧 도면이다.
 import cafeshow from "@/lib/floorplan-cafeshow-2026.json";
@@ -352,6 +353,7 @@ export const VENUE_OF: Record<string, Venue> = {
   "house-archive-2026": VENUES[(ha as { venue: string }).venue],
   "magok-livingmarket-2026": VENUES[(mlm as { venue: string }).venue],
   "siwse-magok-2026": VENUES[(siwse as { venue: string }).venue],
+  "sdf-2026": VENUES[(sdf2026 as { venue: string }).venue],
 };
 
 export const FLOORPLANS: Record<string, Floorplan> = {
@@ -360,6 +362,7 @@ export const FLOORPLANS: Record<string, Floorplan> = {
   "house-archive-2026": compose(ha),
   "magok-livingmarket-2026": compose(mlm),
   "siwse-magok-2026": compose(siwse),
+  "sdf-2026": compose(sdf2026),
   "cafeshow-2026": cafeshow as unknown as Floorplan,
   "ddp-designfair-2026": ddpDesignfair as unknown as Floorplan,
   "seoul-furniture-show-2026": seoulFurnitureShow as unknown as Floorplan,
