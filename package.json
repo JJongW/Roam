@@ -26,6 +26,7 @@
     "floorplan:watch": "node scripts/floorplan-watch.mjs",
     "intake:dry-run": "vite-node -c worker/vite.config.ts scripts/intake-dry-run.ts --",
     "brand-appear:dry-run": "vite-node -c worker/vite.config.ts scripts/brand-appear-dry-run.ts --",
+    "brand-heart:backfill": "vite-node -c worker/vite.config.ts scripts/brand-heart-backfill.ts --",
     "fair:audit": "vite-node -c worker/vite.config.ts scripts/fair-audit.ts --",
     "brand-photos": "vite-node -c worker/vite.config.ts scripts/brand-photos.ts --",
     "brand-fix": "vite-node -c worker/vite.config.ts scripts/brand-fix.ts --"

@@ -6,6 +6,7 @@ import type {
   AppEventBrief,
   PushDevice,
   BrandHeart,
+  BrandHeartSource,
   UpcomingParticipation,
   NewParticipation,
   NotificationInsert,
@@ -531,9 +532,12 @@ export interface Repository {
 
   // brand hearts (0068)
   listBrandHearts(userId: string): Promise<BrandHeart[]>;
-  /** 이미 있으면 그 줄을 돌려준다. 없는 브랜드면 null. */
-  addBrandHeart(userId: string, exhibitorId: string): Promise<BrandHeart | null>;
-  removeBrandHeart(userId: string, exhibitorId: string): Promise<boolean>;
+  /** 이미 있으면 그 줄을 돌려준다. 없는 브랜드면 null.
+   *  source 기본은 direct. direct로 남기는데 booth 줄이 있으면 direct로 올린다(직접 남긴 뜻이 이긴다).
+   *  booth로 남기는데 줄이 이미 있으면 그대로 둔다(direct를 booth로 내리지 않는다). */
+  addBrandHeart(userId: string, exhibitorId: string, source?: BrandHeartSource): Promise<BrandHeart | null>;
+  /** onlySource를 주면 그 출처의 줄만 지운다(부스 하트를 뺄 때 direct 줄을 지키려고). */
+  removeBrandHeart(userId: string, exhibitorId: string, opts?: { onlySource?: BrandHeartSource }): Promise<boolean>;
   /** 브랜드 이름(exhibitor.canonical_name). 없는 id는 빠진다. */
   getExhibitorNames(exhibitorIds: string[]): Promise<Record<string, string>>;
   /** 이 브랜드들의 참가 중 박람회가 아직 안 끝난 것(end_date >= today). 부스 없는 참가도 포함. */

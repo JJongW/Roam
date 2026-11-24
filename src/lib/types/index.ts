@@ -424,12 +424,16 @@ export interface PushDevice {
   revokedAt?: string;
 }
 
-/** 브랜드 하트(0068). 부스 하트와 따로, 브랜드(exhibitor)에 건다. */
+/** 브랜드 하트(0068). 브랜드(exhibitor)에 건다. */
 export interface BrandHeart {
   userId: string;
   exhibitorId: string;
   createdAt: string;
+  /** 0074. direct = 브랜드에 직접 남김, booth = 부스 하트를 따라 서버가 남김(UI 23). 0074 전 줄은 direct. */
+  source: BrandHeartSource;
 }
+
+export type BrandHeartSource = "direct" | "booth";
 
 /** 브랜드의 다가오는(또는 진행 중) 참가 한 줄. 부스가 없을 수 있다(브랜드 먼저 인입). */
 export interface UpcomingParticipation {

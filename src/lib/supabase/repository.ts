@@ -26,6 +26,7 @@ import type {
   AppEventBrief,
   PushDevice,
   BrandHeart,
+  BrandHeartSource,
   NewParticipation,
   NotificationInsert,
   NotificationKind,
@@ -621,7 +622,13 @@ function mapNotification(r: Row): NotificationLog {
 }
 
 function mapBrandHeart(r: Row): BrandHeart {
-  return { userId: str(r.user_id), exhibitorId: str(r.exhibitor_id), createdAt: str(r.created_at) };
+  return {
+    userId: str(r.user_id),
+    exhibitorId: str(r.exhibitor_id),
+    createdAt: str(r.created_at),
+    // 0074 전에는 컬럼이 없다 — 그때까지의 줄은 전부 사용자가 직접 남긴 것이다.
+    source: r.source === "booth" ? "booth" : "direct",
+  };
 }
 
 function mapNote(r: Row): BoothNote {
@@ -1742,7 +1749,7 @@ export class SupabaseRepository implements Repository {
    *  0068 적용 전(표 없음)이면 옮길 것도 없으니 건너뛴다. */
   private async moveBrandHearts(from: string, to: string): Promise<void> {
     const db = createServiceClient();
-    const { data, error } = await db.from("brand_heart").select("user_id, created_at").eq("exhibitor_id", from);
+    const { data, error } = await db.from("brand_heart").select("*").eq("exhibitor_id", from);
     if (error) {
       if (isMissingTable(error)) return;
       throw new Error(`브랜드 하트 조회 실패: ${error.message}`);
@@ -1751,7 +1758,13 @@ export class SupabaseRepository implements Repository {
     if (rows.length === 0) return;
     loggedWrite(
       await db.from("brand_heart").upsert(
-        rows.map((r) => ({ user_id: str(r.user_id), exhibitor_id: to, created_at: str(r.created_at) })),
+        // source(0074)는 있을 때만 옮긴다 — 적용 전이면 컬럼이 없다.
+        rows.map((r) => ({
+          user_id: str(r.user_id),
+          exhibitor_id: to,
+          created_at: str(r.created_at),
+          ...(r.source !== undefined ? { source: str(r.source) } : {}),
+        })),
         { onConflict: "user_id,exhibitor_id", ignoreDuplicates: true },
       ),
       "브랜드 하트 이동",
@@ -3091,7 +3104,11 @@ export class SupabaseRepository implements Repository {
     return ((data ?? []) as Row[]).map(mapBrandHeart);
   }
 
-  async addBrandHeart(userId: string, exhibitorId: string): Promise<BrandHeart | null> {
+  async addBrandHeart(
+    userId: string,
+    exhibitorId: string,
+    source: BrandHeartSource = "direct",
+  ): Promise<BrandHeart | null> {
     const names = await this.getExhibitorNames([exhibitorId]);
     if (!names[exhibitorId]) return null;
     const db = await this.userDb();
@@ -3102,26 +3119,41 @@ export class SupabaseRepository implements Repository {
       .eq("exhibitor_id", exhibitorId)
       .maybeSingle();
     if (error) throw new Error(`브랜드 하트 조회 실패: ${error.message}`);
-    if (existing) return mapBrandHeart(existing as Row);
-    const res = await db
-      .from("brand_heart")
-      .insert({ user_id: userId, exhibitor_id: exhibitorId, created_at: now() })
-      .select("*")
-      .single();
+    if (existing) {
+      const have = mapBrandHeart(existing as Row);
+      // 직접 남긴 뜻이 이긴다: 부스 하트가 만든 줄에 직접 하트가 오면 direct로 올린다(0074).
+      if (source === "direct" && have.source === "booth") {
+        const res = await db
+          .from("brand_heart")
+          .update({ source: "direct" })
+          .eq("user_id", userId)
+          .eq("exhibitor_id", exhibitorId)
+          .select("*")
+          .single();
+        return mapBrandHeart(wrote(res, "브랜드 하트 직접으로 올리기") as Row);
+      }
+      return have;
+    }
+    // direct는 컬럼 기본값이라 싣지 않는다 — 0074 적용 전에도 직접 하트 저장이 그대로 된다.
+    const row: Row = { user_id: userId, exhibitor_id: exhibitorId, created_at: now() };
+    if (source !== "direct") row.source = source;
+    const res = await db.from("brand_heart").insert(row).select("*").single();
     return mapBrandHeart(wrote(res, "브랜드 하트 저장") as Row);
   }
 
-  async removeBrandHeart(userId: string, exhibitorId: string): Promise<boolean> {
+  async removeBrandHeart(
+    userId: string,
+    exhibitorId: string,
+    opts?: { onlySource?: BrandHeartSource },
+  ): Promise<boolean> {
     const db = await this.userDb();
-    const rows = maybeWrote(
-      await db
-        .from("brand_heart")
-        .delete()
-        .eq("user_id", userId)
-        .eq("exhibitor_id", exhibitorId)
-        .select("user_id"),
-      "브랜드 하트 빼기",
-    );
+    let q = db
+      .from("brand_heart")
+      .delete()
+      .eq("user_id", userId)
+      .eq("exhibitor_id", exhibitorId);
+    if (opts?.onlySource) q = q.eq("source", opts.onlySource);
+    const rows = maybeWrote(await q.select("user_id"), "브랜드 하트 빼기");
     return (rows?.length ?? 0) > 0;
   }
 

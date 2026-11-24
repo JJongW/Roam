@@ -60,7 +60,7 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
 
 ## 주요 도메인
 - **방문객 플로우**: 홈 → 지도(`/exhibitions/[slug]`는 `/map`으로 넘겨 준다, 지도 먼저 §4, 2026-11-20) →
-  부스 상세(브랜드 줄 하트 UI 19, `stores/brand-hearts.ts`). 옛 전시 홈(가치 온보딩, 관심 피드, 근거 카드,
+  부스 상세(하트는 아래 바 하나, 브랜드 줄은 설명만 UI 23, 상단 이름은 스크롤하면 부스명). 옛 전시 홈(가치 온보딩, 관심 피드, 근거 카드,
   `FinishVisit` 회고 입구)은 화면에서 닿지 않는다. 피드 큐레이션은 iOS가 쓰는 `/api/exhibitions/[slug]/feed` 때문에 남아 있다.
 - **부스/이벤트**: `Booth`(code 자연키, kind exhibitor|facility, tags=카테고리 slug, aliases 공동입점), `BoothEvent`.
 - **참가사(행사를 넘는 브랜드)**: `exhibitor` ← `exhibition_participant`(회차별 표기 이름) ← `booth_participant`.
@@ -82,7 +82,9 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
   드라이런 `npm run brand-appear:dry-run -- --days 30`(운영 읽기만). `docs/decisions/2026-11-19_브랜드-알림-서버.md`.
   브랜드 알림 대상은 `user_id`가 있는 토큰뿐(2026-11-17).
 - **부스 노트 규칙은 `lib/notes/apply.ts` 한 곳**: 다녀왔어요(`visited_at`)는 평가와 따로, 하트는
-  `hearted_at` + 옛 interest(must·curious=하트)를 함께 맞춘다. 브랜드 하트는 `brand_heart`(0068)로 따로.
+  `hearted_at` + 옛 interest(must·curious=하트)를 함께 맞춘다. 브랜드 하트는 `brand_heart`(0068).
+  부스 하트가 바뀌면 노트 PUT이 대표 브랜드의 브랜드 하트도 맞춘다(`lib/brands/follow.ts`, UI 23): 남기면 `source=booth`로 생기고,
+  빼면 그 브랜드의 다른 부스 하트가 없을 때 booth 줄만 지운다. 직접 남긴 `source=direct`는 지우지 않는다(0074).
 - **앱 이벤트**: `POST /api/analytics/events`가 iOS 묶음(`events[]`, `type='app'` + `name`)도 받는다(0066).
   위치, 메모, 회고 글은 속성에서 지운다(`lib/analytics/app-events.ts`). 설계 `docs/decisions/2026-11-17_ios-기반-api.md`.
 - **인스타 댓글 자동 DM**: `/api/instagram/webhook`(서명 검증 → 키워드 매칭 → Private Reply). 규칙은

@@ -37,6 +37,7 @@ import type {
   AppEventBrief,
   PushDevice,
   BrandHeart,
+  BrandHeartSource,
   NewParticipation,
   NotificationInsert,
   NotificationKind,
@@ -1879,20 +1880,38 @@ export class MockRepository implements Repository {
       .map((h) => ({ ...h }));
   }
 
-  async addBrandHeart(userId: string, exhibitorId: string): Promise<BrandHeart | null> {
+  async addBrandHeart(
+    userId: string,
+    exhibitorId: string,
+    source: BrandHeartSource = "direct",
+  ): Promise<BrandHeart | null> {
     const st = store();
     if (!st.exhibitorGraph.exhibitors.some((e) => e.id === exhibitorId)) return null;
     const have = st.brandHearts.find((h) => h.userId === userId && h.exhibitorId === exhibitorId);
-    if (have) return { ...have };
-    const h = { userId, exhibitorId, createdAt: now() };
+    if (have) {
+      if (source === "direct" && have.source === "booth") have.source = "direct";
+      return { ...have };
+    }
+    const h: BrandHeart = { userId, exhibitorId, createdAt: now(), source };
     st.brandHearts.push(h);
     return { ...h };
   }
 
-  async removeBrandHeart(userId: string, exhibitorId: string): Promise<boolean> {
+  async removeBrandHeart(
+    userId: string,
+    exhibitorId: string,
+    opts?: { onlySource?: BrandHeartSource },
+  ): Promise<boolean> {
     const st = store();
     const before = st.brandHearts.length;
-    st.brandHearts = st.brandHearts.filter((h) => !(h.userId === userId && h.exhibitorId === exhibitorId));
+    st.brandHearts = st.brandHearts.filter(
+      (h) =>
+        !(
+          h.userId === userId &&
+          h.exhibitorId === exhibitorId &&
+          (!opts?.onlySource || h.source === opts.onlySource)
+        ),
+    );
     return st.brandHearts.length < before;
   }
 

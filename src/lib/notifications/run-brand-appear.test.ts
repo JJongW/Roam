@@ -59,7 +59,7 @@ describe("브랜드 알림 잡", () => {
     }
   }
   const heart = (userId: string, exhibitorId: string, createdAt = "2026-11-01T00:00:00.000Z") =>
-    st().brandHearts.push({ userId, exhibitorId, createdAt });
+    st().brandHearts.push({ userId, exhibitorId, createdAt, source: "direct" });
   const device = (userId: string, token: string) =>
     repo.upsertPushDevice({ token, environment: "production", userId });
   const logs = () => st().notificationLogs;
