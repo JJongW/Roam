@@ -912,7 +912,18 @@
       "category": "디자인 브랜드",
       "categorySlug": "sdf-design-brand",
       "categoryColor": "#FF42B2",
-      "kind": "exhibitor"
+      "kind": "exhibitor",
+      "aliases": [
+        "진주 복숭아주"
+      ],
+      "images": [
+        "/booths/sdf-2026/sdf-20325_6a18b92b.webp",
+        "/booths/sdf-2026/sdf-20325_ce790857.webp",
+        "/booths/sdf-2026/sdf-20325_bd27425b.webp",
+        "/booths/sdf-2026/sdf-20325_a387bd77.webp",
+        "/booths/sdf-2026/sdf-20325_7fc196d2.webp",
+        "/booths/sdf-2026/sdf-20325_29835cd3.webp"
+      ]
     },
     {
       "code": "E-30",
