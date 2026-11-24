@@ -25,8 +25,10 @@ export interface SdfDetail {
   introKo: string | null;
   instagramUrl: string | null;
   websiteUrl: string | null;
-  /** 상세 사진 칸의 원본 주소. brands.v1 photos에는 넣지 않는다(허락 범위를 사람이 붙인다). 원본 기록용. */
+  /** 상세 사진 칸(작품 사진)의 원본 주소. 받을 사진은 pickSdfPhotoUrls가 고른다. */
   imageUrls: string[];
+  /** 상세 맨 위 대표 사진(sdf-exhibitor-visual, og:image와 같은 사진). 없으면 null. */
+  heroUrl: string | null;
 }
 
 /** 행사장 밖 프로그램. 이 참가 구분은 명단에서 뺀다. */
@@ -86,13 +88,79 @@ export function parseSdfDetail(html: string): SdfDetail {
   const imgEnd = imgStart < 0 ? -1 : html.indexOf("</div>", imgStart);
   const imgHtml = imgStart < 0 ? "" : html.slice(imgStart, imgEnd > imgStart ? imgEnd : undefined);
   const imageUrls = [...imgHtml.matchAll(/<img[^>]*\ssrc="([^"]+)"/g)].map((m) => decodeEntities(m[1]).trim());
+  const visStart = html.search(/class="[^"]*\bsdf-exhibitor-visual\b[^"]*"/);
+  const visEnd = visStart < 0 ? -1 : html.indexOf("</div>", visStart);
+  const visHtml = visStart < 0 ? "" : html.slice(visStart, visEnd > visStart ? visEnd : undefined);
+  const hero = /<img[^>]*\ssrc="([^"]+)"/.exec(visHtml)?.[1];
   return {
     nameEn: nameEn || null,
     introKo: paragraphs.length ? paragraphs.join("\n") : null,
     instagramUrl: ig ? normalizeUrl(ig) : null,
     websiteUrl: web ? normalizeUrl(web) : null,
     imageUrls,
+    heroUrl: hero ? decodeEntities(hero).trim() : null,
   };
+}
+
+/** 공식 사이트 호스트. 사진은 이 호스트의 업로드 폴더에서만 받는다(같은 사이트만, 2026-11-24). */
+export const SDF_HOST = "seoul.designfestival.co.kr";
+/** 한 브랜드에 받는 사진 상한. 새해 준비상점처럼 상한을 둔다. */
+export const SDF_MAX_PHOTOS = 6;
+/** 대표 사진만 남은 곳에서 그 사진을 쓸지 정하는 문턱. 네 귀퉁이 바탕색과 같은 칸이 이보다 많으면 로고로 본다. */
+export const SDF_FLAT_LOGO = 0.85;
+/** 파일 이름에 이 말이 있으면 로고나 사이트 공통 그림으로 보고 뺀다. */
+const NOT_PHOTO = /(logo|icon|wordmark|favicon|banner|sprite|placeholder|world-design-weeks)/i;
+
+/** WordPress가 붙이는 크기 꼬리(-819x1024)를 뗀 원본 이름. 같은 사진을 두 번 받지 않으려고 쓴다. */
+export function sdfPhotoIdentity(url: string): string {
+  try {
+    const u = new URL(url);
+    return u.pathname.replace(/-\d+x\d+(?=\.[a-z]+$)/i, "").replace(/-scaled(?=\.[a-z]+$)/i, "").toLowerCase();
+  } catch {
+    return url;
+  }
+}
+
+/**
+ * 받을 사진 주소를 고른다: 작품 사진 칸 순서대로. 대표 사진(sdf-exhibitor-visual)은 작품 사진이 하나도 없을 때만 쓴다.
+ * 2026 명단에서 대표 사진은 로고인 곳이 많았고(147곳 중 30곳 넘게), 작품 사진이 없는 곳은 4곳뿐이었다(2026-11-24).
+ * 공식 사이트 업로드 폴더의 jpg, png, webp만 받고(svg와 테마 그림은 뺀다), 로고나 배너로 보이는 이름은 뺀다.
+ * `common`은 여러 브랜드에 똑같이 걸린 사진(사이트 공통 그림)이라 뺀다. 같은 사진은 한 번만, 최대 `max`장.
+ */
+export function pickSdfPhotoUrls(detail: Pick<SdfDetail, "heroUrl" | "imageUrls">, opts: { max?: number; common?: Set<string> } = {}): string[] {
+  const max = opts.max ?? SDF_MAX_PHOTOS;
+  const seen = new Set<string>();
+  const out: string[] = [];
+  const pick = (list: (string | null)[]) => {
+    for (const raw of list) {
+      if (!raw || out.length >= max) continue;
+      let u: URL;
+      try {
+        u = new URL(raw);
+      } catch {
+        continue;
+      }
+      if (u.hostname !== SDF_HOST || !u.pathname.startsWith("/wp-content/uploads/")) continue;
+      if (!/\.(jpe?g|png|webp)$/i.test(u.pathname) || NOT_PHOTO.test(u.pathname)) continue;
+      const id = sdfPhotoIdentity(raw);
+      if (seen.has(id) || opts.common?.has(id)) continue;
+      seen.add(id);
+      out.push(u.toString());
+    }
+  };
+  pick(detail.imageUrls);
+  if (!out.length) pick([detail.heroUrl]);
+  return out;
+}
+
+/** 여러 브랜드(minBrands곳 이상)에 같은 사진이 걸려 있으면 사이트 공통 그림으로 본다. */
+export function sdfCommonPhotos(details: Iterable<Pick<SdfDetail, "heroUrl" | "imageUrls">>, minBrands = 3): Set<string> {
+  const count = new Map<string, number>();
+  for (const d of details) {
+    const ids = new Set([d.heroUrl, ...d.imageUrls].filter((x): x is string => !!x).map(sdfPhotoIdentity));
+    for (const id of ids) count.set(id, (count.get(id) ?? 0) + 1);
+  }
+  return new Set([...count].filter(([, n]) => n >= minBrands).map(([id]) => id));
 }
 
 function normalizeUrl(u: string): string | null {
@@ -117,6 +185,10 @@ export interface BuildInput {
   note?: string;
   /** 주면 이 참가 구분(이름)이 붙은 줄만 넣는다. 나머지는 outOfScope로 돌려준다. */
   onlyTerms?: string[];
+  /** WP id → 받아 둔 사진 경로(/booths/<slug>/<key>_<해시>.webp). 있으면 photos 칸에 넣는다. */
+  photos?: Map<number, string[]>;
+  /** photos 칸 허락 범위 글. 예: "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)". */
+  photoScope?: string;
 }
 
 /** 분야가 여럿이면 구역형 분야를 먼저, 없으면 첫 분야, 그것도 없으면 참가 구분. */
@@ -157,6 +229,10 @@ export function buildSdfBrandsFile(input: BuildInput): {
       ...(d?.websiteUrl ? { websiteUrl: d.websiteUrl } : {}),
       // 주최 측 공식 소개 원문 그대로(브랜드나 주최가 쓴 글은 고치지 않는다, 2026-11-09). 말투 변환은 워커가 한다.
       ...(d?.introKo ? { intro: { text: d.introKo.slice(0, 4000), status: "collected" as const, source: r.link } } : {}),
+      // 주최 측 사이트에 공개된 사진. 부스 상세(서비스)용이다. 아티클과 카드뉴스는 허락 사진만 쓴다(2026-11-19).
+      ...(input.photos?.get(r.id)?.length && input.photoScope
+        ? { photos: input.photos.get(r.id)!.slice(0, 20).map((path) => ({ path, scope: input.photoScope!.slice(0, 200) })) }
+        : {}),
       ...(category ? { category } : {}),
       // 참가 구분(디자인브랜드, 영 디자이너 프로모션, 디자인 스페셜리스트). 개인 작가와 브랜드를 가르는 칸이다.
       ...(terms[0] ? { participationType: terms[0].slice(0, 60) } : {}),

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildSdfBrandsFile, parseSdfDetail, pickSdfCategory, type SdfRestExhibitor } from "./sdf-official";
+import { buildSdfBrandsFile, parseSdfDetail, pickSdfCategory, pickSdfPhotoUrls, sdfCommonPhotos, sdfPhotoIdentity, type SdfRestExhibitor } from "./sdf-official";
 
 // 2025 상세 페이지(seoul.designfestival.co.kr/exhibitor/jogakmoeum/)의 모양을 줄였다.
 const DETAIL = `<article class="sdf-page-frame sdf-exhibitor">
@@ -12,6 +12,9 @@ const DETAIL = `<article class="sdf-page-frame sdf-exhibitor">
 <div class="gb-text sdf-en" lang="en"><p><span class="ml-en">Tucked</span></p></div>
 </div>
 <div class="sdf-exhibitor-images"><img src="https://x/a.png" /></div>
+<div class="gb-element-1ebc5bb9 sdf-exhibitor-visual">
+<img fetchpriority="high" width="1024" height="1024" class="gb-media-1" src="https://seoul.designfestival.co.kr/wp-content/uploads/2026/11/hero-1024x1024.jpg" alt="조각모음" />
+</div>
 <ul class="sdf-brand-links"><li class="is-instagram"><a href="https://www.instagram.com/jogakmoeum_vol.1" target="_blank">ig</a></li><li class="is-website"><a href="https://jogak.example/" target="_blank">web</a></li></ul>
 </article>`;
 
@@ -23,11 +26,57 @@ describe("SDF 상세 읽기", () => {
       instagramUrl: "https://www.instagram.com/jogakmoeum_vol.1",
       websiteUrl: "https://jogak.example/",
       imageUrls: ["https://x/a.png"],
+      heroUrl: "https://seoul.designfestival.co.kr/wp-content/uploads/2026/11/hero-1024x1024.jpg",
     });
   });
 
   it("칸이 없으면 null이에요", () => {
-    expect(parseSdfDetail("<html></html>")).toEqual({ nameEn: null, introKo: null, instagramUrl: null, websiteUrl: null, imageUrls: [] });
+    expect(parseSdfDetail("<html></html>")).toEqual({ nameEn: null, introKo: null, instagramUrl: null, websiteUrl: null, imageUrls: [], heroUrl: null });
+  });
+});
+
+describe("SDF 공개 사진 고르기", () => {
+  const up = (name: string) => `https://seoul.designfestival.co.kr/wp-content/uploads/2026/11/${name}`;
+
+  it("작품 사진을 순서대로 고르고, 같은 원본은 한 번만 골라요. 작품이 있으면 대표 사진(로고가 많음)은 안 써요", () => {
+    const got = pickSdfPhotoUrls({ heroUrl: up("a-1024x1024.jpg"), imageUrls: [up("b-819x1024.jpg"), up("b-768x960.jpg"), up("c.png")] });
+    expect(got).toEqual([up("b-819x1024.jpg"), up("c.png")]);
+  });
+
+  it("작품 사진이 없을 때만 대표 사진을 써요", () => {
+    expect(pickSdfPhotoUrls({ heroUrl: up("a-1024x1024.jpg"), imageUrls: [] })).toEqual([up("a-1024x1024.jpg")]);
+    expect(pickSdfPhotoUrls({ heroUrl: up("a.jpg"), imageUrls: [up("brand-logo.png")] })).toEqual([up("a.jpg")]);
+  });
+
+  it("다른 사이트, 테마 그림, svg, 로고와 배너 이름은 빼요", () => {
+    const got = pickSdfPhotoUrls({
+      heroUrl: null,
+      imageUrls: [
+        "https://cdn.example.com/wp-content/uploads/x.jpg",
+        "https://seoul.designfestival.co.kr/wp-content/themes/generatepress_child/assets/icons/link-instagram.svg",
+        up("sdf-wordmark.svg"),
+        up("brand-logo.png"),
+        up("main_banner.jpg"),
+        up("world-design-weeks.png"),
+        up("work.webp"),
+      ],
+    });
+    expect(got).toEqual([up("work.webp")]);
+  });
+
+  it("상한까지만 받아요", () => {
+    const many = Array.from({ length: 10 }, (_, i) => up(`w${i}.jpg`));
+    expect(pickSdfPhotoUrls({ heroUrl: null, imageUrls: many }, { max: 3 })).toHaveLength(3);
+    expect(pickSdfPhotoUrls({ heroUrl: null, imageUrls: many })).toHaveLength(6);
+  });
+
+  it("여러 브랜드에 똑같이 걸린 사진은 사이트 공통 그림으로 보고 빼요", () => {
+    const shared = up("default-1024x1024.jpg");
+    const details = [1, 2, 3].map((i) => ({ heroUrl: null, imageUrls: [shared, up(`own${i}.jpg`)] }));
+    const common = sdfCommonPhotos(details);
+    expect(common.has(sdfPhotoIdentity(shared))).toBe(true);
+    expect(pickSdfPhotoUrls(details[0], { common })).toEqual([up("own1.jpg")]);
+    expect(sdfCommonPhotos(details.slice(0, 2)).size).toBe(0);
   });
 });
 
@@ -70,6 +119,28 @@ describe("SDF 명단 → brands.v1", () => {
     });
     // 상세가 없으면 이름과 참가 구분만
     expect(file.brands[1]).toEqual({ key: "sdf-3", name: "Studio & Co", category: "디자인브랜드", participationType: "디자인브랜드" });
+  });
+
+  it("받아 둔 사진이 있으면 photos 칸에 허락 범위와 함께 넣어요", () => {
+    const { file } = buildSdfBrandsFile({
+      rows: [row(1, "모스", 16), row(3, "조각모음", 16)],
+      termNames,
+      typeNames,
+      details: new Map(),
+      exhibitionSlug: "sdf-2026",
+      sourceUrl: "https://seoul.designfestival.co.kr/wp-json/wp/v2/exhibitor?exhibition_year=37",
+      collectedAt: "2026-11-24",
+      photos: new Map([
+        [1, ["/booths/sdf-2026/sdf-1_1.webp", "/booths/sdf-2026/sdf-1_2.webp"]],
+        [3, []],
+      ]),
+      photoScope: "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)",
+    });
+    expect(file.brands[0].photos).toEqual([
+      { path: "/booths/sdf-2026/sdf-1_1.webp", scope: "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)" },
+      { path: "/booths/sdf-2026/sdf-1_2.webp", scope: "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)" },
+    ]);
+    expect(file.brands[1].photos).toBeUndefined();
   });
 
   it("명단이 비면(2026 아직 미공개) 만들지 않아요", () => {

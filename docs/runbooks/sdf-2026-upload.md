@@ -10,7 +10,7 @@ _Ted 결정(11-17, 11-19): 배치도가 나오면 행사, 브랜드, 부스를 �
 
 | 파일 | 내용 | 상태 |
 |---|---|---|
-| `data/brands/sdf-2026.json` | brands.v1 146곳(11-22 다시 받음, 11-19보다 6곳 늘어남: 토마스스튜디오, 코발트사회적협동조합, 모비오, 스튜디오 오그루, 유림 / 데일웍스, 다정한 유리). 부스 없음 | 운영 대조 끝(11-22) |
+| `data/brands/sdf-2026.json` | brands.v1 151곳(11-24 다시 받음, 공개 사진 147곳 727장, 11-22 146곳에서 5곳 늘어남: 나인파이브, 다숲 × 도도리, 이승재, 이우연, 아름다운가게). 11-22 146곳(11-22 다시 받음, 11-19보다 6곳 늘어남: 토마스스튜디오, 코발트사회적협동조합, 모비오, 스튜디오 오그루, 유림 / 데일웍스, 다정한 유리). 부스 없음 | 운영 대조 끝(11-22) |
 | `data/exhibitions/sdf-2026.json` | 행사 행 파일(`/admin/intake`에 올림) | 형식 통과, 운영에 없음 |
 | `scripts/sdf-floorplan-watch.mjs` | 배치도 올라왔는지 공식 사이트만 본다 | |
 | `scripts/intake-dry-run.ts` | 세 파일 모두 운영 미리보기(읽기만) | |
@@ -62,6 +62,11 @@ npm run intake:dry-run -- data/brands/sdf-2026.json --brands-only-if-missing
 ```
 
 - 새 "이름만 같음"이 생기면 Ted에게 한 번에 묻는다. 서울디자인스팟이 생기면 생성기가 알아서 뺀다.
+- **공개 사진도 같이 받는다**(11-24 Ted). 대표 사진과 작품 사진을 한 브랜드 최대 6장, `public/booths/sdf-2026/<key>_<해시>.webp`로 받고
+  `photos` 칸(scope "주최 측 사이트 공개 사진(서울디자인페스티벌 2026)")을 채운다. 있는 파일은 다시 받지 않고, 사이트에서 빠진 사진 파일은 지운다.
+  사진을 빼고 명단만 볼 때는 `--no-photos`. 근거 `docs/decisions/2026-11-24_서울디자인페스티벌-공개-사진.md`.
+- 사진 파일은 `public/`에 있어 **PR 머지와 배포가 곧 올리기**다. 운영 Storage에 따로 올리지 않는다.
+  배포 전에 6단계를 적용해도 칸에는 경로만 들어가고, 배포가 끝나면 사진이 열린다. 순서는 배포 먼저가 깔끔하다.
 
 ## 3. 도면 JSON과 FLOORPLANS 등록 (레포 PR, 브랜치 `data/sdf-2026-floorplan`)
 
@@ -103,6 +108,14 @@ npm run intake:dry-run -- data/exhibitions/sdf-2026.json   # "형식 통과, 새
 npm run intake:dry-run -- data/brands/sdf-2026.json --json /tmp/sdf-2026-brands-plan.json
 ```
 
+- **11-24 사진 받은 뒤(지금 할 차례)**: 참가 사실 145곳은 이미 올라가 있어 이번에 채울 칸은 거의 `photos`다. 사진 칸이 비어 있는 브랜드만 채우고,
+  사진 칸이 이미 있는 브랜드(레드이어스클럽)는 "이미 있어 둠"으로 덮지 않는다. 기존 소개(intro)도 덮지 않는다.
+  11-24 드라이런(읽기만): 151곳 → 새 브랜드 5(나인파이브, 다숲 × 도도리, 이승재, 이우연, 아름다운가게), 이음 145, 파일 안 묶음 1(오늑),
+  참가 사실 새로 5, 채울 칸 153(사진 145곳, 소개 5, 링크 3), 이름만 같음 0, 오류 0, 경고 0.
+- 순서: ① 이 PR 머지 → ② Vercel 배포 끝남 확인(`curl -sI https://roam.ai.kr/booths/sdf-2026/sdf-20153_2b19ceec.webp`가 200인지)
+  → ③ `npm run intake:backup -- sdf-2026 --label before-photos` → ④ 위 드라이런 → ⑤ `/admin/intake`에 파일을 올려 미리보기를 보고 적용
+  → ⑥ 같은 드라이런을 다시 돌려 채울 칸 0을 확인.
+
 - 기대값: 참가 사실 새로 139(140곳 중 오늑 묶음 1), 이음 15, 이름만 같음 2(Ted 답에 따라 0), 오류 0.
 - 맞으면 `/admin/intake`에 `data/brands/sdf-2026.json`을 올려 미리보기를 한 번 더 보고 적용한다.
 
@@ -114,6 +127,7 @@ npm run intake:dry-run -- data/brands/sdf-2026.json --json /tmp/sdf-2026-brands-
 - `category`, `categorySlug`(`sdf-` 앞붙임, 명시), `categoryColor`(배치도 구역 색). 분류는 brands.v1의 구역(디자인&크래프트 무브먼트 등)을 쓴다.
 - 배치도에만 있고 명단에 없는 부스는 이름을 배치도대로 적는다(새 브랜드가 된다). 라운지, 무대 등은 `kind: "facility"`.
 - 소개(`description`, `longDescription`)는 넣지 않는다. 소개는 브랜드 프로필 칸이 원천이다.
+- `images`: brands.v1 같은 브랜드의 `photos[].path`를 순서대로 넣는다. 부스 상세는 부스 사진(`booth.images`)을 읽기 때문이다(새해 준비상점 인입 파일과 같은 방식).
 
 ## 8. 부스 미리보기와 적용 (운영 쓰기, Ted, 3단계 배포 뒤)
 
