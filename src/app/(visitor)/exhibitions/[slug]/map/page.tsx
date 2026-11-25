@@ -35,7 +35,7 @@ export default async function MapPage({ params, searchParams }: Props) {
   if (!hasUsableLayout(booths)) {
     return (
       <div className="flex min-h-dvh flex-col bg-v2-bg-layer-basement font-v2-ui">
-        <div className="px-v2-x4 pt-safe">
+        <div className="px-v2-x1-5 pt-safe">
           <BackButton fallbackHref="/" />
         </div>
         <div className="flex flex-1 flex-col items-center justify-center gap-v2-x3 px-v2-x6 text-center">
@@ -49,6 +49,9 @@ export default async function MapPage({ params, searchParams }: Props) {
   // `?booth=<id>&route=1`: 부스 상세 아래 바 "길 안내"(4-02)로 왔다. 지도에서 그 부스로 길 안내(UI 9)를 바로 시작한다.
   return (
     <FairMapScreen
+      // 부스 상세 "지도에서 보기"는 앞의 지도로 돌아간 뒤 그 자리를 `?booth=`로 바꾼다(lib/nav/open-map.ts).
+      // 같은 화면에서 부스만 바뀌어도 카드와 초점을 처음부터 다시 잡게 부스마다 새로 그린다.
+      key={booth ?? ""}
       detail={detail}
       booths={booths}
       initialFocusId={booth}

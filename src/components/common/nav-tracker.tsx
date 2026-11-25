@@ -16,12 +16,29 @@ const KEY = "roam_has_navigated_in_app";
 export function NavTracker() {
   const pathname = usePathname();
   const first = useRef(pathname);
+  const last = useRef(pathname);
   useEffect(() => {
     if (pathname !== first.current) {
       sessionStorage.setItem(KEY, "1");
     }
+    if (pathname !== last.current) {
+      sessionStorage.setItem(PREV_KEY, last.current);
+      last.current = pathname;
+    }
   }, [pathname]);
   return null;
+}
+
+const PREV_KEY = "roam_prev_pathname";
+
+/** 지금 화면 바로 앞에 있던 화면의 경로(쿼리 없이). 앱 안에서 넘어온 적이 없으면 null. */
+export function previousPathname(): string | null {
+  if (typeof window === "undefined") return null;
+  try {
+    return sessionStorage.getItem(PREV_KEY);
+  } catch {
+    return null;
+  }
 }
 
 export function hasNavigatedInApp(): boolean {

@@ -2,10 +2,10 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { Check, File, Heart, UserRound } from "lucide-react";
 import { api } from "@/lib/api/client";
 import { useAuthStore } from "@/lib/stores/auth";
+import { Snackbar, queueSnackbar, type SnackbarState } from "@/components/v2/snackbar";
 import { useVisitStore } from "@/lib/stores/visit";
 import { clearBrandHearts } from "@/lib/stores/brand-hearts";
 import { label, system } from "@/lib/copy/v1";
@@ -23,6 +23,8 @@ export function DeleteAccount() {
   const [ask, setAsk] = useState(false);
   const [busy, setBusy] = useState(false);
   const closeAsk = useCallback(() => setAsk(false), []);
+  const [snack, setSnack] = useState<SnackbarState | null>(null);
+  const closeSnack = useCallback(() => setSnack(null), []);
 
   useEffect(() => {
     track("screen_view", { screen: SCREEN.deleteAccount });
@@ -43,12 +45,13 @@ export function DeleteAccount() {
       useAuthStore.setState({ user: null, needsOnboarding: false });
       useVisitStore.getState().clear();
       clearBrandHearts();
-      toast(system.deleteDone);
+      // 15-13: 홈에서 v2 스낵바로 알린다(page.tsx의 QueuedSnackbar).
+      queueSnackbar(system.deleteDone);
       router.replace("/");
     } catch {
       track("account_delete", { screen: SCREEN.deleteAccount, props: { result: "failed" } });
       setAsk(false);
-      toast(system.deleteFailed);
+      setSnack({ key: Date.now(), message: system.deleteFailed });
     } finally {
       setBusy(false);
     }
@@ -58,13 +61,17 @@ export function DeleteAccount() {
     <MePage
       back="/me/settings"
       bottom={
-        <button
-          type="button"
-          onClick={() => setAsk(true)}
-          className="flex h-v2-x13 w-full items-center justify-center rounded-v2-r3 bg-v2-bg-critical-solid text-v2-t5 font-v2-bold text-v2-fg-on-critical-solid active:bg-v2-bg-critical-solid-pressed"
-        >
-          {label.deleteAccountButton}
-        </button>
+        <>
+          {/* 지우지 못했을 때는 이 화면에 남아 아래 버튼 바로 위에 스낵바로 알린다. */}
+          <Snackbar state={snack} onClose={closeSnack} className="mb-v2-x3 w-full" />
+          <button
+            type="button"
+            onClick={() => setAsk(true)}
+            className="flex h-v2-x13 w-full items-center justify-center rounded-v2-r3 bg-v2-bg-critical-solid text-v2-t5 font-v2-bold text-v2-fg-on-critical-solid active:bg-v2-bg-critical-solid-pressed"
+          >
+            {label.deleteAccountButton}
+          </button>
+        </>
       }
     >
       <PageTitle title={label.deleteAccount} />

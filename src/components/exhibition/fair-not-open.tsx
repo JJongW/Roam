@@ -11,7 +11,7 @@ export async function FairNotOpen() {
   const { t } = await getI18n();
   return (
     <div className="flex min-h-dvh flex-col bg-v2-bg-layer-basement font-v2-ui">
-      <div className="px-v2-x4 pt-safe">
+      <div className="px-v2-x1-5 pt-safe">
         <BackButton fallbackHref="/" />
       </div>
       <div

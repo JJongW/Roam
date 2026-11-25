@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 import { clsx } from "clsx";
 import { BackButton } from "@/components/v2/back-button";
+import { hasNavigatedInApp, previousPathname } from "@/components/common/nav-tracker";
+import { cameFromMap, openMapWithoutStacking } from "@/lib/nav/open-map";
 import { HeartButton } from "@/components/v2/heart-button";
 import { Snackbar } from "@/components/v2/snackbar";
 import { useBoothSignals } from "@/components/booth-v2/booth-actions";
@@ -128,6 +130,14 @@ export function BoothDetailV2({
   const mapHref = exhibitionSlug
     ? `/exhibitions/${exhibitionSlug}/map?booth=${booth.id}`
     : undefined;
+  // 4-07: 지도로 갈 때 화면을 쌓지 않는다. 바로 앞이 그 지도면 뒤로 간 뒤 그 자리를 바꾼다(lib/nav/open-map.ts).
+  const goMap = (href: string) =>
+    openMapWithoutStacking(router, href, {
+      fromMap:
+        !!exhibitionSlug &&
+        hasNavigatedInApp() &&
+        cameFromMap(previousPathname(), exhibitionSlug),
+    });
   const sparse =
     !intro &&
     booth.goods.length === 0 &&
@@ -254,7 +264,7 @@ export function BoothDetailV2({
                 // 4-07: 상세를 닫고 그 자리에 지도를 연다(화면을 쌓지 않는다). 새 탭으로 여는 누름은 그대로 둔다.
                 if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
                 e.preventDefault();
-                router.replace(mapHref!);
+                goMap(mapHref!);
               }}
             />
           )}
@@ -343,7 +353,7 @@ export function BoothDetailV2({
             {canRoute && mapHref && (
               <button
                 type="button"
-                onClick={() => router.replace(`${mapHref}&route=1`)}
+                onClick={() => goMap(`${mapHref}&route=1`)}
                 className="flex min-h-v2-x12 flex-1 items-center justify-center rounded-[var(--roam-v2-trial-radius-control-1)] bg-v2-bg-brand-solid text-v2-t4 font-v2-bold text-v2-fg-on-brand-solid active:bg-v2-bg-brand-solid-pressed"
               >
                 {label.route}

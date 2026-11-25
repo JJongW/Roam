@@ -4,6 +4,7 @@ import { MyPageLink } from "@/components/me/my-page-link";
 import { LegalLinks } from "@/components/common/legal-links";
 import { LanguageSwitch } from "@/components/i18n/language-switch";
 import { HomeBody } from "@/components/home/home-body";
+import { QueuedSnackbar } from "@/components/v2/snackbar";
 import { getI18n } from "@/lib/i18n/server";
 import { getCurrentUser } from "@/lib/api/session";
 import { todayISO } from "@/lib/exhibition/current";
@@ -81,6 +82,8 @@ export default async function HomePage() {
         <LegalLinks />
         <LanguageSwitch />
       </footer>
+      {/* 15-13 계정을 지운 뒤 홈에서 "계정을 지웠어요" 스낵바 */}
+      <QueuedSnackbar />
     </main>
   );
 }
