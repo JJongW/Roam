@@ -19,6 +19,8 @@ export const entryCopy = {
   heartLeft: (name: string) => `‘${name}’에 하트를 남겼어요`,
   leaveHeart: "하트 남기기",
   notThis: "이건 아니에요",
+  /** UI 24 Q2A-2 미리보기 시트 둘째 동작(부스 상세로). Figma 3311:23690 글자 그대로. */
+  seeDetail: "자세히 보기",
   progress: (i: number, n: number) => `${i} / ${n}`,
   knownTitle: "제가 알고 있는 것",
   /** 7-02 둘러보기 줄 설명 */

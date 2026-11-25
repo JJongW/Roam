@@ -81,6 +81,8 @@ export const V2_FILES = [
   "src/components/booth-v2/booth-detail.tsx",
   "src/components/booth-v2/booth-actions.tsx",
   "src/components/booth-v2/booth-detail-skeleton.tsx",
+  // UI 24 Q1 A 브랜드 칸
+  "src/components/booth-v2/brand-row.tsx",
   "src/app/(visitor)/exhibitions/[slug]/map/page.tsx",
   "src/app/(visitor)/exhibitions/[slug]/map/loading.tsx",
   "src/app/(visitor)/booths/[id]/page.tsx",

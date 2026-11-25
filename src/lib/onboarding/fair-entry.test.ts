@@ -7,6 +7,8 @@ import {
   morePicks,
   readFairState,
   readPicksOnMap,
+  saveFirstPicksResume,
+  takeFirstPicksResume,
   writePicksOnMap,
   reasonCategory,
   reasonPhoto,
@@ -122,5 +124,33 @@ describe("저장", () => {
     expect(readFairState("x").moodBoothIds).toEqual(["a"]);
     expect(readFairState("y").openCount).toBe(0);
     expect(window.localStorage.getItem("roam.fair.x")).toContain("moodBoothIds");
+  });
+});
+
+describe("UI 24 Q2A-2 상세에서 뒤로 오면 같은 미리보기 시트", () => {
+  beforeEach(() => window.sessionStorage.clear());
+  const r = {
+    picks: [
+      { boothId: "a", reason: reasonPhoto },
+      { boothId: "b", reason: reasonPhoto },
+    ],
+    index: 1,
+    head: "‘가’에 하트를 남겼어요",
+  };
+
+  it("남긴 진행을 한 번 읽고 지운다", () => {
+    saveFirstPicksResume("fair", r);
+    expect(takeFirstPicksResume("fair")).toEqual(r);
+    expect(takeFirstPicksResume("fair")).toBeNull();
+  });
+
+  it("다른 박람회의 진행은 읽지 않는다", () => {
+    saveFirstPicksResume("fair", r);
+    expect(takeFirstPicksResume("other")).toBeNull();
+  });
+
+  it("모양이 틀리면(위치가 목록 밖) 없는 것으로 본다", () => {
+    saveFirstPicksResume("fair", { ...r, index: 5 });
+    expect(takeFirstPicksResume("fair")).toBeNull();
   });
 });
