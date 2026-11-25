@@ -9,6 +9,7 @@
   --color-v2-fg-placeholder: var(--roam-v2-color-fg-placeholder);
   --color-v2-fg-disabled: var(--roam-v2-color-fg-disabled);
   --color-v2-fg-brand: var(--roam-v2-color-fg-brand);
+  --color-v2-fg-brand-inverted: var(--roam-v2-color-fg-brand-inverted);
   --color-v2-fg-critical: var(--roam-v2-color-fg-critical);
   --color-v2-fg-positive: var(--roam-v2-color-fg-positive);
   --color-v2-fg-warning: var(--roam-v2-color-fg-warning);

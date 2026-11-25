@@ -260,6 +260,18 @@ export function FairMapScreen({
   const [pickHead, setPickHead] = useState("");
   // UI 24 Q2A-2 고른 곳 미리보기 시트가 열렸는지.
   const [pickPreview, setPickPreview] = useState(false);
+  // 미리보기 시트의 높이. 열려 있는 동안 지도 아래 띠를 시트 위까지로 줄여 고른 칸이 시트에 가리지 않게 한다(Figma 24-Q2A-2, iOS focusPickAbovePreview).
+  const [pickPreviewH, setPickPreviewH] = useState<number | null>(null);
+  const mapInsets = useMemo(
+    () =>
+      pickPreview && pickPreviewH
+        ? {
+            top: insets.top,
+            bottom: Math.max(insets.bottom, pickPreviewH + V2_PX["spacing-x2"]),
+          }
+        : insets,
+    [insets, pickPreview, pickPreviewH],
+  );
   // 상세에서 뒤로 와 미리보기를 되살릴 때 그 부스를 다시 비출 id(엔진이 뜬 뒤에 맞춘다).
   const [resumeFocus, setResumeFocus] = useState<string | null>(null);
   const [romiPage, setRomiPage] = useState<"main" | "where" | "known">("main");
@@ -626,7 +638,9 @@ export function FairMapScreen({
       return;
     }
     setPickIndex(next);
-    focusIds([picks[next].boothId], 2.5);
+    // 시트에서 왔으면 지금 띠는 아직 시트 위까지다. 시트가 닫혀 띠가 카드 위로 돌아갈 때 엔진이 다음 곳을 새 띠에 다시 맞추게 둔다.
+    const nextId = picks[next].boothId;
+    focusIds([nextId], 2.5, [], from === "preview" ? { keepWhileSelected: nextId } : undefined);
   };
 
   /** M4 칩. 다 남기면 고마워요(11-06). */
@@ -723,6 +737,15 @@ export function FairMapScreen({
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resumeFocus]);
+
+  // UI 24 Q2A-2: 시트 높이를 알면 고른 칸을 시트 위 지도 가운데로 옮긴다(1-05와 같은 여백, iOS focusPickAbovePreview).
+  // keepWhileSelected라 시트가 닫혀 띠가 카드 위로 돌아가면 엔진이 같은 칸을 새 띠에 다시 맞춘다.
+  const previewPickId = pickPreview ? currentPick?.boothId : undefined;
+  useEffect(() => {
+    if (!previewPickId || !pickPreviewH) return;
+    focusIds([previewPickId], 2.5, [], { keepWhileSelected: previewPickId });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [previewPickId, pickPreviewH]);
 
   // "지도에서 보기"(4-02)로 들어오면 그 부스를 이웃과 함께 읽히는 배율로 맞춘다.
   useEffect(() => {
@@ -1078,11 +1101,12 @@ export function FairMapScreen({
       onLater={() => pickAction("later")}
       onPreview={() => {
         setPickPreview(true);
-        track("screen_view", {
-          screen: SCREEN.firstPickPreview,
+        // iOS openPickPreview와 같은 이름, 화면, 속성(index, 0부터).
+        track("onboarding_first_pick_preview_open", {
+          screen: SCREEN.firstPicks,
           exhibitionSlug: slug,
           boothId: pickBooth.id,
-          props: { index: pickIndex, photo_count: pickBooth.images.length },
+          props: { index: pickIndex },
         });
       }}
     />
@@ -1196,7 +1220,7 @@ export function FairMapScreen({
         exhibitionSlug={slug}
         viewportClassName="inset-0"
         selectedId={selectedId ?? (pickBooth ? pickBooth.id : null)}
-        safeInsets={insets}
+        safeInsets={mapInsets}
         onSelect={(id) => select(id, "map")}
         renderLayer={renderMapLayer}
       />
@@ -1532,6 +1556,7 @@ export function FairMapScreen({
             saveFirstPicksResume(slug, { picks, index: pickIndex, head: pickHead })
           }
           onClose={() => setPickPreview(false)}
+          onHeight={setPickPreviewH}
         />
       )}
       {sheet === "romi" && (

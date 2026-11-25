@@ -64,6 +64,17 @@ describe("FirstPickPreviewSheet(UI 24 Q2A-2)", () => {
     expect(screen.queryByRole("button", { name: "이건 아니에요" })).toBeNull();
   });
 
+  it("열리면 시트 높이를 알린다(지도가 고른 칸을 시트 위로 옮기는 데 쓴다, 24-Q2A-2)", () => {
+    stubFetch(null);
+    const spy = vi.spyOn(HTMLElement.prototype, "offsetHeight", "get").mockReturnValue(420);
+    const onHeight = vi.fn();
+    render(
+      <FirstPickPreviewSheet {...sheetProps} onHeart={() => {}} onLater={() => {}} onDetail={() => {}} onClose={() => {}} onHeight={onHeight} />,
+    );
+    expect(onHeight).toHaveBeenCalledWith(420);
+    spy.mockRestore();
+  });
+
   it("상세와 같은 출처로 소개를 바꾼다(브랜드 공식 소개 우선, 원문 그대로)", async () => {
     stubFetch({ booth, brandIntro: { text: "브랜드가 직접 쓴 소개예요." } });
     render(<FirstPickPreviewSheet {...sheetProps} onHeart={() => {}} onLater={() => {}} onDetail={() => {}} onClose={() => {}} />);

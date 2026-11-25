@@ -356,6 +356,7 @@ export function FirstPickPreviewSheet({
   onLater,
   onDetail,
   onClose,
+  onHeight,
 }: {
   booth: BoothListItem;
   code?: string;
@@ -370,6 +371,8 @@ export function FirstPickPreviewSheet({
   /** 상세로 가기 직전(진행을 남긴다). */
   onDetail: () => void;
   onClose: () => void;
+  /** 시트 높이(px). 지도가 고른 칸을 시트 위로 옮기는 데 쓴다(24-Q2A-2). */
+  onHeight?: (h: number) => void;
 }) {
   const [fullIntro, setFullIntro] = useState<{ id: string; text: string } | null>(null);
   useEffect(() => {
@@ -392,7 +395,7 @@ export function FirstPickPreviewSheet({
   }, [booth.id]);
   const intro = fullIntro?.id === booth.id ? fullIntro.text : pickIntro(booth, reason);
   return (
-    <BottomSheet ariaLabel={booth.name} onClose={onClose} swipeToClose>
+    <BottomSheet ariaLabel={booth.name} onClose={onClose} swipeToClose onHeight={onHeight}>
       <div className="flex flex-col gap-v2-x3 pt-v2-x1">
         <PickRomiRow head={head} index={index} total={total} onLater={onLater} />
         {booth.images.length > 0 && (
