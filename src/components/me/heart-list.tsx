@@ -43,7 +43,7 @@ export function HeartList({ fairs, today }: { fairs: MeFair[]; today: string }) 
     });
 
   return (
-    <MePage back="/me">
+    <MePage back="/me" snack={<Snackbar state={snack} onClose={close} className="w-full" />}>
       <PageTitle
         title={label.heartedPlaces}
         sub={signedIn ? system.heartListNoteAccount : system.heartListNote}
@@ -84,7 +84,6 @@ export function HeartList({ fairs, today }: { fairs: MeFair[]; today: string }) 
           })}
         </div>
       )}
-      <SnackSlot snack={snack} close={close} />
     </MePage>
   );
 }
@@ -125,6 +124,7 @@ export function FairHeartList({
   return (
     <MePage
       back="/me"
+      snack={<Snackbar state={snack} onClose={close} className="w-full" />}
       bottom={
         <Link
           href={`/exhibitions/${fair.slug}/map`}
@@ -178,28 +178,6 @@ export function FairHeartList({
           )}
         </>
       )}
-      <SnackSlot snack={snack} close={close} bottomOffset />
     </MePage>
-  );
-}
-
-function SnackSlot({
-  snack,
-  close,
-  bottomOffset,
-}: {
-  snack: Parameters<typeof Snackbar>[0]["state"];
-  close: () => void;
-  /** 아래 붙은 버튼 위로 띄운다 */
-  bottomOffset?: boolean;
-}) {
-  return (
-    <div
-      className={`pointer-events-none fixed inset-x-0 z-30 mx-auto flex w-full max-w-[var(--roam-v2-size-content-max-width)] px-v2-x4 pb-safe ${
-        bottomOffset ? "bottom-v2-x22" : "bottom-0"
-      }`}
-    >
-      <Snackbar state={snack} onClose={close} className="mb-v2-x4 w-full" />
-    </div>
   );
 }

@@ -23,12 +23,18 @@ export function MePage({
   children,
   back,
   bottom,
+  snack,
 }: {
   children: ReactNode;
   /** 뒤로 버튼이 갈 곳(공유 링크로 바로 들어왔을 때). 없으면 뒤로 버튼이 없다(마이페이지 첫 화면). */
   back?: string;
   /** 화면 맨 아래 붙는 버튼(14-05 지도 보기, 15-11 계정 지우기) */
   bottom?: ReactNode;
+  /**
+   * 이 화면의 스낵바. 아래 바가 있으면 그 윗선 위 8, 없으면 안전 영역 위 8(Figma 18-T 자리, 11-25 결정).
+   * iOS `snackbarFloor`와 같은 규칙(Roam-ios #240).
+   */
+  snack?: ReactNode;
 }) {
   return (
     <div className="min-h-dvh bg-v2-bg-layer-default font-v2-ui text-v2-fg-neutral">
@@ -41,12 +47,23 @@ export function MePage({
         )}
         {children}
       </div>
-      {bottom && (
-        <div className="sticky bottom-0 border-t border-v2-stroke-neutral-muted bg-v2-bg-layer-default px-v2-x4 pb-safe pt-v2-x3">
+      {bottom ? (
+        <div className="sticky bottom-0 z-20 border-t border-v2-stroke-neutral-muted bg-v2-bg-layer-default px-v2-x4 pb-safe pt-v2-x3">
+          {snack && (
+            <div className="pointer-events-none absolute inset-x-0 bottom-full mx-auto w-full max-w-[var(--roam-v2-size-content-max-width)] px-v2-x4 pb-v2-x2">
+              {snack}
+            </div>
+          )}
           <div className="mx-auto w-full max-w-[var(--roam-v2-size-content-max-width)] pb-v2-x3">
             {bottom}
           </div>
         </div>
+      ) : (
+        snack && (
+          <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 mx-auto w-full max-w-[var(--roam-v2-size-content-max-width)] px-v2-x4 pb-safe">
+            <div className="pb-v2-x2">{snack}</div>
+          </div>
+        )
       )}
     </div>
   );

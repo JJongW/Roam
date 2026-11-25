@@ -71,7 +71,7 @@ export function MyPage({ fairs, today }: { fairs: MeFair[]; today: string }) {
   }, [ready]);
 
   return (
-    <MePage>
+    <MePage snack={<Snackbar state={snack} onClose={close} className="w-full" />}>
       {/* 홈으로 돌아가는 길. Figma 14 공통은 iOS 시스템 하단 탭(홈, 마이페이지)인데 웹에는 탭 바가 없고 홈 머리의
           사람 아이콘으로 들어온다. 홈 화면에 앱으로 추가하면(manifest standalone) 브라우저 뒤로도 없어 막다른 화면이
           됐다. 하위 화면과 같은 뒤로 버튼(아이콘 왼쪽 16)을 두고, 바로 들어왔으면 홈으로 간다. */}
@@ -216,10 +216,6 @@ export function MyPage({ fairs, today }: { fairs: MeFair[]; today: string }) {
           )}
         </>
       )}
-
-      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 mx-auto flex w-full max-w-[var(--roam-v2-size-content-max-width)] px-v2-x4 pb-safe">
-        <Snackbar state={snack} onClose={close} className="mb-v2-x4 w-full" />
-      </div>
     </MePage>
   );
 }

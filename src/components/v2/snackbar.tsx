@@ -89,14 +89,14 @@ export function useQueuedSnackbar(show: (s: SnackbarState) => void) {
   }, []);
 }
 
-/** 자기 스낵바가 없는 화면(홈)에 두는 아래 붙은 스낵바. 맡겨 둔 문구만 띄운다. */
+/** 자기 스낵바가 없는 화면(홈)에 두는 아래 붙은 스낵바. 맡겨 둔 문구만 띄운다. 홈엔 아래 바가 없어 안전 영역 위 8(18-T). */
 export function QueuedSnackbar() {
   const [snack, setSnack] = useState<SnackbarState | null>(null);
   const close = useCallback(() => setSnack(null), []);
   useQueuedSnackbar(setSnack);
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 mx-auto flex w-full max-w-[var(--roam-v2-size-content-max-width)] px-v2-x4 pb-safe">
-      <Snackbar state={snack} onClose={close} className="mb-v2-x4 w-full" />
+      <Snackbar state={snack} onClose={close} className="mb-v2-x2 w-full" />
     </div>
   );
 }

@@ -60,10 +60,10 @@ export function DeleteAccount() {
   return (
     <MePage
       back="/me/settings"
+      // 지우지 못했을 때는 이 화면에 남아 아래 바 위 8에 스낵바로 알린다(18-T).
+      snack={<Snackbar state={snack} onClose={closeSnack} className="w-full" />}
       bottom={
         <>
-          {/* 지우지 못했을 때는 이 화면에 남아 아래 버튼 바로 위에 스낵바로 알린다. */}
-          <Snackbar state={snack} onClose={closeSnack} className="mb-v2-x3 w-full" />
           <button
             type="button"
             onClick={() => setAsk(true)}

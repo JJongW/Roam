@@ -101,7 +101,9 @@ export function BoothCardV2({
   );
   return (
     <div
-      className={clsx("pointer-events-none flex flex-col gap-v2-x2", className)}
+      // 스낵바는 카드 위에 걸친 로미 얼굴(36의 반 18)과 다녀왔어요 알약 위 8(Figma 18-T, 11-25 헤더 판단, Ted 확인 전).
+      // 카드 위 여백 mt-x5(20)와 더해 6 + 20 = 26 = 18 + 8. iOS snackbarFloor(overhang:)와 같은 자리(Roam-ios #240).
+      className={clsx("pointer-events-none flex flex-col gap-v2-x1-5", className)}
     >
       {isLoginPrompt && position === "top" ? (
         // 5-03: 화면 맨 위, 찾기 줄 자리에 띄운다(Figma 2995:3234). 카드는 지도 아래 쌓임 안에 있어
