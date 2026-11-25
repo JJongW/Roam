@@ -27,6 +27,12 @@ export const CONTACT_STATUS_LABEL: Record<BrandContactStatus, string> = {
   withdrawn: "철회",
 };
 
+/**
+ * 화면에 보이는 상태 이름. 2026-11-25 Ted: 맨 위 "보냄 131"(지금까지 보낸 곳 전체)과 상태 "보냄 69"(아직 답이 없는 곳)가
+ * 같은 이름이라 헷갈림. 화면에서는 sent를 "답 기다림"으로 부른다. 연락 기록 문장은 CONTACT_STATUS_LABEL 그대로 둔다.
+ */
+export const CONTACT_STATUS_VIEW_LABEL: Record<BrandContactStatus, string> = { ...CONTACT_STATUS_LABEL, sent: "답 기다림" };
+
 export const CONTACT_CHANNEL_LABEL: Record<BrandContactChannel, string> = {
   instagram: "인스타그램",
   x: "X",

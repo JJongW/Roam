@@ -73,6 +73,8 @@ export interface BoardRow {
   /** 할 일 판단에 쓰는 기록 요약(문장 없이). 화면에서 동작 뒤 다시 계산할 때 쓴다. */
   logMeta: Pick<BrandContactLog, "direction" | "kind" | "occurredAt">[];
   allowedUse: string[];
+  /** 일부 허락인 곳에서 아직 빠진 것(체크리스트와 허락 범위로 계산). 일부 허락이 아니면 null. */
+  partialReason: string | null;
   items: string[];
   flags: ActionFlag[];
 }
@@ -178,6 +180,7 @@ export function buildRow(s: BoardSource, today: string): BoardRow {
       : null,
     logMeta: s.logs.map((l) => ({ direction: l.direction, kind: l.kind, occurredAt: l.occurredAt })),
     allowedUse: c?.allowedUse ?? [],
+    partialReason: partialReason(c?.status ?? "not-sent", c?.checklist, c?.allowedUse ?? []),
     items: s.items ?? [],
     flags: actionFlags(c, s.logs, today),
   };
@@ -205,8 +208,30 @@ export function applyContactResult(row: BoardRow, contact: ContactView, log: Log
     lastLog,
     logMeta,
     allowedUse: contact.allowedUse,
+    partialReason: partialReason(contact.status, contact.checklist, contact.allowedUse),
     flags: actionFlags(contact, logMeta, today),
   };
+}
+
+/**
+ * 2026-11-25 Ted: "일부 허락은 이유를 좀 적어주면 좋겠다".
+ * 일부 허락인 곳만, 체크리스트(이미지 받음, 글 내용 받음)와 허락 범위를 보고 아직 빠진 것을 짧게 적는다.
+ * 사진 칩 없이 "글 사용"만 있으면 사진 없이 글로만 소개하는 곳이다.
+ */
+export function partialReason(
+  status: BrandContactStatus,
+  checklist: Record<string, string | boolean | null | undefined> | null | undefined,
+  allowedUse: string[],
+): string | null {
+  if (status !== "partial") return null;
+  const has = (k: string) => Boolean(checklist?.[k]);
+  const photoOk = has("image-received") || allowedUse.includes("account-photo");
+  const textOnly = allowedUse.includes("text") && !allowedUse.includes("account-photo") && !allowedUse.includes("sent-photo");
+  const parts: string[] = [];
+  if (textOnly && !has("image-received")) parts.push("사진 없이 글로만 소개");
+  else if (!photoOk) parts.push("사진 아직");
+  if (!has("text-received") && !textOnly) parts.push("소개 글 아직");
+  return parts.length > 0 ? parts.join(" · ") : "허락 범위 확인";
 }
 
 export interface Funnel {

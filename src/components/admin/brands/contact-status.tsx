@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { CONTACT_STATUS_LABEL } from "@/lib/brands/contact";
+import { CONTACT_STATUS_VIEW_LABEL } from "@/lib/brands/contact";
 import type { BrandContactStatus } from "@/lib/types";
 
 /**
@@ -30,7 +30,7 @@ export function StatusChip({ status, className }: { status: BrandContactStatus; 
       )}
     >
       <span className={cn("size-1.5 rounded-full", STATUS_STYLE[status].dot)} aria-hidden />
-      {CONTACT_STATUS_LABEL[status]}
+      {CONTACT_STATUS_VIEW_LABEL[status]}
     </span>
   );
 }

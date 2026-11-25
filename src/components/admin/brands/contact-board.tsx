@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { ApiClientError } from "@/lib/api/client";
 import { cn } from "@/lib/utils";
 import { OUTREACH_SENDER } from "@/lib/constants";
-import { ALLOWED_USE_LABEL, CONTACT_STATUS_LABEL, LOG_KIND_LABEL } from "@/lib/brands/contact";
+import { ALLOWED_USE_LABEL, CONTACT_STATUS_VIEW_LABEL, LOG_KIND_LABEL } from "@/lib/brands/contact";
 import {
   ACTION_FLAG_LABEL,
   applyContactResult,
@@ -38,6 +38,7 @@ import { EmptyState } from "@/components/common/states";
 import { StatusChip, STATUS_STYLE } from "@/components/admin/brands/contact-status";
 import { BrandContactSheet, runContactAction, type ContactSheetTarget } from "@/components/admin/brand-contact-sheet";
 import { HandleImportSheet } from "@/components/admin/brands/handle-import-sheet";
+
 
 const ALL = "all";
 const PAGE = 100;
@@ -190,7 +191,7 @@ export function ContactBoard({
   );
   const setStatus = useCallback(
     (row: BoardRow, status: BrandContactStatus) =>
-      act([row], { type: "set-status", status }, () => `${row.name}: ${CONTACT_STATUS_LABEL[status]}`),
+      act([row], { type: "set-status", status }, () => `${row.name}: ${CONTACT_STATUS_VIEW_LABEL[status]}`),
     [act],
   );
 
@@ -279,6 +280,8 @@ export function ContactBoard({
   const sentTotal = stats.total - stats.byStatus["not-sent"];
   const answered = stats.byStatus.replied + stats.byStatus.granted + stats.byStatus.partial + stats.byStatus.declined + stats.byStatus.withdrawn;
   const granted = stats.byStatus.granted + stats.byStatus.partial;
+  // 2026-11-25 Ted: 보냄 합계를 상태별로 풀어 쓴다(보냄 131 = 답 기다림 69 + 허락 32 + ...).
+  const sentBreakdown = STATUS_ORDER.filter((s) => s !== "not-sent" && stats.byStatus[s] > 0);
 
   return (
     <div className="space-y-4">
@@ -309,8 +312,22 @@ export function ContactBoard({
         <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
           <p className="text-base font-extrabold">브랜드 {stats.total}곳</p>
           <p className="text-sm text-muted-foreground">
-            보냄 <b className="text-foreground tabular-nums">{sentTotal}</b>, 답이 옴{" "}
-            <b className="text-foreground tabular-nums">{answered}</b>, 허락 <b className="text-foreground tabular-nums">{granted}</b>
+            보냄 <b className="text-foreground tabular-nums">{sentTotal}</b>
+            {sentBreakdown.length > 0 && (
+              <>
+                {" = "}
+                {sentBreakdown.map((s, i) => (
+                  <span key={s}>
+                    {i > 0 && " + "}
+                    {CONTACT_STATUS_VIEW_LABEL[s]} <b className="text-foreground tabular-nums">{stats.byStatus[s]}</b>
+                  </span>
+                ))}
+              </>
+            )}
+          </p>
+          <p className="text-sm text-muted-foreground">
+            답이 옴{" "}
+            <b className="text-foreground tabular-nums">{answered}</b>, 허락·일부 허락 <b className="text-foreground tabular-nums">{granted}</b>
             {stats.noHandle > 0 && (
               <>
                 , 계정 모름 <b className="text-foreground tabular-nums">{stats.noHandle}</b>
@@ -325,7 +342,7 @@ export function ContactBoard({
                 key={s}
                 className={cn("h-full", STATUS_STYLE[s].bar)}
                 style={{ width: `${(stats.byStatus[s] / Math.max(stats.total, 1)) * 100}%` }}
-                title={`${CONTACT_STATUS_LABEL[s]} ${stats.byStatus[s]}`}
+                title={`${CONTACT_STATUS_VIEW_LABEL[s]} ${stats.byStatus[s]}`}
               />
             ) : null,
           )}
@@ -350,7 +367,7 @@ export function ContactBoard({
               >
                 <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
                   <span className={cn("size-2 rounded-full", STATUS_STYLE[s].dot)} aria-hidden />
-                  {CONTACT_STATUS_LABEL[s]}
+                  {CONTACT_STATUS_VIEW_LABEL[s]}
                 </span>
                 <span className="text-lg font-extrabold tabular-nums">{stats.byStatus[s]}</span>
               </button>
@@ -719,7 +736,7 @@ function BoardTableRow({
               {STATUS_ORDER.map((s, i) => (
                 <MenuItem key={s} disabled={s === row.status} onSelect={() => onStatus(s)}>
                   <span className={cn("size-2 rounded-full", STATUS_STYLE[s].dot)} aria-hidden />
-                  <span className="flex-1">{CONTACT_STATUS_LABEL[s]}</span>
+                  <span className="flex-1">{CONTACT_STATUS_VIEW_LABEL[s]}</span>
                   <kbd className="text-xs text-muted-foreground">{i + 1}</kbd>
                 </MenuItem>
               ))}
@@ -754,6 +771,11 @@ function BoardTableRow({
           </p>
         ) : (
           <p className="text-xs text-muted-foreground">기록 없음</p>
+        )}
+        {row.partialReason && (
+          <p className="truncate text-[11px] font-semibold text-amber-700 dark:text-amber-400" title={`일부 허락 이유: ${row.partialReason}`}>
+            일부 허락 이유: {row.partialReason}
+          </p>
         )}
         {row.allowedUse.length > 0 && (
           <p className="truncate text-[11px] text-muted-foreground">{row.allowedUse.map((t) => ALLOWED_USE_LABEL[t] ?? t).join(", ")}</p>

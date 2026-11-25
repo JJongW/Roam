@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { actionFlags, applyContactResult, buildRow, daysBetween, filterRows, funnel, handleCandidates, sortRows, type BoardSource } from "./board";
+import { partialReason, actionFlags, applyContactResult, buildRow, daysBetween, filterRows, funnel, handleCandidates, sortRows, type BoardSource } from "./board";
 import { emptyView, type ContactView } from "./contact-actions";
 
 const T = "2026-11-17";
@@ -140,5 +140,24 @@ describe("인스타 계정 후보 순서(handleCandidates)", () => {
   it("연락에 실제로 쓴 계정은 그보다도 먼저예요", () => {
     const h = handleCandidates({ profile: null, brandOfficial: "@official", booth: "@booth" });
     expect(buildRow(src({ view: { handle: "@used" }, handles: h }), T)).toMatchObject({ handle: "used", handleConfidence: "confirmed" });
+  });
+});
+
+describe("partialReason", () => {
+  it("일부 허락이 아니면 이유를 적지 않는다", () => {
+    expect(partialReason("granted", {}, [])).toBeNull();
+    expect(partialReason("sent", {}, [])).toBeNull();
+  });
+  it("사진과 소개 글이 다 빠졌으면 둘 다 적는다", () => {
+    expect(partialReason("partial", { "reply-received": "2026-11-25" }, [])).toBe("사진 아직 · 소개 글 아직");
+  });
+  it("사진은 받았고 글만 남았으면 글만 적는다", () => {
+    expect(partialReason("partial", { "image-received": "2026-11-25" }, [])).toBe("소개 글 아직");
+  });
+  it("계정 사진을 써도 되면 사진은 빠진 것으로 보지 않는다", () => {
+    expect(partialReason("partial", { "text-received": "2026-11-25" }, ["account-photo"])).toBe("허락 범위 확인");
+  });
+  it("사진 칩 없이 글 사용만 있으면 글로만 소개한다고 적는다", () => {
+    expect(partialReason("partial", { "text-received": "2026-11-25" }, ["text"])).toBe("사진 없이 글로만 소개");
   });
 });
