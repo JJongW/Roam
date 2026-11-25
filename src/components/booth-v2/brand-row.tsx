@@ -15,15 +15,20 @@ import { label, system } from "@/lib/copy/v1";
  *   그 부스의 브랜드에도 하트를 남긴다(PUT /api/me/notes/[boothId], lib/brands/follow.ts).
  * - 알림 문구는 로그인 여부로 나눈다(2026-11-24 Ted). 브랜드 알림은 로그인한 분만 받으므로(11-17) 로그인 전에는
  *   알림을 약속하지 않고 로그인하면 받는다고만 말한다. 로그인 여부는 아래 바(booth-actions)와 같이 auth 스토어에서 읽는다.
+ * - 이어진 브랜드가 없는 부스(브랜드 id 없음)는 같은 칸에 이름과 소개만 두고 알림 문구를 뺀다. 하트가 따라갈
+ *   브랜드가 없어 알림을 약속할 수 없다. 소개도 없으면 호출부가 칸째 뺀다(iOS BoothPageScreen brandBox, #239와 같음).
  */
 export function BrandRow({
   name,
   intro,
+  linked = true,
 }: {
   /** 브랜드 이름. 서버가 못 읽었으면 부스 이름으로 물러선다(호출부). */
   name: string;
   /** 브랜드 소개. 없으면 빈 상태 한 줄. */
   intro?: string;
+  /** 브랜드 id가 이어져 있는지. 아니면 알림 문구를 뺀다. */
+  linked?: boolean;
 }) {
   const signedIn = useAuthStore((s) => !!s.user);
   return (
@@ -42,9 +47,11 @@ export function BrandRow({
           {system.brandIntroEmpty}
         </p>
       )}
-      <span className="text-v2-t3 font-v2-regular text-v2-fg-neutral-muted">
-        {signedIn ? system.brandRowFollowsBoothHeart : system.brandRowLoggedOut}
-      </span>
+      {linked && (
+        <span className="text-v2-t3 font-v2-regular text-v2-fg-neutral-muted">
+          {signedIn ? system.brandRowFollowsBoothHeart : system.brandRowLoggedOut}
+        </span>
+      )}
     </section>
   );
 }

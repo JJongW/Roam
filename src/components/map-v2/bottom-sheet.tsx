@@ -17,6 +17,7 @@ export function BottomSheet({
   children,
   tall,
   swipeToClose,
+  onHeight,
 }: {
   ariaLabel: string;
   onClose: () => void;
@@ -25,6 +26,8 @@ export function BottomSheet({
   tall?: boolean;
   /** 아래로 밀어 닫기. 옆으로 미는 손(사진 넘김)과 위로 미는 손(스크롤)은 건드리지 않는다. */
   swipeToClose?: boolean;
+  /** 시트 높이가 정해지거나 바뀔 때마다(px, 미는 중 이동은 빼고). 지도가 시트 위 띠를 잡는 데 쓴다. */
+  onHeight?: (h: number) => void;
 }) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
@@ -32,6 +35,21 @@ export function BottomSheet({
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
   const sheetRef = useRef<HTMLElement>(null);
+  const onHeightRef = useRef(onHeight);
+  useEffect(() => {
+    onHeightRef.current = onHeight;
+  }, [onHeight]);
+  const measured = !!onHeight;
+  useEffect(() => {
+    const el = sheetRef.current;
+    if (!el || !measured) return;
+    const report = () => onHeightRef.current?.(Math.round(el.offsetHeight));
+    report();
+    if (typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(report);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [measured]);
   const start = useRef<{ x: number; y: number; axis?: "x" | "y" } | null>(null);
   const [drag, setDrag] = useState(0);
   const swipe = swipeToClose

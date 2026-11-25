@@ -43,4 +43,13 @@ describe("BrandRow(UI 24 Q1 A, 소개와 브랜드 칸을 한 칸으로)", () =>
     expect(screen.getByText(EMPTY)).toBeInTheDocument();
     expect(screen.getByText(LOGGED_OUT)).toBeInTheDocument();
   });
+
+  it("이어진 브랜드가 없으면(브랜드 id 없음) 이름과 소개만, 알림 문구는 뺀다(iOS #239 brandBox)", () => {
+    useAuthStore.setState({ user: { id: "u1" } as never });
+    render(<BrandRow name="부스 이름" intro="부스 소개" linked={false} />);
+    expect(screen.getByRole("region", { name: "브랜드" })).toBeInTheDocument();
+    expect(screen.getByText("부스 소개")).toBeInTheDocument();
+    expect(screen.queryByText(LOGGED_IN)).toBeNull();
+    expect(screen.queryByText(LOGGED_OUT)).toBeNull();
+  });
 });

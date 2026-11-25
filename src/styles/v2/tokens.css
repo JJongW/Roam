@@ -102,6 +102,7 @@
   --roam-v2-color-fg-placeholder: #b0b3ba;
   --roam-v2-color-fg-disabled: #d1d3d8;
   --roam-v2-color-fg-brand: #4f46e5;
+  --roam-v2-color-fg-brand-inverted: #9ca7ef;
   --roam-v2-color-fg-critical: #ca1d13;
   --roam-v2-color-fg-positive: #00745f;
   --roam-v2-color-fg-warning: #755b22;
@@ -477,6 +478,7 @@
   --roam-v2-color-fg-placeholder: #868b94;
   --roam-v2-color-fg-disabled: #5b606a;
   --roam-v2-color-fg-brand: #6a70f8;
+  --roam-v2-color-fg-brand-inverted: #4a4db8;
   --roam-v2-color-fg-critical: #ff6e60;
   --roam-v2-color-fg-positive: #22b27f;
   --roam-v2-color-fg-warning: #ca901c;

@@ -28,4 +28,19 @@ describe("v2 스낵바", () => {
     expect(btn.className).toContain("min-h-v2-x11");
     expect(btn.className).toContain("min-w-v2-x11");
   });
+
+  it("행동 글자는 반전 바탕용 브랜드 글자, 그림자는 s3(Roam-design #63, 11-25)", () => {
+    render(
+      <Snackbar
+        state={{ key: 1, message: "하트를 뺐어요", actionLabel: "되돌리기", onAction: () => {} }}
+        onClose={() => {}}
+      />,
+    );
+    const btn = screen.getByRole("button", { name: "되돌리기" });
+    expect(btn.className).toContain("text-v2-fg-brand-inverted");
+    expect(btn.className).not.toContain("text-v2-fg-on-neutral-solid");
+    const bar = screen.getByRole("status");
+    expect(bar.className).toContain("shadow-v2-s3");
+    expect(bar.className).toContain("min-h-v2-x12");
+  });
 });

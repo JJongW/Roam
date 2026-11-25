@@ -56,6 +56,8 @@ export const APP_EVENT_NAMES = [
   "onboarding_mood_skip",
   "onsite_question_answer",
   "onboarding_first_three_shown",
+  // UI 24 Q2 A(11-25): 로미가 고른 곳 카드의 이름 줄을 눌러 미리보기 시트를 열었다. 속성 index(0부터). iOS와 같은 이름.
+  "onboarding_first_pick_preview_open",
   "romi_pick_feedback",
   // UI 8-04~8-08 로미가 고른 곳(K-C). 이름은 iOS AnalyticsTaxonomy와 같다.
   "romi_pick_shown",
@@ -119,7 +121,6 @@ export const SCREEN = {
   moodSheet: "UI 1-02",
   onsiteAsk: "UI 1-04",
   firstPicks: "UI 1-05",
-  firstPickPreview: "UI 24-Q2A-2",
   known: "UI 1-07",
   returnLine: "UI 1-09",
   reask: "UI 1-10",

@@ -222,31 +222,21 @@ export function BoothDetailV2({
           )}
         </div>
 
-        {brand ? (
+        {brand || intro ? (
           // UI 24 Q1 A: 소개 상자와 브랜드 칸을 한 칸으로(소개가 없으면 칸 안에 빈 상태 한 줄).
+          // 이어진 브랜드가 없는 부스는 같은 칸에 부스 이름과 소개만 두고 알림 문구를 뺀다(iOS brandBox와 같음).
           <div className="px-v2-x4 pt-v2-x4">
-            <BrandRow name={brand.name} intro={intro} />
+            <BrandRow name={brand?.name ?? booth.name} intro={intro} linked={!!brand} />
           </div>
         ) : (
-          // 이어진 브랜드가 없는 부스는 UI 24에 그려지지 않았다. 브랜드 이름과 알림을 지어내지 않고 예전 소개 상자를 둔다.
-          <div className="px-v2-x4 pt-v2-x6">
-            {intro ? (
-              <section className="flex flex-col gap-v2-x1-5 rounded-v2-r3 bg-v2-bg-neutral-weak p-v2-x4">
-                <h2 className="text-v2-t3 font-v2-medium text-v2-fg-neutral-muted">
-                  {label.brandIntro}
-                </h2>
-                <p className="whitespace-pre-line text-v2-t5 font-v2-regular leading-[var(--roam-v2-line-height-t6-5)] tracking-v2-body">
-                  {intro}
-                </p>
-              </section>
-            ) : (
-              sparse && (
-                <p className="text-v2-t4 text-v2-fg-neutral-muted">
-                  {system.nameAndLocationOnly}
-                </p>
-              )
-            )}
-          </div>
+          // 브랜드도 소개도 없으면 칸째 뺀다. 이름과 자리만 있는 부스는 그 사실 한 줄.
+          sparse && (
+            <div className="px-v2-x4 pt-v2-x6">
+              <p className="text-v2-t4 text-v2-fg-neutral-muted">
+                {system.nameAndLocationOnly}
+              </p>
+            </div>
+          )
         )}
 
         <ul className="flex flex-col pb-v2-x2 pt-v2-x4">
