@@ -60,7 +60,7 @@ framer-motion · zustand · Zod · Supabase(Postgres) · Google Gemini(@google/g
 
 ## 주요 도메인
 - **방문객 플로우**: 홈 → 지도(`/exhibitions/[slug]`는 `/map`으로 넘겨 준다, 지도 먼저 §4, 2026-11-20) →
-  부스 상세(하트는 아래 바 하나, 브랜드 줄은 설명만 UI 23, 상단 이름은 스크롤하면 부스명). 옛 전시 홈(가치 온보딩, 관심 피드, 근거 카드,
+  부스 상세(하트는 아래 바 하나, 브랜드 칸은 이름 밑에 소개와 작은 알림 문구 UI 24 Q1 A, 상단 이름은 스크롤하면 부스명). 옛 전시 홈(가치 온보딩, 관심 피드, 근거 카드,
   `FinishVisit` 회고 입구)은 화면에서 닿지 않는다. 피드 큐레이션은 iOS가 쓰는 `/api/exhibitions/[slug]/feed` 때문에 남아 있다.
 - **부스/이벤트**: `Booth`(code 자연키, kind exhibitor|facility, tags=카테고리 slug, aliases 공동입점), `BoothEvent`.
 - **참가사(행사를 넘는 브랜드)**: `exhibitor` ← `exhibition_participant`(회차별 표기 이름) ← `booth_participant`.

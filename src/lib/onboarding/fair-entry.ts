@@ -211,3 +211,47 @@ export function writePicksOnMap(slug: string, on: boolean, today: string) {
     // 남기지 못하면 다음 열기에 꺼진 채로 시작할 뿐이다.
   }
 }
+
+/**
+ * UI 24 Q2A-2 미리보기 시트의 "자세히 보기"로 상세에 갔다가 뒤로 오면 같은 시트로(Figma Q2 A 노트 "뒤로 가면 시트로").
+ * 지도 화면은 상세로 가면 내려가므로 첫 세 곳 진행(목록, 위치, 머리 줄)을 이 탭에만 잠깐 남긴다(sessionStorage).
+ * 다음에 지도가 뜰 때 한 번 읽고 지운다. 다른 탭이나 다음 날로 넘어가지 않는다.
+ */
+export interface FirstPicksResume {
+  picks: FirstPick[];
+  index: number;
+  head: string;
+}
+
+const resumeKey = (slug: string) => `roam.firstPicksResume.${slug}`;
+
+export function saveFirstPicksResume(slug: string, r: FirstPicksResume) {
+  try {
+    window.sessionStorage.setItem(resumeKey(slug), JSON.stringify(r));
+  } catch {
+    // 남기지 못하면 돌아왔을 때 시트 없이 지도일 뿐이다.
+  }
+}
+
+/** 남긴 진행을 읽고 지운다. 모양이 맞지 않으면 없는 것으로 본다. */
+export function takeFirstPicksResume(slug: string): FirstPicksResume | null {
+  try {
+    const raw = window.sessionStorage.getItem(resumeKey(slug));
+    if (!raw) return null;
+    window.sessionStorage.removeItem(resumeKey(slug));
+    const r = JSON.parse(raw) as Partial<FirstPicksResume>;
+    if (
+      !Array.isArray(r.picks) ||
+      !r.picks.length ||
+      !r.picks.every((p) => typeof p?.boothId === "string" && typeof p?.reason === "string") ||
+      typeof r.index !== "number" ||
+      r.index < 0 ||
+      r.index >= r.picks.length ||
+      typeof r.head !== "string"
+    )
+      return null;
+    return { picks: r.picks, index: r.index, head: r.head };
+  } catch {
+    return null;
+  }
+}

@@ -52,7 +52,7 @@ export interface BoothDetailV2Props {
   aliases?: string[];
   /** 박람회가 끝났으면 위에 "어떠셨어요?" 띠(6-09). 여는 날엔 평가를 묻지 않는다. */
   fairEnded?: boolean;
-  /** UI 23 Q1 C 브랜드 줄(설명만). 부스에 대표 브랜드가 이어져 있을 때만. 이름은 브랜드 이름, 없으면 부스 이름. */
+  /** UI 24 Q1 A 브랜드 칸(소개와 알림 문구). 부스에 대표 브랜드가 이어져 있을 때만. 이름은 브랜드 이름, 없으면 부스 이름. */
   brand?: { exhibitorId: string; name: string };
   /** 여는 날이고 배치도가 있으면 아래 바에 "길 안내"(4-02). 누르면 지도로 돌아가 그 부스로 길 안내(UI 9)를 시작한다. */
   canRoute?: boolean;
@@ -60,7 +60,7 @@ export interface BoothDetailV2Props {
 
 /**
  * UI 4-02 부스 상세(Figma 3015:1288). 위에서 아래로: 뒤로 → 사진 줄 → 이름과 위치 → 분류 배지
- * → 브랜드 소개 상자 → 브랜드 줄(UI 23 Q1 C, 설명만) → 정보 줄(위치, 파는 것, 인스타그램, 브랜드 사이트) → 아래 고정 바(하트, 다녀왔어요).
+ * → 브랜드 칸(UI 24 Q1 A, 이름 밑에 소개와 작은 알림 문구) → 정보 줄(위치, 파는 것, 인스타그램, 브랜드 사이트) → 아래 고정 바(하트, 다녀왔어요).
  *
  * - 하트는 아래 바 왼쪽 하나(UI 23 Q1 C, 11-24). 부스 하트가 브랜드 하트도 남긴다(서버).
  * - 위 내비(UI 23 Q2 A): 내려 읽어 큰 이름이 내비 밑으로 사라지면 가운데에 부스 이름(booth.name, 한 줄 말줄임)과 아래 선이 나타난다.
@@ -222,28 +222,30 @@ export function BoothDetailV2({
           )}
         </div>
 
-        <div className="px-v2-x4 pt-v2-x6">
-          {intro ? (
-            <section className="flex flex-col gap-v2-x1-5 rounded-v2-r3 bg-v2-bg-neutral-weak p-v2-x4">
-              <h2 className="text-v2-t3 font-v2-medium text-v2-fg-neutral-muted">
-                {label.brandIntro}
-              </h2>
-              <p className="whitespace-pre-line text-v2-t5 font-v2-regular leading-[var(--roam-v2-line-height-t6-5)] tracking-v2-body">
-                {intro}
-              </p>
-            </section>
-          ) : (
-            sparse && (
-              <p className="text-v2-t4 text-v2-fg-neutral-muted">
-                {system.nameAndLocationOnly}
-              </p>
-            )
-          )}
-        </div>
-
-        {brand && (
+        {brand ? (
+          // UI 24 Q1 A: 소개 상자와 브랜드 칸을 한 칸으로(소개가 없으면 칸 안에 빈 상태 한 줄).
           <div className="px-v2-x4 pt-v2-x4">
-            <BrandRow name={brand.name} />
+            <BrandRow name={brand.name} intro={intro} />
+          </div>
+        ) : (
+          // 이어진 브랜드가 없는 부스는 UI 24에 그려지지 않았다. 브랜드 이름과 알림을 지어내지 않고 예전 소개 상자를 둔다.
+          <div className="px-v2-x4 pt-v2-x6">
+            {intro ? (
+              <section className="flex flex-col gap-v2-x1-5 rounded-v2-r3 bg-v2-bg-neutral-weak p-v2-x4">
+                <h2 className="text-v2-t3 font-v2-medium text-v2-fg-neutral-muted">
+                  {label.brandIntro}
+                </h2>
+                <p className="whitespace-pre-line text-v2-t5 font-v2-regular leading-[var(--roam-v2-line-height-t6-5)] tracking-v2-body">
+                  {intro}
+                </p>
+              </section>
+            ) : (
+              sparse && (
+                <p className="text-v2-t4 text-v2-fg-neutral-muted">
+                  {system.nameAndLocationOnly}
+                </p>
+              )
+            )}
           </div>
         )}
 

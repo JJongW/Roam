@@ -30,6 +30,7 @@ import {
   DatePill,
   EntryCard,
   FirstPickCard,
+  FirstPickPreviewSheet,
   MoodSheet,
   StepBars,
   VerdictAskMapCard,
@@ -42,6 +43,8 @@ import {
   morePicks as computeMorePicks,
   readFairState,
   readPicksOnMap,
+  saveFirstPicksResume,
+  takeFirstPicksResume,
   writePicksOnMap,
   updateFairState,
   type FairEntryStep,
@@ -255,6 +258,10 @@ export function FairMapScreen({
   const [picks, setPicks] = useState<FirstPick[]>([]);
   const [pickIndex, setPickIndex] = useState(0);
   const [pickHead, setPickHead] = useState("");
+  // UI 24 Q2A-2 고른 곳 미리보기 시트가 열렸는지.
+  const [pickPreview, setPickPreview] = useState(false);
+  // 상세에서 뒤로 와 미리보기를 되살릴 때 그 부스를 다시 비출 id(엔진이 뜬 뒤에 맞춘다).
+  const [resumeFocus, setResumeFocus] = useState<string | null>(null);
   const [romiPage, setRomiPage] = useState<"main" | "where" | "known">("main");
   // UI 8-06 "제가 고른 곳은 목록에 담아 뒀어요" 줄, 8-07 고른 곳을 지도에 켰는지(오늘만, K-C).
   const [picksLine, setPicksLine] = useState(false);
@@ -403,6 +410,23 @@ export function FairMapScreen({
         window.history.replaceState(window.history.state, "", u.pathname + u.search);
       } catch {
         /* 주소를 못 고쳐도 시트는 연다 */
+      }
+    }
+    // UI 24 Q2A-2 미리보기에서 "자세히 보기"로 상세에 갔다가 뒤로 왔으면 같은 시트로(진행 그대로).
+    // 지도에서 보기나 길 안내로 왔으면(부스를 짚고 옴) 시트를 다시 열지 않는다. 남긴 진행은 어느 쪽이든 지운다.
+    const resume = takeFirstPicksResume(slug);
+    if (resume && !initialFocusId && !isEnded) {
+      const live = resume.picks.filter((p) => booths.some((b) => b.id === p.boothId));
+      const cur = resume.picks[resume.index];
+      const at = live.findIndex((p) => p.boothId === cur.boothId);
+      if (at >= 0) {
+        setFairState(st);
+        setPicks(live);
+        setPickIndex(at);
+        setPickHead(resume.head);
+        setPickPreview(true);
+        setResumeFocus(live[at].boothId);
+        return;
       }
     }
     // 상세에서 길 안내를 누르고 왔으면 사진 고르기나 다시 묻기로 가리지 않는다(누른 일이 먼저다).
@@ -561,8 +585,10 @@ export function FairMapScreen({
   const currentPick = picks[pickIndex];
   /** 1-05 "하트 남기기", "이건 아니에요", "나중에 할게요". 앞의 둘은 다음 곳으로(1-06 머리 줄이 방금 남긴 하트를 말한다).
    *  "나중에 할게요"는 남기는 것 없이 카드를 닫고 지도로(iOS firstPickAction("later")와 같다). */
-  const pickAction = (action: "heart" | "not_this" | "later") => {
+  const pickAction = (action: "heart" | "not_this" | "later", from: "card" | "preview" = "card") => {
     if (!currentPick) return;
+    // 미리보기 시트에서 하트나 나중에 할게요를 누르면 시트를 닫고 카드 규칙대로 간다(UI 24 Q2A-3).
+    setPickPreview(false);
     const b = booths.find((x) => x.id === currentPick.boothId);
     if (action === "heart") {
       if (!isHearted(useVisitStore.getState().records[currentPick.boothId])) {
@@ -572,7 +598,7 @@ export function FairMapScreen({
           screen: SCREEN.firstPicks,
           exhibitionSlug: slug,
           boothId: currentPick.boothId,
-          props: { surface: "onboarding" },
+          props: { surface: from === "preview" ? "onboarding_preview" : "onboarding" },
         });
       }
       setPickHead(entryCopy.heartLeft(b?.name ?? ""));
@@ -586,7 +612,7 @@ export function FairMapScreen({
       screen: SCREEN.firstPicks,
       exhibitionSlug: slug,
       boothId: currentPick.boothId,
-      props: { choice: action, index: pickIndex },
+      props: { choice: action, index: pickIndex, from },
     });
     if (action === "later") {
       setPicks([]);
@@ -689,6 +715,14 @@ export function FairMapScreen({
     if (r) mapRef.current?.focusRect(r, { keepWhileSelected: id });
     else focusIds([id], 2.5, [], { keepWhileSelected: id });
   };
+
+  // UI 24 Q2A-2 상세에서 뒤로 와 미리보기를 되살렸으면 1-05처럼 그 부스를 비춘다.
+  useEffect(() => {
+    if (!resumeFocus) return;
+    const t = setTimeout(() => focusIds([resumeFocus], 2.5), 200);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resumeFocus]);
 
   // "지도에서 보기"(4-02)로 들어오면 그 부스를 이웃과 함께 읽히는 배율로 맞춘다.
   useEffect(() => {
@@ -1042,6 +1076,15 @@ export function FairMapScreen({
       onHeart={() => pickAction("heart")}
       onNotThis={() => pickAction("not_this")}
       onLater={() => pickAction("later")}
+      onPreview={() => {
+        setPickPreview(true);
+        track("screen_view", {
+          screen: SCREEN.firstPickPreview,
+          exhibitionSlug: slug,
+          boothId: pickBooth.id,
+          props: { index: pickIndex, photo_count: pickBooth.images.length },
+        });
+      }}
     />
   ) : onsiteAsk ? (
     <EntryCard
@@ -1471,6 +1514,24 @@ export function FairMapScreen({
           exhibitionSlug={slug}
           onClose={() => setTodayOpen(false)}
           show={(x) => setSnack({ ...x, key: Date.now() })}
+        />
+      )}
+      {pickPreview && pickBooth && currentPick && (
+        <FirstPickPreviewSheet
+          booth={pickBooth}
+          code={pickBooth.code}
+          reason={currentPick.reason}
+          categoryName={catById.get(pickBooth.categoryId)?.name}
+          index={pickIndex}
+          total={picks.length}
+          head={pickHead}
+          detailHref={`/booths/${pickBooth.id}`}
+          onHeart={() => pickAction("heart", "preview")}
+          onLater={() => pickAction("later", "preview")}
+          onDetail={() =>
+            saveFirstPicksResume(slug, { picks, index: pickIndex, head: pickHead })
+          }
+          onClose={() => setPickPreview(false)}
         />
       )}
       {sheet === "romi" && (

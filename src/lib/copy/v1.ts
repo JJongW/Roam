@@ -134,6 +134,8 @@ export const system = {
   brandRowFollowsBoothHeart: "부스 하트를 남기면 이 브랜드의 다음 박람회 참가도 알려 드려요",
   /** 같은 줄의 로그인 전 설명(2026-11-24 Ted "로그인 전 문구를 따로 나눠야지"). 브랜드 알림은 로그인한 분만 받는다(11-17). */
   brandRowLoggedOut: "로그인하면 다음 박람회 소식을 알려 드려요",
+  /** UI 24 Q1 A 브랜드 칸에 소개가 없을 때(2026-11-25 Ted). Figma 3309:23034 글자 그대로. */
+  brandIntroEmpty: "브랜드 소개가 아직 없어요",
   // UI 19 브랜드 하트(11-19). 마이 브랜드 목록(14-10)에서 쓴다.
   /** 19-A4 */
   brandHeartRemoved: (name: string) => `‘${name}’ 브랜드 하트를 뺐어요.`,

@@ -119,6 +119,7 @@ export const SCREEN = {
   moodSheet: "UI 1-02",
   onsiteAsk: "UI 1-04",
   firstPicks: "UI 1-05",
+  firstPickPreview: "UI 24-Q2A-2",
   known: "UI 1-07",
   returnLine: "UI 1-09",
   reask: "UI 1-10",
