@@ -417,7 +417,8 @@ function PicksBlock({
       )}
       <hr className="mx-v2-x4 border-v2-stroke-neutral-muted" />
       <div className="pointer-events-none fixed inset-x-0 bottom-0 z-20 mx-auto w-full max-w-[var(--roam-v2-size-content-max-width)] px-v2-x4 pb-safe">
-        <div className="pb-v2-x4">
+        {/* 아래 바가 없는 화면이라 안전 영역 위 8(Figma 18-T, 11-25). */}
+        <div className="pb-v2-x2">
           <Snackbar state={snack} onClose={closeSnack} className="w-full" />
         </div>
       </div>
@@ -481,7 +482,8 @@ function CategoryBooths({
         ))}
       </ul>
       <div className="pointer-events-none fixed inset-x-0 bottom-0 z-20 mx-auto w-full max-w-[var(--roam-v2-size-content-max-width)] px-v2-x4 pb-safe">
-        <div className="pb-v2-x4">
+        {/* 아래 바가 없는 화면이라 안전 영역 위 8(Figma 18-T, 11-25). */}
+        <div className="pb-v2-x2">
           <Snackbar state={snack} onClose={closeSnack} className="w-full" />
         </div>
       </div>

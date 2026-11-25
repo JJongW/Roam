@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { BookOpen, Calendar, Heart, MessageCircle } from "lucide-react";
 import { clsx } from "clsx";
 import { BackButton } from "@/components/v2/back-button";
+import { hasNavigatedInApp } from "@/components/common/nav-tracker";
 import { RomiAvatar } from "@/components/v2/romi-avatar";
 import { api } from "@/lib/api/client";
 import {
@@ -29,6 +30,7 @@ const ICON: Record<InboxIcon, typeof Heart> = {
  * UI 18-02 알림함, 18-03 빈 알림함(1-A, 11-19). 홈 종에서 들어온다. 로그인은 proxy가 맡는다.
  * - 최근 30일, 최신순(서버). "이번 주"와 "지난 알림"으로 묶는다. 안 읽은 줄은 진하게.
  * - 줄을 누르면 읽음으로 표시하고 그 알림이 가리키는 곳으로 간다(브랜드 알림은 부스 상세, 부스가 없으면 그 지도).
+ *   간 곳에서 뒤로 가면 알림함이 아니라 홈이다(13-04).
  * - 알림 설정(13-09)은 웹에 없어 톱니를 두지 않는다. 웹은 브라우저 푸시를 보내지 않는다.
  */
 export function InboxScreen() {
@@ -75,7 +77,12 @@ export function InboxScreen() {
       );
       void api.post("/api/me/notifications/read", { ids: [row.id] }).catch(() => {});
     }
-    if (href) router.push(href);
+    if (!href) return;
+    // 13-04: 알림으로 연 부스 상세에서 뒤로 가면 홈(20-01)이다(Figma 13-04 연결, iOS `land`가 홈 길을 비운다, Roam-ios #240).
+    // 알림함은 홈 종에서만 들어오므로 알림함 자리를 바꿔 끼우면 뒤로 가기가 홈으로 간다.
+    // 주소로 바로 들어와 앞 화면이 없으면 바꿔 끼우지 않는다(뒤로 가기가 앱 밖으로 나가지 않게).
+    if (hasNavigatedInApp()) router.replace(href);
+    else router.push(href);
   };
 
   return (

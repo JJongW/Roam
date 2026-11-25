@@ -71,11 +71,11 @@ describe("hallsInOrder와 머리 문장(8-01)", () => {
     expect(hallsInOrder(["A홀", "B홀", "C홀", "D홀"], booths)).toEqual(["A홀", "D홀"]);
   });
 
-  it("홀이 여럿이면 처음과 끝, 하나면 그 홀, 없으면 홀 없이", () => {
+  it("홀이 여럿이면 처음과 끝, 하나거나 없으면 홀 없이(iOS와 같은 규칙)", () => {
     expect(romi.boothListIntro(["A홀", "D홀"], 597)).toBe(
       "A홀부터 D홀까지 부스 597곳이 있어요.\n어떤 분류부터 볼까요?",
     );
-    expect(romi.boothListIntro(["A홀"], 3)).toBe("A홀에 부스 3곳이 있어요.\n어떤 분류부터 볼까요?");
+    expect(romi.boothListIntro(["A홀"], 3)).toBe("부스 3곳이 있어요.\n어떤 분류부터 볼까요?");
     expect(romi.boothListIntro([], 3)).toBe("부스 3곳이 있어요.\n어떤 분류부터 볼까요?");
   });
 });

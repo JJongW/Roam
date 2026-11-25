@@ -123,7 +123,7 @@ export function BrandHeartList() {
   );
 
   return (
-    <MePage back="/me/settings">
+    <MePage back="/me/settings" snack={<Snackbar state={snack} onClose={close} className="w-full" />}>
       <PageTitle title={label.heartedBrands} />
       {failed ? (
         <div className="flex flex-col items-start gap-v2-x3 px-v2-x4 py-v2-x6">
@@ -163,9 +163,6 @@ export function BrandHeartList() {
           </p>
         </div>
       )}
-      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-30 mx-auto flex w-full max-w-[var(--roam-v2-size-content-max-width)] px-v2-x4 pb-safe">
-        <Snackbar state={snack} onClose={close} className="mb-v2-x4 w-full" />
-      </div>
     </MePage>
   );
 }

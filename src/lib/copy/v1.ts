@@ -59,14 +59,12 @@ export const romi = {
   /** 12-03 */
   recapSaved: "남겨 주신 말이에요",
   // UI 8 둘러보기(L-B 분류 먼저, 11-11). 부스 목록 머리의 로미 말 상자.
-  /** 8-01 "A홀부터 D홀까지 부스 597곳이 있어요.\n어떤 분류부터 볼까요?" 홀이 하나면 "A홀에", 모르면 홀 없이. */
+  /**
+   * 8-01 "A홀부터 D홀까지 부스 597곳이 있어요.\n어떤 분류부터 볼까요?" 홀이 하나거나 모르면 홀 없이 쓴다.
+   * Figma에 홀 하나 문장이 없어 지어내지 않는다(iOS V1Copy.Romi.boothListIntro(_:halls:), Roam-ios #240).
+   */
   boothListIntro: (halls: string[], n: number) => {
-    const where =
-      halls.length > 1
-        ? `${halls[0]}부터 ${halls[halls.length - 1]}까지 `
-        : halls.length === 1
-          ? `${halls[0]}에 `
-          : "";
+    const where = halls.length > 1 ? `${halls[0]}부터 ${halls[halls.length - 1]}까지 ` : "";
     return `${where}부스 ${n}곳이 있어요.\n어떤 분류부터 볼까요?`;
   },
 } as const;
