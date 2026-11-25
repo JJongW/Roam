@@ -16,6 +16,12 @@ import {
   NAME_LINE_HEIGHT,
   NAME_WIDTH,
 } from "@/components/map/booth-label";
+import {
+  facilityBeside,
+  layoutFacilityInside,
+  type CenterRect,
+  type FacilityBeside,
+} from "@/components/map/facility-label";
 import { V2_NUM, V2_PX } from "@/styles/v2/lengths.generated";
 import { entranceMarkers, wcMarkers } from "./map-markers";
 import { heartCellLayout } from "./heart-cell";
@@ -37,6 +43,8 @@ import type { BoothListItem } from "@/lib/types";
  * - 하트 칸(UI 21 Q2 A, 2026-11-22): 칸이 화면에서 34×20 미만이면 하트를 칸 오른쪽 위에 작게 두고 이름은
  *   가운데, 그 이상이면 UI 부품 "상태=하트"처럼 하트(16)를 이름 왼쪽에(heart-cell.ts, heart-label.tsx).
  *   편의시설 칸은 회색 면(2994:813).
+ * - 시설 칸 이름(iOS `FacilityLabel`, 2026-11-25): 어절 단위로만 줄을 바꾸고 글자를 줄이거나 "…"을 붙이지 않는다.
+ *   칸 안에 안 들어가면 칸 바로 옆 빈 바닥에 쓰고(SDF 2026 A-05 무대 막대), 그래도 안 되면 그리지 않는다(facility-label.ts).
  * - 다녀온 칸(UI/지도/다녀온 칸 3002:4574)은 보통 칸 이름표 + 오른쪽 아래 체크. 하트보다 앞선다(6-02,
  *   섹션 8 "경험한 판정이 먼저").
  * - 도면 원본 색(존 색)은 쓰지 않는다. v2는 부스 칸 한 색이고 상태만 색으로 가른다.
@@ -99,6 +107,25 @@ export const MapLayerV2 = memo(function MapLayerV2({
   // 하트 칸 큰 모양을 재기 시작하는 단계(맞춤 배율의 한 옥타브 아래)와, 엔진이 단계를 적기 전에 쓸 단계.
   const fitLevel = fitScale && fitScale > 0 ? zoomLevel(fitScale) : 0;
 
+  // 칸 안에 이름이 안 들어가는 시설 칸은 칸 옆 빈 바닥에 쓴다. 덮으면 안 되는 칸은 도면의 모든 칸이다.
+  const besides = useMemo(() => {
+    const out: { booth: BoothListItem; beside: FacilityBeside }[] = [];
+    const facilities = booths.filter((b) => b.kind === "facility");
+    if (facilities.length === 0) return out;
+    const avoid: CenterRect[] = floorplan
+      ? floorplan.booths
+      : booths.map((b) => geomOf(b)).filter((g): g is MapRect => !!g);
+    for (const b of facilities) {
+      const g = geomOf(b);
+      if (!g) continue;
+      const swap = (labelQuarter + Math.round((g.rotate ?? 0) / 90)) % 2 !== 0;
+      if (layoutFacilityInside(b.name, swap ? g.h : g.w, swap ? g.w : g.h)) continue;
+      const beside = facilityBeside(b.name, g, avoid, hallRegions);
+      if (beside) out.push({ booth: b, beside });
+    }
+    return out;
+  }, [booths, floorplan, geomOf, hallRegions, labelQuarter]);
+
   return (
     <g>
       {floorplan?.backdrop && (
@@ -147,6 +174,31 @@ export const MapLayerV2 = memo(function MapLayerV2({
             // 하트 칸만 받는다. 맞춤 배율이 바뀌어도 나머지 칸은 다시 그리지 않는다.
             fitLevel={hearted ? fitLevel : undefined}
           />
+        );
+      })}
+
+      {besides.map(({ booth: b, beside }) => {
+        const isSel = b.id === selectedId;
+        const dim = highlightIds ? !highlightIds.has(b.id) && !isSel : false;
+        return (
+          <g
+            key={`beside-${b.id}`}
+            pointerEvents="none"
+            opacity={dim ? V2_NUM["opacity-map-dim"] : 1}
+            {...uprightAnchor(beside.rect.x, beside.rect.y)}
+          >
+            <text
+              x={beside.rect.x}
+              y={beside.rect.y}
+              fontSize={beside.fontSize}
+              textAnchor="middle"
+              dominantBaseline="central"
+              fill={isSel ? C("map-label-selected") : C("fg-neutral-muted")}
+              className={isSel ? "font-v2-ui font-v2-bold" : "font-v2-ui font-v2-regular"}
+            >
+              {b.name}
+            </text>
+          </g>
         );
       })}
 
@@ -444,22 +496,15 @@ function CellLabel({
   color: string;
   selected: boolean;
 }) {
-  const base = labelBaseUnits(cellW, cellH);
-  const inner = labelInner(cellW, cellH);
-  const center = booth.kind === "facility";
-  const layout = layoutBoothLabel(
-    booth.name,
-    base,
-    inner.w * NAME_WIDTH,
-    inner.h,
-    !center && !!booth.code,
-  );
-  const lineH = layout.fontSize * NAME_LINE_HEIGHT;
   const fontClass = selected
     ? "font-v2-ui font-v2-bold"
     : "font-v2-ui font-v2-regular";
 
-  if (center) {
+  // 시설 칸: 어절 단위로 칸 안에 다 들어갈 때만 가운데에 그린다. 안 들어가면 칸 옆(MapLayerV2) 아니면 그리지 않는다.
+  if (booth.kind === "facility") {
+    const layout = layoutFacilityInside(booth.name, cellW, cellH);
+    if (!layout) return null;
+    const lineH = layout.fontSize * NAME_LINE_HEIGHT;
     const top = (-lineH * layout.lines.length) / 2;
     return (
       <text
@@ -476,6 +521,17 @@ function CellLabel({
       </text>
     );
   }
+
+  const base = labelBaseUnits(cellW, cellH);
+  const inner = labelInner(cellW, cellH);
+  const layout = layoutBoothLabel(
+    booth.name,
+    base,
+    inner.w * NAME_WIDTH,
+    inner.h,
+    !!booth.code,
+  );
+  const lineH = layout.fontSize * NAME_LINE_HEIGHT;
 
   // 왼쪽 위 정렬: 번호 한 줄 + 이름(2994:798의 왼쪽 위 이름표).
   const padX = Math.min(w * 0.08, base * 0.6);

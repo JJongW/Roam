@@ -62,6 +62,7 @@ import { useAuthStore } from "@/lib/stores/auth";
 import { BoothCardV2 } from "@/components/map-v2/booth-card";
 import { HallSwitch } from "@/components/map-v2/hall-switch";
 import { MapCompass } from "@/components/map-v2/map-compass";
+import { isCardResult, searchMapBooths } from "@/components/map-v2/map-search";
 import { RomiAvatar } from "@/components/v2/romi-avatar";
 import { BackButton } from "@/components/v2/back-button";
 import { FLOORPLANS } from "@/lib/floorplans";
@@ -334,16 +335,12 @@ export function FairMapScreen({
   );
 
   const q = query.trim().toLowerCase();
-  const results = useMemo(() => {
-    if (!q) return [];
-    return booths.filter(
-      (b) =>
-        b.kind !== "facility" &&
-        [b.name, b.company, b.code, ...(b.aliases ?? [])].some((t) =>
-          t?.toLowerCase().includes(q),
-        ),
-    );
-  }, [booths, q]);
+  // 시설 칸도 찾는다(iOS FairMapModel.search). 부스 수(booth_count)에는 시설을 세지 않는다.
+  const results = useMemo(() => searchMapBooths(booths, q), [booths, q]);
+  const boothResultCount = useMemo(
+    () => results.filter(isCardResult).length,
+    [results],
+  );
 
   // F-B: 끝난 박람회는 남기신 곳만 밝게. 남긴 게 없으면 F-A(전부 보통). 편의시설 칩을 켜면 그쪽이 먼저다.
   const endedBright = useMemo(
@@ -1189,7 +1186,7 @@ export function FairMapScreen({
                   track("search_submit", {
                     screen: SCREEN.map,
                     exhibitionSlug: slug,
-                    props: { booth_count: results.length },
+                    props: { booth_count: boothResultCount },
                   });
                   if (results.length === 0)
                     track("search_zero_result", {
@@ -1310,6 +1307,12 @@ export function FairMapScreen({
               });
               setQuery("");
               setAmenity(null);
+              // 시설 칸은 카드가 없으니 고르지 않고 지도만 그 칸으로 다가간다(iOS focusOnResult).
+              if (!isCardResult(b)) {
+                setSelectedId(null);
+                focusIds([b.id], 2.5);
+                return;
+              }
               select(b.id, "search");
               focusBooth(b.id);
             }}
