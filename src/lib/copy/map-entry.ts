@@ -53,7 +53,7 @@ export const entryCopy = {
   /** 하트가 하나도 없을 때(37-B: 남긴 게 없으면 하트 얘기를 빼요) */
   picksListOnlyBodyNoHearts: "지도에서 켜면 고른 곳이 밝게 보여요.",
   /** 8-07 */
-  picksOnMap: "제가 고른 곳도 지도에 보여 드려요",
+  picksOnMap: "제가 고른 곳을 지도에 켰어요",
   picksOnMapBody: "밝은 곳 중 하트가 없는 곳이에요. 오늘만 켜 둘게요.",
   picksOnMapBodyNoHearts: "밝은 곳이 제가 고른 곳이에요. 오늘만 켜 둘게요.",
   listView: "목록으로 보기",
