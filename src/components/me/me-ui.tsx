@@ -34,7 +34,8 @@ export function MePage({
     <div className="min-h-dvh bg-v2-bg-layer-default font-v2-ui text-v2-fg-neutral">
       <div className="mx-auto flex w-full max-w-[var(--roam-v2-size-content-max-width)] flex-col pb-v2-x10">
         {back && (
-          <div className="flex items-center px-v2-x1-5 pt-safe">
+          // 스크롤해도 뒤로가 남게 위에 붙인다(부스 상세 머리와 같은 방식).
+          <div className="sticky top-0 z-20 flex items-center bg-v2-bg-layer-default px-v2-x1-5 pt-safe">
             <BackButton fallbackHref={back} />
           </div>
         )}
@@ -299,5 +300,5 @@ export function useHeartRemove(screen: ScreenId) {
       },
     });
   };
-  return { snack, close, remove };
+  return { snack, close, remove, show: setSnack };
 }

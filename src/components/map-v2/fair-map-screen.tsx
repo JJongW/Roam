@@ -1169,7 +1169,8 @@ export function FairMapScreen({
           <div className="pointer-events-auto flex w-full max-w-[var(--roam-v2-size-content-max-width)] items-center gap-v2-x2">
             <BackButton
               fallbackHref="/"
-              className="shrink-0 border border-v2-stroke-neutral-muted bg-v2-bg-layer-floating shadow-v2-s3"
+              // 아이콘 왼쪽 16(뒤로 표준): 줄 여백 16에서 단추 안 여백 10만큼 당긴다.
+              className="-ml-v2-x2-5 shrink-0 border border-v2-stroke-neutral-muted bg-v2-bg-layer-floating shadow-v2-s3"
             />
             <label className="flex min-w-0 flex-1 items-center gap-v2-x2 rounded-v2-pill border border-v2-stroke-neutral-muted bg-v2-bg-layer-floating px-v2-x3 py-v2-x2-5 shadow-v2-s3">
               <Search
@@ -1503,6 +1504,13 @@ export function FairMapScreen({
               boothId: b.id,
             });
             focusIds([b.id], 2.5);
+          }}
+          onPickLeft={(id) => {
+            // 7-03 남기신 것 줄: 지도에서 그 부스 카드(5-01, 6-02)를 연다.
+            setSheet(null);
+            setRomiPage("main");
+            select(id, "map");
+            focusBooth(id);
           }}
           onDoneForToday={() => setSheet("recap")}
           onClose={() => {

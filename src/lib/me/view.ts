@@ -10,6 +10,8 @@ export interface MeFair {
   /** YYYY-MM-DD */
   startDate: string;
   endDate: string;
+  /** 방문객이 지도를 열 수 있는지(lib/exhibition/openable.ts, UI 20). 모르면 비워 둔다. */
+  openable?: boolean;
 }
 
 export type FairPhase = "ongoing" | "upcoming" | "ended";

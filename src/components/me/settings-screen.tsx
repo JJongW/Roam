@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 import {
   BookOpen,
   Check,
@@ -13,6 +12,7 @@ import {
   UserRound,
 } from "lucide-react";
 import { BottomSheet } from "@/components/map-v2/bottom-sheet";
+import { queueSnackbar } from "@/components/v2/snackbar";
 import { useAuthStore } from "@/lib/stores/auth";
 import { isVisited, useVisitStore } from "@/lib/stores/visit";
 import { useBrandHeartStore, loadBrandHearts } from "@/lib/stores/brand-hearts";
@@ -110,7 +110,8 @@ export function SettingsScreen() {
             onClick={async () => {
               track("logout", { screen: SCREEN.logout });
               await logout();
-              toast(system.logoutDone);
+              // 15-10: 로그인 전 모양 마이페이지에서 v2 스낵바로 알린다(옛 sonner 토스트는 위 가운데에 다른 모양으로 떴다).
+              queueSnackbar(system.logoutDone);
               router.replace("/me");
             }}
             className="flex h-v2-x13 items-center justify-center rounded-v2-r3 bg-v2-bg-neutral-solid text-v2-t5 font-v2-bold text-v2-fg-on-neutral-solid active:bg-v2-bg-neutral-solid-pressed"

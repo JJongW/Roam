@@ -109,8 +109,10 @@ export function VisitedList({ fairs }: { fairs: FairInfo[] }) {
 
   return (
     <div className="min-h-dvh bg-v2-bg-layer-default font-v2-ui text-v2-fg-neutral">
-      <div className="flex items-center px-v2-x1-5 pt-safe">
-        <BackButton fallbackHref="/" />
+      {/* 6-10은 마이페이지(UI 14)에서 들어온다. 링크로 바로 들어왔으면 뒤로는 마이페이지로 간다.
+          스크롤해도 뒤로가 남게 위에 붙인다. */}
+      <div className="sticky top-0 z-20 flex items-center bg-v2-bg-layer-default px-v2-x1-5 pt-safe">
+        <BackButton fallbackHref="/me" />
       </div>
       <div className="flex flex-col gap-v2-x4 px-v2-x4 pb-v2-x6">
         <div className="flex flex-col gap-v2-x1">

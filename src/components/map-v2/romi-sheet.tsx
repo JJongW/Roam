@@ -38,7 +38,7 @@ export interface KnownInfo {
 
 /**
  * UI 7 로미 시트(R-A, 11-11). 지도 아래 로미 알약을 누르면 반쯤 올라온다.
- * - 7-01 남긴 것: 하트 남긴 곳, 다녀온 곳 → 7-03 목록 → 부스 상세(메모는 상세에서 쓴다).
+ * - 7-01 남긴 것: 하트 남긴 곳, 다녀온 곳 → 7-03 목록 → 지도 부스 카드(5-01, 6-02). 8-02 분류 속 줄과 같은 도착지다.
  * - 물어보기 칩: "'X' 가는 길"(UI 9), 이 지도에 있는 편의시설, "지금 어디인지 알려 주기".
  *   칩은 이 박람회에 실제로 있는 것만 보인다(없는 걸 묻게 하지 않는다).
  * - 12-01 맨 아래 "오늘은 여기까지 할게요": 열린 날에만 회고(12-02)로, 아니면 닫기만.
@@ -59,6 +59,7 @@ export function RomiSheet({
   onRoute,
   onFacility,
   onWhereFound,
+  onPickLeft,
   onDoneForToday,
   onClose,
   initialPage = "main",
@@ -76,6 +77,8 @@ export function RomiSheet({
   onRoute: (boothId: string) => void;
   onFacility: (id: AmenityId) => void;
   onWhereFound: (b: BoothListItem) => void;
+  /** 7-03 남기신 것 줄을 눌렀을 때: 시트를 닫고 지도에서 그 부스 카드를 연다. */
+  onPickLeft: (boothId: string) => void;
   onDoneForToday: () => void;
   onClose: () => void;
   /** 1-09 "지금 어디인지 알려 주기"는 바로 그 쪽으로, 8-04 "답 바꾸기"는 1-07로 연다. */
@@ -123,9 +126,10 @@ export function RomiSheet({
             ].filter(Boolean);
             return (
               <li key={b.id}>
-                <Link
-                  href={`/booths/${b.id}`}
-                  className="flex items-center gap-v2-x3 py-v2-x3 active:bg-v2-bg-transparent-pressed"
+                <button
+                  type="button"
+                  onClick={() => onPickLeft(b.id)}
+                  className="flex w-full items-center gap-v2-x3 py-v2-x3 text-left active:bg-v2-bg-transparent-pressed"
                 >
                   <span className="flex min-w-0 flex-1 flex-col gap-v2-x0-5 font-v2-medium">
                     <span className="truncate text-v2-t5 text-v2-fg-neutral">{b.name}</span>
@@ -141,7 +145,7 @@ export function RomiSheet({
                     aria-hidden
                     className="size-[var(--roam-v2-icon-size-md)] shrink-0 text-v2-fg-neutral-muted"
                   />
-                </Link>
+                </button>
               </li>
             );
           })}

@@ -4,12 +4,14 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { CalendarDays, Check, Heart, Settings } from "lucide-react";
 import { RomiAvatar } from "@/components/v2/romi-avatar";
-import { Snackbar } from "@/components/v2/snackbar";
+import { BackButton } from "@/components/v2/back-button";
+import { Snackbar, useQueuedSnackbar } from "@/components/v2/snackbar";
 import { MiniMap } from "@/components/booth-v2/mini-map";
 import { InboxBell } from "@/components/inbox/inbox-bell";
 import { useAuthStore } from "@/lib/stores/auth";
 import { FLOORPLANS } from "@/lib/floorplans";
 import { dayKo, label, system } from "@/lib/copy/v1";
+import { homeCopy } from "@/lib/copy/home";
 import { SCREEN, track } from "@/lib/analytics/app-track";
 import {
   fairDays,
@@ -35,14 +37,16 @@ import {
 
 /**
  * UI 14 마이페이지 첫 화면. 14-01(로그인 전), 14-03과 14-04(로그인 뒤), 14-06(하트가 없을 때).
- * - 하단 탭 바(14 공통)는 iOS 시스템 탭 자리다. 웹에는 탭 바가 없어 홈 머리의 사람 아이콘으로 들어온다.
+ * - 하단 탭 바(14 공통)는 iOS 시스템 탭 자리다. 웹에는 탭 바가 없어 홈 머리의 사람 아이콘으로 들어오고 머리의 뒤로로 나간다.
  * - 맨 위 박람회 카드의 넘김 점(여러 박람회 넘기기)은 아직 없다. 다음 박람회 한 장만 보인다.
  */
 export function MyPage({ fairs, today }: { fairs: MeFair[]; today: string }) {
   const user = useAuthStore((s) => s.user);
   const authReady = useAuthStore((s) => s.ready);
   const { loading, hearts, visited, heartCount, firstVisit } = useMyRecords(fairs, today);
-  const { snack, close, remove } = useHeartRemove(SCREEN.myPage);
+  const { snack, close, remove, show } = useHeartRemove(SCREEN.myPage);
+  // 15-10 로그아웃하고 돌아오면 "로그아웃했어요"를 이 화면 스낵바로 띄운다.
+  useQueuedSnackbar(show);
   // 11-10 M6: 끝난 박람회 평가 묻기. 홈 M3과 같은 카드, 같은 "나중에 할게요" 기억.
   const { ask, hideAsk } = useEndedEntry(fairs, today);
 
@@ -68,7 +72,11 @@ export function MyPage({ fairs, today }: { fairs: MeFair[]; today: string }) {
 
   return (
     <MePage>
-      <header className="flex h-v2-x11 items-center pl-v2-x4 pr-v2-x1-5 pt-safe">
+      {/* 홈으로 돌아가는 길. Figma 14 공통은 iOS 시스템 하단 탭(홈, 마이페이지)인데 웹에는 탭 바가 없고 홈 머리의
+          사람 아이콘으로 들어온다. 홈 화면에 앱으로 추가하면(manifest standalone) 브라우저 뒤로도 없어 막다른 화면이
+          됐다. 하위 화면과 같은 뒤로 버튼(아이콘 왼쪽 16)을 두고, 바로 들어왔으면 홈으로 간다. */}
+      <header className="flex h-v2-x11 items-center pl-v2-x1-5 pr-v2-x1-5 pt-safe">
+        <BackButton fallbackHref="/" />
         <h1 className="min-w-0 flex-1 truncate text-v2-t7 font-v2-bold tracking-v2-card-title">
           {user?.nickname ?? system.browsing}
         </h1>
@@ -163,13 +171,14 @@ export function MyPage({ fairs, today }: { fairs: MeFair[]; today: string }) {
               <div className="px-v2-x4">
                 <Card>
                   {upcoming.map((f) => (
+                    // 지도를 열 수 없는 박람회(UI 20)는 홈 줄처럼 "진행 예정"만 두고 누르지 않는다.
                     <InfoRow
                       key={f.id}
                       icon={CalendarDays}
                       title={f.name}
                       sub={`${dayKo(f.startDate)}, ${f.venue}`}
-                      value={label.seeMap}
-                      href={`/exhibitions/${f.slug}/map`}
+                      value={f.openable === false ? homeCopy.notOpen : label.seeMap}
+                      href={f.openable === false ? undefined : `/exhibitions/${f.slug}/map`}
                     />
                   ))}
                 </Card>
