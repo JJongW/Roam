@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Check, File, Heart, UserRound } from "lucide-react";
+import { File, Footprints, Heart, UserRound } from "lucide-react";
 import { api } from "@/lib/api/client";
 import { useAuthStore } from "@/lib/stores/auth";
 import { Snackbar, queueSnackbar, type SnackbarState } from "@/components/v2/snackbar";
@@ -81,7 +81,7 @@ export function DeleteAccount() {
       </div>
       <GroupLabel>{label.disappears}</GroupLabel>
       <InfoRow icon={Heart} title={label.goneHearts} />
-      <InfoRow icon={Check} title={label.goneVisits} />
+      <InfoRow icon={Footprints} title={label.goneVisits} />
       <InfoRow icon={File} title={label.memo} />
       <InfoRow icon={UserRound} title={label.nickname} />
 

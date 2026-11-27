@@ -2,10 +2,11 @@
 
 import { useEffect, useMemo } from "react";
 import Link from "next/link";
-import { Check, ChevronRight } from "lucide-react";
+import { ChevronRight, Footprints } from "lucide-react";
 import { BackButton } from "@/components/v2/back-button";
 import { RomiAvatar } from "@/components/v2/romi-avatar";
 import {
+  isHearted,
   isVisited,
   useVisitStore,
   type VerdictValue,
@@ -31,12 +32,14 @@ interface Row {
   name: string;
   code?: string;
   exhibitionId: string;
+  hearted: boolean;
   verdict?: VerdictValue;
   visitedAt?: string;
 }
 
 /**
- * UI 6-10 "다녀왔어요" 목록(Figma 3003:9490). 박람회별로 묶어 작은 지도(다녀온 칸만 진하게)와 부스 줄.
+ * UI 6-10 "다녀왔어요" 목록(Figma 3003:9490). 박람회별로 묶어 작은 지도(다녀온 칸은 초록 면, 하트도 남겼으면 오른쪽 위 하트,
+ * UI 26-F4)와 부스 줄. 부스 줄 아이콘은 선 발자국(UI 26-I1, 체크 아이콘은 쓰지 않는다, 2026-11-27 Ted).
  * - 원천: 이 기기의 기록(로그인하면 계정 노트가 합쳐진 것).
  * - 부스 이름: 로그인했으면 GET /api/me/notes?expand=booth 한 번(API A-1, PR #172). 거기 없는 것(아직 올라가지
  *   않은 기기 기록)과 로그인 전에는 부스마다 GET /api/booths/{id}를 6개씩 묶어 부른다.
@@ -67,6 +70,7 @@ export function VisitedList({ fairs }: { fairs: FairInfo[] }) {
           ...m,
           verdict: records[id]?.verdict,
           visitedAt: records[id]?.visitedAt,
+          hearted: isHearted(records[id]),
         };
       })
       .filter((r): r is Row => !!r);
@@ -173,6 +177,14 @@ export function VisitedList({ fairs }: { fairs: FairInfo[] }) {
                         rows.map((r) => r.code).filter((c): c is string => !!c),
                       )
                     }
+                    heartCodes={
+                      new Set(
+                        rows
+                          .filter((r) => r.hearted)
+                          .map((r) => r.code)
+                          .filter((c): c is string => !!c),
+                      )
+                    }
                   />
                   </div>
                 )}
@@ -217,8 +229,9 @@ export function VisitedList({ fairs }: { fairs: FairInfo[] }) {
                         }
                         className="flex w-full items-center gap-v2-x2-5 px-v2-x4 py-v2-x2-5 active:bg-v2-bg-neutral-weak"
                       >
-                        <Check
+                        <Footprints
                           aria-hidden
+                          data-icon="footprints"
                           className="size-[var(--roam-v2-icon-size-md)] shrink-0 text-v2-fg-neutral"
                         />
                         <span className="min-w-0 flex-1 truncate text-v2-t4 font-v2-medium">

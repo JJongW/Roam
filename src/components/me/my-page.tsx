@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-import { CalendarDays, Check, Heart, Settings } from "lucide-react";
+import { CalendarDays, Footprints, Heart, Settings } from "lucide-react";
 import { RomiAvatar } from "@/components/v2/romi-avatar";
 import { BackButton } from "@/components/v2/back-button";
 import { Snackbar, useQueuedSnackbar } from "@/components/v2/snackbar";
@@ -196,7 +196,7 @@ export function MyPage({ fairs, today }: { fairs: MeFair[]; today: string }) {
                     return (
                       <InfoRow
                         key={g.fair.id}
-                        icon={Check}
+                        icon={Footprints}
                         title={g.fair.name}
                         sub={first ? `${dayKo(first)}, ${g.fair.venue}` : g.fair.venue}
                         value={label.placesStat(g.rows.length)}

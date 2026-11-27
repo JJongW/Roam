@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Heart, Pencil } from "lucide-react";
+import { Footprints, Heart, Pencil } from "lucide-react";
 import { LineInput } from "@/components/v2/line-input";
 import { saveMemo } from "@/components/booth-v2/booth-actions";
 import { isHearted, isVisited, useVisitStore } from "@/lib/stores/visit";
@@ -13,7 +13,8 @@ import type { SnackbarState } from "@/components/v2/snackbar";
 /**
  * UI 6-05 "남기신 것"(Figma 3003:8964). 줄마다 아이콘 20, 글 시작점을 같게(UI/남긴 것 줄 3002:4544).
  * - 하트 줄: 하트를 남겼으면.
- * - 다녀온 줄: "오후 2시 20분에 다녀왔어요". 시각을 모르면(옛 기록) "다녀왔어요"만.
+ * - 다녀온 줄: "오후 2시 20분에 다녀왔어요". 시각을 모르면(옛 기록) "다녀왔어요"만. 아이콘은 선 발자국
+ *   (UI 26-I1, 하트 줄의 선 하트와 같은 결). 체크 아이콘은 쓰지 않는다(11-27 Ted).
  * - 메모 줄: 있으면 그 글, 없으면 "메모 한 줄 남기기"(brand 글자). 누르면 그 자리에서 고친다(6-07).
  * - 평가는 여기서 묻지 않는다(M1). 남긴 게 하나도 없어도 메모 줄은 남겨 둔다(쓸 자리가 있어야 한다).
  */
@@ -55,8 +56,9 @@ export function LeftSection({
       )}
       {isVisited(record) && (
         <p className={row}>
-          <Check
+          <Footprints
             aria-hidden
+            data-icon="footprints"
             className="size-[var(--roam-v2-icon-size-md)] shrink-0 text-v2-fg-neutral"
           />
           <span className="min-w-0 flex-1 text-v2-fg-neutral">

@@ -1,5 +1,5 @@
 import { memo, useMemo } from "react";
-import { Bath, Check } from "lucide-react";
+import { Bath, Heart } from "lucide-react";
 import type { MapLayerContext, MapRect } from "@/components/map/exhibition-map";
 import {
   LABEL_LEVELS_PER_OCTAVE,
@@ -26,6 +26,7 @@ import { V2_NUM, V2_PX } from "@/styles/v2/lengths.generated";
 import { entranceMarkers, wcMarkers } from "./map-markers";
 import { heartCellLayout } from "./heart-cell";
 import { HeartLabel } from "./heart-label";
+import { placeVisitedHeartName, type VisitedHeartName } from "./visited-heart-name";
 import type { BoothListItem } from "@/lib/types";
 
 /**
@@ -34,9 +35,16 @@ import type { BoothListItem } from "@/lib/types";
  * 엔진(ExhibitionMap)의 이동, 확대, 누르기는 그대로 쓰고 그림만 v2로 바꾼다.
  * - 색은 전부 v2 지도 토큰(map-floor, map-booth, map-booth-selected, map-booth-facility, map-label,
  *   map-entrance, stroke-neutral-weak). SVG라 `var(--roam-v2-color-*)`로 칠한다.
- * - 내 칸(UI 22 A + 내 부스 강조, 2026-11-24 Ted): 하트를 남긴 칸과 다녀온 칸은 map-booth-mine으로 칠하고
- *   그 위 이름, 하트, 체크는 map-label-mine, map-heart-mine, map-check-mine. 고른 칸과 편의시설 칸은 그대로.
+ * - 내 칸(UI 22 A + 내 부스 강조, 2026-11-24 Ted): 하트를 남긴 칸은 map-booth-mine으로 칠하고
+ *   그 위 이름, 하트는 map-label-mine, map-heart-mine. 고른 칸과 편의시설 칸은 그대로.
  *   라이트 값은 보통 칸과 거의 같고 다크에서만 갈린다(Roam-design docs/decisions/2026-11-24_다크-지도-내-부스-강조.md).
+ * - 다녀온 칸(UI 26-F4, 2026-11-27 Ted): 칸을 map-booth-visited 초록 면으로 칠한다. 체크 아이콘과 테두리는 쓰지 않고
+ *   칸 위에 아이콘을 올리지 않는다. 하트도 남겼으면 하트를 숨기지 않고 하트 칸 자리에 map-heart-mine으로, 이름은
+ *   map-label-mine으로 그린다(UI/지도/다녀온 칸 3002:4574, 3411:31726). 하트는 칸 크기와 상관없이 오른쪽 위에 짧은 변 ×
+ *   ratio.map-booth-heart-corner(0.3), 이름은 왼쪽 위에서 시작해 하트를 덮지 않게 둔다(visited-heart-name.ts, 번호 줄 없음,
+ *   글자 크기는 다른 칸과 같은 규칙, iOS `VisitedHeartName`과 같은 순서). 고른 칸은 map-booth-selected가 앞서고 하트는 흰색
+ *   (map-label-selected)이다. 다녀온 사실은 카드 알약이 보여 준다.
+ *   끝난 박람회(F-B)에서도 같은 초록이다(Roam-design docs/decisions/2026-11-27_지도-다녀온-칸-초록-면-발자국.md).
  * - 선 굵기와 둥글기는 v2 토큰의 px 값(V2_PX, tokens.css에서 기계로 뽑은 값)을 도면 단위로 쓴다.
  * - 글자 크기는 칸 크기에 맞춘다(booth-label.ts, iOS BoothLabel과 같은 규칙). 도면 단위가
  *   화면 px이 아니라서 t2(12) 같은 고정 크기를 쓰면 큰 도면에선 점, 작은 도면에선 넘친다.
@@ -45,14 +53,12 @@ import type { BoothListItem } from "@/lib/types";
  *   편의시설 칸은 회색 면(2994:813).
  * - 시설 칸 이름(iOS `FacilityLabel`, 2026-11-25): 어절 단위로만 줄을 바꾸고 글자를 줄이거나 "…"을 붙이지 않는다.
  *   칸 안에 안 들어가면 칸 바로 옆 빈 바닥에 쓰고(SDF 2026 A-05 무대 막대), 그래도 안 되면 그리지 않는다(facility-label.ts).
- * - 다녀온 칸(UI/지도/다녀온 칸 3002:4574)은 보통 칸 이름표 + 오른쪽 아래 체크. 하트보다 앞선다(6-02,
- *   섹션 8 "경험한 판정이 먼저").
  * - 도면 원본 색(존 색)은 쓰지 않는다. v2는 부스 칸 한 색이고 상태만 색으로 가른다.
  * - 칸 번호는 화면에서 t1(가장 작은 글자 눈금)보다 작아지는 배율에서 숨는다. 엔진이 적는
  *   라벨 단계를 보고 opacity로 잇는다(map-level 토큰). 이름은 어떤 배율에서도 숨기지 않는다
- *   (2026-10-15 결정, 11-21 Ted 다시 확인). 하트와 다녀온 체크도 늘 보인다.
+ *   (2026-10-15 결정, 11-21 Ted 다시 확인). 하트도 늘 보인다.
  * - 칸 하나하나는 memo다. 선택이나 하트가 바뀌면 그 칸만 다시 그린다.
- * - 지도를 돌려도(2026-11-23) 이름, 번호, 하트, 체크, 출입구와 화장실 표식, 길 안내 이름표는 바로 선다. 이 층은
+ * - 지도를 돌려도(2026-11-23) 이름, 번호, 하트, 출입구와 화장실 표식, 길 안내 이름표는 바로 선다. 이 층은
  *   축만 달아 두고(`uprightAnchor`) 엔진이 각도가 바뀔 때 그 요소에만 transform을 적어서, 돌리는 동안 다시 그리지 않는다.
  *   멈춘 각도가 90도 쪽이면(`labelQuarter` 홀수) 칸이 화면에서 세로와 가로가 바뀌므로 이름표를 바꾼 가로세로로 나눈다.
  */
@@ -159,7 +165,7 @@ export const MapLayerV2 = memo(function MapLayerV2({
         const facility = b.kind === "facility";
         const isSel = b.id === selectedId;
         const visited = !facility && !!visitedIds?.has(b.id);
-        const hearted = !facility && !visited && heartIds.has(b.id);
+        const hearted = !facility && heartIds.has(b.id);
         return (
           <BoothCell
             key={b.id}
@@ -172,7 +178,7 @@ export const MapLayerV2 = memo(function MapLayerV2({
             // 칸 자체 각도까지 더해 가장 가까운 사분면이 홀수면 이름표의 가로세로를 바꾼다. 바뀐 칸만 다시 그린다.
             swap={(labelQuarter + Math.round((g.rotate ?? 0) / 90)) % 2 !== 0}
             // 하트 칸만 받는다. 맞춤 배율이 바뀌어도 나머지 칸은 다시 그리지 않는다.
-            fitLevel={hearted ? fitLevel : undefined}
+            fitLevel={hearted && !visited ? fitLevel : undefined}
           />
         );
       })}
@@ -288,14 +294,17 @@ const BoothCell = memo(function BoothCell({
   const lcw = swap ? g.h : g.w;
   const lch = swap ? g.w : g.h;
   // 내 칸: 하트를 남긴 칸과 다녀온 칸(UI 22). 고른 칸과 편의시설 칸은 아니다(iOS `isMine`과 같다).
+  // 다녀온 칸은 초록 면(UI 26-F4), 하트만 남긴 칸은 map-booth-mine. 이름과 하트 색은 둘 다 내 칸 색이다.
   const mine = !isSel && !facility && (hearted || visited);
   const fill = isSel
     ? C("map-booth-selected")
     : facility
       ? C("map-booth-facility")
-      : mine
-        ? C("map-booth-mine")
-        : C("map-booth");
+      : visited
+        ? C("map-booth-visited")
+        : mine
+          ? C("map-booth-mine")
+          : C("map-booth");
   const text = isSel
     ? C("map-label-selected")
     : facility
@@ -303,9 +312,11 @@ const BoothCell = memo(function BoothCell({
       : mine
         ? C("map-label-mine")
         : C("map-label");
+  // 다녀온 칸의 하트는 오른쪽 위 고정(UI 26-F4, 3002:4574). 하트만 남긴 칸은 UI 21 Q2 A 두 모양 그대로.
+  const visitedHeart = hearted && visited;
   const heartCell = useMemo(
     () =>
-      hearted
+      hearted && !visited
         ? heartCellLayout(
             b.name,
             lcw,
@@ -315,7 +326,12 @@ const BoothCell = memo(function BoothCell({
             (fitLevel ?? 0) - LABEL_LEVELS_PER_OCTAVE,
           )
         : null,
-    [hearted, b.name, lcw, lch, lw, lh, fitLevel],
+    [hearted, visited, b.name, lcw, lch, lw, lh, fitLevel],
+  );
+  // 다녀온 하트 칸: 이름이 하트를 덮지 않는 자리(겹침 0, 글자 크기는 다른 칸과 같은 규칙).
+  const visitedName = useMemo(
+    () => (visitedHeart ? placeVisitedHeartName(b.name, lcw, lch, lw, lh) : null),
+    [visitedHeart, b.name, lcw, lch, lw, lh],
   );
   return (
     <g
@@ -333,7 +349,14 @@ const BoothCell = memo(function BoothCell({
         strokeWidth={stroke}
       />
       <g {...uprightAnchor(0, 0, g.rotate ?? 0)}>
-        {heartCell ? (
+        {visitedName ? (
+          <VisitedHeartLabel
+            clipId={`vh-${b.id}`}
+            place={visitedName}
+            nameColor={text}
+            heartColor={isSel ? C("map-label-selected") : C("map-heart-mine")}
+          />
+        ) : heartCell ? (
           <HeartLabel
             cell={heartCell}
             color={text}
@@ -351,17 +374,68 @@ const BoothCell = memo(function BoothCell({
             selected={isSel}
           />
         )}
-        {visited && (
-          <VisitedCheck
-            w={lw}
-            h={lh}
-            color={isSel ? C("map-label-selected") : C("map-check-mine")}
-          />
-        )}
       </g>
     </g>
   );
 });
+
+/**
+ * 다녀온 하트 칸의 이름과 오른쪽 위 하트(UI/지도/다녀온 칸 3411:31726). 자리는 visited-heart-name.ts가 정한다.
+ * 어림 폭과 실제 글꼴이 어긋나도 하트를 덮지 않게 하트 자리(+ 틈 반)를 글자 판에서 잘라 낸다(안전망, iOS와 같다).
+ */
+function VisitedHeartLabel({
+  clipId,
+  place,
+  nameColor,
+  heartColor,
+}: {
+  clipId: string;
+  place: VisitedHeartName;
+  nameColor: string;
+  heartColor: string;
+}) {
+  const { layout, origin, heart, gap } = place;
+  const lineH = layout.fontSize * NAME_LINE_HEIGHT;
+  const big = 1e6;
+  const hx = heart.x - gap / 2;
+  const hy = heart.y - gap / 2;
+  const hw = heart.w + gap;
+  const hh = heart.h + gap;
+  return (
+    <>
+      <clipPath id={clipId}>
+        <path
+          clipRule="evenodd"
+          d={`M${-big} ${-big}H${big}V${big}H${-big}Z M${hx} ${hy}H${hx + hw}V${hy + hh}H${hx}Z`}
+        />
+      </clipPath>
+      <text
+        data-mark="visited-heart-name"
+        clipPath={`url(#${clipId})`}
+        textAnchor="start"
+        dominantBaseline="central"
+        fill={nameColor}
+        fontSize={layout.fontSize}
+        className="font-v2-ui font-v2-bold"
+      >
+        {layout.lines.map((line, i) => (
+          <tspan key={i} x={origin.x} y={origin.y + lineH * (i + 0.5)}>
+            {line}
+          </tspan>
+        ))}
+      </text>
+      <Heart
+        data-mark="visited-heart"
+        x={heart.x}
+        y={heart.y}
+        width={heart.w}
+        height={heart.h}
+        fill={heartColor}
+        stroke={heartColor}
+      />
+    </>
+  );
+}
 
 /**
  * 길 안내 선(지도 토큰 map-route). 굵기와 이름표는 맞춘 배율에서 화면 px로 읽히는 크기다(출입구 표식과
@@ -447,30 +521,6 @@ function RouteLine({ route, ctx }: { route: RouteOverlay; ctx: MapLayerContext }
         </>
       )}
     </g>
-  );
-}
-
-/** 다녀온 칸 오른쪽 아래 체크. 하트 칸 하트와 같은 크기 규칙(칸 크기에 맞춘다). */
-function VisitedCheck({
-  w,
-  h,
-  color,
-}: {
-  w: number;
-  h: number;
-  color: string;
-}) {
-  const base = labelBaseUnits(w, h);
-  const size = Math.min(base * 1.4, h * 0.35);
-  const pad = Math.min(w * 0.08, base * 0.6);
-  return (
-    <Check
-      x={w / 2 - pad - size}
-      y={h / 2 - pad - size}
-      width={size}
-      height={size}
-      stroke={color}
-    />
   );
 }
 

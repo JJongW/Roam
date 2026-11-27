@@ -66,6 +66,7 @@
   --color-v2-map-booth: var(--roam-v2-color-map-booth);
   --color-v2-map-floor: var(--roam-v2-color-map-floor);
   --color-v2-map-booth-mine: var(--roam-v2-color-map-booth-mine);
+  --color-v2-map-booth-visited: var(--roam-v2-color-map-booth-visited);
   --color-v2-map-booth-pressed: var(--roam-v2-color-map-booth-pressed);
   --color-v2-map-booth-selected: var(--roam-v2-color-map-booth-selected);
   --color-v2-map-booth-facility: var(--roam-v2-color-map-booth-facility);
