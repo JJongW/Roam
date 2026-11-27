@@ -8,7 +8,7 @@ import { RomiAvatar } from "@/components/v2/romi-avatar";
 import { HeartButton } from "@/components/v2/heart-button";
 import { VisitedPill } from "@/components/v2/visited-pill";
 import { CategoryChip } from "@/components/v2/category-chip";
-import { Snackbar } from "@/components/v2/snackbar";
+import { Snackbar, type SnackbarState } from "@/components/v2/snackbar";
 import { useBoothSignals } from "@/components/booth-v2/booth-actions";
 import { label, system } from "@/lib/copy/v1";
 import { SCREEN, track } from "@/lib/analytics/app-track";
@@ -24,6 +24,8 @@ import type { BoothRecord } from "@/lib/stores/visit";
  * - 길 안내(UI 9): 열린 날이고 배치도가 있을 때만 "길 안내" 버튼(`onRoute`). 원할 때만 쓰는 도구다(§4).
  * - 9-06 도착하면 위치 줄 아래 "A홀 A13 도착했어요, 천천히 둘러보세요"(`arrivedLine`). 다녀왔어요는 켜지 않는다.
  * - 8-08 로미가 고른 곳을 지도에 켜 두었을 때 고른 부스면 위치 줄 아래 고른 이유 한 줄(`pickReason`, 확인된 이유만).
+ * - 확인 알림(하트 뺀 뒤, 다녀왔어요 끈 뒤의 되돌리기)은 `onConfirm`으로 지도 화면 위 토스트에 맡긴다(2026-11-27 Ted).
+ *   카드 위 아래 자리는 다음 부스를 누르는 자리라 비운다. 로그인 제안(5-02, 5-03 A/B)만 카드가 그린다.
  * - 둥글기는 카드 시험값 1(16). iOS V2Radius.card와 같다(Ted 확정 전, 미정).
  */
 export function BoothCardV2({
@@ -37,6 +39,8 @@ export function BoothCardV2({
   arrivedLine,
   pickReason,
   beforeOpen,
+  onConfirm,
+  onLoginPrompt,
 }: {
   booth: BoothListItem;
   hallName?: string;
@@ -51,6 +55,10 @@ export function BoothCardV2({
   pickReason?: string;
   /** 10-02 열리기 전: 아직 다녀올 수 없으니 다녀왔어요 알약을 두지 않는다. 하트는 미리 남길 수 있다. */
   beforeOpen?: boolean;
+  /** 확인 알림을 띄울 곳(지도 위 토스트). 없으면 카드 위에 스낵바로 둔다. */
+  onConfirm?: (s: Omit<SnackbarState, "key">) => void;
+  /** 로그인 제안이 뜰 때. 지도 화면이 위 토스트를 내린다(한 번에 하나, 섹션 33). */
+  onLoginPrompt?: () => void;
 }) {
   const s = useBoothSignals({
     boothId: booth.id,
@@ -59,6 +67,7 @@ export function BoothCardV2({
     screen: SCREEN.boothCard,
     exhibitionSlug,
     onVisitMarked,
+    onConfirm,
   });
   const where = label.hallNumber(hallName, booth.code);
   // 5-02 / 5-03 로그인 제안 자리 A/B(11-11 Ted, 위 선호). 기기마다 한쪽으로 고정하고 로그인 탭 비율로 고른다.
@@ -72,6 +81,7 @@ export function BoothCardV2({
   const loginScreen = position === "top" ? SCREEN.loginPromptTop : SCREEN.boothCard;
   useEffect(() => {
     if (!isLoginPrompt) return;
+    onLoginPrompt?.();
     track("login_prompt_shown", {
       screen: loginScreen,
       exhibitionSlug,
