@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   BookOpen,
-  Check,
+  Footprints,
   Heart,
   LogOut,
   ShieldCheck,
@@ -80,7 +80,7 @@ export function SettingsScreen() {
         />
       )}
       <InfoRow
-        icon={Check}
+        icon={Footprints}
         title={label.visited}
         value={visitedFairs > 0 ? label.fairsStat(visitedFairs) : undefined}
         href="/visited"

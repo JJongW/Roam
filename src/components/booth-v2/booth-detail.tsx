@@ -5,8 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   AtSign,
-  Check,
   ChevronRight,
+  Footprints,
   Globe,
   MapPin,
   ShoppingBag,
@@ -334,9 +334,12 @@ export function BoothDetailV2({
                   : "border-v2-stroke-neutral-muted bg-v2-bg-layer-floating text-v2-fg-neutral active:bg-v2-bg-layer-floating-pressed",
               )}
             >
+              {/* 켜면 채운 발자국(UI 26-I1). 체크 아이콘은 쓰지 않는다(11-27 Ted). */}
               {s.visited && (
-                <Check
+                <Footprints
                   aria-hidden
+                  data-icon="footprints"
+                  fill="currentColor"
                   className="size-[var(--roam-v2-icon-size-sm)]"
                 />
               )}

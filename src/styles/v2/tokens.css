@@ -159,6 +159,7 @@
   --roam-v2-color-map-booth: #f3f4f5;
   --roam-v2-color-map-floor: #ffffff;
   --roam-v2-color-map-booth-mine: #f3f4f5;
+  --roam-v2-color-map-booth-visited: #42c593;
   --roam-v2-color-map-booth-pressed: #eeeff1;
   --roam-v2-color-map-booth-selected: #4f46e5;
   --roam-v2-color-map-booth-facility: #dcdee3;
@@ -535,6 +536,7 @@
   --roam-v2-color-map-booth: #5b606a;
   --roam-v2-color-map-floor: #1d2025;
   --roam-v2-color-map-booth-mine: #b0b3ba;
+  --roam-v2-color-map-booth-visited: #22b27f;
   --roam-v2-color-map-booth-pressed: #393d46;
   --roam-v2-color-map-booth-selected: #6a70f8;
   --roam-v2-color-map-booth-facility: #393d46;

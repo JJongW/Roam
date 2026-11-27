@@ -1,12 +1,14 @@
 "use client";
 
-import { Check } from "lucide-react";
+import { Footprints } from "lucide-react";
 import { clsx } from "clsx";
 import { label } from "@/lib/copy/v1";
 
 /**
  * UI/다녀왔어요 알약(Figma 2991:654) — 카드 윗선 오른쪽에 걸친다(V4, 11-10).
- * 현장에서는 체크만, 평가는 나중에 로미가 묻는다. 켜면 브랜드색 면(iOS VisitedPill과 같다).
+ * 현장에서는 누르기만, 평가는 나중에 로미가 묻는다. 켜면 브랜드색 면(iOS VisitedPill과 같다).
+ * 아이콘은 발자국(UI 26-I1, Lucide Footprints, 2026-11-27 Ted). 끔은 선, 켬은 채움(아이콘 셋 v2 04).
+ * 체크 아이콘은 쓰지 않는다(Roam-design docs/decisions/2026-11-27_지도-다녀온-칸-초록-면-발자국.md).
  */
 export function VisitedPill({
   on,
@@ -30,7 +32,12 @@ export function VisitedPill({
         className,
       )}
     >
-      <Check aria-hidden className="size-[var(--roam-v2-icon-size-sm)]" />
+      <Footprints
+        aria-hidden
+        data-icon="footprints"
+        fill={on ? "currentColor" : "none"}
+        className="size-[var(--roam-v2-icon-size-sm)]"
+      />
       {label.visited}
     </button>
   );

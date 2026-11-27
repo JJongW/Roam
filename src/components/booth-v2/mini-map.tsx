@@ -1,11 +1,13 @@
 import type { Floorplan } from "@/lib/floorplans";
+import { heartCorner } from "@/components/map/booth-label";
 import { V2_PX } from "@/styles/v2/lengths.generated";
 
 const C = (name: string) => `var(--roam-v2-color-${name})`;
 
 /**
  * 작은 지도(Figma 3045:18454 홀 벽 + UI/지도/작은 칸). 표시할 칸이 든 홀만 잘라 그린다.
- * - visited: 다녀온 칸은 진하게, 부스 번호(6-10, UI/지도/작은 다녀온 칸 3003:9489).
+ * - visited: 다녀온 칸은 초록 면(map-booth-visited)과 부스 번호(6-10, 12-06, UI/지도/작은 다녀온 칸 3411:31744,
+ *   2026-11-27 Ted UI 26-F4). 하트도 남긴 칸(`heartCodes`)은 오른쪽 위에 짧은 변 0.3 크기 하트(map-heart-mine).
  * - heart: 하트 남긴 칸은 브랜드 옅은 바탕과 테두리, 오른쪽 아래 작은 하트(14-01, 14-05, UI/지도/작은 칸 2992:781).
  *   "이름 없이 칸과 하트만"(Figma 설명).
  */
@@ -13,10 +15,13 @@ export function MiniMap({
   floorplan,
   codes,
   mode = "visited",
+  heartCodes,
 }: {
   floorplan: Floorplan;
   codes: Set<string>;
   mode?: "visited" | "heart";
+  /** visited에서 하트도 남긴 칸 번호. 오른쪽 위에 하트를 둔다. */
+  heartCodes?: Set<string>;
 }) {
   const marked = floorplan.booths.filter((b) => codes.has(b.code));
   if (marked.length === 0) return null;
@@ -64,7 +69,7 @@ export function MiniMap({
           ? C("map-booth")
           : mode === "heart"
             ? C("bg-brand-weak")
-            : C("bg-neutral-solid");
+            : C("map-booth-visited");
         const stroke = !on
           ? C("stroke-neutral-weak")
           : mode === "heart"
@@ -94,17 +99,20 @@ export function MiniMap({
                 fontSize={cellH * 0.35}
                 textAnchor="middle"
                 dominantBaseline="central"
-                fill={C("fg-neutral-inverted")}
+                fill={C("map-label-mine")}
                 className="font-v2-ui font-v2-regular"
               >
                 {b.code}
               </text>
             )}
+            {on && mode === "visited" && heartCodes?.has(b.code) && (
+              <VisitedHeart b={b} />
+            )}
             {on && mode === "heart" && (
               // lucide "heart"(Figma icon/heart Fill). 24 그리드 경로를 칸 오른쪽 아래에 줄여 둔다.
               <path
                 transform={`translate(${b.x + b.w / 2 - heart * 1.5} ${b.y + b.h / 2 - heart * 1.5}) scale(${heart / 24})`}
-                d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"
+                d={HEART_PATH}
                 fill={C("fg-brand")}
               />
             )}
@@ -112,5 +120,23 @@ export function MiniMap({
         );
       })}
     </svg>
+  );
+}
+
+const HEART_PATH =
+  "M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5";
+
+/** 작은 다녀온 칸 오른쪽 위 하트(3411:31744). 지도 다녀온 칸과 같은 자리 규칙(heartCorner, 짧은 변 0.3). */
+function VisitedHeart({ b }: { b: { x: number; y: number; w: number; h: number } }) {
+  const w = Math.max(4, b.w - 4);
+  const h = Math.max(4, b.h - 4);
+  const c = heartCorner(w, h);
+  return (
+    <path
+      data-mark="visited-heart"
+      transform={`translate(${b.x + c.x} ${b.y + c.y}) scale(${c.size / 24})`}
+      d={HEART_PATH}
+      fill={C("map-heart-mine")}
+    />
   );
 }
