@@ -75,10 +75,8 @@ import {
   isVisited,
   pushNote,
   useVisitStore,
-  type BoothRecord,
   type VerdictValue,
 } from "@/lib/stores/visit";
-import { RomiLineCard } from "@/components/map-v2/romi-line-card";
 import { TodaySheet, isToday } from "@/components/map-v2/today-sheet";
 import { restoreRecord } from "@/components/booth-v2/booth-actions";
 import { Snackbar, type SnackbarState } from "@/components/v2/snackbar";
@@ -218,13 +216,6 @@ export function FairMapScreen({
     );
   }, [records, hydrated]);
 
-  // 6-03 로미 줄: 카드 알약으로 다녀왔어요를 켠 직후. 되돌리기는 켜기 전 기록(평가까지)으로 돌린다.
-  const [remembered, setRemembered] = useState<{
-    boothId: string;
-    name: string;
-    before: BoothRecord | undefined;
-  } | null>(null);
-  const clearRemembered = useCallback(() => setRemembered(null), []);
   // 6-04 오늘 다녀온 곳: 이 박람회에서 오늘 다녀온 부스가 있을 때만 입구를 보인다.
   const [todayOpen, setTodayOpen] = useState(false);
   // UI 7 로미 시트, 12 회고, 9 길 안내, 7-05 장소 답(지금 어디, 편의시설)
@@ -248,6 +239,17 @@ export function FairMapScreen({
   const routeOnArrival = !!initialRoute && !!initialFocusId && canRoute;
   const [snack, setSnack] = useState<SnackbarState | null>(null);
   const closeSnack = useCallback(() => setSnack(null), []);
+  // 지도 위 토스트(2026-11-27 Ted): 부스 카드에서 생긴 확인 알림(6-03 다녀왔어요 켠 뒤, 6-06 끈 뒤, 5-08 하트 뺀 뒤)은
+  // 찾기 띠 바로 아래 8에 뜬다. 아래는 다음 부스를 고르고 다녀왔어요를 누르는 자리라 비운다. 새 알림은 앞 알림을 바꾼다.
+  const [toast, setToast] = useState<SnackbarState | null>(null);
+  const closeToast = useCallback(() => setToast(null), []);
+  const showToast = useCallback(
+    (x: Omit<SnackbarState, "key">) => {
+      setSnack(null); // 한 번에 하나(섹션 33)
+      setToast({ ...x, key: Date.now() });
+    },
+    [],
+  );
 
   // UI 1 첫 진입. 상태는 이 브라우저 `roam.fair.<slug>`(iOS와 같은 키).
   const moodList = useMemo(() => moodBooths(booths), [booths]);
@@ -797,7 +799,7 @@ export function FairMapScreen({
     });
     setSheet(null);
     setAnswer(null);
-    setRemembered(null);
+    setToast(null);
     setArrivedId(null);
     setSelectedId(null);
     setRoute({
@@ -1361,6 +1363,13 @@ export function FairMapScreen({
           )}
         </div>
 
+        {/* 확인 알림 토스트: 띠(topRef) 바로 아래 gap 8. 지도 크기(insets)는 띠만 재므로 바뀌지 않는다. */}
+        <Snackbar
+          state={toast}
+          onClose={closeToast}
+          className="w-full max-w-[var(--roam-v2-size-content-max-width)]"
+        />
+
         {q && (
           <SearchResults
             query={query.trim()}
@@ -1423,36 +1432,27 @@ export function FairMapScreen({
         className="pointer-events-none absolute inset-x-0 bottom-0 z-20 px-v2-x4 pb-safe md:pb-v2-x2"
       >
         <div className="w-full max-w-[var(--roam-v2-size-content-max-width)]">
-          {q ? null : remembered ? (
-            <div className="flex w-full flex-col pb-v2-x2">
-              <RomiLineCard
-                key={remembered.boothId}
-                title={romi.visitRemembered(remembered.name)}
-                sub={romi.visitLaterNote}
-                onDone={clearRemembered}
-                onAction={() => {
-                  restoreRecord(remembered.boothId, remembered.before);
-                  track("visit_undo", {
-                    screen: SCREEN.visitRemembered,
-                    exhibitionSlug: slug,
-                    boothId: remembered.boothId,
-                    props: { surface: "card" },
-                  });
-                  setRemembered(null);
-                  setSelectedId(remembered.boothId);
-                }}
-              />
-            </div>
-          ) : showCard ? (
+          {q ? null : showCard ? (
             <BoothCardV2
               onVisitMarked={(before) => {
-                setRemembered({
-                  boothId: selected.id,
-                  name: selected.name,
-                  before,
+                // 6-03: 카드는 그대로 두고(다음 부스를 바로 고를 수 있게) 위 토스트로 알린다. 문구는 로미 줄과 같다.
+                const boothId = selected.id;
+                showToast({
+                  message: `${romi.visitRemembered(selected.name)}\n${romi.visitLaterNote}`,
+                  actionLabel: label.undo,
+                  onAction: () => {
+                    restoreRecord(boothId, before);
+                    track("visit_undo", {
+                      screen: SCREEN.visitRemembered,
+                      exhibitionSlug: slug,
+                      boothId,
+                      props: { surface: "card" },
+                    });
+                  },
                 });
-                setSelectedId(null);
               }}
+              onConfirm={showToast}
+              onLoginPrompt={closeToast}
               key={selected.id}
               booth={selected}
               onRoute={
@@ -1537,7 +1537,10 @@ export function FairMapScreen({
           booths={todayBooths}
           exhibitionSlug={slug}
           onClose={() => setTodayOpen(false)}
-          show={(x) => setSnack({ ...x, key: Date.now() })}
+          show={(x) => {
+            setToast(null);
+            setSnack({ ...x, key: Date.now() });
+          }}
         />
       )}
       {pickPreview && pickBooth && currentPick && (
