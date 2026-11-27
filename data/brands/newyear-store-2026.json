@@ -3,8 +3,8 @@
   "exhibitionSlug": "newyear-store-2026",
   "source": {
     "url": "https://www.newyear-store.com/program/brands",
-    "collectedAt": "2026-11-19",
-    "note": "주최 측 공식 사이트 브랜드 소개 원문. 인스타는 다른 행사 기록, 브랜드 소개글, 네이버 검색(영문 이름 일치)으로 확인한 46곳만. 2026-11-19 다시 대조해 새로 올라온 11곳(ny-285, ny-296, ny-301, ny-304~311)을 더하고 ny-261 이름을 사이트 표기 어떤우주로 고침. 2026-11-20 Ted 결정: ny-285 뷰릿은 기존 브랜드에 잇고, 사이트에서 빠진 ny-200 fabric은 뺌, 바뀐 소개 3, 분류 5, 사진 5는 사이트 값으로"
+    "collectedAt": "2026-11-27",
+    "note": "주최 측 공식 사이트 브랜드 소개 원문. 인스타는 다른 행사 기록, 브랜드 소개글, 네이버 검색(영문 이름 일치)으로 확인한 46곳만. 2026-11-19 다시 대조해 새로 올라온 11곳(ny-285, ny-296, ny-301, ny-304~311)을 더하고 ny-261 이름을 사이트 표기 어떤우주로 고침. 2026-11-20 Ted 결정: ny-285 뷰릿은 기존 브랜드에 잇고, 사이트에서 빠진 ny-200 fabric은 뺌, 바뀐 소개 3, 분류 5, 사진 5는 사이트 값으로. 2026-11-27 다시 대조: 새로 올라온 ny-312 걱정말랑상점을 더함, ny-165 무드디스크 mood.disk와 ny-265 대한무역투자진흥공사는 사이트 표기로 이름을 고침, ny-147 소개와 ny-140, ny-160, ny-302 사진은 사이트 값으로. 사이트에서 빠진 ny-95 포그모그는 Ted 판단 전이라 둠"
   },
   "brands": [
     {
@@ -46,7 +46,7 @@
       },
       "photos": [
         {
-          "path": "/booths/newyear-store-2026/NY302_1.webp",
+          "path": "/booths/newyear-store-2026/NY302_2.webp",
           "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
         }
       ],
@@ -825,11 +825,11 @@
     },
     {
       "key": "ny-265",
-      "name": "대한투자무역진흥공사",
+      "name": "대한무역투자진흥공사",
       "company": "대한무역투자진흥공사",
       "aliases": [
         "KOTRA",
-        "대한무역투자진흥공사"
+        "대한투자무역진흥공사"
       ],
       "instagramUrl": "https://www.instagram.com/kotra_global/",
       "intro": {
@@ -3020,10 +3020,11 @@
     },
     {
       "key": "ny-165",
-      "name": "mood.disk",
+      "name": "무드디스크 mood.disk",
       "company": "무드디스크",
       "aliases": [
-        "무드디스크"
+        "무드디스크",
+        "mood.disk"
       ],
       "intro": {
         "text": "mood.disk는 작은 질문과 퀘스트를 통해 기록을 시작하고, 책으로 엮어 간직하는 일까지 이어갑니다.\n오늘의 기록이 언젠가 책이 되도록,\n2027년에는 나만의 디스크북을 완성해보세요.",
@@ -3160,15 +3161,15 @@
       },
       "photos": [
         {
-          "path": "/booths/newyear-store-2026/NY160_1.webp",
+          "path": "/booths/newyear-store-2026/NY160_4.webp",
           "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
         },
         {
-          "path": "/booths/newyear-store-2026/NY160_2.webp",
+          "path": "/booths/newyear-store-2026/NY160_5.webp",
           "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
         },
         {
-          "path": "/booths/newyear-store-2026/NY160_3.webp",
+          "path": "/booths/newyear-store-2026/NY160_6.webp",
           "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
         }
       ],
@@ -3444,7 +3445,7 @@
       "key": "ny-147",
       "name": "하루치",
       "intro": {
-        "text": "오늘 내가 해낼 수 있는 하루치만큼 차곡차곡! 까칠했던 까냥이가 최고의 셰프가 되기 위해 노력하는 일 년의 이야기를 소개합니다. 매달 새로 만나는 12마리의 동물 친구들과 맛있는 음식을 나누며, 행복은 늘 가까운 곳에 있다는 걸 깨닫게 됩니다. [하루치]와 함께 내가 해낼 수 있는 오늘을 채워가며, 성장하는 한 해를 만들어가요!",
+        "text": "오늘 내가 해낼수 있는 하루치만큼 차곡차곡! 까칠했던 까실이가 최고의 셰프가 되기 위해 노력하는 일 년의 이야기를 소개합니다. 매달 새로 만나는 12마리의동물 친구들과 맛있는 음식을 나누며, 행복은 늘 가까운 곳에 있다는 걸 깨닫게 됩니다. [하루치]와 함께 내가 해낼 수 있는 오늘을 채워가며, 성장하는 한 해를 만들어가요!",
         "status": "collected",
         "source": "https://www.newyear-store.com/program/brands (브랜드 147)"
       },
@@ -3622,7 +3623,7 @@
       },
       "photos": [
         {
-          "path": "/booths/newyear-store-2026/NY140_1.webp",
+          "path": "/booths/newyear-store-2026/NY140_3.webp",
           "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
         },
         {
@@ -6425,6 +6426,35 @@
         }
       ],
       "category": "취미/웰니스"
+    },
+    {
+      "key": "ny-312",
+      "name": "걱정말랑상점",
+      "company": "동아일보 몰댄룩",
+      "aliases": [
+        "Good News Haus",
+        "동아일보 몰댄룩"
+      ],
+      "intro": {
+        "text": "‘어, 이거 귀여운데?’ 하는 마음도 굿뉴스니까!\n\n동아일보 막내들이 운영하는 몰댄룩 매거진에서,\n일상 속 Good News를 디깅하고 공유합니다.\n\n걱정은 가볍게, 마음은 말랑~하게 만들어보세요!",
+        "status": "collected",
+        "source": "https://www.newyear-store.com/program/brands (브랜드 312)"
+      },
+      "photos": [
+        {
+          "path": "/booths/newyear-store-2026/NY312_1.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY312_2.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY312_3.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        }
+      ],
+      "category": "불안/걱정"
     }
   ]
 }

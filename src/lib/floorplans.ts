@@ -10,6 +10,7 @@ import ha from "@/lib/floorplan-house-archive.json";
 import mlm from "@/lib/floorplan-magok-livingmarket.json";
 import siwse from "@/lib/floorplan-siwse-magok.json";
 import sdf2026 from "@/lib/floorplan-sdf-2026.json";
+import newyearStore2026 from "@/lib/floorplan-newyear-store-2026.json";
 // exporum 배치도 API에서 변환(scripts/floorplan-from-exporum.mjs). 코엑스 전관 두 층을
 // 한 지도에 세로로 쌓았고 venue 합성을 거치지 않는다 — API 좌표가 곧 도면이다.
 import cafeshow from "@/lib/floorplan-cafeshow-2026.json";
@@ -22,6 +23,7 @@ import coexHallB1 from "@/lib/venues/coex-hall-b1.json";
 import coexHallB2 from "@/lib/venues/coex-hall-b2.json";
 import coexHallD from "@/lib/venues/coex-hall-d.json";
 import coexMagok1F from "@/lib/venues/coex-magok-1f.json";
+import kintex2Hall6 from "@/lib/venues/kintex-2-hall-6.json";
 import { composeFloorplan, type Layout, type Venue } from "@/lib/floorplan/compose";
 
 export interface FloorplanBooth {
@@ -337,6 +339,7 @@ const VENUES: Record<string, Venue> = {
   "coex-hall-d": coexHallD as Venue,
   "coex-platz": coexPlatz as Venue,
   "coex-magok-1f": coexMagok1F as Venue,
+  "kintex-2-hall-6": kintex2Hall6 as Venue,
 };
 
 function compose(layout: unknown): Floorplan {
@@ -354,6 +357,7 @@ export const VENUE_OF: Record<string, Venue> = {
   "magok-livingmarket-2026": VENUES[(mlm as { venue: string }).venue],
   "siwse-magok-2026": VENUES[(siwse as { venue: string }).venue],
   "sdf-2026": VENUES[(sdf2026 as { venue: string }).venue],
+  "newyear-store-2026": VENUES[(newyearStore2026 as { venue: string }).venue],
 };
 
 export const FLOORPLANS: Record<string, Floorplan> = {
@@ -363,6 +367,7 @@ export const FLOORPLANS: Record<string, Floorplan> = {
   "magok-livingmarket-2026": compose(mlm),
   "siwse-magok-2026": compose(siwse),
   "sdf-2026": compose(sdf2026),
+  "newyear-store-2026": compose(newyearStore2026),
   "cafeshow-2026": cafeshow as unknown as Floorplan,
   "ddp-designfair-2026": ddpDesignfair as unknown as Floorplan,
   "seoul-furniture-show-2026": seoulFurnitureShow as unknown as Floorplan,
