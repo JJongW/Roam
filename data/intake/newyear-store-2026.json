@@ -1,0 +1,5114 @@
+{
+  "version": 1,
+  "exhibitionSlug": "newyear-store-2026",
+  "booths": [
+    {
+      "code": "A01",
+      "name": "그림 그리는 에이치h",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "aliases": [
+        "그림그리는 에이치"
+      ],
+      "instagramUrl": "https://www.instagram.com/aitch8h/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY152.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY152_1.webp"
+      ]
+    },
+    {
+      "code": "A02",
+      "name": "김진주 KIM JINJOO",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "aliases": [
+        "김진주"
+      ],
+      "instagramUrl": "https://www.instagram.com/dingdookim/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY177.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY177_1.webp",
+        "/booths/newyear-store-2026/NY177_2.webp",
+        "/booths/newyear-store-2026/NY177_3.webp"
+      ]
+    },
+    {
+      "code": "A03",
+      "name": "도깨비사",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY138.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY138_1.webp",
+        "/booths/newyear-store-2026/NY138_2.webp"
+      ]
+    },
+    {
+      "code": "A04",
+      "name": "리피워크스",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY231.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY231_1.webp",
+        "/booths/newyear-store-2026/NY231_2.webp",
+        "/booths/newyear-store-2026/NY231_3.webp"
+      ]
+    },
+    {
+      "code": "A05",
+      "name": "마음스윔",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY218.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY218_1.webp",
+        "/booths/newyear-store-2026/NY218_2.webp",
+        "/booths/newyear-store-2026/NY218_3.webp"
+      ]
+    },
+    {
+      "code": "A06",
+      "name": "배지혜 bae.jye",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "aliases": [
+        "배지혜"
+      ],
+      "instagramUrl": "https://www.instagram.com/bae.jye/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY228.webp"
+    },
+    {
+      "code": "A07",
+      "name": "브로콜리 프렌즈",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY149.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY149_1.webp",
+        "/booths/newyear-store-2026/NY149_2.webp",
+        "/booths/newyear-store-2026/NY149_3.webp"
+      ]
+    },
+    {
+      "code": "A08",
+      "name": "블루토마토즈",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "instagramUrl": "https://www.instagram.com/bysoonsim/",
+      "images": [
+        "/booths/newyear-store-2026/NY166_1.webp",
+        "/booths/newyear-store-2026/NY166_2.webp",
+        "/booths/newyear-store-2026/NY166_3.webp"
+      ]
+    },
+    {
+      "code": "A09",
+      "name": "빈종이 프로젝트",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY18.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY18_1.webp",
+        "/booths/newyear-store-2026/NY18_2.webp",
+        "/booths/newyear-store-2026/NY18_3.webp"
+      ]
+    },
+    {
+      "code": "A10",
+      "name": "Studio Siso",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "aliases": [
+        "스튜디오 시소"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY134.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY134_1.webp",
+        "/booths/newyear-store-2026/NY134_2.webp",
+        "/booths/newyear-store-2026/NY134_3.webp"
+      ]
+    },
+    {
+      "code": "A11",
+      "name": "스튜디오 코목",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY93.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY93_1.webp",
+        "/booths/newyear-store-2026/NY93_2.webp",
+        "/booths/newyear-store-2026/NY93_3.webp"
+      ]
+    },
+    {
+      "code": "A12",
+      "name": "스튜디오 키",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY143.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY143_1.webp",
+        "/booths/newyear-store-2026/NY143_2.webp",
+        "/booths/newyear-store-2026/NY143_3.webp"
+      ]
+    },
+    {
+      "code": "A13",
+      "name": "수호",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "aliases": [
+        "엔젤스튜디오"
+      ],
+      "images": [
+        "/booths/newyear-store-2026/NY169_1.webp",
+        "/booths/newyear-store-2026/NY169_2.webp",
+        "/booths/newyear-store-2026/NY169_3.webp"
+      ]
+    },
+    {
+      "code": "A14",
+      "name": "와글와글맨숀",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY20.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY20_1.webp",
+        "/booths/newyear-store-2026/NY20_2.webp"
+      ]
+    },
+    {
+      "code": "A15",
+      "name": "왓어뷰티풀데이",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY204.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY204_1.webp",
+        "/booths/newyear-store-2026/NY204_2.webp",
+        "/booths/newyear-store-2026/NY204_3.webp"
+      ]
+    },
+    {
+      "code": "A16",
+      "name": "워터리스타리",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY146.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY146_1.webp",
+        "/booths/newyear-store-2026/NY146_2.webp",
+        "/booths/newyear-store-2026/NY146_3.webp"
+      ]
+    },
+    {
+      "code": "A17",
+      "name": "일랑빛",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY82.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY82_1.webp",
+        "/booths/newyear-store-2026/NY82_2.webp",
+        "/booths/newyear-store-2026/NY82_3.webp"
+      ]
+    },
+    {
+      "code": "A18",
+      "name": "지금창작단",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY158.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY158_1.webp",
+        "/booths/newyear-store-2026/NY158_2.webp",
+        "/booths/newyear-store-2026/NY158_3.webp"
+      ]
+    },
+    {
+      "code": "A19",
+      "name": "쫑니그림",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY176.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY176_1.webp",
+        "/booths/newyear-store-2026/NY176_2.webp"
+      ]
+    },
+    {
+      "code": "A20",
+      "name": "케카키",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY196.webp"
+    },
+    {
+      "code": "A21",
+      "name": "키박",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY246.webp"
+    },
+    {
+      "code": "A22",
+      "name": "타임맵 x timemap",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "aliases": [
+        "타임맵 × timemap",
+        "타임맵"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY162.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY162_1.webp",
+        "/booths/newyear-store-2026/NY162_2.webp",
+        "/booths/newyear-store-2026/NY162_3.webp"
+      ]
+    },
+    {
+      "code": "A23",
+      "name": "티케킴",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "images": [
+        "/booths/newyear-store-2026/NY243_2.webp",
+        "/booths/newyear-store-2026/NY243_3.webp",
+        "/booths/newyear-store-2026/NY243_4.webp"
+      ]
+    },
+    {
+      "code": "A24",
+      "name": "하루치",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY147.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY147_1.webp",
+        "/booths/newyear-store-2026/NY147_2.webp"
+      ]
+    },
+    {
+      "code": "A25",
+      "name": "루샤의 따뜻한 일상",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "aliases": [
+        "라이크북"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY106.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY106_1.webp",
+        "/booths/newyear-store-2026/NY106_2.webp",
+        "/booths/newyear-store-2026/NY106_3.webp"
+      ]
+    },
+    {
+      "code": "A26",
+      "name": "종이배 문고",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "aliases": [
+        "종이배문고"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY260.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY260_1.webp",
+        "/booths/newyear-store-2026/NY260_2.webp",
+        "/booths/newyear-store-2026/NY260_3.webp"
+      ]
+    },
+    {
+      "code": "A27",
+      "name": "Qu Draws 큐",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "aliases": [
+        "큐 Qu Draws",
+        "큐 드로스"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY144.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY144_1.webp",
+        "/booths/newyear-store-2026/NY144_2.webp",
+        "/booths/newyear-store-2026/NY144_3.webp"
+      ]
+    },
+    {
+      "code": "A28",
+      "name": "나꽁아꽁",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "instagramUrl": "https://www.instagram.com/cong_cafe/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY23.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY23_1.webp",
+        "/booths/newyear-store-2026/NY23_2.webp",
+        "/booths/newyear-store-2026/NY23_3.webp"
+      ]
+    },
+    {
+      "code": "A29",
+      "name": "니지 NIJI",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "aliases": [
+        "니지"
+      ],
+      "instagramUrl": "https://www.instagram.com/nijiboku/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY238.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY238_1.webp",
+        "/booths/newyear-store-2026/NY238_2.webp",
+        "/booths/newyear-store-2026/NY238_3.webp"
+      ]
+    },
+    {
+      "code": "A30",
+      "name": "DOWON",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "aliases": [
+        "도원"
+      ],
+      "instagramUrl": "https://www.instagram.com/dott.k.illustration/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY104.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY104_1.webp",
+        "/booths/newyear-store-2026/NY104_2.webp",
+        "/booths/newyear-store-2026/NY104_3.webp"
+      ]
+    },
+    {
+      "code": "A31",
+      "name": "시나나 SINANA",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "aliases": [
+        "시나나"
+      ],
+      "instagramUrl": "https://www.instagram.com/sinana_grim/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY107.webp"
+    },
+    {
+      "code": "A32",
+      "name": "쏘잉어스",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "instagramUrl": "https://www.instagram.com/sewing._.us/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY227.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY227_1.webp",
+        "/booths/newyear-store-2026/NY227_2.webp",
+        "/booths/newyear-store-2026/NY227_3.webp"
+      ]
+    },
+    {
+      "code": "A33",
+      "name": "illustrator yellmehan",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "aliases": [
+        "일러스트레이터 옐미한"
+      ],
+      "images": [
+        "/booths/newyear-store-2026/NY89_1.webp",
+        "/booths/newyear-store-2026/NY89_2.webp",
+        "/booths/newyear-store-2026/NY89_3.webp"
+      ]
+    },
+    {
+      "code": "A34",
+      "name": "오늘두들",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY75.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY75_1.webp",
+        "/booths/newyear-store-2026/NY75_2.webp",
+        "/booths/newyear-store-2026/NY75_3.webp"
+      ]
+    },
+    {
+      "code": "A35",
+      "name": "할방이네",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY113.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY113_1.webp",
+        "/booths/newyear-store-2026/NY113_2.webp",
+        "/booths/newyear-store-2026/NY113_3.webp"
+      ]
+    },
+    {
+      "code": "A36",
+      "name": "삐롱커피",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "instagramUrl": "https://www.instagram.com/engisstuff/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY115.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY115_1.webp",
+        "/booths/newyear-store-2026/NY115_2.webp",
+        "/booths/newyear-store-2026/NY115_3.webp"
+      ]
+    },
+    {
+      "code": "A37",
+      "name": "서스스토어",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY248.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY248_1.webp",
+        "/booths/newyear-store-2026/NY248_2.webp"
+      ]
+    },
+    {
+      "code": "A38",
+      "name": "숨숨랜드",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "images": [
+        "/booths/newyear-store-2026/NY153_1.webp",
+        "/booths/newyear-store-2026/NY153_2.webp",
+        "/booths/newyear-store-2026/NY153_3.webp"
+      ]
+    },
+    {
+      "code": "A39",
+      "name": "반틈&트라챠",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "aliases": [
+        "반틈 & 트라챠"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY251.webp"
+    },
+    {
+      "code": "A40",
+      "name": "피스낫디",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY234.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY234_1.webp",
+        "/booths/newyear-store-2026/NY234_2.webp"
+      ]
+    },
+    {
+      "code": "B01",
+      "name": "포포웨더 · 마음날씨예보소",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "포포웨더"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY253.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY253_1.webp",
+        "/booths/newyear-store-2026/NY253_2.webp",
+        "/booths/newyear-store-2026/NY253_3.webp"
+      ]
+    },
+    {
+      "code": "B02",
+      "name": "포춘스토어",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "images": [
+        "/booths/newyear-store-2026/NY140_3.webp",
+        "/booths/newyear-store-2026/NY140_2.webp"
+      ]
+    },
+    {
+      "code": "B03",
+      "name": "양쟝점",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY244.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY244_1.webp",
+        "/booths/newyear-store-2026/NY244_2.webp",
+        "/booths/newyear-store-2026/NY244_3.webp"
+      ]
+    },
+    {
+      "code": "B04",
+      "name": "BILLYBEANMILLIM",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "빌리빈밀림 BILLYBEANMILLIM",
+        "빌리빈밀림"
+      ],
+      "instagramUrl": "https://www.instagram.com/billybeanmillim/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY73.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY73_1.webp",
+        "/booths/newyear-store-2026/NY73_2.webp",
+        "/booths/newyear-store-2026/NY73_3.webp"
+      ]
+    },
+    {
+      "code": "B05",
+      "name": "Physical Bakery",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "생활/건강",
+      "categorySlug": "ny-life-health",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-life-health"
+      ],
+      "aliases": [
+        "피지컬 베이커리"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY185.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY185_1.webp",
+        "/booths/newyear-store-2026/NY185_2.webp",
+        "/booths/newyear-store-2026/NY185_3.webp"
+      ]
+    },
+    {
+      "code": "B06",
+      "name": "스윗솔트 Sweet Salt",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "스윗솔트"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY189.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY189_1.webp",
+        "/booths/newyear-store-2026/NY189_2.webp",
+        "/booths/newyear-store-2026/NY189_3.webp"
+      ]
+    },
+    {
+      "code": "B07",
+      "name": "이원이 스튜디오",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "이원이스튜디오"
+      ],
+      "images": [
+        "/booths/newyear-store-2026/NY223_1.webp"
+      ]
+    },
+    {
+      "code": "B08",
+      "name": "솜수프",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY240.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY240_1.webp",
+        "/booths/newyear-store-2026/NY240_2.webp",
+        "/booths/newyear-store-2026/NY240_3.webp"
+      ]
+    },
+    {
+      "code": "B09",
+      "name": "두유라이크",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY256.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY256_1.webp",
+        "/booths/newyear-store-2026/NY256_2.webp",
+        "/booths/newyear-store-2026/NY256_3.webp"
+      ]
+    },
+    {
+      "code": "B10",
+      "name": "부비프",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "images": [
+        "/booths/newyear-store-2026/NY201_1.webp",
+        "/booths/newyear-store-2026/NY201_2.webp",
+        "/booths/newyear-store-2026/NY201_3.webp"
+      ]
+    },
+    {
+      "code": "B11",
+      "name": "바삭바삭신문",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY142.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY142_1.webp",
+        "/booths/newyear-store-2026/NY142_2.webp",
+        "/booths/newyear-store-2026/NY142_3.webp"
+      ]
+    },
+    {
+      "code": "B12",
+      "name": "유디",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "프롬에이치"
+      ],
+      "instagramUrl": "https://www.instagram.com/from.yu_d/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY198.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY198_1.webp",
+        "/booths/newyear-store-2026/NY198_2.webp",
+        "/booths/newyear-store-2026/NY198_3.webp"
+      ]
+    },
+    {
+      "code": "B13",
+      "name": "별가루클럽",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY178.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY178_1.webp",
+        "/booths/newyear-store-2026/NY178_2.webp",
+        "/booths/newyear-store-2026/NY178_3.webp"
+      ]
+    },
+    {
+      "code": "B14",
+      "name": "민티스트",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "민티스트 스튜디오"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY199.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY199_1.webp",
+        "/booths/newyear-store-2026/NY199_2.webp",
+        "/booths/newyear-store-2026/NY199_3.webp"
+      ]
+    },
+    {
+      "code": "B15",
+      "name": "1989 PALETTE",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "레터프롬어니언"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY139.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY139_1.webp",
+        "/booths/newyear-store-2026/NY139_2.webp",
+        "/booths/newyear-store-2026/NY139_3.webp"
+      ]
+    },
+    {
+      "code": "B16",
+      "name": "아바로떼스베",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "외국어/학습",
+      "categorySlug": "ny-language",
+      "categoryColor": "#FFD56F",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-language"
+      ],
+      "instagramUrl": "https://www.instagram.com/abarrotes_b_/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY88.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY88_1.webp",
+        "/booths/newyear-store-2026/NY88_2.webp",
+        "/booths/newyear-store-2026/NY88_3.webp"
+      ]
+    },
+    {
+      "code": "B17",
+      "name": "외계묘 공작소",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY86.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY86_1.webp",
+        "/booths/newyear-store-2026/NY86_2.webp",
+        "/booths/newyear-store-2026/NY86_3.webp"
+      ]
+    },
+    {
+      "code": "B18",
+      "name": "은가비클럽",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY94.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY94_1.webp",
+        "/booths/newyear-store-2026/NY94_2.webp",
+        "/booths/newyear-store-2026/NY94_3.webp"
+      ]
+    },
+    {
+      "code": "B19",
+      "name": "Jane in the Garden",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "제인인더가든"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY207.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY207_1.webp",
+        "/booths/newyear-store-2026/NY207_2.webp",
+        "/booths/newyear-store-2026/NY207_3.webp"
+      ]
+    },
+    {
+      "code": "B20",
+      "name": "KARANGKARANG",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "카랑카랑"
+      ],
+      "instagramUrl": "https://www.instagram.com/karangkarang__/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY68.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY68_1.webp",
+        "/booths/newyear-store-2026/NY68_2.webp",
+        "/booths/newyear-store-2026/NY68_3.webp"
+      ]
+    },
+    {
+      "code": "B21",
+      "name": "순정민화",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "코르사주"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY119.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY119_1.webp",
+        "/booths/newyear-store-2026/NY119_2.webp",
+        "/booths/newyear-store-2026/NY119_3.webp"
+      ]
+    },
+    {
+      "code": "B22",
+      "name": "CottonProse",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "코튼프로즈"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY156.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY156_1.webp",
+        "/booths/newyear-store-2026/NY156_2.webp",
+        "/booths/newyear-store-2026/NY156_3.webp"
+      ]
+    },
+    {
+      "code": "B23",
+      "name": "파류와",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY222.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY222_1.webp",
+        "/booths/newyear-store-2026/NY222_2.webp",
+        "/booths/newyear-store-2026/NY222_3.webp"
+      ]
+    },
+    {
+      "code": "B24",
+      "name": "파인트리",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY150.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY150_1.webp",
+        "/booths/newyear-store-2026/NY150_2.webp",
+        "/booths/newyear-store-2026/NY150_3.webp"
+      ]
+    },
+    {
+      "code": "B26",
+      "name": "푸치랜드",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "instagramUrl": "https://www.instagram.com/ppuccii_land/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY193.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY193_1.webp",
+        "/booths/newyear-store-2026/NY193_2.webp",
+        "/booths/newyear-store-2026/NY193_3.webp"
+      ]
+    },
+    {
+      "code": "B27",
+      "name": "해피레이지데이",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY137.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY137_1.webp",
+        "/booths/newyear-store-2026/NY137_2.webp"
+      ]
+    },
+    {
+      "code": "B28",
+      "name": "호고긱 스튜디오",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY172.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY172_1.webp",
+        "/booths/newyear-store-2026/NY172_2.webp",
+        "/booths/newyear-store-2026/NY172_3.webp"
+      ]
+    },
+    {
+      "code": "B29",
+      "name": "라고미네집",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY203.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY203_1.webp",
+        "/booths/newyear-store-2026/NY203_2.webp",
+        "/booths/newyear-store-2026/NY203_3.webp"
+      ]
+    },
+    {
+      "code": "B30",
+      "name": "304아일랜드",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY78.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY78_1.webp",
+        "/booths/newyear-store-2026/NY78_2.webp",
+        "/booths/newyear-store-2026/NY78_3.webp"
+      ]
+    },
+    {
+      "code": "B31",
+      "name": "노트북 라이프",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "놋북랄프"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY181.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY181_1.webp",
+        "/booths/newyear-store-2026/NY181_2.webp",
+        "/booths/newyear-store-2026/NY181_3.webp"
+      ]
+    },
+    {
+      "code": "B32",
+      "name": "누가의 기록소",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "누가의기록소"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY171.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY171_1.webp",
+        "/booths/newyear-store-2026/NY171_2.webp",
+        "/booths/newyear-store-2026/NY171_3.webp"
+      ]
+    },
+    {
+      "code": "B33",
+      "name": "메바럽ㅣMADE BY LOVE",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "메바럽 MADE BY LOVE",
+        "메이드바이러브"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY250.webp"
+    },
+    {
+      "code": "B34",
+      "name": "무뿌",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "images": [
+        "/booths/newyear-store-2026/NY209_1.webp",
+        "/booths/newyear-store-2026/NY209_2.webp",
+        "/booths/newyear-store-2026/NY209_3.webp"
+      ]
+    },
+    {
+      "code": "B35",
+      "name": "STUDIO AYIRHEE",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "스튜디오 아이르히"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY159.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY159_1.webp",
+        "/booths/newyear-store-2026/NY159_2.webp",
+        "/booths/newyear-store-2026/NY159_3.webp"
+      ]
+    },
+    {
+      "code": "B36",
+      "name": "아크식스랩",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY108.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY108_1.webp",
+        "/booths/newyear-store-2026/NY108_2.webp",
+        "/booths/newyear-store-2026/NY108_3.webp"
+      ]
+    },
+    {
+      "code": "B37",
+      "name": "LaTool. 라툴",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "라툴 LaTool.",
+        "인생도구상점"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY254.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY254_1.webp",
+        "/booths/newyear-store-2026/NY254_2.webp",
+        "/booths/newyear-store-2026/NY254_3.webp"
+      ]
+    },
+    {
+      "code": "B38",
+      "name": "프롬마이데이",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY257.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY257_1.webp",
+        "/booths/newyear-store-2026/NY257_2.webp",
+        "/booths/newyear-store-2026/NY257_3.webp"
+      ]
+    },
+    {
+      "code": "B39",
+      "name": "지니퍼센트 JINIPERCENT",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "지니퍼센트"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY160.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY160_4.webp",
+        "/booths/newyear-store-2026/NY160_5.webp",
+        "/booths/newyear-store-2026/NY160_6.webp"
+      ]
+    },
+    {
+      "code": "B40",
+      "name": "패치워크",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY263.webp"
+    },
+    {
+      "code": "B41",
+      "name": "제이아플러스·JAPLUS",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "제이아플러스 · JAPLUS",
+        "제이아플러스"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY235.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY235_1.webp",
+        "/booths/newyear-store-2026/NY235_2.webp",
+        "/booths/newyear-store-2026/NY235_3.webp"
+      ]
+    },
+    {
+      "code": "B42",
+      "name": "프롬베니",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY128.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY128_1.webp",
+        "/booths/newyear-store-2026/NY128_2.webp",
+        "/booths/newyear-store-2026/NY128_3.webp"
+      ]
+    },
+    {
+      "code": "B43",
+      "name": "피치페어페이퍼",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY190.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY190_1.webp",
+        "/booths/newyear-store-2026/NY190_2.webp",
+        "/booths/newyear-store-2026/NY190_3.webp"
+      ]
+    },
+    {
+      "code": "B44",
+      "name": "도잠 dozamm",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "도잠"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY77.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY77_1.webp",
+        "/booths/newyear-store-2026/NY77_2.webp",
+        "/booths/newyear-store-2026/NY77_3.webp"
+      ]
+    },
+    {
+      "code": "B45",
+      "name": "포레모레",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY217.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY217_1.webp",
+        "/booths/newyear-store-2026/NY217_2.webp",
+        "/booths/newyear-store-2026/NY217_3.webp"
+      ]
+    },
+    {
+      "code": "B46",
+      "name": "마인드 다이어리",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "마음프로젝트"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY195.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY195_1.webp",
+        "/booths/newyear-store-2026/NY195_2.webp",
+        "/booths/newyear-store-2026/NY195_3.webp"
+      ]
+    },
+    {
+      "code": "B47",
+      "name": "nunuko",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "누누코"
+      ],
+      "images": [
+        "/booths/newyear-store-2026/NY91_1.webp",
+        "/booths/newyear-store-2026/NY91_2.webp",
+        "/booths/newyear-store-2026/NY91_3.webp"
+      ]
+    },
+    {
+      "code": "B48",
+      "name": "댕댕백과",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY90.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY90_1.webp",
+        "/booths/newyear-store-2026/NY90_2.webp",
+        "/booths/newyear-store-2026/NY90_3.webp"
+      ]
+    },
+    {
+      "code": "B49",
+      "name": "레빗카우",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY87.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY87_1.webp",
+        "/booths/newyear-store-2026/NY87_2.webp",
+        "/booths/newyear-store-2026/NY87_3.webp"
+      ]
+    },
+    {
+      "code": "B50",
+      "name": "모루가치",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ]
+    },
+    {
+      "code": "B51",
+      "name": "민돕 Mindop",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "민돕"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY155.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY155_1.webp",
+        "/booths/newyear-store-2026/NY155_2.webp",
+        "/booths/newyear-store-2026/NY155_3.webp"
+      ]
+    },
+    {
+      "code": "B52",
+      "name": "스튜디오 민달",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "스튜디오민달"
+      ],
+      "images": [
+        "/booths/newyear-store-2026/NY184_1.webp",
+        "/booths/newyear-store-2026/NY184_2.webp",
+        "/booths/newyear-store-2026/NY184_3.webp"
+      ]
+    },
+    {
+      "code": "B53",
+      "name": "에브리데이위켄드",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY19.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY19_1.webp",
+        "/booths/newyear-store-2026/NY19_2.webp",
+        "/booths/newyear-store-2026/NY19_3.webp"
+      ]
+    },
+    {
+      "code": "B54",
+      "name": "일미터 from.ilmeter",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "일미터"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY120.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY120_1.webp",
+        "/booths/newyear-store-2026/NY120_2.webp",
+        "/booths/newyear-store-2026/NY120_3.webp"
+      ]
+    },
+    {
+      "code": "B55",
+      "name": "무모한 스튜디오",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "무모한"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY188.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY188_1.webp",
+        "/booths/newyear-store-2026/NY188_2.webp",
+        "/booths/newyear-store-2026/NY188_3.webp"
+      ]
+    },
+    {
+      "code": "B56",
+      "name": "귀족식당",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "주식회사 빅하우스엔터테인먼트"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY247.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY247_1.webp",
+        "/booths/newyear-store-2026/NY247_2.webp",
+        "/booths/newyear-store-2026/NY247_3.webp"
+      ]
+    },
+    {
+      "code": "B57",
+      "name": "포에틱 랩 POETIC LAB x 김군",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "포에틱 랩 POETIC LAB × 김군",
+        "포에틱 랩"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY92.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY92_1.webp",
+        "/booths/newyear-store-2026/NY92_2.webp",
+        "/booths/newyear-store-2026/NY92_3.webp"
+      ]
+    },
+    {
+      "code": "B58",
+      "name": "도서출판 북심",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY197.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY197_1.webp"
+      ]
+    },
+    {
+      "code": "B59",
+      "name": "508page",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "508페이지"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY114.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY114_1.webp",
+        "/booths/newyear-store-2026/NY114_2.webp",
+        "/booths/newyear-store-2026/NY114_3.webp"
+      ]
+    },
+    {
+      "code": "B60",
+      "name": "보타니컬아트 초롬",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "초롬"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY96.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY96_1.webp",
+        "/booths/newyear-store-2026/NY96_2.webp"
+      ]
+    },
+    {
+      "code": "B61",
+      "name": "고동상 · 고양이와 동그란 세상",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "고동상"
+      ],
+      "instagramUrl": "https://www.instagram.com/godongsang/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY121.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY121_1.webp",
+        "/booths/newyear-store-2026/NY121_2.webp",
+        "/booths/newyear-store-2026/NY121_3.webp"
+      ]
+    },
+    {
+      "code": "B62",
+      "name": "긴kin",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "긴"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY84.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY84_1.webp",
+        "/booths/newyear-store-2026/NY84_2.webp",
+        "/booths/newyear-store-2026/NY84_3.webp"
+      ]
+    },
+    {
+      "code": "B63",
+      "name": "김웃",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY180.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY180_1.webp",
+        "/booths/newyear-store-2026/NY180_2.webp",
+        "/booths/newyear-store-2026/NY180_3.webp"
+      ]
+    },
+    {
+      "code": "B64",
+      "name": "까마귀클럽",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY167.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY167_1.webp",
+        "/booths/newyear-store-2026/NY167_2.webp",
+        "/booths/newyear-store-2026/NY167_3.webp"
+      ]
+    },
+    {
+      "code": "B65",
+      "name": "날씨모임",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY233.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY233_1.webp",
+        "/booths/newyear-store-2026/NY233_2.webp",
+        "/booths/newyear-store-2026/NY233_3.webp"
+      ]
+    },
+    {
+      "code": "B66",
+      "name": "들요다",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY126.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY126_1.webp",
+        "/booths/newyear-store-2026/NY126_2.webp",
+        "/booths/newyear-store-2026/NY126_3.webp"
+      ]
+    },
+    {
+      "code": "B67",
+      "name": "라인오브젝트",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY232.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY232_1.webp",
+        "/booths/newyear-store-2026/NY232_2.webp",
+        "/booths/newyear-store-2026/NY232_3.webp"
+      ]
+    },
+    {
+      "code": "B68",
+      "name": "루프스튜디오",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY112.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY112_1.webp",
+        "/booths/newyear-store-2026/NY112_2.webp"
+      ]
+    },
+    {
+      "code": "B69",
+      "name": "마이 포엠",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY208.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY208_1.webp",
+        "/booths/newyear-store-2026/NY208_2.webp",
+        "/booths/newyear-store-2026/NY208_3.webp"
+      ]
+    },
+    {
+      "code": "B70",
+      "name": "머무는시간",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY85.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY85_1.webp",
+        "/booths/newyear-store-2026/NY85_2.webp",
+        "/booths/newyear-store-2026/NY85_3.webp"
+      ]
+    },
+    {
+      "code": "B71",
+      "name": "메모리글로브",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY212.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY212_1.webp"
+      ]
+    },
+    {
+      "code": "B72",
+      "name": "제씨월드",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY154.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY154_1.webp",
+        "/booths/newyear-store-2026/NY154_2.webp",
+        "/booths/newyear-store-2026/NY154_3.webp"
+      ]
+    },
+    {
+      "code": "B73",
+      "name": "똑단발소녀",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "무구"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY194.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY194_1.webp",
+        "/booths/newyear-store-2026/NY194_2.webp",
+        "/booths/newyear-store-2026/NY194_3.webp"
+      ]
+    },
+    {
+      "code": "B74",
+      "name": "문베어마켓",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY145.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY145_1.webp",
+        "/booths/newyear-store-2026/NY145_2.webp",
+        "/booths/newyear-store-2026/NY145_3.webp"
+      ]
+    },
+    {
+      "code": "B75",
+      "name": "별긍상점",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "instagramUrl": "https://www.instagram.com/byeol_geung/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY130.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY130_1.webp",
+        "/booths/newyear-store-2026/NY130_2.webp",
+        "/booths/newyear-store-2026/NY130_3.webp"
+      ]
+    },
+    {
+      "code": "B76",
+      "name": "왓쏭",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY219.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY219_1.webp",
+        "/booths/newyear-store-2026/NY219_2.webp",
+        "/booths/newyear-store-2026/NY219_3.webp"
+      ]
+    },
+    {
+      "code": "B77",
+      "name": "세컨드 라이프",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY168.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY168_1.webp",
+        "/booths/newyear-store-2026/NY168_2.webp",
+        "/booths/newyear-store-2026/NY168_3.webp"
+      ]
+    },
+    {
+      "code": "B78",
+      "name": "소프티포그 Softyfog",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "소프티포그"
+      ],
+      "instagramUrl": "https://www.instagram.com/softyfog/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY135.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY135_1.webp",
+        "/booths/newyear-store-2026/NY135_2.webp",
+        "/booths/newyear-store-2026/NY135_3.webp"
+      ]
+    },
+    {
+      "code": "B79",
+      "name": "숲 공방",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY109.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY109_1.webp",
+        "/booths/newyear-store-2026/NY109_2.webp",
+        "/booths/newyear-store-2026/NY109_3.webp"
+      ]
+    },
+    {
+      "code": "B80",
+      "name": "아웃오브디스월드",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY76.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY76_1.webp",
+        "/booths/newyear-store-2026/NY76_2.webp",
+        "/booths/newyear-store-2026/NY76_3.webp"
+      ]
+    },
+    {
+      "code": "B81",
+      "name": "얼렁뚱땅 먼자상점",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ]
+    },
+    {
+      "code": "B82",
+      "name": "오뚝이숲",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY136.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY136_1.webp",
+        "/booths/newyear-store-2026/NY136_2.webp",
+        "/booths/newyear-store-2026/NY136_3.webp"
+      ]
+    },
+    {
+      "code": "B83",
+      "name": "도시오리 올리의 잡화점",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "올릿"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY69.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY69_1.webp",
+        "/booths/newyear-store-2026/NY69_2.webp",
+        "/booths/newyear-store-2026/NY69_3.webp"
+      ]
+    },
+    {
+      "code": "C01",
+      "name": "엠더블유엠",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "mwm"
+      ],
+      "instagramUrl": "https://www.instagram.com/mwm_seoul/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY289.webp"
+    },
+    {
+      "code": "C02",
+      "name": "슬로운 콤부차",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "SLOWN",
+        "슬로운"
+      ],
+      "instagramUrl": "https://www.instagram.com/slown_official/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY287.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY287_1.webp",
+        "/booths/newyear-store-2026/NY287_2.webp"
+      ]
+    },
+    {
+      "code": "C03",
+      "name": "파삭",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "PASAAC"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY308.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY308_1.webp",
+        "/booths/newyear-store-2026/NY308_2.webp",
+        "/booths/newyear-store-2026/NY308_3.webp"
+      ]
+    },
+    {
+      "code": "C04",
+      "name": "웃차",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "WOOTCHA"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY55.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY55_1.webp",
+        "/booths/newyear-store-2026/NY55_2.webp",
+        "/booths/newyear-store-2026/NY55_3.webp"
+      ]
+    },
+    {
+      "code": "C05",
+      "name": "매실매실",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "MAESILMAESIL",
+        "로브콜"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY301.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY301_1.webp",
+        "/booths/newyear-store-2026/NY301_2.webp",
+        "/booths/newyear-store-2026/NY301_3.webp"
+      ]
+    },
+    {
+      "code": "C06",
+      "name": "오페퍼",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "O PEPPER"
+      ],
+      "instagramUrl": "https://www.instagram.com/o.pepper_official/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY290.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY290_1.webp",
+        "/booths/newyear-store-2026/NY290_2.webp"
+      ]
+    },
+    {
+      "code": "C07",
+      "name": "피켓",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "PICKKET by Nod.X",
+        "노드엑스"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY300.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY300_1.webp",
+        "/booths/newyear-store-2026/NY300_2.webp",
+        "/booths/newyear-store-2026/NY300_3.webp"
+      ]
+    },
+    {
+      "code": "C08",
+      "name": "티무드 연남",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "TEA MOOD"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY309.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY309_1.webp",
+        "/booths/newyear-store-2026/NY309_2.webp",
+        "/booths/newyear-store-2026/NY309_3.webp"
+      ]
+    },
+    {
+      "code": "C09",
+      "name": "파이오니어커피",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "PIONEERCOFFEE"
+      ],
+      "instagramUrl": "https://www.instagram.com/pioneercoffee_/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY51.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY51_1.webp",
+        "/booths/newyear-store-2026/NY51_2.webp",
+        "/booths/newyear-store-2026/NY51_3.webp"
+      ]
+    },
+    {
+      "code": "C10",
+      "name": "번뇌상사",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "BEONNOE SANGSA",
+        "아테룸"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY298.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY298_1.webp",
+        "/booths/newyear-store-2026/NY298_2.webp",
+        "/booths/newyear-store-2026/NY298_3.webp"
+      ]
+    },
+    {
+      "code": "C11",
+      "name": "꽃꽃",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "Kot Kot"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY291.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY291_1.webp",
+        "/booths/newyear-store-2026/NY291_2.webp",
+        "/booths/newyear-store-2026/NY291_3.webp"
+      ]
+    },
+    {
+      "code": "C12",
+      "name": "감도",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "생활/건강",
+      "categorySlug": "ny-life-health",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-life-health"
+      ],
+      "aliases": [
+        "GAMDO."
+      ],
+      "instagramUrl": "https://www.instagram.com/gamdo__official/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY295.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY295_1.webp",
+        "/booths/newyear-store-2026/NY295_2.webp",
+        "/booths/newyear-store-2026/NY295_3.webp"
+      ]
+    },
+    {
+      "code": "C13",
+      "name": "노리밋 커피랩",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "NOLIMIT COFFEELAB"
+      ],
+      "instagramUrl": "https://www.instagram.com/nolimit_coffeelab/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY270.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY270_1.webp",
+        "/booths/newyear-store-2026/NY270_2.webp",
+        "/booths/newyear-store-2026/NY270_3.webp"
+      ]
+    },
+    {
+      "code": "C14",
+      "name": "사유",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "생활/건강",
+      "categorySlug": "ny-life-health",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-life-health"
+      ],
+      "aliases": [
+        "Sayoo",
+        "어느순간"
+      ],
+      "instagramUrl": "https://www.instagram.com/sayoo.kr/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY284.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY284_1.webp",
+        "/booths/newyear-store-2026/NY284_2.webp",
+        "/booths/newyear-store-2026/NY284_3.webp"
+      ]
+    },
+    {
+      "code": "C15",
+      "name": "고을결",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "생활/건강",
+      "categorySlug": "ny-life-health",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-life-health"
+      ],
+      "aliases": [
+        "GoEulGyul",
+        "이대죽패밀리"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY274.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY274_1.webp",
+        "/booths/newyear-store-2026/NY274_2.webp",
+        "/booths/newyear-store-2026/NY274_3.webp"
+      ]
+    },
+    {
+      "code": "C16",
+      "name": "오더블유씨",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "OWC",
+        "유진정밀주식회사"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY269.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY269_1.webp",
+        "/booths/newyear-store-2026/NY269_2.webp",
+        "/booths/newyear-store-2026/NY269_3.webp"
+      ]
+    },
+    {
+      "code": "C17",
+      "name": "오론느",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "aurone",
+        "노트앤코드"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY293.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY293_1.webp",
+        "/booths/newyear-store-2026/NY293_2.webp",
+        "/booths/newyear-store-2026/NY293_3.webp"
+      ]
+    },
+    {
+      "code": "C18",
+      "name": "페스티벌라이프",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "FSTVL LIFE"
+      ],
+      "instagramUrl": "https://www.instagram.com/fstvl.life/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY267.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY267_1.webp",
+        "/booths/newyear-store-2026/NY267_2.webp",
+        "/booths/newyear-store-2026/NY267_3.webp"
+      ]
+    },
+    {
+      "code": "C19",
+      "name": "포테이토교",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "POTATOGYO"
+      ],
+      "instagramUrl": "https://www.instagram.com/potato_gyo/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY271.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY271_1.webp",
+        "/booths/newyear-store-2026/NY271_2.webp",
+        "/booths/newyear-store-2026/NY271_3.webp"
+      ]
+    },
+    {
+      "code": "C20",
+      "name": "신자매만물상",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "SHINSIS"
+      ],
+      "instagramUrl": "https://www.instagram.com/shin_jamae1/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY58.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY58_1.webp",
+        "/booths/newyear-store-2026/NY58_2.webp",
+        "/booths/newyear-store-2026/NY58_3.webp"
+      ]
+    },
+    {
+      "code": "C21",
+      "name": "오오아포터리",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "생활/건강",
+      "categorySlug": "ny-life-health",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-life-health"
+      ],
+      "aliases": [
+        "ooa pottery",
+        "오아프"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY292.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY292_3.webp",
+        "/booths/newyear-store-2026/NY292_4.webp",
+        "/booths/newyear-store-2026/NY292_5.webp"
+      ]
+    },
+    {
+      "code": "C22",
+      "name": "마롱즈",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "생활/건강",
+      "categorySlug": "ny-life-health",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-life-health"
+      ],
+      "aliases": [
+        "MARRONS"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY60.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY60_1.webp",
+        "/booths/newyear-store-2026/NY60_2.webp",
+        "/booths/newyear-store-2026/NY60_3.webp"
+      ]
+    },
+    {
+      "code": "C23",
+      "name": "담초",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "DAMCHO"
+      ],
+      "instagramUrl": "https://www.instagram.com/damcho_o/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY48.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY48_1.webp",
+        "/booths/newyear-store-2026/NY48_2.webp",
+        "/booths/newyear-store-2026/NY48_3.webp"
+      ]
+    },
+    {
+      "code": "C24",
+      "name": "페이퍼어스",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "PAPERUS",
+        "썸코리아"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY54.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY54_1.webp",
+        "/booths/newyear-store-2026/NY54_2.webp",
+        "/booths/newyear-store-2026/NY54_3.webp"
+      ]
+    },
+    {
+      "code": "C25",
+      "name": "리본냥",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "Ribbonnyang"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY294.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY294_1.webp",
+        "/booths/newyear-store-2026/NY294_2.webp",
+        "/booths/newyear-store-2026/NY294_3.webp"
+      ]
+    },
+    {
+      "code": "C26",
+      "name": "아뜨아추",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "ateu achu",
+        "디원콘텐츠"
+      ]
+    },
+    {
+      "code": "C27",
+      "name": "페페브릭",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "PEPEBRIC",
+        "온섬제주"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY210.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY210_1.webp",
+        "/booths/newyear-store-2026/NY210_2.webp",
+        "/booths/newyear-store-2026/NY210_3.webp"
+      ]
+    },
+    {
+      "code": "C28",
+      "name": "단단라이프",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "dandanlife"
+      ],
+      "instagramUrl": "https://www.instagram.com/dandanlife_/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY52.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY52_1.webp",
+        "/booths/newyear-store-2026/NY52_2.webp",
+        "/booths/newyear-store-2026/NY52_3.webp"
+      ]
+    },
+    {
+      "code": "C29",
+      "name": "걱정말랑상점",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "불안/걱정",
+      "categorySlug": "ny-worry",
+      "categoryColor": "#3F62CA",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-worry"
+      ],
+      "aliases": [
+        "몰댄룩 특별 큐레이션관",
+        "Good News Haus",
+        "동아일보 몰댄룩"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY312.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY312_1.webp",
+        "/booths/newyear-store-2026/NY312_2.webp",
+        "/booths/newyear-store-2026/NY312_3.webp"
+      ]
+    },
+    {
+      "code": "C30",
+      "name": "주말토리",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "Joomaltory",
+        "주식회사 주말토리"
+      ],
+      "instagramUrl": "https://www.instagram.com/joomaltory/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY268.webp"
+    },
+    {
+      "code": "C31",
+      "name": "소모보울X둥지얌",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "소모보울 × 둥지얌",
+        "somobowl X Doongjiyam",
+        "소모보울 X 둥지얌"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY307.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY307_1.webp",
+        "/booths/newyear-store-2026/NY307_2.webp",
+        "/booths/newyear-store-2026/NY307_3.webp"
+      ]
+    },
+    {
+      "code": "C32",
+      "name": "일루",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "ILLU"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY310.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY310_1.webp",
+        "/booths/newyear-store-2026/NY310_2.webp",
+        "/booths/newyear-store-2026/NY310_3.webp"
+      ]
+    },
+    {
+      "code": "C33",
+      "name": "위올",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "ouior"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY306.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY306_1.webp",
+        "/booths/newyear-store-2026/NY306_2.webp",
+        "/booths/newyear-store-2026/NY306_3.webp"
+      ]
+    },
+    {
+      "code": "C34",
+      "name": "하치",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "HACHI"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY303.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY303_1.webp",
+        "/booths/newyear-store-2026/NY303_2.webp"
+      ]
+    },
+    {
+      "code": "D01",
+      "name": "제이케이엠디자인",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "JKMDESIGN"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY304.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY304_1.webp",
+        "/booths/newyear-store-2026/NY304_2.webp",
+        "/booths/newyear-store-2026/NY304_3.webp"
+      ]
+    },
+    {
+      "code": "D02",
+      "name": "알더블유앤티",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "rwn.t"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY45.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY45_1.webp",
+        "/booths/newyear-store-2026/NY45_2.webp",
+        "/booths/newyear-store-2026/NY45_3.webp"
+      ]
+    },
+    {
+      "code": "D03",
+      "name": "마디틈사이",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "maditmsai",
+        "딜라이트 크리에이티브 컨설턴시"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY47.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY47_1.webp",
+        "/booths/newyear-store-2026/NY47_2.webp",
+        "/booths/newyear-store-2026/NY47_3.webp"
+      ]
+    },
+    {
+      "code": "D04",
+      "name": "파이아카이브",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "PYEARCHIVE",
+        "모파"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY282.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY282_1.webp",
+        "/booths/newyear-store-2026/NY282_2.webp",
+        "/booths/newyear-store-2026/NY282_3.webp"
+      ]
+    },
+    {
+      "code": "D05",
+      "name": "커버서울",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "aliases": [
+        "COVERSEOUL",
+        "피씨지더마사이언스"
+      ],
+      "instagramUrl": "https://www.instagram.com/coverseoul.official/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY25.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY25_1.webp",
+        "/booths/newyear-store-2026/NY25_2.webp",
+        "/booths/newyear-store-2026/NY25_3.webp"
+      ]
+    },
+    {
+      "code": "D06",
+      "name": "파이카 디.웍스",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "aliases": [
+        "PIKA d.works",
+        "파이카디웍스"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY28.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY28_1.webp",
+        "/booths/newyear-store-2026/NY28_2.webp",
+        "/booths/newyear-store-2026/NY28_3.webp"
+      ]
+    },
+    {
+      "code": "D07",
+      "name": "텀블벅",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 문구전",
+      "categorySlug": "ny-stationery",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-stationery"
+      ],
+      "aliases": [
+        "tumblbug"
+      ],
+      "instagramUrl": "https://www.instagram.com/tumblbug/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY276.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY276_1.webp",
+        "/booths/newyear-store-2026/NY276_2.webp",
+        "/booths/newyear-store-2026/NY276_3.webp"
+      ]
+    },
+    {
+      "code": "D08",
+      "name": "어피티 철학관",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "재테크/금융",
+      "categorySlug": "ny-finance",
+      "categoryColor": "#FFD56F",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-finance"
+      ],
+      "aliases": [
+        "UPPITY",
+        "포브미디어"
+      ],
+      "instagramUrl": "https://www.instagram.com/uppity.official/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY302.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY302_2.webp"
+      ]
+    },
+    {
+      "code": "D09",
+      "name": "레드이어스클럽",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "RedEarsClub",
+        "소샤이어티"
+      ],
+      "instagramUrl": "https://www.instagram.com/redearsclub/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY278.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY278_1.webp",
+        "/booths/newyear-store-2026/NY278_2.webp",
+        "/booths/newyear-store-2026/NY278_3.webp"
+      ]
+    },
+    {
+      "code": "D10",
+      "name": "히히웍스",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "외국어/학습",
+      "categorySlug": "ny-language",
+      "categoryColor": "#FFD56F",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-language"
+      ],
+      "aliases": [
+        "히히웍스 heeheeworks",
+        "heeheeworks"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY286.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY286_1.webp",
+        "/booths/newyear-store-2026/NY286_2.webp",
+        "/booths/newyear-store-2026/NY286_3.webp"
+      ]
+    },
+    {
+      "code": "D11",
+      "name": "구름베개한의원",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "생활/건강",
+      "categorySlug": "ny-life-health",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-life-health"
+      ],
+      "aliases": [
+        "Cloudpillow Clinic",
+        "구름베개 한의원"
+      ],
+      "instagramUrl": "https://www.instagram.com/cloudpillow_official/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY288.webp"
+    },
+    {
+      "code": "D12",
+      "name": "마루랩",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "재테크/금융",
+      "categorySlug": "ny-finance",
+      "categoryColor": "#FFD56F",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-finance"
+      ],
+      "aliases": [
+        "maruLab",
+        "토리에듀핀"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY38.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY38_1.webp",
+        "/booths/newyear-store-2026/NY38_2.webp"
+      ]
+    },
+    {
+      "code": "D13",
+      "name": "도니조아",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "재테크/금융",
+      "categorySlug": "ny-finance",
+      "categoryColor": "#FFD56F",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-finance"
+      ],
+      "aliases": [
+        "donizoa"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY66.webp"
+    },
+    {
+      "code": "D14",
+      "name": "길조 시그널 상점",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "재테크/금융",
+      "categorySlug": "ny-finance",
+      "categoryColor": "#FFD56F",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-finance"
+      ],
+      "aliases": [
+        "signalplanner",
+        "해빗팩토리"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY37.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY37_1.webp",
+        "/booths/newyear-store-2026/NY37_2.webp"
+      ]
+    },
+    {
+      "code": "D15",
+      "name": "수학을 쓰다",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "외국어/학습",
+      "categorySlug": "ny-language",
+      "categoryColor": "#FFD56F",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-language"
+      ],
+      "aliases": [
+        "jujumath jujubooks",
+        "쥬쓰"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY42.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY42_1.webp",
+        "/booths/newyear-store-2026/NY42_2.webp",
+        "/booths/newyear-store-2026/NY42_3.webp"
+      ]
+    },
+    {
+      "code": "D16",
+      "name": "세이브더칠드런",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "생활/건강",
+      "categorySlug": "ny-life-health",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-life-health"
+      ],
+      "aliases": [
+        "Save the Children",
+        "더루트코리아"
+      ],
+      "instagramUrl": "https://www.instagram.com/savethechildrenkr/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY275.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY275_1.webp",
+        "/booths/newyear-store-2026/NY275_2.webp"
+      ]
+    },
+    {
+      "code": "D17",
+      "name": "대한무역투자진흥공사",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "KOTRA",
+        "대한투자무역진흥공사"
+      ],
+      "instagramUrl": "https://www.instagram.com/kotra_global/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY265.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY265_1.webp",
+        "/booths/newyear-store-2026/NY265_2.webp"
+      ]
+    },
+    {
+      "code": "D18",
+      "name": "큐라프록스",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "생활/건강",
+      "categorySlug": "ny-life-health",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-life-health"
+      ],
+      "aliases": [
+        "CURAPROX",
+        "유한회사 큐라덴코리아"
+      ],
+      "instagramUrl": "https://www.instagram.com/curaprox_korea/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY63.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY63_1.webp",
+        "/booths/newyear-store-2026/NY63_2.webp",
+        "/booths/newyear-store-2026/NY63_3.webp"
+      ]
+    },
+    {
+      "code": "D19",
+      "name": "유어뮤즈",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "생활/건강",
+      "categorySlug": "ny-life-health",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-life-health"
+      ],
+      "aliases": [
+        "YRMS"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY262.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY262_1.webp",
+        "/booths/newyear-store-2026/NY262_2.webp",
+        "/booths/newyear-store-2026/NY262_3.webp"
+      ]
+    },
+    {
+      "code": "D20",
+      "name": "시텐스 x 포에시스",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "생활/건강",
+      "categorySlug": "ny-life-health",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-life-health"
+      ],
+      "aliases": [
+        "시텐스 × 포에시스",
+        "Sitence POIESIS",
+        "오브트"
+      ]
+    },
+    {
+      "code": "D21",
+      "name": "키므 & 더로바",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "생활/건강",
+      "categorySlug": "ny-life-health",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-life-health"
+      ],
+      "aliases": [
+        "Kymu & THE LOVA",
+        "토브"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY305.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY305_1.webp",
+        "/booths/newyear-store-2026/NY305_2.webp"
+      ]
+    },
+    {
+      "code": "D22",
+      "name": "뷰릿",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "beaurit",
+        "파인유얼뷰티"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY285.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY285_1.webp",
+        "/booths/newyear-store-2026/NY285_2.webp",
+        "/booths/newyear-store-2026/NY285_3.webp"
+      ]
+    },
+    {
+      "code": "D23",
+      "name": "밸런스온",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "BalanceOn",
+        "불스원더블유앤에스"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY272.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY272_1.webp",
+        "/booths/newyear-store-2026/NY272_2.webp",
+        "/booths/newyear-store-2026/NY272_3.webp"
+      ]
+    },
+    {
+      "code": "D24",
+      "name": "느슨작업실",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "생활/건강",
+      "categorySlug": "ny-life-health",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-life-health"
+      ],
+      "aliases": [
+        "Studio Neuseun"
+      ],
+      "instagramUrl": "https://www.instagram.com/neu.seun/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY62.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY62_1.webp",
+        "/booths/newyear-store-2026/NY62_2.webp",
+        "/booths/newyear-store-2026/NY62_3.webp"
+      ]
+    },
+    {
+      "code": "D25",
+      "name": "한포매실",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "생활/건강",
+      "categorySlug": "ny-life-health",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-life-health"
+      ],
+      "aliases": [
+        "HANPOMASIL",
+        "주식회사미오기"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY296.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY296_1.webp",
+        "/booths/newyear-store-2026/NY296_2.webp",
+        "/booths/newyear-store-2026/NY296_3.webp"
+      ]
+    },
+    {
+      "code": "D26",
+      "name": "샌드위치 프레스",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "Sandwich Press"
+      ],
+      "instagramUrl": "https://www.instagram.com/sandwichpress.kr/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY299.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY299_1.webp",
+        "/booths/newyear-store-2026/NY299_2.webp",
+        "/booths/newyear-store-2026/NY299_3.webp"
+      ]
+    },
+    {
+      "code": "D27",
+      "name": "타이트사주",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "TIGHT",
+        "사이버네틱스"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY273.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY273_1.webp",
+        "/booths/newyear-store-2026/NY273_2.webp",
+        "/booths/newyear-store-2026/NY273_3.webp"
+      ]
+    },
+    {
+      "code": "D28",
+      "name": "루업",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "생활/건강",
+      "categorySlug": "ny-life-health",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-life-health"
+      ],
+      "aliases": [
+        "looup",
+        "주식회사 더착한가게"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY61.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY61_1.webp",
+        "/booths/newyear-store-2026/NY61_2.webp",
+        "/booths/newyear-store-2026/NY61_3.webp"
+      ]
+    },
+    {
+      "code": "D29",
+      "name": "계단뿌셔단 모집 본부",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "Staircrusher Club",
+        "계단뿌셔클럽"
+      ],
+      "instagramUrl": "https://www.instagram.com/staircrusher.club/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY53.webp"
+    },
+    {
+      "code": "D30",
+      "name": "밀로베로",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "milovero",
+        "엘에스트레이드"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY283.webp"
+    },
+    {
+      "code": "D31",
+      "name": "네츄럴굿띵스",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "취미/웰니스",
+      "categorySlug": "ny-hobby-wellness",
+      "categoryColor": "#FFF8E6",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-hobby-wellness"
+      ],
+      "aliases": [
+        "NGT"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY311.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY311_1.webp",
+        "/booths/newyear-store-2026/NY311_2.webp",
+        "/booths/newyear-store-2026/NY311_3.webp"
+      ]
+    },
+    {
+      "code": "D32",
+      "name": "사적인사과지적인수박",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "wateremelonbook"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY36.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY36_1.webp",
+        "/booths/newyear-store-2026/NY36_2.webp",
+        "/booths/newyear-store-2026/NY36_3.webp"
+      ]
+    },
+    {
+      "code": "D33",
+      "name": "디자인이음",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "캘린더전",
+      "categorySlug": "ny-calendar",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-calendar"
+      ],
+      "aliases": [
+        "designEUM"
+      ],
+      "instagramUrl": "https://www.instagram.com/design_eum/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY43.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY43_1.webp",
+        "/booths/newyear-store-2026/NY43_2.webp",
+        "/booths/newyear-store-2026/NY43_3.webp"
+      ]
+    },
+    {
+      "code": "D34",
+      "name": "금림",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "KUMRIM"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY40.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY40_1.webp",
+        "/booths/newyear-store-2026/NY40_2.webp",
+        "/booths/newyear-store-2026/NY40_3.webp"
+      ]
+    },
+    {
+      "code": "D35",
+      "name": "한빛비즈",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "Hanbit Biz"
+      ],
+      "instagramUrl": "https://www.instagram.com/hanbitbiz/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY46.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY46_1.webp",
+        "/booths/newyear-store-2026/NY46_2.webp",
+        "/booths/newyear-store-2026/NY46_3.webp"
+      ]
+    },
+    {
+      "code": "D36",
+      "name": "크레마클럽",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "CREMACLUB",
+        "예스이십사"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY65.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY65_1.webp",
+        "/booths/newyear-store-2026/NY65_2.webp",
+        "/booths/newyear-store-2026/NY65_3.webp"
+      ]
+    },
+    {
+      "code": "D37",
+      "name": "도서출판 도반",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "DOBAN BOOKS"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY50.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY50_1.webp",
+        "/booths/newyear-store-2026/NY50_2.webp",
+        "/booths/newyear-store-2026/NY50_3.webp"
+      ]
+    },
+    {
+      "code": "E01",
+      "name": "세나북스",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "images": [
+        "/booths/newyear-store-2026/NY124_1.webp",
+        "/booths/newyear-store-2026/NY124_2.webp",
+        "/booths/newyear-store-2026/NY124_3.webp"
+      ]
+    },
+    {
+      "code": "E02",
+      "name": "두잇프레스",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY132.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY132_1.webp",
+        "/booths/newyear-store-2026/NY132_2.webp",
+        "/booths/newyear-store-2026/NY132_3.webp"
+      ]
+    },
+    {
+      "code": "E03",
+      "name": "소장각",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY164.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY164_1.webp",
+        "/booths/newyear-store-2026/NY164_2.webp",
+        "/booths/newyear-store-2026/NY164_3.webp"
+      ]
+    },
+    {
+      "code": "E04",
+      "name": "가가77페이지x새벽감성1집",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "가가77페이지 × 새벽감성1집",
+        "가가77페이지"
+      ]
+    },
+    {
+      "code": "E05",
+      "name": "김앤작x강주리",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "김앤작 × 강주리",
+        "김시은"
+      ],
+      "images": [
+        "/booths/newyear-store-2026/NY175_1.webp",
+        "/booths/newyear-store-2026/NY175_2.webp",
+        "/booths/newyear-store-2026/NY175_3.webp"
+      ]
+    },
+    {
+      "code": "E06",
+      "name": "지구불시착",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "김택수"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY220.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY220_1.webp",
+        "/booths/newyear-store-2026/NY220_2.webp",
+        "/booths/newyear-store-2026/NY220_3.webp"
+      ]
+    },
+    {
+      "code": "E07",
+      "name": "꿈꾸는인생",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY245.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY245_1.webp",
+        "/booths/newyear-store-2026/NY245_2.webp",
+        "/booths/newyear-store-2026/NY245_3.webp"
+      ]
+    },
+    {
+      "code": "E08",
+      "name": "나나용북스",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "images": [
+        "/booths/newyear-store-2026/NY17_1.webp"
+      ]
+    },
+    {
+      "code": "E09",
+      "name": "나리X서은",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "나리 × 서은"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY229.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY229_1.webp",
+        "/booths/newyear-store-2026/NY229_2.webp",
+        "/booths/newyear-store-2026/NY229_3.webp"
+      ]
+    },
+    {
+      "code": "E10",
+      "name": "더 작업실",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "더작업실"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY192.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY192_1.webp",
+        "/booths/newyear-store-2026/NY192_2.webp"
+      ]
+    },
+    {
+      "code": "E11",
+      "name": "느린서재",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY179.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY179_1.webp",
+        "/booths/newyear-store-2026/NY179_2.webp",
+        "/booths/newyear-store-2026/NY179_3.webp"
+      ]
+    },
+    {
+      "code": "E12",
+      "name": "닢",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY255.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY255_1.webp",
+        "/booths/newyear-store-2026/NY255_2.webp",
+        "/booths/newyear-store-2026/NY255_3.webp"
+      ]
+    },
+    {
+      "code": "E13",
+      "name": "푸름",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY105.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY105_1.webp",
+        "/booths/newyear-store-2026/NY105_2.webp",
+        "/booths/newyear-store-2026/NY105_3.webp"
+      ]
+    },
+    {
+      "code": "E14",
+      "name": "다일x딩스",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "다일 × 딩스"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY127.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY127_1.webp",
+        "/booths/newyear-store-2026/NY127_2.webp",
+        "/booths/newyear-store-2026/NY127_3.webp"
+      ]
+    },
+    {
+      "code": "E15",
+      "name": "다정한책",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY239.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY239_1.webp"
+      ]
+    },
+    {
+      "code": "E16",
+      "name": "푸른숲 출판사",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "도서출판 푸른숲"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY98.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY98_1.webp",
+        "/booths/newyear-store-2026/NY98_2.webp",
+        "/booths/newyear-store-2026/NY98_3.webp"
+      ]
+    },
+    {
+      "code": "E17",
+      "name": "도파닌x이름서재",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "도파닌 × 이름서재",
+        "도파닌"
+      ],
+      "images": [
+        "/booths/newyear-store-2026/NY205_1.webp",
+        "/booths/newyear-store-2026/NY205_2.webp"
+      ]
+    },
+    {
+      "code": "E18",
+      "name": "독서도구점 모멘츠",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY163.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY163_1.webp",
+        "/booths/newyear-store-2026/NY163_2.webp",
+        "/booths/newyear-store-2026/NY163_3.webp"
+      ]
+    },
+    {
+      "code": "E19",
+      "name": "루토",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "딥 플루토"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY117.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY117_1.webp",
+        "/booths/newyear-store-2026/NY117_2.webp"
+      ]
+    },
+    {
+      "code": "E20",
+      "name": "무중력프레스 Zero Gravity Press",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "무중력프레스"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY183.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY183_1.webp",
+        "/booths/newyear-store-2026/NY183_2.webp",
+        "/booths/newyear-store-2026/NY183_3.webp"
+      ]
+    },
+    {
+      "code": "E21",
+      "name": "문장변주",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY258.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY258_1.webp",
+        "/booths/newyear-store-2026/NY258_2.webp",
+        "/booths/newyear-store-2026/NY258_3.webp"
+      ]
+    },
+    {
+      "code": "E22",
+      "name": "바람이 걸어온 자리",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY182.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY182_1.webp",
+        "/booths/newyear-store-2026/NY182_2.webp",
+        "/booths/newyear-store-2026/NY182_3.webp"
+      ]
+    },
+    {
+      "code": "E23",
+      "name": "Vice Versa",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "비체베르사"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY71.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY71_1.webp",
+        "/booths/newyear-store-2026/NY71_2.webp",
+        "/booths/newyear-store-2026/NY71_3.webp"
+      ]
+    },
+    {
+      "code": "E24",
+      "name": "빅퀘스천",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY72.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY72_1.webp",
+        "/booths/newyear-store-2026/NY72_2.webp",
+        "/booths/newyear-store-2026/NY72_3.webp"
+      ]
+    },
+    {
+      "code": "E25",
+      "name": "어썸그레이",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY236.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY236_1.webp",
+        "/booths/newyear-store-2026/NY236_2.webp",
+        "/booths/newyear-store-2026/NY236_3.webp"
+      ]
+    },
+    {
+      "code": "E26",
+      "name": "샤샤미우",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "instagramUrl": "https://www.instagram.com/shashamiu/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY170.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY170_1.webp",
+        "/booths/newyear-store-2026/NY170_2.webp",
+        "/booths/newyear-store-2026/NY170_3.webp"
+      ]
+    },
+    {
+      "code": "E27",
+      "name": "선과 결",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY99.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY99_1.webp",
+        "/booths/newyear-store-2026/NY99_2.webp",
+        "/booths/newyear-store-2026/NY99_3.webp"
+      ]
+    },
+    {
+      "code": "E28",
+      "name": "섬타임즈",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY100.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY100_1.webp",
+        "/booths/newyear-store-2026/NY100_2.webp",
+        "/booths/newyear-store-2026/NY100_3.webp"
+      ]
+    },
+    {
+      "code": "E29",
+      "name": "S Family",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "에스패밀리"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY103.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY103_1.webp",
+        "/booths/newyear-store-2026/NY103_2.webp",
+        "/booths/newyear-store-2026/NY103_3.webp"
+      ]
+    },
+    {
+      "code": "E30",
+      "name": "소소소동단",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY125.webp"
+    },
+    {
+      "code": "E31",
+      "name": "스튜디오604",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY225.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY225_1.webp",
+        "/booths/newyear-store-2026/NY225_2.webp",
+        "/booths/newyear-store-2026/NY225_3.webp"
+      ]
+    },
+    {
+      "code": "E32",
+      "name": "도서출판 11%",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "십일프로 주식회사"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY202.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY202_1.webp",
+        "/booths/newyear-store-2026/NY202_2.webp",
+        "/booths/newyear-store-2026/NY202_3.webp"
+      ]
+    },
+    {
+      "code": "E33",
+      "name": "자기만의 방",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "휴머니스트"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY174.webp"
+    },
+    {
+      "code": "E34",
+      "name": "아작 ARZAK",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "아작"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY70.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY70_1.webp",
+        "/booths/newyear-store-2026/NY70_2.webp",
+        "/booths/newyear-store-2026/NY70_3.webp"
+      ]
+    },
+    {
+      "code": "E35",
+      "name": "연필과머그",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY224.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY224_1.webp",
+        "/booths/newyear-store-2026/NY224_2.webp"
+      ]
+    },
+    {
+      "code": "E36",
+      "name": "이스트엔드",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY211.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY211_1.webp",
+        "/booths/newyear-store-2026/NY211_2.webp",
+        "/booths/newyear-store-2026/NY211_3.webp"
+      ]
+    },
+    {
+      "code": "E37",
+      "name": "이종혁 유독출판",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY81.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY81_1.webp",
+        "/booths/newyear-store-2026/NY81_2.webp",
+        "/booths/newyear-store-2026/NY81_3.webp"
+      ]
+    },
+    {
+      "code": "E38",
+      "name": "태와민",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY129.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY129_1.webp",
+        "/booths/newyear-store-2026/NY129_2.webp",
+        "/booths/newyear-store-2026/NY129_3.webp"
+      ]
+    },
+    {
+      "code": "E39",
+      "name": "인문산책",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY102.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY102_1.webp",
+        "/booths/newyear-store-2026/NY102_2.webp",
+        "/booths/newyear-store-2026/NY102_3.webp"
+      ]
+    },
+    {
+      "code": "E40",
+      "name": "일인칭시점",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "images": [
+        "/booths/newyear-store-2026/NY118_1.webp",
+        "/booths/newyear-store-2026/NY118_2.webp",
+        "/booths/newyear-store-2026/NY118_3.webp"
+      ]
+    },
+    {
+      "code": "E41",
+      "name": "장유정",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY131.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY131_1.webp",
+        "/booths/newyear-store-2026/NY131_2.webp",
+        "/booths/newyear-store-2026/NY131_3.webp"
+      ]
+    },
+    {
+      "code": "E42",
+      "name": "재미공작소",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY133.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY133_1.webp",
+        "/booths/newyear-store-2026/NY133_2.webp",
+        "/booths/newyear-store-2026/NY133_3.webp"
+      ]
+    },
+    {
+      "code": "E43",
+      "name": "책밭농부",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "images": [
+        "/booths/newyear-store-2026/NY215_1.webp",
+        "/booths/newyear-store-2026/NY215_2.webp"
+      ]
+    },
+    {
+      "code": "E44",
+      "name": "어떤우주",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "어떤웅주"
+      ],
+      "instagramUrl": "https://www.instagram.com/et.uju.book/",
+      "logoUrl": "/booths/newyear-store-2026/logo/NY261.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY261_1.webp",
+        "/booths/newyear-store-2026/NY261_2.webp",
+        "/booths/newyear-store-2026/NY261_3.webp"
+      ]
+    },
+    {
+      "code": "E45",
+      "name": "지디에이치 코즈믹",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY116.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY116_1.webp",
+        "/booths/newyear-store-2026/NY116_2.webp",
+        "/booths/newyear-store-2026/NY116_3.webp"
+      ]
+    },
+    {
+      "code": "E46",
+      "name": "청미출판사",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY266.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY266_1.webp",
+        "/booths/newyear-store-2026/NY266_2.webp",
+        "/booths/newyear-store-2026/NY266_3.webp"
+      ]
+    },
+    {
+      "code": "E47",
+      "name": "초록비책공방",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY79.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY79_1.webp",
+        "/booths/newyear-store-2026/NY79_2.webp",
+        "/booths/newyear-store-2026/NY79_3.webp"
+      ]
+    },
+    {
+      "code": "E48",
+      "name": "아홉프레스 작업실 6",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "아홉프레스"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY216.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY216_1.webp"
+      ]
+    },
+    {
+      "code": "E49",
+      "name": "출판사 닿",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY230.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY230_1.webp",
+        "/booths/newyear-store-2026/NY230_2.webp",
+        "/booths/newyear-store-2026/NY230_3.webp"
+      ]
+    },
+    {
+      "code": "E50",
+      "name": "코스모 프레스",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY122.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY122_1.webp",
+        "/booths/newyear-store-2026/NY122_2.webp",
+        "/booths/newyear-store-2026/NY122_3.webp"
+      ]
+    },
+    {
+      "code": "E51",
+      "name": "포레스트 웨일",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY111.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY111_1.webp"
+      ]
+    },
+    {
+      "code": "E52",
+      "name": "픽션들",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY157.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY157_1.webp"
+      ]
+    },
+    {
+      "code": "E53",
+      "name": "셋셋북스",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY148.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY148_1.webp",
+        "/booths/newyear-store-2026/NY148_2.webp",
+        "/booths/newyear-store-2026/NY148_3.webp"
+      ]
+    },
+    {
+      "code": "E54",
+      "name": "핀드 Pinned",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "핀드"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY74.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY74_1.webp",
+        "/booths/newyear-store-2026/NY74_2.webp",
+        "/booths/newyear-store-2026/NY74_3.webp"
+      ]
+    },
+    {
+      "code": "E55",
+      "name": "핌",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY252.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY252_1.webp",
+        "/booths/newyear-store-2026/NY252_2.webp",
+        "/booths/newyear-store-2026/NY252_3.webp"
+      ]
+    },
+    {
+      "code": "E56",
+      "name": "허밍북스",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY242.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY242_1.webp"
+      ]
+    },
+    {
+      "code": "E57",
+      "name": "혼혼HONHON",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "혼혼"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY226.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY226_1.webp",
+        "/booths/newyear-store-2026/NY226_2.webp",
+        "/booths/newyear-store-2026/NY226_3.webp"
+      ]
+    },
+    {
+      "code": "E58",
+      "name": "스탈티",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "images": [
+        "/booths/newyear-store-2026/NY101_1.webp",
+        "/booths/newyear-store-2026/NY101_2.webp",
+        "/booths/newyear-store-2026/NY101_3.webp"
+      ]
+    },
+    {
+      "code": "E59",
+      "name": "휴 X 알코올 플레져",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "휴 × 알코올 플레져"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY259.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY259_1.webp",
+        "/booths/newyear-store-2026/NY259_2.webp",
+        "/booths/newyear-store-2026/NY259_3.webp"
+      ]
+    },
+    {
+      "code": "E60",
+      "name": "왓츠뉴 비엔우숨",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY161.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY161_1.webp",
+        "/booths/newyear-store-2026/NY161_2.webp",
+        "/booths/newyear-store-2026/NY161_3.webp"
+      ]
+    },
+    {
+      "code": "E61",
+      "name": "메이애플 출판사",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY80.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY80_1.webp",
+        "/booths/newyear-store-2026/NY80_2.webp",
+        "/booths/newyear-store-2026/NY80_3.webp"
+      ]
+    },
+    {
+      "code": "E62",
+      "name": "도서출판 혜윰터",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY213.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY213_1.webp",
+        "/booths/newyear-store-2026/NY213_2.webp",
+        "/booths/newyear-store-2026/NY213_3.webp"
+      ]
+    },
+    {
+      "code": "E63",
+      "name": "도서출판 담다",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "주식회사 담다"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY206.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY206_1.webp"
+      ]
+    },
+    {
+      "code": "E64",
+      "name": "다나트 DANART",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "다나트"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY141.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY141_1.webp",
+        "/booths/newyear-store-2026/NY141_2.webp",
+        "/booths/newyear-store-2026/NY141_3.webp"
+      ]
+    },
+    {
+      "code": "E65",
+      "name": "무드디스크 mood.disk",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "무드디스크",
+        "mood.disk"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY165.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY165_1.webp",
+        "/booths/newyear-store-2026/NY165_2.webp",
+        "/booths/newyear-store-2026/NY165_3.webp"
+      ]
+    },
+    {
+      "code": "E66",
+      "name": "오렌지해적단 Orange Pirates",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "오렌지해적단"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY191.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY191_1.webp",
+        "/booths/newyear-store-2026/NY191_2.webp",
+        "/booths/newyear-store-2026/NY191_3.webp"
+      ]
+    },
+    {
+      "code": "E67",
+      "name": "고어라운드",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "images": [
+        "/booths/newyear-store-2026/NY279_1.webp",
+        "/booths/newyear-store-2026/NY279_2.webp",
+        "/booths/newyear-store-2026/NY279_3.webp"
+      ]
+    },
+    {
+      "code": "E68",
+      "name": "유유",
+      "hall": "킨텍스 제2전시장 6홀",
+      "category": "새해 도서전",
+      "categorySlug": "ny-book",
+      "categoryColor": "#E26534",
+      "kind": "exhibitor",
+      "tags": [
+        "ny-book"
+      ],
+      "aliases": [
+        "도서출판 유유"
+      ],
+      "logoUrl": "/booths/newyear-store-2026/logo/NY221.webp",
+      "images": [
+        "/booths/newyear-store-2026/NY221_1.webp",
+        "/booths/newyear-store-2026/NY221_2.webp"
+      ]
+    },
+    {
+      "code": "SARANGBANG",
+      "name": "새해 사랑방",
+      "hall": "킨텍스 제2전시장 6홀",
+      "kind": "facility",
+      "category": "주최 프로그램",
+      "categorySlug": "ny-organizer-program"
+    },
+    {
+      "code": "LOUNGE",
+      "name": "워크숍 라운지",
+      "hall": "킨텍스 제2전시장 6홀",
+      "kind": "facility",
+      "category": "주최 프로그램",
+      "categorySlug": "ny-organizer-program"
+    },
+    {
+      "code": "PLAZA",
+      "name": "새해 광장",
+      "hall": "킨텍스 제2전시장 6홀",
+      "kind": "facility",
+      "category": "주최 프로그램",
+      "categorySlug": "ny-organizer-program"
+    },
+    {
+      "code": "STAGE",
+      "name": "2027 ON STAGE",
+      "hall": "킨텍스 제2전시장 6홀",
+      "kind": "facility",
+      "category": "주최 프로그램",
+      "categorySlug": "ny-organizer-program"
+    },
+    {
+      "code": "FNB",
+      "name": "F&B",
+      "hall": "킨텍스 제2전시장 6홀",
+      "kind": "facility",
+      "category": "주최 프로그램",
+      "categorySlug": "ny-organizer-program"
+    },
+    {
+      "code": "GIFT-DESK",
+      "name": "경품데스크",
+      "hall": "킨텍스 제2전시장 6홀",
+      "kind": "facility",
+      "category": "주최 프로그램",
+      "categorySlug": "ny-organizer-program"
+    }
+  ]
+}

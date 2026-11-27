@@ -73,6 +73,9 @@ export interface LayoutBooth {
   zone?: string;
   kind?: string;
   color?: string;
+  /** 시계방향 회전(도), 중심 기준. 벽 모서리를 따라 비스듬히 선 부스(킨텍스 6홀 새해 준비상점)에만 쓴다.
+   *  x, y, w, h는 돌리기 전 사각형이다. */
+  rotate?: number;
 }
 
 const ZONE: Record<string, string> = {
@@ -124,6 +127,7 @@ export function composeFloorplan(layout: Layout, venue: Venue): Floorplan {
       b.kind === "facility"
         ? FACILITY_FILL
         : (b.color ?? ZONE[b.zone ?? "general"] ?? ZONE.general),
+    ...(b.rotate ? { rotate: b.rotate } : {}),
   }));
 
   // 입출구를 아직 확인 못 한 장소는 하단 중앙을 임시 기점으로 쓴다. 없는 위치를

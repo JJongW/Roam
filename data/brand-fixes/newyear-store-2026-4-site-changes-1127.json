@@ -1,0 +1,107 @@
+{
+  "version": "brand-fix.v1",
+  "exhibitionSlug": "newyear-store-2026",
+  "note": "2026-11-27 사이트 다시 대조(헤더 요청). 사이트 표기로 이름 둘(ny-165 무드디스크 mood.disk, ny-265 대한무역투자진흥공사), 브랜드가 고친 소개 하나(ny-147), 새로 올린 사진 셋(ny-140, ny-160, ny-302)을 덮는다. 소개는 브랜드가 쓴 원문 그대로(collected). 사이트에서 빠진 ny-95 포그모그는 Ted 판단 전이라 넣지 않았다",
+  "ops": [
+    {
+      "op": "rename",
+      "key": "ny-165",
+      "exhibitorId": "exr_4dweq5v1mwa3huom",
+      "from": "mood.disk",
+      "to": "무드디스크 mood.disk"
+    },
+    {
+      "op": "rename",
+      "key": "ny-265",
+      "exhibitorId": "exr_2htthnyomwa3huom",
+      "from": "대한투자무역진흥공사",
+      "to": "대한무역투자진흥공사"
+    },
+    {
+      "op": "setIntro",
+      "key": "ny-147",
+      "exhibitorId": "exr_ahchbfagmwa3huom",
+      "from": "오늘 내가 해낼 수 있는 하루치만큼 차곡차곡! 까칠했던 까냥이가 최고의 셰프가 되기 위해 노력하는 일 년의 이야기를 소개합니다. 매달 새로 만나는 12마리의 동물 친구들과 맛있는 음식을 나누며, 행복은 늘 가까운 곳에 있다는 걸 깨닫게 됩니다. [하루치]와 함께 내가 해낼 수 있는 오늘을 채워가며, 성장하는 한 해를 만들어가요!",
+      "to": "오늘 내가 해낼수 있는 하루치만큼 차곡차곡! 까칠했던 까실이가 최고의 셰프가 되기 위해 노력하는 일 년의 이야기를 소개합니다. 매달 새로 만나는 12마리의동물 친구들과 맛있는 음식을 나누며, 행복은 늘 가까운 곳에 있다는 걸 깨닫게 됩니다. [하루치]와 함께 내가 해낼 수 있는 오늘을 채워가며, 성장하는 한 해를 만들어가요!",
+      "source": "https://www.newyear-store.com/program/brands (브랜드 147)"
+    },
+    {
+      "op": "setPhotos",
+      "key": "ny-140",
+      "exhibitorId": "exr_abrkhinsmwa3huom",
+      "from": [
+        {
+          "path": "/booths/newyear-store-2026/NY140_1.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY140_2.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        }
+      ],
+      "to": [
+        {
+          "path": "/booths/newyear-store-2026/NY140_3.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY140_2.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        }
+      ],
+      "source": "https://www.newyear-store.com/program/brands (브랜드 140)"
+    },
+    {
+      "op": "setPhotos",
+      "key": "ny-160",
+      "exhibitorId": "exr_340f0bn5mwa3huom",
+      "from": [
+        {
+          "path": "/booths/newyear-store-2026/NY160_1.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY160_2.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY160_3.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        }
+      ],
+      "to": [
+        {
+          "path": "/booths/newyear-store-2026/NY160_4.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY160_5.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        },
+        {
+          "path": "/booths/newyear-store-2026/NY160_6.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        }
+      ],
+      "source": "https://www.newyear-store.com/program/brands (브랜드 160)"
+    },
+    {
+      "op": "setPhotos",
+      "key": "ny-302",
+      "exhibitorId": "exr_7n8ug4vxmwa3huom",
+      "from": [
+        {
+          "path": "/booths/newyear-store-2026/NY302_1.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        }
+      ],
+      "to": [
+        {
+          "path": "/booths/newyear-store-2026/NY302_2.webp",
+          "scope": "주최 측 사이트 공개 사진(새해 준비상점 N.27)"
+        }
+      ],
+      "source": "https://www.newyear-store.com/program/brands (브랜드 302)"
+    }
+  ]
+}
