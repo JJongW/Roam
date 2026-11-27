@@ -240,3 +240,23 @@ export function layoutCornerName(
     count = hit;
   }
 }
+
+/**
+ * 글자 크기를 `size`로 고정하고 줄만 나눈다(줄이지 않는다). 위에서 `narrowCount` 줄은 폭 `narrow`, 나머지는 `width`.
+ * 가장 긴 어절이 안 들어가거나 줄이 `height`를 넘으면 null. 번호 줄은 없다. iOS `BoothNameLabel.pack`과 같다.
+ */
+export function packAtSize(
+  name: string,
+  size: number,
+  width: number,
+  height: number,
+  narrow: number,
+  narrowCount: number,
+): BoothLabelLayout | null {
+  const tokens = labelWords(name);
+  if (size <= 0 || tokens.length === 0) return null;
+  if (Math.max(...tokens.map(emWidth)) > width / size) return null;
+  const lines = packVar(tokens, (i) => (i < narrowCount ? narrow : width) / size);
+  if (!lines || lines.length > lineBudget(size, height, false)) return null;
+  return { lines, fontSize: size };
+}

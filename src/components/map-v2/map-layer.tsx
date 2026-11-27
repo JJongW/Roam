@@ -10,7 +10,6 @@ import {
 } from "@/components/map/map-camera";
 import {
   CODE_RATIO,
-  heartCorner,
   labelBaseUnits,
   labelInner,
   layoutBoothLabel,
@@ -27,6 +26,7 @@ import { V2_NUM, V2_PX } from "@/styles/v2/lengths.generated";
 import { entranceMarkers, wcMarkers } from "./map-markers";
 import { heartCellLayout } from "./heart-cell";
 import { HeartLabel } from "./heart-label";
+import { placeVisitedHeartName, type VisitedHeartName } from "./visited-heart-name";
 import type { BoothListItem } from "@/lib/types";
 
 /**
@@ -40,8 +40,9 @@ import type { BoothListItem } from "@/lib/types";
  *   라이트 값은 보통 칸과 거의 같고 다크에서만 갈린다(Roam-design docs/decisions/2026-11-24_다크-지도-내-부스-강조.md).
  * - 다녀온 칸(UI 26-F4, 2026-11-27 Ted): 칸을 map-booth-visited 초록 면으로 칠한다. 체크 아이콘과 테두리는 쓰지 않고
  *   칸 위에 아이콘을 올리지 않는다. 하트도 남겼으면 하트를 숨기지 않고 하트 칸 자리에 map-heart-mine으로, 이름은
- *   map-label-mine으로 그린다(UI/지도/다녀온 칸 3002:4574). 이름표는 보통 칸처럼 왼쪽 위, 하트는 칸 크기와 상관없이 오른쪽 위에
- *   짧은 변 × ratio.map-booth-heart-corner(0.3) 크기로 둔다(`heartCorner`). 고른 칸은 map-booth-selected가 앞서고 하트는 흰색
+ *   map-label-mine으로 그린다(UI/지도/다녀온 칸 3002:4574, 3411:31726). 하트는 칸 크기와 상관없이 오른쪽 위에 짧은 변 ×
+ *   ratio.map-booth-heart-corner(0.3), 이름은 왼쪽 위에서 시작해 하트를 덮지 않게 둔다(visited-heart-name.ts, 번호 줄 없음,
+ *   글자 크기는 다른 칸과 같은 규칙, iOS `VisitedHeartName`과 같은 순서). 고른 칸은 map-booth-selected가 앞서고 하트는 흰색
  *   (map-label-selected)이다. 다녀온 사실은 카드 알약이 보여 준다.
  *   끝난 박람회(F-B)에서도 같은 초록이다(Roam-design docs/decisions/2026-11-27_지도-다녀온-칸-초록-면-발자국.md).
  * - 선 굵기와 둥글기는 v2 토큰의 px 값(V2_PX, tokens.css에서 기계로 뽑은 값)을 도면 단위로 쓴다.
@@ -327,6 +328,11 @@ const BoothCell = memo(function BoothCell({
         : null,
     [hearted, visited, b.name, lcw, lch, lw, lh, fitLevel],
   );
+  // 다녀온 하트 칸: 이름이 하트를 덮지 않는 자리(겹침 0, 글자 크기는 다른 칸과 같은 규칙).
+  const visitedName = useMemo(
+    () => (visitedHeart ? placeVisitedHeartName(b.name, lcw, lch, lw, lh) : null),
+    [visitedHeart, b.name, lcw, lch, lw, lh],
+  );
   return (
     <g
       transform={`translate(${g.x} ${g.y})${g.rotate ? ` rotate(${g.rotate})` : ""}`}
@@ -343,7 +349,14 @@ const BoothCell = memo(function BoothCell({
         strokeWidth={stroke}
       />
       <g {...uprightAnchor(0, 0, g.rotate ?? 0)}>
-        {heartCell ? (
+        {visitedName ? (
+          <VisitedHeartLabel
+            clipId={`vh-${b.id}`}
+            place={visitedName}
+            nameColor={text}
+            heartColor={isSel ? C("map-label-selected") : C("map-heart-mine")}
+          />
+        ) : heartCell ? (
           <HeartLabel
             cell={heartCell}
             color={text}
@@ -361,31 +374,66 @@ const BoothCell = memo(function BoothCell({
             selected={isSel}
           />
         )}
-        {visitedHeart && (
-          <VisitedHeart
-            w={lw}
-            h={lh}
-            color={isSel ? C("map-label-selected") : C("map-heart-mine")}
-          />
-        )}
       </g>
     </g>
   );
 });
 
-/** 다녀온 칸 오른쪽 위 하트(UI/지도/다녀온 칸 3002:4574). 짧은 변의 0.3, 안쪽 0.06(heartCorner). */
-function VisitedHeart({ w, h, color }: { w: number; h: number; color: string }) {
-  const c = heartCorner(w, h);
+/**
+ * 다녀온 하트 칸의 이름과 오른쪽 위 하트(UI/지도/다녀온 칸 3411:31726). 자리는 visited-heart-name.ts가 정한다.
+ * 어림 폭과 실제 글꼴이 어긋나도 하트를 덮지 않게 하트 자리(+ 틈 반)를 글자 판에서 잘라 낸다(안전망, iOS와 같다).
+ */
+function VisitedHeartLabel({
+  clipId,
+  place,
+  nameColor,
+  heartColor,
+}: {
+  clipId: string;
+  place: VisitedHeartName;
+  nameColor: string;
+  heartColor: string;
+}) {
+  const { layout, origin, heart, gap } = place;
+  const lineH = layout.fontSize * NAME_LINE_HEIGHT;
+  const big = 1e6;
+  const hx = heart.x - gap / 2;
+  const hy = heart.y - gap / 2;
+  const hw = heart.w + gap;
+  const hh = heart.h + gap;
   return (
-    <Heart
-      data-mark="visited-heart"
-      x={c.x}
-      y={c.y}
-      width={c.size}
-      height={c.size}
-      fill={color}
-      stroke={color}
-    />
+    <>
+      <clipPath id={clipId}>
+        <path
+          clipRule="evenodd"
+          d={`M${-big} ${-big}H${big}V${big}H${-big}Z M${hx} ${hy}H${hx + hw}V${hy + hh}H${hx}Z`}
+        />
+      </clipPath>
+      <text
+        data-mark="visited-heart-name"
+        clipPath={`url(#${clipId})`}
+        textAnchor="start"
+        dominantBaseline="central"
+        fill={nameColor}
+        fontSize={layout.fontSize}
+        className="font-v2-ui font-v2-bold"
+      >
+        {layout.lines.map((line, i) => (
+          <tspan key={i} x={origin.x} y={origin.y + lineH * (i + 0.5)}>
+            {line}
+          </tspan>
+        ))}
+      </text>
+      <Heart
+        data-mark="visited-heart"
+        x={heart.x}
+        y={heart.y}
+        width={heart.w}
+        height={heart.h}
+        fill={heartColor}
+        stroke={heartColor}
+      />
+    </>
   );
 }
 

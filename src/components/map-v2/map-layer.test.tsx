@@ -111,7 +111,10 @@ describe("지도 다녀온 칸(UI 26-F4)", () => {
       const heart = heartOf(el);
       expect(heart).not.toBeNull();
       expect(heart!.getAttribute("fill")).toBe(C("map-heart-mine"));
-      expect(el.textContent!.replace(/\s/g, "")).toContain(booths.find((b) => b.id === id)!.name.replace(/\s/g, ""));
+      // 아주 작은 칸(f)은 하트 왼쪽 띠에서 "…"로 줄 수 있다. 이름 앞부분은 늘 보인다.
+      const shown = el.querySelector('[data-mark="visited-heart-name"]')!.textContent!.replace(/\s/g, "");
+      expect(shown.length).toBeGreaterThan(0);
+      expect(booths.find((b) => b.id === id)!.name.replace(/\s/g, "").startsWith(shown.replace("…", ""))).toBe(true);
       expect(el.querySelector(`text[fill="${C("map-label-mine")}"]`)).not.toBeNull();
       expect(hasCheck(el)).toBe(false);
     }
