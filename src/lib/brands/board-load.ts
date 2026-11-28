@@ -1,10 +1,11 @@
 import "server-only";
 import type { Repository } from "@/lib/repositories/types";
-import { buildRow, CONFIDENCE_SOURCE_PREFIX, emailFromMailto, HANDLE_CONFIDENCES, handleCandidates, type BoardRow, type HandleConfidence } from "@/lib/brands/board";
+import { boardStatus, buildRow, CONFIDENCE_SOURCE_PREFIX, emailFromMailto, HANDLE_CONFIDENCES, handleCandidates, type BoardRow, type BoardStatus, type HandleConfidence } from "@/lib/brands/board";
 import type { ImportTarget } from "@/lib/brands/handle-import";
 import { confirmedItems } from "@/lib/brands/profile";
 import { getOutreachStore, subjectsFromGraph, type OutreachMode } from "@/lib/brands/outreach-store";
-import type { Exhibition, ProfileField } from "@/lib/types";
+import type { SubjectState, ContactSubject } from "@/lib/brands/outreach-store";
+import type { Exhibition, ExhibitorGraph, ProfileField } from "@/lib/types";
 
 /**
  * 연락 보드의 데이터 길목 하나. 화면과 API는 이 함수가 주는 `BoardRow`만 본다.
@@ -27,7 +28,6 @@ export async function loadContactBoard(
   ]);
   const participants = graph.participants.filter((p) => p.exhibitionId === exhibition.id);
   const exhibitorById = new Map(graph.exhibitors.map((e) => [e.id, e]));
-  const boothById = new Map(booths.map((b) => [b.id, b]));
   const subjects = subjectsFromGraph(graph, participants.map((p) => p.id));
   const states = await store.read(subjects);
 
@@ -37,6 +37,40 @@ export async function loadContactBoard(
 
   const exhibitorIds = [...new Set(participants.map((p) => p.exhibitorId))];
   const fields = exhibitorIds.length ? await repo.listProfileFields({ exhibitorIds }) : [];
+  const { rows, profileInstagram } = rowsFromStates({ subjects, states, graph, booths, fields, today });
+
+  // csv 가져오기는 브랜드에 쓴다 — 이 박람회의 브랜드와 그 이름들.
+  const targets = new Map<string, ImportTarget>();
+  for (const p of participants) {
+    const e = exhibitorById.get(p.exhibitorId);
+    const t = targets.get(p.exhibitorId) ?? { exhibitorId: p.exhibitorId, names: [], currentHandle: null };
+    t.names.push(p.displayName, ...(p.aliases ?? []), ...(e ? [e.canonicalName, ...(e.aliases ?? [])] : []));
+    // 이미 있는 인스타: 프로필 links 칸, 없으면 브랜드 공식 링크. 다르면 충돌로 보여 주고 덮지 않는다.
+    t.currentHandle = profileInstagram(p.exhibitorId)?.url ?? e?.instagramUrl ?? t.currentHandle;
+    targets.set(p.exhibitorId, t);
+  }
+  return { rows, targets: [...targets.values()], mode: store.mode, unlinkedBooths };
+}
+
+/** 부스에서 줄을 만드는 데 쓰는 칸. 목록 조회(BoothListItem)와 전체 조회 둘 다 가진다. */
+type BoothLite = { id: string; name: string; code?: string | null; instagramUrl?: string | null };
+
+/**
+ * 저장된 연락 상태와 브랜드, 부스, 프로필 칸으로 보드 줄을 만든다. 연락 보드와 브랜드 목록, 브랜드 상세가
+ * 이 함수 하나를 써서 "연락 수단 없음" 기준(연락 수단 종류와 출처 순서)이 화면마다 갈리지 않게 한다
+ * (2026-11-28 Ted "아직 안보냄과 보낼 연락수단이 없는 거랑은 구분").
+ */
+export function rowsFromStates(args: {
+  subjects: ContactSubject[];
+  states: Map<string, SubjectState>;
+  graph: ExhibitorGraph;
+  booths: BoothLite[];
+  fields: ProfileField[];
+  today: string;
+}) {
+  const { subjects, states, graph, booths, fields, today } = args;
+  const exhibitorById = new Map(graph.exhibitors.map((e) => [e.id, e]));
+  const boothById = new Map(booths.map((b) => [b.id, b]));
   const fieldOf = new Map<string, ProfileField>();
   for (const f of fields) if (f.exhibitorId) fieldOf.set(`${f.exhibitorId}:${f.field}`, f);
   const profileLinks = (exhibitorId: string) => {
@@ -57,7 +91,7 @@ export async function loadContactBoard(
   // DM 품목 자리는 확인된 칸만. AI 초안이 "공식 계정에 소개된" 사실처럼 브랜드에게 나가지 않게 한다.
   const itemsOf = (exhibitorId: string) => confirmedItems(fieldOf.get(`${exhibitorId}:items`));
 
-  const nameOf = new Map(participants.map((p) => [p.id, p.displayName]));
+  const nameOf = new Map(graph.participants.map((p) => [p.id, p.displayName]));
   const rows: BoardRow[] = subjects.map((s) => {
     const booth = s.boothId ? boothById.get(s.boothId) : undefined;
     const st = states.get(s.participantId);
@@ -82,18 +116,12 @@ export async function loadContactBoard(
       today,
     );
   });
+  return { rows, profileInstagram };
+}
 
-  // csv 가져오기는 브랜드에 쓴다 — 이 박람회의 브랜드와 그 이름들.
-  const targets = new Map<string, ImportTarget>();
-  for (const p of participants) {
-    const e = exhibitorById.get(p.exhibitorId);
-    const t = targets.get(p.exhibitorId) ?? { exhibitorId: p.exhibitorId, names: [], currentHandle: null };
-    t.names.push(p.displayName, ...(p.aliases ?? []), ...(e ? [e.canonicalName, ...(e.aliases ?? [])] : []));
-    // 이미 있는 인스타: 프로필 links 칸, 없으면 브랜드 공식 링크. 다르면 충돌로 보여 주고 덮지 않는다.
-    t.currentHandle = profileInstagram(p.exhibitorId)?.url ?? e?.instagramUrl ?? t.currentHandle;
-    targets.set(p.exhibitorId, t);
-  }
-  return { rows, targets: [...targets.values()], mode: store.mode, unlinkedBooths };
+/** 출전 id → 보드에 보이는 상태("연락 수단 없음" 포함). 브랜드 목록 배지용. */
+export function boardStatusMap(rows: BoardRow[]): Record<string, BoardStatus> {
+  return Object.fromEntries(rows.map((r) => [r.ref.participantId, boardStatus(r)]));
 }
 
 function confidenceFromSources(sources: string[]): HandleConfidence {
