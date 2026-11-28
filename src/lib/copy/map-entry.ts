@@ -5,9 +5,12 @@
 export const entryCopy = {
   // UI 1
   welcome: (fair: string) => `${fair}에 오셨네요`,
-  moodBody: "눈길 가는 사진을 두 장 골라 주세요. 이번 행사에 나오는 부스의 사진이에요.",
-  moodHint: "두 장을 고르면 바로 지도로 가요",
-  moodDone: "두 장 고르셨네요. 이제 지도로 가요",
+  // 2026-11-28 Ted: 두 장 이상 고르고 "골랐어요"로 넘어간다. moodBody, moodHint, moodRefresh는 임시 문구(나중에 한꺼번에 정한다).
+  moodBody: "눈길 가는 사진을 두 장 이상 골라 주세요. 이번 행사에 나오는 부스의 사진이에요.",
+  moodHint: "두 장 이상 골라 주세요",
+  moodRefresh: "다른 사진 보기",
+  /** Ted가 쓴 글 그대로. */
+  moodDone: "골랐어요",
   skip: "건너뛰기",
   moodPhoto: (name: string) => `${name} 부스 사진`,
   onsiteAsk: "지금 행사장에 계세요?",

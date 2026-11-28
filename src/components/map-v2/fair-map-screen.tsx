@@ -39,7 +39,8 @@ import { entryCopy, monthDayKo } from "@/lib/copy/map-entry";
 import {
   entryStep,
   firstPicks as computeFirstPicks,
-  moodBooths,
+  moodPool,
+  MOOD_PHOTO_COUNT,
   morePicks as computeMorePicks,
   readFairState,
   readPicksOnMap,
@@ -252,7 +253,8 @@ export function FairMapScreen({
   );
 
   // UI 1 첫 진입. 상태는 이 브라우저 `roam.fair.<slug>`(iOS와 같은 키).
-  const moodList = useMemo(() => moodBooths(booths), [booths]);
+  const moodAll = useMemo(() => moodPool(booths), [booths]);
+  const moodList = useMemo(() => moodAll.slice(0, MOOD_PHOTO_COUNT), [moodAll]);
   const [fairState, setFairState] = useState<FairOnboardingState | null>(null);
   const [entry, setEntry] = useState<FairEntryStep>("none");
   const [moodOpen, setMoodOpen] = useState(false);
@@ -1642,7 +1644,7 @@ export function FairMapScreen({
       {moodOpen && (
         <MoodSheet
           fairName={detail.exhibition.name}
-          booths={moodList}
+          pool={moodAll}
           onPicked={moodPicked}
           onSkip={moodSkipped}
         />
