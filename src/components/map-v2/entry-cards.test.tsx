@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { FirstPickCard, FirstPickPreviewSheet } from "./entry-cards";
+import { FirstPickCard, FirstPickPreviewSheet, MoodSheet } from "./entry-cards";
 import type { BoothListItem } from "@/lib/types";
 
 const booth = {
@@ -109,5 +109,52 @@ describe("FirstPickPreviewSheet(UI 24 Q2A-2)", () => {
     fireEvent.touchMove(sheet, { touches: [{ clientX: 200, clientY: 250 }] });
     fireEvent.touchEnd(sheet);
     expect(onClose).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe("MoodSheet(UI 1-02, 2026-11-28 Ted: 두 장 이상 + 골랐어요 + 다른 사진 보기)", () => {
+  const pool = Array.from({ length: 9 }, (_, i) => ({
+    ...booth,
+    id: `p${i}`,
+    name: `부스${i}`,
+    images: ["", `/p${i}.jpg`],
+  })) as BoothListItem[];
+  const photo = (i: number) => screen.getByRole("button", { name: `부스${i} 부스 사진` });
+  const done = () => screen.getByRole("button", { name: "골랐어요" });
+  const refresh = () => screen.getByRole("button", { name: "다른 사진 보기" });
+
+  it("한 장이면 골랐어요가 꺼져 있고, 두 장 이상이면 눌러서 고른 차례대로 넘긴다", async () => {
+    const onPicked = vi.fn();
+    render(<MoodSheet fairName="새해 준비상점" pool={pool} onPicked={onPicked} onSkip={() => {}} />);
+    expect(screen.getAllByRole("listitem")).toHaveLength(6);
+    expect(done()).toBeDisabled();
+    await userEvent.click(photo(0));
+    expect(done()).toBeDisabled();
+    await userEvent.click(photo(3));
+    await userEvent.click(photo(5));
+    expect(onPicked).not.toHaveBeenCalled(); // 두 장이 돼도 바로 넘어가지 않는다
+    await userEvent.click(done());
+    expect(onPicked).toHaveBeenCalledWith(["p0", "p3", "p5"]);
+  });
+
+  it("다른 사진 보기는 고른 칸을 두고 나머지만 바꾸고, 바꾼 뒤 고른 것도 쌓인다", async () => {
+    const onPicked = vi.fn();
+    render(<MoodSheet fairName="새해 준비상점" pool={pool} onPicked={onPicked} onSkip={() => {}} />);
+    await userEvent.click(photo(1));
+    await userEvent.click(refresh());
+    const names = screen.getAllByRole("button", { name: / 부스 사진$/ }).map((b) => b.getAttribute("aria-label"));
+    expect(names).toEqual(["부스6 부스 사진", "부스1 부스 사진", "부스7 부스 사진", "부스8 부스 사진", "부스4 부스 사진", "부스5 부스 사진"]);
+    expect(photo(1)).toHaveAttribute("aria-pressed", "true");
+    // 남은 사진이 없으니 꺼진다(다시 보여 주지 않는다).
+    expect(refresh()).toBeDisabled();
+    await userEvent.click(photo(7));
+    await userEvent.click(done());
+    expect(onPicked).toHaveBeenCalledWith(["p1", "p7"]);
+  });
+
+  it("사진이 여섯 장뿐이면 다른 사진 보기가 처음부터 꺼져 있다. 빈 주소 대신 있는 사진을 쓴다", () => {
+    render(<MoodSheet fairName="새해 준비상점" pool={pool.slice(0, 6)} onPicked={() => {}} onSkip={() => {}} />);
+    expect(refresh()).toBeDisabled();
+    expect(screen.getAllByRole("listitem")[0].querySelector("img")).toHaveAttribute("src", "/p0.jpg");
   });
 });

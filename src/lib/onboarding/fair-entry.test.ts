@@ -4,6 +4,9 @@ import {
   entryStep,
   firstPicks,
   moodBooths,
+  moodPool,
+  refreshMood,
+  canRefreshMood,
   morePicks,
   readFairState,
   readPicksOnMap,
@@ -57,6 +60,39 @@ describe("moodBooths", () => {
       booth("c2", "C"),
     ];
     expect(moodBooths(list).map((b) => b.id)).toEqual(["a1", "b1", "c2", "a2", "b2", "a3"]);
+  });
+});
+
+describe("다른 사진 보기(2026-11-28 Ted)", () => {
+  const ids = (xs: { id: string }[]) => xs.map((b) => b.id);
+  const pool = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l"].map((id) => ({ id }));
+  const first = pool.slice(0, 6);
+  const seen0 = new Set(ids(first));
+
+  it("moodPool은 여섯 장 뒤로도 같은 차례를 잇는다", () => {
+    const list = ["a1", "a2", "a3", "a4", "b1", "b2", "c2"].map((id) => booth(id, id[0].toUpperCase()));
+    expect(ids(moodPool(list))).toEqual(["a1", "b1", "c2", "a2", "b2", "a3", "a4"]);
+    expect(ids(moodBooths(list))).toEqual(ids(moodPool(list)).slice(0, 6));
+  });
+
+  it("고른 칸은 그 자리에 그대로, 고르지 않은 칸만 안 보여 준 사진으로 바뀐다", () => {
+    const next = refreshMood(first, ["b", "e"], pool, seen0);
+    expect(ids(next)).toEqual(["g", "b", "h", "i", "e", "j"]);
+  });
+
+  it("이미 보여 준 사진은 다시 꺼내지 않고, 모자라면 앞 칸부터 바꾸고 나머지는 그대로 둔다", () => {
+    const seen = new Set([...seen0, "g", "h", "i", "j"]);
+    const shown = ["g", "b", "h", "i", "e", "j"].map((id) => ({ id }));
+    const next = refreshMood(shown, ["b", "e"], pool, seen);
+    expect(ids(next)).toEqual(["k", "b", "l", "i", "e", "j"]);
+    expect(next.filter((b) => ["a", "c", "d", "f"].includes(b.id))).toEqual([]);
+  });
+
+  it("더 보여 줄 사진이 없거나 모든 칸을 골랐으면 꺼진다", () => {
+    expect(canRefreshMood(first, [], pool, seen0)).toBe(true);
+    expect(canRefreshMood(first, [], first, seen0)).toBe(false);
+    expect(canRefreshMood(first, ids(first), pool, seen0)).toBe(false);
+    expect(refreshMood(first, [], first, seen0)).toEqual(first);
   });
 });
 
