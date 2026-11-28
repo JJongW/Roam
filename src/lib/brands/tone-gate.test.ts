@@ -135,6 +135,28 @@ describe("checkToneConversion mode intro — 브랜드 소개", () => {
     expect(r).toEqual({ ok: true, issues: [] });
   });
 
+  it("주어 없는 바람(~기를 바라요, ~길 바라요)은 실패, 브랜드가 주어인 사실은 통과", () => {
+    const original = "새해에 작은 행복이 함께하길 바랍니다.";
+    for (const display of ["새해에 작은 행복이 함께하기를 바라요.", "새해에 작은 행복이 함께하길 바라요."])
+      expect(checkToneConversion({ original, display }).issues.some((i) => i.startsWith("누가 바라는지 모르는 문장"))).toBe(true);
+    expect(checkToneConversion({ original, display: "푸치랜드는 새해에 작은 행복이 함께하기를 바라는 마음으로 만들어요." }).ok).toBe(true);
+  });
+
+  it("이에요와 예요 받침", () => {
+    const o = "만듭니다.";
+    expect(checkToneConversion({ original: o, display: "아트 브랜드이에요." }).issues).toContain('"드이에요"는 "드예요"로 써 주세요');
+    expect(checkToneConversion({ original: o, display: "작은 공방예요." }).issues).toContain('"방예요"는 "방이에요"로 써 주세요');
+    expect(checkToneConversion({ original: "공방입니다.", display: "작은 공방이에요." }).ok).toBe(true);
+    expect(checkToneConversion({ original: "브랜드입니다.", display: "아트 브랜드예요." }).ok).toBe(true);
+    // 영문, 숫자 뒤는 건너뛴다.
+    expect(checkToneConversion({ original: "Siso입니다. 604입니다.", display: "Siso예요. 604이에요." }).issues.filter((i) => i.includes("써 주세요"))).toEqual([]);
+    // 원문이 "고양이예요"인데 "고양이에요"로 쓰면 실패.
+    expect(
+      checkToneConversion({ original: "귀가 빨개지는 고양이예요.", display: "귀가 빨개지는 고양이에요." }).issues,
+    ).toContain('"고양이에요"는 "고양이예요"로 써 주세요');
+    expect(checkToneConversion({ original: "귀가 빨개지는 고양이예요.", display: "귀가 빨개지는 고양이예요." }).ok).toBe(true);
+  });
+
   it("읽는 사람 시점의 나만의는 괜찮다", () => {
     expect(checkToneConversion({ original: "나만의 컵을 만들 수 있습니다.", display: "나만의 컵을 만들 수 있어요." }).ok).toBe(true);
   });

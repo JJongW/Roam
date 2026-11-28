@@ -214,11 +214,24 @@ function checkIntroRewrite(input: GateInput): GateResult {
     else if (!/요$/.test(end) && /[가-힣]$/.test(end)) issues.push(`문장 끝을 해요체로 맺어 주세요: ${s.slice(-20)}`);
     // 권유와 명령(~해 보세요, ~오세요)은 결정을 방문객에게서 가져간다(02_voice-tone §1-5).
     if (/(?:세요|십시오)$/.test(end)) issues.push(`방문객에게 권하는 문장이 있어요: ${s.slice(-20)}`);
+    // 주어 없는 바람("~기를 바라요", "~길 바라요")은 Roam이 바라는 말로 읽힌다(사실만, 확신 키우지 않기).
+    // 브랜드의 바람은 "~를 바라는 마음으로 만들어요"처럼 브랜드가 주어인 사실로 쓴다.
+    if (/(?:기를|길|기)\s*바라요$/u.test(end)) issues.push(`누가 바라는지 모르는 문장이 있어요: ${s.slice(-20)}`);
   }
 
-  // 3-1. 받침 없는 말 뒤 "이에요"(브랜드이에요)는 "예요"가 맞다. 기계 변환이 자주 틀리는 자리.
+  // 3-1. 이에요와 예요: 받침(유니코드 (code - 0xAC00) % 28) 있는 말 뒤 "이에요", 없는 말 뒤 "예요".
+  // 영문이나 숫자로 끝나는 말 뒤는 읽는 소리를 몰라 건너뛴다(정규식이 한글 음절만 잡는다).
   for (const m of display.matchAll(/([가-힣])이에요/g))
     if (!hasBatchim(m[1]) && !original.includes(m[0])) issues.push(`"${m[1]}이에요"는 "${m[1]}예요"로 써 주세요`);
+  for (const m of display.matchAll(/([가-힣])예요/g))
+    if (hasBatchim(m[1]) && !original.includes(m[0])) issues.push(`"${m[1]}예요"는 "${m[1]}이에요"로 써 주세요`);
+  // "고양이에요"는 받침 계산으로 못 가른다("고양 + 이에요"로도 읽힌다). 원문이 "고양이예요", "고양이입니다"처럼
+  // "이"로 끝나는 말로 썼으면 "고양이예요"가 맞다(2026-11-28 드라이런에서 원문 "고양이예요"를 "고양이에요"로 바꿨다).
+  for (const m of display.matchAll(/([가-힣]+)이에요/g)) {
+    const w = `${m[1].slice(-4)}이`;
+    if (new RegExp(`${w}(?:예요|입니다|이다|이에요)`, "u").test(original) && !original.includes(`${w}에요`))
+      issues.push(`"${w}에요"는 "${w}예요"로 써 주세요`);
+  }
 
   // 3-2. 화자: Roam이 브랜드를 소개하는 글이다. 브랜드 1인칭과 방문객 호칭을 쓰지 않는다(브랜드 규칙 §5).
   const fp = display.match(FIRST_PERSON);
