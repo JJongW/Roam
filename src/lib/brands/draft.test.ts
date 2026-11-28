@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { MockRepository } from "@/lib/mock/repository";
 import { planFromRepository } from "@/lib/exhibitor/service";
 import { hasRealBlurb } from "@/lib/booth/blurb";
-import { CHANGED_REASON, TONE_SYSTEM, draftSystemPrompt, mayFetch, runBrandProfileDraft, type DraftDeps } from "./draft";
+import { CHANGED_REASON, TONE_SYSTEM, draftSystemPrompt, mayFetch, rewriteIntro, runBrandProfileDraft, type DraftDeps } from "./draft";
 import { hasBatchim } from "./tone-gate";
 
 beforeEach(() => {
@@ -50,8 +50,10 @@ describe("runBrandProfileDraft", () => {
 
   it("말투 변환이 게이트를 넘으면 collected, 못 넘으면 ai_draft", async () => {
     const { repo, real, exhibitorOf } = await setup();
-    const good = exhibitorOf(real[0].id);
-    const bad = exhibitorOf(real[1].id);
+    // 원문에 행사 이름이 든 소개는 게이트가 거른다(2026-11-28). 통과 쪽은 행사 이름이 없는 원문으로 고른다.
+    const clean = real.filter((b) => !b.description.includes("하우스 아카이브"));
+    const good = exhibitorOf(clean[0].id);
+    const bad = exhibitorOf(clean[1].id);
     const r1 = await runBrandProfileDraft(repo, good, { convertTone: async ({ original }) => fakeTone(original) });
     if ("error" in r1) throw new Error(r1.error);
     expect(r1.gate).toEqual({ ok: true, issues: [] });
@@ -87,6 +89,41 @@ describe("runBrandProfileDraft", () => {
     await repo.upsertProfileField({ subject: { exhibitorId: x }, field: "intro", value: { original: "작가 원문입니다." }, sources: ["contact-log:1"], status: "artist_confirmed", actor: "ted" });
     await runBrandProfileDraft(repo, x, { convertTone: async ({ original }) => fakeTone(original) });
     expect((await repo.listProfileFields({ exhibitorIds: [x] })).find((y) => y.field === "intro")!.value).toEqual({ original: "작가 원문입니다." });
+  });
+
+  it("모델이 낸 소개는 정돈한 뒤 게이트에 넣는다 — 문장 중간 줄바꿈과 인스타 줄은 저장되지 않는다(2026-11-28)", async () => {
+    const { repo, real, exhibitorOf } = await setup();
+    const x = exhibitorOf(real[0].id);
+    await repo.upsertProfileField({
+      subject: { exhibitorId: x },
+      field: "intro",
+      value: { original: "손으로 그릇을 빚습니다. 매일 물레를 돌립니다.\n인스타그램 @bowl.studio" },
+      sources: ["https://fair.example/x"],
+      status: "collected",
+      actor: "system:brands-intake",
+    });
+    const r = await runBrandProfileDraft(repo, x, {
+      convertTone: async () => "손으로 그릇을\n빚어요.\n매일 물레를 돌려요.\nInstagram @bowl.studio",
+    });
+    if ("error" in r) throw new Error(r.error);
+    expect(r.gate).toEqual({ ok: true, issues: [] });
+    const f = (await repo.listProfileFields({ exhibitorIds: [x] })).find((y) => y.field === "intro")!;
+    expect(f.value).toMatchObject({
+      original: "손으로 그릇을 빚습니다. 매일 물레를 돌립니다.\n인스타그램 @bowl.studio",
+      display: "손으로 그릇을 빚어요.\n\n매일 물레를 돌려요.",
+    });
+  });
+
+  it("소개가 게이트를 못 넘으면 짚은 점을 붙여 한 번만 더 쓴다", async () => {
+    const convert = vi.fn<NonNullable<DraftDeps["convertTone"]>>(async ({ feedback }) => (feedback ? "그릇을 빚어요." : "그릇을 빚습니다."));
+    const r = await rewriteIntro(convert, { original: "그릇을 빚습니다.", protectedTerms: [], brandName: "흙집" });
+    expect(r).toMatchObject({ display: "그릇을 빚어요.", gate: { ok: true }, tries: 2 });
+    expect(convert.mock.calls[0]![0]).toMatchObject({ brandName: "흙집", feedback: undefined });
+    expect(convert.mock.calls[1]![0].feedback!.issues.some((i) => i.startsWith("해요체가 아닌 문장"))).toBe(true);
+    // 두 번 다 못 넘어도 세 번째는 없다.
+    const bad = vi.fn<NonNullable<DraftDeps["convertTone"]>>(async () => "그릇을 빚습니다.");
+    expect((await rewriteIntro(bad, { original: "그릇을 빚습니다.", protectedTerms: [] })).gate.ok).toBe(false);
+    expect(bad).toHaveBeenCalledTimes(2);
   });
 
   it("AI 초안 칸: 출처 필수, 목록 밖 품목은 버리고, 사람이 확인한 칸은 덮지 않는다", async () => {
@@ -212,6 +249,9 @@ describe("runBrandProfileDraft", () => {
       expect(p).toContain("가운뎃점");
     }
     expect(draftSystemPrompt([])).toContain("sources");
+    // 소개 지침(2026-11-28): 화자는 Roam, 연락처 빼기, 문단 2~3개와 빈 줄, 문단 안 줄바꿈 금지, 사실만.
+    for (const w of ["화자는 Roam", "인스타그램 아이디", "링크", "해시태그", "이모지", "문단 2~3개", "빈 줄", "줄을 바꾸지 않는다", "원문에 적힌 사실만", "여러분"])
+      expect(TONE_SYSTEM).toContain(w);
   });
 
   it("인스타와 판매 페이지는 읽지 않는다", () => {
