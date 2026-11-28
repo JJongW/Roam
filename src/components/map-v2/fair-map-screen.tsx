@@ -69,7 +69,8 @@ import { isCardResult, searchMapBooths } from "@/components/map-v2/map-search";
 import { RomiAvatar } from "@/components/v2/romi-avatar";
 import { BackButton } from "@/components/v2/back-button";
 import { FLOORPLANS } from "@/lib/floorplans";
-import { floorplanHallOf } from "@/lib/floorplan/hall-of";
+import { floorplanHallOf, hallForBooth } from "@/lib/floorplan/hall-of";
+import { previewMovesCamera } from "@/components/map-v2/preview-focus";
 import { boothFocusBox } from "@/components/map/booth-focus";
 import {
   isHearted,
@@ -275,8 +276,8 @@ export function FairMapScreen({
         : insets,
     [insets, pickPreview, pickPreviewH],
   );
-  // 상세에서 뒤로 와 미리보기를 되살릴 때 그 부스를 다시 비출 id(엔진이 뜬 뒤에 맞춘다).
-  const [resumeFocus, setResumeFocus] = useState<string | null>(null);
+  // 상세에서 뒤로 와 되살린 미리보기의 칸. 이 칸인 동안 시트가 열려도 지도를 옮기지 않는다(보던 그대로, 11-27 Ted).
+  const heldPreviewId = useRef<string | null>(null);
   const [romiPage, setRomiPage] = useState<"main" | "where" | "known">("main");
   // UI 8-06 "제가 고른 곳은 목록에 담아 뒀어요" 줄, 8-07 고른 곳을 지도에 켰는지(오늘만, K-C).
   const [picksLine, setPicksLine] = useState(false);
@@ -440,7 +441,7 @@ export function FairMapScreen({
         setPickIndex(at);
         setPickHead(resume.head);
         setPickPreview(true);
-        setResumeFocus(live[at].boothId);
+        heldPreviewId.current = live[at].boothId;
         return;
       }
     }
@@ -731,25 +732,21 @@ export function FairMapScreen({
       ? floorplan?.booths.find((fb) => fb.code === b.code)
       : undefined;
     if (!cell) return;
+    setHall((h) => hallForBooth(floorplan, b?.code, h));
     mapRef.current?.focusRect(boothFocusBox(cell), {
       cell,
       ...(select ? { keepWhileSelected: id } : {}),
     });
   };
 
-  // UI 24 Q2A-2 상세에서 뒤로 와 미리보기를 되살렸으면 1-05처럼 그 부스를 비춘다.
-  useEffect(() => {
-    if (!resumeFocus) return;
-    const t = setTimeout(() => focusIds([resumeFocus], 2.5), 200);
-    return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resumeFocus]);
-
   // UI 24 Q2A-2: 시트 높이를 알면 고른 칸을 시트 위 지도 가운데로 옮긴다(1-05와 같은 여백, iOS focusPickAbovePreview).
   // keepWhileSelected라 시트가 닫혀 띠가 카드 위로 돌아가면 엔진이 같은 칸을 새 띠에 다시 맞춘다.
+  // 상세에서 뒤로 와 되살린 시트면 옮기지 않는다(`preview-focus.ts`).
   const previewPickId = pickPreview ? currentPick?.boothId : undefined;
   useEffect(() => {
-    if (!previewPickId || !pickPreviewH) return;
+    // 되살린 칸에서 다음 곳으로 넘어가면 다시 옮긴다(첫 렌더처럼 시트가 아직 안 열렸을 땐 그대로 둔다).
+    if (previewPickId && previewPickId !== heldPreviewId.current) heldPreviewId.current = null;
+    if (!previewPickId || !previewMovesCamera(previewPickId, pickPreviewH, heldPreviewId.current)) return;
     focusIds([previewPickId], 2.5, [], { keepWhileSelected: previewPickId });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [previewPickId, pickPreviewH]);
@@ -1107,6 +1104,8 @@ export function FairMapScreen({
       onNotThis={() => pickAction("not_this")}
       onLater={() => pickAction("later")}
       onPreview={() => {
+        // 사용자가 직접 연 시트는 늘 그 칸을 시트 위로 옮긴다.
+        heldPreviewId.current = null;
         setPickPreview(true);
         // iOS openPickPreview와 같은 이름, 화면, 속성(index, 0부터).
         track("onboarding_first_pick_preview_open", {
@@ -1597,7 +1596,8 @@ export function FairMapScreen({
               ),
               boothId: b.id,
             });
-            focusIds([b.id], 2.5);
+            // 사용자가 그 부스가 어디냐고 물었다 — 찾기에서 고르기와 같은 규칙으로 다가간다.
+            focusBooth(b.id, false);
           }}
           onPickLeft={(id) => {
             // 7-03 남기신 것 줄: 지도에서 그 부스 카드(5-01, 6-02)를 연다.
