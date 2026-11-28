@@ -22,6 +22,7 @@ export function BrandRow({
   name,
   intro,
   linked = true,
+  introLoading = false,
 }: {
   /** 브랜드 이름. 서버가 못 읽었으면 부스 이름으로 물러선다(호출부). */
   name: string;
@@ -29,6 +30,8 @@ export function BrandRow({
   intro?: string;
   /** 브랜드 id가 이어져 있는지. 아니면 알림 문구를 뺀다. */
   linked?: boolean;
+  /** 불러오는 중 틀(iOS `IntroSlot.loading`). 브랜드 소개는 상세 응답에만 와서 소개 자리에 본문 한 줄 높이의 회색 막대만 둔다. */
+  introLoading?: boolean;
 }) {
   const signedIn = useAuthStore((s) => !!s.user);
   return (
@@ -38,7 +41,11 @@ export function BrandRow({
     >
       <span className="text-v2-t2 font-v2-medium text-v2-fg-neutral-muted">{label.brand}</span>
       <span className="break-words text-v2-t5 font-v2-bold text-v2-fg-neutral">{name}</span>
-      {intro ? (
+      {introLoading ? (
+        <span className="flex h-[var(--roam-v2-line-height-t6-5)] items-center">
+          <span className="h-v2-x4 w-full rounded-v2-r1 bg-v2-bg-neutral-weak motion-safe:animate-pulse" />
+        </span>
+      ) : intro ? (
         <p className="whitespace-pre-line break-words text-v2-t5 font-v2-regular leading-[var(--roam-v2-line-height-t6-5)] tracking-v2-body text-v2-fg-neutral">
           {intro}
         </p>

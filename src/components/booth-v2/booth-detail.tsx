@@ -361,7 +361,8 @@ export function BoothDetailV2({
   );
 }
 
-function InfoRow({
+/** 정보 줄(위치, 파는 것, 인스타그램, 브랜드 사이트). 불러오는 중 틀(booth-detail-skeleton)도 위치 줄을 이걸로 그린다. */
+export function InfoRow({
   icon: Icon,
   title,
   sub,

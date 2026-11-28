@@ -6,10 +6,11 @@ import { getRepository } from "@/lib/repositories";
 import { AnalyticsTracker } from "@/components/common/analytics-tracker";
 import { BoothExhibitionContextBridge } from "@/components/companion/booth-exhibition-context-bridge";
 import { BoothDetailV2 } from "@/components/booth-v2/booth-detail";
+import { BoothDetailEnter } from "@/components/booth-v2/booth-detail-enter";
 import { boothAbout } from "@/lib/booth/about";
 import { brandIntroForBooth } from "@/lib/brands/intro";
 import { FLOORPLANS } from "@/lib/floorplans";
-import { floorplanHallOf } from "@/lib/floorplan/hall-of";
+import { boothHallLabel } from "@/lib/floorplan/hall-of";
 import { devSkeletonDelay } from "@/lib/dev/skeleton-delay";
 import { withBrandIds } from "@/lib/booth/brand-ids";
 import { exhibitionStatus } from "@/lib/exhibition/status";
@@ -58,9 +59,12 @@ export default async function BoothDetailPage({ params, searchParams }: Props) {
   // 4-02 아래 바 "길 안내": 지도 화면과 같은 조건(여는 날이고 배치도와 부스 번호가 있을 때)만 둔다.
   const canRoute =
     status === "ongoing" && !!exhibitionSlug && !!FLOORPLANS[exhibitionSlug] && !!booth.code;
-  const hallName =
-    floorplanHallOf(exhibitionSlug ? FLOORPLANS[exhibitionSlug] : undefined, booth.code) ??
-    halls.find((h) => h.id === booth.hallId)?.name;
+  // 홀 칸은 지도 카드와 같은 짧은 이름("A홀", iOS BoothPageScreen hallName과 같음).
+  const hallName = boothHallLabel(
+    exhibitionSlug ? FLOORPLANS[exhibitionSlug] : undefined,
+    booth.code,
+    halls.find((h) => h.id === booth.hallId)?.name,
+  );
 
   const about = boothAbout(booth);
   const intro = brandIntro?.text ?? about.quote ?? about.fallback;
@@ -70,6 +74,7 @@ export default async function BoothDetailPage({ params, searchParams }: Props) {
     <>
       <AnalyticsTracker type="view" boothId={booth.id} x={booth.x} y={booth.y} />
       <BoothExhibitionContextBridge exhibitionId={booth.exhibitionId} />
+      <BoothDetailEnter boothId={booth.id}>
       <BoothDetailV2
         booth={{
           id: booth.id,
@@ -102,6 +107,7 @@ export default async function BoothDetailPage({ params, searchParams }: Props) {
             : undefined
         }
       />
+      </BoothDetailEnter>
     </>
   );
 }

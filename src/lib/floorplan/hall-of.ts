@@ -42,3 +42,19 @@ export function shortHallName(name: string): string {
   const last = t.split(/\s+/).pop() ?? t;
   return last.endsWith("홀") ? last : t;
 }
+
+/**
+ * 부스 카드와 부스 상세 위치 줄의 홀 칸("A홀 A13"의 "A홀"). iOS `FairMapViewModel.hallName(of:)`과 같다 —
+ * 서버가 홀 짧은 이름을 따로 주지 않아 배치도 홀 이름을 `shortHallName`으로 줄인다
+ * ("킨텍스 제2전시장 6홀" → "6홀", "Hall A" → "A홀", "SETEC" → "SETEC").
+ * 배치도가 없거나 칸이 어느 홀에도 안 들어가면 부스 데이터의 홀 이름을 같은 규칙으로 줄인다(iOS는 이때 홀 칸을 비운다).
+ * 장소 공식명 자체를 줄이는 게 아니라 홀 칸 표기만 홀 칩과 같은 말로 맞춘다(브랜드 규칙 §1, 2026-11-29).
+ */
+export function boothHallLabel(
+  floorplan: Floorplan | undefined,
+  code: string | undefined,
+  fallbackHallName?: string,
+): string | undefined {
+  const name = floorplanHallOf(floorplan, code) ?? fallbackHallName;
+  return name?.trim() ? shortHallName(name) : undefined;
+}

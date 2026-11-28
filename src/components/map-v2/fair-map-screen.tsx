@@ -70,7 +70,8 @@ import { isCardResult, searchMapBooths } from "@/components/map-v2/map-search";
 import { RomiAvatar } from "@/components/v2/romi-avatar";
 import { BackButton } from "@/components/v2/back-button";
 import { FLOORPLANS } from "@/lib/floorplans";
-import { floorplanHallOf, hallForBooth } from "@/lib/floorplan/hall-of";
+import { boothHallLabel, hallForBooth } from "@/lib/floorplan/hall-of";
+import { boothPreviewOf, useBoothPreviewStore } from "@/lib/stores/booth-preview";
 import { previewMovesCamera } from "@/components/map-v2/preview-focus";
 import { boothFocusBox } from "@/components/map/booth-focus";
 import {
@@ -194,10 +195,10 @@ export function FairMapScreen({
     () => new Map(detail.halls.map((h) => [h.id, h.name])),
     [detail.halls],
   );
-  // 부스의 홀 이름: 배치도가 있으면 부스 칸이 들어 있는 배치도 홀 이름(지도와 같은 말),
-  // 없으면 부스 데이터의 홀 이름.
+  // 부스의 홀 칸: 배치도가 있으면 부스 칸이 들어 있는 배치도 홀 이름(지도와 같은 말),
+  // 없으면 부스 데이터의 홀 이름. 둘 다 홀 칩처럼 짧게("A홀", iOS hallName(of:)와 같음).
   const hallOf = (b: BoothListItem): string | undefined =>
-    floorplanHallOf(floorplan, b.code) ?? hallNameById.get(b.hallId);
+    boothHallLabel(floorplan, b.code, hallNameById.get(b.hallId));
   const catById = useMemo(
     () => new Map(detail.categories.map((c) => [c.id, c])),
     [detail.categories],
@@ -1561,9 +1562,15 @@ export function FairMapScreen({
           detailHref={`/booths/${pickBooth.id}`}
           onHeart={() => pickAction("heart", "preview")}
           onLater={() => pickAction("later", "preview")}
-          onDetail={() =>
-            saveFirstPicksResume(slug, { picks, index: pickIndex, head: pickHead })
-          }
+          onDetail={() => {
+            saveFirstPicksResume(slug, { picks, index: pickIndex, head: pickHead });
+            useBoothPreviewStore.getState().remember(
+              boothPreviewOf(pickBooth, {
+                hallName: hallOf(pickBooth),
+                categoryName: catById.get(pickBooth.categoryId)?.name,
+              }),
+            );
+          }}
           onClose={() => setPickPreview(false)}
           onHeight={setPickPreviewH}
         />
