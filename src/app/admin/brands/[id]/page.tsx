@@ -9,6 +9,8 @@ import { pickIntro } from "@/lib/brands/draft";
 import { BRAND_DRAFT_JOB } from "@/lib/brands/jobs";
 import { BrandProfile, type Participation, type Suggestion } from "@/components/admin/brands/brand-profile";
 import { getOutreachStore, subjectsFromGraph } from "@/lib/brands/outreach-store";
+import { rowsFromStates } from "@/lib/brands/board-load";
+import { todayISO } from "@/lib/exhibition/current";
 
 export const metadata = { title: "브랜드 프로필" };
 
@@ -76,6 +78,11 @@ export default async function BrandProfilePage({ params }: Props) {
   const exName = new Map(data.exhibitions.map((e) => [e.id, e]));
   const subjects = subjectsFromGraph(data.graph).filter((s) => s.exhibitorId === exhibitorId);
   const states = await store.read(subjects);
+  // 연락 보드와 같은 줄 계산 — 안 보냄인데 연락 수단이 없으면 "연락 수단 없음"(2026-11-28 Ted).
+  const today = todayISO();
+  const rowOf = new Map(
+    rowsFromStates({ subjects, states, graph: data.graph, booths: data.booths, fields: data.fields, today }).rows.map((r) => [r.ref.participantId, r]),
+  );
   const participantName = new Map(data.graph.participants.map((p) => [p.id, p.displayName]));
   const participations: Participation[] = subjects
     .map((s) => {
@@ -89,6 +96,7 @@ export default async function BrandProfilePage({ params }: Props) {
         name: participantName.get(s.participantId) ?? booth?.name ?? brand.name,
         instagramUrl: booth?.instagramUrl ?? data.graph.exhibitors.find((e) => e.id === exhibitorId)?.instagramUrl ?? null,
         status: st?.view.status ?? "not-sent",
+        row: rowOf.get(s.participantId)!,
         writable: st?.writable ?? false,
       };
     })
@@ -108,6 +116,7 @@ export default async function BrandProfilePage({ params }: Props) {
         reactions={countReactions(notes)}
         draftQueued={draftQueued}
         participations={participations}
+        today={today}
       />
     </div>
   );

@@ -15,7 +15,7 @@ import {
   type GroupBy,
 } from "@/lib/brands/directory";
 import type { FillLevel } from "@/lib/brands/profile";
-import type { BrandContactStatus } from "@/lib/types";
+import type { BoardStatus } from "@/lib/brands/board";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,7 +35,7 @@ const ALL = "all";
 const PAGE = 60;
 
 /** 연락 상태 표시. 색은 연락 현황 보드와 같은 곳(contact-status.tsx)에서 온다. */
-export function StatusBadge({ status, className }: { status: BrandContactStatus; className?: string }) {
+export function StatusBadge({ status, className }: { status: BoardStatus; className?: string }) {
   return <StatusChip status={status} className={className} />;
 }
 
@@ -56,8 +56,8 @@ export function BrandDirectory({
   brands: BrandSummary[];
   unlinkedCount: number;
   exhibitions: { id: string; name: string }[];
-  /** 출전 id → 연락 상태. 저장된 행이 없는 출전은 빠져 있고 "보내지 않음"으로 본다. */
-  contactStatus: Record<string, BrandContactStatus>;
+  /** 출전 id → 보드에 보이는 연락 상태(연락 보드와 같은 계산, "연락 수단 없음" 포함). */
+  contactStatus: Record<string, BoardStatus>;
 }) {
   const [q, setQ] = useState("");
   const [exhibitionId, setExhibitionId] = useState(ALL);
@@ -284,7 +284,7 @@ function GroupSection({
 }: {
   label: string;
   rows: BrandSummary[];
-  contactStatus: Record<string, BrandContactStatus>;
+  contactStatus: Record<string, BoardStatus>;
 }) {
   const [expanded, setExpanded] = useState(false);
   const LIMIT = 8;
@@ -319,7 +319,7 @@ function FillMeter({ b }: { b: BrandSummary }) {
   );
 }
 
-function BrandList({ rows, contactStatus }: { rows: BrandSummary[]; contactStatus: Record<string, BrandContactStatus> }) {
+function BrandList({ rows, contactStatus }: { rows: BrandSummary[]; contactStatus: Record<string, BoardStatus> }) {
   return (
     <Card className="divide-y divide-border p-0">
       {rows.map((b) => {

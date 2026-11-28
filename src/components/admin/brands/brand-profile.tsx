@@ -9,6 +9,7 @@ import type { BrandAppearance, BrandSummary } from "@/lib/brands/directory";
 import { BRAND_FIELDS, PARTICIPANT_FIELDS, summarizeFill } from "@/lib/brands/profile";
 import { REACTION_LABEL, type ReactionCounts } from "@/lib/brands/reactions";
 import type { BrandContactStatus, ProfileField } from "@/lib/types";
+import { applyContactResult, boardStatus, type BoardRow } from "@/lib/brands/board";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/ui/chip";
@@ -26,6 +27,8 @@ export interface Participation {
   name: string;
   instagramUrl: string | null;
   status: BrandContactStatus;
+  /** 연락 보드와 같은 줄. 칩은 boardStatus(row)로 그려 "연락 수단 없음"을 가른다. */
+  row: BoardRow;
   writable: boolean;
 }
 
@@ -43,7 +46,9 @@ export function BrandProfile({
   reactions,
   draftQueued,
   participations,
+  today,
 }: {
+  today: string;
   draftQueued: boolean;
   brand: BrandSummary;
   brandFields: ProfileField[];
@@ -54,8 +59,8 @@ export function BrandProfile({
 }) {
   const [brandFields, setBrandFields] = useState(initialBrandFields);
   const [participantFields, setParticipantFields] = useState(initialParticipantFields);
-  const [contactStatus, setContactStatus] = useState<Record<string, BrandContactStatus>>(() =>
-    Object.fromEntries(participations.map((p) => [p.participantId, p.status])),
+  const [contactRows, setContactRows] = useState<Record<string, BoardRow>>(() =>
+    Object.fromEntries(participations.map((p) => [p.participantId, p.row])),
   );
   const [contactTarget, setContactTarget] = useState<ContactSheetTarget | null>(null);
 
@@ -176,7 +181,7 @@ export function BrandProfile({
                     {a.name}
                   </p>
                 </div>
-                <StatusBadge status={contactStatus[a.participantId] ?? "not-sent"} />
+                <StatusBadge status={contactRows[a.participantId] ? boardStatus(contactRows[a.participantId]) : a.status} />
                 <Button
                   size="sm"
                   variant="outline"
@@ -200,7 +205,9 @@ export function BrandProfile({
       <BrandContactSheet
         target={contactTarget}
         onClose={() => setContactTarget(null)}
-        onChanged={(participantId, view) => setContactStatus((m) => ({ ...m, [participantId]: view.status }))}
+        onChanged={(participantId, view, log) =>
+          setContactRows((m) => (m[participantId] ? { ...m, [participantId]: applyContactResult(m[participantId], view, log, today) } : m))
+        }
       />
     </div>
   );
