@@ -1,6 +1,6 @@
 import "server-only";
 import type { Repository } from "@/lib/repositories/types";
-import { buildRow, CONFIDENCE_SOURCE_PREFIX, HANDLE_CONFIDENCES, handleCandidates, type BoardRow, type HandleConfidence } from "@/lib/brands/board";
+import { buildRow, CONFIDENCE_SOURCE_PREFIX, emailFromMailto, HANDLE_CONFIDENCES, handleCandidates, type BoardRow, type HandleConfidence } from "@/lib/brands/board";
 import type { ImportTarget } from "@/lib/brands/handle-import";
 import { confirmedItems } from "@/lib/brands/profile";
 import { getOutreachStore, subjectsFromGraph, type OutreachMode } from "@/lib/brands/outreach-store";
@@ -39,12 +39,20 @@ export async function loadContactBoard(
   const fields = exhibitorIds.length ? await repo.listProfileFields({ exhibitorIds }) : [];
   const fieldOf = new Map<string, ProfileField>();
   for (const f of fields) if (f.exhibitorId) fieldOf.set(`${f.exhibitorId}:${f.field}`, f);
-  const profileInstagram = (exhibitorId: string) => {
+  const profileLinks = (exhibitorId: string) => {
     const links = fieldOf.get(`${exhibitorId}:links`);
-    if (!links || !Array.isArray(links.value)) return null;
-    const url = (links.value as { kind?: string; url?: string }[]).find((l) => l.kind === "instagram")?.url;
-    return url ? { url, confidence: confidenceFromSources(links.sources) } : null;
+    return links && Array.isArray(links.value) ? { list: links.value as { kind?: string; url?: string }[], sources: links.sources } : null;
   };
+  const profileInstagram = (exhibitorId: string) => {
+    const links = profileLinks(exhibitorId);
+    const url = links?.list.find((l) => l.kind === "instagram")?.url;
+    return url && links ? { url, confidence: confidenceFromSources(links.sources) } : null;
+  };
+  // 인스타 말고 보낼 수 있는 연락 수단: X 링크, mailto 링크(어느 종류 칸에 들어 있든).
+  // 사이트와 판매 페이지는 보내는 곳이 아니라 세지 않는다.
+  const profileX = (exhibitorId: string) => profileLinks(exhibitorId)?.list.find((l) => l.kind === "x")?.url ?? null;
+  const profileEmail = (exhibitorId: string) =>
+    profileLinks(exhibitorId)?.list.map((l) => emailFromMailto(l.url)).find((e) => e) ?? null;
 
   // DM 품목 자리는 확인된 칸만. AI 초안이 "공식 계정에 소개된" 사실처럼 브랜드에게 나가지 않게 한다.
   const itemsOf = (exhibitorId: string) => confirmedItems(fieldOf.get(`${exhibitorId}:items`));
@@ -67,6 +75,8 @@ export async function loadContactBoard(
           brandOfficial: exhibitorById.get(s.exhibitorId)?.instagramUrl,
           booth: booth?.instagramUrl,
         }),
+        profileX: profileX(s.exhibitorId),
+        profileEmail: profileEmail(s.exhibitorId),
         items: itemsOf(s.exhibitorId),
       },
       today,
