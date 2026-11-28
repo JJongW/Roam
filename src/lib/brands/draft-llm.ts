@@ -32,10 +32,19 @@ export function brandDraftDeps(): DraftDeps {
                 fields: z.array(z.object({ field: z.string(), value: z.unknown(), sources: z.array(z.string()).default([]) })),
               }),
             }),
-          convertTone: ({ original, protectedTerms }) =>
+          convertTone: ({ original, protectedTerms, brandName, feedback }) =>
             generateText({
               system: TONE_SYSTEM,
-              prompt: `그대로 둘 말: ${[...new Set(protectedTerms)].filter((t) => original.includes(t)).join(", ") || "없음"}\n\n원문:\n${original}`,
+              prompt: [
+                ...(brandName ? [`브랜드 이름: ${brandName}`] : []),
+                `그대로 둘 말: ${[...new Set(protectedTerms)].filter((t) => original.includes(t)).join(", ") || "없음"}`,
+                "",
+                "원문:",
+                original,
+                ...(feedback
+                  ? ["", "지난번에 쓴 글:", feedback.display, "", "지난번 글에서 고칠 점(전부 고쳐서 다시 쓴다):", ...feedback.issues.map((i) => `- ${i}`)]
+                  : []),
+              ].join("\n"),
               temperature: 0.1,
             }),
         }

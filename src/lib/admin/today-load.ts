@@ -6,7 +6,7 @@ import { funnel } from "@/lib/brands/board";
 import {
   articleQueue,
   dataIssueQueue,
-  enrichmentQueue,
+  enrichmentQueueByFair,
   issueGroups,
   pendingLinkCandidates,
   verifyQueue,
@@ -92,17 +92,9 @@ export async function loadAdminToday(
     ),
     safely(async () => ({ state: "ok", count: (await pendingLinkCandidates(repo)).length }) as QueueCount),
     safely(async () => {
-      const per = await Promise.all(
-        exhibitions.map(async (e) => {
-          const q = await enrichmentQueue(repo, e.id);
-          return { fair: { ...fairRef(e), count: q.forHuman.length, secondary: q.notFound.length }, atLeast: q.atLeast };
-        }),
-      );
-      return sumFairs(
-        per.map((p) => p.fair),
-        per.some((p) => p.atLeast),
-        "직접 조사",
-      );
+      // 초안 검수 화면의 "박람회별" 줄과 같은 함수(enrichmentQueueByFair).
+      const { rows, atLeast } = await enrichmentQueueByFair(repo, exhibitions);
+      return sumFairs(rows, atLeast, "직접 조사");
     }),
     safely(async () =>
       sumFairs(await Promise.all(exhibitions.map(async (e) => ({ ...fairRef(e), count: (await verifyQueue(repo, e)).rows.length })))),

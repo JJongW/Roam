@@ -90,7 +90,6 @@ export const V2_FILES = [
   // W2(UI 6, v1 상세 칸 옮김)
   "src/components/v2/choice-chip.tsx",
   "src/components/v2/line-input.tsx",
-  "src/components/map-v2/romi-line-card.tsx",
   // UI 1 첫 진입, 10 열리기 전, 11 끝난 박람회 지도
   "src/components/map-v2/entry-cards.tsx",
   "src/components/map-v2/today-sheet.tsx",

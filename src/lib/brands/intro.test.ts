@@ -32,6 +32,16 @@ describe("brandIntroFromField", () => {
     expect(brandIntroFromField(field({ status: "reviewed", value: { original: "a", display: "사람이 고친 문장이에요." } }))!.text).toBe("사람이 고친 문장이에요.");
     expect(brandIntroFromField(null)).toBeNull();
   });
+
+  it("내보내기 전에 정돈한다 — 인스타 아이디 줄과 문장 중간 줄바꿈이 화면에 나가지 않는다(2026-11-28)", () => {
+    const display = "손으로 그린 엽서를\n만들어요.\n새해 캘린더도 준비했어요 ✨\nInstagram @kibak";
+    expect(brandIntroFromField(field({ value: { original: "o", display, gate: { ok: true, issues: [] } } }))!.text).toBe(
+      "손으로 그린 엽서를 만들어요.\n\n새해 캘린더도 준비했어요",
+    );
+    expect(brandIntroFromField(field({ value: { original: "o", display: "@kibak", gate: { ok: true, issues: [] } } }))).toBeNull();
+    // 사람이 고치거나 작가가 확인한 소개는 쓴 그대로.
+    expect(brandIntroFromField(field({ status: "artist_confirmed", value: { original: "o", display } }))!.text).toBe(display);
+  });
 });
 
 describe("brandIntroForBooth", () => {

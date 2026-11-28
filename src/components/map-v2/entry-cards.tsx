@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { clsx } from "clsx";
 import Link from "next/link";
-import { Check, ChevronRight } from "lucide-react";
+import { Check, ChevronRight, RefreshCw } from "lucide-react";
 import { RomiAvatar } from "@/components/v2/romi-avatar";
 import { ChoiceChip } from "@/components/v2/choice-chip";
 import { BottomSheet } from "@/components/map-v2/bottom-sheet";
@@ -11,7 +11,7 @@ import { hasRealBlurb } from "@/lib/booth/blurb";
 import { boothAbout } from "@/lib/booth/about";
 import { entryCopy } from "@/lib/copy/map-entry";
 import { label } from "@/lib/copy/v1";
-import { MOOD_PICK_COUNT } from "@/lib/onboarding/fair-entry";
+import { MOOD_PHOTO_COUNT, MOOD_PICK_COUNT, canRefreshMood, refreshMood } from "@/lib/onboarding/fair-entry";
 import type { VerdictValue } from "@/lib/stores/visit";
 import type { BoothListItem } from "@/lib/types";
 
@@ -112,40 +112,35 @@ export function EntryCard({
 }
 
 /**
- * UI 1-02 사진 고르기 시트(1-03 두 장 고른 뒤). 이 박람회 부스 사진 여섯 장 중 두 장.
- * 두 장을 고르면 "두 장 고르셨네요. 이제 지도로 가요"를 잠깐 보이고 바로 지도로 간다(누르면 바로 다음, 11-11).
- * 건너뛰면 그대로 지도. 바깥을 눌러 닫아도 건너뛴 것으로 센다.
+ * UI 1-02 사진 고르기 시트. 이 박람회 부스 사진 여섯 장에서 두 장 이상(상한 없음).
+ * 2026-11-28 Ted: 두 장이 되면 바로 넘어가던 것을 없애고 "골랐어요"를 눌러 지도로 간다(두 장 미만이면 꺼짐).
+ * "다른 사진 보기"는 고르지 않은 칸만 아직 안 보여 준 사진으로 바꾼다(Figma 섹션 24에는 아직 없다).
+ * 고른 것은 바꿔도 쌓인다. 건너뛰면 그대로 지도. 바깥을 눌러 닫아도 건너뛴 것으로 센다.
  */
 export function MoodSheet({
   fairName,
-  booths,
+  pool,
   onPicked,
   onSkip,
 }: {
   fairName: string;
-  booths: BoothListItem[];
+  /** `moodPool` 차례 전부. 앞 여섯 장을 먼저 보인다. */
+  pool: BoothListItem[];
   onPicked: (ids: string[]) => void;
   onSkip: () => void;
 }) {
+  const [shown, setShown] = useState(() => pool.slice(0, MOOD_PHOTO_COUNT));
+  const [seen, setSeen] = useState<ReadonlySet<string>>(() => new Set(shown.map((b) => b.id)));
   const [picked, setPicked] = useState<string[]>([]);
-  const [done, setDone] = useState(false);
-  // 부모가 다시 그려도 타이머가 다시 돌지 않게 마지막 콜백만 잡아 둔다.
-  const onPickedRef = useRef(onPicked);
-  useEffect(() => {
-    onPickedRef.current = onPicked;
-  });
-  useEffect(() => {
-    if (!done) return;
-    const t = setTimeout(() => onPickedRef.current(picked), 700);
-    return () => clearTimeout(t);
-  }, [done, picked]);
-  const toggle = (id: string) => {
-    if (done) return;
-    const next = picked.includes(id) ? picked.filter((x) => x !== id) : [...picked, id];
-    if (next.length > MOOD_PICK_COUNT) return;
-    setPicked(next);
-    if (next.length === MOOD_PICK_COUNT) setDone(true);
+  const toggle = (id: string) =>
+    setPicked((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
+  const refresh = () => {
+    const next = refreshMood(shown, picked, pool, seen);
+    setShown(next);
+    setSeen(new Set([...seen, ...next.map((b) => b.id)]));
   };
+  const canRefresh = canRefreshMood(shown, picked, pool, seen);
+  const ready = picked.length >= MOOD_PICK_COUNT;
   return (
     <BottomSheet ariaLabel={entryCopy.welcome(fairName)} onClose={onSkip} tall>
       <div className="flex items-center justify-between">
@@ -166,7 +161,7 @@ export function MoodSheet({
         <p className="text-v2-t4 font-v2-medium text-v2-fg-neutral-muted">{entryCopy.moodBody}</p>
       </div>
       <ul className="grid grid-cols-2 gap-v2-x2">
-        {booths.map((b) => {
+        {shown.map((b) => {
           const on = picked.includes(b.id);
           return (
             <li key={b.id}>
@@ -181,7 +176,7 @@ export function MoodSheet({
                 )}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element -- 브랜드 사진은 외부 주소가 제각각이라 next/image 도메인 목록에 다 넣을 수 없다 */}
-                <img src={b.images[0]} alt="" loading="eager" className="size-full object-cover" />
+                <img src={b.images.find(Boolean)} alt="" loading="eager" className="size-full object-cover" />
                 {on && (
                   <span className="absolute right-v2-x2 top-v2-x2 flex size-v2-x6 items-center justify-center rounded-v2-full bg-v2-bg-brand-solid text-v2-fg-on-brand-solid">
                     <Check aria-hidden strokeWidth={3} className="size-[var(--roam-v2-icon-size-sm)]" />
@@ -192,13 +187,29 @@ export function MoodSheet({
           );
         })}
       </ul>
-      <p
-        role="status"
-        aria-live="polite"
-        className="text-center text-v2-t4 font-v2-medium text-v2-fg-neutral"
-      >
-        {done ? entryCopy.moodDone : entryCopy.moodHint}
-      </p>
+      {/* 아래 묶음은 시트 바닥에 붙어 있다. 작은 화면에서 사진이 길어져도 "골랐어요"가 가려지지 않는다. */}
+      <div className="sticky bottom-0 flex flex-col gap-v2-x2 bg-v2-bg-layer-floating pt-v2-x2">
+        <p className="text-center text-v2-t3 font-v2-medium text-v2-fg-neutral-muted">{entryCopy.moodHint}</p>
+        <div className="flex gap-v2-x2">
+          <button
+            type="button"
+            onClick={refresh}
+            disabled={!canRefresh}
+            className="flex min-h-v2-x12 shrink-0 items-center justify-center gap-v2-x1 rounded-v2-field px-v2-x3 text-v2-t4 font-v2-bold text-v2-fg-neutral active:bg-v2-bg-transparent-pressed disabled:text-v2-fg-disabled"
+          >
+            <RefreshCw aria-hidden className="size-[var(--roam-v2-icon-size-sm)]" />
+            {entryCopy.moodRefresh}
+          </button>
+          <button
+            type="button"
+            onClick={() => onPicked(picked)}
+            disabled={!ready}
+            className="flex min-h-v2-x12 flex-1 items-center justify-center rounded-v2-field bg-v2-bg-brand-solid text-v2-t5 font-v2-bold text-v2-fg-on-brand-solid active:bg-v2-bg-brand-solid-pressed disabled:bg-v2-bg-disabled disabled:text-v2-fg-disabled"
+          >
+            {entryCopy.moodDone}
+          </button>
+        </div>
+      </div>
     </BottomSheet>
   );
 }

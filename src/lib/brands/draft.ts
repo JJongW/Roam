@@ -2,7 +2,8 @@
 // 기준 문서 brand-profile-spec 6장 ③ ~ ④). 브랜드 하나씩 돈다.
 //
 // 1. 결정적으로 모으는 칸(collected): 링크, 다른 이름 — LLM 없음.
-// 2. 공식 소개(intro): 원문은 그대로 두고 LLM이 말투만 바꾼다 → 결정적 게이트(tone-gate.ts).
+// 2. 공식 소개(intro): 원문은 그대로 두고 LLM이 Roam 말투의 짧은 소개로 다시 쓴다 → 정돈(intro-tidy.ts) →
+//    결정적 게이트(tone-gate.ts). 2026-11-28 전에는 말투만 바꿨다.
 //    통과하면 collected, 못 넘으면 ai_draft(검수 큐).
 // 3. AI 초안 칸(ai_draft): 정체 한 줄, 품목, 대표 작품, 어떤 결인가. 주어진 자료만 근거로,
 //    칸마다 자료 id(출처)를 반드시 낸다. 출처 없는 칸은 버린다.
@@ -24,7 +25,8 @@
 import { z } from "zod";
 import { anchorKey } from "@/lib/exhibitor/identity";
 import { hasRealBlurb } from "@/lib/booth/blurb";
-import { checkToneConversion } from "@/lib/brands/tone-gate";
+import { checkToneConversion, type GateResult } from "@/lib/brands/tone-gate";
+import { INTRO_MAX_PARAGRAPH_CHARS, INTRO_TARGET_CHARS, tidyIntroText } from "@/lib/brands/intro-tidy";
 import { brandFieldLessons, lessonLines } from "@/lib/brands/lessons";
 import {
   AI_DRAFT_FIELDS,
@@ -75,10 +77,21 @@ export interface Material {
 export interface DraftDeps {
   /** AI 초안 칸. 자료와 지침을 받아 JSON을 돌려준다. */
   draftFields?: (input: { system: string; prompt: string }) => Promise<unknown>;
-  /** 말투 변환. 원문을 받아 Roam 말투 문장을 돌려준다. */
-  convertTone?: (input: { original: string; protectedTerms: string[] }) => Promise<string>;
+  /** 소개 다시 쓰기. 원문을 받아 Roam 소개를 돌려준다. feedback이 있으면 지난 결과와 게이트가 짚은 점을 고쳐 다시 쓴다. */
+  convertTone?: (input: ConvertToneInput) => Promise<string>;
   /** 공개 페이지 본문(글자만). 못 읽으면 null. */
   fetchText?: (url: string) => Promise<string | null>;
+}
+
+export interface ConvertToneInput {
+  original: string;
+  protectedTerms: string[];
+  /** 주어로 쓸 브랜드 이름. 없으면 모델이 "Roam은"처럼 화자를 주어로 쓴다(2026-11-28 표본에서 실제로 나옴). */
+  brandName?: string;
+  /** 이 브랜드가 나온 행사 이름. 게이트가 소개 안의 행사 이름을 거른다. 모델에는 넘기지 않는다. */
+  fairNames?: string[];
+  /** 한 번 더 쓸 때: 지난 결과와 게이트가 짚은 점. */
+  feedback?: { display: string; issues: string[] };
 }
 
 export interface DraftResult {
@@ -95,17 +108,50 @@ const draftOutputSchema = z.object({
     .max(10),
 });
 
+/**
+ * 공식 소개 → Roam 소개(display) 지침. 2026-11-28 Ted 요청으로 "말투만 바꾸기"에서 "Roam이 브랜드를 소개하는
+ * 짧은 글"로 바꿨다(docs/decisions/2026-11-28_브랜드-소개-정돈.md). 원문은 intro.original에 그대로 남는다.
+ * 숫자는 intro-tidy.ts의 상수와 맞춘다. 게이트(tone-gate.ts)가 같은 규칙을 결정적으로 다시 본다.
+ */
 export const TONE_SYSTEM = [
-  "너는 Roam의 문장 손질 담당이다. 브랜드 공식 소개 원문을 Roam 말투로 바꾼다. 내용은 한 글자도 더하거나 빼지 않는다.",
+  "너는 Roam의 브랜드 소개 정리 담당이다. 브랜드가 쓴 공식 소개 원문을 읽고, Roam이 박람회 방문객에게 이 브랜드를 소개하는 짧은 글로 다시 쓴다.",
   "규칙:",
-  "- 해요체로 쓴다. 합니다체, 반말을 섞지 않는다.",
-  '- "전시", "전시회", "전시장"을 쓰지 않는다. 박람회, 페어, 행사로 바꾼다. 원문 고유명사 안의 말은 그대로 둔다.',
+  "- 원문에 적힌 사실만 쓴다. 원문에 없는 내용, 칭찬, 과장, 단정(최고, 유일, 꼭, 무조건 등)을 넣지 않는다. 원문보다 확신을 크게 말하지 않는다.",
+  "- 모든 문장을 해요체(~해요, ~예요, ~이에요)로 끝낸다. 원문이 합니다체(~습니다, ~입니다, ~바랍니다)여도 해요체로 바꾼다. 반말을 섞지 않는다.",
+  "- 글의 화자는 Roam이다. 브랜드의 1인칭(저, 제, 저희)과 방문객을 부르는 말(여러분, 당신, 방문객)을 쓰지 않는다. 브랜드 이름을 주어로 쓰거나 주어를 뺀다.",
+  "- 인스타그램 아이디(@로 시작하는 말), 링크와 웹 주소, 메일 주소, 해시태그(#), 이모지, 꾸밈 기호를 넣지 않는다. 팔로우나 문의 안내 문장도 뺀다.",
+  "- 부스 번호, 날짜, 장소, \"이번 행사\"나 행사 이름처럼 한 회차에만 맞는 안내는 넣지 않는다. 이 소개는 다른 박람회 부스 화면에도 그대로 나간다.",
+  "- 방문객에게 무엇을 하라고 권하지 않는다(~해 보세요, ~하세요, ~오세요로 끝내지 않는다). 사실을 말하고 고르는 건 방문객에게 둔다.",
+  '- "전시", "전시회", "전시장"을 쓰지 않는다. 행사를 가리키면 박람회, 페어, 행사로 바꾼다. 작업 분야(예: 인쇄물, 웹, 전시 디자인)처럼 행사가 아닌 뜻이면 박람회로 바꾸지 말고 그 낱말을 뺀다. 원문 고유명사(행사명, 장소명) 안의 말은 그대로 둔다.',
+  '- "드려요", "드릴게요"를 쓰지 않는다. Roam이 해 주는 일로 읽힌다. 브랜드가 하는 일로 쓴다(예: 이야기를 전해요).',
   "- 가운뎃점(·)을 쓰지 않는다. 쉼표나 와, 과로 바꾼다.",
-  "- 숫자, 영문 표기, 브랜드 이름, 작가 이름, 품목 이름은 그대로 둔다.",
-  "- 원문에 없는 칭찬, 과장, 단정(최고, 유일, 꼭, 무조건 등)을 넣지 않는다. 느낌표를 늘리지 않는다.",
-  "- 길이는 원문과 비슷하게. 문장을 합치거나 나누는 정도만 한다.",
-  "- 바꾼 문장만 출력한다. 따옴표나 설명을 붙이지 않는다.",
+  "- 영문 표기, 브랜드 이름, 작가 이름, 품목 이름은 원문 표기 그대로 쓴다. 숫자는 원문에 있는 것만 쓴다.",
+  `- 형식: 문단 2~3개, 문단마다 1~2문장, 문단 하나는 ${INTRO_MAX_PARAGRAPH_CHARS}자 안, 전체 ${INTRO_TARGET_CHARS}자 안. 문단 사이에는 빈 줄 하나를 두고, 문단 안에서는 줄을 바꾸지 않는다. 원문이 짧으면 한 문단도 괜찮다.`,
+  "- 문장을 \"~기를 바라요\", \"~길 바라요\"로 끝내지 않는다. Roam이 바라는 말로 읽힌다. 원문에 브랜드의 바람이 있으면 브랜드가 주어인 사실로 쓴다(예: 하치는 전통이 일상에 스미기를 바라는 마음으로 만들어요).",
+  "- 받침 있는 말 뒤에는 \"이에요\", 받침 없는 말 뒤에는 \"예요\"를 쓴다(공방이에요, 브랜드예요, 고양이예요).",
+  "- 첫 문단은 누가 무엇을 만드는지, 다음 문단은 작업 방식이나 품목, 마지막 문단은 원문에 있을 때만 작업에 담은 마음을 쓴다.",
+  "- 바꾼 글만 출력한다. 제목, 따옴표, 설명을 붙이지 않는다.",
 ].join("\n");
+
+/**
+ * 소개를 다시 쓰고 정돈해 게이트에 넣는다. 못 넘으면 게이트가 짚은 점을 붙여 **한 번만** 더 쓴다(모델 호출 최대 2번).
+ * 통과 여부는 여전히 게이트가 정한다 — 두 번째도 못 넘으면 그 결과가 ai_draft로 남는다.
+ * 근거: 2026-11-28 새해 준비상점 표본 30곳에서 한 번에 넘은 게 9곳뿐이었다(합니다체가 남거나 길이를 넘김).
+ */
+export async function rewriteIntro(
+  convert: NonNullable<DraftDeps["convertTone"]>,
+  input: Omit<ConvertToneInput, "feedback">,
+): Promise<{ display: string; gate: GateResult; tries: number }> {
+  const once = async (feedback?: ConvertToneInput["feedback"]) => {
+    const display = tidyIntroText(await convert({ ...input, feedback }));
+    const gate = checkToneConversion({ mode: "intro", original: input.original, display, protectedTerms: input.protectedTerms, fairNames: input.fairNames });
+    return { display, gate };
+  };
+  const first = await once();
+  if (first.gate.ok) return { ...first, tries: 1 };
+  const second = await once({ display: first.display, issues: first.gate.issues });
+  return { ...(second.gate.ok || second.gate.issues.length <= first.gate.issues.length ? second : first), tries: 2 };
+}
 
 export function draftSystemPrompt(lessons: string[]): string {
   return [
@@ -245,21 +291,25 @@ export async function runBrandProfileDraft(
     ...ITEM_OPTIONS,
     ...booths.flatMap((b) => b.enrichment?.goodsKeywords ?? []),
   ];
+  const fairNames = exhibitions.filter((e) => exIds.includes(e.id)).map((e) => e.name);
   const curIntro = cur("intro");
   if (introNeedsTone(curIntro) && deps.convertTone) {
     // 원문만 모아 둔 공식 소개(브랜드 먼저 인입, 또는 LLM 없이 돈 워커) — 원문과 출처는 그대로 두고
     // 말투만 바꾼다. 없으면 이 칸은 앱에 영영 안 보인다(publicValue는 display만 보여 준다).
     const original = (curIntro!.value as { original: string }).original;
     result.usedLlm = true;
-    const display = (await deps.convertTone({ original, protectedTerms })).trim();
-    const gate = checkToneConversion({ original, display, protectedTerms });
+    const { display, gate } = await rewriteIntro(deps.convertTone, { original, protectedTerms, brandName: exhibitor.canonicalName, fairNames });
     result.gate = gate;
     await write("intro", { original, display, gate }, curIntro!.sources, gate.ok ? "collected" : "ai_draft");
   } else if (intro && guard("intro")) {
     if (deps.convertTone) {
       result.usedLlm = true;
-      const display = (await deps.convertTone({ original: intro.text, protectedTerms })).trim();
-      const gate = checkToneConversion({ original: intro.text, display, protectedTerms });
+      const { display, gate } = await rewriteIntro(deps.convertTone, {
+        original: intro.text,
+        protectedTerms,
+        brandName: exhibitor.canonicalName,
+        fairNames,
+      });
       result.gate = gate;
       await write("intro", { original: intro.text, display, gate }, [intro.source], gate.ok ? "collected" : "ai_draft");
     } else {

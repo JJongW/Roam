@@ -1,8 +1,8 @@
 // UI 1 박람회 첫 진입(취향 확장형, 11-12 Figma 24). iOS `FairOnboarding.swift`와 같은 규칙, 같은 저장 키.
 //
-// - 박람회를 처음 열면 지도 위로 사진 고르기 시트(1-02). 그 박람회 부스 사진 여섯 장 중 두 장.
-//   건너뛰면 바로 지도. 사진이 여섯 장이 안 되면 시트를 띄우지 않는다.
-// - 두 장을 고르면 지도로 돌아와 "지금 행사장에 계세요?"(1-04) 한 번.
+// - 박람회를 처음 열면 지도 위로 사진 고르기 시트(1-02). 그 박람회 부스 사진 여섯 장 중 두 장 이상(상한 없음, 2026-11-28 Ted).
+//   "다른 사진 보기"로 고르지 않은 칸만 바꿀 수 있다. 건너뛰면 바로 지도. 사진이 여섯 장이 안 되면 시트를 띄우지 않는다.
+// - 두 장 이상 고르고 "골랐어요"를 누르면 지도로 돌아와 "지금 행사장에 계세요?"(1-04) 한 번.
 // - 이어서 고른 사진의 부스와 같은 분류 부스로 세 곳(1-05). 이유를 그대로 말한다.
 //   "이건 아니에요"는 온보딩 답으로만 남기고 패스로 기록하지 않는다.
 // - 두 번째 진입: 건너뛴 분께 한 번만 다시 묻는다(1-10, 11-13 B). 하트가 있으면 1-09.
@@ -86,18 +86,21 @@ export function entryStep(
 
 type PhotoBooth = Pick<BoothListItem, "id" | "categoryId" | "images" | "kind">;
 
-/** 사진 여섯 장: 분류가 겹치지 않게 돌아가며 고른다. 같은 박람회면 늘 같은 순서. */
-export function moodBooths<T extends PhotoBooth>(booths: T[]): T[] {
+/**
+ * 사진을 보일 차례 전부: 분류가 겹치지 않게 돌아가며 고른다. 같은 박람회면 늘 같은 순서.
+ * 앞 여섯 장이 처음 보이는 사진이고(`moodBooths`), 나머지는 "다른 사진 보기"가 차례로 꺼낸다.
+ */
+export function moodPool<T extends PhotoBooth>(booths: T[]): T[] {
   const withPhoto = booths
     .filter((b) => b.kind !== "facility" && b.images.some((s) => !!s))
     .sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
   const byCat = new Map<string, T[]>();
   for (const b of withPhoto) byCat.set(b.categoryId, [...(byCat.get(b.categoryId) ?? []), b]);
   const out: T[] = [];
-  for (let round = 0; out.length < MOOD_PHOTO_COUNT; round++) {
+  for (let round = 0; ; round++) {
     let added = false;
     for (const list of byCat.values()) {
-      if (round < list.length && out.length < MOOD_PHOTO_COUNT) {
+      if (round < list.length) {
         out.push(list[round]);
         added = true;
       }
@@ -105,6 +108,40 @@ export function moodBooths<T extends PhotoBooth>(booths: T[]): T[] {
     if (!added) break;
   }
   return out;
+}
+
+/** 사진 여섯 장(처음 보이는 칸). */
+export function moodBooths<T extends PhotoBooth>(booths: T[]): T[] {
+  return moodPool(booths).slice(0, MOOD_PHOTO_COUNT);
+}
+
+/**
+ * "다른 사진 보기"(2026-11-28 Ted): 고르지 않은 칸만 아직 안 보여 준 사진으로 바꾼다.
+ * 고른 칸은 그 자리에 그대로 둔다. 이미 보여 준 사진은 다시 꺼내지 않고, 모자라면 앞 칸부터 바꾸고 나머지 칸은 그대로 둔다.
+ * 바뀌어 사라진 사진은 어디에도 기록하지 않는다(무관심이나 싫어요가 아니다, 브랜드 규칙 §4).
+ */
+export function refreshMood<T extends { id: string }>(
+  shown: T[],
+  picked: readonly string[],
+  pool: T[],
+  seen: ReadonlySet<string>,
+): T[] {
+  const fresh = pool.filter((b) => !seen.has(b.id) && !shown.some((s) => s.id === b.id));
+  let i = 0;
+  return shown.map((b) => (picked.includes(b.id) || i >= fresh.length ? b : fresh[i++]));
+}
+
+/** 바꿀 칸(고르지 않은 칸)과 아직 안 보여 준 사진이 둘 다 있어야 "다른 사진 보기"가 켜진다. */
+export function canRefreshMood(
+  shown: { id: string }[],
+  picked: readonly string[],
+  pool: { id: string }[],
+  seen: ReadonlySet<string>,
+): boolean {
+  return (
+    shown.some((b) => !picked.includes(b.id)) &&
+    pool.some((b) => !seen.has(b.id) && !shown.some((s) => s.id === b.id))
+  );
 }
 
 export interface FirstPick {

@@ -49,6 +49,20 @@ describe("composeFloorplan", () => {
     expect(fp.booths[0]).toMatchObject({ x: 100 + 48, y: 200 + 32, w: 96, h: 64 });
   });
 
+  it("돌린 부스는 회전을 그대로 넘기고, 안 돌린 부스엔 rotate를 붙이지 않는다", () => {
+    const fp = composeFloorplan(
+      layout({
+        booths: [
+          { code: "B10", x: 100, y: 200, w: 60, h: 60, rotate: 21.1 },
+          { code: "B12", x: 300, y: 200, w: 60, h: 60 },
+        ],
+      }),
+      platz,
+    );
+    expect(fp.booths[0]).toMatchObject({ x: 130, y: 230, rotate: 21.1 });
+    expect("rotate" in fp.booths[1]).toBe(false);
+  });
+
   it("시설 부스는 일반 부스와 다른 색을 받는다", () => {
     const fp = composeFloorplan(
       layout({

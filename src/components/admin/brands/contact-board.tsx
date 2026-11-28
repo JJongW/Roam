@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { AtSign, ChevronRight, Copy, Loader2, Mail, MessageCircle, Search, Send, Upload, X } from "lucide-react";
 import { toast } from "sonner";
@@ -12,6 +12,11 @@ import { ALLOWED_USE_LABEL, CONTACT_STATUS_VIEW_LABEL, LOG_KIND_LABEL } from "@/
 import {
   ACTION_FLAG_LABEL,
   applyContactResult,
+  BOARD_STATUS_LABEL,
+  BOARD_STATUS_ORDER,
+  boardStatus,
+  CHANNEL_LABEL,
+  channelsOf,
   filterRows,
   funnel,
   HANDLE_CONFIDENCE_LABEL,
@@ -21,6 +26,8 @@ import {
   STATUS_ORDER,
   type ActionFlag,
   type BoardRow,
+  type BoardStatus,
+  type ChannelKind,
   type HandleConfidence,
   type SortKey,
 } from "@/lib/brands/board";
@@ -74,7 +81,7 @@ export function ContactBoard({
   }
 
   const [q, setQ] = useState("");
-  const [statuses, setStatuses] = useState<BrandContactStatus[]>([]);
+  const [statuses, setStatuses] = useState<BoardStatus[]>([]);
   const [hasHandle, setHasHandle] = useState<typeof ALL | "yes" | "no">(ALL);
   const [confidence, setConfidence] = useState<typeof ALL | HandleConfidence | "none">(ALL);
   const [flag, setFlag] = useState<ActionFlag | null>(null);
@@ -327,29 +334,26 @@ export function ContactBoard({
           </p>
           <p className="text-sm text-muted-foreground">
             답이 옴{" "}
-            <b className="text-foreground tabular-nums">{answered}</b>, 허락·일부 허락 <b className="text-foreground tabular-nums">{granted}</b>
-            {stats.noHandle > 0 && (
-              <>
-                , 계정 모름 <b className="text-foreground tabular-nums">{stats.noHandle}</b>
-              </>
-            )}
+            <b className="text-foreground tabular-nums">{answered}</b>, 허락과 일부 허락 <b className="text-foreground tabular-nums">{granted}</b>
           </p>
         </div>
         <div className="flex h-3 w-full overflow-hidden rounded-full bg-secondary" role="img" aria-label="상태별 비율">
-          {STATUS_ORDER.map((s) =>
-            stats.byStatus[s] > 0 ? (
+          {BOARD_STATUS_ORDER.map((s) =>
+            stats.byBoardStatus[s] > 0 ? (
               <div
                 key={s}
                 className={cn("h-full", STATUS_STYLE[s].bar)}
-                style={{ width: `${(stats.byStatus[s] / Math.max(stats.total, 1)) * 100}%` }}
-                title={`${CONTACT_STATUS_VIEW_LABEL[s]} ${stats.byStatus[s]}`}
+                style={{ width: `${(stats.byBoardStatus[s] / Math.max(stats.total, 1)) * 100}%` }}
+                title={`${BOARD_STATUS_LABEL[s]} ${stats.byBoardStatus[s]}`}
               />
             ) : null,
           )}
         </div>
-        <div className="grid grid-cols-3 gap-1.5 sm:grid-cols-5 lg:grid-cols-9">
-          {STATUS_ORDER.map((s, i) => {
+        <div className="grid grid-cols-3 gap-1.5 sm:grid-cols-5 lg:grid-cols-10">
+          {BOARD_STATUS_ORDER.map((s) => {
             const on = statuses.includes(s);
+            // 숫자 키는 저장 상태 아홉 개에만 붙는다. 연락 수단 없음은 저장값이 아니라 계산이다.
+            const key = s === "no-channel" ? 0 : STATUS_ORDER.indexOf(s) + 1;
             return (
               <button
                 key={s}
@@ -363,13 +367,17 @@ export function ContactBoard({
                   "flex cursor-pointer flex-col items-start rounded-lg border px-2.5 py-1.5 text-left transition-colors",
                   on ? "border-primary bg-primary/5" : "border-transparent hover:bg-secondary",
                 )}
-                title={`숫자 ${i + 1}: 고른 줄을 이 상태로`}
+                title={
+                  key
+                    ? `숫자 ${key}: 고른 줄을 이 상태로`
+                    : "아직 안 보냈고 인스타, 메일, X 같은 연락 수단도 없는 곳이에요. 자세히에서 계정을 적거나 인스타 계정을 가져오면 안 보냄으로 옮겨 가요"
+                }
               >
-                <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1.5 text-xs whitespace-nowrap text-muted-foreground">
                   <span className={cn("size-2 rounded-full", STATUS_STYLE[s].dot)} aria-hidden />
-                  {CONTACT_STATUS_VIEW_LABEL[s]}
+                  {BOARD_STATUS_LABEL[s]}
                 </span>
-                <span className="text-lg font-extrabold tabular-nums">{stats.byStatus[s]}</span>
+                <span className="text-lg font-extrabold tabular-nums">{stats.byBoardStatus[s]}</span>
               </button>
             );
           })}
@@ -433,7 +441,7 @@ export function ContactBoard({
           <Input
             ref={searchRef}
             className="h-10 pl-9"
-            placeholder="이름, 부스 번호, 계정으로 찾기 ( / )"
+            placeholder="이름, 부스 번호, 계정, 메일로 찾기 ( / )"
             value={q}
             onChange={(e) => {
               setQ(e.target.value);
@@ -449,13 +457,13 @@ export function ContactBoard({
             resetPaging();
           }}
         >
-          <SelectTrigger className="h-10 w-36" aria-label="계정">
+          <SelectTrigger className="h-10 w-40" aria-label="연락 수단">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value={ALL}>계정 전체</SelectItem>
-            <SelectItem value="yes">계정 있음</SelectItem>
-            <SelectItem value="no">계정 없음</SelectItem>
+            <SelectItem value={ALL}>연락 수단 전체</SelectItem>
+            <SelectItem value="yes">연락 수단 있음</SelectItem>
+            <SelectItem value="no">연락 수단 없음</SelectItem>
           </SelectContent>
         </Select>
         <Select
@@ -551,7 +559,7 @@ export function ContactBoard({
                   />
                 </th>
                 <th className="px-2 py-2 font-semibold">브랜드</th>
-                <th className="px-2 py-2 font-semibold">인스타</th>
+                <th className="px-2 py-2 font-semibold">연락 수단</th>
                 <th className="px-2 py-2 font-semibold">상태</th>
                 <th className="px-2 py-2 text-right font-semibold whitespace-nowrap">보낸 지</th>
                 <th className="px-2 py-2 font-semibold">마지막 기록, 허락 범위</th>
@@ -678,58 +686,14 @@ function BoardTableRow({
         </p>
       </td>
       <td className="px-2 py-2">
-        {row.handle ? (
-          <div className="flex min-w-0 items-center gap-1">
-            <a
-              href={instagramProfileUrl(row.handle)}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex min-w-0 items-center gap-0.5 font-medium text-primary hover:underline"
-              title="프로필 새 탭에서 열기"
-            >
-              <AtSign className="size-3.5 shrink-0" />
-              <span className="truncate">{row.handle}</span>
-            </a>
-            <a
-              href={instagramDmUrl(row.handle)}
-              target="_blank"
-              rel="noreferrer"
-              className="shrink-0 rounded-md p-1 text-muted-foreground hover:bg-secondary hover:text-foreground"
-              aria-label={`${row.name} DM 새 탭에서 열기`}
-              title="DM 새 탭에서 열기"
-            >
-              <MessageCircle className="size-3.5" />
-            </a>
-            {row.handleConfidence && row.handleConfidence !== "official" && row.handleConfidence !== "confirmed" && (
-              <span
-                className={cn(
-                  "shrink-0 rounded px-1 text-[11px] font-semibold",
-                  row.handleConfidence === "candidate" ? "bg-warning/20 text-foreground" : "bg-secondary text-muted-foreground",
-                )}
-              >
-                {HANDLE_CONFIDENCE_LABEL[row.handleConfidence]}
-              </span>
-            )}
-          </div>
-        ) : row.email ? (
-          <a
-            href={mailtoLink(row.email, fairSlug, { brand: row.name, fair: fairName, items: row.items })}
-            className="inline-flex items-center gap-1 text-primary hover:underline"
-            title={`메일 초안 열기. 보내는 주소는 ${OUTREACH_SENDER.email}로 골라 주세요`}
-          >
-            <Mail className="size-3.5" />
-            {row.email}
-          </a>
-        ) : (
-          <span className="text-xs text-muted-foreground">계정 모름</span>
-        )}
+        <ChannelCell row={row} fairName={fairName} fairSlug={fairSlug} />
       </td>
       <td className="px-2 py-2">
         {row.writable ? (
           <Menu>
             <MenuTrigger asChild>
               <button type="button" className="cursor-pointer rounded-full" aria-label={`${row.name} 상태 바꾸기`} disabled={busy}>
-                <StatusChip status={row.status} />
+                <StatusChip status={boardStatus(row)} />
               </button>
             </MenuTrigger>
             <MenuContent align="start">
@@ -744,7 +708,7 @@ function BoardTableRow({
           </Menu>
         ) : (
           <span title={READ_ONLY_HINT}>
-            <StatusChip status={row.status} className="opacity-60" />
+            <StatusChip status={boardStatus(row)} className="opacity-60" />
           </span>
         )}
       </td>
@@ -809,6 +773,98 @@ function BoardTableRow({
         </div>
       </td>
     </tr>
+  );
+}
+
+const xProfileUrl = (h: string) => `https://x.com/${h}`;
+
+/**
+ * 연락 수단 칸. 맨 앞 수단(인스타 → 메일 → X → 기타)을 크게, 나머지는 작은 표로 옆에 둔다.
+ * 무엇으로 보낼지가 한눈에 보이게 하려는 것이다(2026-11-28).
+ */
+function ChannelCell({ row, fairName, fairSlug }: { row: BoardRow; fairName: string; fairSlug: string }) {
+  const kinds = channelsOf(row);
+  if (kinds.length === 0)
+    return (
+      <span className="text-xs text-muted-foreground" title="자세히에서 계정이나 메일을 적으면 안 보냄으로 돌아가요">
+        없음
+      </span>
+    );
+  const [first, ...rest] = kinds;
+  const mailHref = row.email ? mailtoLink(row.email, fairSlug, { brand: row.name, fair: fairName, items: row.items }) : "";
+  const mailTitle = `메일 초안 열기. 보내는 주소는 ${OUTREACH_SENDER.email}로 골라 주세요`;
+  const linkCls = "inline-flex min-w-0 items-center gap-0.5 font-medium text-primary hover:underline";
+  const main: Record<ChannelKind, () => ReactNode> = {
+    instagram: () => (
+      <>
+        <a href={instagramProfileUrl(row.handle!)} target="_blank" rel="noreferrer" className={linkCls} title="인스타 프로필 새 탭에서 열기">
+          <AtSign className="size-3.5 shrink-0" />
+          <span className="truncate">{row.handle}</span>
+        </a>
+        <a
+          href={instagramDmUrl(row.handle!)}
+          target="_blank"
+          rel="noreferrer"
+          className="shrink-0 rounded-md p-1 text-muted-foreground hover:bg-secondary hover:text-foreground"
+          aria-label={`${row.name} DM 새 탭에서 열기`}
+          title="DM 새 탭에서 열기"
+        >
+          <MessageCircle className="size-3.5" />
+        </a>
+        {row.handleConfidence && row.handleConfidence !== "official" && row.handleConfidence !== "confirmed" && (
+          <span
+            className={cn(
+              "shrink-0 rounded px-1 text-[11px] font-semibold",
+              row.handleConfidence === "candidate" ? "bg-warning/20 text-foreground" : "bg-secondary text-muted-foreground",
+            )}
+          >
+            {HANDLE_CONFIDENCE_LABEL[row.handleConfidence]}
+          </span>
+        )}
+      </>
+    ),
+    email: () => (
+      <a href={mailHref} className={linkCls} title={mailTitle}>
+        <Mail className="size-3.5 shrink-0" />
+        <span className="truncate">{row.email}</span>
+      </a>
+    ),
+    x: () => (
+      <a href={xProfileUrl(row.x!)} target="_blank" rel="noreferrer" className={linkCls} title="X 프로필 새 탭에서 열기">
+        <span className="shrink-0 text-xs font-bold">X</span>
+        <span className="truncate">@{row.x}</span>
+      </a>
+    ),
+    other: () => (
+      <span className="truncate text-foreground/80" title={`기타 연락처: ${row.otherContact}`}>
+        {row.otherContact}
+      </span>
+    ),
+  };
+  const extraHref: Record<ChannelKind, string | null> = {
+    instagram: row.handle ? instagramProfileUrl(row.handle) : null,
+    email: mailHref || null,
+    x: row.x ? xProfileUrl(row.x) : null,
+    other: null,
+  };
+  return (
+    <div className="flex min-w-0 items-center gap-1">
+      {main[first]()}
+      {rest.map((k) => {
+        const href = extraHref[k];
+        const cls = "shrink-0 rounded bg-secondary px-1 text-[11px] font-semibold text-muted-foreground";
+        const title = k === "email" ? `${row.email}. ${mailTitle}` : k === "x" ? `X @${row.x}` : k === "other" ? `기타 연락처: ${row.otherContact}` : `인스타 @${row.handle}`;
+        return href ? (
+          <a key={k} href={href} {...(k === "email" ? {} : { target: "_blank", rel: "noreferrer" })} className={cn(cls, "hover:text-foreground")} title={title}>
+            {CHANNEL_LABEL[k]}
+          </a>
+        ) : (
+          <span key={k} className={cls} title={title}>
+            {CHANNEL_LABEL[k]}
+          </span>
+        );
+      })}
+    </div>
   );
 }
 

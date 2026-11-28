@@ -1,5 +1,21 @@
 import { describe, expect, it } from "vitest";
-import { partialReason, actionFlags, applyContactResult, buildRow, daysBetween, filterRows, funnel, handleCandidates, sortRows, type BoardSource } from "./board";
+import {
+  actionFlags,
+  applyContactResult,
+  BOARD_STATUS_LABEL,
+  boardStatus,
+  buildRow,
+  channelsOf,
+  daysBetween,
+  emailFromMailto,
+  filterRows,
+  funnel,
+  handleCandidates,
+  normalizeXHandle,
+  partialReason,
+  sortRows,
+  type BoardSource,
+} from "./board";
 import { emptyView, type ContactView } from "./contact-actions";
 
 const T = "2026-11-17";
@@ -149,7 +165,7 @@ describe("partialReason", () => {
     expect(partialReason("sent", {}, [])).toBeNull();
   });
   it("사진과 소개 글이 다 빠졌으면 둘 다 적는다", () => {
-    expect(partialReason("partial", { "reply-received": "2026-11-25" }, [])).toBe("사진 아직 · 소개 글 아직");
+    expect(partialReason("partial", { "reply-received": "2026-11-25" }, [])).toBe("사진 아직, 소개 글 아직");
   });
   it("사진은 받았고 글만 남았으면 글만 적는다", () => {
     expect(partialReason("partial", { "image-received": "2026-11-25" }, [])).toBe("소개 글 아직");
@@ -159,5 +175,67 @@ describe("partialReason", () => {
   });
   it("사진 칩 없이 글 사용만 있으면 글로만 소개한다고 적는다", () => {
     expect(partialReason("partial", { "text-received": "2026-11-25" }, ["text"])).toBe("사진 없이 글로만 소개");
+  });
+});
+
+describe("안 보냄과 연락 수단 없음 나누기(2026-11-28)", () => {
+  it("안 보냄인데 인스타, 메일, X, 기타 어느 것도 없으면 연락 수단 없음", () => {
+    expect(boardStatus(buildRow(src(), T))).toBe("no-channel");
+    expect(boardStatus(buildRow(src({ handles: [{ value: "@a", confidence: "official" }] }), T))).toBe("not-sent");
+    expect(boardStatus(buildRow(src({ view: { handle: "a@b.kr" } }), T))).toBe("not-sent");
+    expect(boardStatus(buildRow(src({ profileX: "https://x.com/Brand_X" }), T))).toBe("not-sent");
+    expect(boardStatus(buildRow(src({ profileEmail: "hi@brand.kr" }), T))).toBe("not-sent");
+    expect(boardStatus(buildRow(src({ view: { handle: "pf.kakao.com/_abc", channel: "other" } }), T))).toBe("not-sent");
+  });
+  it("저장 상태는 그대로이고, 보낸 뒤 상태는 수단이 없어도 그대로 보인다", () => {
+    const r = buildRow(src(), T);
+    expect(r.status).toBe("not-sent");
+    expect(boardStatus(buildRow(src({ view: { status: "sent", sentAt: T } }), T))).toBe("sent");
+  });
+  it("무엇으로 보낼지: 인스타 → 메일 → X → 기타 순", () => {
+    const r = buildRow(
+      src({ view: { handle: "a@b.kr" }, handles: [{ value: "@ig", confidence: "official" }], profileX: "@xx" }),
+      T,
+    );
+    expect(channelsOf(r)).toEqual(["instagram", "email", "x"]);
+    expect([r.handle, r.email, r.x]).toEqual(["ig", "a@b.kr", "xx"]);
+  });
+  it("개수는 안 보냄과 연락 수단 없음을 나눠 세고, 합은 저장값 안 보냄과 같다", () => {
+    const rows = [
+      buildRow(src(), T),
+      buildRow(src(), T),
+      buildRow(src({ handles: [{ value: "@a", confidence: "official" }] }), T),
+      buildRow(src({ view: { status: "sent", sentAt: T } }), T),
+    ];
+    const f = funnel(rows);
+    expect(f.byBoardStatus).toMatchObject({ "not-sent": 1, "no-channel": 2, sent: 1 });
+    expect(f.byBoardStatus["not-sent"] + f.byBoardStatus["no-channel"]).toBe(f.byStatus["not-sent"]);
+    expect(filterRows(rows, { statuses: ["no-channel"] })).toHaveLength(2);
+    expect(filterRows(rows, { statuses: ["not-sent"] })).toHaveLength(1);
+  });
+  it("연락처를 확정하면(저장 결과 반영) 바로 안 보냄으로 돌아간다", () => {
+    const row = buildRow(src(), T);
+    expect(boardStatus(row)).toBe("no-channel");
+    const ig = applyContactResult(row, { ...emptyView(), handle: "@found", channel: "instagram" }, null, T);
+    expect(boardStatus(ig)).toBe("not-sent");
+    const mail = applyContactResult(row, { ...emptyView(), handle: "hi@b.kr", channel: "email" }, null, T);
+    expect([boardStatus(mail), mail.email]).toEqual(["not-sent", "hi@b.kr"]);
+  });
+  it("X 계정과 mailto 모양 읽기", () => {
+    expect(normalizeXHandle("https://twitter.com/Abc_1?s=20")).toBe("abc_1");
+    expect(normalizeXHandle("x.com/abc")).toBe("abc");
+    expect(normalizeXHandle("@abc")).toBe("abc");
+    expect(normalizeXHandle("https://x.com/intent/follow")).toBeNull();
+    expect(normalizeXHandle("https://box.com/abc")).toBeNull();
+    expect(emailFromMailto("mailto:hi%40b.kr?subject=x")).toBe("hi@b.kr");
+    expect(emailFromMailto("https://b.kr")).toBeNull();
+  });
+});
+
+describe("보드 상태 이름", () => {
+  it("sent는 답 기다림, 화면에서 계산하는 상태는 연락 수단 없음", () => {
+    expect(BOARD_STATUS_LABEL.sent).toBe("답 기다림");
+    expect(BOARD_STATUS_LABEL["no-channel"]).toBe("연락 수단 없음");
+    expect(BOARD_STATUS_LABEL["not-sent"]).toBe("아직 안 보냄");
   });
 });

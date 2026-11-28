@@ -92,7 +92,7 @@ describe("검수 학습과 말투 게이트", () => {
     const f = (await res.json()).data.field;
     expect(f.status).toBe("reviewed");
     expect(f.value.gate.ok).toBe(false);
-    expect(f.value.gate.issues).toContain("숫자가 빠졌어요: 2019");
+    expect(f.value.gate.issues).toContain("원문에 없는 과장이나 단정이 생겼어요: 최고");
   });
 });
 

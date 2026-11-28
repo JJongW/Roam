@@ -48,7 +48,7 @@ export async function PATCH(req: Request) {
     let finalValue = checked.value;
     if (def.kind === "prose") {
       const v = finalValue as { original: string; display?: string };
-      finalValue = v.display ? { ...v, gate: checkToneConversion({ original: v.original, display: v.display }) } : { original: v.original };
+      finalValue = v.display ? { ...v, gate: checkToneConversion({ mode: "intro", original: v.original, display: v.display }) } : { original: v.original };
     }
     const sources = parsed.data.sources ?? [];
     const status = parsed.data.status ?? "reviewed";

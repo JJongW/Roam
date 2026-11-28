@@ -43,6 +43,7 @@ export function useBoothSignals({
   screen,
   exhibitionSlug,
   onVisitMarked,
+  onConfirm,
 }: {
   boothId: string;
   name: string;
@@ -51,6 +52,11 @@ export function useBoothSignals({
   exhibitionSlug?: string;
   /** 다녀왔어요를 켠 직후(되돌리기 말고). 카드는 이걸로 로미 줄(6-03)을 띄운다. 넘기면 스낵바 대신 그쪽이 되돌리기를 맡는다. */
   onVisitMarked?: (before: BoothRecord | undefined) => void;
+  /**
+   * 확인 알림(하트 뺀 뒤, 다녀왔어요 끈 뒤의 되돌리기)을 대신 띄울 곳. 지도 부스 카드는 이걸로 화면 위 토스트에 맡긴다
+   * (2026-11-27 Ted, 아래는 다음 부스를 누르는 자리). 없으면 이 훅의 스낵바(snack)에 둔다. 로그인 제안은 늘 snack이다.
+   */
+  onConfirm?: (s: Omit<SnackbarState, "key">) => void;
 }) {
   const record = useVisitStore((s) => s.records[boothId]);
   const signedIn = useAuthStore((s) => !!s.user);
@@ -62,6 +68,12 @@ export function useBoothSignals({
   const show = (s: Omit<SnackbarState, "key">) =>
     setSnack({ ...s, key: Date.now() });
   const close = useCallback(() => setSnack(null), []);
+  // 한 번에 하나(섹션 33): 확인 알림을 밖에 맡기면 이 훅의 로그인 제안은 내린다.
+  const confirm = (s: Omit<SnackbarState, "key">) => {
+    if (!onConfirm) return show(s);
+    setSnack(null);
+    onConfirm(s);
+  };
 
   const toggleHeart = () => {
     const before = useVisitStore.getState().records[boothId];
@@ -74,7 +86,7 @@ export function useBoothSignals({
       props: { surface },
     });
     if (!next) {
-      show({
+      confirm({
         message: system.heartRemoved(name),
         actionLabel: label.undo,
         onAction: () => {
@@ -122,7 +134,7 @@ export function useBoothSignals({
     if (next) {
       onVisitMarked?.(before);
     } else {
-      show({
+      confirm({
         message: system.visitRemoved(name, !!before?.verdict),
         actionLabel: label.undo,
         onAction: () => {

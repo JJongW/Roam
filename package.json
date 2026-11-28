@@ -29,7 +29,8 @@
     "brand-heart:backfill": "vite-node -c worker/vite.config.ts scripts/brand-heart-backfill.ts --",
     "fair:audit": "vite-node -c worker/vite.config.ts scripts/fair-audit.ts --",
     "brand-photos": "vite-node -c worker/vite.config.ts scripts/brand-photos.ts --",
-    "brand-fix": "vite-node -c worker/vite.config.ts scripts/brand-fix.ts --"
+    "brand-fix": "vite-node -c worker/vite.config.ts scripts/brand-fix.ts --",
+    "brand-intro:retidy": "vite-node -c worker/vite.config.ts scripts/brand-intro-retidy.ts --"
   },
   "dependencies": {
     "@google/genai": "^2.8.0",

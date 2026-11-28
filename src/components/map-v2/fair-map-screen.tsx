@@ -39,7 +39,8 @@ import { entryCopy, monthDayKo } from "@/lib/copy/map-entry";
 import {
   entryStep,
   firstPicks as computeFirstPicks,
-  moodBooths,
+  moodPool,
+  MOOD_PHOTO_COUNT,
   morePicks as computeMorePicks,
   readFairState,
   readPicksOnMap,
@@ -69,16 +70,16 @@ import { isCardResult, searchMapBooths } from "@/components/map-v2/map-search";
 import { RomiAvatar } from "@/components/v2/romi-avatar";
 import { BackButton } from "@/components/v2/back-button";
 import { FLOORPLANS } from "@/lib/floorplans";
-import { floorplanHallOf } from "@/lib/floorplan/hall-of";
+import { floorplanHallOf, hallForBooth } from "@/lib/floorplan/hall-of";
+import { previewMovesCamera } from "@/components/map-v2/preview-focus";
+import { boothFocusBox } from "@/components/map/booth-focus";
 import {
   isHearted,
   isVisited,
   pushNote,
   useVisitStore,
-  type BoothRecord,
   type VerdictValue,
 } from "@/lib/stores/visit";
-import { RomiLineCard } from "@/components/map-v2/romi-line-card";
 import { TodaySheet, isToday } from "@/components/map-v2/today-sheet";
 import { restoreRecord } from "@/components/booth-v2/booth-actions";
 import { Snackbar, type SnackbarState } from "@/components/v2/snackbar";
@@ -218,13 +219,6 @@ export function FairMapScreen({
     );
   }, [records, hydrated]);
 
-  // 6-03 로미 줄: 카드 알약으로 다녀왔어요를 켠 직후. 되돌리기는 켜기 전 기록(평가까지)으로 돌린다.
-  const [remembered, setRemembered] = useState<{
-    boothId: string;
-    name: string;
-    before: BoothRecord | undefined;
-  } | null>(null);
-  const clearRemembered = useCallback(() => setRemembered(null), []);
   // 6-04 오늘 다녀온 곳: 이 박람회에서 오늘 다녀온 부스가 있을 때만 입구를 보인다.
   const [todayOpen, setTodayOpen] = useState(false);
   // UI 7 로미 시트, 12 회고, 9 길 안내, 7-05 장소 답(지금 어디, 편의시설)
@@ -248,9 +242,21 @@ export function FairMapScreen({
   const routeOnArrival = !!initialRoute && !!initialFocusId && canRoute;
   const [snack, setSnack] = useState<SnackbarState | null>(null);
   const closeSnack = useCallback(() => setSnack(null), []);
+  // 지도 위 토스트(2026-11-27 Ted): 부스 카드에서 생긴 확인 알림(6-03 다녀왔어요 켠 뒤, 6-06 끈 뒤, 5-08 하트 뺀 뒤)은
+  // 찾기 띠 바로 아래 8에 뜬다. 아래는 다음 부스를 고르고 다녀왔어요를 누르는 자리라 비운다. 새 알림은 앞 알림을 바꾼다.
+  const [toast, setToast] = useState<SnackbarState | null>(null);
+  const closeToast = useCallback(() => setToast(null), []);
+  const showToast = useCallback(
+    (x: Omit<SnackbarState, "key">) => {
+      setSnack(null); // 한 번에 하나(섹션 33)
+      setToast({ ...x, key: Date.now() });
+    },
+    [],
+  );
 
   // UI 1 첫 진입. 상태는 이 브라우저 `roam.fair.<slug>`(iOS와 같은 키).
-  const moodList = useMemo(() => moodBooths(booths), [booths]);
+  const moodAll = useMemo(() => moodPool(booths), [booths]);
+  const moodList = useMemo(() => moodAll.slice(0, MOOD_PHOTO_COUNT), [moodAll]);
   const [fairState, setFairState] = useState<FairOnboardingState | null>(null);
   const [entry, setEntry] = useState<FairEntryStep>("none");
   const [moodOpen, setMoodOpen] = useState(false);
@@ -272,8 +278,8 @@ export function FairMapScreen({
         : insets,
     [insets, pickPreview, pickPreviewH],
   );
-  // 상세에서 뒤로 와 미리보기를 되살릴 때 그 부스를 다시 비출 id(엔진이 뜬 뒤에 맞춘다).
-  const [resumeFocus, setResumeFocus] = useState<string | null>(null);
+  // 상세에서 뒤로 와 되살린 미리보기의 칸. 이 칸인 동안 시트가 열려도 지도를 옮기지 않는다(보던 그대로, 11-27 Ted).
+  const heldPreviewId = useRef<string | null>(null);
   const [romiPage, setRomiPage] = useState<"main" | "where" | "known">("main");
   // UI 8-06 "제가 고른 곳은 목록에 담아 뒀어요" 줄, 8-07 고른 곳을 지도에 켰는지(오늘만, K-C).
   const [picksLine, setPicksLine] = useState(false);
@@ -437,7 +443,7 @@ export function FairMapScreen({
         setPickIndex(at);
         setPickHead(resume.head);
         setPickPreview(true);
-        setResumeFocus(live[at].boothId);
+        heldPreviewId.current = live[at].boothId;
         return;
       }
     }
@@ -718,31 +724,31 @@ export function FairMapScreen({
     );
   };
 
-  // 부스 하나를 보여 줄 때(찾기, 지도에서 보기): 그 부스가 있는 홀 하나를 안전 띠에 맞춘다
-  // (UI 3-02, iOS와 같음). 홀이 하나뿐인 도면이면 지도 전체가 그 홀이다. 홀을 모르면 이웃과 함께.
-  const focusBooth = (id: string) => {
+  // 부스 하나로 갈 때(찾기에서 고르기, 지도에서 보기): 그 부스를 띠 가운데 두고 번호가 읽히는 배율로
+  // 다가간다(2026-11-28 Ted, iOS focusOnResult와 같은 상자). 예전엔 부스가 있는 홀을 통째로 맞춰서
+  // 홀이 하나인 도면에선 지도 전체로 멀어졌다(`docs/decisions/2026-11-28_지도-검색-부스로-다가가기.md`).
+  // 카드가 떠서 아래 띠가 높아지면 엔진이 같은 부스를 새 띠에 다시 맞춘다(keepWhileSelected).
+  const focusBooth = (id: string, select = true) => {
     const b = booths.find((x) => x.id === id);
-    const name = b ? floorplanHallOf(floorplan, b.code) : undefined;
-    const r = name ? floorplan?.halls.find((h) => h.name === name) : undefined;
-    // 카드가 떠서 아래 띠가 높아지면 엔진이 같은 상자를 새 띠에 다시 맞춘다(keepWhileSelected).
-    // 예전엔 여기서 여백이 바뀔 때 한 번 더 불러 이동이 둘 겹쳤다.
-    if (r) mapRef.current?.focusRect(r, { keepWhileSelected: id });
-    else focusIds([id], 2.5, [], { keepWhileSelected: id });
+    const cell = b?.code
+      ? floorplan?.booths.find((fb) => fb.code === b.code)
+      : undefined;
+    if (!cell) return;
+    setHall((h) => hallForBooth(floorplan, b?.code, h));
+    mapRef.current?.focusRect(boothFocusBox(cell), {
+      cell,
+      ...(select ? { keepWhileSelected: id } : {}),
+    });
   };
-
-  // UI 24 Q2A-2 상세에서 뒤로 와 미리보기를 되살렸으면 1-05처럼 그 부스를 비춘다.
-  useEffect(() => {
-    if (!resumeFocus) return;
-    const t = setTimeout(() => focusIds([resumeFocus], 2.5), 200);
-    return () => clearTimeout(t);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resumeFocus]);
 
   // UI 24 Q2A-2: 시트 높이를 알면 고른 칸을 시트 위 지도 가운데로 옮긴다(1-05와 같은 여백, iOS focusPickAbovePreview).
   // keepWhileSelected라 시트가 닫혀 띠가 카드 위로 돌아가면 엔진이 같은 칸을 새 띠에 다시 맞춘다.
+  // 상세에서 뒤로 와 되살린 시트면 옮기지 않는다(`preview-focus.ts`).
   const previewPickId = pickPreview ? currentPick?.boothId : undefined;
   useEffect(() => {
-    if (!previewPickId || !pickPreviewH) return;
+    // 되살린 칸에서 다음 곳으로 넘어가면 다시 옮긴다(첫 렌더처럼 시트가 아직 안 열렸을 땐 그대로 둔다).
+    if (previewPickId && previewPickId !== heldPreviewId.current) heldPreviewId.current = null;
+    if (!previewPickId || !previewMovesCamera(previewPickId, pickPreviewH, heldPreviewId.current)) return;
     focusIds([previewPickId], 2.5, [], { keepWhileSelected: previewPickId });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [previewPickId, pickPreviewH]);
@@ -797,7 +803,7 @@ export function FairMapScreen({
     });
     setSheet(null);
     setAnswer(null);
-    setRemembered(null);
+    setToast(null);
     setArrivedId(null);
     setSelectedId(null);
     setRoute({
@@ -1100,6 +1106,8 @@ export function FairMapScreen({
       onNotThis={() => pickAction("not_this")}
       onLater={() => pickAction("later")}
       onPreview={() => {
+        // 사용자가 직접 연 시트는 늘 그 칸을 시트 위로 옮긴다.
+        heldPreviewId.current = null;
         setPickPreview(true);
         // iOS openPickPreview와 같은 이름, 화면, 속성(index, 0부터).
         track("onboarding_first_pick_preview_open", {
@@ -1361,6 +1369,13 @@ export function FairMapScreen({
           )}
         </div>
 
+        {/* 확인 알림 토스트: 띠(topRef) 바로 아래 gap 8. 지도 크기(insets)는 띠만 재므로 바뀌지 않는다. */}
+        <Snackbar
+          state={toast}
+          onClose={closeToast}
+          className="w-full max-w-[var(--roam-v2-size-content-max-width)]"
+        />
+
         {q && (
           <SearchResults
             query={query.trim()}
@@ -1378,7 +1393,7 @@ export function FairMapScreen({
               // 시설 칸은 카드가 없으니 고르지 않고 지도만 그 칸으로 다가간다(iOS focusOnResult).
               if (!isCardResult(b)) {
                 setSelectedId(null);
-                focusIds([b.id], 2.5);
+                focusBooth(b.id, false);
                 return;
               }
               select(b.id, "search");
@@ -1423,36 +1438,27 @@ export function FairMapScreen({
         className="pointer-events-none absolute inset-x-0 bottom-0 z-20 px-v2-x4 pb-safe md:pb-v2-x2"
       >
         <div className="w-full max-w-[var(--roam-v2-size-content-max-width)]">
-          {q ? null : remembered ? (
-            <div className="flex w-full flex-col pb-v2-x2">
-              <RomiLineCard
-                key={remembered.boothId}
-                title={romi.visitRemembered(remembered.name)}
-                sub={romi.visitLaterNote}
-                onDone={clearRemembered}
-                onAction={() => {
-                  restoreRecord(remembered.boothId, remembered.before);
-                  track("visit_undo", {
-                    screen: SCREEN.visitRemembered,
-                    exhibitionSlug: slug,
-                    boothId: remembered.boothId,
-                    props: { surface: "card" },
-                  });
-                  setRemembered(null);
-                  setSelectedId(remembered.boothId);
-                }}
-              />
-            </div>
-          ) : showCard ? (
+          {q ? null : showCard ? (
             <BoothCardV2
               onVisitMarked={(before) => {
-                setRemembered({
-                  boothId: selected.id,
-                  name: selected.name,
-                  before,
+                // 6-03: 카드는 그대로 두고(다음 부스를 바로 고를 수 있게) 위 토스트로 알린다. 문구는 로미 줄과 같다.
+                const boothId = selected.id;
+                showToast({
+                  message: `${romi.visitRemembered(selected.name)}\n${romi.visitLaterNote}`,
+                  actionLabel: label.undo,
+                  onAction: () => {
+                    restoreRecord(boothId, before);
+                    track("visit_undo", {
+                      screen: SCREEN.visitRemembered,
+                      exhibitionSlug: slug,
+                      boothId,
+                      props: { surface: "card" },
+                    });
+                  },
                 });
-                setSelectedId(null);
               }}
+              onConfirm={showToast}
+              onLoginPrompt={closeToast}
               key={selected.id}
               booth={selected}
               onRoute={
@@ -1537,7 +1543,10 @@ export function FairMapScreen({
           booths={todayBooths}
           exhibitionSlug={slug}
           onClose={() => setTodayOpen(false)}
-          show={(x) => setSnack({ ...x, key: Date.now() })}
+          show={(x) => {
+            setToast(null);
+            setSnack({ ...x, key: Date.now() });
+          }}
         />
       )}
       {pickPreview && pickBooth && currentPick && (
@@ -1589,7 +1598,8 @@ export function FairMapScreen({
               ),
               boothId: b.id,
             });
-            focusIds([b.id], 2.5);
+            // 사용자가 그 부스가 어디냐고 물었다 — 찾기에서 고르기와 같은 규칙으로 다가간다.
+            focusBooth(b.id, false);
           }}
           onPickLeft={(id) => {
             // 7-03 남기신 것 줄: 지도에서 그 부스 카드(5-01, 6-02)를 연다.
@@ -1639,7 +1649,7 @@ export function FairMapScreen({
       {moodOpen && (
         <MoodSheet
           fairName={detail.exhibition.name}
-          booths={moodList}
+          pool={moodAll}
           onPicked={moodPicked}
           onSkip={moodSkipped}
         />

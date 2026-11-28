@@ -9,6 +9,7 @@ import {
   brandLinkRows,
   dataIssueQueue,
   enrichmentQueue,
+  enrichmentQueueByFair,
   issueGroups,
   pendingLinkCandidates,
   splitPending,
@@ -100,6 +101,25 @@ describe("홈 카드 숫자 = 화면 숫자", () => {
     // 옛 홈은 재조사와 다른 박람회까지 더해 4건이었다.
     expect(fairCount(c, a.id)).toMatchObject({ count: 2, secondary: 1 });
     expect(fairCount(c, b.id)).toMatchObject({ count: 1 });
+  });
+
+  it("초안 검수: 홈 카드와 화면의 박람회별 줄이 같은 함수라 고른 박람회가 0건이어도 같은 숫자가 보인다", async () => {
+    // 2026-11-28 운영: 홈은 9건(끝난 박람회의 직접 조사)인데 카드를 누르면 고른 박람회(0건)만 보였다.
+    const { repo, exhibitions, a, b } = await fixture();
+    const c = byKey((await home(repo, exhibitions, EARLY)).items).drafts;
+    const { rows } = await enrichmentQueueByFair(repo, exhibitions);
+    const open = rows.filter((r) => r.count > 0 || r.secondary > 0);
+    expect(open.map((r) => [r.exhibitionId, r.count, r.secondary]).sort()).toEqual(
+      fairsOf(c).map((f) => [f.exhibitionId, f.count, f.secondary ?? 0]).sort(),
+    );
+    expect(c).toMatchObject({
+      count: open.reduce((s, r) => s + r.count, 0),
+      secondary: { count: open.reduce((s, r) => s + r.secondary, 0) },
+    });
+    // 아무것도 없는 박람회를 골라 들어가도 a, b의 건수는 줄에 남는다.
+    const empty = exhibitions.find((e) => e.id !== a.id && e.id !== b.id)!;
+    expect((await enrichmentQueue(repo, empty.id)).forHuman).toHaveLength(0);
+    expect(open.map((r) => r.exhibitionId).sort()).toEqual([a.id, b.id].sort());
   });
 
   it("대조 검수: 박람회마다 화면의 '다른 것' 수와 같다", async () => {
