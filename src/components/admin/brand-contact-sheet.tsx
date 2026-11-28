@@ -9,7 +9,7 @@ import {
   ALLOWED_USE_LABEL,
   CONTACT_CHANNEL_LABEL,
   CONTACT_CHECKLIST,
-  CONTACT_STATUS_LABEL,
+  CONTACT_STATUS_VIEW_LABEL,
   LOG_DIRECTION_LABEL,
   LOG_KIND_LABEL,
 } from "@/lib/brands/contact";
@@ -179,7 +179,7 @@ function ContactEditor({
                   )}
                 >
                   <span className={cn("size-1.5 rounded-full", STATUS_STYLE[s].dot)} aria-hidden />
-                  {CONTACT_STATUS_LABEL[s]}
+                  {CONTACT_STATUS_VIEW_LABEL[s]}
                 </button>
               );
             })}

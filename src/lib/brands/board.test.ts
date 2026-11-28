@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   actionFlags,
   applyContactResult,
+  BOARD_STATUS_LABEL,
   boardStatus,
   buildRow,
   channelsOf,
@@ -11,6 +12,7 @@ import {
   funnel,
   handleCandidates,
   normalizeXHandle,
+  partialReason,
   sortRows,
   type BoardSource,
 } from "./board";
@@ -157,6 +159,25 @@ describe("인스타 계정 후보 순서(handleCandidates)", () => {
   });
 });
 
+describe("partialReason", () => {
+  it("일부 허락이 아니면 이유를 적지 않는다", () => {
+    expect(partialReason("granted", {}, [])).toBeNull();
+    expect(partialReason("sent", {}, [])).toBeNull();
+  });
+  it("사진과 소개 글이 다 빠졌으면 둘 다 적는다", () => {
+    expect(partialReason("partial", { "reply-received": "2026-11-25" }, [])).toBe("사진 아직, 소개 글 아직");
+  });
+  it("사진은 받았고 글만 남았으면 글만 적는다", () => {
+    expect(partialReason("partial", { "image-received": "2026-11-25" }, [])).toBe("소개 글 아직");
+  });
+  it("계정 사진을 써도 되면 사진은 빠진 것으로 보지 않는다", () => {
+    expect(partialReason("partial", { "text-received": "2026-11-25" }, ["account-photo"])).toBe("허락 범위 확인");
+  });
+  it("사진 칩 없이 글 사용만 있으면 글로만 소개한다고 적는다", () => {
+    expect(partialReason("partial", { "text-received": "2026-11-25" }, ["text"])).toBe("사진 없이 글로만 소개");
+  });
+});
+
 describe("안 보냄과 연락 수단 없음 나누기(2026-11-28)", () => {
   it("안 보냄인데 인스타, 메일, X, 기타 어느 것도 없으면 연락 수단 없음", () => {
     expect(boardStatus(buildRow(src(), T))).toBe("no-channel");
@@ -208,5 +229,13 @@ describe("안 보냄과 연락 수단 없음 나누기(2026-11-28)", () => {
     expect(normalizeXHandle("https://box.com/abc")).toBeNull();
     expect(emailFromMailto("mailto:hi%40b.kr?subject=x")).toBe("hi@b.kr");
     expect(emailFromMailto("https://b.kr")).toBeNull();
+  });
+});
+
+describe("보드 상태 이름", () => {
+  it("sent는 답 기다림, 화면에서 계산하는 상태는 연락 수단 없음", () => {
+    expect(BOARD_STATUS_LABEL.sent).toBe("답 기다림");
+    expect(BOARD_STATUS_LABEL["no-channel"]).toBe("연락 수단 없음");
+    expect(BOARD_STATUS_LABEL["not-sent"]).toBe("아직 안 보냄");
   });
 });
