@@ -33,6 +33,7 @@ import {
   entryPoint,
   readableScale,
 } from "./map-entry";
+import { boothFocusCamera, type BoothCell } from "./booth-focus";
 import {
   angleDelta,
   cameraKeeping,
@@ -191,6 +192,9 @@ export interface MapHandle {
        *  맞춘다. 카드가 뜨면서 아래 띠가 높아질 때 화면 쪽에서 한 번 더 부르지 않게 엔진이 맡는다.
        *  진행 중인 이동은 새로 시작하지 않고 목표만 바꿔 이어 간다. */
       keepWhileSelected?: string;
+      /** 이 부스 하나로 간다(찾기에서 고르기, 지도에서 보기). `r`은 `boothFocusBox(cell)`이다. 부스를 띠
+       *  가운데 두고, 번호가 읽히는 배율까지 다가가고, 이미 더 가까이 보고 있으면 배율은 둔다(`booth-focus.ts`). */
+      cell?: BoothCell;
     },
   ) => void;
 }
@@ -1221,6 +1225,26 @@ export function ExhibitionMap({
                   ),
           },
         };
+      } else if (opts?.cell) {
+        const cam = boothFocusCamera({
+          box: r,
+          cell: opts.cell,
+          center: { x: opts.cell.x, y: opts.cell.y },
+          size: { w: width, h: height },
+          rotation: rotationRef.current,
+          view: safeInsets
+            ? { w: cw, bandTop: safe.top, bandH: safe.h }
+            : { w: cw, bandTop: 0, bandH: ch },
+          // 다시 맞추기(띠가 바뀜)는 앞서 고른 배율을 두고 가운데만 옮긴다. 새로 갈 때는 지금 보이는 배율과 견준다.
+          currentScale:
+            mode === "refit" ? view.current.scale : shown.current.scale,
+          minScale: minScale(),
+          maxScale: maxScale(),
+        });
+        view.current = {
+          scale: cam.scale,
+          offset: clampOffset(cam.offset, cam.scale),
+        };
       } else {
         const s = clamp(want, minScale(), maxScale());
         const y = safeInsets
@@ -1248,6 +1272,8 @@ export function ExhibitionMap({
       focusBottomInset,
       safeInsets,
       footprint,
+      width,
+      height,
     ],
   );
 

@@ -70,6 +70,7 @@ import { RomiAvatar } from "@/components/v2/romi-avatar";
 import { BackButton } from "@/components/v2/back-button";
 import { FLOORPLANS } from "@/lib/floorplans";
 import { floorplanHallOf } from "@/lib/floorplan/hall-of";
+import { boothFocusBox } from "@/components/map/booth-focus";
 import {
   isHearted,
   isVisited,
@@ -720,16 +721,20 @@ export function FairMapScreen({
     );
   };
 
-  // 부스 하나를 보여 줄 때(찾기, 지도에서 보기): 그 부스가 있는 홀 하나를 안전 띠에 맞춘다
-  // (UI 3-02, iOS와 같음). 홀이 하나뿐인 도면이면 지도 전체가 그 홀이다. 홀을 모르면 이웃과 함께.
-  const focusBooth = (id: string) => {
+  // 부스 하나로 갈 때(찾기에서 고르기, 지도에서 보기): 그 부스를 띠 가운데 두고 번호가 읽히는 배율로
+  // 다가간다(2026-11-28 Ted, iOS focusOnResult와 같은 상자). 예전엔 부스가 있는 홀을 통째로 맞춰서
+  // 홀이 하나인 도면에선 지도 전체로 멀어졌다(`docs/decisions/2026-11-28_지도-검색-부스로-다가가기.md`).
+  // 카드가 떠서 아래 띠가 높아지면 엔진이 같은 부스를 새 띠에 다시 맞춘다(keepWhileSelected).
+  const focusBooth = (id: string, select = true) => {
     const b = booths.find((x) => x.id === id);
-    const name = b ? floorplanHallOf(floorplan, b.code) : undefined;
-    const r = name ? floorplan?.halls.find((h) => h.name === name) : undefined;
-    // 카드가 떠서 아래 띠가 높아지면 엔진이 같은 상자를 새 띠에 다시 맞춘다(keepWhileSelected).
-    // 예전엔 여기서 여백이 바뀔 때 한 번 더 불러 이동이 둘 겹쳤다.
-    if (r) mapRef.current?.focusRect(r, { keepWhileSelected: id });
-    else focusIds([id], 2.5, [], { keepWhileSelected: id });
+    const cell = b?.code
+      ? floorplan?.booths.find((fb) => fb.code === b.code)
+      : undefined;
+    if (!cell) return;
+    mapRef.current?.focusRect(boothFocusBox(cell), {
+      cell,
+      ...(select ? { keepWhileSelected: id } : {}),
+    });
   };
 
   // UI 24 Q2A-2 상세에서 뒤로 와 미리보기를 되살렸으면 1-05처럼 그 부스를 비춘다.
@@ -1387,7 +1392,7 @@ export function FairMapScreen({
               // 시설 칸은 카드가 없으니 고르지 않고 지도만 그 칸으로 다가간다(iOS focusOnResult).
               if (!isCardResult(b)) {
                 setSelectedId(null);
-                focusIds([b.id], 2.5);
+                focusBooth(b.id, false);
                 return;
               }
               select(b.id, "search");
