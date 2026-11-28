@@ -56,6 +56,39 @@ export async function enrichmentQueue(repo: Repository, exhibitionId: string) {
   };
 }
 
+/** 초안 검수 큐의 박람회 하나. count = 사람 몫(forHuman), secondary = 직접 조사(notFound). */
+export interface DraftFairRow {
+  exhibitionId: string;
+  slug: string;
+  name: string;
+  count: number;
+  secondary: number;
+}
+
+/**
+ * 모든 박람회의 초안 검수 건수. **관리자 홈 카드와 초안 검수 화면의 "박람회별" 줄이 이것 하나를 같이 쓴다.**
+ *
+ * 왜(2026-11-28 Ted, 운영: "초안 검수 대기가 9개 있다는데 눌렀을 때 보여지는 건 없음"): 홈은 모든 박람회를
+ * 더해 세는데, 카드를 누르면 화면은 쿠키나 오늘 기준으로 고른 박람회 하나(그날은 SDF, 0건)만 보여 줬다.
+ * 9건은 끝난 박람회 둘(카페쇼 8, SIF 1)의 직접 조사였다. 화면이 같은 줄을 그리면 어느 박람회로 들어가도
+ * 나머지 박람회의 건수가 보이고, 숫자를 따로 세는 길이 없어진다.
+ */
+export async function enrichmentQueueByFair(
+  repo: Repository,
+  exhibitions: Pick<Exhibition, "id" | "slug" | "name">[],
+): Promise<{ rows: DraftFairRow[]; atLeast: boolean }> {
+  const per = await Promise.all(
+    exhibitions.map(async (e) => {
+      const q = await enrichmentQueue(repo, e.id);
+      return {
+        row: { exhibitionId: e.id, slug: e.slug, name: e.name, count: q.forHuman.length, secondary: q.notFound.length },
+        atLeast: q.atLeast,
+      };
+    }),
+  );
+  return { rows: per.map((p) => p.row), atLeast: per.some((p) => p.atLeast) };
+}
+
 // ─── 대조 검수(/admin/verify) ────────────────────────────────────────────
 
 /** 박람회 하나의 대조 큐. 확인한 사실 파일이 없으면 부스를 읽지 않는다. */

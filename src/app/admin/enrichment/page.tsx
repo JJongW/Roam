@@ -5,7 +5,8 @@ import { CandidateQueue } from "@/components/admin/candidate-queue";
 import { CalibrationCard } from "@/components/admin/calibration-card";
 import { calibration } from "@/lib/enrichment/calibration";
 import { exhibitionTrust, MAX_DRAFT_ROUNDS } from "@/lib/enrichment/review-policy";
-import { enrichmentQueue } from "@/lib/admin/queues";
+import { enrichmentQueue, enrichmentQueueByFair } from "@/lib/admin/queues";
+import { DraftFairList } from "@/components/admin/draft-fair-list";
 
 /** 검수 큐. 초안은 여기서 승인해야 booth_enrichment로 간다. */
 export default async function AdminEnrichmentPage() {
@@ -14,7 +15,11 @@ export default async function AdminEnrichmentPage() {
 
   // 큐 숫자는 관리자 홈과 같은 함수로 센다(lib/admin/queues.ts). 0.60 아래나 근거 못 찾은 초안은
   // 사람 큐에 올리지 않고 직접 조사할 목록(notFound)으로 따로 보여 준다.
-  const q = exhibition ? await enrichmentQueue(repo, exhibition.id) : null;
+  // 박람회별 줄은 홈 카드와 같은 함수(enrichmentQueueByFair)다. 고른 박람회가 0건이어도 홈 숫자가 여기 보인다.
+  const [q, byFair] = await Promise.all([
+    exhibition ? enrichmentQueue(repo, exhibition.id) : null,
+    enrichmentQueueByFair(repo, exhibitions),
+  ]);
   const reviewed = q?.reviewed ?? [];
   const cal = calibration(reviewed);
   const trust = q?.trust ?? exhibitionTrust([]);
@@ -40,6 +45,7 @@ export default async function AdminEnrichmentPage() {
         exhibition={exhibition}
         description="자동 초안은 여기서 승인해야 부스에 반영돼요. 고친 내용은 변경 이력에 남아 다음 초안을 더 좋게 만들어요."
       />
+      <DraftFairList rows={byFair.rows} selectedId={exhibition?.id} />
       {exhibition && (
         <div className="rounded-2xl border border-border bg-card p-4">
           <div className="flex items-baseline justify-between gap-3">
