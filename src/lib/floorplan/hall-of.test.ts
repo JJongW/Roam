@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { FLOORPLANS } from "@/lib/floorplans";
-import { floorplanHallOf, hallForBooth, shortHallName } from "./hall-of";
+import { boothHallLabel, floorplanHallOf, hallForBooth, shortHallName } from "./hall-of";
 
 // 2026-11-28 헤더: 여러 홀 도면에서 찾아 고르면 홀 칩이 "전체"로 남았다. iOS처럼 그 홀로 바꾼다.
 describe("부스로 갈 때 홀 칩", () => {
@@ -38,5 +38,25 @@ describe("홀 칩 짧은 이름", () => {
       for (const h of fp.halls) expect(shortHallName(h.name)).not.toMatch(/^Hal$/);
     }
     expect(FLOORPLANS["cafeshow-2026"].halls.map((h) => shortHallName(h.name)).sort()).toEqual(["A홀", "B홀", "C홀", "D홀"]);
+  });
+});
+
+// 2026-11-29 헤더: 부스 카드와 상세의 위치 줄이 "킨텍스 제2전시장 6홀 A01"처럼 홀 이름을 통째로 적었다.
+// iOS(FairMapViewModel.hallName(of:) → MapHall.shortName)처럼 홀 칩과 같은 짧은 이름으로 맞춘다.
+describe("부스 카드와 상세의 홀 칸", () => {
+  it("실제 배치도 홀 이름을 iOS와 같이 줄인다", () => {
+    expect(boothHallLabel(FLOORPLANS["newyear-store-2026"], "A01")).toBe("6홀");
+    expect(boothHallLabel(FLOORPLANS["sdf-2026"], "A-01")).toBe("A홀");
+    expect(boothHallLabel(FLOORPLANS["sif-2026"], "A01")).toBe("C홀");
+    expect(boothHallLabel(FLOORPLANS["cafeshow-2026"], "A511")).toBe("A홀");
+    expect(boothHallLabel(FLOORPLANS["ddp-designfair-2026"], "E17")).toBe("아트홀");
+    expect(boothHallLabel(FLOORPLANS["seoul-furniture-show-2026"], "A210")).toBe("SETEC");
+  });
+
+  it("배치도에서 못 찾으면 부스 데이터의 홀 이름을 같은 규칙으로 줄인다", () => {
+    expect(boothHallLabel(FLOORPLANS["newyear-store-2026"], "없는칸", "킨텍스 제2전시장 6홀")).toBe("6홀");
+    expect(boothHallLabel(undefined, "A01", "Hall B")).toBe("B홀");
+    expect(boothHallLabel(undefined, "A01", "  ")).toBeUndefined();
+    expect(boothHallLabel(undefined, "A01")).toBeUndefined();
   });
 });

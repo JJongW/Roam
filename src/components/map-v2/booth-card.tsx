@@ -15,6 +15,7 @@ import { SCREEN, track } from "@/lib/analytics/app-track";
 import { AB, abVariant } from "@/lib/ab/variant";
 import type { BoothListItem, Category } from "@/lib/types";
 import type { BoothRecord } from "@/lib/stores/visit";
+import { boothPreviewOf, useBoothPreviewStore } from "@/lib/stores/booth-preview";
 
 /**
  * UI 4-01 부스 카드(Figma 3-02 아래 카드, 3008:1032).
@@ -198,6 +199,12 @@ export function BoothCardV2({
           )}
           <Link
             href={`/booths/${booth.id}`}
+            // 상세 로딩 화면이 이 부스의 이름, 홀과 부스 번호, 배지를 실제 글자로 그리게 건넨다(iOS preview).
+            onClick={() =>
+              useBoothPreviewStore.getState().remember(
+                boothPreviewOf(booth, { hallName, categoryName: categories[0]?.name }),
+              )
+            }
             className="flex min-h-v2-x9 items-center rounded-v2-r2 px-v2-x3-5 py-v2-x2 text-v2-t4 font-v2-bold text-v2-fg-neutral-muted active:bg-v2-bg-transparent-pressed"
           >
             {label.detail}
